@@ -28,6 +28,34 @@ $ bazel run //optic:pip_requirements.update
 bazel run //tests/...:all
 ```
 
+### venv / VS Code
+
+To support IDE type-checking (Pylance) in VS Code, we use Aspect's [rules_py](https://docs.aspect.build/rulesets/aspect_rules_py/) which generates a venv target.
+
+```
+$ bazel run //optic:dev_server.venv
+```
+
+Then, you can activate the venv:
+
+```
+$ source .dev_server.venv/bin/activate
+```
+
+Check that you're using venv's python:
+
+```
+$ which python
+```
+
+Copy the python interpreter path and paste it into VS Code.
+
+Finally, install third-party dependencies.
+
+```
+$ pip install -r optic/requirements_lock.txt
+```
+
 ## Commit hooks
 
 We use [pre-commit](https://pre-commit.com/) to automatically format, lint code before committing.

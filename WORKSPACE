@@ -23,12 +23,13 @@ load("@rules_python//python:repositories.bzl", "py_repositories", "python_regist
 
 py_repositories()
 
+# Use Python 3.10 because of https://github.com/aspect-build/rules_py/issues/159
 python_register_toolchains(
-    name = "python_3_11",
-    python_version = "3.11",
+    name = "python_3_10",
+    python_version = "3.10",
 )
 
-load("@python_3_11//:defs.bzl", "interpreter")
+load("@python_3_10//:defs.bzl", "interpreter")
 load("@rules_python//python:pip.bzl", "pip_parse")
 
 pip_parse(
@@ -42,6 +43,22 @@ load("@my_deps//:requirements.bzl", "install_deps")
 
 # Call it to define repos for your requirements.
 install_deps()
+
+http_archive(
+    name = "aspect_rules_py",
+    sha256 = "50b4b43491cdfc13238c29cb159b7ccacf0a1e54bd27b65ff2d5fac69af4d46f",
+    strip_prefix = "rules_py-0.4.0",
+    url = "https://github.com/aspect-build/rules_py/releases/download/v0.4.0/rules_py-v0.4.0.tar.gz",
+)
+
+# Fetches the rules_py dependencies.
+# If you want to have a different version of some dependency,
+# you should fetch it *before* calling this.
+# Alternatively, you can skip calling this function, so long as you've
+# already fetched all the dependencies.
+load("@aspect_rules_py//py:repositories.bzl", "rules_py_dependencies")
+
+rules_py_dependencies()
 
 #####################
 # Angular
