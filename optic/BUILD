@@ -1,5 +1,6 @@
 load("@rules_python//python:defs.bzl", "py_binary", "py_library")
 load("@rules_python//python:pip.bzl", "compile_pip_requirements")
+load("@my_deps//:requirements.bzl", "requirement")
 
 package(
     default_visibility = [":internal"],
@@ -9,6 +10,22 @@ package_group(
     name = "internal",
     packages = [
         "//...",
+    ],
+)
+
+py_library(
+    name = "server",
+    srcs = ["server.py"],
+    deps = [
+        requirement("flask"),
+    ],
+)
+
+py_binary(
+    name = "dev_server",
+    srcs = ["dev_server.py"],
+    deps = [
+        ":server",
     ],
 )
 

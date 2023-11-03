@@ -6,6 +6,14 @@ We use [Bazel](https://bazel.build/) as our build system.
 
 ## Python
 
+### Run dev-server
+
+```
+$ bazel run //optic:dev_server
+```
+
+> NOTE: you don't need to use ibazel since Flask debug mode automatically reloads.
+
 ### Third-party packages (PIP)
 
 If you update `//optic/requirements.txt`, run:
