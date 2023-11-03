@@ -28,3 +28,13 @@ We use [pre-commit](https://pre-commit.com/) to automatically format, lint code 
 
 1. [Install pre-commit](https://pre-commit.com/#installation).
 1. Setup git hook: ```pre-commit install```
+
+## Web (Angular)
+
+### Run local dev server
+
+```
+ibazel run //web/src/app:devserver
+```
+
+> NOTE: this will automatically reload the browser when an edit is made.
