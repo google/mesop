@@ -11,6 +11,9 @@ ng_module(
     srcs = glob([
         "*.ts",
     ]),
+    assets = [
+        "app.html",
+    ],
     deps = [
         "@npm//@angular/compiler",
     ],
