@@ -4,6 +4,7 @@ import json
 
 import protos.ui_pb2 as pb
 
+
 app = Flask(__name__)
 
 def generate_data():
