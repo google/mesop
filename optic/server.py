@@ -2,6 +2,8 @@ from flask import Flask, Response
 import time
 import json
 
+import protos.ui_pb2 as pb
+
 app = Flask(__name__)
 
 def generate_data():
@@ -13,7 +15,8 @@ def generate_data():
     while True:
         time.sleep(1)  # Simulate a delay for data preparation
         count += 1
-        data = json.dumps({'time': time.time(), 'message': f'Data number {count}'})
+        uir = pb.UiResponse(id=count)
+        data = json.dumps({'time': time.time(), 'message': f'Data number {uir.SerializeToString()}'})
         yield f"data: {data}\n\n"
 
 @app.route('/ui')

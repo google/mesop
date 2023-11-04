@@ -18,6 +18,7 @@ py_library(
     srcs = ["server.py"],
     deps = [
         requirement("flask"),
+        "//protos:ui_py_proto",
     ],
 )
 

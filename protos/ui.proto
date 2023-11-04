@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+package protos;
+
+message UiResponse {
+    int32 id = 1;
+}
