@@ -1,6 +1,3 @@
 /bazel-*
 node_modules/
-
-# generated python stubs & types:
-protos/*.py
-protos/*.pyi
+.*.venv

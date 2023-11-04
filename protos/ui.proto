@@ -2,6 +2,9 @@ syntax = "proto3";
 
 package protos;
 
+// UiResponse.
 message UiResponse {
     int32 id = 1;
+    int32 id2 = 2;
+    int32 id3 = 3;
 }
