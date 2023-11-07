@@ -1,6 +1,6 @@
 #Workspace for angular material
 workspace(
-    name = "opt",
+    name = "optic",
     # managed_directories = {"@npm": ["node_modules"]},
 )
 
@@ -77,11 +77,15 @@ load("@bazel_skylib//:workspace.bzl", "bazel_skylib_workspace")
 
 bazel_skylib_workspace()
 
+# Using an old verison of protobuf due to issue with protobuf javascript ERR:
+# In file included from external/com_google_protobuf_javascript/generator/protoc-gen-js.cc:33:
+# external/com_google_protobuf_javascript/generator/js_generator.h:39:10: fatal error: 'google/protobuf/stubs/logging.h' file not found
+# #include <google/protobuf/stubs/logging.h>
 http_archive(
     name = "com_google_protobuf",
-    sha256 = "616bb3536ac1fff3fb1a141450fa28b875e985712170ea7f1bfe5e5fc41e2cd8",
-    strip_prefix = "protobuf-24.4",
-    urls = ["https://github.com/protocolbuffers/protobuf/archive/v24.4.tar.gz"],
+    sha256 = "22fdaf641b31655d4b2297f9981fa5203b2866f8332d3c6333f6b0107bb320de",
+    strip_prefix = "protobuf-21.12",
+    urls = ["https://github.com/protocolbuffers/protobuf/archive/v21.12.tar.gz"],
 )
 
 load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
@@ -97,9 +101,26 @@ http_archive(
 
 load("@rules_proto//proto:repositories.bzl", "rules_proto_dependencies", "rules_proto_toolchains")
 
+http_archive(
+    name = "rules_proto_grpc",
+    sha256 = "9ba7299c5eb6ec45b6b9a0ceb9916d0ab96789ac8218269322f0124c0c0d24e2",
+    strip_prefix = "rules_proto_grpc-4.5.0",
+    urls = ["https://github.com/rules-proto-grpc/rules_proto_grpc/releases/download/4.5.0/rules_proto_grpc-4.5.0.tar.gz"],
+)
+
+load("@rules_proto_grpc//:repositories.bzl", "rules_proto_grpc_repos", "rules_proto_grpc_toolchains")
+
+rules_proto_grpc_toolchains()
+
+rules_proto_grpc_repos()
+
 rules_proto_dependencies()
 
 rules_proto_toolchains()
+
+load("@rules_proto_grpc//js:repositories.bzl", rules_proto_grpc_js_repos = "js_repos")
+
+rules_proto_grpc_js_repos()
 
 #####################
 # Angular

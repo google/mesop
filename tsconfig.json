@@ -25,7 +25,12 @@
       "target": "es2022",
       "lib": ["es2020", "dom"],
       "types": ["jasmine"],
-      "baseUrl": "."
+      "baseUrl": ".",
+      "paths": {
+        "optic/*": [
+          "bazel-bin/*" // Enables referencing generate protos with absolute paths
+        ]
+      }
     },
     "angularCompilerOptions": {
       "strictTemplates": true,

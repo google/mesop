@@ -15,6 +15,7 @@ ng_module(
         "app.html",
     ],
     deps = [
+        "//protos:ui_ts_proto",
         "@npm//@angular/compiler",
     ],
 )

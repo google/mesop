@@ -1,9 +1,6 @@
 # Forked from: https://github.com/protocolbuffers/protobuf/blob/c508a40f40c0b4f1e562ef917cd5606d66d9601c/protobuf.bzl#L79
 load("@bazel_skylib//lib:versions.bzl", "versions")
-load("@rules_cc//cc:defs.bzl", "objc_library")
-load("@rules_proto//proto:defs.bzl", "ProtoInfo")
 load("@rules_python//python:defs.bzl", "py_library")
-load("@rules_ruby//ruby:defs.bzl", "ruby_library")
 
 def _GetPath(ctx, path):
     if ctx.label.workspace_root:
