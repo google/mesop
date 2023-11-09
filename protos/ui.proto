@@ -2,9 +2,41 @@ syntax = "proto3";
 
 package protos;
 
-// UiResponse.
-message UiResponse {
-    int32 id = 1;
-    int32 id2 = 2;
-    int32 id3 = 3;
+// Sent from web client to Python server.
+message UiRequest {
+    oneof type {
+        InitRequest init = 1;
+    }
+}
+
+message InitRequest {
+
+}
+
+// Sent from Python server to web client.
+// Multiple ServerEvent messages may be sent in response to 1 UiRequest.
+message ServerEvent {
+    oneof type {
+        RenderEvent render = 1;
+    }
+}
+
+message RenderEvent {
+    Component root_component = 1; 
+}
+
+// Represents an instance of a component.
+message Component {
+    ComponentData data = 1;
+    repeated Component children = 2;
+}
+
+message ComponentData {
+    oneof type {
+        TextComponent text = 1;
+    }
+}
+
+message TextComponent {
+    string text = 1;
 }

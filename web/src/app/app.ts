@@ -1,5 +1,7 @@
 import { ChangeDetectorRef, Component, NgZone } from "@angular/core";
-import { UiResponse } from "optic/protos/ui_ts_proto_pb/protos/ui_pb";
+import * as pb from "optic/protos/ui_ts_proto_pb/protos/ui_pb";
+import { TextComponent } from "../components/text/text";
+import { CommonModule } from "@angular/common";
 
 // TODO: set this as environmental variable
 const DEV_SERVER_URL = "http://127.0.0.1:8080/ui";
@@ -8,32 +10,37 @@ const DEV_SERVER_URL = "http://127.0.0.1:8080/ui";
   selector: "app",
   templateUrl: "app.html",
   standalone: true,
+  imports: [TextComponent, CommonModule],
 })
 export class App {
-  val = 1;
-  data: any[] = [];
+  rootComponent: pb.Component;
 
-  constructor(
-    private zone: NgZone,
-    private cd: ChangeDetectorRef
-  ) {}
+  constructor(private zone: NgZone) {}
 
   ngOnInit() {
-    const uir = new UiResponse();
-    uir.setId(1);
-
     var eventSource = new EventSource(DEV_SERVER_URL);
     eventSource.onmessage = (e) => {
       // Looks like Angular has a bug where it's not intercepting EventSource onmessage.
       this.zone.run(() => {
         console.log(e.data);
-        // Need a new array reference so Angular's dirty checker works.
-        this.data = this.data.concat(JSON.stringify(e.data));
+        const array = toUint8Array(atob(e.data));
+        const serverEvent = pb.ServerEvent.deserializeBinary(array);
+        switch (serverEvent.getTypeCase()) {
+          case pb.ServerEvent.TypeCase.RENDER:
+            this.rootComponent = serverEvent.getRender()!.getRootComponent()!;
+            break;
+          case pb.ServerEvent.TypeCase.TYPE_NOT_SET:
+            throw new Error("Unhandled case for server event: " + serverEvent);
+        }
       });
     };
   }
+}
 
-  incrementCount() {
-    this.val++;
+function toUint8Array(byteString: string): Uint8Array {
+  const byteArray = new Uint8Array(byteString.length);
+  for (let i = 0; i < byteString.length; i++) {
+    byteArray[i] = byteString.charCodeAt(i);
   }
+  return byteArray;
 }

@@ -1,7 +1,3 @@
-<div>
-    val:{{val}}
-    {{data}}
-    <button (click)="incrementCount()">
-        count
-    </button>
-</div>
+<ng-container *ngIf="rootComponent != null">
+    <app-text [config]="rootComponent.getData()!.getText()!"></app-text>
+</ng-container>
