@@ -2,7 +2,7 @@
 
 ## Build
 
-We use [Bazel](https://bazel.build/) as our build system.
+We use [Bazel](https://bazel.build/) as our build system. Use [bazelisk](https://github.com/bazelbuild/bazelisk) which ensures the right version of Bazel is used for this project.
 
 If [ibazel](https://github.com/bazelbuild/bazel-watcher) breaks, but bazel works, try following [these steps](https://github.com/bazelbuild/bazel-watcher/issues/588#issuecomment-1421939371)
 
