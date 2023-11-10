@@ -11,6 +11,7 @@ py_library(
     srcs = ["__init__.py"],
     deps = [
         "//optic/components",
+        "//optic/state",
     ],
 )
 
