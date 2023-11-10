@@ -20,8 +20,11 @@ message UserAction {
 
     oneof type {
         bool bool = 2;
+        Click click = 3;
     }
 }
+
+message Click {}
 
 // Sent from Python server to web client.
 // Multiple ServerEvent messages may be sent in response to 1 UiRequest.
@@ -45,6 +48,7 @@ message ComponentData {
     oneof type {
         TextComponent text = 1;
         CheckboxComponent checkbox = 2;
+        ButtonComponent button = 3;
     }
 }
 
@@ -55,6 +59,11 @@ message TextComponent {
 message CheckboxComponent {
     string label = 1;
     ActionType on_update = 2;
+}
+
+message ButtonComponent {
+    string label = 1;
+    ActionType on_click = 2;
 }
 
 message ActionType {

@@ -5,18 +5,16 @@ package(
 )
 
 ng_module(
-    name = "component_renderer",
+    name = "button",
     srcs = glob([
         "*.ts",
     ]),
-    assets = glob([
-        "*.html",
-    ]),
+    assets = [
+        "button.html",
+    ],
     deps = [
         "//protos:ui_ts_proto",
-        "//web/src/components/button",
-        "//web/src/components/checkbox",
-        "//web/src/components/text",
+        "//web/src/services",
         "@npm//@angular/compiler",
     ],
 )

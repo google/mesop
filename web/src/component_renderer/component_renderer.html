@@ -1,3 +1,7 @@
+<ng-container *ngIf="component.getData()?.getButton() != null">
+    <app-button [config]="component.getData()!.getButton()!"></app-button>
+</ng-container>
+
 <ng-container *ngIf="component.getData()?.getCheckbox() != null">
     <app-checkbox [config]="component.getData()!.getCheckbox()!"></app-checkbox>
 </ng-container>
