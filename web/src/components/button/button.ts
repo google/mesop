@@ -14,11 +14,9 @@ export class ButtonComponent {
   constructor(private readonly channelService: ChannelService) {}
 
   handleClick(event: any) {
-    const request = new pb.UiRequest();
     const userAction = new pb.UserAction();
     userAction.setClick(new pb.Click());
     userAction.setActionType(this.config.getOnClick()!);
-    request.setUserAction(userAction);
-    this.channelService.dispatch(request);
+    this.channelService.dispatch(userAction);
   }
 }

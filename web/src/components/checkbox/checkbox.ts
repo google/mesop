@@ -16,11 +16,9 @@ export class CheckboxComponent {
   handleCheckboxChange(event: any) {
     console.log("Checkbox is now:", event.target.checked);
     this.isChecked = event.target.checked;
-    const request = new pb.UiRequest();
     const userAction = new pb.UserAction();
     userAction.setBool(event.target.checked);
     userAction.setActionType(this.config.getOnUpdate()!);
-    request.setUserAction(userAction);
-    this.channelService.dispatch(request);
+    this.channelService.dispatch(userAction);
   }
 }

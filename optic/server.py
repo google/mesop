@@ -7,11 +7,16 @@ from optic.lib.runtime import runtime
 
 app = Flask(__name__)
 
+
 def render_loop():
     runtime.run_module()
     root_component = runtime.session().current_node()
 
-    data = pb.ServerEvent(render=pb.RenderEvent(root_component=root_component))
+    data = pb.ServerEvent(
+        render=pb.RenderEvent(
+            root_component=root_component, state=runtime.session().current_state()
+        )
+    )
 
     runtime.reset_session()
 
@@ -20,11 +25,13 @@ def render_loop():
     yield f"data: {encodedString}\n\n"
     yield "data: <stream_end>\n\n"
 
+
 def generate_data(ui_request: pb.UiRequest):
     if ui_request.HasField("init"):
         return render_loop()
     if ui_request.HasField("user_action"):
         runtime.session().set_current_action(ui_request.user_action)
+        runtime.session().set_current_state(ui_request.user_action.state)
         return render_loop()
     else:
         raise Exception(f"Unknown request type: {ui_request}")

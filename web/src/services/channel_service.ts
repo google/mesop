@@ -12,6 +12,7 @@ interface InitParams {
 export class ChannelService {
   private eventSource: EventSource;
   private initParams: InitParams;
+  private state: pb.State;
   constructor() {
     this.eventSource = new EventSource(DEV_SERVER_HOST + "/ui");
   }
@@ -32,6 +33,8 @@ export class ChannelService {
         const serverEvent = pb.ServerEvent.deserializeBinary(array);
         switch (serverEvent.getTypeCase()) {
           case pb.ServerEvent.TypeCase.RENDER:
+            this.state = serverEvent.getRender()!.getState()!;
+
             onRender(serverEvent.getRender()!.getRootComponent()!);
             break;
           case pb.ServerEvent.TypeCase.TYPE_NOT_SET:
@@ -41,7 +44,10 @@ export class ChannelService {
     };
   }
 
-  dispatch(request: pb.UiRequest) {
+  dispatch(userAction: pb.UserAction) {
+    userAction.setState(this.state);
+    const request = new pb.UiRequest();
+    request.setUserAction(userAction);
     const array = request.serializeBinary();
 
     const byteString = btoa(fromUint8Array(array));

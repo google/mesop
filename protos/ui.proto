@@ -15,6 +15,8 @@ message InitRequest {
 }
 
 message UserAction {
+    State state = 4;
+
     // Used to determine which action handler to call.
     ActionType action_type = 1;
 
@@ -35,7 +37,14 @@ message ServerEvent {
 }
 
 message RenderEvent {
-    Component root_component = 1; 
+    Component root_component = 1;
+    State state = 2;
+}
+
+// Serialized state of application. Sent from Python server to web client.
+// Web client doesn't parse this data, it just sends it back to the server.
+message State {
+    string data = 1;
 }
 
 // Represents an instance of a component.
