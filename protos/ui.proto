@@ -6,11 +6,18 @@ package protos;
 message UiRequest {
     oneof type {
         InitRequest init = 1;
+        UserAction user_action = 2;
     }
 }
 
 message InitRequest {
 
+}
+
+message UserAction {
+    oneof type {
+        bool bool = 1;
+    }
 }
 
 // Sent from Python server to web client.
