@@ -4,7 +4,7 @@ load("//builddefs:protos.bzl", "py_proto_library")
 load("@rules_proto_grpc//js:defs.bzl", "js_proto_library")
 
 package(
-    default_visibility = ["//visibility:public"],
+    default_visibility = ["//:optic_internal"],
 )
 
 proto_library(

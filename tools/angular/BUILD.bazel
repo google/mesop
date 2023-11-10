@@ -1,7 +1,9 @@
 load("@npm//@angular/build-tooling/bazel/esbuild:index.bzl", "esbuild_config")
 load(":index.bzl", "create_angular_bundle_targets")
 
-package(default_visibility = ["//visibility:public"])
+package(
+    default_visibility = ["//:optic_internal"],
+)
 
 esbuild_config(
     name = "esbuild_config",

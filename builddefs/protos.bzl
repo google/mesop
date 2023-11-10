@@ -298,7 +298,7 @@ def internal_py_proto_library(
         includes = includes,
         protoc = protoc,
         langs = ["python"],
-        visibility = ["//visibility:public"],
+        visibility = ["//:optic_internal"],
         plugin = "//protos/bin:protoc_gen_mypy",
         plugin_language = "mypy",
     )
@@ -343,7 +343,7 @@ def _source_proto_library(
         includes = ["."],
         protoc = Label("//:protoc"),
         testonly = None,
-        visibility = ["//visibility:public"],
+        visibility = ["//:optic_internal"],
         **kwargs):
     """Bazel rule to create generated protobuf code from proto source files for
     languages not well supported by Bazel yet.  This will output the generated
