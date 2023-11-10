@@ -1,6 +1,6 @@
 from dataclasses import asdict, fields, is_dataclass
 import json
-from typing import Callable, TypeVar, Generic, Any
+from typing import Callable, Dict, TypeVar, Generic, Any
 from optic.lib.runtime import runtime
 import protos.ui_pb2 as pb
 
@@ -20,23 +20,28 @@ Reducer = Callable[[S, Action], S]
 
 
 class Store(Generic[S]):
-    def __init__(self, reducer: Reducer[S], initial_state: S):
+    def __init__(self, reducers: Dict[str, Reducer[S]], initial_state: S):
         self.state = initial_state
-        self.reducer = reducer
+        self.reducers = reducers
 
     def dispatch(self, action: Action):
-        self.state = self.reducer(self.state, action)
+        reducer = self.reducers.get(action.type)
+        if reducer:
+            return reducer(self.state, action)
+        else:
+            print(f"Unknown action type: {action.type}")
+            return self.state
 
     def get_state(self) -> S:
         return self.state
 
 
-def store(reducer: Reducer[S], initial_state: S) -> Store[S]:
+def store(reducers: Dict[str, Reducer[S]], initial_state: S) -> Store[S]:
     current_state = runtime.session().current_state()
     if current_state is not None:
         update_dataclass_from_json(initial_state, current_state.data)
 
-    new_store = Store(reducer, initial_state)
+    new_store = Store(reducers, initial_state)
 
     current_action = runtime.session().current_action()
     action = Action(type=current_action.action_type.type, payload=current_action)
