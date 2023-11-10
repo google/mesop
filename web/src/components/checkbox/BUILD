@@ -5,17 +5,15 @@ package(
 )
 
 ng_module(
-    name = "component_renderer",
+    name = "checkbox",
     srcs = glob([
         "*.ts",
     ]),
-    assets = glob([
-        "*.html",
-    ]),
+    assets = [
+        "checkbox.html",
+    ],
     deps = [
         "//protos:ui_ts_proto",
-        "//web/src/components/checkbox",
-        "//web/src/components/text",
         "@npm//@angular/compiler",
     ],
 )

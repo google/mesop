@@ -34,9 +34,14 @@ message Component {
 message ComponentData {
     oneof type {
         TextComponent text = 1;
+        CheckboxComponent checkbox = 2;
     }
 }
 
 message TextComponent {
     string text = 1;
+}
+
+message CheckboxComponent {
+    string label = 1;
 }

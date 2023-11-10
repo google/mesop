@@ -1,4 +1,5 @@
 import optic as op
 
 def main():
-    op.text(text="hi")
+    op.checkbox(label="check?")
+    op.text(text="hi2")
