@@ -14,12 +14,18 @@ const DEV_SERVER_URL = "http://127.0.0.1:8080/ui";
 })
 export class App {
   rootComponent: pb.Component;
+  eventSource: EventSource;
 
-  constructor(private zone: NgZone) {}
+  constructor(private zone: NgZone) {
+    this.eventSource = new EventSource(DEV_SERVER_URL);
+  }
 
   ngOnInit() {
-    var eventSource = new EventSource(DEV_SERVER_URL);
-    eventSource.onmessage = (e) => {
+    this.eventSource.onmessage = (e) => {
+      if (e.data == "<stream_end>") {
+        this.eventSource.close();
+        return;
+      }
       // Looks like Angular has a bug where it's not intercepting EventSource onmessage.
       this.zone.run(() => {
         console.log(e.data);

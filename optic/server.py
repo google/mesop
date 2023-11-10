@@ -12,16 +12,18 @@ def generate_data():
     runtime.run_module()
     root_component = runtime.session().current_node()
     
-    # TODO: reset session.
-
     data = pb.ServerEvent(
         render=pb.RenderEvent(
             root_component=root_component
         )
     )
+
+    runtime.reset_session()
+
     encodedString = base64.b64encode(data.SerializeToString()).decode('utf-8')
 
-    return f"data: {encodedString}\n\n"
+    yield f"data: {encodedString}\n\n"
+    yield "data: <stream_end>\n\n"
 
 
 @app.route("/ui")

@@ -8,6 +8,9 @@ class Runtime:
     def session(self):
         return self._session
     
+    def reset_session(self):
+        self._session = Session()
+    
     def set_module(self, module: ModuleType) -> None:
         self._module = module
 
