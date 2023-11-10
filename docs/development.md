@@ -4,6 +4,8 @@
 
 We use [Bazel](https://bazel.build/) as our build system.
 
+If [ibazel](https://github.com/bazelbuild/bazel-watcher) breaks, but bazel works, try following [these steps](https://github.com/bazelbuild/bazel-watcher/issues/588#issuecomment-1421939371)
+
 ## Local Development
 
 ### Web Dev-server
