@@ -9,10 +9,8 @@ We use [Bazel](https://bazel.build/) as our build system.
 ### Run dev-server
 
 ```
-$ bazel run //optic:dev_server
+$ ibazel run //optic:cli -- --path="optic/examples/simple.py"
 ```
-
-> NOTE: you don't need to use ibazel since Flask debug mode automatically reloads.
 
 ### Third-party packages (PIP)
 

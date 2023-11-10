@@ -1,7 +1,7 @@
-import { ChangeDetectorRef, Component, NgZone } from "@angular/core";
+import { Component, NgZone } from "@angular/core";
 import * as pb from "optic/protos/ui_ts_proto_pb/protos/ui_pb";
-import { TextComponent } from "../components/text/text";
 import { CommonModule } from "@angular/common";
+import { ComponentRenderer } from "../component_renderer/component_renderer";
 
 // TODO: set this as environmental variable
 const DEV_SERVER_URL = "http://127.0.0.1:8080/ui";
@@ -10,7 +10,7 @@ const DEV_SERVER_URL = "http://127.0.0.1:8080/ui";
   selector: "app",
   templateUrl: "app.html",
   standalone: true,
-  imports: [TextComponent, CommonModule],
+  imports: [CommonModule, ComponentRenderer],
 })
 export class App {
   rootComponent: pb.Component;

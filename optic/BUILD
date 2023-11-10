@@ -14,6 +14,29 @@ package_group(
 )
 
 py_library(
+    name = "optic",
+    srcs = ["__init__.py"],
+    deps = [
+        "//optic/components",
+    ],
+)
+
+py_binary(
+    name = "cli",
+    srcs = ["cli.py"],
+    data = [
+        ":optic",
+        "//optic/examples",
+    ],
+    main = "cli.py",
+    deps = [
+        requirement("absl-py"),
+        ":dev_server",
+        "//optic/lib",
+    ],
+)
+
+py_library(
     name = "server",
     srcs = ["server.py"],
     deps = [

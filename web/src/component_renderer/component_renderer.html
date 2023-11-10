@@ -1,0 +1,7 @@
+<ng-container *ngIf="component.getData()?.getText() != null">
+    <app-text [config]="component.getData()!.getText()!"></app-text>
+</ng-container>
+
+<ng-container *ngFor="let child of component.getChildrenList(); trackBy: trackByFn">
+    <component-renderer [component]="child"> </component-renderer>
+</ng-container>
