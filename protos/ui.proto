@@ -15,8 +15,11 @@ message InitRequest {
 }
 
 message UserAction {
+    // Used to determine which action handler to call.
+    ActionType action_type = 1;
+
     oneof type {
-        bool bool = 1;
+        bool bool = 2;
     }
 }
 
@@ -51,4 +54,9 @@ message TextComponent {
 
 message CheckboxComponent {
     string label = 1;
+    ActionType on_update = 2;
+}
+
+message ActionType {
+    string type = 1;
 }

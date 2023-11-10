@@ -1,13 +1,16 @@
 import optic as op
 
-def reducer(state: str, action: op.Action[str]) -> str:
+
+def reducer(state: str, action: op.Action) -> str:
     if action.type == 'CHECKED':
-        return "checked"
-    elif action.type == 'UNCHECKED':
-        return "unchecked"
+        if action.payload.bool:
+            return "checked"
+        else: 
+            return "unchecked"
+
     return state
 
 def main():
     store = op.store(reducer, "init")
-    op.checkbox(label="check?", on_checked="CHECKED")
+    op.checkbox(label="check?", on_update="CHECKED")
     op.text(text=store.get_state())

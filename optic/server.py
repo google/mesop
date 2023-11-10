@@ -7,24 +7,25 @@ from optic.lib.runtime import runtime
 
 app = Flask(__name__)
 
+def render_loop():
+    runtime.run_module()
+    root_component = runtime.session().current_node()
+
+    data = pb.ServerEvent(render=pb.RenderEvent(root_component=root_component))
+
+    runtime.reset_session()
+
+    encodedString = base64.b64encode(data.SerializeToString()).decode("utf-8")
+
+    yield f"data: {encodedString}\n\n"
+    yield "data: <stream_end>\n\n"
 
 def generate_data(ui_request: pb.UiRequest):
     if ui_request.HasField("init"):
-        runtime.run_module()
-        root_component = runtime.session().current_node()
-
-        data = pb.ServerEvent(render=pb.RenderEvent(root_component=root_component))
-
-        runtime.reset_session()
-
-        encodedString = base64.b64encode(data.SerializeToString()).decode("utf-8")
-
-        yield f"data: {encodedString}\n\n"
-        yield "data: <stream_end>\n\n"
-    elif ui_request.HasField("user_action"):
-        print("ui_action=", ui_request.user_action)
-        yield "data: <stream_end>\n\n"
-        pass
+        return render_loop()
+    if ui_request.HasField("user_action"):
+        runtime.session().set_current_action(ui_request.user_action)
+        return render_loop()
     else:
         raise Exception(f"Unknown request type: {ui_request}")
 

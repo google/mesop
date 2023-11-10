@@ -19,6 +19,7 @@ export class CheckboxComponent {
     const request = new pb.UiRequest();
     const userAction = new pb.UserAction();
     userAction.setBool(event.target.checked);
+    userAction.setActionType(this.config.getOnUpdate()!);
     request.setUserAction(userAction);
     this.channelService.dispatch(request);
   }
