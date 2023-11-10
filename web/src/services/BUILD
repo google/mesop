@@ -5,16 +5,12 @@ package(
 )
 
 ng_module(
-    name = "checkbox",
+    name = "services",
     srcs = glob([
         "*.ts",
     ]),
-    assets = [
-        "checkbox.html",
-    ],
     deps = [
         "//protos:ui_ts_proto",
-        "//web/src/services",
         "@npm//@angular/compiler",
     ],
 )
