@@ -38,7 +38,7 @@ $ bazel run //optic:pip_requirements.update
 bazel run //tests/...:all
 ```
 
-### venv / VS Code
+### venv
 
 To support IDE type-checking (Pylance) in VS Code, we use Aspect's [rules_py](https://docs.aspect.build/rulesets/aspect_rules_py/) which generates a venv target.
 
@@ -84,3 +84,10 @@ We use [pre-commit](https://pre-commit.com/) to automatically format, lint code 
 ## Web (Angular)
 
 <TODO>
+
+## Docs
+
+We use [Mkdocs Material](https://squidfunk.github.io/mkdocs-material/) to generate our docs site.
+
+1. [Activate venv](#venv)
+1. `mkdocs serve`

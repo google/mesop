@@ -2,3 +2,4 @@ pytest
 flask
 mypy-protobuf
 absl-py
+mkdocs-material
