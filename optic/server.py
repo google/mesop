@@ -9,7 +9,7 @@ app = Flask(__name__)
 
 
 def render_loop():
-    runtime.run_module()
+    runtime.run_module_main()
     root_component = runtime.session().current_node()
 
     data = pb.ServerEvent(
@@ -28,10 +28,13 @@ def render_loop():
 
 def generate_data(ui_request: pb.UiRequest):
     if ui_request.HasField("init"):
+        runtime.load_module()
         return render_loop()
     if ui_request.HasField("user_action"):
         runtime.session().set_current_action(ui_request.user_action)
         runtime.session().set_current_state(ui_request.user_action.state)
+        runtime.load_module()
+        runtime.session().execute_current_action()
         return render_loop()
     else:
         raise Exception(f"Unknown request type: {ui_request}")

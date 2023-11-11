@@ -1,5 +1,4 @@
 import importlib.util
-import traceback
 from types import ModuleType
 
 from absl import app
@@ -16,12 +15,10 @@ def main(argv):
     if len(FLAGS.path) < 1:
         raise Exception("Required flag 'path'. Received: " + FLAGS.path)
     
-    module = read_module(FLAGS.path)
-    assert module
-    runtime.set_module(module)
+    runtime.set_load_module(lambda: read_module(FLAGS.path))
     dev_server.run()
 
-def read_module(module_path: str) -> ModuleType | None :
+def read_module(module_path: str) -> ModuleType :
     try:
         spec = importlib.util.spec_from_file_location("module_name", module_path)
         assert spec
@@ -29,15 +26,13 @@ def read_module(module_path: str) -> ModuleType | None :
         assert spec.loader
         spec.loader.exec_module(module)
     except Exception as e:
-        message = f"Error loading module '{module_path}' has {e}.\n${traceback.format_exc()}"
-        print(message)
-        return None
+        raise e
 
     if hasattr(module, "main"):
         return module
     else:
-        print("No main function found")
-        return None
+        raise Exception("No main function found")
+        
 
 
 if __name__ == '__main__':
