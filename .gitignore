@@ -2,3 +2,4 @@
 /bazel-*
 node_modules/
 .*.venv
+__pycache__
