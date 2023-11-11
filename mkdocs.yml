@@ -1,6 +1,19 @@
 site_name: Optics
+repo_url: https://github.com/google/optic
+repo_name: google/optic
+nav:
+  - Overview: index.md
+  - Concepts: concepts.md
+  - Components: 
+    - Button: components/button.md
+    - Checkbox: components/checkbox.md
+    - Text: components/text.md
+  - Development: development.md
 theme:
   name: material
+  logo: assets/logo.png
+  favicon: assets/logo.png
+
   palette:
     # Palette toggle for light mode
     - media: "(prefers-color-scheme: light)"
@@ -18,6 +31,10 @@ theme:
 
   features:
       - content.code.copy
+      - navigation.expand
+      - navigation.path
+      - navigation.instant
+
 
 extra_css:
   - stylesheets/extra.css
@@ -29,3 +46,26 @@ markdown_extensions:
       auto_title: true
 
   - pymdownx.superfences
+
+plugins:
+  - mkdocstrings:
+      default_handler: python
+      
+      handlers:
+        python:
+            options:
+              docstring_options:
+                ignore_init_summary: true
+              docstring_section_style: list
+              heading_level: 1
+              inherited_members: true
+              merge_init_into_class: true
+              separate_signature: true
+              show_root_heading: true
+              show_root_full_path: false
+              show_source: false
+              show_signature_annotations: true
+              show_symbol_type_heading: true
+              show_symbol_type_toc: true
+              signature_crossrefs: true
+              summary: true

@@ -3,3 +3,4 @@ flask
 mypy-protobuf
 absl-py
 mkdocs-material
+mkdocstrings[python]

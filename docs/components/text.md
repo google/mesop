@@ -1,0 +1,1 @@
+::: optic.components.text.text

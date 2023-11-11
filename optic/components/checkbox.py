@@ -5,6 +5,15 @@ from optic.components.component_util import get_qualified_fn_name
 
 
 def checkbox(label: str, on_update: Callable[..., Any]):
+    """
+    Creates a checkbox component with a specified label and update action.
+
+    Args:
+        label (str): The label for the checkbox.
+        on_update (Callable[..., Any]): The function to be called when the checkbox is updated.
+
+    The function appends the created checkbox component to the children of the current node in the runtime session.
+    """
     runtime.session().current_node().children.append(
         pb.Component(
             data=pb.ComponentData(
