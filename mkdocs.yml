@@ -16,7 +16,16 @@ theme:
         icon: material/brightness-4
         name: Switch to system preference
 
+  features:
+      - content.code.copy
+
 extra_css:
   - stylesheets/extra.css
 
   
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      auto_title: true
+
+  - pymdownx.superfences
