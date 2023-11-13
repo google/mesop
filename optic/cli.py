@@ -5,7 +5,7 @@ from absl import app
 from absl import flags
 
 from optic.lib.runtime import runtime
-from optic import dev_server
+from optic.server import dev_server
 
 FLAGS = flags.FLAGS
 

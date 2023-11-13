@@ -25,25 +25,8 @@ py_binary(
     main = "cli.py",
     deps = [
         requirement("absl-py"),
-        ":dev_server",
         "//optic/lib",
-    ],
-)
-
-py_library(
-    name = "server",
-    srcs = ["server.py"],
-    deps = [
-        requirement("flask"),
-        "//protos:ui_py_proto",
-    ],
-)
-
-py_binary(
-    name = "dev_server",
-    srcs = ["dev_server.py"],
-    deps = [
-        ":server",
+        "//optic/server:dev_server",
     ],
 )
 

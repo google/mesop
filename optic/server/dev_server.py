@@ -1,5 +1,5 @@
 from flask import Response
-from optic.server import app
+from .server import app
 
 # Disable CORS for development purpose since FE dev server is on a separate origin
 # from this server.
