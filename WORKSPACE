@@ -123,7 +123,7 @@ load("@rules_proto_grpc//js:repositories.bzl", rules_proto_grpc_js_repos = "js_r
 rules_proto_grpc_js_repos()
 
 #####################
-# Angular
+# Angular-related
 # Based on: https://github.com/angular/components/blob/ff67a416d19e9237607605bec0d7cc372025387f/WORKSPACE
 #####################
 
@@ -240,6 +240,10 @@ load("@build_bazel_rules_nodejs//toolchains/esbuild:esbuild_repositories.bzl", "
 esbuild_repositories(
     npm_repository = "npm",
 )
+
+#####################
+# Optic
+#####################
 
 load("@//:workspace.bzl", "op_workspace")
 
