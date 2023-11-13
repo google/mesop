@@ -27,6 +27,7 @@ py_binary(
         requirement("absl-py"),
         "//optic/lib",
         "//optic/server:dev_server",
+        "//optic/server:prod_server",
     ],
 )
 

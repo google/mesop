@@ -5,18 +5,26 @@ from absl import app
 from absl import flags
 
 from optic.lib.runtime import runtime
-from optic.server import dev_server
 
 FLAGS = flags.FLAGS
 
 flags.DEFINE_string('path', '', 'path to main python module of Optic app.')
+flags.DEFINE_bool('dev', False, 'if dev=False, then run in prod mode.')
 
 def main(argv):
     if len(FLAGS.path) < 1:
         raise Exception("Required flag 'path'. Received: " + FLAGS.path)
     
     runtime.set_load_module(lambda: read_module(FLAGS.path))
-    dev_server.run()
+
+    if FLAGS.dev:
+        print("Running in dev mode")
+        from optic.server import dev_server
+        dev_server.run()
+    else:
+        print("Running in prod mode")
+        from optic.server import prod_server
+        prod_server.run()
 
 def read_module(module_path: str) -> ModuleType :
     try:

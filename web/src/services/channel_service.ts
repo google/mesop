@@ -2,7 +2,7 @@ import { NgZone } from "@angular/core";
 import * as pb from "optic/protos/ui_ts_proto_pb/protos/ui_pb";
 
 // TODO: set this as environmental variable
-const DEV_SERVER_HOST = "http://127.0.0.1:8080";
+const DEV_SERVER_HOST = "http://localhost:8080";
 
 interface InitParams {
   zone: NgZone;
