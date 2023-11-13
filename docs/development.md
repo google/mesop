@@ -8,10 +8,12 @@ If [ibazel](https://github.com/bazelbuild/bazel-watcher) breaks, but bazel works
 
 ## Local Development
 
+We recommend having two terminal tabs open because you will be running two processes for: 1. web and 2. python.
+
 ### Web Dev-server
 
 ```sh
-ibazel run //web/src/app:devserver
+$ ./scripts/run_web_dev.sh
 ```
 
 > NOTE: this will automatically reload the browser when an edit is made.
@@ -19,7 +21,7 @@ ibazel run //web/src/app:devserver
 ### Python Server
 
 ```sh
-$ ibazel run //optic:cli -- --path="optic/examples/simple.py" --dev
+$ ./scripts/run_py_dev.sh
 ```
 
 > NOTE: if you do not include `--dev`, then it will default to prod mode.

@@ -1,0 +1,1 @@
+OPTIC_SERVER_HOST="http://localhost:8080" bazel run //web/src/app:devserver
