@@ -5,7 +5,7 @@ from rules_python.python.runfiles import runfiles
 
 def get_path():
     r = runfiles.Create()
-    return r.Rlocation("optic/web/src/app/web_package")
+    return r.Rlocation("optic/web/src/app/prod/web_package")
 
 
 @app.route("/")

@@ -26,7 +26,7 @@ py_binary(
     name = "prod_server",
     srcs = ["prod_server.py"],
     data = [
-        "//web/src/app:web_package",
+        "//web/src/app/prod:web_package",
     ],
     deps = [
         ":server",
