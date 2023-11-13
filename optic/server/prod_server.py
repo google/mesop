@@ -1,10 +1,12 @@
 from flask import send_from_directory
 from .server import app
+from rules_python.python.runfiles import runfiles
 
-import os
 
 def get_path():
-    return os.path.join(os.getcwd(), "web/src/app/web_package")
+    r = runfiles.Create()
+    return r.Rlocation("optic/web/src/app/web_package")
+
 
 @app.route("/")
 def serve_root():

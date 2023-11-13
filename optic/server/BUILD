@@ -30,5 +30,6 @@ py_binary(
     ],
     deps = [
         ":server",
+        "@rules_python//python/runfiles",
     ],
 )
