@@ -11,7 +11,7 @@ checkbox = checkbox.checkbox
 
 CheckboxEvent = state.CheckboxEvent
 ClickEvent = state.ClickEvent
-reducer = decorator.reducer
+on = decorator.handler
 
 
 def store(state: Any):

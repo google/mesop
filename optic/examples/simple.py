@@ -13,7 +13,7 @@ store = op.store(
 )
 
 
-@op.reducer(op.CheckboxEvent)
+@op.on(op.CheckboxEvent)
 def checkbox_update(state: State, action: op.CheckboxEvent) -> State:
     if action.checked:
         state.str = "checked"
@@ -22,7 +22,7 @@ def checkbox_update(state: State, action: op.CheckboxEvent) -> State:
     return state
 
 
-@op.reducer(op.ClickEvent)
+@op.on(op.ClickEvent)
 def button_click(state: State, action: op.ClickEvent) -> State:
     state.count += 1
     return state

@@ -7,11 +7,11 @@ import protos.ui_pb2 as pb
 
 A = TypeVar("A")
 S = TypeVar("S")
-Reducer = Callable[[S, A], S]
+Handler = Callable[[S, A], None]
 
 
-def reducer(actionType: Type[A]) -> Callable[[Reducer[S, A]], Reducer[S, A]]:
-    def register(func: Reducer[S, A]):
+def handler(actionType: Type[A]) -> Callable[[Handler[S, A]], Handler[S, A]]:
+    def register(func: Handler[S, A]):
         def wrapper(state: S, action: A):
             registerHandler(f"{func.__module__}.{func.__name__}", func)
             # This is guaranteed to be a UserAction because only Optic
@@ -26,11 +26,11 @@ def reducer(actionType: Type[A]) -> Callable[[Reducer[S, A]], Reducer[S, A]]:
         wrapper.__module__ = func.__module__
         wrapper.__name__ = func.__name__
 
-        runtime.session().get_store().reducers[get_qualified_fn_name(func)] = wrapper
+        runtime.session().get_store().handlers[get_qualified_fn_name(func)] = wrapper
         return wrapper
 
     return register
 
 
-def registerHandler(name: str, func: Reducer[S, A]):
-    runtime.session().get_store().reducers[name] = func
+def registerHandler(name: str, func: Handler[S, A]):
+    runtime.session().get_store().handlers[name] = func

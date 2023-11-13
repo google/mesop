@@ -41,10 +41,10 @@ This will render "Hello" and "World" in two consecutive lines.
 
 ## Interactivity
 
-When a user interacts with the UI, an action is triggered. This action is processed by a **reducer** which is a function that takes the current state and an action, and returns the new state.
+When a user interacts with the UI, an action is triggered. This action is processed by a **handler** which is a function that takes the current state and event and updates the state.
 
 ```
-reducer(state, action) -> state
+f(state, event) -> None
 ```
 
 Here's a simple example showing interactivity:
@@ -61,7 +61,7 @@ store = op.store(
     State(text="initial_state"),
 )
 
-@op.reducer(op.CheckboxEvent)
+@op.on(op.CheckboxEvent)
 def checkbox_change(state: State, event: op.CheckboxEvent):
     if event.checked:
         state.text = "checked"
@@ -86,7 +86,7 @@ If you are building a chat-style LLM application, you will oftentimes want to st
 ```python
 import optic as op
 
-@op.reducer(op.ClickEvent)
+@op.on(op.ClickEvent)
 def chat(state: State, action: op.ClickEvent):
     response = streaming_api_call(...)
     for chunk in response:
@@ -104,7 +104,7 @@ If you're calling a heavy API which doesn't support streaming, you may instead w
 ```python
 import optic as op
 
-@op.reducer(op.ClickEvent)
+@op.on(op.ClickEvent)
 def chat(state: State, action: op.ClickEvent):
     state.in_progress = True
     yield state
@@ -119,4 +119,4 @@ def main():
 
 ## Tips
 
-- Component are expected to be fast and pure functions. If you need to update state, you should trigger an action handle it in a reducer.
+- Component are expected to be fast and pure functions. If you need to update state, you should trigger an action handle it in a handler.
