@@ -26,11 +26,5 @@ EXPOSE 8080
 # Make sure Bazel is working
 RUN bazel version
 
-# Trim out Angular section to avoid NPM dependencies which take a long time to install
-RUN sed -i '/# Angular-related/,/# Optic/d' WORKSPACE
-
-# Run the following Bazel command manually inside the container
-# after creating the image because it takes forever during the build step.
-# Afterwards, commit the container into an image and deploy that image.
-
-# RUN bazel build //optic:cli
+# Build the Optic CLI
+RUN bazel build //optic:cli
