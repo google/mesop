@@ -28,3 +28,8 @@ RUN bazel version
 
 # Build the Optic CLI
 RUN bazel build //optic:cli
+
+# Run Optic CLI (this will fail because it's missing required flag path)
+# But if we don't do this then when we run bazel-bin/optic/cli, we get error:
+# ln: /cli.venv/include: No such file or directory
+RUN bazel run //optic:cli || true
