@@ -1,5 +1,5 @@
 from flask import send_from_directory
-from .server import app
+from .server import app, port
 from rules_python.python.runfiles import runfiles
 
 
@@ -19,7 +19,7 @@ def serve_file(path: str):
 
 
 def run():
-    app.run(host="0.0.0.0", port=8080, use_reloader=False)
+    app.run(host="0.0.0.0", port=port, use_reloader=False)
 
 
 if __name__ == "__main__":
