@@ -47,17 +47,6 @@ py_binary(
     ],
 )
 
-py_library(
-    name = "hello",
-    srcs = ["hello.py"],
-)
-
-py_binary(
-    name = "hello_binary",
-    srcs = ["hello.py"],
-    main = "hello.py",
-)
-
 compile_pip_requirements(
     name = "pip_requirements",
     requirements_in = ":requirements.txt",
