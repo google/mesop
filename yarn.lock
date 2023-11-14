@@ -303,6 +303,15 @@
     uuid "^9.0.0"
     yargs "^17.0.0"
 
+"@angular/cdk@^17.0.0":
+  version "17.0.0"
+  resolved "https://registry.yarnpkg.com/@angular/cdk/-/cdk-17.0.0.tgz#d69a73688c01705da4996832775a0c902947a415"
+  integrity sha512-8F1z0YhDjKWqB29+AUh33OKr2Ts5PVUUogVXEVmmPipPDtj82iIQLbtBnR6xpWvmsw9mS3oD76EwBoUhHQgi6g==
+  dependencies:
+    tslib "^2.3.0"
+  optionalDependencies:
+    parse5 "^7.1.2"
+
 "@angular/cli@^17.0.0-rc.0":
   version "17.0.0-rc.0"
   resolved "https://registry.yarnpkg.com/@angular/cli/-/cli-17.0.0-rc.0.tgz#c8851cc11756c7d6e7a74e17e46b7691a698af6a"
@@ -384,6 +393,60 @@
     "@babel/core" "7.23.2"
     fast-glob "3.3.1"
     yargs "^17.2.1"
+
+"@angular/material@^17.0.0":
+  version "17.0.0"
+  resolved "https://registry.yarnpkg.com/@angular/material/-/material-17.0.0.tgz#7c2b67ed5c34c70c27f3f65a13441178d4682b9f"
+  integrity sha512-rd7H7NhkDPDiyLHADm2FHOJlmgaWV7ZYNYPe/4yTXlt++GTSLhKus+PTCZYVsKGlA3mxDhNnC1RY+fdjtx/G2A==
+  dependencies:
+    "@material/animation" "15.0.0-canary.a246a4439.0"
+    "@material/auto-init" "15.0.0-canary.a246a4439.0"
+    "@material/banner" "15.0.0-canary.a246a4439.0"
+    "@material/base" "15.0.0-canary.a246a4439.0"
+    "@material/button" "15.0.0-canary.a246a4439.0"
+    "@material/card" "15.0.0-canary.a246a4439.0"
+    "@material/checkbox" "15.0.0-canary.a246a4439.0"
+    "@material/chips" "15.0.0-canary.a246a4439.0"
+    "@material/circular-progress" "15.0.0-canary.a246a4439.0"
+    "@material/data-table" "15.0.0-canary.a246a4439.0"
+    "@material/density" "15.0.0-canary.a246a4439.0"
+    "@material/dialog" "15.0.0-canary.a246a4439.0"
+    "@material/dom" "15.0.0-canary.a246a4439.0"
+    "@material/drawer" "15.0.0-canary.a246a4439.0"
+    "@material/elevation" "15.0.0-canary.a246a4439.0"
+    "@material/fab" "15.0.0-canary.a246a4439.0"
+    "@material/feature-targeting" "15.0.0-canary.a246a4439.0"
+    "@material/floating-label" "15.0.0-canary.a246a4439.0"
+    "@material/form-field" "15.0.0-canary.a246a4439.0"
+    "@material/icon-button" "15.0.0-canary.a246a4439.0"
+    "@material/image-list" "15.0.0-canary.a246a4439.0"
+    "@material/layout-grid" "15.0.0-canary.a246a4439.0"
+    "@material/line-ripple" "15.0.0-canary.a246a4439.0"
+    "@material/linear-progress" "15.0.0-canary.a246a4439.0"
+    "@material/list" "15.0.0-canary.a246a4439.0"
+    "@material/menu" "15.0.0-canary.a246a4439.0"
+    "@material/menu-surface" "15.0.0-canary.a246a4439.0"
+    "@material/notched-outline" "15.0.0-canary.a246a4439.0"
+    "@material/radio" "15.0.0-canary.a246a4439.0"
+    "@material/ripple" "15.0.0-canary.a246a4439.0"
+    "@material/rtl" "15.0.0-canary.a246a4439.0"
+    "@material/segmented-button" "15.0.0-canary.a246a4439.0"
+    "@material/select" "15.0.0-canary.a246a4439.0"
+    "@material/shape" "15.0.0-canary.a246a4439.0"
+    "@material/slider" "15.0.0-canary.a246a4439.0"
+    "@material/snackbar" "15.0.0-canary.a246a4439.0"
+    "@material/switch" "15.0.0-canary.a246a4439.0"
+    "@material/tab" "15.0.0-canary.a246a4439.0"
+    "@material/tab-bar" "15.0.0-canary.a246a4439.0"
+    "@material/tab-indicator" "15.0.0-canary.a246a4439.0"
+    "@material/tab-scroller" "15.0.0-canary.a246a4439.0"
+    "@material/textfield" "15.0.0-canary.a246a4439.0"
+    "@material/theme" "15.0.0-canary.a246a4439.0"
+    "@material/tooltip" "15.0.0-canary.a246a4439.0"
+    "@material/top-app-bar" "15.0.0-canary.a246a4439.0"
+    "@material/touch-target" "15.0.0-canary.a246a4439.0"
+    "@material/typography" "15.0.0-canary.a246a4439.0"
+    tslib "^2.3.0"
 
 "@angular/ng-dev@https://github.com/angular/dev-infra-private-ng-dev-builds.git#16b9f550b766b52f51dc5580cbac13378a1ab5f4":
   version "0.0.0-52c2fa858076a6397ee3d0efb97b22f3870dd2d6"

@@ -40,6 +40,7 @@ filegroup(
     name = "dev_app_static_files",
     srcs = [
         "index.html",
+        "//web/src/app:styles",
         "@npm//:node_modules/moment/min/moment-with-locales.min.js",
         "@npm//:node_modules/rxjs/bundles/rxjs.umd.min.js",
         "@npm//:node_modules/zone.js/dist/zone.js",
@@ -51,6 +52,8 @@ http_server(
     srcs = [":dev_app_static_files"],
     additional_root_paths = [
         "npm/node_modules",
+        # Needed for style to be loaded.
+        "optic/web/src/app",
         # Needed for compatibility with "pkg_web" which always uses the tree
         # artifact output as workspace root.
         "angular_material",

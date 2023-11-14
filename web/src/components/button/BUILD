@@ -16,5 +16,6 @@ ng_module(
         "//protos:ui_ts_proto",
         "//web/src/services",
         "@npm//@angular/compiler",
+        "@npm//@angular/material",
     ],
 )

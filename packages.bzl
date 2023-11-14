@@ -1,3 +1,43 @@
+_CDK_ENTRY_POINTS = [
+    "scrolling",
+    "tree",
+    "keycodes",
+    "collections",
+    "overlay",
+    "table",
+    "text-field",
+    "accordion",
+    "drag-drop",
+    "a11y",
+    "platform",
+    "observers",
+    "layout",
+    "bidi",
+]
+
+_MATERIAL_ENTRY_POINTS = [
+    "dialog",
+    "menu",
+    "slide-toggle",
+    "grid-list",
+    "tree",
+    "expansion",
+    "checkbox",
+    "select",
+    "input",
+    "button",
+    "core",
+    "progress-bar",
+    "snack-bar",
+    "icon",
+    "progress-spinner",
+    "tabs",
+    "card",
+    "form-field",
+    "tooltip",
+    "toolbar",
+]
+
 # Forked from: https://github.com/angular/components/blob/ff67a416d19e9237607605bec0d7cc372025387f/packages.bzl
 
 # Each individual package uses a placeholder for the version of Angular to ensure they're
@@ -83,6 +123,10 @@ MDC_PACKAGES = [
 ]
 
 ANGULAR_PACKAGES_CONFIG = [
+    # Angular components:
+    ("@angular/cdk", struct(entry_points = _CDK_ENTRY_POINTS)),
+    ("@angular/material", struct(entry_points = _MATERIAL_ENTRY_POINTS)),
+    # Angular core:
     ("@angular/animations", struct(entry_points = ["browser"])),
     ("@angular/common", struct(entry_points = ["http/testing", "http", "testing"])),
     ("@angular/compiler", struct(entry_points = [])),

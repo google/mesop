@@ -1,0 +1,19 @@
+// Based on: https://github.com/angular/angular/blob/15a825c113701583773fa028259518b63760c3b4/devtools/styles.scss
+
+@use 'sass:map';
+@use 'external/npm/node_modules/@angular/material/index' as mat;
+@include mat.all-component-typographies();
+@include mat.core();
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+}
+
+// Light theme
+$light-primary: mat.define-palette(mat.$blue-palette, 800, 200);
+$light-accent: mat.define-palette(mat.$indigo-palette, A200, A100, A400);
+$light-theme: mat.define-light-theme($light-primary, $light-accent);
+
+@include mat.all-component-themes($light-theme);
