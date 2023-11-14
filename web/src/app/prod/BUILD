@@ -31,29 +31,18 @@ esbuild(
     ],
 )
 
-# File group for all static files which are needed to serve the dev-app. These files are
-# used in the devserver as runfiles and will be copied into the static web package that can
-# be deployed on static hosting services (like firebase).
-filegroup(
-    name = "static_files",
-    srcs = [
-        "index.html",
-        "@npm//:node_modules/moment/min/moment-with-locales.min.js",
-        "@npm//:node_modules/rxjs/bundles/rxjs.umd.min.js",
-        "@npm//:node_modules/zone.js/dist/zone.js",
-    ],
-)
-
 # Target that builds a static web package of the dev-app. The web package can be
 # deployed on static hosting services (such as firebase).
 pkg_web(
     name = "web_package",
     srcs = [
         ":bundles",
-        ":static_files",
+        "//web/src/app:static_files",
     ],
     additional_root_paths = [
         "npm/node_modules",
+        # Needed for index.html & style to be loaded.
+        "web/src/app",
     ],
     tags = ["manual"],
 )
