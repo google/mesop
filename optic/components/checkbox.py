@@ -5,7 +5,7 @@ from optic.components.component_util import get_qualified_fn_name
 
 from optic.state.actions import CheckboxEvent
 
-def checkbox(label: str, on_update: Callable[[Any, CheckboxEvent], Any]):
+def checkbox(*, label: str, on_update: Callable[[Any, CheckboxEvent], Any]):
     """
     Creates a checkbox component with a specified label and update action.
 

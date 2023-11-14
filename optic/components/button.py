@@ -5,7 +5,7 @@ from optic.components.component_util import get_qualified_fn_name
 from optic.state.actions import ClickEvent
 
 
-def button(label: str, on_click: Callable[[Any, ClickEvent], Any]):
+def button(*, label: str, on_click: Callable[[Any, ClickEvent], Any]):
     """
     This function creates a button component with a label and an on_click event.
 
