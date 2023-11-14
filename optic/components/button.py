@@ -2,9 +2,10 @@ from typing import Any, Callable
 import protos.ui_pb2 as pb
 from optic.lib.runtime import runtime
 from optic.components.component_util import get_qualified_fn_name
+from optic.state.actions import ClickEvent
 
 
-def button(label: str, on_click: Callable[..., Any]):
+def button(label: str, on_click: Callable[[Any, ClickEvent], Any]):
     """
     This function creates a button component with a label and an on_click event.
 

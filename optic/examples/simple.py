@@ -14,18 +14,16 @@ store = op.store(
 
 
 @op.on(op.CheckboxEvent)
-def checkbox_update(state: State, action: op.CheckboxEvent) -> State:
+def checkbox_update(state: State, action: op.CheckboxEvent) -> None:
     if action.checked:
         state.str = "checked"
     else:
         state.str = "unchecked"
-    return state
 
 
 @op.on(op.ClickEvent)
-def button_click(state: State, action: op.ClickEvent) -> State:
+def button_click(state: State, action: op.ClickEvent):
     state.count += 1
-    return state
 
 
 def main():
