@@ -28,9 +28,9 @@ export class ChannelService {
       }
       // Looks like Angular has a bug where it's not intercepting EventSource onmessage.
       zone.run(() => {
-        console.log(e.data);
         const array = toUint8Array(atob(e.data));
         const serverEvent = pb.ServerEvent.deserializeBinary(array);
+        console.debug("Server event: ", serverEvent.toObject());
         switch (serverEvent.getTypeCase()) {
           case pb.ServerEvent.TypeCase.RENDER:
             this.state = serverEvent.getRender()!.getState()!;
