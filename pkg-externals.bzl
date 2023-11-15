@@ -1,7 +1,5 @@
 # Forked from: https://github.com/angular/components/blob/ff67a416d19e9237607605bec0d7cc372025387f/pkg-externals.bzl
 
-load("//:packages.bzl", "MDC_PACKAGES")
-
 # Base list of externals which should not be bundled into the APF package output.
 # Note that we want to disable sorting of the externals as we manually group entries.
 # buildifier: disable=unsorted-list-items

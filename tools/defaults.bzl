@@ -13,7 +13,6 @@ load("@npm//@angular/build-tooling/bazel:extract_js_module_output.bzl", "extract
 load("@npm//@bazel/jasmine:index.bzl", _jasmine_node_test = "jasmine_node_test")
 load("@npm//@bazel/protractor:index.bzl", _protractor_web_test_suite = "protractor_web_test_suite")
 load("@npm//@bazel/concatjs:index.bzl", _ts_library = "ts_library")
-load("@npm//tsec:index.bzl", _tsec_test = "tsec_test")
 load("//:packages.bzl", "NO_STAMP_NPM_PACKAGE_SUBSTITUTIONS", "NPM_PACKAGE_SUBSTITUTIONS")
 load("//:pkg-externals.bzl", "PKG_EXTERNALS")
 load("//tools/angular:index.bzl", "LINKER_PROCESSED_FW_PACKAGES")
