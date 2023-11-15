@@ -18,6 +18,11 @@
   },
   "editor.formatOnSave": true,
   "files.exclude": {
-    "**/tmp/**": true
+    "**/tmp/**": true,
+    "**/bazel-*/**": true
+  },
+  "search.exclude": {
+    "**/tmp/**": true,
+    "**/bazel-*/**": true
   }
 }
