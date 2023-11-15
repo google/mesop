@@ -1,10 +1,17 @@
 # Development
 
-## Build
+## Setup
+
+### Bazel/ibazel
 
 We use [Bazel](https://bazel.build/) as our build system. Use [bazelisk](https://github.com/bazelbuild/bazelisk) which ensures the right version of Bazel is used for this project.
 
 If [ibazel](https://github.com/bazelbuild/bazel-watcher) breaks, but bazel works, try following [these steps](https://github.com/bazelbuild/bazel-watcher/issues/588#issuecomment-1421939371)
+
+### Commit hooks
+
+1. Install [pre-commit](https://pre-commit.com/#installation)
+1. Install pre-commit hooks for this repo: `pre-commit install`
 
 ## Local Development
 
