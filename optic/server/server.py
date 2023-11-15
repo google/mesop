@@ -19,8 +19,6 @@ def render_loop():
         )
     )
 
-    runtime.reset_session()
-
     encodedString = base64.b64encode(data.SerializeToString()).decode("utf-8")
 
     yield f"data: {encodedString}\n\n"
@@ -43,6 +41,8 @@ def generate_data(ui_request: pb.UiRequest):
 
 @app.route("/ui")
 def ui_stream():
+    runtime.reset_session()
+
     param = request.args.get("request", default=None)
     ui_request = pb.UiRequest(init=pb.InitRequest())
     if param is not None:
