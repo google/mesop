@@ -1,15 +1,29 @@
-<ng-container *ngIf="component.getData()?.getButton() != null">
-    <app-button [config]="component.getData()!.getButton()!"></app-button>
+<ng-container *ngIf="data()?.getButton() != null">
+  @defer (on viewport) {
+  <app-button [config]="data()!.getButton()!" />
+  } @placeholder {
+  <component-loader />
+  }
 </ng-container>
 
-<ng-container *ngIf="component.getData()?.getCheckbox() != null">
-    <app-checkbox [config]="component.getData()!.getCheckbox()!"></app-checkbox>
+<ng-container *ngIf="data()?.getCheckbox() != null">
+  @defer (on viewport) {
+  <app-checkbox [config]="data()!.getCheckbox()!" />
+  } @placeholder {
+  <component-loader />
+  }
 </ng-container>
 
-<ng-container *ngIf="component.getData()?.getText() != null">
-    <app-text [config]="component.getData()!.getText()!"></app-text>
+<ng-container *ngIf="data()?.getText() != null">
+  @defer (on viewport) {
+  <app-text [config]="data()!.getText()!" />
+  } @placeholder {
+  <component-loader />
+  }
 </ng-container>
 
-<ng-container *ngFor="let child of component.getChildrenList(); trackBy: trackByFn">
-    <component-renderer [component]="child"> </component-renderer>
+<ng-container
+  *ngFor="let child of component.getChildrenList(); trackBy: trackByFn"
+>
+  <component-renderer [component]="child"> </component-renderer>
 </ng-container>

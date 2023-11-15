@@ -4,12 +4,19 @@ import { CommonModule } from "@angular/common";
 import * as pb from "optic/protos/ui_ts_proto_pb/protos/ui_pb";
 import { CheckboxComponent } from "../components/checkbox/checkbox";
 import { ButtonComponent } from "../components/button/button";
+import { ComponentLoader } from "./component_loader";
 
 @Component({
   selector: "component-renderer",
   templateUrl: "component_renderer.html",
   standalone: true,
-  imports: [TextComponent, CheckboxComponent, ButtonComponent, CommonModule],
+  imports: [
+    TextComponent,
+    CheckboxComponent,
+    ButtonComponent,
+    CommonModule,
+    ComponentLoader,
+  ],
 })
 export class ComponentRenderer {
   @Input() component!: pb.Component;
@@ -17,5 +24,9 @@ export class ComponentRenderer {
   trackByFn(index: any, item: any) {
     // TODO: use item id.
     return index;
+  }
+
+  data() {
+    return this.component.getData();
   }
 }
