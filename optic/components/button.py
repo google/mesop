@@ -1,7 +1,7 @@
 from typing import Any, Callable
 import protos.ui_pb2 as pb
 from optic.components.helper import insert_component, handler_type
-from optic.state.actions import ClickEvent
+from optic.state.events import ClickEvent
 
 
 def button(*, label: str, on_click: Callable[[Any, ClickEvent], Any]):

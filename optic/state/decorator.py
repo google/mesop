@@ -2,7 +2,7 @@ from typing import Any, TypeVar, Callable, Type, cast
 
 from .key import key_from_proto
 
-from . import actions
+from . import events
 from ..components.helper import get_qualified_fn_name
 from optic.lib.runtime import runtime
 import protos.ui_pb2 as pb
@@ -21,8 +21,8 @@ def handler(actionType: Type[A]) -> Callable[[Handler[S, A]], Handler[S, A]]:
             typed_action = cast(pb.UserAction, action)
             key = key_from_proto(typed_action.key)
 
-            if actionType == actions.CheckboxEvent:
-                typed_action = actions.CheckboxEvent(checked=typed_action.bool, key=key)
+            if actionType == events.CheckboxEvent:
+                typed_action = events.CheckboxEvent(checked=typed_action.bool, key=key)
 
             return func(state, cast(Any, typed_action))
 

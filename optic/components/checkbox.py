@@ -1,7 +1,7 @@
 from typing import Any, Callable
 import protos.ui_pb2 as pb
 from optic.components.helper import insert_component, handler_type
-from optic.state.actions import CheckboxEvent
+from optic.state.events import CheckboxEvent
 
 
 def checkbox(
