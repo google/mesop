@@ -1,9 +1,8 @@
 from typing import Any, Callable
 import protos.ui_pb2 as pb
-from optic.lib.runtime import runtime
-from optic.components.component_util import get_qualified_fn_name
-
+from optic.components.helper import insert_component, handler_type
 from optic.state.actions import CheckboxEvent
+
 
 def checkbox(*, label: str, on_update: Callable[[Any, CheckboxEvent], Any]):
     """
@@ -15,13 +14,11 @@ def checkbox(*, label: str, on_update: Callable[[Any, CheckboxEvent], Any]):
 
     The function appends the created checkbox component to the children of the current node in the runtime session.
     """
-    runtime.session().current_node().children.append(
-        pb.Component(
+    insert_component(
             data=pb.ComponentData(
                 checkbox=pb.CheckboxComponent(
                     label=label,
-                    on_update=pb.ActionType(type=get_qualified_fn_name(on_update)),
+                    on_update=handler_type(on_update),
                 )
             )
-        )
     )
