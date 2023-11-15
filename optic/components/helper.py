@@ -11,9 +11,9 @@ def insert_component(data: pb.ComponentData):
     runtime.session().current_node().children.append(pb.Component(data=data))
 
 
-def handler_type(handler_fn: Callable[..., Any]):
-    pb.ActionType(type=get_qualified_fn_name(handler_fn))
+def handler_type(handler_fn: Callable[..., Any]) -> pb.ActionType:
+    return pb.ActionType(type=get_qualified_fn_name(handler_fn))
 
 
-def get_qualified_fn_name(fn: Callable[..., Any]):
+def get_qualified_fn_name(fn: Callable[..., Any]) -> str:
     return f"{fn.__module__}.{fn.__name__}"

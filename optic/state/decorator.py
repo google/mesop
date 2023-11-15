@@ -1,7 +1,7 @@
 from typing import Any, TypeVar, Callable, Type, cast
 
 from . import actions
-from ..components.component_util import get_qualified_fn_name
+from ..components.helper import get_qualified_fn_name
 from optic.lib.runtime import runtime
 import protos.ui_pb2 as pb
 
