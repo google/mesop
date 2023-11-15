@@ -10,7 +10,10 @@ nav:
       - Text: components/text.md
   - Deployment: deployment.md
   - Goals: goals.md
-  - Development: development.md
+  - Troubleshooting: troubleshooting.md
+  - Advanced:
+      - New component: new_component.md
+      - Development: development.md
 theme:
   name: material
   logo: assets/logo.png
