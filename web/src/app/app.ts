@@ -16,7 +16,7 @@ export class App {
 
   constructor(
     private zone: NgZone,
-    private channelService: ChannelService
+    private channelService: ChannelService,
   ) {}
 
   ngOnInit() {

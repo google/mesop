@@ -5,9 +5,9 @@ nav:
   - Overview: index.md
   - Concepts: concepts.md
   - Components:
-    - Button: components/button.md
-    - Checkbox: components/checkbox.md
-    - Text: components/text.md
+      - Button: components/button.md
+      - Checkbox: components/checkbox.md
+      - Text: components/text.md
   - Deployment: deployment.md
   - Goals: goals.md
   - Development: development.md
@@ -32,15 +32,13 @@ theme:
         name: Switch to system preference
 
   features:
-      - content.code.copy
-      - navigation.expand
-      - navigation.path
-      - navigation.instant
-
+    - content.code.copy
+    - navigation.expand
+    - navigation.path
+    - navigation.instant
 
 extra_css:
   - stylesheets/extra.css
-
 
 markdown_extensions:
   - pymdownx.highlight:
@@ -55,19 +53,19 @@ plugins:
 
       handlers:
         python:
-            options:
-              docstring_options:
-                ignore_init_summary: true
-              docstring_section_style: list
-              heading_level: 1
-              inherited_members: true
-              merge_init_into_class: true
-              separate_signature: true
-              show_root_heading: true
-              show_root_full_path: false
-              show_source: false
-              show_signature_annotations: true
-              show_symbol_type_heading: true
-              show_symbol_type_toc: true
-              signature_crossrefs: true
-              summary: true
+          options:
+            docstring_options:
+              ignore_init_summary: true
+            docstring_section_style: list
+            heading_level: 1
+            inherited_members: true
+            merge_init_into_class: true
+            separate_signature: true
+            show_root_heading: true
+            show_root_full_path: false
+            show_source: false
+            show_signature_annotations: true
+            show_symbol_type_heading: true
+            show_symbol_type_toc: true
+            signature_crossrefs: true
+            summary: true

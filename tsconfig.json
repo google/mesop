@@ -3,48 +3,45 @@
 // TypeScript config file that matches all source files in the project. This file is read by
 // IDEs and TSLint. For IDEs it ensures that `experimentalDecorator` warnings are not showing up.
 {
-    "compilerOptions": {
-      "outDir": "./dist/packages/all",
-      "experimentalDecorators": true,
-      "module": "esnext",
-      "moduleResolution": "node",
-      "esModuleInterop": true,
-      "noUnusedParameters": false,
-      "noFallthroughCasesInSwitch": true,
-      "noUnusedLocals": false,
-      "strictNullChecks": true,
-      "noPropertyAccessFromIndexSignature": true,
-      "useUnknownInCatchVariables": true,
-      "noImplicitOverride": true,
-      "noImplicitReturns": true,
-      "strictFunctionTypes": true,
-      "noImplicitAny": true,
-      "noImplicitThis": true,
-      "skipLibCheck": true,
-      "strictBindCallApply": true,
-      "target": "es2022",
-      "lib": ["es2020", "dom"],
-      "types": ["jasmine"],
-      "baseUrl": ".",
-      "paths": {
-        "optic/*": [
-          "bazel-bin/*" // Enables referencing generate protos with absolute paths
-        ]
-      }
-    },
-    "angularCompilerOptions": {
-      "strictTemplates": true,
-      "extendedDiagnostics": {
-        "defaultCategory": "error"
-      }
-    },
-    "include": [
-      "web/**/*.ts",
-      "tools/**/*.ts",
-    ],
-    "exclude": [
-      // IDEs should not type-check the different node_modules directories of the different packages.
-      // This would cause the IDEs to be slower and also linters would check the node_modules.
-      "node_modules/",
-    ]
-  }
+  "compilerOptions": {
+    "outDir": "./dist/packages/all",
+    "experimentalDecorators": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "noUnusedParameters": false,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": false,
+    "strictNullChecks": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "useUnknownInCatchVariables": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "strictFunctionTypes": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "skipLibCheck": true,
+    "strictBindCallApply": true,
+    "target": "es2022",
+    "lib": ["es2020", "dom"],
+    "types": ["jasmine"],
+    "baseUrl": ".",
+    "paths": {
+      "optic/*": [
+        "bazel-bin/*" // Enables referencing generate protos with absolute paths
+      ]
+    }
+  },
+  "angularCompilerOptions": {
+    "strictTemplates": true,
+    "extendedDiagnostics": {
+      "defaultCategory": "error"
+    }
+  },
+  "include": ["web/**/*.ts", "tools/**/*.ts"],
+  "exclude": [
+    // IDEs should not type-check the different node_modules directories of the different packages.
+    // This would cause the IDEs to be slower and also linters would check the node_modules.
+    "node_modules/"
+  ]
+}

@@ -33,7 +33,7 @@ async function main() {
         .catch((error) => {
           worker.log(error);
           return false;
-        })
+        }),
     );
   } else {
     // For non-worker mode, we parse the flag/params file ourselves. The Sass rule

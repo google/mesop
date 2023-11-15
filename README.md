@@ -1,4 +1,4 @@
-Disclaimer: *This is not an officially supported Google product.*
+Disclaimer: _This is not an officially supported Google product._
 
 # Optic
 

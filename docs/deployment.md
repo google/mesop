@@ -16,7 +16,7 @@ Google Cloud Artifact Registry provides a private Docker repo.
 
 You only need to run this once and then you can re-use the same repo for multiple builds.
 
-* Follow Cloud Build's [Docker quickstart guide](https://cloud.google.com/build/docs/build-push-docker-image) for any pre-requisites.
+- Follow Cloud Build's [Docker quickstart guide](https://cloud.google.com/build/docs/build-push-docker-image) for any pre-requisites.
 
 ```sh
 gcloud artifacts repositories create {REPO_NAME} --repository-format=docker \

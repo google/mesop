@@ -97,10 +97,10 @@ $ pip install -r optic/requirements_lock.txt
 
 We use [pre-commit](https://pre-commit.com/) to automatically format, lint code before committing.
 
-*Setup:*
+_Setup:_
 
 1. [Install pre-commit](https://pre-commit.com/#installation).
-1. Setup git hook: ```pre-commit install```
+1. Setup git hook: `pre-commit install`
 
 ## Web (Angular)
 
