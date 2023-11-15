@@ -51,4 +51,5 @@ def ui_stream():
 
     return Response(generate_data(ui_request), content_type="text/event-stream")
 
+
 port = int(os.environ.get("PORT", 8080))

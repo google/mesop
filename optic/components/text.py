@@ -3,6 +3,4 @@ from optic.components.helper import insert_component
 
 
 def text(*, text: str):
-    insert_component(
-        data=pb.ComponentData(text=pb.TextComponent(text=text))
-    )
+    insert_component(data=pb.ComponentData(text=pb.TextComponent(text=text)))

@@ -4,7 +4,7 @@ repo_name: google/optic
 nav:
   - Overview: index.md
   - Concepts: concepts.md
-  - Components: 
+  - Components:
     - Button: components/button.md
     - Checkbox: components/checkbox.md
     - Text: components/text.md
@@ -41,7 +41,7 @@ theme:
 extra_css:
   - stylesheets/extra.css
 
-  
+
 markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true
@@ -52,7 +52,7 @@ markdown_extensions:
 plugins:
   - mkdocstrings:
       default_handler: python
-      
+
       handlers:
         python:
             options:

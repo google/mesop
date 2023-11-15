@@ -15,10 +15,10 @@ def checkbox(*, label: str, on_update: Callable[[Any, CheckboxEvent], Any]):
     The function appends the created checkbox component to the children of the current node in the runtime session.
     """
     insert_component(
-            data=pb.ComponentData(
-                checkbox=pb.CheckboxComponent(
-                    label=label,
-                    on_update=handler_type(on_update),
-                )
+        data=pb.ComponentData(
+            checkbox=pb.CheckboxComponent(
+                label=label,
+                on_update=handler_type(on_update),
             )
+        )
     )

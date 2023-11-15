@@ -55,7 +55,7 @@ $ docker push ${REPO_NAME}
 
 ## Deploying Container
 
-There's many cloud providers and services that allow you to run a container. 
+There's many cloud providers and services that allow you to run a container.
 
 To help you get started, I will show one example using Google Cloud Run.
 
