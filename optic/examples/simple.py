@@ -1,24 +1,27 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 import optic as op
 
 
 @dataclass
 class State:
-    str: str
+    string: str
     count: int
+    keys: list[str] = field(default_factory=list)
 
 
 store = op.store(
-    State(str="init", count=0),
+    State(string="init", count=0),
 )
 
 
 @op.on(op.CheckboxEvent)
 def checkbox_update(state: State, action: op.CheckboxEvent) -> None:
     if action.checked:
-        state.str = "checked"
+        state.keys.append(action.key.key)
+        state.string = "checked"
     else:
-        state.str = "unchecked"
+        state.keys.remove(action.key.key)
+        state.string = "unchecked"
 
 
 @op.on(op.ClickEvent)
@@ -30,5 +33,8 @@ def main():
     state = store.get_state()
     op.button(label="click me", on_click=button_click)
     op.text(text=f"{state.count} clicks")
-    op.checkbox(label="check?", on_update=checkbox_update)
-    op.text(text=state.str)
+    state.keys
+    op.text(text=f"Selected keys: {state.keys}")
+    for i in range(1000):
+        op.checkbox(label=f"check {i}?", on_update=checkbox_update, key=f"check={i}")
+    op.text(text=state.string)

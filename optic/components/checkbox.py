@@ -4,7 +4,12 @@ from optic.components.helper import insert_component, handler_type
 from optic.state.actions import CheckboxEvent
 
 
-def checkbox(*, label: str, on_update: Callable[[Any, CheckboxEvent], Any]):
+def checkbox(
+    *,
+    label: str,
+    on_update: Callable[[Any, CheckboxEvent], Any],
+    key: str | None = None,
+):
     """
     Creates a checkbox component with a specified label and update action.
 
@@ -15,10 +20,11 @@ def checkbox(*, label: str, on_update: Callable[[Any, CheckboxEvent], Any]):
     The function appends the created checkbox component to the children of the current node in the runtime session.
     """
     insert_component(
+        key=key,
         data=pb.ComponentData(
             checkbox=pb.CheckboxComponent(
                 label=label,
                 on_update=handler_type(on_update),
             )
-        )
+        ),
     )

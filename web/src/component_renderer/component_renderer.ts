@@ -21,12 +21,19 @@ import { ComponentLoader } from "./component_loader";
 export class ComponentRenderer {
   @Input() component!: pb.Component;
 
-  trackByFn(index: any, item: any) {
-    // TODO: use item id.
+  trackByFn(index: any, item: pb.Component) {
+    const key = item.getKey()?.getKey();
+    if (key) {
+      return key;
+    }
     return index;
   }
 
   data() {
     return this.component.getData();
+  }
+
+  key() {
+    return this.component.getKey()!;
   }
 }

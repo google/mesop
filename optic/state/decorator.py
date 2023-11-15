@@ -1,5 +1,7 @@
 from typing import Any, TypeVar, Callable, Type, cast
 
+from .key import key_from_proto
+
 from . import actions
 from ..components.helper import get_qualified_fn_name
 from optic.lib.runtime import runtime
@@ -17,9 +19,10 @@ def handler(actionType: Type[A]) -> Callable[[Handler[S, A]], Handler[S, A]]:
             # This is guaranteed to be a UserAction because only Optic
             # framework will call the wrapper.
             typed_action = cast(pb.UserAction, action)
+            key = key_from_proto(typed_action.key)
 
             if actionType == actions.CheckboxEvent:
-                typed_action = actions.CheckboxEvent(checked=typed_action.bool)
+                typed_action = actions.CheckboxEvent(checked=typed_action.bool, key=key)
 
             return func(state, cast(Any, typed_action))
 

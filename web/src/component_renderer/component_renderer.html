@@ -8,7 +8,7 @@
 
 <ng-container *ngIf="data()?.getCheckbox() != null">
   @defer (on viewport) {
-  <app-checkbox [config]="data()!.getCheckbox()!" />
+  <app-checkbox [key]="key()" [config]="data()!.getCheckbox()!" />
   } @placeholder {
   <component-loader />
   }

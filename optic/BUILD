@@ -11,6 +11,7 @@ py_library(
     deps = [
         "//optic/components",
         "//optic/state",
+        "//optic/store",
     ],
 )
 

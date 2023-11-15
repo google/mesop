@@ -9,6 +9,7 @@ import { ChannelService } from "../../services/channel_service";
 })
 export class CheckboxComponent {
   @Input() config!: pb.CheckboxComponent;
+  @Input() key!: pb.Key;
   isChecked = false;
 
   constructor(private readonly channelService: ChannelService) {}
@@ -19,6 +20,7 @@ export class CheckboxComponent {
     const userAction = new pb.UserAction();
     userAction.setBool(event.target.checked);
     userAction.setActionType(this.config.getOnUpdate()!);
+    userAction.setKey(this.key);
     this.channelService.dispatch(userAction);
   }
 }
