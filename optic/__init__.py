@@ -1,10 +1,10 @@
-from optic.components import text, checkbox, button as button
+from optic.components.button.button import button as button
+from optic.components.checkbox.checkbox import checkbox as checkbox
+from optic.components.text.text import text as text
+
 import optic.state as state
 import optic.state.decorator as decorator
 from optic.store import store
-
-text = text.text
-checkbox = checkbox.checkbox
 
 
 CheckboxEvent = state.CheckboxEvent

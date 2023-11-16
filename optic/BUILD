@@ -10,6 +10,9 @@ py_library(
     srcs = ["__init__.py"],
     deps = [
         "//optic/components",
+        "//optic/components/button:py",
+        "//optic/components/checkbox:py",
+        "//optic/components/text:py",
         "//optic/state",
         "//optic/store",
     ],

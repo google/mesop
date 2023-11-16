@@ -5,7 +5,7 @@ package(
 )
 
 ng_module(
-    name = "component_renderer",
+    name = "ng",
     srcs = glob([
         "*.ts",
     ]),
@@ -13,10 +13,18 @@ ng_module(
         "*.html",
     ]),
     deps = [
-        "//optic/components/button:ng",
-        "//optic/components/checkbox:ng",
-        "//optic/components/text:ng",
         "//protos:ui_ts_proto",
+        "//web/src/services",
         "@npm//@angular/compiler",
+        "@npm//@angular/material",
+    ],
+)
+
+py_library(
+    name = "py",
+    srcs = glob(["*.py"]),
+    deps = [
+        "//optic/component_helpers",
+        "//protos:ui_py_proto",
     ],
 )
