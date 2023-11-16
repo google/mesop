@@ -16,9 +16,9 @@
   }
 </ng-container>
 
-<ng-container *ngIf="data()?.getText() != null">
+<ng-container *ngIf="data()?.getType() == 'text'">
   @defer (on viewport) {
-  <app-text [config]="data()!.getText()!" />
+  <app-text [data]="data()!" />
   } @placeholder {
   <component-loader />
   }

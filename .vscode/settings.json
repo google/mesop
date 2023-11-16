@@ -28,5 +28,6 @@
     "bazel-bin/**": true,
     "bazel-out/**": true,
     "bazel-optic/**": true
-  }
+  },
+  "python.analysis.extraPaths": ["./bazel-bin"]
 }

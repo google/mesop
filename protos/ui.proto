@@ -61,15 +61,13 @@ message Key {
 }
 
 message ComponentData {
-    oneof type {
-        TextComponent text = 1;
+    string type = 4;
+    bytes value = 5;
+
+    oneof legacy_type {
         CheckboxComponent checkbox = 2;
         ButtonComponent button = 3;
     }
-}
-
-message TextComponent {
-    string text = 1;
 }
 
 message CheckboxComponent {
