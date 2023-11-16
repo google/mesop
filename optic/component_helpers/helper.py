@@ -13,8 +13,8 @@ def insert_component(data: pb.ComponentData, key: str | None = None):
     )
 
 
-def handler_type(handler_fn: Callable[..., Any]) -> pb.ActionType:
-    return pb.ActionType(type=get_qualified_fn_name(handler_fn))
+def handler_type(handler_fn: Callable[..., Any]) -> str:
+    return get_qualified_fn_name(handler_fn)
 
 
 def get_qualified_fn_name(fn: Callable[..., Any]) -> str:

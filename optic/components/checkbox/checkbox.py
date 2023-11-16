@@ -24,7 +24,7 @@ def checkbox(
         data=pb.ComponentData(
             checkbox=pb.CheckboxComponent(
                 label=label,
-                on_update=handler_type(on_update),
+                on_update_handler_id=handler_type(on_update),
             )
         ),
     )

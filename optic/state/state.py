@@ -15,13 +15,11 @@ class Store(Generic[S]):
 
     def dispatch(self, action: pb.UserAction) -> None:
         payload = cast(Any, action)
-        handler = self.handlers.get(action.action_type.type)
+        handler = self.handlers.get(action.handler_id)
         if handler:
             handler(self.state, payload)
         else:
-            print(
-                f"Unknown action type: {action.action_type}; handlers={self.handlers}"
-            )
+            print(f"Unknown handler id: {action.handler_id}; handlers={self.handlers}")
 
     def get_state(self) -> S:
         return self.state

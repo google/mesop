@@ -18,7 +18,7 @@ export class ButtonComponent {
   handleClick(event: any) {
     const userAction = new pb.UserAction();
     userAction.setClick(new pb.Click());
-    userAction.setActionType(this.config.getOnClick()!);
+    userAction.setHandlerId(this.config.getOnClickHandlerId()!);
     this.channelService.dispatch(userAction);
   }
 }

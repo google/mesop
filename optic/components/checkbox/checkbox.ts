@@ -19,7 +19,7 @@ export class CheckboxComponent {
     this.isChecked = event.target.checked;
     const userAction = new pb.UserAction();
     userAction.setBool(event.target.checked);
-    userAction.setActionType(this.config.getOnUpdate()!);
+    userAction.setHandlerId(this.config.getOnUpdateHandlerId()!);
     userAction.setKey(this.key);
     this.channelService.dispatch(userAction);
   }

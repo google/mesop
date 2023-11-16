@@ -18,7 +18,7 @@ message UserAction {
     State state = 4;
 
     // Used to determine which action handler to call.
-    ActionType action_type = 1;
+    string handler_id = 1;
 
     Key key = 5;
 
@@ -72,14 +72,10 @@ message ComponentData {
 
 message CheckboxComponent {
     string label = 1;
-    ActionType on_update = 2;
+    string on_update_handler_id = 2;
 }
 
 message ButtonComponent {
     string label = 1;
-    ActionType on_click = 2;
-}
-
-message ActionType {
-    string type = 1;
+    string on_click_handler_id = 2;
 }

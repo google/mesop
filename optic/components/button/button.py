@@ -16,7 +16,7 @@ def button(*, label: str, on_click: Callable[[Any, ClickEvent], Any]):
         data=pb.ComponentData(
             button=pb.ButtonComponent(
                 label=label,
-                on_click=handler_type(on_click),
+                on_click_handler_id=handler_type(on_click),
             )
         )
     )
