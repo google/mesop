@@ -1,6 +1,6 @@
 from typing import Any, Callable
 import protos.ui_pb2 as pb
-from optic.components.helper import insert_component, handler_type
+from optic.component_helpers import insert_component, handler_type
 from optic.state.events import ClickEvent
 
 

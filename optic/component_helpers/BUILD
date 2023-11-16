@@ -3,10 +3,9 @@ package(
 )
 
 py_library(
-    name = "components",
+    name = "component_helpers",
     srcs = glob(["*.py"]),
     deps = [
-        "//optic/component_helpers",
         "//protos:ui_py_proto",
     ],
 )

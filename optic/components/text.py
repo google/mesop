@@ -1,5 +1,5 @@
 import protos.ui_pb2 as pb
-from optic.components.helper import insert_component
+from optic.component_helpers import insert_component
 
 
 def text(*, text: str):
