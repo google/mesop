@@ -9,6 +9,7 @@ py_library(
     name = "optic",
     srcs = ["__init__.py"],
     deps = [
+        # INSERT COMPONENT IMPORT HERE:
         "//optic/components",
         "//optic/components/button:py",
         "//optic/components/checkbox:py",

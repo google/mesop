@@ -4,6 +4,7 @@ import * as pb from "optic/protos/ui_ts_proto_pb/protos/ui_pb";
 import { CheckboxComponent } from "../../../optic/components/checkbox/checkbox";
 import { ButtonComponent } from "../../../optic/components/button/button";
 import { TextComponent } from "../../../optic/components/text/text";
+// INSERT COMPONENT TS IMPORTS HERE:
 import { ComponentLoader } from "./component_loader";
 
 @Component({
@@ -11,6 +12,7 @@ import { ComponentLoader } from "./component_loader";
   templateUrl: "component_renderer.html",
   standalone: true,
   imports: [
+    // INSERT COMPONENT NG IMPORTS HERE:
     TextComponent,
     CheckboxComponent,
     ButtonComponent,
