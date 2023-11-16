@@ -8,9 +8,9 @@
   }
 </ng-container>
 
-<ng-container *ngIf="data()?.getCheckbox() != null">
+<ng-container *ngIf="data()?.getType() == 'checkbox'">
   @defer (on viewport) {
-  <app-checkbox [key]="key()" [config]="data()!.getCheckbox()!" />
+  <app-checkbox [key]="key()" [data]="data()!" />
   } @placeholder {
   <component-loader />
   }

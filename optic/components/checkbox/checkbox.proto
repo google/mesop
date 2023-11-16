@@ -1,0 +1,6 @@
+syntax = "proto3";
+
+message CheckboxComponent {
+    string label = 1;
+    string on_update_handler_id = 2;
+}

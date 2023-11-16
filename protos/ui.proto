@@ -63,13 +63,4 @@ message Key {
 message ComponentData {
     string type = 4;
     bytes value = 5;
-
-    oneof legacy_type {
-        CheckboxComponent checkbox = 2;
-    }
-}
-
-message CheckboxComponent {
-    string label = 1;
-    string on_update_handler_id = 2;
 }
