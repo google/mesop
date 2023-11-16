@@ -1,8 +1,8 @@
 <!-- INSERT NEW COMPONENT HERE -->
 
-<ng-container *ngIf="data()?.getButton() != null">
+<ng-container *ngIf="data()?.getType() == 'button'">
   @defer (on viewport) {
-  <app-button [config]="data()!.getButton()!" />
+  <app-button [data]="data()!" />
   } @placeholder {
   <component-loader />
   }

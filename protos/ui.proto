@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package protos;
+package optic;
 
 // Sent from web client to Python server.
 message UiRequest {
@@ -66,16 +66,10 @@ message ComponentData {
 
     oneof legacy_type {
         CheckboxComponent checkbox = 2;
-        ButtonComponent button = 3;
     }
 }
 
 message CheckboxComponent {
     string label = 1;
     string on_update_handler_id = 2;
-}
-
-message ButtonComponent {
-    string label = 1;
-    string on_click_handler_id = 2;
 }

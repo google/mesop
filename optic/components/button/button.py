@@ -1,5 +1,6 @@
 from typing import Any, Callable
 import protos.ui_pb2 as pb
+import optic.components.button.button_pb2 as button_pb
 from optic.component_helpers import insert_component, handler_type
 from optic.state.events import ClickEvent
 
@@ -14,9 +15,10 @@ def button(*, label: str, on_click: Callable[[Any, ClickEvent], Any]):
     """
     insert_component(
         data=pb.ComponentData(
-            button=pb.ButtonComponent(
+            type="button",
+            value=button_pb.ButtonComponent(
                 label=label,
                 on_click_handler_id=handler_type(on_click),
-            )
+            ).SerializeToString(),
         )
     )
