@@ -3,7 +3,7 @@ import { TextComponent } from "../components/text/text";
 import { CommonModule } from "@angular/common";
 import * as pb from "optic/protos/ui_ts_proto_pb/protos/ui_pb";
 import { CheckboxComponent } from "../components/checkbox/checkbox";
-import { ButtonComponent } from "../components/button/button";
+import { ButtonComponent } from "../../../optic/components/button/button";
 import { ComponentLoader } from "./component_loader";
 
 @Component({

@@ -5,17 +5,26 @@ package(
 )
 
 ng_module(
-    name = "button",
+    name = "ng",
     srcs = glob([
         "*.ts",
     ]),
-    assets = [
-        "button.html",
-    ],
+    assets = glob([
+        "*.html",
+    ]),
     deps = [
         "//protos:ui_ts_proto",
         "//web/src/services",
         "@npm//@angular/compiler",
         "@npm//@angular/material",
+    ],
+)
+
+py_library(
+    name = "py",
+    srcs = glob(["*.py"]),
+    deps = [
+        "//optic/component_helpers",
+        "//protos:ui_py_proto",
     ],
 )

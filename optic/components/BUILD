@@ -7,6 +7,7 @@ py_library(
     srcs = glob(["*.py"]),
     deps = [
         "//optic/component_helpers",
+        "//optic/components/button:py",
         "//protos:ui_py_proto",
     ],
 )

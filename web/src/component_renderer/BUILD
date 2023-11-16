@@ -13,8 +13,8 @@ ng_module(
         "*.html",
     ]),
     deps = [
+        "//optic/components/button:ng",
         "//protos:ui_ts_proto",
-        "//web/src/components/button",
         "//web/src/components/checkbox",
         "//web/src/components/text",
         "@npm//@angular/compiler",
