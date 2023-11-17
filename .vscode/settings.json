@@ -17,12 +17,6 @@
     "editor.defaultFormatter": "charliermarsh.ruff"
   },
   "editor.formatOnSave": true,
-  "files.exclude": {
-    "**/tmp/**": true,
-    "bazel-bin/**": true,
-    "bazel-out/**": true,
-    "bazel-optic/**": true
-  },
   "search.exclude": {
     "**/tmp/**": true,
     "bazel-bin/**": true,
