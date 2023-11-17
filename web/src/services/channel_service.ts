@@ -29,16 +29,16 @@ export class ChannelService {
       // Looks like Angular has a bug where it's not intercepting EventSource onmessage.
       zone.run(() => {
         const array = toUint8Array(atob(e.data));
-        const serverEvent = pb.ServerEvent.deserializeBinary(array);
-        console.debug("Server event: ", serverEvent.toObject());
-        switch (serverEvent.getTypeCase()) {
-          case pb.ServerEvent.TypeCase.RENDER:
-            this.state = serverEvent.getRender()!.getState()!;
+        const UiResponse = pb.UiResponse.deserializeBinary(array);
+        console.debug("Server event: ", UiResponse.toObject());
+        switch (UiResponse.getTypeCase()) {
+          case pb.UiResponse.TypeCase.RENDER:
+            this.state = UiResponse.getRender()!.getState()!;
 
-            onRender(serverEvent.getRender()!.getRootComponent()!);
+            onRender(UiResponse.getRender()!.getRootComponent()!);
             break;
-          case pb.ServerEvent.TypeCase.TYPE_NOT_SET:
-            throw new Error("Unhandled case for server event: " + serverEvent);
+          case pb.UiResponse.TypeCase.TYPE_NOT_SET:
+            throw new Error("Unhandled case for server event: " + UiResponse);
         }
       });
     };

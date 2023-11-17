@@ -31,8 +31,8 @@ message UserAction {
 message Click {}
 
 // Sent from Python server to web client.
-// Multiple ServerEvent messages may be sent in response to 1 UiRequest.
-message ServerEvent {
+// Multiple UiResponse messages may be sent in response to 1 UiRequest.
+message UiResponse {
     oneof type {
         RenderEvent render = 1;
     }

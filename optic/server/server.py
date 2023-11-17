@@ -13,7 +13,7 @@ def render_loop():
     runtime.run_module_main()
     root_component = runtime.session().current_node()
 
-    data = pb.ServerEvent(
+    data = pb.UiResponse(
         render=pb.RenderEvent(
             root_component=root_component, state=runtime.session().current_state()
         )
