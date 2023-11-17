@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-message ButtonComponent {
+message ButtonType {
     string label = 1;
     string on_click_handler_id = 2;
 }

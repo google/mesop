@@ -1,6 +1,6 @@
 import { Component, Input } from "@angular/core";
 import * as pb from "optic/protos/ui_ts_proto_pb/protos/ui_pb";
-import { ButtonComponent as ButtonComponentProto } from "optic/optic/components/button/button_ts_proto_pb/optic/components/button/button_pb";
+import { ButtonType } from "optic/optic/components/button/button_ts_proto_pb/optic/components/button/button_pb";
 import { ChannelService } from "../../../web/src/services/channel_service";
 import { MatButtonModule } from "@angular/material/button";
 
@@ -12,18 +12,18 @@ import { MatButtonModule } from "@angular/material/button";
 })
 export class ButtonComponent {
   @Input() type!: pb.Type;
-  private _config: ButtonComponentProto;
+  private _config: ButtonType;
   isChecked = false;
 
   constructor(private readonly channelService: ChannelService) {}
 
   ngOnChanges() {
-    this._config = ButtonComponentProto.deserializeBinary(
+    this._config = ButtonType.deserializeBinary(
       this.type.getValue() as Uint8Array,
     );
   }
 
-  config(): ButtonComponentProto {
+  config(): ButtonType {
     return this._config;
   }
 

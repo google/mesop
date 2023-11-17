@@ -6,6 +6,6 @@ from optic.component_helpers import insert_component
 def text(*, text: str):
     insert_component(
         type=pb.Type(
-            name="text", value=text_pb2.TextComponent(text=text).SerializeToString()
+            name="text", value=text_pb2.TextType(text=text).SerializeToString()
         )
     )

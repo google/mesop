@@ -2,6 +2,6 @@ syntax = "proto3";
 
 package optic.components;
 
-message TextComponent {
+message TextType {
     string text = 1;
 }

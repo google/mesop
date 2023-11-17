@@ -1,6 +1,6 @@
 import { Component, Input } from "@angular/core";
 import * as pb from "optic/protos/ui_ts_proto_pb/protos/ui_pb";
-import { CheckboxComponent as CheckboxComponentProto } from "optic/optic/components/checkbox/checkbox_ts_proto_pb/optic/components/checkbox/checkbox_pb";
+import { CheckboxType } from "optic/optic/components/checkbox/checkbox_ts_proto_pb/optic/components/checkbox/checkbox_pb";
 import { ChannelService } from "../../../web/src/services/channel_service";
 
 @Component({
@@ -11,18 +11,18 @@ import { ChannelService } from "../../../web/src/services/channel_service";
 export class CheckboxComponent {
   @Input() type!: pb.Type;
   @Input() key!: pb.Key;
-  private _config: CheckboxComponentProto;
+  private _config: CheckboxType;
   isChecked = false;
 
   constructor(private readonly channelService: ChannelService) {}
 
   ngOnChanges() {
-    this._config = CheckboxComponentProto.deserializeBinary(
+    this._config = CheckboxType.deserializeBinary(
       this.type.getValue() as Uint8Array,
     );
   }
 
-  config(): CheckboxComponentProto {
+  config(): CheckboxType {
     return this._config;
   }
 

@@ -24,7 +24,7 @@ def checkbox(
         key=key,
         type=pb.Type(
             name="checkbox",
-            value=checkbox_pb.CheckboxComponent(
+            value=checkbox_pb.CheckboxType(
                 label=label,
                 on_update_handler_id=handler_type(on_update),
             ).SerializeToString(),
