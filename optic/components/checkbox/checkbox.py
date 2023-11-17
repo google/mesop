@@ -23,7 +23,7 @@ def checkbox(
     insert_component(
         key=key,
         type=pb.Type(
-            type="checkbox",
+            name="checkbox",
             value=checkbox_pb.CheckboxComponent(
                 label=label,
                 on_update_handler_id=handler_type(on_update),

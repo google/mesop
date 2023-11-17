@@ -62,6 +62,6 @@ message Key {
 }
 
 message Type {
-    string type = 4;
+    string name = 4;
     bytes value = 5;
 }
