@@ -12,13 +12,13 @@ class Session:
 
     def __init__(self) -> None:
         self._current_node = pb.Component()
-        self._current_action = pb.UserAction()
+        self._current_action = pb.UserEvent()
         self._current_state = None
 
     def current_node(self) -> pb.Component:
         return self._current_node
 
-    def current_action(self) -> pb.UserAction:
+    def current_action(self) -> pb.UserEvent:
         return self._current_action
 
     def current_state(self) -> pb.State | None:
@@ -27,7 +27,7 @@ class Session:
     def set_current_state(self, state: pb.State) -> None:
         self._current_state = state
 
-    def set_current_action(self, action: pb.UserAction) -> None:
+    def set_current_action(self, action: pb.UserEvent) -> None:
         self._current_action = action
 
     def execute_current_action(self) -> None:

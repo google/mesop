@@ -13,9 +13,9 @@ export class ComponentNameComponent {
   constructor(private readonly channelService: ChannelService) {}
 
   handleClick(event: any) {
-    const userAction = new pb.UserAction();
-    userAction.setClick(new pb.Click());
-    userAction.setActionType(this.config.getOnClick()!);
-    this.channelService.dispatch(userAction);
+    const userEvent = new pb.UserEvent();
+    userEvent.setClick(new pb.Click());
+    userEvent.setActionType(this.config.getOnClick()!);
+    this.channelService.dispatch(userEvent);
   }
 }

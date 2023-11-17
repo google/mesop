@@ -16,9 +16,9 @@ def handler(actionType: Type[A]) -> Callable[[Handler[S, A]], Handler[S, A]]:
     def register(func: Handler[S, A]):
         def wrapper(state: S, action: A):
             registerHandler(f"{func.__module__}.{func.__name__}", func)
-            # This is guaranteed to be a UserAction because only Optic
+            # This is guaranteed to be a UserEvent because only Optic
             # framework will call the wrapper.
-            typed_action = cast(pb.UserAction, action)
+            typed_action = cast(pb.UserEvent, action)
             key = key_from_proto(typed_action.key)
 
             if actionType == events.CheckboxEvent:

@@ -29,9 +29,9 @@ def generate_data(ui_request: pb.UiRequest):
     if ui_request.HasField("init"):
         runtime.load_module()
         return render_loop()
-    if ui_request.HasField("user_action"):
-        runtime.session().set_current_action(ui_request.user_action)
-        runtime.session().set_current_state(ui_request.user_action.state)
+    if ui_request.HasField("user_event"):
+        runtime.session().set_current_action(ui_request.user_event)
+        runtime.session().set_current_state(ui_request.user_event.state)
         runtime.load_module()
         runtime.session().execute_current_action()
         return render_loop()

@@ -24,10 +24,10 @@ export class CheckboxComponent {
   handleCheckboxChange(event: any) {
     console.log("Checkbox is now:", event.target.checked);
     this.isChecked = event.target.checked;
-    const userAction = new pb.UserAction();
-    userAction.setBool(event.target.checked);
-    userAction.setHandlerId(this.getConfig().getOnUpdateHandlerId()!);
-    userAction.setKey(this.key);
-    this.channelService.dispatch(userAction);
+    const userEvent = new pb.UserEvent();
+    userEvent.setBool(event.target.checked);
+    userEvent.setHandlerId(this.getConfig().getOnUpdateHandlerId()!);
+    userEvent.setKey(this.key);
+    this.channelService.dispatch(userEvent);
   }
 }

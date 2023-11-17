@@ -6,7 +6,7 @@ package optic;
 message UiRequest {
     oneof type {
         InitRequest init = 1;
-        UserAction user_action = 2;
+        UserEvent user_event = 2;
     }
 }
 
@@ -14,7 +14,7 @@ message InitRequest {
 
 }
 
-message UserAction {
+message UserEvent {
     State state = 4;
 
     // Used to determine which action handler to call.

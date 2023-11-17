@@ -13,7 +13,7 @@ class Store(Generic[S]):
         self.state = initial_state
         self.handlers: Dict[str, Handler[S]] = {}
 
-    def dispatch(self, action: pb.UserAction) -> None:
+    def dispatch(self, action: pb.UserEvent) -> None:
         payload = cast(Any, action)
         handler = self.handlers.get(action.handler_id)
         if handler:

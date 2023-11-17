@@ -44,10 +44,10 @@ export class ChannelService {
     };
   }
 
-  dispatch(userAction: pb.UserAction) {
-    userAction.setState(this.state);
+  dispatch(userEvent: pb.UserEvent) {
+    userEvent.setState(this.state);
     const request = new pb.UiRequest();
-    request.setUserAction(userAction);
+    request.setUserEvent(userEvent);
     const array = request.serializeBinary();
 
     const byteString = btoa(fromUint8Array(array));
