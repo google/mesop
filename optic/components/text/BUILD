@@ -1,3 +1,4 @@
+load("@my_deps//:requirements.bzl", "requirement")
 load("@rules_proto//proto:defs.bzl", "proto_library")
 load("@rules_proto_grpc//js:defs.bzl", "js_proto_library")
 load("//builddefs:protos.bzl", "py_proto_library")
@@ -30,6 +31,7 @@ py_library(
         ":text_py_proto",
         "//optic/component_helpers",
         "//protos:ui_py_proto",
+        requirement("pydantic"),
     ],
 )
 

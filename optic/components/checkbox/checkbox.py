@@ -1,3 +1,5 @@
+from pydantic import validate_arguments
+
 from typing import Any, Callable
 import protos.ui_pb2 as pb
 import optic.components.checkbox.checkbox_pb2 as checkbox_pb
@@ -5,6 +7,7 @@ from optic.component_helpers import insert_component, handler_type
 from optic.state.events import CheckboxEvent
 
 
+@validate_arguments
 def checkbox(
     *,
     label: str,

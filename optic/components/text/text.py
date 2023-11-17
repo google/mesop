@@ -1,8 +1,11 @@
+from pydantic import validate_arguments
+
 import protos.ui_pb2 as pb
 import optic.components.text.text_pb2 as text_pb2
 from optic.component_helpers import insert_component
 
 
+@validate_arguments
 def text(
     *,
     text: str,
