@@ -1,3 +1,5 @@
+from pydantic import validate_arguments
+
 from typing import Any, Callable
 import protos.ui_pb2 as pb
 import optic.components.button.button_pb2 as button_pb
@@ -5,6 +7,7 @@ from optic.component_helpers import insert_component, handler_type
 from optic.state.events import ClickEvent
 
 
+@validate_arguments
 def button(
     *,
     label: str,

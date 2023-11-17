@@ -4,3 +4,4 @@ mypy-protobuf
 absl-py
 mkdocs-material
 mkdocstrings[python]
+pydantic==1.10

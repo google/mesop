@@ -13,6 +13,7 @@ py_binary(
     deps = [
         ":read_module",
         requirement("absl-py"),
+        "//optic",  # Keep dep to ensure the entire Optic library is loaded.
         "//optic/lib",
         "//optic/server:prod_server",
     ],
@@ -23,13 +24,13 @@ py_binary(
     name = "dev_cli",
     srcs = ["dev_cli.py"],
     data = [
-        "//optic",
         "//optic/examples",
     ],
     main = "dev_cli.py",
     deps = [
         ":read_module",
         requirement("absl-py"),
+        "//optic",  # Keep dep to ensure the entire Optic library is loaded.
         "//optic/lib",
         "//optic/server:dev_server",
     ],

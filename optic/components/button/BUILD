@@ -2,6 +2,7 @@ load("//tools:defaults.bzl", "ng_module")
 load("@rules_proto//proto:defs.bzl", "proto_library")
 load("@rules_proto_grpc//js:defs.bzl", "js_proto_library")
 load("//builddefs:protos.bzl", "py_proto_library")
+load("@my_deps//:requirements.bzl", "requirement")
 
 package(
     default_visibility = ["//:optic_internal"],
@@ -28,6 +29,7 @@ py_library(
     name = "py",
     srcs = glob(["*.py"]),
     deps = [
+        requirement("pydantic"),
         ":button_py_proto",
         "//optic/component_helpers",
         "//protos:ui_py_proto",
