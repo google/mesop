@@ -11,14 +11,19 @@ import { ChannelService } from "../../../web/src/services/channel_service";
 export class CheckboxComponent {
   @Input() data!: pb.Type;
   @Input() key!: pb.Key;
+  private _config: CheckboxComponentProto;
   isChecked = false;
 
   constructor(private readonly channelService: ChannelService) {}
 
-  getConfig(): CheckboxComponentProto {
-    return CheckboxComponentProto.deserializeBinary(
+  ngOnChanges() {
+    this._config = CheckboxComponentProto.deserializeBinary(
       this.data.getValue() as Uint8Array,
     );
+  }
+
+  config(): CheckboxComponentProto {
+    return this._config;
   }
 
   handleCheckboxChange(event: any) {
@@ -26,7 +31,7 @@ export class CheckboxComponent {
     this.isChecked = event.target.checked;
     const userEvent = new pb.UserEvent();
     userEvent.setBool(event.target.checked);
-    userEvent.setHandlerId(this.getConfig().getOnUpdateHandlerId()!);
+    userEvent.setHandlerId(this.config().getOnUpdateHandlerId()!);
     userEvent.setKey(this.key);
     this.channelService.dispatch(userEvent);
   }

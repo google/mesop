@@ -9,10 +9,15 @@ import * as pb from "optic/optic/components/text/text_ts_proto_pb/optic/componen
 })
 export class TextComponent {
   @Input() data!: Type;
+  _config: pb.TextComponent;
 
-  getConfig(): pb.TextComponent {
-    return pb.TextComponent.deserializeBinary(
+  ngOnChanges() {
+    this._config = pb.TextComponent.deserializeBinary(
       this.data.getValue() as Uint8Array,
     );
+  }
+
+  config(): pb.TextComponent {
+    return this._config;
   }
 }

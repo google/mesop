@@ -12,20 +12,25 @@ import { MatButtonModule } from "@angular/material/button";
 })
 export class ButtonComponent {
   @Input() data!: pb.Type;
+  private _config: ButtonComponentProto;
   isChecked = false;
 
   constructor(private readonly channelService: ChannelService) {}
 
-  getConfig(): ButtonComponentProto {
-    return ButtonComponentProto.deserializeBinary(
+  ngOnChanges() {
+    this._config = ButtonComponentProto.deserializeBinary(
       this.data.getValue() as Uint8Array,
     );
+  }
+
+  config(): ButtonComponentProto {
+    return this._config;
   }
 
   handleClick(event: any) {
     const userEvent = new pb.UserEvent();
     userEvent.setClick(new pb.Click());
-    userEvent.setHandlerId(this.getConfig().getOnClickHandlerId()!);
+    userEvent.setHandlerId(this.config().getOnClickHandlerId()!);
     this.channelService.dispatch(userEvent);
   }
 }
