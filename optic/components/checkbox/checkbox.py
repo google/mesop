@@ -22,7 +22,7 @@ def checkbox(
     """
     insert_component(
         key=key,
-        data=pb.ComponentData(
+        type=pb.Type(
             type="checkbox",
             value=checkbox_pb.CheckboxComponent(
                 label=label,

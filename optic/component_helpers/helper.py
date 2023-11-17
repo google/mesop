@@ -4,12 +4,12 @@ from optic.lib.runtime import runtime
 import protos.ui_pb2 as pb
 
 
-def insert_component(data: pb.ComponentData, key: str | None = None):
+def insert_component(type: pb.Type, key: str | None = None):
     """
     Inserts a component into the current session's current node.
     """
     runtime.session().current_node().children.append(
-        pb.Component(key=pb.Key(key=key or ""), data=data)
+        pb.Component(key=pb.Key(key=key or ""), type=type)
     )
 
 

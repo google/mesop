@@ -1,5 +1,5 @@
 import { Component, Input } from "@angular/core";
-import { ComponentData } from "optic/protos/ui_ts_proto_pb/protos/ui_pb";
+import { Type } from "optic/protos/ui_ts_proto_pb/protos/ui_pb";
 import * as pb from "optic/optic/components/text/text_ts_proto_pb/optic/components/text/text_pb";
 
 @Component({
@@ -8,7 +8,7 @@ import * as pb from "optic/optic/components/text/text_ts_proto_pb/optic/componen
   standalone: true,
 })
 export class TextComponent {
-  @Input() data!: ComponentData;
+  @Input() data!: Type;
 
   getConfig(): pb.TextComponent {
     return pb.TextComponent.deserializeBinary(

@@ -11,7 +11,7 @@ import { MatButtonModule } from "@angular/material/button";
   imports: [MatButtonModule],
 })
 export class ButtonComponent {
-  @Input() data!: pb.ComponentData;
+  @Input() data!: pb.Type;
   isChecked = false;
 
   constructor(private readonly channelService: ChannelService) {}

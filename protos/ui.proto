@@ -52,7 +52,8 @@ message State {
 // Represents an instance of a component.
 message Component {
     Key key = 3;
-    ComponentData data = 1;
+    // Type-specific component properties.
+    Type type = 1;
     repeated Component children = 2;
 }
 
@@ -60,7 +61,7 @@ message Key {
     string key = 1;
 }
 
-message ComponentData {
+message Type {
     string type = 4;
     bytes value = 5;
 }

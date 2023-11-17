@@ -32,7 +32,7 @@ export class ComponentRenderer {
   }
 
   data() {
-    return this.component.getData();
+    return this.component.getType();
   }
 
   key() {

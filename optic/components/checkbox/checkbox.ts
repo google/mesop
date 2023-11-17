@@ -9,7 +9,7 @@ import { ChannelService } from "../../../web/src/services/channel_service";
   standalone: true,
 })
 export class CheckboxComponent {
-  @Input() data!: pb.ComponentData;
+  @Input() data!: pb.Type;
   @Input() key!: pb.Key;
   isChecked = false;
 

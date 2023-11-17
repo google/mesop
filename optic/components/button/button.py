@@ -14,7 +14,7 @@ def button(*, label: str, on_click: Callable[[Any, ClickEvent], Any]):
         on_click (Callable[..., Any]): The function to be called when the button is clicked.
     """
     insert_component(
-        data=pb.ComponentData(
+        type=pb.Type(
             type="button",
             value=button_pb.ButtonComponent(
                 label=label,
