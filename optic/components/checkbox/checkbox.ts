@@ -9,7 +9,7 @@ import { ChannelService } from "../../../web/src/services/channel_service";
   standalone: true,
 })
 export class CheckboxComponent {
-  @Input() type!: pb.Type;
+  @Input({ required: true }) type!: pb.Type;
   @Input() key!: pb.Key;
   private _config: CheckboxType;
   isChecked = false;

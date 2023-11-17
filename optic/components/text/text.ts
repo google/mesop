@@ -8,7 +8,7 @@ import { TextType } from "optic/optic/components/text/text_ts_proto_pb/optic/com
   standalone: true,
 })
 export class TextComponent {
-  @Input() type!: Type;
+  @Input({ required: true }) type!: pb.Type;
   _config: TextType;
 
   ngOnChanges() {

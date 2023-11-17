@@ -11,7 +11,7 @@ import { MatButtonModule } from "@angular/material/button";
   imports: [MatButtonModule],
 })
 export class ButtonComponent {
-  @Input() type!: pb.Type;
+  @Input({ required: true }) type!: pb.Type;
   private _config: ButtonType;
   isChecked = false;
 
