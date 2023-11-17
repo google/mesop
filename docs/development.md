@@ -64,7 +64,7 @@ bazel run //tests/...:all
 To support IDE type-checking (Pylance) in VS Code, we use Aspect's [rules_py](https://docs.aspect.build/rulesets/aspect_rules_py/) which generates a venv target.
 
 ```sh
-$ bazel run //optic:dev_server.venv
+$ bazel run //optic/server:dev_server.venv
 ```
 
 Then, you can activate the venv:
