@@ -2,7 +2,7 @@
 
 <ng-container *ngIf="type()?.getName() == 'button'">
   @defer (on viewport) {
-  <app-button [type]="type()!" />
+  <app-button [key]="key()" [type]="type()!" />
   } @placeholder {
   <component-loader />
   }
@@ -18,7 +18,7 @@
 
 <ng-container *ngIf="type()?.getName() == 'text'">
   @defer (on viewport) {
-  <app-text [type]="type()!" />
+  <app-text [key]="key()" [type]="type()!" />
   } @placeholder {
   <component-loader />
   }

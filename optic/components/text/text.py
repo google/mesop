@@ -3,9 +3,14 @@ import optic.components.text.text_pb2 as text_pb2
 from optic.component_helpers import insert_component
 
 
-def text(*, text: str):
+def text(
+    *,
+    text: str,
+    key: str | None = None,
+):
     insert_component(
+        key=key,
         type=pb.Type(
             name="text", value=text_pb2.TextType(text=text).SerializeToString()
-        )
+        ),
     )

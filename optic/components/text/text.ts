@@ -1,5 +1,5 @@
 import { Component, Input } from "@angular/core";
-import { Type } from "optic/protos/ui_ts_proto_pb/protos/ui_pb";
+import { Key, Type } from "optic/protos/ui_ts_proto_pb/protos/ui_pb";
 import { TextType } from "optic/optic/components/text/text_ts_proto_pb/optic/components/text/text_pb";
 
 @Component({
@@ -8,7 +8,8 @@ import { TextType } from "optic/optic/components/text/text_ts_proto_pb/optic/com
   standalone: true,
 })
 export class TextComponent {
-  @Input({ required: true }) type!: pb.Type;
+  @Input({ required: true }) type!: Type;
+  @Input() key!: Key;
   _config: TextType;
 
   ngOnChanges() {

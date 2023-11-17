@@ -1,5 +1,5 @@
 import { Component, Input } from "@angular/core";
-import * as pb from "optic/protos/ui_ts_proto_pb/protos/ui_pb";
+import { Key, Type, UserEvent } from "optic/protos/ui_ts_proto_pb/protos/ui_pb";
 import { CheckboxType } from "optic/optic/components/checkbox/checkbox_ts_proto_pb/optic/components/checkbox/checkbox_pb";
 import { ChannelService } from "../../../web/src/services/channel_service";
 
@@ -9,8 +9,8 @@ import { ChannelService } from "../../../web/src/services/channel_service";
   standalone: true,
 })
 export class CheckboxComponent {
-  @Input({ required: true }) type!: pb.Type;
-  @Input() key!: pb.Key;
+  @Input({ required: true }) type!: Type;
+  @Input() key!: Key;
   private _config: CheckboxType;
   isChecked = false;
 
@@ -29,7 +29,7 @@ export class CheckboxComponent {
   handleCheckboxChange(event: any) {
     console.log("Checkbox is now:", event.target.checked);
     this.isChecked = event.target.checked;
-    const userEvent = new pb.UserEvent();
+    const userEvent = new UserEvent();
     userEvent.setBool(event.target.checked);
     userEvent.setHandlerId(this.config().getOnUpdateHandlerId()!);
     userEvent.setKey(this.key);
