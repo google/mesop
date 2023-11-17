@@ -11,7 +11,7 @@ import { MatButtonModule } from "@angular/material/button";
   imports: [MatButtonModule],
 })
 export class ButtonComponent {
-  @Input() data!: pb.Type;
+  @Input() type!: pb.Type;
   private _config: ButtonComponentProto;
   isChecked = false;
 
@@ -19,7 +19,7 @@ export class ButtonComponent {
 
   ngOnChanges() {
     this._config = ButtonComponentProto.deserializeBinary(
-      this.data.getValue() as Uint8Array,
+      this.type.getValue() as Uint8Array,
     );
   }
 

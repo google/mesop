@@ -1,24 +1,24 @@
 <!-- INSERT NEW COMPONENT HERE -->
 
-<ng-container *ngIf="data()?.getName() == 'button'">
+<ng-container *ngIf="type()?.getName() == 'button'">
   @defer (on viewport) {
-  <app-button [data]="data()!" />
+  <app-button [type]="type()!" />
   } @placeholder {
   <component-loader />
   }
 </ng-container>
 
-<ng-container *ngIf="data()?.getName() == 'checkbox'">
+<ng-container *ngIf="type()?.getName() == 'checkbox'">
   @defer (on viewport) {
-  <app-checkbox [key]="key()" [data]="data()!" />
+  <app-checkbox [key]="key()" [type]="type()!" />
   } @placeholder {
   <component-loader />
   }
 </ng-container>
 
-<ng-container *ngIf="data()?.getName() == 'text'">
+<ng-container *ngIf="type()?.getName() == 'text'">
   @defer (on viewport) {
-  <app-text [data]="data()!" />
+  <app-text [type]="type()!" />
   } @placeholder {
   <component-loader />
   }

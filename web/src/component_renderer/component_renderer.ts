@@ -31,7 +31,7 @@ export class ComponentRenderer {
     return index;
   }
 
-  data() {
+  type() {
     return this.component.getType();
   }
 

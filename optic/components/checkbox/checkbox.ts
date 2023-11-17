@@ -9,7 +9,7 @@ import { ChannelService } from "../../../web/src/services/channel_service";
   standalone: true,
 })
 export class CheckboxComponent {
-  @Input() data!: pb.Type;
+  @Input() type!: pb.Type;
   @Input() key!: pb.Key;
   private _config: CheckboxComponentProto;
   isChecked = false;
@@ -18,7 +18,7 @@ export class CheckboxComponent {
 
   ngOnChanges() {
     this._config = CheckboxComponentProto.deserializeBinary(
-      this.data.getValue() as Uint8Array,
+      this.type.getValue() as Uint8Array,
     );
   }
 

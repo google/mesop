@@ -8,12 +8,12 @@ import * as pb from "optic/optic/components/text/text_ts_proto_pb/optic/componen
   standalone: true,
 })
 export class TextComponent {
-  @Input() data!: Type;
+  @Input() type!: Type;
   _config: pb.TextComponent;
 
   ngOnChanges() {
     this._config = pb.TextComponent.deserializeBinary(
-      this.data.getValue() as Uint8Array,
+      this.type.getValue() as Uint8Array,
     );
   }
 
