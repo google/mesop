@@ -29,8 +29,8 @@ jobs:
         uses: angular/dev-infra/github-actions/bazel/setup@af6d1c371f387efd5703a24739412ea862c3218e
       - name: Install node modules
         run: yarn install --frozen-lockfile
-      - name: Install Playwright Browsers
-        run: yarn playwright install --with-deps
+      - name: Install Chromium browser for Playwright
+        run: yarn playwright install chromium --with-deps
       - name: Pre-build
         run: bazel build //optic/cli
       - name: Run playwright test
