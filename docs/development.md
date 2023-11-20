@@ -31,8 +31,6 @@ $ ./scripts/run_web_dev.sh
 $ ./scripts/run_py_dev.sh
 ```
 
-> NOTE: if you do not include `--dev`, then it will default to prod mode.
-
 ## Prod mode
 
 To run it in prod mode (which can be done locally or in an actual production environment), run the following:
