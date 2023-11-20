@@ -1,0 +1,9 @@
+{
+  "include": ["optic"],
+  "exclude": ["**/node_modules", "**/__pycache__"],
+  "extraPaths": ["bazel-bin"],
+  "reportMissingImports": true,
+  "reportMissingTypeStubs": false,
+  "pythonVersion": "3.10",
+  "pythonPlatform": "Linux"
+}
