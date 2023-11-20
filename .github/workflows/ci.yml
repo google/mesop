@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions: {}
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Initialize environment
+        uses: angular/dev-infra/github-actions/npm/checkout-and-setup-node@af6d1c371f387efd5703a24739412ea862c3218e
+        with:
+          cache-node-modules: true
+      - name: Setup Bazel
+        uses: angular/dev-infra/github-actions/bazel/setup@af6d1c371f387efd5703a24739412ea862c3218e
+      - name: Install node modules
+        run: yarn install --frozen-lockfile
+      - name: Install Playwright Browsers
+        run: yarn playwright install --with-deps
+      - name: Pre-build
+        run: bazel build //optic:cli
+      - name: Run playwright test
+        run: yarn playwright test
+      - uses: actions/upload-artifact@a8a3f3ad30e3422c9c7b888a15615d19a852ae32 # v3.1.3
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
