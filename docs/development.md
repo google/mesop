@@ -38,7 +38,7 @@ $ ./scripts/run_py_dev.sh
 To run it in prod mode (which can be done locally or in an actual production environment), run the following:
 
 ```sh
-$ bazel run //optic:cli -- --path="optic/examples/simple.py"
+$ bazel run //optic/cli -- --path="optic/examples/simple.py"
 ```
 
 > NOTE: this automatically serves the angular app.
