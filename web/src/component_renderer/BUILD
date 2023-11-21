@@ -13,7 +13,7 @@ ng_module(
         "*.html",
     ]),
     deps = [
-        # INSERT COMPONENT IMPORTS HERE:
+        # REF(//scripts/gen_component.py):insert_component_import
         "//optic/components/button:ng",
         "//optic/components/checkbox:ng",
         "//optic/components/text:ng",

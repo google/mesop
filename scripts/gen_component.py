@@ -26,10 +26,7 @@ def main():
     update_component_renderer(component_name)
 
 
-def update_component_renderer(component_name):
-    """
-    Open file web/src/component_renderer/component_renderer.html and before the line "<!-- INSERT NEW COMPONENT HERE -->" insert the block"baz"
-    """
+def update_component_renderer(component_name: str):
     component_renderer_path = os.path.join(
         get_current_directory(), "..", "web", "src", "component_renderer"
     )
@@ -49,7 +46,7 @@ def update_component_renderer(component_name):
     )
 
     for i in range(len(lines)):
-        if "<!-- INSERT NEW COMPONENT HERE -->" in lines[i]:
+        if "<!-- REF(//scripts/gen_component.py):insert_component -->" in lines[i]:
             lines.insert(i, template_call + "\n")
             break
 
@@ -65,7 +62,7 @@ def update_component_renderer(component_name):
     import_line = f'    "//optic/components/{component_name}:ng",'
 
     for i in range(len(lines)):
-        if "# INSERT COMPONENT IMPORTS HERE:" in lines[i]:
+        if "# REF(//scripts/gen_component.py):insert_component_import" in lines[i]:
             lines.insert(i + 1, import_line + "\n")
             break
 
@@ -83,12 +80,12 @@ def update_component_renderer(component_name):
     ts_import_line = f'import {{ {camel_case(component_name)}Component }} from "../../../optic/components/{component_name}/{component_name}";'
     ng_import_line = f"    {camel_case(component_name)}Component,"
     for i in range(len(lines)):
-        if "// INSERT COMPONENT TS IMPORTS HERE:" in lines[i]:
+        if "// REF(//scripts/gen_component.py):insert_ts_import" in lines[i]:
             lines.insert(i + 1, ts_import_line + "\n")
             break
 
     for i in range(len(lines)):
-        if "// INSERT COMPONENT NG IMPORTS HERE:" in lines[i]:
+        if "// REF(//scripts/gen_component.py):insert_ng_import" in lines[i]:
             lines.insert(i + 1, ng_import_line + "\n")
             break
 
@@ -96,7 +93,7 @@ def update_component_renderer(component_name):
         f.writelines(lines)
 
 
-def update_py_build(component_name):
+def update_py_build(component_name: str):
     build_path = os.path.join(get_current_directory(), "..", "optic", "BUILD")
 
     with open(build_path, "r") as f:
@@ -105,7 +102,7 @@ def update_py_build(component_name):
     import_line = f'    "//optic/components/{component_name}:py",'
 
     for i in range(len(lines)):
-        if "# INSERT COMPONENT IMPORT HERE:" in lines[i]:
+        if "# REF(//scripts/gen_component.py):insert_component_import" in lines[i]:
             lines.insert(i + 1, import_line + "\n")
             break
 
@@ -113,11 +110,7 @@ def update_py_build(component_name):
         f.writelines(lines)
 
 
-def update_py_export(component_name):
-    """
-    Reads the optic/__init__.py file and adds an export statement for the new component
-    """
-
+def update_py_export(component_name: str):
     init_path = os.path.join(get_current_directory(), "..", "optic", "__init__.py")
 
     with open(init_path, "r") as f:
@@ -126,7 +119,10 @@ def update_py_export(component_name):
     import_line = f"from optic.components.{component_name}.{component_name} import {component_name} as {component_name}"
 
     for i in range(len(lines)):
-        if "### COMPONENTS: END ###" in lines[i]:
+        if (
+            "# REF(//scripts/gen_component.py):insert_component_import_export"
+            in lines[i]
+        ):
             lines.insert(i, import_line + "\n")
             break
 
@@ -134,7 +130,7 @@ def update_py_export(component_name):
         f.writelines(lines)
 
 
-def update_ts(component_name):
+def update_ts(component_name: str):
     dst_dir = get_dst_dir(component_name)
     ts_file_path = dst_dir + "/" + component_name + ".ts"
 
@@ -153,7 +149,7 @@ def update_ts(component_name):
         f.writelines(lines)
 
 
-def update_py(component_name):
+def update_py(component_name: str):
     dst_dir = get_dst_dir(component_name)
     ts_file_path = dst_dir + "/" + component_name + ".py"
 
@@ -167,29 +163,29 @@ def update_py(component_name):
         f.writelines(lines)
 
 
-def camel_case(component_name):
+def camel_case(component_name: str):
     """
     Split underscore and make it UpperCamelCase
     """
     return "".join(x.title() for x in component_name.split("_"))
 
 
-def kebab_case(component_name):
+def kebab_case(component_name: str):
     """
     Split underscore and make it kebab-case
     """
     return "-".join(x for x in component_name.split("_"))
 
 
-def rename_files(component_name):
+def rename_files(component_name: str):
     rename_file(component_name, ".py")
     rename_file(component_name, ".ts")
     rename_file(component_name, ".html")
 
 
-def rename_file(component_name, extension):
+def rename_file(component_name: str, extension: str):
     dst_dir = get_dst_dir(component_name)
-    old_file_path = dst_dir + "/button" + extension
+    old_file_path = dst_dir + "/component_name" + extension
     new_file_path = dst_dir + "/" + component_name + extension
 
     try:
@@ -198,7 +194,7 @@ def rename_file(component_name, extension):
         print(f"Error renaming: {e.strerror}")
 
 
-def copy_template(component_name):
+def copy_template(component_name: str):
     """
     Copies the directory in component_template and puts it in //optic/components/<component_name>"""
 
@@ -212,13 +208,11 @@ def get_current_directory():
     return os.path.dirname(os.path.realpath(__file__))
 
 
-def get_dst_dir(component_name):
+def get_dst_dir(component_name: str):
     return os.path.join(
         get_current_directory(), "..", "optic", "components", component_name
     )
 
-
-print(get_current_directory())
 
 if __name__ == "__main__":
     main()

@@ -1,8 +1,10 @@
-### COMPONENTS: START ###
+#########################
+### COMPONENTS
+#########################
 from optic.components.button.button import button as button
 from optic.components.checkbox.checkbox import checkbox as checkbox
 from optic.components.text.text import text as text
-### COMPONENTS: END ###
+# REF(//scripts/gen_component.py):insert_component_import_export
 
 import optic.state as state
 import optic.state.decorator as decorator
