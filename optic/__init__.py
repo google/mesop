@@ -7,6 +7,7 @@ from optic.components.text.text import text as text
 import optic.state as state
 import optic.state.decorator as decorator
 from optic.store import store
+from optic.features import page as page
 
 
 CheckboxEvent = state.CheckboxEvent

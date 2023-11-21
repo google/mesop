@@ -5,4 +5,7 @@ package(
 py_library(
     name = "features",
     srcs = glob(["*.py"]),
+    deps = [
+        "//optic/lib",
+    ],
 )
