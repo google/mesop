@@ -5,4 +5,3 @@ absl-py
 mkdocs-material
 mkdocstrings[python]
 pydantic==1.10
-pyright
