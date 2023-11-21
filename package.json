@@ -200,6 +200,7 @@
     "postcss": "^8.4.17",
     "postcss-scss": "^4.0.4",
     "protractor": "^7.0.0",
+    "pyright": "^1.1.336",
     "reflect-metadata": "^0.1.13",
     "requirejs": "^2.3.6",
     "rollup": "^2.66.1",
