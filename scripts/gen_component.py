@@ -16,14 +16,16 @@ def main():
 
     component_name = args.component_name
 
-    print("Generating new component: " + component_name)
+    print("Start generating new component: " + component_name)
     copy_template(component_name)
-    rename_files(component_name)
-    update_ts(component_name)
-    update_py(component_name)
+    update_e2e_init(component_name)
+    rename_and_update_files(component_name)
     update_py_export(component_name)
     update_py_build(component_name)
+    update_testing_build(component_name)
+    update_testing_index_py(component_name)
     update_component_renderer(component_name)
+    print("Finished generating new component: " + component_name)
 
 
 def update_component_renderer(component_name: str):
@@ -34,15 +36,17 @@ def update_component_renderer(component_name: str):
     with open(component_renderer_path + "/component_renderer.html", "r") as f:
         lines = f.readlines()
 
-    template_call = """<ng-container *ngIf="data()?.get[CamelCase]() != null">
+    template_call = (
+        """<ng-container *ngIf="type()?.getName() == '[component_name]'">
   @defer (on viewport) {
-  <app-[kebab-case] [config]="data()!.get[CamelCase]()!" />
+  <optic-[kebab-case] [key]="key()" [type]="type()!" />
   } @placeholder {
   <component-loader />
   }
 </ng-container>
-""".replace("[CamelCase]", camel_case(component_name)).replace(
-        "[kebab-case]", kebab_case(component_name)
+""".replace("[CamelCase]", camel_case(component_name))
+        .replace("[kebab-case]", kebab_case(component_name))
+        .replace("[component_name]", component_name)
     )
 
     for i in range(len(lines)):
@@ -130,36 +134,46 @@ def update_py_export(component_name: str):
         f.writelines(lines)
 
 
-def update_ts(component_name: str):
-    dst_dir = get_dst_dir(component_name)
-    ts_file_path = dst_dir + "/" + component_name + ".ts"
+def update_testing_index_py(component_name: str):
+    index_path = os.path.join(
+        get_current_directory(), "..", "optic", "testing", "index.py"
+    )
 
-    with open(ts_file_path, "r") as f:
+    with open(index_path, "r") as f:
         lines = f.readlines()
 
-    for i in range(len(lines)):
-        lines[i] = (
-            lines[i]
-            .replace("{component_name}", component_name)
-            .replace("{component-name}", kebab_case(component_name))
-            .replace("ComponentName", camel_case(component_name))
-        )
+    import_line = (
+        f"import optic.components.{component_name}.e2e as {component_name}_e2e"
+    )
 
-    with open(ts_file_path, "w") as f:
+    for i in range(len(lines)):
+        if (
+            "# REF(//scripts/gen_component.py):insert_component_e2e_import_export"
+            in lines[i]
+        ):
+            lines.insert(i, import_line + "\n")
+            break
+
+    with open(index_path, "w") as f:
         f.writelines(lines)
 
 
-def update_py(component_name: str):
-    dst_dir = get_dst_dir(component_name)
-    ts_file_path = dst_dir + "/" + component_name + ".py"
+def update_testing_build(component_name: str):
+    build_path = os.path.join(
+        get_current_directory(), "..", "optic", "testing", "BUILD"
+    )
 
-    with open(ts_file_path, "r") as f:
+    with open(build_path, "r") as f:
         lines = f.readlines()
 
-    for i in range(len(lines)):
-        lines[i] = lines[i].replace("component_name", component_name)
+    import_line = f'    "//optic/components/{component_name}/e2e",'
 
-    with open(ts_file_path, "w") as f:
+    for i in range(len(lines)):
+        if "# REF(//scripts/gen_component.py):insert_component_e2e_import" in lines[i]:
+            lines.insert(i + 1, import_line + "\n")
+            break
+
+    with open(build_path, "w") as f:
         f.writelines(lines)
 
 
@@ -177,21 +191,64 @@ def kebab_case(component_name: str):
     return "-".join(x for x in component_name.split("_"))
 
 
-def rename_files(component_name: str):
-    rename_file(component_name, ".py")
-    rename_file(component_name, ".ts")
+def rename_and_update_files(component_name: str):
+    replace_component_name_ref(
+        path=rename_file(component_name, ".py"), component_name=component_name
+    )
+    replace_component_name_ref(
+        path=rename_file(component_name, ".ts"), component_name=component_name
+    )
     rename_file(component_name, ".html")
+    proto_path = rename_file(component_name, ".proto")
+    replace_component_name_ref(path=proto_path, component_name=component_name)
+
+    new_app_py_path = rename_file(
+        component_name, ".py", filename_suffix="_app", dir="e2e"
+    )
+    replace_component_name_ref(path=new_app_py_path, component_name=component_name)
+    new_test_ts_path = rename_file(
+        component_name, ".ts", filename_suffix="_test", dir="e2e"
+    )
+    replace_component_name_ref(path=new_test_ts_path, component_name=component_name)
 
 
-def rename_file(component_name: str, extension: str):
+def update_e2e_init(component_name: str):
+    replace_component_name_ref(
+        path=os.path.join(get_dst_dir(component_name), "e2e", "__init__.py"),
+        component_name=component_name,
+    )
+
+
+def replace_component_name_ref(path: str, component_name: str):
+    with open(path, "r") as f:
+        lines = f.readlines()
+
+    for i in range(len(lines)):
+        lines[i] = (
+            lines[i]
+            .replace("{component_name}", component_name)
+            .replace("{component-name}", kebab_case(component_name))
+            .replace("ComponentName", camel_case(component_name))
+            .replace("component_name", component_name)
+        )
+
+    with open(path, "w") as f:
+        f.writelines(lines)
+
+
+def rename_file(
+    component_name: str, extension: str, filename_suffix: str = "", dir: str = ""
+) -> str:
     dst_dir = get_dst_dir(component_name)
-    old_file_path = dst_dir + "/component_name" + extension
-    new_file_path = dst_dir + "/" + component_name + extension
+    old_file_path = os.path.join(
+        dst_dir, dir, "component_name" + filename_suffix + extension
+    )
+    new_file_path = os.path.join(
+        dst_dir, dir, component_name + filename_suffix + extension
+    )
 
-    try:
-        os.rename(old_file_path, new_file_path)
-    except OSError as e:
-        print(f"Error renaming: {e.strerror}")
+    os.rename(old_file_path, new_file_path)
+    return new_file_path
 
 
 def copy_template(component_name: str):
