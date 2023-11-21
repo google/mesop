@@ -13,6 +13,7 @@ export default defineConfig({
   timeout: 5000,
   testDir: ".",
   testMatch: "e2e/*_test.ts",
+  testIgnore: "scripts/**",
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
