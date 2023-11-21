@@ -4,6 +4,8 @@ package optic;
 
 // Sent from web client to Python server.
 message UiRequest {
+    // Current path of UI client (browser).
+    string path = 3;
     oneof type {
         InitRequest init = 1;
         UserEvent user_event = 2;
