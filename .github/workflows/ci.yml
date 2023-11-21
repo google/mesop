@@ -44,6 +44,8 @@ jobs:
 
   # Deploy docs
   deploy-docs:
+    # Only deploy docs if we're pushing to main (see on.push.branches)
+    if: github.event_name == 'push'
     # Need write permission to push to gh-pages branch
     permissions:
       contents: write
