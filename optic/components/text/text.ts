@@ -3,7 +3,7 @@ import { Key, Type } from "optic/protos/ui_ts_proto_pb/protos/ui_pb";
 import { TextType } from "optic/optic/components/text/text_ts_proto_pb/optic/components/text/text_pb";
 
 @Component({
-  selector: "app-text",
+  selector: "optic-text",
   templateUrl: "text.html",
   standalone: true,
 })

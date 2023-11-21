@@ -10,7 +10,7 @@ import { ChannelService } from "../../../web/src/services/channel_service";
 import { MatButtonModule } from "@angular/material/button";
 
 @Component({
-  selector: "app-button",
+  selector: "optic-button",
   templateUrl: "button.html",
   standalone: true,
   imports: [MatButtonModule],

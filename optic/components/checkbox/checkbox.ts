@@ -4,7 +4,7 @@ import { CheckboxType } from "optic/optic/components/checkbox/checkbox_ts_proto_
 import { ChannelService } from "../../../web/src/services/channel_service";
 
 @Component({
-  selector: "app-checkbox",
+  selector: "optic-checkbox",
   templateUrl: "checkbox.html",
   standalone: true,
 })

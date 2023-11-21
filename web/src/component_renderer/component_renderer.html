@@ -2,7 +2,7 @@
 
 <ng-container *ngIf="type()?.getName() == 'button'">
   @defer (on viewport) {
-  <app-button [key]="key()" [type]="type()!" />
+  <optic-button [key]="key()" [type]="type()!" />
   } @placeholder {
   <component-loader />
   }
@@ -10,7 +10,7 @@
 
 <ng-container *ngIf="type()?.getName() == 'checkbox'">
   @defer (on viewport) {
-  <app-checkbox [key]="key()" [type]="type()!" />
+  <optic-checkbox [key]="key()" [type]="type()!" />
   } @placeholder {
   <component-loader />
   }
@@ -18,7 +18,7 @@
 
 <ng-container *ngIf="type()?.getName() == 'text'">
   @defer (on viewport) {
-  <app-text [key]="key()" [type]="type()!" />
+  <optic-text [key]="key()" [type]="type()!" />
   } @placeholder {
   <component-loader />
   }
