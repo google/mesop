@@ -33,6 +33,8 @@ jobs:
         run: yarn playwright install chromium --with-deps
       - name: Pre-build
         run: bazel build //optic/cli
+      - name: Python type-checking
+        run: yarn pyright
       - name: Run playwright test
         run: yarn playwright test
       - uses: actions/upload-artifact@a8a3f3ad30e3422c9c7b888a15615d19a852ae32 # v3.1.3
