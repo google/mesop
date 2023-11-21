@@ -93,22 +93,6 @@ $ pip install -r optic/requirements_lock.txt
 
 > NOTE: You may need to run the command with `sudo` if you get a permission denied error, particularly with "\_distutils_hack".
 
-### Type-checking (pyright)
-
-We use [pyright](https://github.com/microsoft/pyright) for type-checking our Python code because it has excellent IDE support (particularly for VS Code).
-
-To run type-checking, please follow the above steps to setup the venv and activate it in your shell session.
-
-**Pre-requisite:**
-
-- You will need to run `$ setup_proto_py_modules.sh`.
-
-**Command:**
-
-```sh
-$ pyright
-```
-
 ## Commit hooks
 
 We use [pre-commit](https://pre-commit.com/) to automatically format, lint code before committing.
@@ -117,10 +101,6 @@ _Setup:_
 
 1. [Install pre-commit](https://pre-commit.com/#installation).
 1. Setup git hook: `pre-commit install`
-
-## Web (Angular)
-
-<TODO>
 
 ## Docs
 

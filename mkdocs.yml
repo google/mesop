@@ -9,11 +9,15 @@ nav:
       - Checkbox: components/checkbox.md
       - Text: components/text.md
   - Deployment: deployment.md
-  - Goals: goals.md
   - Troubleshooting: troubleshooting.md
-  - Advanced:
-      - New component: new_component.md
-      - Development: development.md
+  - Developing Optic:
+      - Goals: goals.md
+      - New component: internal/new_component.md
+      - Development: internal/development.md
+      - Testing: internal/testing.md
+      - Type checking: internal/type_checking.md
+      - CI: internal/ci.md
+      - Toolchain: internal/toolchain.md
 theme:
   name: material
   logo: assets/logo.png
