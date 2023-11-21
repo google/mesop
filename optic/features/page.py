@@ -7,7 +7,7 @@ def page(*, path: str = "/") -> Callable[[Callable[[], None]], Callable[[], None
         def wrapper() -> None:
             return func()
 
-        runtime.session().register_path_fn(path, wrapper)
+        runtime.register_path_fn(path, wrapper)
         return wrapper
 
     return decorator
