@@ -8,6 +8,7 @@ py_binary(
     data = [
         "//optic",
         "//optic/examples",
+        "//optic/testing:index",
     ],
     main = "cli.py",
     deps = [
@@ -25,6 +26,7 @@ py_binary(
     srcs = ["dev_cli.py"],
     data = [
         "//optic/examples",
+        "//optic/testing:index",
     ],
     main = "dev_cli.py",
     deps = [

@@ -1,0 +1,4 @@
+[tool.ruff]
+# In addition to the standard set of exclusions, omit index.py because
+# it's imports are used for side effects
+extend-exclude = ["optic/testing/index.py"]

@@ -1,1 +1,1 @@
-bazel run //optic/cli -- --path="optic/examples/index.py"
+bazel run //optic/cli -- --path="optic/testing/index.py"

@@ -2,13 +2,8 @@ package(
     default_visibility = ["//:optic_internal"],
 )
 
-filegroup(
-    name = "examples_files",
-    srcs = glob(["*.py"]),
-)
-
 py_library(
-    name = "examples",
+    name = "e2e",
     srcs = glob(["*.py"]),
     deps = [
         "//optic",

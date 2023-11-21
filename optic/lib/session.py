@@ -48,6 +48,7 @@ class Session:
         new_store = Store(initial_state)
 
         self._store = new_store
+        print("*** new_store", new_store)
         return new_store
 
     def get_store(self) -> Store[Any]:
