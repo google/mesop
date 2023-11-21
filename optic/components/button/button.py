@@ -11,7 +11,7 @@ from optic.state.events import ClickEvent
 def button(
     *,
     label: str,
-    on_click: Callable[[Any, ClickEvent], Any],
+      on_click: Callable[[Any, ClickEvent], Any],
     key: str | None = None,
 ):
     """
