@@ -9,10 +9,6 @@ def read_module(module_path: str) -> ModuleType:
         module = importlib.util.module_from_spec(spec)
         assert spec.loader
         spec.loader.exec_module(module)
+        return module
     except Exception as e:
         raise e
-
-    if hasattr(module, "main"):
-        return module
-    else:
-        raise Exception("No main function found")
