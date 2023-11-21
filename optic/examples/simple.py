@@ -29,7 +29,7 @@ def button_click(state: State, action: op.ClickEvent):
     state.count += 1
 
 
-@op.page(path="/")
+@op.page()
 def main():
     state = store.get_state()
     op.button(label="click me", on_click=button_click)
