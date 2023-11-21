@@ -9,8 +9,8 @@ from optic.lib.runtime import runtime
 app = Flask(__name__)
 
 
-def render_loop():
-    runtime.run_module_main()
+def render_loop(path: str):
+    runtime.run_path(path=path)
     root_component = runtime.session().current_node()
 
     data = pb.UiResponse(
@@ -28,13 +28,13 @@ def render_loop():
 def generate_data(ui_request: pb.UiRequest):
     if ui_request.HasField("init"):
         runtime.load_module()
-        return render_loop()
+        return render_loop(path=ui_request.path)
     if ui_request.HasField("user_event"):
         runtime.session().set_current_action(ui_request.user_event)
         runtime.session().set_current_state(ui_request.user_event.state)
         runtime.load_module()
         runtime.session().execute_current_action()
-        return render_loop()
+        return render_loop(path=ui_request.path)
     else:
         raise Exception(f"Unknown request type: {ui_request}")
 
@@ -44,10 +44,10 @@ def ui_stream():
     runtime.reset_session()
 
     param = request.args.get("request", default=None)
-    ui_request = pb.UiRequest(init=pb.InitRequest())
-    if param is not None:
-        ui_request = pb.UiRequest()
-        ui_request.ParseFromString(base64.b64decode(param))
+    if param is None:
+        raise Exception("Missing request parameter")
+    ui_request = pb.UiRequest()
+    ui_request.ParseFromString(base64.b64decode(param))
 
     return Response(generate_data(ui_request), content_type="text/event-stream")
 

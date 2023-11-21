@@ -14,7 +14,9 @@ export class ChannelService {
   private initParams: InitParams;
   private state: pb.State;
   constructor() {
-    this.eventSource = new EventSource(DEV_SERVER_HOST + "/ui");
+    const request = new pb.UiRequest();
+    request.setInit(new pb.InitRequest());
+    this.eventSource = new EventSource(generateRequestUrl(request));
   }
 
   init(initParams: InitParams) {
@@ -48,14 +50,18 @@ export class ChannelService {
     userEvent.setState(this.state);
     const request = new pb.UiRequest();
     request.setUserEvent(userEvent);
-    const array = request.serializeBinary();
 
-    const byteString = btoa(fromUint8Array(array));
-    const url = DEV_SERVER_HOST + "/ui?request=" + byteString;
     this.eventSource.close();
-    this.eventSource = new EventSource(url);
+    this.eventSource = new EventSource(generateRequestUrl(request));
     this.init(this.initParams);
   }
+}
+
+function generateRequestUrl(request: pb.UiRequest): string {
+  request.setPath(window.location.pathname);
+  const array = request.serializeBinary();
+  const byteString = btoa(fromUint8Array(array));
+  return DEV_SERVER_HOST + "/ui?request=" + byteString;
 }
 
 function fromUint8Array(array: Uint8Array): string {

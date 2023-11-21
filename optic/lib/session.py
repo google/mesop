@@ -58,5 +58,5 @@ class Session:
     def register_path_fn(self, path: str, fn: Callable[[], None]) -> None:
         self._path_fns[path] = fn
 
-    def execute_main_path(self) -> None:
-        self._path_fns["/"]()
+    def run_path(self, path: str) -> None:
+        self._path_fns[path]()

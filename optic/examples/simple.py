@@ -39,3 +39,8 @@ def main():
     for i in range(1000):
         op.checkbox(label=f"check {i}?", on_update=checkbox_update, key=f"check={i}")
     op.text(text=state.string)
+
+
+@op.page(path="/other")
+def other():
+    op.text(text="other page")

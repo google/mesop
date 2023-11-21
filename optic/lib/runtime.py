@@ -21,11 +21,11 @@ class Runtime:
     def load_module(self) -> None:
         self._module = self._load_module()
 
-    def run_module_main(self) -> None:
+    def run_path(self, path: str) -> None:
         # Make sure we've loaded the module, otherwise no paths will be registered
         # with the session.
         assert self._module
-        self._session.execute_main_path()
+        self._session.run_path(path)
 
 
 runtime = Runtime()
