@@ -1,12 +1,13 @@
-from typing import Callable, Any
+from typing import Callable
+from optic.lib.runtime import runtime
 
 
-def page(path: str) -> Callable[..., Any]:
-    def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
-        def wrapper(*args: Any, **kwargs: Any) -> Any:
-            # Registers the page with the path with runtime library.
-            return func(*args, **kwargs)
+def page(path: str) -> Callable[[Callable[[], None]], Callable[[], None]]:
+    def decorator(func: Callable[[], None]) -> Callable[[], None]:
+        def wrapper() -> None:
+            return func()
 
+        runtime.session().register_path_fn(path, wrapper)
         return wrapper
 
     return decorator

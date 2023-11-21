@@ -1,6 +1,6 @@
 from dataclasses import asdict, is_dataclass
 import json
-from typing import Any
+from typing import Any, Callable
 import protos.ui_pb2 as pb
 from ..state.serialization import update_dataclass_from_json
 from ..state.state import Store
@@ -9,11 +9,13 @@ from ..state.state import Store
 class Session:
     _current_state: pb.State | None
     _store: Store[Any]
+    _path_fns: dict[str, Callable[[], None]]
 
     def __init__(self) -> None:
         self._current_node = pb.Component()
         self._current_action = pb.UserEvent()
         self._current_state = None
+        self._path_fns = {}
 
     def current_node(self) -> pb.Component:
         return self._current_node
@@ -52,3 +54,9 @@ class Session:
 
     def get_store(self) -> Store[Any]:
         return self._store
+
+    def register_path_fn(self, path: str, fn: Callable[[], None]) -> None:
+        self._path_fns[path] = fn
+
+    def execute_main_path(self) -> None:
+        self._path_fns["/"]()
