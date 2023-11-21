@@ -9,14 +9,26 @@ interface InitParams {
   onRender: (rootComponent: pb.Component) => void;
 }
 
+export enum ChannelStatus {
+  OPEN = "OPEN",
+  CLOSED = "CLOSED",
+}
+
 export class ChannelService {
   private eventSource: EventSource;
   private initParams: InitParams;
   private state: pb.State;
+  private status: ChannelStatus;
+
   constructor() {
     const request = new pb.UiRequest();
     request.setInit(new pb.InitRequest());
     this.eventSource = new EventSource(generateRequestUrl(request));
+    this.status = ChannelStatus.OPEN;
+  }
+
+  getStatus(): ChannelStatus {
+    return this.status;
   }
 
   init(initParams: InitParams) {
@@ -24,12 +36,14 @@ export class ChannelService {
     this.initParams = initParams;
 
     this.eventSource.onmessage = (e) => {
-      if (e.data == "<stream_end>") {
-        this.eventSource.close();
-        return;
-      }
       // Looks like Angular has a bug where it's not intercepting EventSource onmessage.
       zone.run(() => {
+        if (e.data == "<stream_end>") {
+          this.eventSource.close();
+          this.status = ChannelStatus.CLOSED;
+          return;
+        }
+
         const array = toUint8Array(atob(e.data));
         const UiResponse = pb.UiResponse.deserializeBinary(array);
         console.debug("Server event: ", UiResponse.toObject());
@@ -53,6 +67,7 @@ export class ChannelService {
 
     this.eventSource.close();
     this.eventSource = new EventSource(generateRequestUrl(request));
+    this.status = ChannelStatus.OPEN;
     this.init(this.initParams);
   }
 }

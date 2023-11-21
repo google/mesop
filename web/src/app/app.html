@@ -1,3 +1,6 @@
+<div class="status">
+  <mat-progress-bar *ngIf="isConnectionOpen()" mode="query"></mat-progress-bar>
+</div>
 <ng-container *ngIf="rootComponent != null">
   <component-renderer [component]="rootComponent"></component-renderer>
 </ng-container>
