@@ -74,7 +74,7 @@ $ source .dev_server.venv/bin/activate
 You will need to setup a symlink to have Python IDE support for protos:
 
 ```sh
-$ ./setup_proto_symlink.sh
+$ ./setup_proto_py_modules.sh
 ```
 
 Check that you're using venv's python:
