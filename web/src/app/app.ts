@@ -27,12 +27,12 @@ import { ChannelService, ChannelStatus } from "../services/channel_service";
 
   .traceback-heading {
     font-weight: 500;
-    font-size: 1rem;
+    font-size: 1.2rem;
   }
 
   .traceback {
     font-family: monospace;
-    font-size: 0.8rem;
+    font-size: 1rem;
     line-height: 1.5;
     white-space: preserve;
     border: 1.5px solid #d8adad;
@@ -53,7 +53,7 @@ import { ChannelService, ChannelStatus } from "../services/channel_service";
 
   .show-full-traceback {
     text-decoration: underline;
-    font-size: 0.85rem;
+    font-size: 1rem;
   }
 
   .show-full-traceback:hover {
