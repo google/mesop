@@ -12,7 +12,10 @@ S = TypeVar("S")
 Handler = Callable[[S, A], None]
 
 
-def handler(actionType: Type[A]) -> Callable[[Handler[S, A]], Handler[S, A]]:
+def event_handler(actionType: Type[A]) -> Callable[[Handler[S, A]], Handler[S, A]]:
+    """
+    Decorator for making a function into an event handler."""
+
     def register(func: Handler[S, A]):
         def wrapper(state: S, action: A):
             # This is guaranteed to be a UserEvent because only Optic
