@@ -37,7 +37,13 @@ message Click {}
 message UiResponse {
     oneof type {
         RenderEvent render = 1;
+        ServerError error = 2;
     }
+}
+
+message ServerError {
+    string exception = 1;
+    string traceback = 2;
 }
 
 message RenderEvent {

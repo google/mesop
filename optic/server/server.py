@@ -1,5 +1,7 @@
 import base64
 import os
+import traceback
+
 from flask import Flask, Response, request
 
 import protos.ui_pb2 as pb
@@ -10,19 +12,28 @@ app = Flask(__name__)
 
 
 def render_loop(path: str):
-    runtime.run_path(path=path)
-    root_component = runtime.session().current_node()
+    try:
+        runtime.run_path(path=path)
+        root_component = runtime.session().current_node()
 
-    data = pb.UiResponse(
-        render=pb.RenderEvent(
-            root_component=root_component, state=runtime.session().current_state()
+        data = pb.UiResponse(
+            render=pb.RenderEvent(
+                root_component=root_component, state=runtime.session().current_state()
+            )
         )
-    )
+        yield serialize(data)
+        yield "data: <stream_end>\n\n"
+    except Exception as e:
+        ui_response = pb.UiResponse(
+            error=pb.ServerError(exception=str(e), traceback=traceback.format_exc())
+        )
+        yield serialize(ui_response)
+        yield "data: <stream_end>\n\n"
 
-    encodedString = base64.b64encode(data.SerializeToString()).decode("utf-8")
 
-    yield f"data: {encodedString}\n\n"
-    yield "data: <stream_end>\n\n"
+def serialize(response: pb.UiResponse) -> str:
+    encoded = base64.b64encode(response.SerializeToString()).decode("utf-8")
+    return f"data: {encoded}\n\n"
 
 
 def generate_data(ui_request: pb.UiRequest):

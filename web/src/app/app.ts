@@ -19,6 +19,7 @@ import { ChannelService, ChannelStatus } from "../services/channel_service";
 })
 export class App {
   rootComponent: pb.Component;
+  error: pb.ServerError;
 
   constructor(
     private zone: NgZone,
@@ -30,6 +31,9 @@ export class App {
       zone: this.zone,
       onRender: (rootComponent) => {
         this.rootComponent = rootComponent;
+      },
+      onError: (error) => {
+        this.error = error;
       },
     });
   }

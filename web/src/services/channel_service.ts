@@ -7,6 +7,7 @@ const DEV_SERVER_HOST = anyWindow["OPTIC_SERVER_HOST"] || "";
 interface InitParams {
   zone: NgZone;
   onRender: (rootComponent: pb.Component) => void;
+  onError: (error: pb.ServerError) => void;
 }
 
 export enum ChannelStatus {
@@ -32,7 +33,7 @@ export class ChannelService {
   }
 
   init(initParams: InitParams) {
-    const { zone, onRender } = initParams;
+    const { zone, onRender, onError } = initParams;
     this.initParams = initParams;
 
     this.eventSource.onmessage = (e) => {
@@ -52,6 +53,10 @@ export class ChannelService {
             this.state = UiResponse.getRender()!.getState()!;
 
             onRender(UiResponse.getRender()!.getRootComponent()!);
+            break;
+          case pb.UiResponse.TypeCase.ERROR:
+            onError(UiResponse.getError()!);
+            console.log("error", UiResponse.getError());
             break;
           case pb.UiResponse.TypeCase.TYPE_NOT_SET:
             throw new Error("Unhandled case for server event: " + UiResponse);
