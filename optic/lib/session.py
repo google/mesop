@@ -18,6 +18,9 @@ class Session:
     def current_node(self) -> pb.Component:
         return self._current_node
 
+    def set_current_node(self, node: pb.Component) -> None:
+        self._current_node = node
+
     def current_action(self) -> pb.UserEvent:
         return self._current_action
 

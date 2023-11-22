@@ -30,11 +30,4 @@ export class BoxComponent {
   config(): BoxType {
     return this._config;
   }
-
-  handleClick(event: any) {
-    const userEvent = new UserEvent();
-    userEvent.setClick(new Click());
-    userEvent.setHandlerId(this.config().getOnClickHandlerId()!);
-    this.channelService.dispatch(userEvent);
-  }
 }
