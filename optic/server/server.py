@@ -18,7 +18,7 @@ def render_loop(path: str):
 
         data = pb.UiResponse(
             render=pb.RenderEvent(
-                root_component=root_component, state=runtime.session().current_state()
+                root_component=root_component, state=runtime.session().serialize_state()
             )
         )
         yield serialize(data)
@@ -38,13 +38,9 @@ def serialize(response: pb.UiResponse) -> str:
 
 def generate_data(ui_request: pb.UiRequest):
     if ui_request.HasField("init"):
-        runtime.load_module()
         return render_loop(path=ui_request.path)
     if ui_request.HasField("user_event"):
-        runtime.session().set_current_action(ui_request.user_event)
-        runtime.session().set_current_state(ui_request.user_event.state)
-        runtime.load_module()
-        runtime.session().execute_current_action()
+        runtime.session().process_event(ui_request.user_event)
         return render_loop(path=ui_request.path)
     else:
         raise Exception(f"Unknown request type: {ui_request}")

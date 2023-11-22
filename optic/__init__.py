@@ -9,7 +9,7 @@ from optic.components.box.box import box as box
 
 import optic.state as state
 import optic.state.decorator as decorator
-from optic.store import store
+from optic.store.store import store as store, state as export_state
 from optic.features import page as page
 
 
@@ -18,4 +18,4 @@ ClickEvent = state.ClickEvent
 Key = state.Key
 
 on = decorator.handler
-store = store.store
+state = export_state

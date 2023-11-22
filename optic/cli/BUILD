@@ -12,7 +12,7 @@ py_binary(
     ],
     main = "cli.py",
     deps = [
-        ":read_module",
+        ":execute_module",
         requirement("absl-py"),
         "//optic",  # Keep dep to ensure the entire Optic library is loaded.
         "//optic/lib",
@@ -30,7 +30,7 @@ py_binary(
     ],
     main = "dev_cli.py",
     deps = [
-        ":read_module",
+        ":execute_module",
         requirement("absl-py"),
         "//optic",  # Keep dep to ensure the entire Optic library is loaded.
         "//optic/lib",
@@ -39,9 +39,9 @@ py_binary(
 )
 
 py_library(
-    name = "read_module",
+    name = "execute_module",
     srcs = [
         "__init__.py",
-        "read_module.py",
+        "execute_module.py",
     ],
 )

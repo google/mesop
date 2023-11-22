@@ -1,6 +1,7 @@
-from types import ModuleType
+from copy import deepcopy
 from typing import Any, Callable
 from .session import Session
+from optic.state.state import Store
 
 Handler = Callable[[Any, Any], None]
 
@@ -11,7 +12,6 @@ class Runtime:
     _handlers: dict[str, Handler]
 
     def __init__(self):
-        self.reset_session()
         self._path_fns = {}
         self._handlers = {}
 
@@ -19,18 +19,11 @@ class Runtime:
         return self._session
 
     def reset_session(self):
-        self._session = Session(self.get_handler)
-
-    def set_load_module(self, load_module: Callable[[], ModuleType]) -> None:
-        self._load_module = load_module
-
-    def load_module(self) -> None:
-        self._module = self._load_module()
+        # Make sure we create a fully copy of initial state to not accidentally
+        # share state across sessions.
+        self._session = Session(Store(deepcopy(self._initial_state), self.get_handler))
 
     def run_path(self, path: str) -> None:
-        # Make sure we've loaded the module, otherwise no paths will be registered
-        # with the session.
-        assert self._module
         self._path_fns[path]()
 
     def register_path_fn(self, path: str, fn: Callable[[], None]) -> None:
@@ -41,6 +34,9 @@ class Runtime:
 
     def get_handler(self, handler_id: str) -> Handler | None:
         return self._handlers[handler_id]
+
+    def set_initial_state(self, state: Any) -> None:
+        self._initial_state = state
 
 
 runtime = Runtime()

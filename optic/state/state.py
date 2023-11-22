@@ -12,16 +12,16 @@ class Store(Generic[S]):
     def __init__(
         self, initial_state: S, get_handler: Callable[[str], Handler[S] | None]
     ):
-        self.state = initial_state
+        self._state = initial_state
         self.get_handler = get_handler
 
     def dispatch(self, action: pb.UserEvent) -> None:
         payload = cast(Any, action)
         handler = self.get_handler(action.handler_id)
         if handler:
-            handler(self.state, payload)
+            handler(self._state, payload)
         else:
             print(f"Unknown handler id: {action.handler_id}")
 
-    def get_state(self) -> S:
-        return self.state
+    def state(self) -> S:
+        return self._state

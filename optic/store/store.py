@@ -1,9 +1,13 @@
-from typing import TypeVar
+from typing import Any, TypeVar
 import optic.lib.runtime as runtime
-import optic.state as state
+
+
+def store(state: Any) -> None:
+    runtime.runtime.set_initial_state(state)
+
 
 S = TypeVar("S")
 
 
-def store(state: S) -> state.state.Store[S]:
-    return runtime.runtime.session().create_store(state)
+def state(state: S) -> S:
+    return runtime.runtime.session().state()
