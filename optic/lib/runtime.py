@@ -2,8 +2,10 @@ from copy import deepcopy
 from typing import Any, Callable
 from .session import Session
 from optic.state.state import Store
+from optic.exceptions import OpticUserException
 
 Handler = Callable[[Any, Any], None]
+newline = "\n"
 
 
 class Runtime:
@@ -24,6 +26,16 @@ class Runtime:
         self._session = Session(Store(deepcopy(self._initial_state), self.get_handler))
 
     def run_path(self, path: str) -> None:
+        if path not in self._path_fns:
+            paths = list(self._path_fns.keys())
+            paths.sort()
+            raise OpticUserException(
+                f"""Accessed path: {path} not registered
+
+Try one of the following paths:
+{newline.join(paths)}
+                                     """
+            )
         self._path_fns[path]()
 
     def register_path_fn(self, path: str, fn: Callable[[], None]) -> None:

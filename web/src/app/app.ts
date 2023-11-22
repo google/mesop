@@ -19,6 +19,7 @@ import { ChannelService, ChannelStatus } from "../services/channel_service";
     font-size: 1.5rem;
     font-weight: 500;
     padding-bottom: 16px;
+    white-space: preserve;
   }
 
   .exception-title {
