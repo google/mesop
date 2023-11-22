@@ -1,4 +1,26 @@
-<ng-container *ngIf="error"> {{error}} </ng-container>
+<div *ngIf="error" class="error">
+  <div class="exception">
+    <span class="exception-title">ERROR: </span>{{error.getException()}}
+  </div>
+  <div class="traceback-heading">Traceback</div>
+  <div class="traceback">
+    <ng-container *ngFor="let segment of getTraceback()">
+      <div
+        *ngIf="segment.type === 'highlight' || showFullTraceback "
+        class="traceback-segment"
+        [ngClass]="{'highlight': segment.type === 'highlight' && showFullTraceback}"
+      >
+        {{segment.text}}
+      </div>
+    </ng-container>
+  </div>
+  <a
+    *ngIf="!showFullTraceback"
+    class="show-full-traceback"
+    (click)="turnOnFullTraceBack()"
+    >Show full traceback</a
+  >
+</div>
 <div class="status">
   <mat-progress-bar *ngIf="isConnectionOpen()" mode="query"></mat-progress-bar>
 </div>

@@ -14,6 +14,10 @@ body {
     Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
+* {
+  box-sizing: border-box;
+}
+
 // Light theme
 $light-primary: mat.define-palette(mat.$blue-palette, 800, 200);
 $light-accent: mat.define-palette(mat.$indigo-palette, A200, A100, A400);
