@@ -6,7 +6,7 @@ py_library(
     name = "component_helpers",
     srcs = glob(["*.py"]),
     deps = [
-        "//optic/lib",
+        "//optic/runtime",
         "//protos:ui_py_proto",
     ],
 )

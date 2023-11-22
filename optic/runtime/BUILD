@@ -3,7 +3,7 @@ package(
 )
 
 py_library(
-    name = "lib",
+    name = "runtime",
     srcs = glob(["*.py"]),
     deps = [
         "//optic/exceptions",

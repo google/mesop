@@ -6,7 +6,7 @@ from flask import Flask, Response, request
 
 import protos.ui_pb2 as pb
 
-from optic.lib.runtime import runtime
+from optic.runtime import runtime
 
 app = Flask(__name__)
 

@@ -1,5 +1,5 @@
 from typing import Any, Callable
-from optic.lib.runtime import runtime
+from optic.runtime import runtime
 
 import protos.ui_pb2 as pb
 

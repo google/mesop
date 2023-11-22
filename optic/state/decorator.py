@@ -4,7 +4,7 @@ from .key import key_from_proto
 
 from . import events
 from ..component_helpers.helper import get_qualified_fn_name
-from optic.lib.runtime import runtime
+from optic.runtime import runtime
 import protos.ui_pb2 as pb
 
 A = TypeVar("A")

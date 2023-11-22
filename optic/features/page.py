@@ -1,5 +1,5 @@
 from typing import Callable
-from optic.lib.runtime import runtime
+from optic.runtime import runtime
 
 
 def page(*, path: str = "/") -> Callable[[Callable[[], None]], Callable[[], None]]:
