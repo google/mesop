@@ -4,7 +4,7 @@
   </div>
   <div class="traceback-heading">Traceback</div>
   <div class="traceback">
-    <ng-container *ngFor="let segment of getTraceback()">
+    <ng-container *ngFor="let segment of getTracebackSegments()">
       <div
         *ngIf="segment.type === 'highlight' || showFullTraceback "
         class="traceback-segment"

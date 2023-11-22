@@ -71,7 +71,8 @@ import { ChannelService, ChannelStatus } from "../services/channel_service";
 export class App {
   rootComponent: pb.Component;
   error: pb.ServerError;
-  showFullTraceback: boolean = false;
+  _tracebackSegments: TracebackSegment[];
+  _showFullTraceback: boolean = false;
 
   constructor(
     private zone: NgZone,
@@ -86,6 +87,7 @@ export class App {
       },
       onError: (error) => {
         this.error = error;
+        this._tracebackSegments = processError(error);
       },
     });
   }
@@ -94,28 +96,19 @@ export class App {
     return this.channelService.getStatus() == ChannelStatus.OPEN;
   }
 
-  getTraceback(): TracebackSegment[] {
-    const originalTraceback = this.error
-      .getTraceback()
-      .slice("Traceback (most recent call last):".length)
-      .trimStart();
-    const regex = /File ".*?\.runfiles/g;
-
-    const trimmedString = originalTraceback.replace(regex, 'File "/');
-
-    const res = trimmedString
-      .split("File")
-      .map((str) => ({
-        text: str.trimEnd(),
-        type: getTypeFromPath(str),
-      }))
-      .slice(1) as TracebackSegment[];
-
-    return res;
+  turnOnFullTraceBack() {
+    this._showFullTraceback = true;
   }
 
-  turnOnFullTraceBack() {
-    this.showFullTraceback = true;
+  showFullTraceback() {
+    if (this._showFullTraceback) {
+      return true;
+    }
+    return this._tracebackSegments.every((s) => s.type === "lowlight");
+  }
+
+  getTracebackSegments(): TracebackSegment[] {
+    return this._tracebackSegments;
   }
 }
 
@@ -127,4 +120,24 @@ interface TracebackSegment {
 function getTypeFromPath(str: string): "highlight" | "lowlight" {
   // TODO: make this logic more robust.
   return str.includes("/examples/") ? "highlight" : "lowlight";
+}
+
+function processError(error: pb.ServerError): TracebackSegment[] {
+  const originalTraceback = error
+    .getTraceback()
+    .slice("Traceback (most recent call last):".length)
+    .trimStart();
+  const regex = /File ".*?\.runfiles/g;
+
+  const trimmedString = originalTraceback.replace(regex, 'File "/');
+
+  const res = trimmedString
+    .split("File")
+    .map((str) => ({
+      text: str.trimEnd(),
+      type: getTypeFromPath(str),
+    }))
+    .slice(1) as TracebackSegment[];
+
+  return res;
 }
