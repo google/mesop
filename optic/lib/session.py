@@ -1,19 +1,22 @@
 from dataclasses import asdict, is_dataclass
 import json
-from typing import Any
+from typing import Any, Callable
 import protos.ui_pb2 as pb
 from ..state.serialization import update_dataclass_from_json
 from ..state.state import Store
+
+Handler = Callable[[Any, Any], None]
 
 
 class Session:
     _current_state: pb.State | None
     _store: Store[Any]
 
-    def __init__(self) -> None:
+    def __init__(self, get_handler: Callable[[str], Handler | None]) -> None:
         self._current_node = pb.Component()
         self._current_action = pb.UserEvent()
         self._current_state = None
+        self._get_handler = get_handler
 
     def current_node(self) -> pb.Component:
         return self._current_node
@@ -48,10 +51,9 @@ class Session:
         if current_state is not None and len(current_state.data) > 0:
             update_dataclass_from_json(initial_state, current_state.data)
 
-        new_store = Store(initial_state)
+        new_store = Store(initial_state, self._get_handler)
 
         self._store = new_store
-        print("*** new_store", new_store)
         return new_store
 
     def get_store(self) -> Store[Any]:

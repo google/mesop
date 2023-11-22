@@ -15,7 +15,6 @@ Handler = Callable[[S, A], None]
 def handler(actionType: Type[A]) -> Callable[[Handler[S, A]], Handler[S, A]]:
     def register(func: Handler[S, A]):
         def wrapper(state: S, action: A):
-            registerHandler(f"{func.__module__}.{func.__name__}", func)
             # This is guaranteed to be a UserEvent because only Optic
             # framework will call the wrapper.
             typed_action = cast(pb.UserEvent, action)
@@ -29,11 +28,7 @@ def handler(actionType: Type[A]) -> Callable[[Handler[S, A]], Handler[S, A]]:
         wrapper.__module__ = func.__module__
         wrapper.__name__ = func.__name__
 
-        runtime.session().get_store().handlers[get_qualified_fn_name(func)] = wrapper
+        runtime.register_handler(get_qualified_fn_name(func), wrapper)
         return wrapper
 
     return register
-
-
-def registerHandler(name: str, func: Handler[S, A]):
-    runtime.session().get_store().handlers[name] = func

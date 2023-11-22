@@ -1,4 +1,4 @@
-from typing import Any, Callable, Dict, TypeVar, Generic, cast
+from typing import Any, Callable, TypeVar, Generic, cast
 import protos.ui_pb2 as pb
 
 # Define a type variable for the state
@@ -9,17 +9,19 @@ Handler = Callable[[S, Any], None]
 
 
 class Store(Generic[S]):
-    def __init__(self, initial_state: S):
+    def __init__(
+        self, initial_state: S, get_handler: Callable[[str], Handler[S] | None]
+    ):
         self.state = initial_state
-        self.handlers: Dict[str, Handler[S]] = {}
+        self.get_handler = get_handler
 
     def dispatch(self, action: pb.UserEvent) -> None:
         payload = cast(Any, action)
-        handler = self.handlers.get(action.handler_id)
+        handler = self.get_handler(action.handler_id)
         if handler:
             handler(self.state, payload)
         else:
-            print(f"Unknown handler id: {action.handler_id}; handlers={self.handlers}")
+            print(f"Unknown handler id: {action.handler_id}")
 
     def get_state(self) -> S:
         return self.state
