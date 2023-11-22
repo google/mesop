@@ -15,6 +15,7 @@ ng_module(
     deps = [
         "//protos:ui_ts_proto",
         "//web/src/component_renderer",
+        "//web/src/error",
         "//web/src/services",
         "@npm//@angular/compiler",
     ],

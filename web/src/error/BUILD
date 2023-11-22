@@ -1,0 +1,27 @@
+load("//tools:defaults.bzl", "ng_module", "sass_binary")
+
+package(
+    default_visibility = ["//:optic_internal"],
+)
+
+ng_module(
+    name = "error",
+    srcs = glob([
+        "*.ts",
+    ]),
+    assets = glob([
+        "*.html",
+    ]) + [":error_box.css"],
+    deps = [
+        "//protos:ui_ts_proto",
+        "//web/src/component_renderer",
+        "//web/src/services",
+        "@npm//@angular/compiler",
+    ],
+)
+
+sass_binary(
+    name = "styles",
+    src = "error_box.scss",
+    sourcemap = False,
+)

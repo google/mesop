@@ -1,0 +1,55 @@
+.error {
+  background-color: #ffe8ef;
+  padding: 18px;
+  color: #ae2626;
+}
+
+.exception {
+  font-size: 1.5rem;
+  font-weight: 500;
+  padding-bottom: 16px;
+  white-space: preserve;
+}
+
+.exception-title {
+  font-weight: bold;
+}
+
+.traceback-heading {
+  font-weight: 500;
+  font-size: 1.2rem;
+}
+
+.traceback {
+  font-family: monospace;
+  font-size: 1rem;
+  line-height: 1.5;
+  white-space: preserve;
+  border: 1.5px solid #d8adad;
+  padding: 8px;
+  border-radius: 12px;
+  margin: 8px 0;
+}
+
+.traceback-segment {
+  color: #444;
+  margin-bottom: 12px;
+}
+
+.traceback-segment.highlight {
+  color: #000;
+  font-weight: bold;
+}
+
+.show-full-traceback {
+  text-decoration: underline;
+  font-size: 1rem;
+}
+
+.show-full-traceback:hover {
+  cursor: pointer;
+}
+
+.status {
+  height: 8px;
+}
