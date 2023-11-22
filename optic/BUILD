@@ -7,7 +7,10 @@ package(
 
 py_library(
     name = "optic",
-    srcs = ["__init__.py"],
+    srcs = [
+        "__init__.py",
+        "api.py",
+    ],
     deps = [
         # REF(//scripts/gen_component.py):insert_component_import
         "//optic/components/box:py",
@@ -18,7 +21,6 @@ py_library(
         "//optic/event_handler",
         "//optic/events",
         "//optic/features",
-        "//optic/interactivity",
         "//optic/store",
     ],
 )

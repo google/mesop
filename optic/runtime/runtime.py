@@ -1,7 +1,7 @@
 from copy import deepcopy
 from typing import Any, Callable
 from .session import Session
-from optic.interactivity import Store
+from optic.store import Store
 from optic.exceptions import OpticUserException
 
 Handler = Callable[[Any, Any], None]

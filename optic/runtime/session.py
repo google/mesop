@@ -3,7 +3,7 @@ import json
 from typing import Any
 import protos.ui_pb2 as pb
 from optic.dataclass_utils import update_dataclass_from_json
-from optic.interactivity import Store
+from optic.store import Store
 
 
 class Session:
