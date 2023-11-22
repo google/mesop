@@ -8,7 +8,7 @@ from optic.component_helpers import ComponentWithChildren
 @validate_arguments
 def box(
     *,
-    label: str,
+    background_color: str = "",
     key: str | None = None,
 ):
     """
@@ -21,7 +21,10 @@ def box(
         component=pb.Component(
             key=pb.Key(key=key or ""),
             type=pb.Type(
-                name="box", value=box_pb.BoxType(label=label).SerializeToString()
+                name="box",
+                value=box_pb.BoxType(
+                    background_color=background_color
+                ).SerializeToString(),
             ),
         ),
     )

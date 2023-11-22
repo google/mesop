@@ -1,4 +1,4 @@
-import { Component, Input } from "@angular/core";
+import { Component, HostBinding, Input } from "@angular/core";
 import {
   Click,
   Key,
@@ -29,5 +29,11 @@ export class BoxComponent {
 
   config(): BoxType {
     return this._config;
+  }
+
+  @HostBinding("style") get style(): string {
+    return `
+    display: block;
+    background-color: ${this.config().getBackgroundColor()};`;
   }
 }

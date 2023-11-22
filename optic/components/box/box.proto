@@ -1,5 +1,5 @@
 syntax = "proto3";
 
 message BoxType {
-    string label = 1;
+    string background_color = 2;
 }
