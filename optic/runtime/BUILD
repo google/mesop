@@ -7,7 +7,7 @@ py_library(
     srcs = glob(["*.py"]),
     deps = [
         "//optic/exceptions",
-        "//optic/state",
+        "//optic/interactivity",
         "//protos:ui_py_proto",
     ],
 )

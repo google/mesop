@@ -16,7 +16,7 @@ py_library(
         "//optic/components/checkbox:py",
         "//optic/components/text:py",
         "//optic/features",
-        "//optic/state",
+        "//optic/interactivity",
         "//optic/store",
     ],
 )

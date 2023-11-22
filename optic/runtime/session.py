@@ -2,8 +2,8 @@ from dataclasses import asdict, is_dataclass
 import json
 from typing import Any
 import protos.ui_pb2 as pb
-from ..state.serialization import update_dataclass_from_json
-from ..state.state import Store
+from ..interactivity.serialization import update_dataclass_from_json
+from ..interactivity.state import Store
 
 
 class Session:

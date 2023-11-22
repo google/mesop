@@ -3,6 +3,6 @@ package(
 )
 
 py_library(
-    name = "state",
+    name = "interactivity",
     srcs = glob(["*.py"]),
 )

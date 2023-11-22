@@ -31,7 +31,7 @@ def button_click(state: State, action: op.ClickEvent):
 
 @op.page()
 def main():
-    state = op.state(State)
+    state = op.interactivity(State)
     op.button(label="click me", on_click=button_click)
     op.text(text=f"{state.count} clicks")
     state.keys
