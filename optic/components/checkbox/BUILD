@@ -31,6 +31,7 @@ py_library(
     deps = [
         ":checkbox_py_proto",
         "//optic/component_helpers",
+        "//optic/events",
         "//protos:ui_py_proto",
         requirement("pydantic"),
     ],

@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from .key import Key
+from optic.key import Key
 
 
 class ClickEvent:

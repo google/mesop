@@ -32,6 +32,7 @@ py_library(
         requirement("pydantic"),
         ":button_py_proto",
         "//optic/component_helpers",
+        "//optic/events",
         "//protos:ui_py_proto",
     ],
 )

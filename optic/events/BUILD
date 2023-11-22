@@ -3,7 +3,9 @@ package(
 )
 
 py_library(
-    name = "interactivity",
+    name = "events",
     srcs = glob(["*.py"]),
-    deps = ["//optic/key"],
+    deps = [
+        "//optic/key",
+    ],
 )

@@ -1,8 +1,8 @@
 from typing import Any, TypeVar, Callable, Type, cast
 
-from .key import key_from_proto
+from optic.key import key_from_proto
 
-from . import events
+import optic.events as events
 from ..component_helpers.helper import get_qualified_fn_name
 from optic.runtime import runtime
 import protos.ui_pb2 as pb

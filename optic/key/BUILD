@@ -3,7 +3,9 @@ package(
 )
 
 py_library(
-    name = "interactivity",
+    name = "key",
     srcs = glob(["*.py"]),
-    deps = ["//optic/key"],
+    deps = [
+        "//protos:ui_py_proto",
+    ],
 )

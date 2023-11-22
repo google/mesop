@@ -4,7 +4,7 @@ from typing import Any, Callable
 import protos.ui_pb2 as pb
 import optic.components.checkbox.checkbox_pb2 as checkbox_pb
 from optic.component_helpers import insert_component, handler_type
-from optic.interactivity.events import CheckboxEvent
+from optic.events import CheckboxEvent
 
 
 @validate_arguments

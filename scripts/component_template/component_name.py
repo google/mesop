@@ -4,7 +4,7 @@ from typing import Any, Callable
 import protos.ui_pb2 as pb
 import optic.components.component_name.component_name_pb2 as component_name_pb
 from optic.component_helpers import insert_component, handler_type
-from optic.state.events import ClickEvent
+from optic.events import ClickEvent
 
 
 @validate_arguments
