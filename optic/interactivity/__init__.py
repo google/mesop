@@ -1,3 +1,1 @@
-from . import state
-
-Store = state.Store
+from .store import Store as Store
