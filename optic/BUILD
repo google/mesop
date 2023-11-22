@@ -10,6 +10,7 @@ py_library(
     srcs = ["__init__.py"],
     deps = [
         # REF(//scripts/gen_component.py):insert_component_import
+        "//optic/components/box:py",
         "//optic/components",
         "//optic/components/button:py",
         "//optic/components/checkbox:py",

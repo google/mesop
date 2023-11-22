@@ -1,3 +1,11 @@
+<ng-container *ngIf="type()?.getName() == 'box'">
+  @defer (on viewport) {
+  <optic-box [key]="key()" [type]="type()!" />
+  } @placeholder {
+  <component-loader />
+  }
+</ng-container>
+
 <!-- REF(//scripts/gen_component.py):insert_component -->
 
 <ng-container *ngIf="type()?.getName() == 'button'">

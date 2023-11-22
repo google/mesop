@@ -7,6 +7,7 @@ py_library(
     srcs = ["index.py"],
     deps = [
         # REF(//scripts/gen_component.py):insert_component_e2e_import
+        "//optic/components/box/e2e",
         "//optic/components/text/e2e",
         "//optic/examples",
     ],
