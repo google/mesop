@@ -11,7 +11,7 @@ from optic.events import CheckboxEvent
 def checkbox(
     *,
     label: str,
-    on_update: Callable[[Any, CheckboxEvent], Any],
+    on_update: Callable[[CheckboxEvent], Any],
     key: str | None = None,
 ):
     """

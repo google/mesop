@@ -8,16 +8,15 @@ from optic.runtime import runtime
 import protos.ui_pb2 as pb
 
 A = TypeVar("A")
-S = TypeVar("S")
-Handler = Callable[[S, A], None]
+Handler = Callable[[A], None]
 
 
-def event_handler(actionType: Type[A]) -> Callable[[Handler[S, A]], Handler[S, A]]:
+def event_handler(actionType: Type[A]) -> Callable[[Handler[A]], Handler[A]]:
     """
     Decorator for making a function into an event handler."""
 
-    def register(func: Handler[S, A]):
-        def wrapper(state: S, action: A):
+    def register(func: Handler[A]):
+        def wrapper(action: A):
             # This is guaranteed to be a UserEvent because only Optic
             # framework will call the wrapper.
             typed_action = cast(pb.UserEvent, action)
@@ -26,7 +25,7 @@ def event_handler(actionType: Type[A]) -> Callable[[Handler[S, A]], Handler[S, A
             if actionType == events.CheckboxEvent:
                 typed_action = events.CheckboxEvent(checked=typed_action.bool, key=key)
 
-            return func(state, cast(Any, typed_action))
+            return func(cast(Any, typed_action))
 
         wrapper.__module__ = func.__module__
         wrapper.__name__ = func.__name__

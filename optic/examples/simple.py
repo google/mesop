@@ -14,7 +14,8 @@ class State:
 
 
 @op.on(op.CheckboxEvent)
-def checkbox_update(state: State, action: op.CheckboxEvent) -> None:
+def checkbox_update(action: op.CheckboxEvent) -> None:
+    state = op.state(State)
     if action.checked:
         state.keys.append(action.key.key)
         state.string = "checked"
@@ -24,7 +25,8 @@ def checkbox_update(state: State, action: op.CheckboxEvent) -> None:
 
 
 @op.on(op.ClickEvent)
-def button_click(state: State, action: op.ClickEvent):
+def button_click(action: op.ClickEvent):
+    state = op.state(State)
     state.count += 1
 
 

@@ -6,7 +6,7 @@ from .session import Session
 from optic.store import Store
 from optic.exceptions import OpticUserException
 
-Handler = Callable[[Any, Any], None]
+Handler = Callable[[Any], None]
 newline = "\n"
 
 

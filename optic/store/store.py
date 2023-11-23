@@ -5,14 +5,12 @@ import protos.ui_pb2 as pb
 S = TypeVar("S")
 
 
-# (State, Payload) -> None
-Handler = Callable[[S, Any], None]
+# (Payload) -> None
+Handler = Callable[[Any], None]
 
 
 class Store(Generic[S]):
-    def __init__(
-        self, initial_state: S, get_handler: Callable[[str], Handler[S] | None]
-    ):
+    def __init__(self, initial_state: S, get_handler: Callable[[str], Handler | None]):
         self._state = initial_state
         self.get_handler = get_handler
 
@@ -20,7 +18,7 @@ class Store(Generic[S]):
         payload = cast(Any, action)
         handler = self.get_handler(action.handler_id)
         if handler:
-            handler(self._state, payload)
+            handler(payload)
         else:
             print(f"Unknown handler id: {action.handler_id}")
 
