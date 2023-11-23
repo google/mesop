@@ -5,8 +5,8 @@ from optic.runtime import runtime
 T = TypeVar("T")
 
 
-def state(state: T) -> T:
-    return runtime.session().state()
+def state(state: type[T]) -> T:
+    return runtime.session().state(state)
 
 
 def stateclass(cls: type[T] | None, **kw_args: Any) -> type[T]:
@@ -16,7 +16,7 @@ def stateclass(cls: type[T] | None, **kw_args: Any) -> type[T]:
 
     def wrapper(cls: type[T]) -> type[T]:
         dataclass_cls = dataclass(cls, **kw_args)
-        runtime.set_state_class(dataclass_cls)
+        runtime.register_state_class(dataclass_cls)
         return dataclass_cls
 
     if cls is None:

@@ -18,7 +18,8 @@ def render_loop(path: str):
 
         data = pb.UiResponse(
             render=pb.RenderEvent(
-                root_component=root_component, state=runtime.session().serialize_state()
+                root_component=root_component,
+                states=runtime.session().serialize_state(),
             )
         )
         yield serialize(data)

@@ -18,7 +18,7 @@ export enum ChannelStatus {
 export class ChannelService {
   private eventSource: EventSource;
   private initParams: InitParams;
-  private state: pb.State;
+  private states: pb.States;
   private status: ChannelStatus;
 
   constructor() {
@@ -50,7 +50,7 @@ export class ChannelService {
         console.debug("Server event: ", UiResponse.toObject());
         switch (UiResponse.getTypeCase()) {
           case pb.UiResponse.TypeCase.RENDER:
-            this.state = UiResponse.getRender()!.getState()!;
+            this.states = UiResponse.getRender()!.getStates()!;
 
             onRender(UiResponse.getRender()!.getRootComponent()!);
             break;
@@ -66,7 +66,7 @@ export class ChannelService {
   }
 
   dispatch(userEvent: pb.UserEvent) {
-    userEvent.setState(this.state);
+    userEvent.setStates(this.states);
     const request = new pb.UiRequest();
     request.setUserEvent(userEvent);
 

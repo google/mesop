@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Any, Callable
+from typing import Any, Callable, cast
 
 import protos.ui_pb2 as pb
 from .session import Session
@@ -19,26 +19,31 @@ class Runtime:
     _session: Session
     _path_fns: dict[str, Callable[[], None]]
     _handlers: dict[str, Handler]
-    _state_class: Any | None
+    _state_classes: list[type[Any]]
     _loading_errors: list[pb.ServerError]
 
     def __init__(self):
         self._path_fns = {}
         self._handlers = {}
-        self._state_class = None
+        self._state_classes = []
         self._loading_errors = []
 
     def session(self):
         return self._session
 
     def reset_session(self):
-        if self._state_class is None:
+        if len(self._state_classes) == 0:
             print("No state class was registered, using an empty state")
-            state = EmptyState()
+            states = {EmptyState: EmptyState()}
         else:
-            state = self._state_class()
-        # Create a new instance of State so that we don't accidentally share state across sessions.
-        self._session = Session(Store(state, self.get_handler))
+            states = {}
+            # Create new instances so that we don't accidentally share state across sessions.
+            for state_class in self._state_classes:
+                states[state_class] = state_class()
+
+        self._session = Session(
+            store=Store(self.get_handler), states=cast(dict[Any, Any], states)
+        )
 
     def run_path(self, path: str) -> None:
         if path not in self._path_fns:
@@ -62,8 +67,8 @@ Try one of the following paths:
     def get_handler(self, handler_id: str) -> Handler | None:
         return self._handlers[handler_id]
 
-    def set_state_class(self, state_class: Any) -> None:
-        self._state_class = state_class
+    def register_state_class(self, state_class: Any) -> None:
+        self._state_classes.append(state_class)
 
     def add_loading_error(self, error: pb.ServerError) -> None:
         """Only put non-session specific errors, because these errors can be potentially shown across sessions."""

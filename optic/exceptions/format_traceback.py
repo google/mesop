@@ -21,7 +21,7 @@ def format_traceback(lines_before: int = 2, lines_after: int = 4) -> pb.Tracebac
             code_name=code_name,
             line_number=lineno,
             lines=[],
-            is_app_code=code_name == "<module>",
+            is_app_code=is_app_code(filename),
         )
 
         start_line = max(1, lineno - lines_before)
@@ -43,3 +43,12 @@ def format_filename(filename: str) -> str:
     if ".runfiles" in filename:
         filename = "/" + filename.split(".runfiles", 1)[1]
     return filename
+
+
+# TODO: make this a better heuristic
+def is_app_code(filename: str) -> bool:
+    if "examples" in filename:
+        return True
+    if "testing" in filename:
+        return True
+    return False

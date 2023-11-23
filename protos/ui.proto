@@ -17,7 +17,7 @@ message InitRequest {
 }
 
 message UserEvent {
-    State state = 4;
+    States states = 4;
 
     // Used to determine which action handler to call.
     string handler_id = 1;
@@ -69,7 +69,11 @@ message ContextLine {
 
 message RenderEvent {
     Component root_component = 1;
-    State state = 2;
+    States states = 2;
+}
+
+message States {
+    repeated State states = 1;
 }
 
 // Serialized state of application. Sent from Python server to web client.
