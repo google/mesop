@@ -45,10 +45,9 @@ def format_filename(filename: str) -> str:
     return filename
 
 
-# TODO: make this a better heuristic
 def is_app_code(filename: str) -> bool:
-    if "examples" in filename:
-        return True
-    if "testing" in filename:
-        return True
+    """Use a naive but effective heuristic for whether this is 'application' code."""
+    for i in range(1, len(linecache.getlines(filename)) + 1):
+        if "import optic as op" in linecache.getline(filename, i):
+            return True
     return False
