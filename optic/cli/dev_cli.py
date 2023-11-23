@@ -5,6 +5,7 @@ import protos.ui_pb2 as pb
 from optic.cli.execute_module import execute_module
 from optic.exceptions import format_traceback
 
+
 FLAGS = flags.FLAGS
 
 flags.DEFINE_string("path", "", "path to main python module of Optic app.")

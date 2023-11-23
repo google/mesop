@@ -1,5 +1,13 @@
-load("//builddefs:defs.bzl", "py_binary", "py_library")
 load("@my_deps//:requirements.bzl", "requirement")
+load("//builddefs:defs.bzl", "py_binary", "py_library")
+
+COMMON_DEPS = [
+    ":execute_module",
+    "//optic",  # Keep dep to ensure the entire Optic library is loaded.
+    "//optic/exceptions",
+    "//optic/runtime",
+    requirement("absl-py"),
+]
 
 # Prod CLI
 py_binary(
@@ -11,11 +19,7 @@ py_binary(
         "//optic/testing:index",
     ],
     main = "cli.py",
-    deps = [
-        ":execute_module",
-        requirement("absl-py"),
-        "//optic",  # Keep dep to ensure the entire Optic library is loaded.
-        "//optic/runtime",
+    deps = COMMON_DEPS + [
         "//optic/server:prod_server",
     ],
 )
@@ -29,12 +33,7 @@ py_binary(
         "//optic/testing:index",
     ],
     main = "dev_cli.py",
-    deps = [
-        ":execute_module",
-        requirement("absl-py"),
-        "//optic",  # Keep dep to ensure the entire Optic library is loaded.
-        "//optic/exceptions",
-        "//optic/runtime",
+    deps = COMMON_DEPS + [
         "//optic/server:dev_server",
     ],
 )
