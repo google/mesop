@@ -3,13 +3,10 @@ from types import ModuleType
 
 
 def execute_module(module_path: str) -> ModuleType:
-    try:
-        spec = importlib.util.spec_from_file_location("main_optic_app", module_path)
-        assert spec
-        module = importlib.util.module_from_spec(spec)
-        assert spec.loader
-        spec.loader.exec_module(module)
+    spec = importlib.util.spec_from_file_location("main_optic_app", module_path)
+    assert spec
+    module = importlib.util.module_from_spec(spec)
+    assert spec.loader
+    spec.loader.exec_module(module)
 
-        return module
-    except Exception as e:
-        raise e
+    return module

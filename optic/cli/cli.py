@@ -12,6 +12,7 @@ def main(argv):
     if len(FLAGS.path) < 1:
         raise Exception("Required flag 'path'. Received: " + FLAGS.path)
 
+    # Potentially wrap
     execute_module(FLAGS.path)
 
     print("Running in prod mode")

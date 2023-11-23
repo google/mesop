@@ -1,4 +1,5 @@
 [tool.ruff]
 # In addition to the standard set of exclusions, omit index.py because
 # it's imports are used for side effects
-extend-exclude = ["optic/testing/index.py"]
+# Skip error examples since there's intentionally incorrect Python code.
+extend-exclude = ["optic/testing/index.py", "optic/examples/error*"]

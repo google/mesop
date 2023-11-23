@@ -24,11 +24,16 @@ def render_loop(path: str):
         yield serialize(data)
         yield "data: <stream_end>\n\n"
     except Exception as e:
-        ui_response = pb.UiResponse(
+        return yield_errors(
             error=pb.ServerError(exception=str(e), traceback=traceback.format_exc())
         )
-        yield serialize(ui_response)
-        yield "data: <stream_end>\n\n"
+
+
+def yield_errors(error: pb.ServerError):
+    ui_response = pb.UiResponse(error=error)
+
+    yield serialize(ui_response)
+    yield "data: <stream_end>\n\n"
 
 
 def serialize(response: pb.UiResponse) -> str:
@@ -37,6 +42,12 @@ def serialize(response: pb.UiResponse) -> str:
 
 
 def generate_data(ui_request: pb.UiRequest):
+    if runtime.has_loading_errors():
+        # Only showing the first error since our error UI only
+        # shows one error at a time, and in practice there's usually
+        # one error.
+        return yield_errors(runtime.get_loading_errors()[0])
+
     if ui_request.HasField("init"):
         return render_loop(path=ui_request.path)
     if ui_request.HasField("user_event"):
