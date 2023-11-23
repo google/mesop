@@ -24,7 +24,8 @@ def render_loop(path: str):
         yield serialize(data)
         yield "data: <stream_end>\n\n"
     except Exception as e:
-        return yield_errors(
+        print(e)
+        yield from yield_errors(
             error=pb.ServerError(exception=str(e), traceback=format_traceback())
         )
 
