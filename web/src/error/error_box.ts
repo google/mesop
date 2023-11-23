@@ -15,8 +15,21 @@ import { ChannelService } from "../services/channel_service";
 })
 export class ErrorBox {
   _showFullTraceback: boolean = false;
-
+  _lastAppFrame: pb.StackFrame | undefined;
   @Input({ required: true }) error!: pb.ServerError;
+
+  ngOnChanges() {
+    for (const frame of this.error
+      .getTraceback()!
+      .getFramesList()
+      .slice()
+      .reverse()) {
+      if (frame.getIsAppCode()) {
+        this._lastAppFrame = frame;
+        return;
+      }
+    }
+  }
 
   turnOnFullTraceBack() {
     this._showFullTraceback = true;
@@ -34,5 +47,9 @@ export class ErrorBox {
 
   formatFrame(frame: pb.StackFrame): string {
     return `${frame.getFilename()}:${frame.getLineNumber()} | ${frame.getCodeName()}`;
+  }
+
+  isLastAppCode(frame: pb.StackFrame): boolean {
+    return frame === this._lastAppFrame;
   }
 }

@@ -2,6 +2,7 @@
   background-color: #ffe8ef;
   padding: 18px;
   color: #ae2626;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .exception {
@@ -22,28 +23,30 @@
 
 .traceback {
   font-family: monospace;
-  font-size: 1rem;
+  font-size: 0.9rem;
   line-height: 1.5;
   white-space: preserve;
-  border: 1.5px solid #d8adad;
   padding: 8px;
   border-radius: 12px;
-  margin: 8px 0;
+  margin-top: 4px;
 }
 
 .traceback-segment {
   color: #444;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
+  background: #f2f2f2;
+  border-radius: 12px;
 }
 
 .traceback-segment.highlight {
-  color: #000;
-  font-weight: bold;
+  // color: #000;
+  // font-weight: bold;
+  background: white;
 }
 
 .frame-title {
   color: #333;
-  background: #ffb5cc;
+  background: #ffbbbbe0;
   margin-bottom: 4px;
 }
 

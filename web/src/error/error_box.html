@@ -6,9 +6,9 @@
   <div class="traceback">
     <ng-container *ngFor="let frame of error.getTraceback()!.getFramesList()">
       <div
-        *ngIf="frame.getIsAppCode() || showFullTraceback() "
+        *ngIf="isLastAppCode(frame) || showFullTraceback() "
         class="traceback-segment"
-        [ngClass]="{'highlight': frame.getIsAppCode() && showFullTraceback()}"
+        [ngClass]="{'highlight': frame.getIsAppCode()}"
       >
         <div class="frame-title">{{formatFrame(frame)}}</div>
         <div class="line-group">
@@ -17,7 +17,8 @@
             [ngClass]="{'caller': line.getIsCaller() && frame.getIsAppCode()}"
           >
             <ng-container *ngIf="line.getIsCaller() || frame.getIsAppCode()">
-              {{line.getCode()}}
+              {{frame.getIsAppCode() ? line.getCode() :
+              line.getCode().trimStart()}}
             </ng-container>
           </div>
         </div>
