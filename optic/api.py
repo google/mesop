@@ -1,12 +1,28 @@
-from typing import Any, TypeVar
+from dataclasses import dataclass
+from typing import Any, TypeVar, cast
 from optic.runtime import runtime
 
-S = TypeVar("S")
+T = TypeVar("T")
 
 
-def store(state: Any) -> None:
-    runtime.set_initial_state(state)
-
-
-def state(state: S) -> S:
+def state(state: T) -> T:
     return runtime.session().state()
+
+
+def stateclass(cls: type[T] | None, **kw_args: Any) -> type[T]:
+    """
+    Similar as dataclass, but it also registers with Optic runtime.
+    """
+
+    def wrapper(cls: type[T]) -> type[T]:
+        dataclass_cls = dataclass(cls, **kw_args)
+        runtime.set_state_class(dataclass_cls)
+        return dataclass_cls
+
+    if cls is None:
+        # too difficult to properly type annotate
+        anyWrapper = cast(Any, wrapper)
+        # We're called with parens.
+        return anyWrapper
+
+    return wrapper(cls)

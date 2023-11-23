@@ -1,17 +1,16 @@
-from dataclasses import dataclass, field
+from dataclasses import field
 import optic as op
 
 
-@dataclass
+def compute():
+    return "abc"
+
+
+@op.stateclass
 class State:
-    string: str
-    count: int
+    count: int = 0
+    string: str = compute()
     keys: list[str] = field(default_factory=list)
-
-
-store = op.store(
-    State(string="init", count=0),
-)
 
 
 @op.on(op.CheckboxEvent)

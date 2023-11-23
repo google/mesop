@@ -1,4 +1,3 @@
-from copy import deepcopy
 from typing import Any, Callable
 from .session import Session
 from optic.store import Store
@@ -21,9 +20,8 @@ class Runtime:
         return self._session
 
     def reset_session(self):
-        # Make sure we create a fully copy of initial state to not accidentally
-        # share state across sessions.
-        self._session = Session(Store(deepcopy(self._initial_state), self.get_handler))
+        # Create a new instance of State so that we don't accidentally share state across sessions.
+        self._session = Session(Store(self._state_class(), self.get_handler))
 
     def run_path(self, path: str) -> None:
         if path not in self._path_fns:
@@ -47,8 +45,8 @@ Try one of the following paths:
     def get_handler(self, handler_id: str) -> Handler | None:
         return self._handlers[handler_id]
 
-    def set_initial_state(self, state: Any) -> None:
-        self._initial_state = state
+    def set_state_class(self, state_class: Any) -> None:
+        self._state_class = state_class
 
 
 runtime = Runtime()

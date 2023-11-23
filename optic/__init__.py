@@ -12,7 +12,7 @@ from optic.events import CheckboxEvent as CheckboxEvent, ClickEvent as ClickEven
 from optic.event_handler import event_handler
 from optic.key import Key as Key
 
-from optic.api import store as store, state as state
+from optic.api import state as state, stateclass as stateclass
 
 # Give a short alias for event handler since it's ubiquitous.
 on = event_handler
