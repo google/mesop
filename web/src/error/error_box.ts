@@ -14,14 +14,9 @@ import { ChannelService } from "../services/channel_service";
   providers: [ChannelService],
 })
 export class ErrorBox {
-  _tracebackSegments: TracebackSegment[];
   _showFullTraceback: boolean = false;
 
   @Input({ required: true }) error!: pb.ServerError;
-
-  ngOnChanges() {
-    this._tracebackSegments = processError(this.error);
-  }
 
   turnOnFullTraceBack() {
     this._showFullTraceback = true;
@@ -31,40 +26,13 @@ export class ErrorBox {
     if (this._showFullTraceback) {
       return true;
     }
-    return this._tracebackSegments.every((s) => s.type === "lowlight");
+    return this.error
+      .getTraceback()!
+      .getFramesList()
+      .every((frame) => !frame.getIsAppCode());
   }
 
-  getTracebackSegments(): TracebackSegment[] {
-    return this._tracebackSegments;
+  formatFrame(frame: pb.StackFrame): string {
+    return `${frame.getFilename()}:${frame.getLineNumber()} | ${frame.getCodeName()}`;
   }
-}
-
-interface TracebackSegment {
-  text: string;
-  type: "highlight" | "lowlight";
-}
-
-function getTypeFromPath(str: string): "highlight" | "lowlight" {
-  // TODO: make this logic more robust.
-  return str.includes("/examples/") ? "highlight" : "lowlight";
-}
-
-function processError(error: pb.ServerError): TracebackSegment[] {
-  const originalTraceback = error
-    .getTraceback()
-    .slice("Traceback (most recent call last):".length)
-    .trimStart();
-  const regex = /File ".*?\.runfiles/g;
-
-  const trimmedString = originalTraceback.replace(regex, 'File "/');
-
-  const res = trimmedString
-    .split("File")
-    .map((str) => ({
-      text: str.trimEnd(),
-      type: getTypeFromPath(str),
-    }))
-    .slice(1) as TracebackSegment[];
-
-  return res;
 }

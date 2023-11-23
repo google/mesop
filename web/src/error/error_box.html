@@ -4,18 +4,28 @@
   </div>
   <div class="traceback-heading">Traceback</div>
   <div class="traceback">
-    <ng-container *ngFor="let segment of getTracebackSegments()">
+    <ng-container *ngFor="let frame of error.getTraceback()!.getFramesList()">
       <div
-        *ngIf="segment.type === 'highlight' || showFullTraceback "
+        *ngIf="frame.getIsAppCode() || showFullTraceback() "
         class="traceback-segment"
-        [ngClass]="{'highlight': segment.type === 'highlight' && showFullTraceback}"
+        [ngClass]="{'highlight': frame.getIsAppCode() && showFullTraceback()}"
       >
-        {{segment.text}}
+        <div class="frame-title">{{formatFrame(frame)}}</div>
+        <div class="line-group">
+          <div
+            *ngFor="let line of frame.getLinesList()"
+            [ngClass]="{'caller': line.getIsCaller() && frame.getIsAppCode()}"
+          >
+            <ng-container *ngIf="line.getIsCaller() || frame.getIsAppCode()">
+              {{line.getCode()}}
+            </ng-container>
+          </div>
+        </div>
       </div>
     </ng-container>
   </div>
   <a
-    *ngIf="!showFullTraceback"
+    *ngIf="!showFullTraceback()"
     class="show-full-traceback"
     (click)="turnOnFullTraceBack()"
     >Show full traceback</a

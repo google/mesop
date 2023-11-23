@@ -33,12 +33,26 @@
 
 .traceback-segment {
   color: #444;
-  margin-bottom: 12px;
+  margin-bottom: 2rem;
 }
 
 .traceback-segment.highlight {
   color: #000;
   font-weight: bold;
+}
+
+.frame-title {
+  color: #333;
+  background: #ffb5cc;
+  margin-bottom: 4px;
+}
+
+.line-group {
+  margin-left: 2rem;
+}
+.caller {
+  color: #efe4cf;
+  background: #c86464;
 }
 
 .show-full-traceback {

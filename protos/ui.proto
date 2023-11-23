@@ -43,7 +43,28 @@ message UiResponse {
 
 message ServerError {
     string exception = 1;
-    string traceback = 2;
+    Traceback traceback = 2;
+}
+
+message Traceback {
+    repeated StackFrame frames = 1;
+}
+
+message StackFrame {
+    // e.g. "optic/optic/cli/execute_module.py"
+    string filename = 1;
+    string code_name = 2;
+    int32 line_number = 3;
+
+    repeated ContextLine lines = 4;
+
+    // If this originates from application code, the developer wrote, we should highlight it.
+    bool is_app_code = 5;
+}
+
+message ContextLine {
+    string code = 1;
+    bool is_caller = 2;
 }
 
 message RenderEvent {

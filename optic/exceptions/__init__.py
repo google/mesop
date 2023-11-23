@@ -1,3 +1,6 @@
+from .format_traceback import format_traceback as format_traceback
+
+
 class OpticException(Exception):
     pass
 

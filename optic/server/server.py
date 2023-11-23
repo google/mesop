@@ -1,12 +1,12 @@
 import base64
 import os
-import traceback
 
 from flask import Flask, Response, request
 
 import protos.ui_pb2 as pb
 
 from optic.runtime import runtime
+from optic.exceptions import format_traceback
 
 app = Flask(__name__)
 
@@ -25,7 +25,7 @@ def render_loop(path: str):
         yield "data: <stream_end>\n\n"
     except Exception as e:
         return yield_errors(
-            error=pb.ServerError(exception=str(e), traceback=traceback.format_exc())
+            error=pb.ServerError(exception=str(e), traceback=format_traceback())
         )
 
 

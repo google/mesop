@@ -1,10 +1,9 @@
-import traceback
-
 from absl import app
 from absl import flags
 
 import protos.ui_pb2 as pb
 from optic.cli.execute_module import execute_module
+from optic.exceptions import format_traceback
 
 FLAGS = flags.FLAGS
 
@@ -21,7 +20,7 @@ def main(argv):
         from optic.runtime import runtime
 
         runtime.add_loading_error(
-            pb.ServerError(exception=str(e), traceback=traceback.format_exc())
+            pb.ServerError(exception=str(e), traceback=format_traceback())
         )
         print("Exception executing module:", e)
 

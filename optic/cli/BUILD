@@ -33,6 +33,7 @@ py_binary(
         ":execute_module",
         requirement("absl-py"),
         "//optic",  # Keep dep to ensure the entire Optic library is loaded.
+        "//optic/exceptions",
         "//optic/runtime",
         "//optic/server:dev_server",
     ],
