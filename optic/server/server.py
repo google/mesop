@@ -44,6 +44,12 @@ def serialize(response: pb.UiResponse) -> str:
 
 
 def generate_data(ui_request: pb.UiRequest):
+    try:
+        runtime.reset_session()
+    except Exception as e:
+        return yield_errors(
+            error=pb.ServerError(exception=str(e), traceback=format_traceback())
+        )
     if runtime.has_loading_errors():
         # Only showing the first error since our error UI only
         # shows one error at a time, and in practice there's usually
@@ -61,8 +67,7 @@ def generate_data(ui_request: pb.UiRequest):
 
 @app.route("/ui")
 def ui_stream():
-    runtime.reset_session()
-
+    # runtime.reset_session()
     param = request.args.get("request", default=None)
     if param is None:
         raise Exception("Missing request parameter")
