@@ -1,6 +1,6 @@
 from dataclasses import asdict, is_dataclass
 import json
-from typing import Any, TypeVar, cast
+from typing import Any, Generator, TypeVar, cast
 import protos.ui_pb2 as pb
 from optic.dataclass_utils import update_dataclass_from_json
 from optic.store import Store
@@ -23,6 +23,9 @@ class Session:
     def set_current_node(self, node: pb.Component) -> None:
         self._current_node = node
 
+    def reset_current_node(self) -> None:
+        self._current_node = pb.Component()
+
     def state(self, state: type[T]) -> T:
         return cast(T, self._states[state])
 
@@ -36,7 +39,7 @@ class Session:
                 raise Exception(f"State must be a dataclass. Instead got {state}")
         return states
 
-    def process_event(self, event: pb.UserEvent) -> None:
+    def process_event(self, event: pb.UserEvent) -> Generator[None, None, None]:
         for state, proto_state in zip(self._states.values(), event.states.states):
             update_dataclass_from_json(state, proto_state.data)
-        self._store.dispatch(event)
+        return self._store.dispatch(event)
