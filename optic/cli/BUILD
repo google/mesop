@@ -14,14 +14,12 @@ py_binary(
     name = "cli",
     srcs = ["cli.py"],
     data = [
-        "//optic",
         "//optic/examples",
         "//optic/testing:index",
+        "//web/src/app/prod:web_package",
     ],
     main = "cli.py",
-    deps = COMMON_DEPS + [
-        "//optic/server:prod_server",
-    ],
+    deps = COMMON_DEPS,
 )
 
 # Dev CLI
@@ -33,9 +31,7 @@ py_binary(
         "//optic/testing:index",
     ],
     main = "dev_cli.py",
-    deps = COMMON_DEPS + [
-        "//optic/server:dev_server",
-    ],
+    deps = COMMON_DEPS,
 )
 
 py_library(

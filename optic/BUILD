@@ -22,6 +22,7 @@ py_library(
         "//optic/events",
         "//optic/features",
         "//optic/store",
+        "//optic/server",
     ],
 )
 
