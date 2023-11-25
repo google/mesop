@@ -27,7 +27,13 @@ message UserEvent {
     oneof type {
         bool bool = 2;
         Click click = 3;
+        InputChange change = 6;
     }
+}
+
+// Corresponds to an input change event.
+message InputChange {
+    string value = 1;
 }
 
 message Click {}

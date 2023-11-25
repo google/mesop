@@ -2,6 +2,7 @@ from typing import Any, Generator, TypeVar, Callable, Type, cast
 
 from optic.key import key_from_proto
 
+from optic.exceptions import OpticInternalException
 import optic.events as events
 from ..component_helpers.helper import get_qualified_fn_name
 from optic.runtime import runtime
@@ -19,13 +20,19 @@ def event_handler(actionType: Type[A]) -> Callable[[Handler[A]], Handler[A]]:
         def wrapper(action: A):
             # This is guaranteed to be a UserEvent because only Optic
             # framework will call the wrapper.
-            typed_action = cast(pb.UserEvent, action)
-            key = key_from_proto(typed_action.key)
+            proto_event = cast(pb.UserEvent, action)
+            key = key_from_proto(proto_event.key)
 
             if actionType == events.CheckboxEvent:
-                typed_action = events.CheckboxEvent(checked=typed_action.bool, key=key)
+                event = events.CheckboxEvent(checked=proto_event.bool, key=key)
+            elif actionType == events.ChangeEvent:
+                event = events.ChangeEvent(key=key, value=proto_event.change.value)
+            elif actionType == events.ClickEvent:
+                event = events.ClickEvent()
+            else:
+                raise OpticInternalException("Unhandled event type: " + str(actionType))
 
-            return func(cast(Any, typed_action))
+            return func(cast(Any, event))
 
         wrapper.__module__ = func.__module__
         wrapper.__name__ = func.__name__

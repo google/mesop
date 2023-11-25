@@ -10,3 +10,9 @@ class ClickEvent:
 class CheckboxEvent:
     key: Key
     checked: bool
+
+
+@dataclass
+class ChangeEvent:
+    key: Key
+    value: str

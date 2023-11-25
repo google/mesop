@@ -1,4 +1,3 @@
-import { bootstrapApplication } from "@angular/platform-browser";
-import { App } from "../app";
+import { bootstrapApp } from "../app";
 
-bootstrapApplication(App);
+bootstrapApp();

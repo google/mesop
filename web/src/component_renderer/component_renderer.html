@@ -13,11 +13,11 @@
 </ng-container>
 
 <ng-container *ngIf="type()?.getName() == 'text_input'">
-  @defer (on viewport) {
+  <!-- @defer (on viewport) { -->
   <optic-text-input [key]="key()" [type]="type()!" />
-  } @placeholder {
-  <component-loader />
-  }
+  <!-- } @placeholder { -->
+  <!-- <component-loader /> -->
+  <!-- } -->
 </ng-container>
 
 <!-- REF(//scripts/gen_component.py):insert_component -->

@@ -5,6 +5,11 @@ import { CommonModule } from "@angular/common";
 import { ComponentRenderer } from "../component_renderer/component_renderer";
 import { ChannelService, ChannelStatus } from "../services/channel_service";
 import { ErrorBox } from "../error/error_box";
+import {
+  BrowserAnimationsModule,
+  provideAnimations,
+} from "@angular/platform-browser/animations";
+import { bootstrapApplication } from "@angular/platform-browser";
 
 @Component({
   selector: "app",
@@ -13,7 +18,7 @@ import { ErrorBox } from "../error/error_box";
   imports: [CommonModule, ComponentRenderer, MatProgressBarModule, ErrorBox],
   providers: [ChannelService],
 })
-export class App {
+class App {
   rootComponent: pb.Component;
   error: pb.ServerError;
 
@@ -37,4 +42,8 @@ export class App {
   isConnectionOpen() {
     return this.channelService.getStatus() == ChannelStatus.OPEN;
   }
+}
+
+export function bootstrapApp() {
+  bootstrapApplication(App, { providers: [provideAnimations()] });
 }

@@ -11,6 +11,8 @@ _CDK_ENTRY_POINTS = [
     "a11y",
     "platform",
     "observers",
+    # Needed because https://github.com/angular/components/blob/9e438901555eaedc6617dd241ffabe391cba3b64/src/material/form-field/directives/floating-label.ts#L18
+    "observers/private",
     "layout",
     "bidi",
 ]
