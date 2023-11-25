@@ -13,6 +13,7 @@ py_library(
     ],
     deps = [
         # REF(//scripts/gen_component.py):insert_component_import
+        "//optic/components/text_input:py",
         "//optic/components/box:py",
         "//optic/components",
         "//optic/components/button:py",

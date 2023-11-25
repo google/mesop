@@ -5,6 +5,7 @@ import { CheckboxComponent } from "../../../optic/components/checkbox/checkbox";
 import { ButtonComponent } from "../../../optic/components/button/button";
 import { TextComponent } from "../../../optic/components/text/text";
 // REF(//scripts/gen_component.py):insert_ts_import
+import { TextInputComponent } from "../../../optic/components/text_input/text_input";
 import { BoxComponent } from "../../../optic/components/box/box";
 import { ComponentLoader } from "./component_loader";
 
@@ -14,6 +15,7 @@ import { ComponentLoader } from "./component_loader";
   standalone: true,
   imports: [
     // REF(//scripts/gen_component.py):insert_ng_import
+    TextInputComponent,
     BoxComponent,
     TextComponent,
     CheckboxComponent,

@@ -14,6 +14,7 @@ ng_module(
     ]),
     deps = [
         # REF(//scripts/gen_component.py):insert_component_import
+        "//optic/components/text_input:ng",
         "//optic/components/box:ng",
         "//optic/components/button:ng",
         "//optic/components/checkbox:ng",
