@@ -1,12 +1,12 @@
 from dataclasses import dataclass
-from typing import Any, Callable, cast
+from typing import Any, Callable, Generator, cast
 
 import protos.ui_pb2 as pb
 from .session import Session
 from optic.store import Store
 from optic.exceptions import OpticUserException
 
-Handler = Callable[[Any], None]
+Handler = Callable[[Any], None | Generator[None, None, None]]
 newline = "\n"
 
 

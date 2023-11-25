@@ -1,4 +1,4 @@
-from typing import Any, TypeVar, Callable, Type, cast
+from typing import Any, Generator, TypeVar, Callable, Type, cast
 
 from optic.key import key_from_proto
 
@@ -8,7 +8,7 @@ from optic.runtime import runtime
 import protos.ui_pb2 as pb
 
 A = TypeVar("A")
-Handler = Callable[[A], None]
+Handler = Callable[[A], None | Generator[None, None, None]]
 
 
 def event_handler(actionType: Type[A]) -> Callable[[Handler[A]], Handler[A]]:
