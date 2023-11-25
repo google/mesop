@@ -20,6 +20,7 @@ def main():
     copy_template(component_name)
     update_e2e_init(component_name)
     rename_and_update_files(component_name)
+    update_component_build(component_name)
     update_py_export(component_name)
     update_py_build(component_name)
     update_testing_build(component_name)
@@ -189,6 +190,13 @@ def kebab_case(component_name: str):
     Split underscore and make it kebab-case
     """
     return "-".join(x for x in component_name.split("_"))
+
+
+def update_component_build(component_name: str):
+    dst_dir = get_dst_dir(component_name)
+    replace_component_name_ref(
+        path=os.path.join(dst_dir, "BUILD"), component_name=component_name
+    )
 
 
 def rename_and_update_files(component_name: str):

@@ -5,7 +5,7 @@ import {
   Type,
   UserEvent,
 } from "optic/protos/ui_ts_proto_pb/protos/ui_pb";
-import { ComponentNameType } from "optic/optic/components/component_name/ts_proto_pb/optic/components/component_name/component_name_pb";
+import { ComponentNameType } from "optic/optic/components/component_name/component_name_ts_proto_pb/optic/components/component_name/component_name_pb";
 import { ChannelService } from "../../../web/src/services/channel_service";
 
 @Component({
