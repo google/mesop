@@ -47,26 +47,28 @@ def serialize(response: pb.UiResponse) -> str:
 def generate_data(ui_request: pb.UiRequest):
     try:
         runtime.reset_session()
+
+        if runtime.has_loading_errors():
+            # Only showing the first error since our error UI only
+            # shows one error at a time, and in practice there's usually
+            # one error.
+            yield from yield_errors(runtime.get_loading_errors()[0])
+
+        if ui_request.HasField("init"):
+            yield from render_loop(path=ui_request.path)
+        if ui_request.HasField("user_event"):
+            result = runtime.session().process_event(ui_request.user_event)
+            for _ in result:
+                yield from render_loop(path=ui_request.path, keep_alive=True)
+                runtime.session().reset_current_node()
+            yield "data: <stream_end>\n\n"
+        else:
+            raise Exception(f"Unknown request type: {ui_request}")
+
     except Exception as e:
         yield from yield_errors(
             error=pb.ServerError(exception=str(e), traceback=format_traceback())
         )
-    if runtime.has_loading_errors():
-        # Only showing the first error since our error UI only
-        # shows one error at a time, and in practice there's usually
-        # one error.
-        yield from yield_errors(runtime.get_loading_errors()[0])
-
-    if ui_request.HasField("init"):
-        yield from render_loop(path=ui_request.path)
-    if ui_request.HasField("user_event"):
-        result = runtime.session().process_event(ui_request.user_event)
-        for _ in result:
-            yield from render_loop(path=ui_request.path, keep_alive=True)
-            runtime.session().reset_current_node()
-        yield "data: <stream_end>\n\n"
-    else:
-        raise Exception(f"Unknown request type: {ui_request}")
 
 
 @app.route("/ui")
