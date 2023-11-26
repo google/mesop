@@ -1,11 +1,29 @@
-<optic-error-box *ngIf="error != null" [error]="error" />
-<div class="status">
-  <mat-progress-bar
-    data-testid="connection-progress-bar"
-    *ngIf="isConnectionOpen()"
-    mode="query"
-  ></mat-progress-bar>
-</div>
-<ng-container *ngIf="rootComponent != null">
-  <component-renderer [component]="rootComponent"></component-renderer>
-</ng-container>
+<mat-sidenav-container class="container">
+  <mat-sidenav-content #sidenavContent>
+    <optic-error-box *ngIf="error != null" [error]="error" />
+    <div class="status">
+      <mat-progress-bar
+        data-testid="connection-progress-bar"
+        *ngIf="isConnectionOpen()"
+        mode="query"
+      ></mat-progress-bar>
+    </div>
+    <ng-container *ngIf="rootComponent != null">
+      <component-renderer [component]="rootComponent"></component-renderer>
+    </ng-container>
+    <div class="debug-buttons">
+      <button mat-icon-button (click)="toggleRightSideNav()">
+        <mat-icon>dock_to_left</mat-icon>
+      </button>
+    </div>
+  </mat-sidenav-content>
+  <mat-sidenav
+    #sidenav
+    [(opened)]="rightSideNav"
+    mode="side"
+    position="end"
+    class="right-sidenav"
+  >
+    HelloWorld
+  </mat-sidenav>
+</mat-sidenav-container>

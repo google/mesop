@@ -10,22 +10,52 @@ import {
   provideAnimations,
 } from "@angular/platform-browser/animations";
 import { bootstrapApplication } from "@angular/platform-browser";
+import { MatIconModule, MatIconRegistry } from "@angular/material/icon";
+import { MatButtonModule } from "@angular/material/button";
+import { MatSidenavModule } from "@angular/material/sidenav";
 
 @Component({
   selector: "app",
   templateUrl: "app.html",
   standalone: true,
-  imports: [CommonModule, ComponentRenderer, MatProgressBarModule, ErrorBox],
+  imports: [
+    CommonModule,
+    ComponentRenderer,
+    MatProgressBarModule,
+    ErrorBox,
+    MatIconModule,
+    MatButtonModule,
+    MatSidenavModule,
+  ],
+  styles: `
+  .container {
+    height: 100%;
+  }
+  .debug-buttons {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+  }
+  .right-sidenav {
+    width: 280px;
+    padding: 16px;
+  }
+
+  `,
   providers: [ChannelService],
 })
 class App {
   rootComponent: pb.Component;
   error: pb.ServerError;
+  rightSideNav: boolean;
 
   constructor(
     private zone: NgZone,
     private channelService: ChannelService,
-  ) {}
+    private iconRegistry: MatIconRegistry,
+  ) {
+    this.iconRegistry.setDefaultFontSetClass("material-symbols-rounded");
+  }
 
   ngOnInit() {
     this.channelService.init({
@@ -41,6 +71,11 @@ class App {
 
   isConnectionOpen() {
     return this.channelService.getStatus() == ChannelStatus.OPEN;
+  }
+
+  toggleRightSideNav() {
+    this.rightSideNav = !this.rightSideNav;
+    console.log("this.rightSideNav", this.rightSideNav);
   }
 }
 
