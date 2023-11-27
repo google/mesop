@@ -51,12 +51,12 @@ export class Logger {
     const duration = lastTimestamp ? Date.now() - lastTimestamp : undefined;
     switch (input.type) {
       case "StreamStart":
-        return { type: "StreamStart", timestamp: Date.now(), duration };
+        return { type: "Stream Start", timestamp: Date.now(), duration };
       case "StreamEnd":
-        return { type: "StreamEnd", timestamp: Date.now(), duration };
+        return { type: "Stream End", timestamp: Date.now(), duration };
       case "UserEventLog":
         return {
-          type: "UserEventLog",
+          type: "User Event",
           timestamp: Date.now(),
           userEvent: input.userEvent.toObject(),
           duration,
@@ -65,7 +65,7 @@ export class Logger {
         const rootComponent = input.rootComponent.toObject();
         this.updateComponent(rootComponent);
         return {
-          type: "RenderLog",
+          type: "Render",
           timestamp: Date.now(),
           duration,
           states: input.states
@@ -100,20 +100,20 @@ export interface BaseLogModel {
 }
 
 export interface StreamStartLogModel extends BaseLogModel {
-  type: "StreamStart";
+  type: "Stream Start";
 }
 
 export interface StreamEndLogModel extends BaseLogModel {
-  type: "StreamEnd";
+  type: "Stream End";
 }
 
 export interface UserEventLogModel extends BaseLogModel {
-  type: "UserEventLog";
+  type: "User Event";
   userEvent: object;
 }
 
 export interface RenderLogModel extends BaseLogModel {
-  type: "RenderLog";
+  type: "Render";
   rootComponent: object;
   states: object[];
 }
