@@ -53,7 +53,7 @@ export class ComponentTree {
 
   dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
-  ngOnInit() {
+  ngOnChanges() {
     this.dataSource.data = [mapObject(this.component)];
 
     this.treeControl.dataNodes.forEach((node) => {
@@ -85,7 +85,7 @@ function mapObject(object: InputNode): DisplayNode {
   return node;
 }
 
-interface InputNode {
+export interface InputNode {
   key: {
     key: string;
   };
