@@ -26,8 +26,9 @@ def insert_component(type: pb.Type, key: str | None = None):
     """
     Inserts a component into the current session's current node.
     """
+
     runtime.session().current_node().children.append(
-        pb.Component(key=pb.Key(key=key or ""), type=type)
+        pb.Component(key=pb.Key(key=key) if key else None, type=type)
     )
 
 
