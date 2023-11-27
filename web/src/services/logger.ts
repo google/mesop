@@ -45,16 +45,21 @@ export class Logger {
   }
 
   mapLog(input: LogInput): LogModel {
+    const lastTimestamp = this.logs.length
+      ? this.logs[this.logs.length - 1].timestamp
+      : undefined;
+    const duration = lastTimestamp ? Date.now() - lastTimestamp : undefined;
     switch (input.type) {
       case "StreamStart":
-        return { type: "StreamStart", timestamp: Date.now() };
+        return { type: "StreamStart", timestamp: Date.now(), duration };
       case "StreamEnd":
-        return { type: "StreamEnd", timestamp: Date.now() };
+        return { type: "StreamEnd", timestamp: Date.now(), duration };
       case "UserEventLog":
         return {
           type: "UserEventLog",
           timestamp: Date.now(),
           userEvent: input.userEvent.toObject(),
+          duration,
         };
       case "RenderLog":
         const rootComponent = input.rootComponent.toObject();
@@ -62,6 +67,7 @@ export class Logger {
         return {
           type: "RenderLog",
           timestamp: Date.now(),
+          duration,
           states: input.states
             .getStatesList()
             .map((s) => JSON.parse(s.getData())),
@@ -90,6 +96,7 @@ export class Logger {
 export interface BaseLogModel {
   type: string;
   timestamp: number; // Use Date.now()
+  duration: number | undefined;
 }
 
 export interface StreamStartLogModel extends BaseLogModel {

@@ -15,6 +15,7 @@ interface ExampleFlatNode {
   name: string;
   value: string;
   level: number;
+  duration: number | undefined;
 }
 
 @Component({
@@ -36,6 +37,7 @@ export class ObjectTree {
       name: node.key,
       value: node.value,
       level: level,
+      duration: node.duration,
     };
   };
 
@@ -63,11 +65,19 @@ export class ObjectTree {
 function mapObject(object: object): PropertyNode[] {
   const nodes: PropertyNode[] = [];
   for (const key of Object.keys(object)) {
+    // Skip showing duration & timestamp since we have special handling for them.
+    if (key === "duration" || key === "timestamp") {
+      continue;
+    }
     const value = (object as any)[key];
     const node: PropertyNode = {
       key,
       value: JSON.stringify(value),
     };
+    const duration = (object as any)["duration"];
+    if (node.key === "type" && duration) {
+      node.duration = duration;
+    }
     if (typeof value === "object" && value !== null) {
       node.children = mapObject(value);
     }
@@ -82,4 +92,5 @@ interface PropertyNode {
   key: string;
   value: string;
   children?: PropertyNode[];
+  duration?: number;
 }

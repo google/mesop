@@ -29,3 +29,23 @@
   overflow: hidden;
   white-space: nowrap;
 }
+.type-row {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.type-chip {
+  background: #e5e5f7;
+  padding: 4px;
+  border-radius: 4px;
+  font-weight: 500;
+  margin-top: -8px;
+  margin-left: -16px;
+}
+
+.duration-chip {
+  float: right;
+  margin-top: -8px;
+  color: #319fff;
+  margin-right: -6px;
+}
