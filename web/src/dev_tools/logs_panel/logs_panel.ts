@@ -26,10 +26,6 @@ export class LogsPanel {
     this.logDataSource = new LogDataSource(this.logger);
   }
 
-  getLogs() {
-    return this.logger.getLogs();
-  }
-
   onLog = () => {
     // Scroll to bottom. In the future, make this configurable.
     setTimeout(() => {

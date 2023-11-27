@@ -1,9 +1,5 @@
 <div class="logs-panel">
-  <cdk-virtual-scroll-viewport
-    [itemSize]="getLogs().length"
-    class="viewport"
-    #virtualScroll
-  >
+  <cdk-virtual-scroll-viewport [itemSize]="50" class="viewport" #virtualScroll>
     <div
       *cdkVirtualFor="let log of logDataSource; trackByFn"
       class="log-element"
