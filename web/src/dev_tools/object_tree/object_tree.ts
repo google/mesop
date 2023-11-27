@@ -57,6 +57,12 @@ export class ObjectTree {
 
   ngOnInit() {
     this.dataSource.data = mapObject(this.object);
+
+    this.treeControl.dataNodes.forEach((node) => {
+      if (node.level < 2) {
+        this.treeControl.expand(node);
+      }
+    });
   }
 
   hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
