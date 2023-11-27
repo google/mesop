@@ -1,7 +1,14 @@
+:host {
+  overflow: hidden;
+  height: 100%;
+  display: block;
+}
+
 .panel-header {
   border-bottom: 1px solid #e8e8e8;
   background: #edeff6;
   font-size: 0.85rem;
+  position: sticky;
 }
 
 .panel-button {
@@ -9,4 +16,9 @@
   padding: 4px;
   width: 60px;
   text-align: center;
+}
+
+.panel-body {
+  overflow: auto;
+  height: calc(100% - 48px);
 }
