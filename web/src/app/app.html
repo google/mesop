@@ -11,7 +11,7 @@
     <ng-container *ngIf="rootComponent != null">
       <component-renderer [component]="rootComponent"></component-renderer>
     </ng-container>
-    <div class="debug-buttons" *ngIf="showRightSideNav()">
+    <div class="debug-buttons" *ngIf="showDebugButton()">
       <button mat-icon-button (click)="toggleRightSideNav()">
         <mat-icon>dock_to_left</mat-icon>
       </button>
@@ -19,11 +19,11 @@
   </mat-sidenav-content>
   <mat-sidenav
     #sidenav
-    [(opened)]="rightSideNav"
+    [opened]="showRightSideNav()"
     mode="side"
     position="end"
     class="right-sidenav"
   >
-    <optic-dev-tools></optic-dev-tools>
+    <optic-dev-tools *ngIf="showRightSideNav()"></optic-dev-tools>
   </mat-sidenav>
 </mat-sidenav-container>

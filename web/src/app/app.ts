@@ -56,7 +56,6 @@ import { TypeDeserializerService } from "../services/type_deserializer_service";
 class App {
   rootComponent: pb.Component;
   error: pb.ServerError;
-  rightSideNav: boolean;
 
   constructor(
     private zone: NgZone,
@@ -65,7 +64,6 @@ class App {
     private debugService: DebugService,
   ) {
     this.iconRegistry.setDefaultFontSetClass("material-symbols-rounded");
-    this.rightSideNav = debugService.showDebugPanel();
   }
 
   ngOnInit() {
@@ -84,13 +82,16 @@ class App {
     return this.channelService.getStatus() == ChannelStatus.OPEN;
   }
 
-  showRightSideNav() {
+  showDebugButton() {
     return this.debugService.isDebugMode();
   }
 
+  showRightSideNav() {
+    return this.debugService.showDebugPanel();
+  }
+
   toggleRightSideNav() {
-    this.rightSideNav = !this.rightSideNav;
-    console.log("this.rightSideNav", this.rightSideNav);
+    this.debugService.toggleShowDebugPanel();
   }
 }
 
