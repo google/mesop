@@ -83,6 +83,7 @@ export class Channel {
     this.eventSource = new EventSource(generateRequestUrl(request));
     this.status = ChannelStatus.OPEN;
     this.logger.log({ type: "StreamStart" });
+    this.logger.log({ type: "UserEventLog", userEvent: userEvent });
     this.init(this.initParams);
   }
 }

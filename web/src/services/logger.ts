@@ -54,7 +54,7 @@ export class Logger {
         return {
           type: "UserEventLog",
           timestamp: Date.now(),
-          body: JSON.stringify(input.userEvent.toObject(), undefined, 2),
+          userEvent: input.userEvent.toObject(),
         };
       case "RenderLog":
         const rootComponent = input.rootComponent.toObject();
@@ -102,7 +102,7 @@ export interface StreamEndLogModel extends BaseLogModel {
 
 export interface UserEventLogModel extends BaseLogModel {
   type: "UserEventLog";
-  body: string;
+  userEvent: object;
 }
 
 export interface RenderLogModel extends BaseLogModel {
