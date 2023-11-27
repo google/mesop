@@ -1,4 +1,10 @@
-import { Component, NgZone } from "@angular/core";
+import {
+  Component,
+  ElementRef,
+  NgZone,
+  Renderer2,
+  ViewChild,
+} from "@angular/core";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
 import * as pb from "optic/protos/ui_ts_proto_pb/protos/ui_pb";
 import { CommonModule } from "@angular/common";
@@ -45,15 +51,34 @@ import { TypeDeserializer } from "../dev_tools/services/type_deserializer";
     width: 420px;
   }
 
+  .resize-handle {
+    border: 0.75px solid gainsboro;
+    border-radius: 1px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0px;
+    width: 8px;
+    cursor: ew-resize;
+    z-index: 9999999;
+    background: rgb(252, 252, 252);
+  }
   `,
   providers: [DebugService, Channel, Logger, TypeDeserializer],
 })
 class App {
   rootComponent: pb.Component;
   error: pb.ServerError;
+  @ViewChild("dragHandle", { read: ElementRef }) dragHandle!: ElementRef;
+  private isDragging: boolean = false;
+  @ViewChild("sidenav", { read: ElementRef }) sidenav!: ElementRef;
+  @ViewChild("sidenavContent", { read: ElementRef })
+  sidenavContent!: ElementRef;
 
   constructor(
     private zone: NgZone,
+    private renderer: Renderer2,
+
     private channel: Channel,
     private iconRegistry: MatIconRegistry,
     private debugService: DebugService,
@@ -70,6 +95,24 @@ class App {
       onError: (error) => {
         this.error = error;
       },
+    });
+  }
+
+  ngAfterViewInit() {
+    this.dragHandle.nativeElement.addEventListener("mousedown", () => {
+      this.isDragging = true;
+    });
+
+    this.renderer.listen(document, "mousemove", (event) => {
+      if (!this.isDragging) return;
+
+      const newWidth = window.innerWidth - event.clientX;
+      this.sidenav.nativeElement.style.width = `${newWidth}px`;
+      this.sidenavContent.nativeElement.style.marginRight = `${newWidth}px`;
+    });
+
+    this.renderer.listen(document, "mouseup", (event) => {
+      this.isDragging = false;
     });
   }
 

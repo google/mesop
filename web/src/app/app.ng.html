@@ -16,6 +16,7 @@
         <mat-icon>dock_to_left</mat-icon>
       </button>
     </div>
+    <div [hidden]="!showRightSideNav()" #dragHandle class="resize-handle"></div>
   </mat-sidenav-content>
   <mat-sidenav
     #sidenav
