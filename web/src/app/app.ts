@@ -13,6 +13,7 @@ import { bootstrapApplication } from "@angular/platform-browser";
 import { MatIconModule, MatIconRegistry } from "@angular/material/icon";
 import { MatButtonModule } from "@angular/material/button";
 import { MatSidenavModule } from "@angular/material/sidenav";
+import { DevTools } from "../dev_tools/dev_tools";
 
 @Component({
   selector: "app",
@@ -23,6 +24,7 @@ import { MatSidenavModule } from "@angular/material/sidenav";
     ComponentRenderer,
     MatProgressBarModule,
     ErrorBox,
+    DevTools,
     MatIconModule,
     MatButtonModule,
     MatSidenavModule,
