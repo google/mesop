@@ -1,0 +1,24 @@
+.node {
+  display: flex;
+  align-items: center;
+}
+
+.leaf-node {
+  height: 24px;
+  margin-left: 16px;
+}
+
+.button {
+  height: 24px;
+  width: 24px;
+  background: white;
+  border: 0;
+  cursor: pointer;
+  margin-right: 2px;
+}
+
+.name {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}

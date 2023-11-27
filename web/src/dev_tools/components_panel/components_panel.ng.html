@@ -1,1 +1,3 @@
-<div>Components panel</div>
+@if(component()) {
+<optic-component-tree [component]="component()!"> </optic-component-tree>
+} @else { No component rendered. }

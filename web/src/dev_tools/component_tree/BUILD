@@ -5,16 +5,16 @@ package(
 )
 
 ng_module(
-    name = "components_panel",
+    name = "component_tree",
     srcs = glob([
         "*.ts",
     ]),
     assets = glob([
         "*.ng.html",
-    ]) + [":components_panel.css"],
+    ]) + [":component_tree.css"],
     deps = [
         "//protos:ui_ts_proto",
-        "//web/src/dev_tools/component_tree",
+        "//web/src/component_renderer",
         "//web/src/services",
         "@npm//@angular/compiler",
     ],
@@ -22,6 +22,6 @@ ng_module(
 
 sass_binary(
     name = "styles",
-    src = "components_panel.scss",
+    src = "component_tree.scss",
     sourcemap = False,
 )

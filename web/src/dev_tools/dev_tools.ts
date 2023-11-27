@@ -17,7 +17,7 @@ enum Panel {
 })
 export class DevTools {
   Panel = Panel; // Make it accessible by template.
-  _panel = Panel.Logs;
+  _panel = Panel.Components; // TODO: store in local storage
   panel(): Panel {
     return this._panel;
   }

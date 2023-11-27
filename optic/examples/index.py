@@ -7,3 +7,4 @@ from optic.examples import simple as simple
 from optic.examples import simple_button as simple_button
 from optic.examples import hello_world as hello_world
 from optic.examples import generator as generator
+from optic.examples import nested as nested
