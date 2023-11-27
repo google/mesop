@@ -1,8 +1,7 @@
 <div class="logs-panel">
   @for(log of getLogs(); track $index) {
   <div class="log-element">
-    {{log}}
-    <optic-object-tree></optic-object-tree>
+    <optic-object-tree [object]="log"></optic-object-tree>
   </div>
   }
 </div>

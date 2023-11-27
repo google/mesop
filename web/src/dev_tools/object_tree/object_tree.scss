@@ -1,0 +1,31 @@
+.node {
+  display: flex;
+  align-items: center;
+  margin-left: -12px;
+  margin-bottom: -4px;
+}
+
+.leaf-node {
+  height: 24px;
+  margin-left: 14px;
+}
+
+.button {
+  height: 24px;
+  width: 24px;
+  background: white;
+  border: 0;
+  cursor: pointer;
+  margin-right: 2px;
+}
+
+.key {
+  color: #881180;
+  font-weight: 700;
+}
+
+.value {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}

@@ -15,7 +15,7 @@ export class LogsPanel {
   }
 
   getLogs() {
-    return this.loggerService.getLogs().map((l) => JSON.stringify(l, null, 2));
+    return this.loggerService.getLogs();
   }
   onLog = () => {
     console.log("getLogs", this.getLogs());
