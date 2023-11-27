@@ -20,7 +20,7 @@ import { TypeDeserializer } from "../services/type_deserializer";
 
 @Component({
   selector: "app",
-  templateUrl: "app.html",
+  templateUrl: "app.ng.html",
   standalone: true,
   imports: [
     CommonModule,

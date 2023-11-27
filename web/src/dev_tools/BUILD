@@ -10,7 +10,7 @@ ng_module(
         "*.ts",
     ]),
     assets = glob([
-        "*.html",
+        "*.ng.html",
     ]) + [":dev_tools.css"],
     deps = [
         "//protos:ui_ts_proto",

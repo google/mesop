@@ -10,7 +10,7 @@ import { Channel } from "../../../web/src/services/channel";
 
 @Component({
   selector: "optic-box",
-  templateUrl: "box.html",
+  templateUrl: "box.ng.html",
   standalone: true,
 })
 export class BoxComponent {

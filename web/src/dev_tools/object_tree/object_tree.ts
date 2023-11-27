@@ -19,7 +19,7 @@ interface ExampleFlatNode {
 
 @Component({
   selector: "optic-object-tree",
-  templateUrl: "object_tree.html",
+  templateUrl: "object_tree.ng.html",
   styleUrl: "object_tree.css",
   standalone: true,
   imports: [CdkTreeModule, MatTreeModule, MatButtonModule, MatIconModule],

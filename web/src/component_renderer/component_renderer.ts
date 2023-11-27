@@ -11,7 +11,7 @@ import { ComponentLoader } from "./component_loader";
 
 @Component({
   selector: "component-renderer",
-  templateUrl: "component_renderer.html",
+  templateUrl: "component_renderer.ng.html",
   standalone: true,
   imports: [
     // REF(//scripts/gen_component.py):insert_ng_import

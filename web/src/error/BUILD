@@ -10,7 +10,7 @@ ng_module(
         "*.ts",
     ]),
     assets = glob([
-        "*.html",
+        "*.ng.html",
     ]) + [":error_box.css"],
     deps = [
         "//protos:ui_ts_proto",

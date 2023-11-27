@@ -10,7 +10,7 @@ import { Channel } from "../../../web/src/services/channel_service";
 
 @Component({
   selector: "optic-{component-name}",
-  templateUrl: "{component_name}.html",
+  templateUrl: "{component_name}.ng.html",
   standalone: true,
 })
 export class ComponentNameComponent {

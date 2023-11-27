@@ -24,7 +24,7 @@ def optic_component(name, ng_deps = [], py_deps = []):
             "*.ts",
         ]),
         assets = native.glob([
-            "*.html",
+            "*.ng.html",
         ]),
         deps = [
             ":" + ts_proto_target,

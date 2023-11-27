@@ -51,7 +51,7 @@ http_server(
     srcs = ["//web/src/app:static_files"],
     additional_root_paths = [
         "npm/node_modules",
-        # Needed for index.html & style to be loaded.
+        # Needed for index.ng.html & style to be loaded.
         "optic/web/src/app",
         # Needed for compatibility with "pkg_web" which always uses the tree
         # artifact output as workspace root.
@@ -59,7 +59,7 @@ http_server(
     ],
     enable_dev_ui = True,
     # List of environment variables that will be made available as `window.<NAME>` in the
-    # served `index.html` throuhg an injected script. Useful for allowing developers to
+    # served `index.ng.html` throuhg an injected script. Useful for allowing developers to
     # configure API keys without requiring secrets to be committed.
     environment_variables = [
         "OPTIC_SERVER_HOST",

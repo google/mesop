@@ -7,7 +7,7 @@ import { Channel } from "../services/channel";
 
 @Component({
   selector: "optic-error-box",
-  templateUrl: "error_box.html",
+  templateUrl: "error_box.ng.html",
   styleUrl: "error_box.css",
   standalone: true,
   imports: [CommonModule, ComponentRenderer, MatProgressBarModule],

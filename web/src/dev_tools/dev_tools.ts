@@ -3,7 +3,7 @@ import { LogsPanel } from "./logs_panel/logs_panel";
 
 @Component({
   selector: "optic-dev-tools",
-  templateUrl: "dev_tools.html",
+  templateUrl: "dev_tools.ng.html",
   styleUrl: "dev_tools.css",
   standalone: true,
   imports: [LogsPanel],

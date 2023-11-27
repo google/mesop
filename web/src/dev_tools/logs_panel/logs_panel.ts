@@ -4,7 +4,7 @@ import { ObjectTree } from "../object_tree/object_tree";
 
 @Component({
   selector: "optic-logs-panel",
-  templateUrl: "logs_panel.html",
+  templateUrl: "logs_panel.ng.html",
   styleUrl: "logs_panel.css",
   standalone: true,
   imports: [ObjectTree],

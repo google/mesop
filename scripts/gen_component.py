@@ -34,7 +34,7 @@ def update_component_renderer(component_name: str):
         get_current_directory(), "..", "web", "src", "component_renderer"
     )
 
-    with open(component_renderer_path + "/component_renderer.html", "r") as f:
+    with open(component_renderer_path + "/component_renderer.ng.html", "r") as f:
         lines = f.readlines()
 
     template_call = (
@@ -55,7 +55,7 @@ def update_component_renderer(component_name: str):
             lines.insert(i, template_call + "\n")
             break
 
-    with open(component_renderer_path + "/component_renderer.html", "w") as f:
+    with open(component_renderer_path + "/component_renderer.ng.html", "w") as f:
         f.writelines(lines)
 
     # Update BUILD
@@ -206,7 +206,7 @@ def rename_and_update_files(component_name: str):
     replace_component_name_ref(
         path=rename_file(component_name, ".ts"), component_name=component_name
     )
-    rename_file(component_name, ".html")
+    rename_file(component_name, ".ng.html")
     proto_path = rename_file(component_name, ".proto")
     replace_component_name_ref(path=proto_path, component_name=component_name)
 

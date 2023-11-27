@@ -4,7 +4,7 @@ import { TextType } from "optic/optic/components/text/text_ts_proto_pb/optic/com
 
 @Component({
   selector: "optic-text",
-  templateUrl: "text.html",
+  templateUrl: "text.ng.html",
   standalone: true,
 })
 export class TextComponent {

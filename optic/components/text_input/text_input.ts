@@ -14,7 +14,7 @@ import { ObserversModule } from "@angular/cdk/observers";
 
 @Component({
   selector: "optic-text-input",
-  templateUrl: "text_input.html",
+  templateUrl: "text_input.ng.html",
   standalone: true,
   imports: [MatFormFieldModule, MatInputModule, FormsModule, ObserversModule],
 })

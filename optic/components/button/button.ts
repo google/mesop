@@ -11,7 +11,7 @@ import { MatButtonModule } from "@angular/material/button";
 
 @Component({
   selector: "optic-button",
-  templateUrl: "button.html",
+  templateUrl: "button.ng.html",
   standalone: true,
   imports: [MatButtonModule],
 })

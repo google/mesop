@@ -10,7 +10,7 @@ ng_module(
         "*.ts",
     ]),
     assets = glob([
-        "*.html",
+        "*.ng.html",
     ]),
     deps = [
         # REF(//scripts/gen_component.py):insert_component_import

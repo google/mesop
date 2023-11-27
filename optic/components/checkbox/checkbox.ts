@@ -5,7 +5,7 @@ import { Channel } from "../../../web/src/services/channel";
 
 @Component({
   selector: "optic-checkbox",
-  templateUrl: "checkbox.html",
+  templateUrl: "checkbox.ng.html",
   standalone: true,
 })
 export class CheckboxComponent {
