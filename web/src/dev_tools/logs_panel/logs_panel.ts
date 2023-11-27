@@ -18,6 +18,11 @@ export class LogsPanel {
     return this.logger.getLogs();
   }
   onLog = () => {
-    console.log("getLogs", this.getLogs());
+    // Scroll to bottom. In the future, make this configurable.
+    setTimeout(() => {
+      document
+        .getElementById("log-end")
+        ?.scrollIntoView({ block: "end", behavior: "smooth" });
+    }, 150);
   };
 }
