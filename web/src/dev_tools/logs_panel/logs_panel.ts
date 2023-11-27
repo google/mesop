@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { Logger } from "../../services/logger";
+import { Logger } from "../services/logger";
 import { ObjectTree } from "../object_tree/object_tree";
 
 @Component({

@@ -1,6 +1,6 @@
 import { Injectable, NgZone } from "@angular/core";
 import * as pb from "optic/protos/ui_ts_proto_pb/protos/ui_pb";
-import { Logger } from "./logger";
+import { Logger } from "../dev_tools/services/logger";
 
 const anyWindow = window as any;
 const DEV_SERVER_HOST = anyWindow["OPTIC_SERVER_HOST"] || "";

@@ -14,9 +14,9 @@ import { MatIconModule, MatIconRegistry } from "@angular/material/icon";
 import { MatButtonModule } from "@angular/material/button";
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { DevTools } from "../dev_tools/dev_tools";
-import { DebugService } from "../services/debug_service";
-import { Logger } from "../services/logger";
-import { TypeDeserializer } from "../services/type_deserializer";
+import { DebugService } from "../dev_tools/services/debug_service";
+import { Logger } from "../dev_tools/services/logger";
+import { TypeDeserializer } from "../dev_tools/services/type_deserializer";
 
 @Component({
   selector: "app",
