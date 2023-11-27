@@ -1,3 +1,11 @@
 .logs-panel {
   white-space: preserve;
 }
+
+.log-element {
+  font-family: monospace;
+  font-size: 0.8rem;
+  border-bottom: 1px solid #d3e2fd;
+  padding: 6px;
+  margin-bottom: 4px;
+}

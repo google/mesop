@@ -1,1 +1,5 @@
-<div class="logs-panel">LogsPanel {{getLogs()}}</div>
+<div class="logs-panel">
+  @for(log of getLogs(); track $index) {
+  <div class="log-element">{{log}}</div>
+  }
+</div>
