@@ -11,7 +11,7 @@
     <ng-container *ngIf="rootComponent != null">
       <component-renderer [component]="rootComponent"></component-renderer>
     </ng-container>
-    <div class="debug-buttons">
+    <div class="debug-buttons" *ngIf="showRightSideNav()">
       <button mat-icon-button (click)="toggleRightSideNav()">
         <mat-icon>dock_to_left</mat-icon>
       </button>

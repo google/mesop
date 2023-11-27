@@ -14,6 +14,7 @@ import { MatIconModule, MatIconRegistry } from "@angular/material/icon";
 import { MatButtonModule } from "@angular/material/button";
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { DevTools } from "../dev_tools/dev_tools";
+import { DebugService } from "../services/debug_service";
 
 @Component({
   selector: "app",
@@ -39,12 +40,11 @@ import { DevTools } from "../dev_tools/dev_tools";
     right: 0px;
   }
   .right-sidenav {
-    width: 280px;
-    padding: 16px;
+    width: 420px;
   }
 
   `,
-  providers: [ChannelService],
+  providers: [ChannelService, DebugService],
 })
 class App {
   rootComponent: pb.Component;
@@ -55,8 +55,10 @@ class App {
     private zone: NgZone,
     private channelService: ChannelService,
     private iconRegistry: MatIconRegistry,
+    private debugService: DebugService,
   ) {
     this.iconRegistry.setDefaultFontSetClass("material-symbols-rounded");
+    this.rightSideNav = debugService.showDebugPanel();
   }
 
   ngOnInit() {
@@ -73,6 +75,10 @@ class App {
 
   isConnectionOpen() {
     return this.channelService.getStatus() == ChannelStatus.OPEN;
+  }
+
+  showRightSideNav() {
+    return this.debugService.isDebugMode();
   }
 
   toggleRightSideNav() {
