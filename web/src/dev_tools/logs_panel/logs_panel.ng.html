@@ -1,8 +1,15 @@
 <div class="logs-panel">
-  @for(log of getLogs(); track $index) {
-  <div class="log-element">
-    <optic-object-tree [object]="log"></optic-object-tree>
-  </div>
-  }
+  <cdk-virtual-scroll-viewport
+    [itemSize]="getLogs().length"
+    class="viewport"
+    #virtualScroll
+  >
+    <div
+      *cdkVirtualFor="let log of logDataSource; trackByFn"
+      class="log-element"
+    >
+      <optic-object-tree [object]="log"></optic-object-tree>
+    </div>
+  </cdk-virtual-scroll-viewport>
   <div id="log-end"></div>
 </div>

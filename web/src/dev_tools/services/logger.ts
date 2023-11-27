@@ -6,11 +6,13 @@ import { TextType } from "optic/optic/components/text/text_ts_proto_pb/optic/com
 import { BoxType } from "optic/optic/components/box/box_ts_proto_pb/optic/components/box/box_pb";
 import { CheckboxType } from "optic/optic/components/checkbox/checkbox_ts_proto_pb/optic/components/checkbox/checkbox_pb";
 import { TextInputType } from "optic/optic/components/text_input/text_input_ts_proto_pb/optic/components/text_input/text_input_pb";
+import { Observable, Subject } from "rxjs";
 
 @Injectable()
 export class Logger {
   private logs: LogModel[] = [];
   private onLog?: () => void;
+  private logSubject = new Subject<LogModel[]>();
 
   constructor(private _typeDeserializer: TypeDeserializer) {
     console.log("constructed logger");
@@ -32,7 +34,9 @@ export class Logger {
   }
 
   log(input: LogInput) {
-    this.logs.push(this.mapLog(input));
+    const logModel = this.mapLog(input);
+    this.logs.push(logModel);
+    this.logSubject.next(this.logs);
     this.onLog?.();
   }
 
@@ -42,6 +46,10 @@ export class Logger {
 
   getLogs(): LogModel[] {
     return this.logs;
+  }
+
+  getLogObservable(): Observable<LogModel[]> {
+    return this.logSubject.asObservable();
   }
 
   mapLog(input: LogInput): LogModel {

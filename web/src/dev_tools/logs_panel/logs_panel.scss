@@ -1,5 +1,18 @@
 .logs-panel {
   white-space: preserve;
+  height: 100%;
+}
+
+.viewport {
+  height: 100%;
+  width: 100%;
+}
+
+// See: https://github.com/angular/components/issues/24277
+cdk-virtual-scroll-viewport {
+  ::ng-deep .cdk-virtual-scroll-content-wrapper {
+    max-width: 100% !important;
+  }
 }
 
 .log-element {
