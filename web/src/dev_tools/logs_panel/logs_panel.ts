@@ -1,4 +1,5 @@
 import { Component } from "@angular/core";
+import { LoggerService } from "../../services/logger_service";
 
 @Component({
   selector: "optic-logs-panel",
@@ -6,4 +7,15 @@ import { Component } from "@angular/core";
   styleUrl: "logs_panel.css",
   standalone: true,
 })
-export class LogsPanel {}
+export class LogsPanel {
+  constructor(private loggerService: LoggerService) {
+    this.loggerService.setOnLog(this.onLog);
+  }
+
+  getLogs() {
+    return this.loggerService.getLogs().map((l) => JSON.stringify(l, null, 2));
+  }
+  onLog = () => {
+    console.log("getLogs", this.getLogs());
+  };
+}

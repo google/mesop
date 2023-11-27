@@ -15,6 +15,8 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { DevTools } from "../dev_tools/dev_tools";
 import { DebugService } from "../services/debug_service";
+import { LoggerService } from "../services/logger_service";
+import { TypeDeserializerService } from "../services/type_deserializer_service";
 
 @Component({
   selector: "app",
@@ -44,7 +46,12 @@ import { DebugService } from "../services/debug_service";
   }
 
   `,
-  providers: [ChannelService, DebugService],
+  providers: [
+    DebugService,
+    ChannelService,
+    LoggerService,
+    TypeDeserializerService,
+  ],
 })
 class App {
   rootComponent: pb.Component;
@@ -88,5 +95,7 @@ class App {
 }
 
 export function bootstrapApp() {
-  bootstrapApplication(App, { providers: [provideAnimations()] });
+  bootstrapApplication(App, {
+    providers: [provideAnimations()],
+  });
 }

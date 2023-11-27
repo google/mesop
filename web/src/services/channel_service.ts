@@ -1,5 +1,6 @@
-import { NgZone } from "@angular/core";
+import { Injectable, NgZone } from "@angular/core";
 import * as pb from "optic/protos/ui_ts_proto_pb/protos/ui_pb";
+import { LoggerService } from "./logger_service";
 
 const anyWindow = window as any;
 const DEV_SERVER_HOST = anyWindow["OPTIC_SERVER_HOST"] || "";
@@ -15,17 +16,19 @@ export enum ChannelStatus {
   CLOSED = "CLOSED",
 }
 
+@Injectable()
 export class ChannelService {
   private eventSource: EventSource;
   private initParams: InitParams;
   private states: pb.States;
   private status: ChannelStatus;
 
-  constructor() {
+  constructor(private loggerService: LoggerService) {
     const request = new pb.UiRequest();
     request.setInit(new pb.InitRequest());
     this.eventSource = new EventSource(generateRequestUrl(request));
     this.status = ChannelStatus.OPEN;
+    this.loggerService.log({ type: "StreamStart" });
   }
 
   getStatus(): ChannelStatus {
@@ -42,6 +45,7 @@ export class ChannelService {
         if (e.data == "<stream_end>") {
           this.eventSource.close();
           this.status = ChannelStatus.CLOSED;
+          this.loggerService.log({ type: "StreamEnd" });
           return;
         }
 
@@ -51,8 +55,13 @@ export class ChannelService {
         switch (UiResponse.getTypeCase()) {
           case pb.UiResponse.TypeCase.RENDER:
             this.states = UiResponse.getRender()!.getStates()!;
-
-            onRender(UiResponse.getRender()!.getRootComponent()!);
+            const rootComponent = UiResponse.getRender()!.getRootComponent()!;
+            onRender(rootComponent);
+            this.loggerService.log({
+              type: "RenderLog",
+              states: this.states,
+              rootComponent: rootComponent,
+            });
             break;
           case pb.UiResponse.TypeCase.ERROR:
             onError(UiResponse.getError()!);
@@ -73,6 +82,7 @@ export class ChannelService {
     this.eventSource.close();
     this.eventSource = new EventSource(generateRequestUrl(request));
     this.status = ChannelStatus.OPEN;
+    this.loggerService.log({ type: "StreamStart" });
     this.init(this.initParams);
   }
 }
