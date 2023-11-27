@@ -7,7 +7,7 @@
       *matTreeNodeDef="let node"
       class="node leaf-node"
     >
-      <span class="name">{{node.name}}</span>
+      <span class="name" [title]="node.name">{{node.name}}</span>
     </cdk-tree-node>
     <!-- This is the tree node template for expandable nodes -->
     <cdk-tree-node
@@ -22,7 +22,7 @@
           {{treeControl.isExpanded(node) ? 'arrow_drop_down' : 'arrow_right'}}
         </mat-icon>
       </button>
-      <span class="name">{{node.name}}</span>
+      <span class="name" [title]="node.name">{{node.name}}</span>
     </cdk-tree-node>
   </cdk-tree>
 </div>

@@ -72,7 +72,7 @@ function mapObject(object: InputNode): DisplayNode {
     const values = Object.entries(object.type.value)
       .map((entry) => {
         const [key, value] = entry;
-        return `${key}=${value}`;
+        return `${key}=${JSON.stringify(value)}`;
       })
       .join(", ");
     node.text = `${object.type.name}(${values})`;
