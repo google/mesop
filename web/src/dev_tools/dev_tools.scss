@@ -7,15 +7,21 @@
 .panel-header {
   border-bottom: 1px solid #e8e8e8;
   background: #edeff6;
-  font-size: 0.85rem;
+  display: flex;
+  font-size: 0.8rem;
   position: sticky;
 }
 
 .panel-button {
-  border-bottom: 2px solid #1c6ef3;
   padding: 4px;
-  width: 60px;
+  width: 100px;
   text-align: center;
+  cursor: pointer;
+}
+
+.selected-panel-button {
+  color: #1c6ef3;
+  border-bottom: 2px solid #1c6ef3;
 }
 
 .panel-body {

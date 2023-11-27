@@ -5,23 +5,24 @@ package(
 )
 
 ng_module(
-    name = "dev_tools",
+    name = "components_panel",
     srcs = glob([
         "*.ts",
     ]),
     assets = glob([
         "*.ng.html",
-    ]) + [":dev_tools.css"],
+    ]) + [":components_panel.css"],
     deps = [
         "//protos:ui_ts_proto",
-        "//web/src/dev_tools/components_panel",
-        "//web/src/dev_tools/logs_panel",
+        "//web/src/component_renderer",
+        "//web/src/dev_tools/object_tree",
+        "//web/src/services",
         "@npm//@angular/compiler",
     ],
 )
 
 sass_binary(
     name = "styles",
-    src = "dev_tools.scss",
+    src = "components_panel.scss",
     sourcemap = False,
 )

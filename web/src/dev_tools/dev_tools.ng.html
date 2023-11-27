@@ -1,6 +1,23 @@
 <div class="panel-header">
-  <div class="panel-button">Logs</div>
+  <div
+    class="panel-button"
+    [ngClass]="{'selected-panel-button': panel() === Panel.Components}"
+    (click)="selectComponentsPanel()"
+  >
+    Components
+  </div>
+  <div
+    class="panel-button"
+    [ngClass]="{'selected-panel-button': panel() === Panel.Logs}"
+    (click)="selectLogsPanel()"
+  >
+    Logs
+  </div>
 </div>
 <div class="panel-body">
+  @if(panel() === Panel.Components) {
+  <optic-components-panel></optic-components-panel>
+  } @if (panel() === Panel.Logs) {
   <optic-logs-panel></optic-logs-panel>
+  }
 </div>
