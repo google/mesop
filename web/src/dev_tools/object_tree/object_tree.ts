@@ -87,7 +87,7 @@ function mapObject(object: object): PropertyNode[] {
     if (typeof value === "object" && value !== null) {
       node.children = mapObject(value);
     }
-    if (value || node.children) {
+    if (value != null || node.children) {
       nodes.push(node);
     }
   }
