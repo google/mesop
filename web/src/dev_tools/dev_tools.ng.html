@@ -15,9 +15,9 @@
   </div>
 </div>
 <div class="panel-body">
-  @if(panel() === Panel.Components) {
-  <optic-components-panel></optic-components-panel>
-  } @if (panel() === Panel.Logs) {
-  <optic-logs-panel></optic-logs-panel>
-  }
+  <optic-components-panel
+    [hidden]="panel() !== Panel.Components"
+  ></optic-components-panel>
+
+  <optic-logs-panel [hidden]="panel() !== Panel.Logs"></optic-logs-panel>
 </div>
