@@ -3,7 +3,7 @@ import { MatProgressBarModule } from "@angular/material/progress-bar";
 import * as pb from "optic/protos/ui_ts_proto_pb/protos/ui_pb";
 import { CommonModule } from "@angular/common";
 import { ComponentRenderer } from "../component_renderer/component_renderer";
-import { ChannelService, ChannelStatus } from "../services/channel_service";
+import { Channel, ChannelStatus } from "../services/channel";
 import { ErrorBox } from "../error/error_box";
 import {
   BrowserAnimationsModule,
@@ -15,8 +15,8 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { DevTools } from "../dev_tools/dev_tools";
 import { DebugService } from "../services/debug_service";
-import { LoggerService } from "../services/logger_service";
-import { TypeDeserializerService } from "../services/type_deserializer_service";
+import { Logger } from "../services/logger";
+import { TypeDeserializer } from "../services/type_deserializer";
 
 @Component({
   selector: "app",
@@ -46,12 +46,7 @@ import { TypeDeserializerService } from "../services/type_deserializer_service";
   }
 
   `,
-  providers: [
-    DebugService,
-    ChannelService,
-    LoggerService,
-    TypeDeserializerService,
-  ],
+  providers: [DebugService, Channel, Logger, TypeDeserializer],
 })
 class App {
   rootComponent: pb.Component;
@@ -59,7 +54,7 @@ class App {
 
   constructor(
     private zone: NgZone,
-    private channelService: ChannelService,
+    private channel: Channel,
     private iconRegistry: MatIconRegistry,
     private debugService: DebugService,
   ) {
@@ -67,7 +62,7 @@ class App {
   }
 
   ngOnInit() {
-    this.channelService.init({
+    this.channel.init({
       zone: this.zone,
       onRender: (rootComponent) => {
         this.rootComponent = rootComponent;
@@ -79,7 +74,7 @@ class App {
   }
 
   isConnectionOpen() {
-    return this.channelService.getStatus() == ChannelStatus.OPEN;
+    return this.channel.getStatus() == ChannelStatus.OPEN;
   }
 
   showDebugButton() {

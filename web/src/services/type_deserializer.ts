@@ -3,7 +3,7 @@ import { Injectable, defineInjectable } from "@angular/core";
 type Deserializer = (value: Uint8Array) => object;
 
 @Injectable()
-export class TypeDeserializerService {
+export class TypeDeserializer {
   private _map = new Map<string, Deserializer>();
   registerDeserializer(type: string, deserializer: Deserializer) {
     this._map.set(type, deserializer);

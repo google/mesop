@@ -1,6 +1,6 @@
 import { Injectable, NgZone } from "@angular/core";
 import * as pb from "optic/protos/ui_ts_proto_pb/protos/ui_pb";
-import { LoggerService } from "./logger_service";
+import { Logger } from "./logger";
 
 const anyWindow = window as any;
 const DEV_SERVER_HOST = anyWindow["OPTIC_SERVER_HOST"] || "";
@@ -17,18 +17,18 @@ export enum ChannelStatus {
 }
 
 @Injectable()
-export class ChannelService {
+export class Channel {
   private eventSource: EventSource;
   private initParams: InitParams;
   private states: pb.States;
   private status: ChannelStatus;
 
-  constructor(private loggerService: LoggerService) {
+  constructor(private logger: Logger) {
     const request = new pb.UiRequest();
     request.setInit(new pb.InitRequest());
     this.eventSource = new EventSource(generateRequestUrl(request));
     this.status = ChannelStatus.OPEN;
-    this.loggerService.log({ type: "StreamStart" });
+    this.logger.log({ type: "StreamStart" });
   }
 
   getStatus(): ChannelStatus {
@@ -45,7 +45,7 @@ export class ChannelService {
         if (e.data == "<stream_end>") {
           this.eventSource.close();
           this.status = ChannelStatus.CLOSED;
-          this.loggerService.log({ type: "StreamEnd" });
+          this.logger.log({ type: "StreamEnd" });
           return;
         }
 
@@ -57,7 +57,7 @@ export class ChannelService {
             this.states = UiResponse.getRender()!.getStates()!;
             const rootComponent = UiResponse.getRender()!.getRootComponent()!;
             onRender(rootComponent);
-            this.loggerService.log({
+            this.logger.log({
               type: "RenderLog",
               states: this.states,
               rootComponent: rootComponent,
@@ -82,7 +82,7 @@ export class ChannelService {
     this.eventSource.close();
     this.eventSource = new EventSource(generateRequestUrl(request));
     this.status = ChannelStatus.OPEN;
-    this.loggerService.log({ type: "StreamStart" });
+    this.logger.log({ type: "StreamStart" });
     this.init(this.initParams);
   }
 }

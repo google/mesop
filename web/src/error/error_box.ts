@@ -3,7 +3,7 @@ import { MatProgressBarModule } from "@angular/material/progress-bar";
 import * as pb from "optic/protos/ui_ts_proto_pb/protos/ui_pb";
 import { CommonModule } from "@angular/common";
 import { ComponentRenderer } from "../component_renderer/component_renderer";
-import { ChannelService } from "../services/channel_service";
+import { Channel } from "../services/channel";
 
 @Component({
   selector: "optic-error-box",
@@ -11,7 +11,7 @@ import { ChannelService } from "../services/channel_service";
   styleUrl: "error_box.css",
   standalone: true,
   imports: [CommonModule, ComponentRenderer, MatProgressBarModule],
-  providers: [ChannelService],
+  providers: [Channel],
 })
 export class ErrorBox {
   _showFullTraceback: boolean = false;

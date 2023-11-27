@@ -6,7 +6,7 @@ import {
   UserEvent,
 } from "optic/protos/ui_ts_proto_pb/protos/ui_pb";
 import { BoxType } from "optic/optic/components/box/box_ts_proto_pb/optic/components/box/box_pb";
-import { ChannelService } from "../../../web/src/services/channel_service";
+import { Channel } from "../../../web/src/services/channel";
 
 @Component({
   selector: "optic-box",
@@ -19,7 +19,7 @@ export class BoxComponent {
   private _config: BoxType;
   isChecked = false;
 
-  constructor(private readonly channelService: ChannelService) {}
+  constructor(private readonly channel: Channel) {}
 
   ngOnChanges() {
     this._config = BoxType.deserializeBinary(

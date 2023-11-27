@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { LoggerService } from "../../services/logger_service";
+import { Logger } from "../../services/logger";
 import { ObjectTree } from "../object_tree/object_tree";
 
 @Component({
@@ -10,12 +10,12 @@ import { ObjectTree } from "../object_tree/object_tree";
   imports: [ObjectTree],
 })
 export class LogsPanel {
-  constructor(private loggerService: LoggerService) {
-    this.loggerService.setOnLog(this.onLog);
+  constructor(private logger: Logger) {
+    this.logger.setOnLog(this.onLog);
   }
 
   getLogs() {
-    return this.loggerService.getLogs();
+    return this.logger.getLogs();
   }
   onLog = () => {
     console.log("getLogs", this.getLogs());

@@ -6,7 +6,7 @@ import {
   UserEvent,
 } from "optic/protos/ui_ts_proto_pb/protos/ui_pb";
 import { TextInputType } from "optic/optic/components/text_input/text_input_ts_proto_pb/optic/components/text_input/text_input_pb";
-import { ChannelService } from "../../../web/src/services/channel_service";
+import { Channel } from "../../../web/src/services/channel";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { FormsModule } from "@angular/forms";
@@ -24,7 +24,7 @@ export class TextInputComponent {
   private _config: TextInputType;
   isChecked = false;
 
-  constructor(private readonly channelService: ChannelService) {}
+  constructor(private readonly channel: Channel) {}
 
   ngOnChanges() {
     this._config = TextInputType.deserializeBinary(
@@ -42,6 +42,6 @@ export class TextInputComponent {
     inputChange.setValue((event.target as HTMLInputElement).value);
     userEvent.setChange(inputChange);
     userEvent.setHandlerId(this.config().getOnChangeHandlerId()!);
-    this.channelService.dispatch(userEvent);
+    this.channel.dispatch(userEvent);
   }
 }

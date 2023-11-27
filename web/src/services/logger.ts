@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import * as pb from "optic/protos/ui_ts_proto_pb/protos/ui_pb";
-import { TypeDeserializerService } from "./type_deserializer_service";
+import { TypeDeserializer } from "./type_deserializer";
 import { ButtonType } from "optic/optic/components/button/button_ts_proto_pb/optic/components/button/button_pb";
 import { TextType } from "optic/optic/components/text/text_ts_proto_pb/optic/components/text/text_pb";
 import { BoxType } from "optic/optic/components/box/box_ts_proto_pb/optic/components/box/box_pb";
@@ -8,25 +8,25 @@ import { CheckboxType } from "optic/optic/components/checkbox/checkbox_ts_proto_
 import { TextInputType } from "optic/optic/components/text_input/text_input_ts_proto_pb/optic/components/text_input/text_input_pb";
 
 @Injectable()
-export class LoggerService {
+export class Logger {
   private logs: LogModel[] = [];
   private onLog?: () => void;
 
-  constructor(private _typeDeserializerService: TypeDeserializerService) {
+  constructor(private _typeDeserializer: TypeDeserializer) {
     console.log("constructed logger");
-    _typeDeserializerService.registerDeserializer("button", (value) =>
+    _typeDeserializer.registerDeserializer("button", (value) =>
       ButtonType.deserializeBinary(value).toObject(),
     );
-    _typeDeserializerService.registerDeserializer("text", (value) =>
+    _typeDeserializer.registerDeserializer("text", (value) =>
       TextType.deserializeBinary(value).toObject(),
     );
-    _typeDeserializerService.registerDeserializer("box", (value) =>
+    _typeDeserializer.registerDeserializer("box", (value) =>
       BoxType.deserializeBinary(value).toObject(),
     );
-    _typeDeserializerService.registerDeserializer("checkbox", (value) =>
+    _typeDeserializer.registerDeserializer("checkbox", (value) =>
       CheckboxType.deserializeBinary(value).toObject(),
     );
-    _typeDeserializerService.registerDeserializer("text_input", (value) =>
+    _typeDeserializer.registerDeserializer("text_input", (value) =>
       TextInputType.deserializeBinary(value).toObject(),
     );
   }
@@ -73,7 +73,7 @@ export class LoggerService {
   updateComponent(component: object): void {
     const type = (component as any)["type"];
     if (type) {
-      type["value"] = this._typeDeserializerService.deserialize(
+      type["value"] = this._typeDeserializer.deserialize(
         type["name"],
         type["value"],
       );

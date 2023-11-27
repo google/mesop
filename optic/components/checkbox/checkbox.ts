@@ -1,7 +1,7 @@
 import { Component, Input } from "@angular/core";
 import { Key, Type, UserEvent } from "optic/protos/ui_ts_proto_pb/protos/ui_pb";
 import { CheckboxType } from "optic/optic/components/checkbox/checkbox_ts_proto_pb/optic/components/checkbox/checkbox_pb";
-import { ChannelService } from "../../../web/src/services/channel_service";
+import { Channel } from "../../../web/src/services/channel";
 
 @Component({
   selector: "optic-checkbox",
@@ -14,7 +14,7 @@ export class CheckboxComponent {
   private _config: CheckboxType;
   isChecked = false;
 
-  constructor(private readonly channelService: ChannelService) {}
+  constructor(private readonly channel: Channel) {}
 
   ngOnChanges() {
     this._config = CheckboxType.deserializeBinary(
@@ -33,6 +33,6 @@ export class CheckboxComponent {
     userEvent.setBool(event.target.checked);
     userEvent.setHandlerId(this.config().getOnUpdateHandlerId()!);
     userEvent.setKey(this.key);
-    this.channelService.dispatch(userEvent);
+    this.channel.dispatch(userEvent);
   }
 }

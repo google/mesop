@@ -6,7 +6,7 @@ import {
   UserEvent,
 } from "optic/protos/ui_ts_proto_pb/protos/ui_pb";
 import { ButtonType } from "optic/optic/components/button/button_ts_proto_pb/optic/components/button/button_pb";
-import { ChannelService } from "../../../web/src/services/channel_service";
+import { Channel } from "../../../web/src/services/channel";
 import { MatButtonModule } from "@angular/material/button";
 
 @Component({
@@ -21,7 +21,7 @@ export class ButtonComponent {
   private _config: ButtonType;
   isChecked = false;
 
-  constructor(private readonly channelService: ChannelService) {}
+  constructor(private readonly channel: Channel) {}
 
   ngOnChanges() {
     this._config = ButtonType.deserializeBinary(
@@ -37,6 +37,6 @@ export class ButtonComponent {
     const userEvent = new UserEvent();
     userEvent.setClick(new Click());
     userEvent.setHandlerId(this.config().getOnClickHandlerId()!);
-    this.channelService.dispatch(userEvent);
+    this.channel.dispatch(userEvent);
   }
 }

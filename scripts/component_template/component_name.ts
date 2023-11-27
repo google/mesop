@@ -6,7 +6,7 @@ import {
   UserEvent,
 } from "optic/protos/ui_ts_proto_pb/protos/ui_pb";
 import { ComponentNameType } from "optic/optic/components/component_name/component_name_ts_proto_pb/optic/components/component_name/component_name_pb";
-import { ChannelService } from "../../../web/src/services/channel_service";
+import { Channel } from "../../../web/src/services/channel_service";
 
 @Component({
   selector: "optic-{component-name}",
@@ -19,7 +19,7 @@ export class ComponentNameComponent {
   private _config: ComponentNameType;
   isChecked = false;
 
-  constructor(private readonly channelService: ChannelService) {}
+  constructor(private readonly channel: Channel) {}
 
   ngOnChanges() {
     this._config = ComponentNameType.deserializeBinary(
@@ -35,6 +35,6 @@ export class ComponentNameComponent {
     const userEvent = new UserEvent();
     userEvent.setClick(new Click());
     userEvent.setHandlerId(this.config().getOnClickHandlerId()!);
-    this.channelService.dispatch(userEvent);
+    this.channel.dispatch(userEvent);
   }
 }
