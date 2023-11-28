@@ -2,11 +2,7 @@ import { Component } from "@angular/core";
 import { LogsPanel } from "./logs_panel/logs_panel";
 import { ComponentsPanel } from "./components_panel/components_panel";
 import { CommonModule } from "@angular/common";
-
-enum Panel {
-  Components,
-  Logs,
-}
+import { DebugService, Panel } from "./services/debug_service";
 
 @Component({
   selector: "optic-dev-tools",
@@ -17,13 +13,18 @@ enum Panel {
 })
 export class DevTools {
   Panel = Panel; // Make it accessible by template.
-  selectedPanel = Panel.Components; // TODO: store in local storage
+
+  get selectedPanel(): Panel {
+    return this.debugService.getCurrentDevToolsPanel();
+  }
+
+  constructor(private debugService: DebugService) {}
 
   selectComponentsPanel() {
-    this.selectedPanel = Panel.Components;
+    this.debugService.setCurrentDevToolsPanel(Panel.Components);
   }
 
   selectLogsPanel() {
-    this.selectedPanel = Panel.Logs;
+    this.debugService.setCurrentDevToolsPanel(Panel.Logs);
   }
 }
