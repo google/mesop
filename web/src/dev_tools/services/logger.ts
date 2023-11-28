@@ -1,11 +1,6 @@
 import { Injectable } from "@angular/core";
 import * as pb from "optic/protos/ui_ts_proto_pb/protos/ui_pb";
 import { TypeDeserializer } from "./type_deserializer";
-import { ButtonType } from "optic/optic/components/button/button_ts_proto_pb/optic/components/button/button_pb";
-import { TextType } from "optic/optic/components/text/text_ts_proto_pb/optic/components/text/text_pb";
-import { BoxType } from "optic/optic/components/box/box_ts_proto_pb/optic/components/box/box_pb";
-import { CheckboxType } from "optic/optic/components/checkbox/checkbox_ts_proto_pb/optic/components/checkbox/checkbox_pb";
-import { TextInputType } from "optic/optic/components/text_input/text_input_ts_proto_pb/optic/components/text_input/text_input_pb";
 import { Observable, Subject } from "rxjs";
 
 @Injectable()
@@ -14,24 +9,7 @@ export class Logger {
   private onLog?: () => void;
   private logSubject = new Subject<LogModel[]>();
 
-  constructor(private _typeDeserializer: TypeDeserializer) {
-    console.log("constructed logger");
-    _typeDeserializer.registerDeserializer("button", (value) =>
-      ButtonType.deserializeBinary(value).toObject(),
-    );
-    _typeDeserializer.registerDeserializer("text", (value) =>
-      TextType.deserializeBinary(value).toObject(),
-    );
-    _typeDeserializer.registerDeserializer("box", (value) =>
-      BoxType.deserializeBinary(value).toObject(),
-    );
-    _typeDeserializer.registerDeserializer("checkbox", (value) =>
-      CheckboxType.deserializeBinary(value).toObject(),
-    );
-    _typeDeserializer.registerDeserializer("text_input", (value) =>
-      TextInputType.deserializeBinary(value).toObject(),
-    );
-  }
+  constructor(private _typeDeserializer: TypeDeserializer) {}
 
   log(input: LogInput) {
     const logModel = this.mapLog(input);
