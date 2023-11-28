@@ -55,7 +55,7 @@ export class ObjectTree {
 
   dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
-  ngOnInit() {
+  ngOnChanges() {
     this.dataSource.data = mapObject(this.object);
 
     this.treeControl.dataNodes.forEach((node) => {

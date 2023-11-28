@@ -1,5 +1,5 @@
 import { FlatTreeControl } from "@angular/cdk/tree";
-import { Component, Input } from "@angular/core";
+import { Component, EventEmitter, Input, Output } from "@angular/core";
 import {
   MatTreeFlatDataSource,
   MatTreeFlattener,
@@ -10,9 +10,10 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatButtonModule } from "@angular/material/button";
 
 /** Flat node with expandable and level information */
-interface ExampleFlatNode {
+export interface ExampleFlatNode {
   expandable: boolean;
-  name: string;
+  text: string;
+  componentName: string;
   properties: [string: any];
   level: number;
 }
@@ -26,6 +27,7 @@ interface ExampleFlatNode {
 })
 export class ComponentTree {
   @Input({ required: true }) component: InputNode;
+  @Output() nodeSelected = new EventEmitter<ExampleFlatNode>();
 
   keys() {
     return Object.keys(this.component);
@@ -33,9 +35,10 @@ export class ComponentTree {
   private _transformer = (node: DisplayNode, level: number) => {
     return {
       expandable: !!node.children && node.children.length > 0,
-      name: node.text,
+      text: node.text,
       properties: node.properties,
       level: level,
+      componentName: node.componentName,
     };
   };
 
@@ -64,10 +67,19 @@ export class ComponentTree {
   }
 
   hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
+
+  selectNode(node: ExampleFlatNode): void {
+    this.nodeSelected.emit(node);
+  }
 }
 
 function mapObject(object: InputNode): DisplayNode {
-  const node: DisplayNode = { text: "", properties: {} as any, children: [] };
+  const node: DisplayNode = {
+    componentName: "<undefined>",
+    text: "",
+    properties: {} as any,
+    children: [],
+  };
   if (object.type) {
     const values = Object.entries(object.type.value)
       .map((entry) => {
@@ -76,6 +88,8 @@ function mapObject(object: InputNode): DisplayNode {
       })
       .join(", ");
     node.text = `${object.type.name}(${values})`;
+    node.properties = object.type.value;
+    node.componentName = object.type.name;
   } else {
     node.text = `<root>`;
   }
@@ -98,6 +112,7 @@ export interface InputNode {
 
 interface DisplayNode {
   text: string; // foo(bar=blue)
+  componentName: string;
   properties: [string: any];
   children: DisplayNode[];
 }

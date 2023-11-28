@@ -7,7 +7,9 @@
       *matTreeNodeDef="let node"
       class="node leaf-node"
     >
-      <span class="name" [title]="node.name">{{node.name}}</span>
+      <div (click)="selectNode(node)" class="node-container">
+        <span class="name" [title]="node.text">{{node.text}}</span>
+      </div>
     </cdk-tree-node>
     <!-- This is the tree node template for expandable nodes -->
     <cdk-tree-node
@@ -15,14 +17,19 @@
       cdkTreeNodePaddingIndent="10"
       *matTreeNodeDef="let node;when: hasChild"
       class="node"
-      matTreeNodeToggle
     >
-      <button class="button" [attr.aria-label]="'Toggle ' + node.name">
-        <mat-icon class="mat-icon-rtl-mirror">
-          {{treeControl.isExpanded(node) ? 'arrow_drop_down' : 'arrow_right'}}
-        </mat-icon>
-      </button>
-      <span class="name" [title]="node.name">{{node.name}}</span>
+      <div (click)="selectNode(node)" class="node-container">
+        <button
+          class="button"
+          [attr.aria-label]="'Toggle ' + node.text"
+          matTreeNodeToggle
+        >
+          <mat-icon class="mat-icon-rtl-mirror">
+            {{treeControl.isExpanded(node) ? 'arrow_drop_down' : 'arrow_right'}}
+          </mat-icon>
+        </button>
+        <span class="name" [title]="node.text">{{node.text}}</span>
+      </div>
     </cdk-tree-node>
   </cdk-tree>
 </div>

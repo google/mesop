@@ -1,3 +1,15 @@
 @if(component()) {
-<optic-component-tree [component]="component()!"> </optic-component-tree>
+<optic-component-tree
+  (nodeSelected)="onNodeSelected($event)"
+  [component]="component()!"
+>
+</optic-component-tree>
 } @else { No component rendered. }
+
+<!-- Selected Node: -->
+@if (selectedNode) {
+<div class="bottom-pane">
+  Selected node: {{selectedNode.componentName}}
+  <optic-object-tree [object]="selectedNode.properties"></optic-object-tree>
+</div>
+}
