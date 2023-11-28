@@ -3,3 +3,8 @@
 # it's imports are used for side effects
 # Skip error examples since there's intentionally incorrect Python code.
 extend-exclude = ["optic/testing/index.py", "optic/examples/error*"]
+
+[build-system]
+# Fallback behavior: https://pip.pypa.io/en/stable/reference/build-system/pyproject-toml/#fallback-behaviour
+requires = ["setuptools>=40.8.0", "wheel"]
+build-backend = "setuptools.build_meta:__legacy__"
