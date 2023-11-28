@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from typing import Any, Callable, Generator, cast
 
 import protos.ui_pb2 as pb
-from .session import Session
+from .context import Context
 from optic.exceptions import OpticUserException
 
 Handler = Callable[[Any], None | Generator[None, None, None]]
@@ -15,7 +15,7 @@ class EmptyState:
 
 
 class Runtime:
-    _session: Session
+    _context: Context
     _path_fns: dict[str, Callable[[], None]]
     _handlers: dict[str, Handler]
     _state_classes: list[type[Any]]
@@ -27,20 +27,20 @@ class Runtime:
         self._state_classes = []
         self._loading_errors = []
 
-    def session(self):
-        return self._session
+    def context(self):
+        return self._context
 
-    def reset_session(self):
+    def reset_context(self):
         if len(self._state_classes) == 0:
             print("No state class was registered, using an empty state")
             states = {EmptyState: EmptyState()}
         else:
             states = {}
-            # Create new instances so that we don't accidentally share state across sessions.
+            # Create new instances so that we don't accidentally share state across contexts.
             for state_class in self._state_classes:
                 states[state_class] = state_class()
 
-        self._session = Session(
+        self._context = Context(
             get_handler=self.get_handler, states=cast(dict[Any, Any], states)
         )
 
@@ -70,7 +70,7 @@ Try one of the following paths:
         self._state_classes.append(state_class)
 
     def add_loading_error(self, error: pb.ServerError) -> None:
-        """Only put non-session specific errors, because these errors can be potentially shown across sessions."""
+        """Only put non-context specific errors, because these errors can be potentially shown across contexts."""
         self._loading_errors.append(error)
 
     def has_loading_errors(self) -> bool:

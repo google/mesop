@@ -9,25 +9,25 @@ class ComponentWithChildren:
         self,
         component: pb.Component,
     ):
-        self.prev_current_node = runtime.session().current_node()
+        self.prev_current_node = runtime.context().current_node()
         self.component = component
 
     def __enter__(self):
-        runtime.session().set_current_node(self.component)
+        runtime.context().set_current_node(self.component)
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):  # type: ignore
         # TODO: not sure why I can't append this in `__enter__`
-        runtime.session().set_current_node(self.prev_current_node)
+        runtime.context().set_current_node(self.prev_current_node)
         self.prev_current_node.children.append(self.component)
 
 
 def insert_component(type: pb.Type, key: str | None = None):
     """
-    Inserts a component into the current session's current node.
+    Inserts a component into the current context's current node.
     """
 
-    runtime.session().current_node().children.append(
+    runtime.context().current_node().children.append(
         pb.Component(key=pb.Key(key=key) if key else None, type=type)
     )
 

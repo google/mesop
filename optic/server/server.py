@@ -14,12 +14,12 @@ app = Flask(__name__)
 def render_loop(path: str, keep_alive: bool = False):
     try:
         runtime.run_path(path=path)
-        root_component = runtime.session().current_node()
+        root_component = runtime.context().current_node()
 
         data = pb.UiResponse(
             render=pb.RenderEvent(
                 root_component=root_component,
-                states=runtime.session().serialize_state(),
+                states=runtime.context().serialize_state(),
             )
         )
         yield serialize(data)
@@ -46,7 +46,7 @@ def serialize(response: pb.UiResponse) -> str:
 
 def generate_data(ui_request: pb.UiRequest):
     try:
-        runtime.reset_session()
+        runtime.reset_context()
 
         if runtime.has_loading_errors():
             # Only showing the first error since our error UI only
@@ -57,10 +57,10 @@ def generate_data(ui_request: pb.UiRequest):
         if ui_request.HasField("init"):
             yield from render_loop(path=ui_request.path)
         if ui_request.HasField("user_event"):
-            result = runtime.session().process_event(ui_request.user_event)
+            result = runtime.context().process_event(ui_request.user_event)
             for _ in result:
                 yield from render_loop(path=ui_request.path, keep_alive=True)
-                runtime.session().reset_current_node()
+                runtime.context().reset_current_node()
             yield "data: <stream_end>\n\n"
         else:
             raise Exception(f"Unknown request type: {ui_request}")

@@ -21,7 +21,7 @@ def checkbox(
         label (str): The label for the checkbox.
         on_update (Callable[..., Any]): The function to be called when the checkbox is updated.
 
-    The function appends the created checkbox component to the children of the current node in the runtime session.
+    The function appends the created checkbox component to the children of the current node in the runtime context.
     """
     insert_component(
         key=key,

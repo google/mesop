@@ -9,7 +9,7 @@ T = TypeVar("T")
 Handler = Callable[[Any], Generator[None, None, None] | None]
 
 
-class Session:
+class Context:
     _states: dict[type[Any], object]
 
     def __init__(

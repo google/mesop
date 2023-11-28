@@ -7,7 +7,7 @@ T = TypeVar("T")
 
 
 def state(state: type[T]) -> T:
-    return runtime.session().state(state)
+    return runtime.context().state(state)
 
 
 def stateclass(cls: type[T] | None, **kw_args: Any) -> type[T]:
