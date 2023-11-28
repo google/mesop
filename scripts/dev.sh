@@ -1,7 +1,7 @@
 #!/bin/bash
 
-lsof -t -i:4200 | xargs kill;
-lsof -t -i:8080 | xargs kill;
+# Kill existing ibazel processes (if any)
+killall ibazel;
 
 # Define your commands
 cmd1="scripts/run_web_dev.sh"
