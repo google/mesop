@@ -1,20 +1,24 @@
 from dataclasses import asdict, is_dataclass
 import json
-from typing import Any, Generator, TypeVar, cast
+from typing import Any, Callable, Generator, TypeVar, cast
 import protos.ui_pb2 as pb
 from optic.dataclass_utils import update_dataclass_from_json
-from optic.store import Store
 
 T = TypeVar("T")
 
+Handler = Callable[[Any], Generator[None, None, None] | None]
+
 
 class Session:
-    _store: Store[Any]
     _states: dict[type[Any], object]
 
-    def __init__(self, store: Store[Any], states: dict[type[Any], object]) -> None:
+    def __init__(
+        self,
+        get_handler: Callable[[str], Handler | None],
+        states: dict[type[Any], object],
+    ) -> None:
+        self._get_handler = get_handler
         self._current_node = pb.Component()
-        self._store = store
         self._states = states
 
     def current_node(self) -> pb.Component:
@@ -42,4 +46,14 @@ class Session:
     def process_event(self, event: pb.UserEvent) -> Generator[None, None, None]:
         for state, proto_state in zip(self._states.values(), event.states.states):
             update_dataclass_from_json(state, proto_state.data)
-        return self._store.dispatch(event)
+
+        payload = cast(Any, event)
+        handler = self._get_handler(event.handler_id)
+        if handler:
+            result = handler(payload)
+            if result is not None:
+                yield from result
+            else:
+                yield
+        else:
+            print(f"Unknown handler id: {event.handler_id}")

@@ -3,7 +3,6 @@ from typing import Any, Callable, Generator, cast
 
 import protos.ui_pb2 as pb
 from .session import Session
-from optic.store import Store
 from optic.exceptions import OpticUserException
 
 Handler = Callable[[Any], None | Generator[None, None, None]]
@@ -42,7 +41,7 @@ class Runtime:
                 states[state_class] = state_class()
 
         self._session = Session(
-            store=Store(self.get_handler), states=cast(dict[Any, Any], states)
+            get_handler=self.get_handler, states=cast(dict[Any, Any], states)
         )
 
     def run_path(self, path: str) -> None:
