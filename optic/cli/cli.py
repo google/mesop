@@ -8,7 +8,7 @@ from optic.exceptions import format_traceback
 FLAGS = flags.FLAGS
 
 flags.DEFINE_string("path", "", "path to main python module of Optic app.")
-flags.DEFINE_bool("ci", False, "set to true if running in CI/test mode.")
+flags.DEFINE_bool("debug", False, "set to true for debug mode.")
 
 
 def main(argv):
@@ -19,7 +19,7 @@ def main(argv):
         execute_module(FLAGS.path)
     except Exception as e:
         # Only record error to runtime if in CI mode.
-        if FLAGS.ci:
+        if FLAGS.debug:
             from optic.runtime import runtime
 
             runtime.add_loading_error(

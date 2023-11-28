@@ -47,7 +47,7 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: "bazel run //optic/cli -- --path=optic/testing/index.py --ci",
+    command: "bazel run //optic/cli -- --path=optic/testing/index.py --debug",
     url: "http://127.0.0.1:8080/",
     reuseExistingServer: !process.env.CI,
   },
