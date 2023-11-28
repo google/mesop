@@ -20,7 +20,7 @@ import { MatIconModule, MatIconRegistry } from "@angular/material/icon";
 import { MatButtonModule } from "@angular/material/button";
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { DevTools } from "../dev_tools/dev_tools";
-import { DebugService } from "../dev_tools/services/debug_service";
+import { DevToolsSettings } from "../dev_tools/services/dev_tools_settings";
 import { Logger } from "../dev_tools/services/logger";
 import { TypeDeserializer } from "../dev_tools/services/type_deserializer";
 
@@ -64,7 +64,7 @@ import { TypeDeserializer } from "../dev_tools/services/type_deserializer";
     background: rgb(252, 252, 252);
   }
   `,
-  providers: [DebugService, Channel, Logger, TypeDeserializer],
+  providers: [DevToolsSettings, Channel, Logger, TypeDeserializer],
 })
 class App {
   rootComponent: pb.Component;
@@ -81,7 +81,7 @@ class App {
 
     private channel: Channel,
     private iconRegistry: MatIconRegistry,
-    private debugService: DebugService,
+    private devToolsSettings: DevToolsSettings,
   ) {
     this.iconRegistry.setDefaultFontSetClass("material-symbols-rounded");
   }
@@ -121,15 +121,15 @@ class App {
   }
 
   showDebugButton() {
-    return this.debugService.isDebugMode();
+    return this.devToolsSettings.isDebugMode();
   }
 
   showDevTools() {
-    return this.debugService.showDevTools();
+    return this.devToolsSettings.showDevTools();
   }
 
   toggleDevTools() {
-    this.debugService.toggleShowDevTools();
+    this.devToolsSettings.toggleShowDevTools();
   }
 }
 

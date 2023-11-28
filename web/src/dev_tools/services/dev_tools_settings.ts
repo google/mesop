@@ -4,7 +4,7 @@ const SHOW_DEV_TOOLS_KEY = "OPTIC://SHOW_DEV_TOOLS_KEY";
 const CURRENT_DEV_TOOLS_PANEL_KEY = "OPTIC://CURRENT_DEV_TOOLS_PANEL_KEY";
 
 @Injectable()
-export class DebugService {
+export class DevToolsSettings {
   isDebugMode(): boolean {
     // TODO: configure this.
     return true;

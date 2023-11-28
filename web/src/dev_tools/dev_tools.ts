@@ -2,7 +2,7 @@ import { Component } from "@angular/core";
 import { LogsPanel } from "./logs_panel/logs_panel";
 import { ComponentsPanel } from "./components_panel/components_panel";
 import { CommonModule } from "@angular/common";
-import { DebugService, Panel } from "./services/debug_service";
+import { DevToolsSettings, Panel } from "./services/dev_tools_settings";
 
 @Component({
   selector: "optic-dev-tools",
@@ -15,16 +15,16 @@ export class DevTools {
   Panel = Panel; // Make it accessible by template.
 
   get selectedPanel(): Panel {
-    return this.debugService.getCurrentDevToolsPanel();
+    return this.devToolsSettings.getCurrentDevToolsPanel();
   }
 
-  constructor(private debugService: DebugService) {}
+  constructor(private devToolsSettings: DevToolsSettings) {}
 
   selectComponentsPanel() {
-    this.debugService.setCurrentDevToolsPanel(Panel.Components);
+    this.devToolsSettings.setCurrentDevToolsPanel(Panel.Components);
   }
 
   selectLogsPanel() {
-    this.debugService.setCurrentDevToolsPanel(Panel.Logs);
+    this.devToolsSettings.setCurrentDevToolsPanel(Panel.Logs);
   }
 }
