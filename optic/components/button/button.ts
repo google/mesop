@@ -1,4 +1,4 @@
-import { Component, Input } from "@angular/core";
+import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
 import {
   Click,
   Key,
@@ -13,6 +13,7 @@ import { MatButtonModule } from "@angular/material/button";
   selector: "optic-button",
   templateUrl: "button.ng.html",
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatButtonModule],
 })
 export class ButtonComponent {

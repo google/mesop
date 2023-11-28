@@ -1,4 +1,4 @@
-import { Component, Input } from "@angular/core";
+import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
 import { Key, Type, UserEvent } from "optic/protos/ui_ts_proto_pb/protos/ui_pb";
 import { CheckboxType } from "optic/optic/components/checkbox/checkbox_ts_proto_pb/optic/components/checkbox/checkbox_pb";
 import { Channel } from "../../../web/src/services/channel";
@@ -7,6 +7,7 @@ import { Channel } from "../../../web/src/services/channel";
   selector: "optic-checkbox",
   templateUrl: "checkbox.ng.html",
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CheckboxComponent {
   @Input({ required: true }) type!: Type;

@@ -1,4 +1,4 @@
-import { Component, Input } from "@angular/core";
+import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
 import {
   InputChange,
   Key,
@@ -16,6 +16,7 @@ import { ObserversModule } from "@angular/cdk/observers";
   selector: "optic-text-input",
   templateUrl: "text_input.ng.html",
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatFormFieldModule, MatInputModule, FormsModule, ObserversModule],
 })
 export class TextInputComponent {

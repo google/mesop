@@ -1,4 +1,4 @@
-import { Component, Input } from "@angular/core";
+import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
 import { Key, Type } from "optic/protos/ui_ts_proto_pb/protos/ui_pb";
 import { TextType } from "optic/optic/components/text/text_ts_proto_pb/optic/components/text/text_pb";
 
@@ -6,6 +6,7 @@ import { TextType } from "optic/optic/components/text/text_ts_proto_pb/optic/com
   selector: "optic-text",
   templateUrl: "text.ng.html",
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TextComponent {
   @Input({ required: true }) type!: Type;

@@ -1,4 +1,9 @@
-import { Component, HostBinding, Input } from "@angular/core";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  HostBinding,
+  Input,
+} from "@angular/core";
 import {
   Click,
   Key,
@@ -11,6 +16,7 @@ import { Channel } from "../../../web/src/services/channel";
 @Component({
   selector: "optic-box",
   templateUrl: "box.ng.html",
+  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
 export class BoxComponent {

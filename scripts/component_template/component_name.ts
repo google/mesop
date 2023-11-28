@@ -1,4 +1,4 @@
-import { Component, Input } from "@angular/core";
+import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
 import {
   Click,
   Key,
@@ -11,6 +11,7 @@ import { Channel } from "../../../web/src/services/channel";
 @Component({
   selector: "optic-{component-name}",
   templateUrl: "{component_name}.ng.html",
+  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
 export class ComponentNameComponent {
