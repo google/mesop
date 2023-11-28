@@ -14,6 +14,7 @@ nav:
       - Goals: goals.md
       - New component: internal/new_component.md
       - Development: internal/development.md
+      - Modes: internal/modes.md
       - Testing: internal/testing.md
       - Type checking: internal/type_checking.md
       - CI: internal/ci.md
