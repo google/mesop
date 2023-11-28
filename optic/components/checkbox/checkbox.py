@@ -4,9 +4,12 @@ from pydantic import validate_arguments
 from typing import Any, Callable
 import protos.ui_pb2 as pb
 import optic.components.checkbox.checkbox_pb2 as checkbox_pb
-from optic.component_helpers import insert_component, handler_type
+from optic.component_helpers import (
+    insert_component,
+    handler_type,
+    register_event_mapper,
+)
 from optic.events import OpticEvent
-from optic.runtime import runtime
 
 
 @dataclass
@@ -42,7 +45,7 @@ def checkbox(
     )
 
 
-runtime.register_event_mapper(
+register_event_mapper(
     CheckboxEvent,
     lambda userEvent, key: CheckboxEvent(
         key=key,
