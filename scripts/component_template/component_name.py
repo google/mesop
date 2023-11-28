@@ -11,7 +11,7 @@ from optic.events import ClickEvent
 def component_name(
     *,
     label: str,
-    on_click: Callable[[Any, ClickEvent], Any],
+    on_click: Callable[[Any, ClickEvent], Any] | None = None,
     key: str | None = None,
 ):
     """
@@ -27,7 +27,7 @@ def component_name(
             name="component_name",
             value=component_name_pb.ComponentNameType(
                 label=label,
-                on_click_handler_id=handler_type(on_click),
+                on_click_handler_id=handler_type(on_click) if on_click else None,
             ).SerializeToString(),
         ),
     )
