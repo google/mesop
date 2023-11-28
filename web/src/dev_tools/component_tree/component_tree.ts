@@ -89,6 +89,7 @@ function mapObject(object: InputNode): DisplayNode {
       .join(", ");
     node.text = `${object.type.name}(${values})`;
     node.properties = object.type.value;
+    (node.properties as any).key = object.key?.key;
     node.componentName = object.type.name;
   } else {
     node.text = `<root>`;

@@ -3,6 +3,7 @@
   font-size: 0.8rem;
   flex-direction: column;
   justify-content: space-between;
+  height: 100%;
 }
 
 optic-component-tree,
@@ -10,8 +11,13 @@ optic-object-tree {
   font-family: monospace;
 }
 
+optic-component-tree {
+  overflow: hidden;
+}
+
 .bottom-pane {
   flex-basis: 280px;
+  flex-shrink: 0;
 }
 
 .drawer-header {
