@@ -9,7 +9,12 @@
 <!-- Selected Node: -->
 @if (selectedNode) {
 <div class="bottom-pane">
-  Selected node: {{selectedNode.componentName}}
-  <optic-object-tree [object]="selectedNode.properties"></optic-object-tree>
+  <div class="drawer-header">
+    <div class="drawer-button selected-drawer-button">Selected node</div>
+  </div>
+  <div class="drawer-body">
+    <span class="component-name">{{selectedNode.componentName}}</span>
+    <optic-object-tree [object]="selectedNode.properties"></optic-object-tree>
+  </div>
 </div>
 }

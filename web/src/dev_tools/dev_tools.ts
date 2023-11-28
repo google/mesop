@@ -17,16 +17,13 @@ enum Panel {
 })
 export class DevTools {
   Panel = Panel; // Make it accessible by template.
-  _panel = Panel.Components; // TODO: store in local storage
-  panel(): Panel {
-    return this._panel;
-  }
+  selectedPanel = Panel.Components; // TODO: store in local storage
 
   selectComponentsPanel() {
-    this._panel = Panel.Components;
+    this.selectedPanel = Panel.Components;
   }
 
   selectLogsPanel() {
-    this._panel = Panel.Logs;
+    this.selectedPanel = Panel.Logs;
   }
 }

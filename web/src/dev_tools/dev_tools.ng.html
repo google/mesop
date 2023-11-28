@@ -1,14 +1,14 @@
 <div class="panel-header">
   <div
     class="panel-button"
-    [ngClass]="{'selected-panel-button': panel() === Panel.Components}"
+    [ngClass]="{'selected-panel-button': selectedPanel === Panel.Components}"
     (click)="selectComponentsPanel()"
   >
     Components
   </div>
   <div
     class="panel-button"
-    [ngClass]="{'selected-panel-button': panel() === Panel.Logs}"
+    [ngClass]="{'selected-panel-button': selectedPanel === Panel.Logs}"
     (click)="selectLogsPanel()"
   >
     Logs
@@ -16,8 +16,10 @@
 </div>
 <div class="panel-body">
   <optic-components-panel
-    [hidden]="panel() !== Panel.Components"
+    [ngClass]="{'hide-panel': selectedPanel !== Panel.Components}"
   ></optic-components-panel>
 
-  <optic-logs-panel [hidden]="panel() !== Panel.Logs"></optic-logs-panel>
+  <optic-logs-panel
+    [ngClass]="{'hide-panel': selectedPanel !== Panel.Logs}"
+  ></optic-logs-panel>
 </div>

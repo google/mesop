@@ -1,5 +1,44 @@
 :host {
-  display: block;
-  font-family: monospace;
+  display: flex;
   font-size: 0.8rem;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+optic-component-tree,
+optic-object-tree {
+  font-family: monospace;
+}
+
+.bottom-pane {
+  flex-basis: 280px;
+}
+
+.drawer-header {
+  border-bottom: 1px solid #e8e8e8;
+  background: #edeff6;
+  display: flex;
+  font-size: 0.8rem;
+  position: sticky;
+}
+
+.drawer-button {
+  padding: 4px;
+  width: 140px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.selected-drawer-button {
+  color: #1c6ef3;
+  border-bottom: 2px solid #1c6ef3;
+}
+
+.drawer-body {
+  padding: 8px;
+}
+
+.component-name {
+  font-weight: 500;
+  font-size: 0.9rem;
 }

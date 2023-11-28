@@ -26,5 +26,9 @@
 
 .panel-body {
   overflow: auto;
-  height: calc(100% - 48px);
+  height: 100%;
+}
+
+.hide-panel {
+  display: none !important;
 }
