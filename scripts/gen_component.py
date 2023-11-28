@@ -26,6 +26,8 @@ def main():
     update_testing_build(component_name)
     update_testing_index_py(component_name)
     update_component_renderer(component_name)
+    update_dev_tools_services_build(component_name)
+    update_dev_tools_deserializer(component_name)
     print("Finished generating new component: " + component_name)
 
 
@@ -95,6 +97,81 @@ def update_component_renderer(component_name: str):
             break
 
     with open(component_renderer_ts_path, "w") as f:
+        f.writelines(lines)
+
+
+def update_dev_tools_services_build(component_name: str):
+    build_path = os.path.join(
+        get_current_directory(), "..", "web", "src", "dev_tools", "services", "BUILD"
+    )
+
+    with open(build_path, "r") as f:
+        lines = f.readlines()
+
+    import_line = (
+        f'    "//optic/components/{component_name}:{component_name}_ts_proto",'
+    )
+
+    for i in range(len(lines)):
+        if (
+            "# REF(//scripts/gen_component.py):insert_component_ts_proto_import"
+            in lines[i]
+        ):
+            lines.insert(i + 1, import_line + "\n")
+            break
+
+    with open(build_path, "w") as f:
+        f.writelines(lines)
+
+
+def update_dev_tools_deserializer(component_name: str):
+    build_path = os.path.join(
+        get_current_directory(),
+        "..",
+        "web",
+        "src",
+        "dev_tools",
+        "services",
+        "type_deserializer.ts",
+    )
+
+    # TODO: update TS import
+    # TODO: update deserialization register line
+
+    with open(build_path, "r") as f:
+        lines = f.readlines()
+
+    type = "{" + f"{camel_case(component_name)}Type" + "}"
+    import_line = f'import {type} from "optic/optic/components/{component_name}/{component_name}_ts_proto_pb/optic/components/{component_name}/{component_name}_pb";'
+
+    for i in range(len(lines)):
+        if (
+            "// REF(//scripts/gen_component.py):insert_component_ts_proto_import"
+            in lines[i]
+        ):
+            lines.insert(i + 1, import_line + "\n")
+            break
+
+    with open(build_path, "w") as f:
+        f.writelines(lines)
+
+    with open(build_path, "r") as f:
+        lines = f.readlines()
+
+    deserializer_line = f"""this.registerDeserializer("{component_name}", (value) =>
+      {camel_case(component_name)}Type.deserializeBinary(value).toObject(),
+    );
+    """
+
+    for i in range(len(lines)):
+        if (
+            "// REF(//scripts/gen_component.py):insert_register_deserializer"
+            in lines[i]
+        ):
+            lines.insert(i + 1, deserializer_line + "\n")
+            break
+
+    with open(build_path, "w") as f:
         f.writelines(lines)
 
 

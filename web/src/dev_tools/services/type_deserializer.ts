@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+// REF(//scripts/gen_component.py):insert_component_ts_proto_import
 import { ButtonType } from "optic/optic/components/button/button_ts_proto_pb/optic/components/button/button_pb";
 import { TextType } from "optic/optic/components/text/text_ts_proto_pb/optic/components/text/text_pb";
 import { BoxType } from "optic/optic/components/box/box_ts_proto_pb/optic/components/box/box_pb";
@@ -11,6 +12,7 @@ type Deserializer = (value: Uint8Array) => object;
 export class TypeDeserializer {
   private _map = new Map<string, Deserializer>();
   constructor() {
+    // REF(//scripts/gen_component.py):insert_register_deserializer
     this.registerDeserializer("button", (value) =>
       ButtonType.deserializeBinary(value).toObject(),
     );

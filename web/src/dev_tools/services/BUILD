@@ -10,6 +10,7 @@ ng_module(
         "*.ts",
     ]),
     deps = [
+        # REF(//scripts/gen_component.py):insert_component_ts_proto_import
         "//optic/components/box:box_ts_proto",
         "//optic/components/button:button_ts_proto",
         "//optic/components/checkbox:checkbox_ts_proto",
