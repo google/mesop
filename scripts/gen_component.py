@@ -8,125 +8,137 @@ import os
 import argparse
 
 
+parser = argparse.ArgumentParser(description="Process a single CLI argument.")
+parser.add_argument("component_name", type=str, help="The CLI argument to process")
+
+args = parser.parse_args()
+
+component_name = args.component_name
+
+
 def main():
-    parser = argparse.ArgumentParser(description="Process a single CLI argument.")
-    parser.add_argument("component_name", type=str, help="The CLI argument to process")
-
-    args = parser.parse_args()
-
-    component_name = args.component_name
-
     print("Start generating new component: " + component_name)
-    copy_template(component_name)
-    update_e2e_init(component_name)
-    rename_and_update_files(component_name)
-    update_component_build(component_name)
-    update_py_export(component_name)
-    update_py_build(component_name)
-    update_testing_build(component_name)
-    update_testing_index_py(component_name)
-    update_component_renderer(component_name)
-    update_dev_tools_services_build(component_name)
-    update_dev_tools_deserializer(component_name)
+
+    # Copy template directory
+    shutil.copytree(
+        os.path.join(current_dir(), "component_template"),
+        new_component_dir(),
+    )
+
+    # Rename & update new component files
+    rename_and_update_file(".py")
+    rename_and_update_file(".ts")
+    rename_file(".ng.html")
+    rename_and_update_file(".proto")
+    replace_component_name_ref(
+        path=rename_file(".py", filename_suffix="_app", dir="e2e"),
+    )
+    replace_component_name_ref(
+        path=rename_file(".ts", filename_suffix="_test", dir="e2e"),
+    )
+
+    # Update e2e init file
+    replace_component_name_ref(
+        path=os.path.join(new_component_dir(), "e2e", "__init__.py"),
+    )
+
+    # Update component BUILD file
+    replace_component_name_ref(
+        path=os.path.join(new_component_dir(), "BUILD"),
+    )
+
+    # Update //optic/__init__.py
+    update_file(
+        path=os.path.join(current_dir(), "..", "optic", "__init__.py"),
+        target="# REF(//scripts/gen_component.py):insert_component_import_export",
+        content=f"from optic.components.{component_name}.{component_name} import {component_name} as {component_name}",
+        before=True,
+    )
+
+    # Update //optic/BUILD
+    update_file(
+        path=os.path.join(current_dir(), "..", "optic", "BUILD"),
+        target="# REF(//scripts/gen_component.py):insert_component_import",
+        content=f'    "//optic/components/{component_name}:py",',
+    )
+
+    # Update testing BUILD file
+    update_file(
+        path=os.path.join(current_dir(), "..", "optic", "testing", "BUILD"),
+        target="# REF(//scripts/gen_component.py):insert_component_e2e_import",
+        content=f'    "//optic/components/{component_name}/e2e",',
+    )
+
+    # Update testing index.py file
+    update_file(
+        path=os.path.join(current_dir(), "..", "optic", "testing", "index.py"),
+        target="# REF(//scripts/gen_component.py):insert_component_e2e_import_export",
+        content=f"import optic.components.{component_name}.e2e as {component_name}_e2e",
+        before=True,
+    )
+
+    update_component_renderer()
+
+    update_dev_tools_deserializer()
+
+    # Update dev_tools/service/BUILD
+    update_file(
+        path=os.path.join(
+            current_dir(), "..", "web", "src", "dev_tools", "services", "BUILD"
+        ),
+        target="# REF(//scripts/gen_component.py):insert_component_ts_proto_import",
+        content=f'    "//optic/components/{component_name}:{component_name}_ts_proto",',
+    )
+
     print("Finished generating new component: " + component_name)
 
 
-def update_component_renderer(component_name: str):
+def update_component_renderer():
     component_renderer_path = os.path.join(
-        get_current_directory(), "..", "web", "src", "component_renderer"
+        current_dir(), "..", "web", "src", "component_renderer"
     )
 
-    with open(component_renderer_path + "/component_renderer.ng.html", "r") as f:
-        lines = f.readlines()
-
-    template_call = (
-        """<ng-container *ngIf="type()?.getName() == '[component_name]'">
+    update_file(
+        path=os.path.join(
+            component_renderer_path,
+            "component_renderer.ng.html",
+        ),
+        target="<!-- REF(//scripts/gen_component.py):insert_component -->",
+        content="""<ng-container *ngIf="type()?.getName() == '[component_name]'">
   @defer (on viewport) {
   <optic-[kebab-case] [key]="key()" [type]="type()!" />
   } @placeholder {
   <component-loader />
   }
 </ng-container>
-""".replace("[CamelCase]", camel_case(component_name))
-        .replace("[kebab-case]", kebab_case(component_name))
-        .replace("[component_name]", component_name)
+""".replace("[CamelCase]", camel_case())
+        .replace("[kebab-case]", kebab_case())
+        .replace("[component_name]", component_name),
+        before=True,
     )
 
-    for i in range(len(lines)):
-        if "<!-- REF(//scripts/gen_component.py):insert_component -->" in lines[i]:
-            lines.insert(i, template_call + "\n")
-            break
-
-    with open(component_renderer_path + "/component_renderer.ng.html", "w") as f:
-        f.writelines(lines)
-
-    # Update BUILD
-    build_path = os.path.join(component_renderer_path, "BUILD")
-
-    with open(build_path, "r") as f:
-        lines = f.readlines()
-
-    import_line = f'    "//optic/components/{component_name}:ng",'
-
-    for i in range(len(lines)):
-        if "# REF(//scripts/gen_component.py):insert_component_import" in lines[i]:
-            lines.insert(i + 1, import_line + "\n")
-            break
-
-    with open(build_path, "w") as f:
-        f.writelines(lines)
-
-    # Update component_renderer.ts
-    component_renderer_ts_path = os.path.join(
-        component_renderer_path, "component_renderer.ts"
+    update_file(
+        path=os.path.join(component_renderer_path, "BUILD"),
+        target="# REF(//scripts/gen_component.py):insert_component_import",
+        content=f'    "//optic/components/{component_name}:ng",',
     )
 
-    with open(component_renderer_ts_path, "r") as f:
-        lines = f.readlines()
-
-    ts_import_line = f'import {{ {camel_case(component_name)}Component }} from "../../../optic/components/{component_name}/{component_name}";'
-    ng_import_line = f"    {camel_case(component_name)}Component,"
-    for i in range(len(lines)):
-        if "// REF(//scripts/gen_component.py):insert_ts_import" in lines[i]:
-            lines.insert(i + 1, ts_import_line + "\n")
-            break
-
-    for i in range(len(lines)):
-        if "// REF(//scripts/gen_component.py):insert_ng_import" in lines[i]:
-            lines.insert(i + 1, ng_import_line + "\n")
-            break
-
-    with open(component_renderer_ts_path, "w") as f:
-        f.writelines(lines)
-
-
-def update_dev_tools_services_build(component_name: str):
-    build_path = os.path.join(
-        get_current_directory(), "..", "web", "src", "dev_tools", "services", "BUILD"
+    ts_path = os.path.join(component_renderer_path, "component_renderer.ts")
+    update_file(
+        path=ts_path,
+        target="// REF(//scripts/gen_component.py):insert_ts_import",
+        content=f'import {{ {camel_case()}Component }} from "../../../optic/components/{component_name}/{component_name}";',
+    )
+    update_file(
+        path=ts_path,
+        target="// REF(//scripts/gen_component.py):insert_ng_import",
+        content=f"    {camel_case()}Component,",
     )
 
-    with open(build_path, "r") as f:
-        lines = f.readlines()
 
-    import_line = (
-        f'    "//optic/components/{component_name}:{component_name}_ts_proto",'
-    )
-
-    for i in range(len(lines)):
-        if (
-            "# REF(//scripts/gen_component.py):insert_component_ts_proto_import"
-            in lines[i]
-        ):
-            lines.insert(i + 1, import_line + "\n")
-            break
-
-    with open(build_path, "w") as f:
-        f.writelines(lines)
-
-
-def update_dev_tools_deserializer(component_name: str):
-    build_path = os.path.join(
-        get_current_directory(),
+def update_dev_tools_deserializer():
+    deserializer_path = os.path.join(
+        current_dir(),
         "..",
         "web",
         "src",
@@ -134,177 +146,59 @@ def update_dev_tools_deserializer(component_name: str):
         "services",
         "type_deserializer.ts",
     )
-
-    # TODO: update TS import
-    # TODO: update deserialization register line
-
-    with open(build_path, "r") as f:
-        lines = f.readlines()
-
-    type = "{" + f"{camel_case(component_name)}Type" + "}"
-    import_line = f'import {type} from "optic/optic/components/{component_name}/{component_name}_ts_proto_pb/optic/components/{component_name}/{component_name}_pb";'
-
-    for i in range(len(lines)):
-        if (
-            "// REF(//scripts/gen_component.py):insert_component_ts_proto_import"
-            in lines[i]
-        ):
-            lines.insert(i + 1, import_line + "\n")
-            break
-
-    with open(build_path, "w") as f:
-        f.writelines(lines)
-
-    with open(build_path, "r") as f:
-        lines = f.readlines()
-
-    deserializer_line = f"""this.registerDeserializer("{component_name}", (value) =>
-      {camel_case(component_name)}Type.deserializeBinary(value).toObject(),
+    type = "{" + f"{camel_case()}Type" + "}"
+    update_file(
+        path=deserializer_path,
+        target="// REF(//scripts/gen_component.py):insert_component_ts_proto_import",
+        content=f'import {type} from "optic/optic/components/{component_name}/{component_name}_ts_proto_pb/optic/components/{component_name}/{component_name}_pb";',
+    )
+    update_file(
+        path=deserializer_path,
+        target="// REF(//scripts/gen_component.py):insert_register_deserializer",
+        content=f"""this.registerDeserializer("{component_name}", (value) =>
+      {camel_case()}Type.deserializeBinary(value).toObject(),
     );
-    """
-
-    for i in range(len(lines)):
-        if (
-            "// REF(//scripts/gen_component.py):insert_register_deserializer"
-            in lines[i]
-        ):
-            lines.insert(i + 1, deserializer_line + "\n")
-            break
-
-    with open(build_path, "w") as f:
-        f.writelines(lines)
-
-
-def update_py_build(component_name: str):
-    build_path = os.path.join(get_current_directory(), "..", "optic", "BUILD")
-
-    with open(build_path, "r") as f:
-        lines = f.readlines()
-
-    import_line = f'    "//optic/components/{component_name}:py",'
-
-    for i in range(len(lines)):
-        if "# REF(//scripts/gen_component.py):insert_component_import" in lines[i]:
-            lines.insert(i + 1, import_line + "\n")
-            break
-
-    with open(build_path, "w") as f:
-        f.writelines(lines)
-
-
-def update_py_export(component_name: str):
-    init_path = os.path.join(get_current_directory(), "..", "optic", "__init__.py")
-
-    with open(init_path, "r") as f:
-        lines = f.readlines()
-
-    import_line = f"from optic.components.{component_name}.{component_name} import {component_name} as {component_name}"
-
-    for i in range(len(lines)):
-        if (
-            "# REF(//scripts/gen_component.py):insert_component_import_export"
-            in lines[i]
-        ):
-            lines.insert(i, import_line + "\n")
-            break
-
-    with open(init_path, "w") as f:
-        f.writelines(lines)
-
-
-def update_testing_index_py(component_name: str):
-    index_path = os.path.join(
-        get_current_directory(), "..", "optic", "testing", "index.py"
+    """,
     )
 
-    with open(index_path, "r") as f:
+
+##################
+# UTILITIES
+##################
+
+
+def update_file(path: str, target: str, content: str, before: bool = False):
+    with open(path, "r") as f:
         lines = f.readlines()
 
-    import_line = (
-        f"import optic.components.{component_name}.e2e as {component_name}_e2e"
-    )
-
     for i in range(len(lines)):
-        if (
-            "# REF(//scripts/gen_component.py):insert_component_e2e_import_export"
-            in lines[i]
-        ):
-            lines.insert(i, import_line + "\n")
+        if target in lines[i]:
+            lines.insert(i + (0 if before else 1), content + "\n")
             break
 
-    with open(index_path, "w") as f:
+    with open(path, "w") as f:
         f.writelines(lines)
 
 
-def update_testing_build(component_name: str):
-    build_path = os.path.join(
-        get_current_directory(), "..", "optic", "testing", "BUILD"
-    )
-
-    with open(build_path, "r") as f:
-        lines = f.readlines()
-
-    import_line = f'    "//optic/components/{component_name}/e2e",'
-
-    for i in range(len(lines)):
-        if "# REF(//scripts/gen_component.py):insert_component_e2e_import" in lines[i]:
-            lines.insert(i + 1, import_line + "\n")
-            break
-
-    with open(build_path, "w") as f:
-        f.writelines(lines)
-
-
-def camel_case(component_name: str):
+def camel_case():
     """
     Split underscore and make it UpperCamelCase
     """
     return "".join(x.title() for x in component_name.split("_"))
 
 
-def kebab_case(component_name: str):
+def kebab_case():
     """
     Split underscore and make it kebab-case
     """
     return "-".join(x for x in component_name.split("_"))
 
 
-def update_component_build(component_name: str):
-    dst_dir = get_dst_dir(component_name)
-    replace_component_name_ref(
-        path=os.path.join(dst_dir, "BUILD"), component_name=component_name
-    )
+def rename_and_update_file(extension: str):
+    replace_component_name_ref(path=rename_file(extension))
 
 
-def rename_and_update_files(component_name: str):
-    replace_component_name_ref(
-        path=rename_file(component_name, ".py"), component_name=component_name
-    )
-    replace_component_name_ref(
-        path=rename_file(component_name, ".ts"), component_name=component_name
-    )
-    rename_file(component_name, ".ng.html")
-    proto_path = rename_file(component_name, ".proto")
-    replace_component_name_ref(path=proto_path, component_name=component_name)
-
-    new_app_py_path = rename_file(
-        component_name, ".py", filename_suffix="_app", dir="e2e"
-    )
-    replace_component_name_ref(path=new_app_py_path, component_name=component_name)
-    new_test_ts_path = rename_file(
-        component_name, ".ts", filename_suffix="_test", dir="e2e"
-    )
-    replace_component_name_ref(path=new_test_ts_path, component_name=component_name)
-
-
-def update_e2e_init(component_name: str):
-    replace_component_name_ref(
-        path=os.path.join(get_dst_dir(component_name), "e2e", "__init__.py"),
-        component_name=component_name,
-    )
-
-
-def replace_component_name_ref(path: str, component_name: str):
+def replace_component_name_ref(path: str):
     with open(path, "r") as f:
         lines = f.readlines()
 
@@ -312,8 +206,8 @@ def replace_component_name_ref(path: str, component_name: str):
         lines[i] = (
             lines[i]
             .replace("{component_name}", component_name)
-            .replace("{component-name}", kebab_case(component_name))
-            .replace("ComponentName", camel_case(component_name))
+            .replace("{component-name}", kebab_case())
+            .replace("ComponentName", camel_case())
             .replace("component_name", component_name)
         )
 
@@ -321,39 +215,24 @@ def replace_component_name_ref(path: str, component_name: str):
         f.writelines(lines)
 
 
-def rename_file(
-    component_name: str, extension: str, filename_suffix: str = "", dir: str = ""
-) -> str:
-    dst_dir = get_dst_dir(component_name)
-    old_file_path = os.path.join(
-        dst_dir, dir, "component_name" + filename_suffix + extension
-    )
+def rename_file(extension: str, filename_suffix: str = "", dir: str = "") -> str:
+    dst_dir = new_component_dir()
     new_file_path = os.path.join(
         dst_dir, dir, component_name + filename_suffix + extension
     )
-
-    os.rename(old_file_path, new_file_path)
+    os.rename(
+        os.path.join(dst_dir, dir, "component_name" + filename_suffix + extension),
+        new_file_path,
+    )
     return new_file_path
 
 
-def copy_template(component_name: str):
-    """
-    Copies the directory in component_template and puts it in //optic/components/<component_name>"""
-
-    src_dir = os.path.join(get_current_directory(), "component_template")
-    dst_dir = get_dst_dir(component_name)
-
-    shutil.copytree(src_dir, dst_dir)
-
-
-def get_current_directory():
+def current_dir():
     return os.path.dirname(os.path.realpath(__file__))
 
 
-def get_dst_dir(component_name: str):
-    return os.path.join(
-        get_current_directory(), "..", "optic", "components", component_name
-    )
+def new_component_dir():
+    return os.path.join(current_dir(), "..", "optic", "components", component_name)
 
 
 if __name__ == "__main__":
