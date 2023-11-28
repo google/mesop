@@ -1,10 +1,17 @@
+from dataclasses import dataclass
 from pydantic import validate_arguments
 
 from typing import Any, Callable
 import protos.ui_pb2 as pb
 import optic.components.checkbox.checkbox_pb2 as checkbox_pb
 from optic.component_helpers import insert_component, handler_type
-from optic.events import CheckboxEvent
+from optic.events import OpticEvent
+from optic.runtime import runtime
+
+
+@dataclass
+class CheckboxEvent(OpticEvent):
+    checked: bool
 
 
 @validate_arguments
@@ -33,3 +40,12 @@ def checkbox(
             ).SerializeToString(),
         ),
     )
+
+
+runtime.register_event_mapper(
+    CheckboxEvent,
+    lambda userEvent, key: CheckboxEvent(
+        key=key,
+        checked=userEvent.bool,
+    ),
+)

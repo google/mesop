@@ -1,5 +1,5 @@
 from .events import (
-    CheckboxEvent as CheckboxEvent,
+    OpticEvent as OpticEvent,
     ClickEvent as ClickEvent,
     ChangeEvent as ChangeEvent,
 )

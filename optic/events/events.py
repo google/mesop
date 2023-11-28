@@ -2,17 +2,16 @@ from dataclasses import dataclass
 from optic.key import Key
 
 
-class ClickEvent:
+@dataclass
+class OpticEvent:
     key: Key
 
 
 @dataclass
-class CheckboxEvent:
-    key: Key
-    checked: bool
+class ClickEvent(OpticEvent):
+    pass
 
 
 @dataclass
-class ChangeEvent:
-    key: Key
+class ChangeEvent(OpticEvent):
     value: str

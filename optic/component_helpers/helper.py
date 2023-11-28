@@ -1,6 +1,6 @@
-from typing import Any, Callable
+from typing import Any, Callable, TypeVar
 from optic.runtime import runtime
-
+from optic.events import OpticEvent
 import protos.ui_pb2 as pb
 
 
@@ -38,3 +38,10 @@ def handler_type(handler_fn: Callable[..., Any]) -> str:
 
 def get_qualified_fn_name(fn: Callable[..., Any]) -> str:
     return f"{fn.__module__}.{fn.__name__}"
+
+
+E = TypeVar("E", bound=OpticEvent)
+
+
+def register_event_mapper(event: E, map_fn: Callable[[pb.UserEvent], E]):
+    runtime.register_event_mapper(event=event, map_fn=map_fn)

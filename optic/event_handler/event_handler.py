@@ -2,35 +2,27 @@ from typing import Any, Generator, TypeVar, Callable, Type, cast
 
 from optic.key import key_from_proto
 
-from optic.exceptions import OpticInternalException
 import optic.events as events
 from ..component_helpers.helper import get_qualified_fn_name
 from optic.runtime import runtime
 import protos.ui_pb2 as pb
 
-A = TypeVar("A")
-Handler = Callable[[A], None | Generator[None, None, None]]
+E = TypeVar("E", bound=events.OpticEvent)
+Handler = Callable[[E], None | Generator[None, None, None]]
 
 
-def event_handler(actionType: Type[A]) -> Callable[[Handler[A]], Handler[A]]:
+def event_handler(actionType: Type[E]) -> Callable[[Handler[E]], Handler[E]]:
     """
     Decorator for making a function into an event handler."""
 
-    def register(func: Handler[A]):
-        def wrapper(action: A):
+    def register(func: Handler[E]):
+        def wrapper(action: E):
             # This is guaranteed to be a UserEvent because only Optic
             # framework will call the wrapper.
             proto_event = cast(pb.UserEvent, action)
             key = key_from_proto(proto_event.key)
 
-            if actionType == events.CheckboxEvent:
-                event = events.CheckboxEvent(checked=proto_event.bool, key=key)
-            elif actionType == events.ChangeEvent:
-                event = events.ChangeEvent(key=key, value=proto_event.string)
-            elif actionType == events.ClickEvent:
-                event = events.ClickEvent()
-            else:
-                raise OpticInternalException("Unhandled event type: " + str(actionType))
+            event = runtime.get_event_mapper(actionType)(proto_event, key)
 
             return func(cast(Any, event))
 
@@ -41,3 +33,19 @@ def event_handler(actionType: Type[A]) -> Callable[[Handler[A]], Handler[A]]:
         return wrapper
 
     return register
+
+
+runtime.register_event_mapper(
+    events.ChangeEvent,
+    lambda userEvent, key: events.ChangeEvent(
+        value=userEvent.string,
+        key=key,
+    ),
+)
+
+runtime.register_event_mapper(
+    events.ClickEvent,
+    lambda userEvent, key: events.ClickEvent(
+        key=key,
+    ),
+)

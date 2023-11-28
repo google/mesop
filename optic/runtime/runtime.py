@@ -1,6 +1,8 @@
 from dataclasses import dataclass
-from typing import Any, Callable, Generator, cast
+from typing import Any, Callable, Generator, Type, TypeVar, cast
 
+from optic.key import Key
+from optic.events import OpticEvent
 import protos.ui_pb2 as pb
 from .context import Context
 from optic.exceptions import OpticUserException
@@ -14,16 +16,21 @@ class EmptyState:
     pass
 
 
+E = TypeVar("E", bound=OpticEvent)
+
+
 class Runtime:
     _context: Context
     _path_fns: dict[str, Callable[[], None]]
     _handlers: dict[str, Handler]
     _state_classes: list[type[Any]]
     _loading_errors: list[pb.ServerError]
+    _event_mappers: dict[Any, Callable[[pb.UserEvent, Key], Any]]
 
     def __init__(self):
         self._path_fns = {}
         self._handlers = {}
+        self._event_mappers = {}
         self._state_classes = []
         self._loading_errors = []
 
@@ -78,6 +85,14 @@ Try one of the following paths:
 
     def get_loading_errors(self) -> list[pb.ServerError]:
         return self._loading_errors
+
+    def register_event_mapper(
+        self, event: Type[E], map_fn: Callable[[pb.UserEvent, Key], E]
+    ):
+        self._event_mappers[event] = map_fn
+
+    def get_event_mapper(self, event: Type[E]) -> Callable[[pb.UserEvent, Key], E]:
+        return self._event_mappers[event]
 
 
 runtime = Runtime()

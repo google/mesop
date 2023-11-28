@@ -2,7 +2,10 @@
 ### COMPONENTS
 #########################
 from optic.components.button.button import button as button
-from optic.components.checkbox.checkbox import checkbox as checkbox
+from optic.components.checkbox.checkbox import (
+    checkbox as checkbox,
+    CheckboxEvent as CheckboxEvent,
+)
 from optic.components.text.text import text as text
 from optic.components.box.box import box as box
 from optic.components.text_input.text_input import text_input as text_input
@@ -11,7 +14,6 @@ from optic.components.text_input.text_input import text_input as text_input
 from optic.features import page as page
 from optic.events import (
     ChangeEvent as ChangeEvent,
-    CheckboxEvent as CheckboxEvent,
     ClickEvent as ClickEvent,
 )
 from optic.event_handler import event_handler
