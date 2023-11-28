@@ -1,11 +1,11 @@
 import { Injectable } from "@angular/core";
 
-const SHOW_DEBUG_PANEL_KEY = "OPTIC://SHOW_DEBUG_PANEL_KEY";
+const SHOW_DEV_TOOLS_KEY = "OPTIC://SHOW_DEV_TOOLS_KEY";
 
 @Injectable()
 export class DebugService {
   constructor() {
-    window.localStorage.getItem(SHOW_DEBUG_PANEL_KEY);
+    window.localStorage.getItem(SHOW_DEV_TOOLS_KEY);
   }
 
   isDebugMode(): boolean {
@@ -13,14 +13,14 @@ export class DebugService {
     return true;
   }
 
-  showDebugPanel(): boolean {
-    return window.localStorage.getItem(SHOW_DEBUG_PANEL_KEY) === "true";
+  showDevTools(): boolean {
+    return window.localStorage.getItem(SHOW_DEV_TOOLS_KEY) === "true";
   }
 
-  toggleShowDebugPanel() {
+  toggleShowDevTools() {
     window.localStorage.setItem(
-      SHOW_DEBUG_PANEL_KEY,
-      (!this.showDebugPanel()).toString(),
+      SHOW_DEV_TOOLS_KEY,
+      (!this.showDevTools()).toString(),
     );
   }
 }

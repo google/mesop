@@ -124,12 +124,12 @@ class App {
     return this.debugService.isDebugMode();
   }
 
-  showRightSideNav() {
-    return this.debugService.showDebugPanel();
+  showDevTools() {
+    return this.debugService.showDevTools();
   }
 
-  toggleRightSideNav() {
-    this.debugService.toggleShowDebugPanel();
+  toggleDevTools() {
+    this.debugService.toggleShowDevTools();
   }
 }
 
