@@ -1,10 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
-import {
-  Click,
-  Key,
-  Type,
-  UserEvent,
-} from "optic/protos/ui_ts_proto_pb/protos/ui_pb";
+import { Key, Type, UserEvent } from "optic/protos/ui_ts_proto_pb/protos/ui_pb";
 import { ButtonType } from "optic/optic/components/button/button_ts_proto_pb/optic/components/button/button_pb";
 import { Channel } from "../../../web/src/services/channel";
 import { MatButtonModule } from "@angular/material/button";
@@ -36,7 +31,6 @@ export class ButtonComponent {
 
   handleClick(event: any) {
     const userEvent = new UserEvent();
-    userEvent.setClick(new Click());
     userEvent.setHandlerId(this.config().getOnClickHandlerId()!);
     this.channel.dispatch(userEvent);
   }

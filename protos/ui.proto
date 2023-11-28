@@ -17,26 +17,18 @@ message InitRequest {
 }
 
 message UserEvent {
-    States states = 4;
+    States states = 1;
 
     // Used to determine which action handler to call.
-    string handler_id = 1;
+    string handler_id = 2;
 
-    Key key = 5;
+    Key key = 3;
 
     oneof type {
-        bool bool = 2;
-        Click click = 3;
-        InputChange change = 6;
+        bool bool = 4;
+        string string = 5;
     }
 }
-
-// Corresponds to an input change event.
-message InputChange {
-    string value = 1;
-}
-
-message Click {}
 
 // Sent from Python server to web client.
 // Multiple UiResponse messages may be sent in response to 1 UiRequest.

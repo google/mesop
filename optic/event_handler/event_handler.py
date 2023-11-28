@@ -26,7 +26,7 @@ def event_handler(actionType: Type[A]) -> Callable[[Handler[A]], Handler[A]]:
             if actionType == events.CheckboxEvent:
                 event = events.CheckboxEvent(checked=proto_event.bool, key=key)
             elif actionType == events.ChangeEvent:
-                event = events.ChangeEvent(key=key, value=proto_event.change.value)
+                event = events.ChangeEvent(key=key, value=proto_event.string)
             elif actionType == events.ClickEvent:
                 event = events.ClickEvent()
             else:

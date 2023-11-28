@@ -1,10 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
-import {
-  InputChange,
-  Key,
-  Type,
-  UserEvent,
-} from "optic/protos/ui_ts_proto_pb/protos/ui_pb";
+import { Key, Type, UserEvent } from "optic/protos/ui_ts_proto_pb/protos/ui_pb";
 import { TextInputType } from "optic/optic/components/text_input/text_input_ts_proto_pb/optic/components/text_input/text_input_pb";
 import { Channel } from "../../../web/src/services/channel";
 import { MatFormFieldModule } from "@angular/material/form-field";
@@ -39,9 +34,7 @@ export class TextInputComponent {
 
   onChange(event: Event) {
     const userEvent = new UserEvent();
-    const inputChange = new InputChange();
-    inputChange.setValue((event.target as HTMLInputElement).value);
-    userEvent.setChange(inputChange);
+    userEvent.setString((event.target as HTMLInputElement).value);
     userEvent.setHandlerId(this.config().getOnChangeHandlerId()!);
     this.channel.dispatch(userEvent);
   }
