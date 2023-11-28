@@ -1,5 +1,8 @@
 #!/bin/bash
 
+lsof -t -i:4200 | xargs kill;
+lsof -t -i:8080 | xargs kill;
+
 # Define your commands
 cmd1="scripts/run_web_dev.sh"
 cmd2="scripts/run_py_dev.sh"
