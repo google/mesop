@@ -1,4 +1,5 @@
 # Forked from: https://github.com/protocolbuffers/protobuf/blob/c508a40f40c0b4f1e562ef917cd5606d66d9601c/protobuf.bzl#L79
+# Forked to support mypy plugin to generate py type stubs
 load("@bazel_skylib//lib:versions.bzl", "versions")
 load("@rules_python//python:defs.bzl", "py_library")
 
