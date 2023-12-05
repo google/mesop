@@ -45,6 +45,9 @@ jobs:
         run: bazel build //optic/cli
       - name: Python type-checking
         run: ./scripts/run_py_typecheck.sh
+      - name: Bazel tests
+        # NOTE: bazel test //... doesn't work (due to node_modules)
+        run: bazel test //optic/...
       - name: Run playwright test
         run: yarn playwright test
       - uses: actions/upload-artifact@a8a3f3ad30e3422c9c7b888a15615d19a852ae32 # v3.1.3

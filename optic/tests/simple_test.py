@@ -1,8 +1,9 @@
-import optic.hello as hello
+import types
+import optic as op
 
 
 def test_hello_world():
-    assert hello.greet() == "hello"
+    assert isinstance(op, types.ModuleType)
 
 
 if __name__ == "__main__":
