@@ -43,9 +43,8 @@ jobs:
         run: yarn playwright install chromium --with-deps
       - name: Pre-build
         run: bazel build //optic/cli
-      # TODO: re-enable Python type-checking after updating py_proto_library to generate type stubs.
-      # - name: Python type-checking
-      #   run: ./scripts/run_py_typecheck.sh
+      - name: Python type-checking
+        run: ./scripts/run_py_typecheck.sh
       - name: Bazel tests
         # NOTE: bazel test //... doesn't work (due to node_modules)
         run: bazel test //optic/...

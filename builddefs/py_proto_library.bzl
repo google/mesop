@@ -78,6 +78,14 @@ def _py_proto_aspect_impl(target, ctx):
             name_mapper = lambda name: name.replace("-", "_").replace(".", "/"),
         )
 
+        # Generate pyi (type stubs) files
+        generated_sources += proto_common.declare_generated_files(
+            actions = ctx.actions,
+            proto_info = proto_info,
+            extension = "_pb2.pyi",
+            name_mapper = lambda name: name.replace("-", "_").replace(".", "/"),
+        )
+
         # Handles multiple repository and virtual import cases
         if proto_root.startswith(ctx.bin_dir.path):
             proto_root = proto_root[len(ctx.bin_dir.path) + 1:]
@@ -85,12 +93,16 @@ def _py_proto_aspect_impl(target, ctx):
         plugin_output = ctx.bin_dir.path + "/" + proto_root
         proto_root = ctx.workspace_name + "/" + proto_root
 
+        additional_args = ctx.actions.args()
+        additional_args.add(ctx.bin_dir.path, format = "--mypy_out=%s")
+
         proto_common.compile(
             actions = ctx.actions,
             proto_info = proto_info,
             proto_lang_toolchain_info = proto_lang_toolchain_info,
             generated_files = generated_sources,
             plugin_output = plugin_output,
+            additional_args = additional_args,
         )
 
     # Generated sources == Python sources
