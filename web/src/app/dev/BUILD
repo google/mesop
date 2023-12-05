@@ -1,4 +1,4 @@
-load("//build_defs:defaults.bzl", "devmode_esbuild", "http_server", "ng_module")
+load("//build_defs:defaults.bzl", "ANGULAR_CORE_DEPS", "devmode_esbuild", "http_server", "ng_module")
 load("//tools/angular:index.bzl", "LINKER_PROCESSED_FW_PACKAGES")
 
 package(
@@ -12,8 +12,7 @@ ng_module(
     ]),
     deps = [
         "//web/src/app",
-        "@npm//@angular/compiler",
-    ],
+    ] + ANGULAR_CORE_DEPS,
 )
 
 devmode_esbuild(

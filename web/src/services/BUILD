@@ -1,4 +1,4 @@
-load("//build_defs:defaults.bzl", "ng_module")
+load("//build_defs:defaults.bzl", "ANGULAR_CORE_DEPS", "ng_module")
 
 package(
     default_visibility = ["//:optic_internal"],
@@ -12,6 +12,5 @@ ng_module(
     deps = [
         "//protos:ui_jspb_proto",
         "//web/src/dev_tools/services",
-        "@npm//@angular/compiler",
-    ],
+    ] + ANGULAR_CORE_DEPS,
 )

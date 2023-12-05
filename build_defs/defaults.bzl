@@ -16,6 +16,19 @@ npm_sass_library = _npm_sass_library
 sass_binary = _sass_binary
 ts_library = _ts_library
 
+# Constants for deps
+ANGULAR_CORE_DEPS = [
+    "@npm//@angular/compiler",
+]
+
+ANGULAR_MATERIAL_DEPS = [
+    "@npm//@angular/material",
+]
+
+ANGULAR_CDK_DEPS = [
+    "@npm//@angular/cdk",
+]
+
 def jspb_proto_library(name, deps):
     """
     Shim for JS proto.

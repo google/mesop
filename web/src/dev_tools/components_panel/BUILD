@@ -1,4 +1,4 @@
-load("//build_defs:defaults.bzl", "ng_module", "sass_binary")
+load("//build_defs:defaults.bzl", "ANGULAR_CORE_DEPS", "ng_module", "sass_binary")
 
 package(
     default_visibility = ["//:optic_internal"],
@@ -17,8 +17,7 @@ ng_module(
         "//web/src/dev_tools/component_tree",
         "//web/src/dev_tools/object_tree",
         "//web/src/services",
-        "@npm//@angular/compiler",
-    ],
+    ] + ANGULAR_CORE_DEPS,
 )
 
 sass_binary(
