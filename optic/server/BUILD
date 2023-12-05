@@ -10,7 +10,7 @@ py_library(
     srcs = glob(["*.py"]),
     deps = [
         requirement("flask"),
-        "//protos:ui_py_proto",
+        "//protos:ui_py_pb2",
         "@rules_python//python/runfiles",
     ],
     # Note: prod_server.py has a runtime dependency on

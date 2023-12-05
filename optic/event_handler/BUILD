@@ -9,6 +9,6 @@ py_library(
         "//optic/component_helpers",
         "//optic/events",
         "//optic/runtime",
-        "//protos:ui_py_proto",
+        "//protos:ui_py_pb2",
     ],
 )

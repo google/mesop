@@ -5,7 +5,7 @@ Bazel macro for defining an Optic component, which includes the Python, client-s
 load("@my_deps//:requirements.bzl", "requirement")
 load("@rules_proto//proto:defs.bzl", "proto_library")
 load("//builddefs:defs.bzl", "jspb_proto_library")
-load("//builddefs:protos.bzl", "py_proto_library")
+load("//builddefs:py_proto_library.bzl", "py_proto_library")
 load("//tools:defaults.bzl", "ng_module")
 
 def optic_component(name, ng_deps = [], py_deps = []):
@@ -18,6 +18,7 @@ def optic_component(name, ng_deps = [], py_deps = []):
         py_deps (list, optional): List of Python dependencies for the component. Defaults to an empty list.
     """
     jspb_proto_target = name + "_jspb_proto"
+    py_proto_target = name + "_py_pb2"
     ng_module(
         name = "ng",
         srcs = native.glob([
@@ -39,11 +40,11 @@ def optic_component(name, ng_deps = [], py_deps = []):
         name = "py",
         srcs = native.glob(["*.py"]),
         deps = [
+            ":" + py_proto_target,
             requirement("pydantic"),
-            ":py_proto",
             "//optic/component_helpers",
             "//optic/events",
-            "//protos:ui_py_proto",
+            "//protos:ui_py_pb2",
         ] + py_deps,
     )
 
@@ -53,8 +54,8 @@ def optic_component(name, ng_deps = [], py_deps = []):
     )
 
     py_proto_library(
-        name = "py_proto",
-        srcs = native.glob(["*.proto"]),
+        name = py_proto_target,
+        deps = [":proto"],
     )
 
     jspb_proto_library(

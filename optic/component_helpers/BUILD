@@ -7,6 +7,6 @@ py_library(
     srcs = glob(["*.py"]),
     deps = [
         "//optic/runtime",
-        "//protos:ui_py_proto",
+        "//protos:ui_py_pb2",
     ],
 )

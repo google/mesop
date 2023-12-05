@@ -8,6 +8,6 @@ py_library(
     deps = [
         "//optic/dataclass_utils",
         "//optic/exceptions",
-        "//protos:ui_py_proto",
+        "//protos:ui_py_pb2",
     ],
 )
