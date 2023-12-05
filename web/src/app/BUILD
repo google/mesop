@@ -1,4 +1,4 @@
-load("//tools:defaults.bzl", "esbuild_config", "ng_module", "npm_sass_library", "sass_binary")
+load("//build_defs:defaults.bzl", "esbuild_config", "ng_module", "npm_sass_library", "sass_binary")
 
 package(
     default_visibility = ["//:optic_internal"],

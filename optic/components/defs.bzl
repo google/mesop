@@ -4,8 +4,7 @@ Bazel macro for defining an Optic component, which includes the Python, client-s
 
 load("@my_deps//:requirements.bzl", "requirement")
 load("@rules_proto//proto:defs.bzl", "proto_library")
-load("//build_defs:defaults.bzl", "jspb_proto_library", "py_proto_library")
-load("//tools:defaults.bzl", "ng_module")
+load("//build_defs:defaults.bzl", "jspb_proto_library", "ng_module", "py_proto_library")
 
 def optic_component(name, ng_deps = [], py_deps = []):
     """

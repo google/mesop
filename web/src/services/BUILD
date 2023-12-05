@@ -1,4 +1,4 @@
-load("//tools:defaults.bzl", "ng_module")
+load("//build_defs:defaults.bzl", "ng_module")
 
 package(
     default_visibility = ["//:optic_internal"],

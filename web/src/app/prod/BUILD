@@ -1,5 +1,5 @@
 load("@build_bazel_rules_nodejs//:index.bzl", "pkg_web")
-load("//tools:defaults.bzl", "esbuild", "ng_module")
+load("//build_defs:defaults.bzl", "esbuild", "ng_module")
 load("//tools/angular:index.bzl", "LINKER_PROCESSED_FW_PACKAGES")
 
 package(
