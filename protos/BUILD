@@ -1,6 +1,6 @@
 load("@rules_proto//proto:defs.bzl", "proto_library")
+load("//builddefs:defs.bzl", "jspb_proto_library")
 load("//builddefs:protos.bzl", "py_proto_library")
-load("@rules_proto_grpc//js:defs.bzl", "js_proto_library")
 
 package(
     default_visibility = ["//:optic_internal"],
@@ -16,7 +16,7 @@ py_proto_library(
     srcs = ["ui.proto"],
 )
 
-js_proto_library(
+jspb_proto_library(
     name = "ui_jspb_proto",
-    protos = [":ui_proto"],
+    deps = [":ui_proto"],
 )
