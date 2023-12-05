@@ -1,4 +1,4 @@
-load("//builddefs:defs.bzl", "py_library")
+load("//build_defs:defaults.bzl", "py_library")
 load("@rules_python//python:pip.bzl", "compile_pip_requirements")
 
 package(

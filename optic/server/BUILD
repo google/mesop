@@ -1,4 +1,4 @@
-load("//builddefs:defs.bzl", "py_library")
+load("//build_defs:defaults.bzl", "py_library")
 load("@my_deps//:requirements.bzl", "requirement")
 
 package(

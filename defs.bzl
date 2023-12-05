@@ -3,7 +3,7 @@ This includes the BUILD rules which should be considered
 as part of Optic's public API.
 """
 
-load("//builddefs:defs.bzl", "py_binary")
+load("//build_defs:defaults.bzl", "py_binary")
 
 def optic_binary(name, srcs, data = [], deps = []):
     py_binary(

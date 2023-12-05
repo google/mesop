@@ -1,6 +1,5 @@
 load("@rules_proto//proto:defs.bzl", "proto_library")
-load("//builddefs:defs.bzl", "jspb_proto_library")
-load("//builddefs:py_proto_library.bzl", "py_proto_library")
+load("//build_defs:defaults.bzl", "jspb_proto_library", "py_proto_library")
 
 package(
     default_visibility = ["//:optic_internal"],

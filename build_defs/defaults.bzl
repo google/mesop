@@ -2,9 +2,11 @@
 
 load("@aspect_rules_py//py:defs.bzl", _py_binary = "py_binary", _py_library = "py_library")
 load("@rules_proto_grpc//js:defs.bzl", "js_proto_library")
+load("//build_defs:py_proto_library.bzl", _py_proto_library = "py_proto_library")
 
 py_binary = _py_binary
 py_library = _py_library
+py_proto_library = _py_proto_library
 
 def jspb_proto_library(name, deps):
     """

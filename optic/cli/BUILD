@@ -1,5 +1,5 @@
 load("@my_deps//:requirements.bzl", "requirement")
-load("//builddefs:defs.bzl", "py_binary", "py_library")
+load("//build_defs:defaults.bzl", "py_binary", "py_library")
 
 COMMON_DEPS = [
     ":execute_module",
