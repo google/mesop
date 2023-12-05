@@ -1,6 +1,10 @@
 import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
-import { Key, Type, UserEvent } from "optic/protos/ui_ts_proto_pb/protos/ui_pb";
-import { CheckboxType } from "optic/optic/components/checkbox/checkbox_ts_proto_pb/optic/components/checkbox/checkbox_pb";
+import {
+  Key,
+  Type,
+  UserEvent,
+} from "optic/protos/ui_jspb_proto_pb/protos/ui_pb";
+import { CheckboxType } from "optic/optic/components/checkbox/checkbox_jspb_proto_pb/optic/components/checkbox/checkbox_pb";
 import { Channel } from "../../../web/src/services/channel";
 
 @Component({

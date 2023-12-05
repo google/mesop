@@ -17,7 +17,7 @@ def optic_component(name, ng_deps = [], py_deps = []):
         ng_deps (list, optional): List of Angular dependencies for the component. Defaults to an empty list.
         py_deps (list, optional): List of Python dependencies for the component. Defaults to an empty list.
     """
-    ts_proto_target = name + "_ts_proto"
+    jspb_proto_target = name + "_jspb_proto"
     ng_module(
         name = "ng",
         srcs = native.glob([
@@ -27,8 +27,8 @@ def optic_component(name, ng_deps = [], py_deps = []):
             "*.ng.html",
         ]),
         deps = [
-            ":" + ts_proto_target,
-            "//protos:ui_ts_proto",
+            ":" + jspb_proto_target,
+            "//protos:ui_jspb_proto",
             "//web/src/services",
             "@npm//@angular/compiler",
             "@npm//@angular/material",
@@ -58,6 +58,6 @@ def optic_component(name, ng_deps = [], py_deps = []):
     )
 
     js_proto_library(
-        name = ts_proto_target,
+        name = jspb_proto_target,
         protos = [":proto"],
     )

@@ -86,8 +86,8 @@ def main():
         path=os.path.join(
             current_dir(), "..", "web", "src", "dev_tools", "services", "BUILD"
         ),
-        target="# REF(//scripts/gen_component.py):insert_component_ts_proto_import",
-        content=f'    "//optic/components/{component_name}:{component_name}_ts_proto",',
+        target="# REF(//scripts/gen_component.py):insert_component_jspb_proto_import",
+        content=f'    "//optic/components/{component_name}:{component_name}_jspb_proto",',
     )
 
     print("Finished generating new component: " + component_name)
@@ -149,8 +149,8 @@ def update_dev_tools_deserializer():
     type = "{" + f"{camel_case()}Type" + "}"
     update_file(
         path=deserializer_path,
-        target="// REF(//scripts/gen_component.py):insert_component_ts_proto_import",
-        content=f'import {type} from "optic/optic/components/{component_name}/{component_name}_ts_proto_pb/optic/components/{component_name}/{component_name}_pb";',
+        target="// REF(//scripts/gen_component.py):insert_component_jspb_proto_import",
+        content=f'import {type} from "optic/optic/components/{component_name}/{component_name}_jspb_proto_pb/optic/components/{component_name}/{component_name}_pb";',
     )
     update_file(
         path=deserializer_path,

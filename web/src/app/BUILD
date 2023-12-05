@@ -13,7 +13,7 @@ ng_module(
         "app.ng.html",
     ],
     deps = [
-        "//protos:ui_ts_proto",
+        "//protos:ui_jspb_proto",
         "//web/src/component_renderer",
         "//web/src/dev_tools",
         "//web/src/error",

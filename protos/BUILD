@@ -17,6 +17,6 @@ py_proto_library(
 )
 
 js_proto_library(
-    name = "ui_ts_proto",
+    name = "ui_jspb_proto",
     protos = [":ui_proto"],
 )

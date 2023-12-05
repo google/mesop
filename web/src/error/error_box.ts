@@ -1,6 +1,6 @@
 import { Component, Input } from "@angular/core";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
-import * as pb from "optic/protos/ui_ts_proto_pb/protos/ui_pb";
+import * as pb from "optic/protos/ui_jspb_proto_pb/protos/ui_pb";
 import { CommonModule } from "@angular/common";
 import { ComponentRenderer } from "../component_renderer/component_renderer";
 import { Channel } from "../services/channel";

@@ -19,7 +19,7 @@ ng_module(
         "//optic/components/button:ng",
         "//optic/components/checkbox:ng",
         "//optic/components/text:ng",
-        "//protos:ui_ts_proto",
+        "//protos:ui_jspb_proto",
         "@npm//@angular/compiler",
     ],
 )

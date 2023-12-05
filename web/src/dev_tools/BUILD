@@ -13,7 +13,7 @@ ng_module(
         "*.ng.html",
     ]) + [":dev_tools.css"],
     deps = [
-        "//protos:ui_ts_proto",
+        "//protos:ui_jspb_proto",
         "//web/src/dev_tools/components_panel",
         "//web/src/dev_tools/logs_panel",
         "@npm//@angular/compiler",

@@ -13,7 +13,7 @@ ng_module(
         "*.ng.html",
     ]) + [":error_box.css"],
     deps = [
-        "//protos:ui_ts_proto",
+        "//protos:ui_jspb_proto",
         "//web/src/component_renderer",
         "//web/src/services",
         "@npm//@angular/compiler",

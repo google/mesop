@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import * as pb from "optic/protos/ui_ts_proto_pb/protos/ui_pb";
+import * as pb from "optic/protos/ui_jspb_proto_pb/protos/ui_pb";
 import { TypeDeserializer } from "./type_deserializer";
 import { Observable, Subject } from "rxjs";
 

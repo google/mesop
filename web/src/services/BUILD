@@ -10,7 +10,7 @@ ng_module(
         "*.ts",
     ]),
     deps = [
-        "//protos:ui_ts_proto",
+        "//protos:ui_jspb_proto",
         "//web/src/dev_tools/services",
         "@npm//@angular/compiler",
     ],
