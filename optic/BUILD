@@ -1,5 +1,4 @@
 load("//build_defs:defaults.bzl", "py_library")
-load("@rules_python//python:pip.bzl", "compile_pip_requirements")
 
 package(
     default_visibility = ["//build_defs:optic_internal"],
@@ -24,10 +23,4 @@ py_library(
         "//optic/features",
         "//optic/server",
     ],
-)
-
-compile_pip_requirements(
-    name = "pip_requirements",
-    requirements_in = ":requirements.txt",
-    requirements_txt = ":requirements_lock.txt",
 )

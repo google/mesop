@@ -45,10 +45,10 @@ $ bazel run //optic/cli -- --path="optic/examples/simple.py"
 
 ### Third-party packages (PIP)
 
-If you update `//optic/requirements.txt`, run:
+If you update `//build_defs/requirements.txt`, run:
 
 ```sh
-$ bazel run //optic:pip_requirements.update
+$ bazel run //build_defs:pip_requirements.update
 ```
 
 ### Run tests

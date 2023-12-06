@@ -1,4 +1,5 @@
 load("@rules_proto//proto:defs.bzl", "proto_lang_toolchain")
+load("@rules_python//python:pip.bzl", "compile_pip_requirements")
 
 package_group(
     name = "optic_internal",
@@ -20,4 +21,10 @@ proto_lang_toolchain(
     # NOTE: This isn't *actually* public. It's an implicit dependency of py_proto_library,
     # so must be public so user usages of the rule can reference it.
     visibility = ["//visibility:public"],
+)
+
+compile_pip_requirements(
+    name = "pip_requirements",
+    requirements_in = ":requirements.txt",
+    requirements_txt = ":requirements_lock.txt",
 )
