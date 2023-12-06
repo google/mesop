@@ -2,7 +2,7 @@ load("//build_defs:defaults.bzl", "ANGULAR_CORE_DEPS", "devmode_esbuild", "http_
 load("//tools/angular:index.bzl", "LINKER_PROCESSED_FW_PACKAGES")
 
 package(
-    default_visibility = ["//:optic_internal"],
+    default_visibility = ["//build_defs:optic_internal"],
 )
 
 ng_module(

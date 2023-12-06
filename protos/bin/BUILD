@@ -2,7 +2,7 @@ load("@my_deps//:requirements.bzl", "requirement")
 load("//build_defs:defaults.bzl", "py_binary")
 
 package(
-    default_visibility = ["//:optic_internal"],
+    default_visibility = ["//build_defs:optic_internal"],
 )
 
 py_binary(

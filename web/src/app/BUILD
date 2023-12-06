@@ -1,7 +1,7 @@
 load("//build_defs:defaults.bzl", "ANGULAR_CDK_DEPS", "ANGULAR_CORE_DEPS", "ANGULAR_MATERIAL_DEPS", "esbuild_config", "ng_module", "npm_sass_library", "sass_binary")
 
 package(
-    default_visibility = ["//:optic_internal"],
+    default_visibility = ["//build_defs:optic_internal"],
 )
 
 ng_module(

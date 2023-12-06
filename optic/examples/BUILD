@@ -1,5 +1,5 @@
 package(
-    default_visibility = ["//:optic_internal"],
+    default_visibility = ["//build_defs:optic_internal"],
 )
 
 filegroup(

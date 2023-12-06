@@ -1,7 +1,7 @@
 load("//build_defs:defaults.bzl", "ANGULAR_CORE_DEPS", "ng_module")
 
 package(
-    default_visibility = ["//:optic_internal"],
+    default_visibility = ["//build_defs:optic_internal"],
 )
 
 ng_module(
