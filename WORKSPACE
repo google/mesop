@@ -251,11 +251,3 @@ load("@build_bazel_rules_nodejs//toolchains/esbuild:esbuild_repositories.bzl", "
 esbuild_repositories(
     npm_repository = "npm",
 )
-
-#####################
-# Optic
-#####################
-
-load("@//:workspace.bzl", "op_workspace")
-
-op_workspace()
