@@ -79,5 +79,5 @@ jobs:
           path: .cache
           restore-keys: |
             mkdocs-material-
-      - run: pip install -r optic/requirements_lock.txt
+      - run: pip install -r build_defs/requirements_lock.txt
       - run: mkdocs gh-deploy --force
