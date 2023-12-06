@@ -1,4 +1,4 @@
-load("//build_defs:defaults.bzl", "ANGULAR_CDK_DEPS", "ANGULAR_CORE_DEPS", "ANGULAR_MATERIAL_DEPS", "esbuild_config", "ng_module", "npm_sass_library", "sass_binary")
+load("//build_defs:defaults.bzl", "ANGULAR_CDK_DEPS", "ANGULAR_CORE_DEPS", "ANGULAR_MATERIAL_DEPS", "JS_STATIC_FILES", "esbuild_config", "ng_module", "npm_sass_library", "sass_binary")
 
 package(
     default_visibility = ["//build_defs:optic_internal"],
@@ -47,8 +47,5 @@ filegroup(
     srcs = [
         ":index.html",
         ":styles",
-        "@npm//:node_modules/moment/min/moment-with-locales.min.js",
-        "@npm//:node_modules/rxjs/bundles/rxjs.umd.min.js",
-        "@npm//:node_modules/zone.js/dist/zone.js",
-    ],
+    ] + JS_STATIC_FILES,
 )

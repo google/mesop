@@ -1,13 +1,11 @@
-load("@my_deps//:requirements.bzl", "requirement")
-load("//build_defs:defaults.bzl", "py_binary", "py_library")
+load("//build_defs:defaults.bzl", "THIRD_PARTY_PY_ABSL_PY", "py_binary", "py_library")
 
 COMMON_DEPS = [
     ":execute_module",
     "//optic",  # Keep dep to ensure the entire Optic library is loaded.
     "//optic/exceptions",
     "//optic/runtime",
-    requirement("absl-py"),
-]
+] + THIRD_PARTY_PY_ABSL_PY
 
 # Prod CLI
 py_binary(

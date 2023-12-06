@@ -3,6 +3,7 @@
 
 load("@aspect_rules_py//py:defs.bzl", _py_binary = "py_binary", _py_library = "py_library")
 load("@build_bazel_rules_nodejs//:index.bzl", _pkg_web = "pkg_web")
+load("@my_deps//:requirements.bzl", "requirement")
 load("@rules_proto//proto:defs.bzl", _proto_library = "proto_library")
 load("@rules_proto_grpc//js:defs.bzl", "js_proto_library")
 load("@rules_python//python:defs.bzl", _py_test = "py_test")
@@ -34,6 +35,28 @@ ANGULAR_MATERIAL_DEPS = [
 
 ANGULAR_CDK_DEPS = [
     "@npm//@angular/cdk",
+]
+
+JS_STATIC_FILES = [
+    "@npm//:node_modules/moment/min/moment-with-locales.min.js",
+    "@npm//:node_modules/rxjs/bundles/rxjs.umd.min.js",
+    "@npm//:node_modules/zone.js/dist/zone.js",
+]
+
+THIRD_PARTY_PY_ABSL_PY = [
+    requirement("absl-py"),
+]
+
+THIRD_PARTY_PY_FLASK = [
+    requirement("flask"),
+]
+
+THIRD_PARTY_PYTEST = [
+    requirement("pytest"),
+]
+
+THIRD_PARTY_MYPY_PROTOBUF = [
+    requirement("mypy-protobuf"),
 ]
 
 def jspb_proto_library(name, deps):

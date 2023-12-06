@@ -1,4 +1,4 @@
-load("//build_defs:defaults.bzl", "ANGULAR_CORE_DEPS", "devmode_esbuild", "http_server", "ng_module")
+load("//build_defs:defaults.bzl", "ANGULAR_CORE_DEPS", "JS_STATIC_FILES", "devmode_esbuild", "http_server", "ng_module")
 load("//tools/angular:index.bzl", "LINKER_PROCESSED_FW_PACKAGES")
 
 package(
@@ -39,10 +39,7 @@ filegroup(
     srcs = [
         "//web/src/app:index.html",
         "//web/src/app:styles",
-        "@npm//:node_modules/moment/min/moment-with-locales.min.js",
-        "@npm//:node_modules/rxjs/bundles/rxjs.umd.min.js",
-        "@npm//:node_modules/zone.js/dist/zone.js",
-    ],
+    ] + JS_STATIC_FILES,
 )
 
 http_server(
