@@ -59,6 +59,10 @@ THIRD_PARTY_MYPY_PROTOBUF = [
     requirement("mypy-protobuf"),
 ]
 
+PYTHON_RUNFILES_DEP = [
+    "@rules_python//python/runfiles",
+]
+
 def jspb_proto_library(name, deps):
     """
     Shim for JS proto.
