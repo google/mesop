@@ -6,6 +6,6 @@ source .cli.venv/bin/activate && \
 # Setup py modules for proto dirs
 ./scripts/setup_proto_py_modules.sh && \
 # Install pip deps
-pip install -r optic/requirements_lock.txt && \
+pip install -r build_defs/requirements_lock.txt && \
 # Run actual typecheck
 yarn pyright
