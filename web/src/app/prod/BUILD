@@ -1,4 +1,4 @@
-load("//build_defs:defaults.bzl", "ANGULAR_CORE_DEPS", "LINKER_PROCESSED_FW_PACKAGES", "esbuild", "ng_module", "pkg_web")
+load("//build_defs:defaults.bzl", "ANGULAR_CORE_DEPS", "ng_js_binary", "ng_module", "pkg_web")
 
 package(
     default_visibility = ["//build_defs:optic_internal"],
@@ -14,16 +14,10 @@ ng_module(
     ] + ANGULAR_CORE_DEPS,
 )
 
-esbuild(
+ng_js_binary(
     name = "bundles",
-    config = "//web/src/app:esbuild_config",
     entry_points = [":main.ts"],
-    platform = "browser",
-    splitting = True,
-    # We cannot use `ES2017` or higher as that would result in `async/await` not being downleveled.
-    # ZoneJS needs to be able to intercept these as otherwise change detection would not work properly.
-    target = "es2016",
-    deps = LINKER_PROCESSED_FW_PACKAGES + [
+    deps = [
         ":main",
     ],
 )

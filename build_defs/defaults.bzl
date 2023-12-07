@@ -7,6 +7,7 @@ load("@my_deps//:requirements.bzl", "requirement")
 load("@rules_proto//proto:defs.bzl", _proto_library = "proto_library")
 load("@rules_python//python:defs.bzl", _py_test = "py_test")
 load("//build_defs:jspb_proto_library.bzl", _jspb_proto_library = "jspb_proto_library")
+load("//build_defs:ng_js_binary.bzl", _ng_js_binary = "ng_js_binary")
 load("//build_defs:py_proto_library.bzl", _py_proto_library = "py_proto_library")
 load("//build_defs:sass_external_binary.bzl", _sass_external_binary = "sass_external_binary")
 load("//tools:defaults.bzl", _devmode_esbuild = "devmode_esbuild", _esbuild = "esbuild", _esbuild_config = "esbuild_config", _http_server = "http_server", _ng_module = "ng_module", _sass_binary = "sass_binary", _ts_library = "ts_library")
@@ -18,6 +19,7 @@ esbuild = _esbuild
 esbuild_config = _esbuild_config
 http_server = _http_server
 jspb_proto_library = _jspb_proto_library
+ng_js_binary = _ng_js_binary
 ng_module = _ng_module
 pkg_web = _pkg_web
 proto_library = _proto_library
