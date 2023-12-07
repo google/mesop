@@ -10,6 +10,7 @@ ng_module(
         "*.ts",
     ]),
     deps = [
+        "//web/src/utils",
         # REF(//scripts/gen_component.py):insert_component_jspb_proto_import
         "//optic/components/box:box_jspb_proto",
         "//optic/components/button:button_jspb_proto",

@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import * as pb from "optic/optic/protos/ui_jspb_proto_pb/optic/protos/ui_pb";
 import { TypeDeserializer } from "./type_deserializer";
 import { Observable, Subject } from "rxjs";
+import { jsonParse } from "../../utils/strict_types";
 
 @Injectable()
 export class Logger {
@@ -56,7 +57,7 @@ export class Logger {
           duration,
           states: input.states
             .getStatesList()
-            .map((s) => JSON.parse(s.getData())),
+            .map((s) => jsonParse(s.getData())) as object[],
           rootComponent,
         };
     }
