@@ -8,12 +8,14 @@ load("@rules_proto//proto:defs.bzl", _proto_library = "proto_library")
 load("@rules_python//python:defs.bzl", _py_test = "py_test")
 load("//build_defs:jspb_proto_library.bzl", _jspb_proto_library = "jspb_proto_library")
 load("//build_defs:py_proto_library.bzl", _py_proto_library = "py_proto_library")
-load("//tools:defaults.bzl", _esbuild = "esbuild", _esbuild_config = "esbuild_config", _ng_module = "ng_module", _npm_sass_library = "npm_sass_library", _sass_binary = "sass_binary", _ts_library = "ts_library")
+load("//tools:defaults.bzl", _devmode_esbuild = "devmode_esbuild", _esbuild = "esbuild", _esbuild_config = "esbuild_config", _http_server = "http_server", _ng_module = "ng_module", _npm_sass_library = "npm_sass_library", _sass_binary = "sass_binary", _ts_library = "ts_library")
 load("//tools/angular:index.bzl", _LINKER_PROCESSED_FW_PACKAGES = "LINKER_PROCESSED_FW_PACKAGES")
 
 # Re-export symbols
+devmode_esbuild = _devmode_esbuild
 esbuild = _esbuild
 esbuild_config = _esbuild_config
+http_server = _http_server
 jspb_proto_library = _jspb_proto_library
 ng_module = _ng_module
 npm_sass_library = _npm_sass_library
