@@ -1,13 +1,13 @@
-import { FlatTreeControl } from "@angular/cdk/tree";
-import { Component, EventEmitter, Input, Output } from "@angular/core";
+import {FlatTreeControl} from '@angular/cdk/tree';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {
   MatTreeFlatDataSource,
   MatTreeFlattener,
   MatTreeModule,
-} from "@angular/material/tree";
-import { CdkTreeModule } from "@angular/cdk/tree";
-import { MatIconModule } from "@angular/material/icon";
-import { MatButtonModule } from "@angular/material/button";
+} from '@angular/material/tree';
+import {CdkTreeModule} from '@angular/cdk/tree';
+import {MatIconModule} from '@angular/material/icon';
+import {MatButtonModule} from '@angular/material/button';
 
 /** Flat node with expandable and level information */
 export interface ExampleFlatNode {
@@ -19,14 +19,14 @@ export interface ExampleFlatNode {
 }
 
 @Component({
-  selector: "optic-component-tree",
-  templateUrl: "component_tree.ng.html",
-  styleUrl: "component_tree.css",
+  selector: 'optic-component-tree',
+  templateUrl: 'component_tree.ng.html',
+  styleUrl: 'component_tree.css',
   standalone: true,
   imports: [CdkTreeModule, MatTreeModule, MatButtonModule, MatIconModule],
 })
 export class ComponentTree {
-  @Input({ required: true }) component!: InputNode;
+  @Input({required: true}) component!: InputNode;
   @Output() nodeSelected = new EventEmitter<ExampleFlatNode>();
 
   keys() {
@@ -75,8 +75,8 @@ export class ComponentTree {
 
 function mapObject(object: InputNode): DisplayNode {
   const node: DisplayNode = {
-    componentName: "<undefined>",
-    text: "",
+    componentName: '<undefined>',
+    text: '',
     properties: {} as any,
     children: [],
   };
@@ -86,7 +86,7 @@ function mapObject(object: InputNode): DisplayNode {
         const [key, value] = entry;
         return `${key}=${JSON.stringify(value)}`;
       })
-      .join(", ");
+      .join(', ');
     node.text = `${object.type.name}(${values})`;
     node.properties = object.type.value;
     (node.properties as any).key = object.key?.key;

@@ -1,7 +1,7 @@
-import { Component } from "@angular/core";
+import {Component} from '@angular/core';
 
 @Component({
-  selector: "component-loader",
+  selector: 'component-loader',
   template: ` <div>Loading.,..</div> `,
   standalone: true,
 })

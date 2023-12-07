@@ -1,7 +1,7 @@
 // Based on: https://github.com/angular/angular/blob/15a825c113701583773fa028259518b63760c3b4/devtools/styles.scss
 
-@use "sass:map";
-@use "external/npm/node_modules/@angular/material/index" as mat;
+@use 'sass:map';
+@use 'external/npm/node_modules/@angular/material/index' as mat;
 @include mat.all-component-typographies();
 @include mat.core();
 
@@ -11,8 +11,8 @@ body {
   margin: 0;
   height: 100%;
   // Use system font.
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
-    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
+    Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
 }
 
 * {

@@ -1,12 +1,12 @@
-import { Injectable } from "@angular/core";
+import {Injectable} from '@angular/core';
 import {
   States,
   UserEvent,
   Component as ComponentProto,
-} from "optic/optic/protos/ui_jspb_proto_pb/optic/protos/ui_pb";
-import { TypeDeserializer } from "./type_deserializer";
-import { Observable, Subject } from "rxjs";
-import { jsonParse } from "../../utils/strict_types";
+} from 'optic/optic/protos/ui_jspb_proto_pb/optic/protos/ui_pb';
+import {TypeDeserializer} from './type_deserializer';
+import {Observable, Subject} from 'rxjs';
+import {jsonParse} from '../../utils/strict_types';
 
 @Injectable()
 export class Logger {
@@ -41,22 +41,22 @@ export class Logger {
       : undefined;
     const duration = lastTimestamp ? Date.now() - lastTimestamp : undefined;
     switch (input.type) {
-      case "StreamStart":
-        return { type: "Stream Start", timestamp: Date.now(), duration };
-      case "StreamEnd":
-        return { type: "Stream End", timestamp: Date.now(), duration };
-      case "UserEventLog":
+      case 'StreamStart':
+        return {type: 'Stream Start', timestamp: Date.now(), duration};
+      case 'StreamEnd':
+        return {type: 'Stream End', timestamp: Date.now(), duration};
+      case 'UserEventLog':
         return {
-          type: "User Event",
+          type: 'User Event',
           timestamp: Date.now(),
           userEvent: input.userEvent.toObject(),
           duration,
         };
-      case "RenderLog":
+      case 'RenderLog':
         const rootComponent = input.rootComponent.toObject();
         this.updateComponent(rootComponent);
         return {
-          type: "Render",
+          type: 'Render',
           timestamp: Date.now(),
           duration,
           states: input.states
@@ -68,14 +68,14 @@ export class Logger {
   }
 
   updateComponent(component: object): void {
-    const type = (component as any)["type"];
+    const type = (component as any)['type'];
     if (type) {
-      type["value"] = this._typeDeserializer.deserialize(
-        type["name"],
-        type["value"],
+      type['value'] = this._typeDeserializer.deserialize(
+        type['name'],
+        type['value'],
       );
     }
-    const children = (component as any)["childrenList"];
+    const children = (component as any)['childrenList'];
     if (children) {
       for (const child of children) {
         this.updateComponent(child);
@@ -91,20 +91,20 @@ export interface BaseLogModel {
 }
 
 export interface StreamStartLogModel extends BaseLogModel {
-  type: "Stream Start";
+  type: 'Stream Start';
 }
 
 export interface StreamEndLogModel extends BaseLogModel {
-  type: "Stream End";
+  type: 'Stream End';
 }
 
 export interface UserEventLogModel extends BaseLogModel {
-  type: "User Event";
+  type: 'User Event';
   userEvent: object;
 }
 
 export interface RenderLogModel extends BaseLogModel {
-  type: "Render";
+  type: 'Render';
   rootComponent: object;
   states: object[];
 }
@@ -120,20 +120,20 @@ export interface BaseLogInput {
 }
 
 export interface StreamStartLogInput extends BaseLogInput {
-  type: "StreamStart";
+  type: 'StreamStart';
 }
 
 export interface StreamEndLogInput extends BaseLogInput {
-  type: "StreamEnd";
+  type: 'StreamEnd';
 }
 
 export interface UserEventLogInput extends BaseLogInput {
-  type: "UserEventLog";
+  type: 'UserEventLog';
   userEvent: UserEvent;
 }
 
 export interface RenderLogInput extends BaseLogInput {
-  type: "RenderLog";
+  type: 'RenderLog';
   rootComponent: ComponentProto;
   states: States;
 }

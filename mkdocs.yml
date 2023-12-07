@@ -26,14 +26,14 @@ theme:
 
   palette:
     # Palette toggle for light mode
-    - media: "(prefers-color-scheme: light)"
+    - media: '(prefers-color-scheme: light)'
       scheme: optic-light
       toggle:
         icon: material/brightness-7
         name: Switch to light mode
 
     # Palette toggle for dark mode
-    - media: "(prefers-color-scheme: dark)"
+    - media: '(prefers-color-scheme: dark)'
       scheme: optic-dark
       toggle:
         icon: material/brightness-4

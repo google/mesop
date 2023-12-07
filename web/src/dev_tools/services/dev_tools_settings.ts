@@ -1,7 +1,7 @@
-import { Injectable } from "@angular/core";
+import {Injectable} from '@angular/core';
 
-const SHOW_DEV_TOOLS_KEY = "OPTIC://SHOW_DEV_TOOLS_KEY";
-const CURRENT_DEV_TOOLS_PANEL_KEY = "OPTIC://CURRENT_DEV_TOOLS_PANEL_KEY";
+const SHOW_DEV_TOOLS_KEY = 'OPTIC://SHOW_DEV_TOOLS_KEY';
+const CURRENT_DEV_TOOLS_PANEL_KEY = 'OPTIC://CURRENT_DEV_TOOLS_PANEL_KEY';
 
 @Injectable()
 export class DevToolsSettings {
@@ -11,7 +11,7 @@ export class DevToolsSettings {
   }
 
   showDevTools(): boolean {
-    return window.localStorage.getItem(SHOW_DEV_TOOLS_KEY) === "true";
+    return window.localStorage.getItem(SHOW_DEV_TOOLS_KEY) === 'true';
   }
 
   toggleShowDevTools() {

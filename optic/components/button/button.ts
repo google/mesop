@@ -1,22 +1,22 @@
-import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
+import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 import {
   Key,
   Type,
   UserEvent,
-} from "optic/optic/protos/ui_jspb_proto_pb/optic/protos/ui_pb";
-import { ButtonType } from "optic/optic/components/button/button_jspb_proto_pb/optic/components/button/button_pb";
-import { Channel } from "../../../web/src/services/channel";
-import { MatButtonModule } from "@angular/material/button";
+} from 'optic/optic/protos/ui_jspb_proto_pb/optic/protos/ui_pb';
+import {ButtonType} from 'optic/optic/components/button/button_jspb_proto_pb/optic/components/button/button_pb';
+import {Channel} from '../../../web/src/services/channel';
+import {MatButtonModule} from '@angular/material/button';
 
 @Component({
-  selector: "optic-button",
-  templateUrl: "button.ng.html",
+  selector: 'optic-button',
+  templateUrl: 'button.ng.html',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatButtonModule],
 })
 export class ButtonComponent {
-  @Input({ required: true }) type!: Type;
+  @Input({required: true}) type!: Type;
   @Input() key!: Key;
   private _config!: ButtonType;
   isChecked = false;

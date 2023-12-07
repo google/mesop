@@ -1,17 +1,17 @@
-import { Component, Input } from "@angular/core";
-import { MatProgressBarModule } from "@angular/material/progress-bar";
+import {Component, Input} from '@angular/core';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {
   ServerError,
   StackFrame,
-} from "optic/optic/protos/ui_jspb_proto_pb/optic/protos/ui_pb";
-import { CommonModule } from "@angular/common";
-import { ComponentRenderer } from "../component_renderer/component_renderer";
-import { Channel } from "../services/channel";
+} from 'optic/optic/protos/ui_jspb_proto_pb/optic/protos/ui_pb';
+import {CommonModule} from '@angular/common';
+import {ComponentRenderer} from '../component_renderer/component_renderer';
+import {Channel} from '../services/channel';
 
 @Component({
-  selector: "optic-error-box",
-  templateUrl: "error_box.ng.html",
-  styleUrl: "error_box.css",
+  selector: 'optic-error-box',
+  templateUrl: 'error_box.ng.html',
+  styleUrl: 'error_box.css',
   standalone: true,
   imports: [CommonModule, ComponentRenderer, MatProgressBarModule],
   providers: [Channel],
@@ -19,7 +19,7 @@ import { Channel } from "../services/channel";
 export class ErrorBox {
   _showFullTraceback: boolean = false;
   _lastAppFrame: StackFrame | undefined;
-  @Input({ required: true }) error!: ServerError;
+  @Input({required: true}) error!: ServerError;
 
   ngOnChanges() {
     for (const frame of this.error

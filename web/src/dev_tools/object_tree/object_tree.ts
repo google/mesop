@@ -1,13 +1,13 @@
-import { FlatTreeControl } from "@angular/cdk/tree";
-import { Component, Input } from "@angular/core";
+import {FlatTreeControl} from '@angular/cdk/tree';
+import {Component, Input} from '@angular/core';
 import {
   MatTreeFlatDataSource,
   MatTreeFlattener,
   MatTreeModule,
-} from "@angular/material/tree";
-import { CdkTreeModule } from "@angular/cdk/tree";
-import { MatIconModule } from "@angular/material/icon";
-import { MatButtonModule } from "@angular/material/button";
+} from '@angular/material/tree';
+import {CdkTreeModule} from '@angular/cdk/tree';
+import {MatIconModule} from '@angular/material/icon';
+import {MatButtonModule} from '@angular/material/button';
 
 /** Flat node with expandable and level information */
 interface ExampleFlatNode {
@@ -19,14 +19,14 @@ interface ExampleFlatNode {
 }
 
 @Component({
-  selector: "optic-object-tree",
-  templateUrl: "object_tree.ng.html",
-  styleUrl: "object_tree.css",
+  selector: 'optic-object-tree',
+  templateUrl: 'object_tree.ng.html',
+  styleUrl: 'object_tree.css',
   standalone: true,
   imports: [CdkTreeModule, MatTreeModule, MatButtonModule, MatIconModule],
 })
 export class ObjectTree {
-  @Input({ required: true }) object!: object;
+  @Input({required: true}) object!: object;
 
   keys() {
     return Object.keys(this.object);
@@ -72,7 +72,7 @@ function mapObject(object: object): PropertyNode[] {
   const nodes: PropertyNode[] = [];
   for (const key of Object.keys(object)) {
     // Skip showing duration & timestamp since we have special handling for them.
-    if (key === "duration" || key === "timestamp") {
+    if (key === 'duration' || key === 'timestamp') {
       continue;
     }
     const value = (object as any)[key];
@@ -80,11 +80,11 @@ function mapObject(object: object): PropertyNode[] {
       key,
       value: JSON.stringify(value),
     };
-    const duration = (object as any)["duration"];
-    if (node.key === "type" && duration) {
+    const duration = (object as any)['duration'];
+    if (node.key === 'type' && duration) {
       node.duration = duration;
     }
-    if (typeof value === "object" && value !== null) {
+    if (typeof value === 'object' && value !== null) {
       node.children = mapObject(value);
     }
     if (value != null || node.children) {

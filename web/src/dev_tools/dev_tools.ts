@@ -1,13 +1,13 @@
-import { Component } from "@angular/core";
-import { LogsPanel } from "./logs_panel/logs_panel";
-import { ComponentsPanel } from "./components_panel/components_panel";
-import { CommonModule } from "@angular/common";
-import { DevToolsSettings, Panel } from "./services/dev_tools_settings";
+import {Component} from '@angular/core';
+import {LogsPanel} from './logs_panel/logs_panel';
+import {ComponentsPanel} from './components_panel/components_panel';
+import {CommonModule} from '@angular/common';
+import {DevToolsSettings, Panel} from './services/dev_tools_settings';
 
 @Component({
-  selector: "optic-dev-tools",
-  templateUrl: "dev_tools.ng.html",
-  styleUrl: "dev_tools.css",
+  selector: 'optic-dev-tools',
+  templateUrl: 'dev_tools.ng.html',
+  styleUrl: 'dev_tools.css',
   standalone: true,
   imports: [LogsPanel, ComponentsPanel, CommonModule],
 })

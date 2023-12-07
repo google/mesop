@@ -1,22 +1,22 @@
-import { Component, ViewChild } from "@angular/core";
-import { LogModel, Logger } from "../services/logger";
-import { ObjectTree } from "../object_tree/object_tree";
+import {Component, ViewChild} from '@angular/core';
+import {LogModel, Logger} from '../services/logger';
+import {ObjectTree} from '../object_tree/object_tree';
 import {
   CdkVirtualScrollViewport,
   ScrollingModule,
-} from "@angular/cdk/scrolling";
-import { CollectionViewer, DataSource } from "@angular/cdk/collections";
-import { Observable } from "rxjs";
+} from '@angular/cdk/scrolling';
+import {CollectionViewer, DataSource} from '@angular/cdk/collections';
+import {Observable} from 'rxjs';
 
 @Component({
-  selector: "optic-logs-panel",
-  templateUrl: "logs_panel.ng.html",
-  styleUrl: "logs_panel.css",
+  selector: 'optic-logs-panel',
+  templateUrl: 'logs_panel.ng.html',
+  styleUrl: 'logs_panel.css',
   standalone: true,
   imports: [ScrollingModule, ObjectTree],
 })
 export class LogsPanel {
-  @ViewChild("virtualScroll", { static: true })
+  @ViewChild('virtualScroll', {static: true})
   virtualScrollViewport!: CdkVirtualScrollViewport;
 
   logDataSource: LogDataSource;
@@ -31,7 +31,7 @@ export class LogsPanel {
     setTimeout(() => {
       this.virtualScrollViewport.scrollTo({
         bottom: 0,
-        behavior: "auto",
+        behavior: 'auto',
       });
     }, 50);
   };

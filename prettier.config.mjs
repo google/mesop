@@ -1,4 +1,6 @@
 /** @type {import("prettier").Config} */
 export default {
-  trailingComma: "all",
+  singleQuote: true,
+  quoteProps: 'preserve',
+  bracketSpacing: false,
 };

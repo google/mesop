@@ -1,4 +1,4 @@
-import { Injectable, NgZone } from "@angular/core";
+import {Injectable, NgZone} from '@angular/core';
 import {
   InitRequest,
   ServerError,
@@ -7,11 +7,11 @@ import {
   UserEvent,
   Component as ComponentProto,
   UiResponse,
-} from "optic/optic/protos/ui_jspb_proto_pb/optic/protos/ui_pb";
-import { Logger } from "../dev_tools/services/logger";
+} from 'optic/optic/protos/ui_jspb_proto_pb/optic/protos/ui_pb';
+import {Logger} from '../dev_tools/services/logger';
 
 const anyWindow = window as any;
-const DEV_SERVER_HOST = anyWindow["OPTIC_SERVER_HOST"] || "";
+const DEV_SERVER_HOST = anyWindow['OPTIC_SERVER_HOST'] || '';
 
 interface InitParams {
   zone: NgZone;
@@ -20,8 +20,8 @@ interface InitParams {
 }
 
 export enum ChannelStatus {
-  OPEN = "OPEN",
-  CLOSED = "CLOSED",
+  OPEN = 'OPEN',
+  CLOSED = 'CLOSED',
 }
 
 @Injectable()
@@ -36,7 +36,7 @@ export class Channel {
     request.setInit(new InitRequest());
     this.eventSource = new EventSource(generateRequestUrl(request));
     this.status = ChannelStatus.OPEN;
-    this.logger.log({ type: "StreamStart" });
+    this.logger.log({type: 'StreamStart'});
   }
 
   getStatus(): ChannelStatus {
@@ -44,39 +44,39 @@ export class Channel {
   }
 
   init(initParams: InitParams) {
-    const { zone, onRender, onError } = initParams;
+    const {zone, onRender, onError} = initParams;
     this.initParams = initParams;
 
     this.eventSource.onmessage = (e) => {
       // Looks like Angular has a bug where it's not intercepting EventSource onmessage.
       zone.run(() => {
-        if (e.data == "<stream_end>") {
+        if (e.data == '<stream_end>') {
           this.eventSource.close();
           this.status = ChannelStatus.CLOSED;
-          this.logger.log({ type: "StreamEnd" });
+          this.logger.log({type: 'StreamEnd'});
           return;
         }
 
         const array = toUint8Array(atob(e.data));
         const uiResponse = UiResponse.deserializeBinary(array);
-        console.debug("Server event: ", uiResponse.toObject());
+        console.debug('Server event: ', uiResponse.toObject());
         switch (uiResponse.getTypeCase()) {
           case UiResponse.TypeCase.RENDER:
             this.states = uiResponse.getRender()!.getStates()!;
             const rootComponent = uiResponse.getRender()!.getRootComponent()!;
             onRender(rootComponent);
             this.logger.log({
-              type: "RenderLog",
+              type: 'RenderLog',
               states: this.states,
               rootComponent: rootComponent,
             });
             break;
           case UiResponse.TypeCase.ERROR:
             onError(uiResponse.getError()!);
-            console.log("error", uiResponse.getError());
+            console.log('error', uiResponse.getError());
             break;
           case UiResponse.TypeCase.TYPE_NOT_SET:
-            throw new Error("Unhandled case for server event: " + uiResponse);
+            throw new Error('Unhandled case for server event: ' + uiResponse);
         }
       });
     };
@@ -90,8 +90,8 @@ export class Channel {
     this.eventSource.close();
     this.eventSource = new EventSource(generateRequestUrl(request));
     this.status = ChannelStatus.OPEN;
-    this.logger.log({ type: "StreamStart" });
-    this.logger.log({ type: "UserEventLog", userEvent: userEvent });
+    this.logger.log({type: 'StreamStart'});
+    this.logger.log({type: 'UserEventLog', userEvent: userEvent});
     this.init(this.initParams);
   }
 }
@@ -100,11 +100,11 @@ function generateRequestUrl(request: UiRequest): string {
   request.setPath(window.location.pathname);
   const array = request.serializeBinary();
   const byteString = btoa(fromUint8Array(array));
-  return DEV_SERVER_HOST + "/ui?request=" + byteString;
+  return DEV_SERVER_HOST + '/ui?request=' + byteString;
 }
 
 function fromUint8Array(array: Uint8Array): string {
-  let binary = "";
+  let binary = '';
   for (let i = 0; i < array.length; i++) {
     binary += String.fromCharCode(array[i]);
   }

@@ -1,17 +1,17 @@
-import { Component, Input } from "@angular/core";
-import { CommonModule } from "@angular/common";
-import { Component as ComponentProto } from "optic/optic/protos/ui_jspb_proto_pb/optic/protos/ui_pb";
-import { CheckboxComponent } from "../../../optic/components/checkbox/checkbox";
-import { ButtonComponent } from "../../../optic/components/button/button";
-import { TextComponent } from "../../../optic/components/text/text";
+import {Component, Input} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {Component as ComponentProto} from 'optic/optic/protos/ui_jspb_proto_pb/optic/protos/ui_pb';
+import {CheckboxComponent} from '../../../optic/components/checkbox/checkbox';
+import {ButtonComponent} from '../../../optic/components/button/button';
+import {TextComponent} from '../../../optic/components/text/text';
 // REF(//scripts/gen_component.py):insert_ts_import
-import { TextInputComponent } from "../../../optic/components/text_input/text_input";
-import { BoxComponent } from "../../../optic/components/box/box";
-import { ComponentLoader } from "./component_loader";
+import {TextInputComponent} from '../../../optic/components/text_input/text_input';
+import {BoxComponent} from '../../../optic/components/box/box';
+import {ComponentLoader} from './component_loader';
 
 @Component({
-  selector: "component-renderer",
-  templateUrl: "component_renderer.ng.html",
+  selector: 'component-renderer',
+  templateUrl: 'component_renderer.ng.html',
   standalone: true,
   imports: [
     // REF(//scripts/gen_component.py):insert_ng_import

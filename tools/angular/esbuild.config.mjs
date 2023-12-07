@@ -6,12 +6,12 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import { createEsbuildAngularOptimizePlugin } from "@angular/build-tooling/shared-scripts/angular-optimization/esbuild-plugin.mjs";
+import {createEsbuildAngularOptimizePlugin} from '@angular/build-tooling/shared-scripts/angular-optimization/esbuild-plugin.mjs';
 
 export default {
   // Note: We support `.mjs` here as this is the extension used by Angular APF packages.
-  resolveExtensions: [".mjs", ".js"],
-  format: "esm",
+  resolveExtensions: ['.mjs', '.js'],
+  format: 'esm',
   plugins: [
     await createEsbuildAngularOptimizePlugin({
       enableLinker: {
