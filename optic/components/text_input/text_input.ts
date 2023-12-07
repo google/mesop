@@ -21,7 +21,7 @@ import { ObserversModule } from "@angular/cdk/observers";
 export class TextInputComponent {
   @Input({ required: true }) type!: Type;
   @Input() key!: Key;
-  private _config: TextInputType;
+  private _config!: TextInputType;
   isChecked = false;
 
   constructor(private readonly channel: Channel) {}

@@ -17,7 +17,7 @@ import { Channel } from "../../../web/src/services/channel";
 export class ComponentNameComponent {
   @Input({ required: true }) type!: Type;
   @Input() key!: Key;
-  private _config: ComponentNameType;
+  private _config!: ComponentNameType;
   isChecked = false;
 
   constructor(private readonly channel: Channel) {}

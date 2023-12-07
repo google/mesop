@@ -15,7 +15,7 @@ import { ObjectTree } from "../object_tree/object_tree";
   imports: [ComponentTree, ObjectTree],
 })
 export class ComponentsPanel {
-  selectedNode: ExampleFlatNode;
+  selectedNode!: ExampleFlatNode;
   constructor(private logger: Logger) {}
 
   component(): InputNode {

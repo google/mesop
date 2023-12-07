@@ -26,7 +26,7 @@ export interface ExampleFlatNode {
   imports: [CdkTreeModule, MatTreeModule, MatButtonModule, MatIconModule],
 })
 export class ComponentTree {
-  @Input({ required: true }) component: InputNode;
+  @Input({ required: true }) component!: InputNode;
   @Output() nodeSelected = new EventEmitter<ExampleFlatNode>();
 
   keys() {

@@ -70,8 +70,8 @@ import { TypeDeserializer } from "../dev_tools/services/type_deserializer";
   providers: [DevToolsSettings, Channel, Logger, TypeDeserializer],
 })
 class App {
-  rootComponent: ComponentProto;
-  error: ServerError;
+  rootComponent!: ComponentProto;
+  error!: ServerError;
   @ViewChild("dragHandle", { read: ElementRef }) dragHandle!: ElementRef;
   private isDragging: boolean = false;
   @ViewChild("sidenav", { read: ElementRef }) sidenav!: ElementRef;

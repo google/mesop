@@ -16,7 +16,7 @@ import { Channel } from "../../../web/src/services/channel";
 export class CheckboxComponent {
   @Input({ required: true }) type!: Type;
   @Input() key!: Key;
-  private _config: CheckboxType;
+  private _config!: CheckboxType;
   isChecked = false;
 
   constructor(private readonly channel: Channel) {}

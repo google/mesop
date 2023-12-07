@@ -21,7 +21,7 @@ import { Channel } from "../../../web/src/services/channel";
 export class BoxComponent {
   @Input({ required: true }) type!: Type;
   @Input() key!: Key;
-  private _config: BoxType;
+  private _config!: BoxType;
   isChecked = false;
 
   constructor(private readonly channel: Channel) {}

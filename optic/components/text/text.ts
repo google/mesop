@@ -14,7 +14,7 @@ import { TextType } from "optic/optic/components/text/text_jspb_proto_pb/optic/c
 export class TextComponent {
   @Input({ required: true }) type!: Type;
   @Input() key!: Key;
-  _config: TextType;
+  _config!: TextType;
 
   ngOnChanges() {
     this._config = TextType.deserializeBinary(

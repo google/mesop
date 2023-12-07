@@ -27,8 +27,8 @@ export enum ChannelStatus {
 @Injectable()
 export class Channel {
   private eventSource: EventSource;
-  private initParams: InitParams;
-  private states: States;
+  private initParams!: InitParams;
+  private states!: States;
   private status: ChannelStatus;
 
   constructor(private logger: Logger) {

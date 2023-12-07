@@ -26,7 +26,7 @@ interface ExampleFlatNode {
   imports: [CdkTreeModule, MatTreeModule, MatButtonModule, MatIconModule],
 })
 export class ObjectTree {
-  @Input({ required: true }) object: object;
+  @Input({ required: true }) object!: object;
 
   keys() {
     return Object.keys(this.object);

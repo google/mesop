@@ -17,7 +17,7 @@ import { Observable } from "rxjs";
 })
 export class LogsPanel {
   @ViewChild("virtualScroll", { static: true })
-  virtualScrollViewport: CdkVirtualScrollViewport;
+  virtualScrollViewport!: CdkVirtualScrollViewport;
 
   logDataSource: LogDataSource;
 

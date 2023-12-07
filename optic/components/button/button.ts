@@ -18,7 +18,7 @@ import { MatButtonModule } from "@angular/material/button";
 export class ButtonComponent {
   @Input({ required: true }) type!: Type;
   @Input() key!: Key;
-  private _config: ButtonType;
+  private _config!: ButtonType;
   isChecked = false;
 
   constructor(private readonly channel: Channel) {}
