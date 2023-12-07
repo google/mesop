@@ -1,4 +1,4 @@
-load("//build_defs:defaults.bzl", "ANGULAR_CDK_TS_DEPS", "ANGULAR_CORE_DEPS", "ANGULAR_MATERIAL_SASS_DEPS", "ANGULAR_MATERIAL_TS_DEPS", "JS_STATIC_FILES", "esbuild_config", "ng_module", "sass_external_binary")
+load("//build_defs:defaults.bzl", "ANGULAR_CDK_TS_DEPS", "ANGULAR_CORE_DEPS", "ANGULAR_MATERIAL_TS_DEPS", "JS_STATIC_FILES", "esbuild_config", "ng_module", "sass_external_binary")
 
 package(
     default_visibility = ["//build_defs:optic_internal"],
@@ -29,7 +29,7 @@ esbuild_config(
 sass_external_binary(
     name = "styles",
     src = "styles.scss",
-    external_deps = ANGULAR_MATERIAL_SASS_DEPS,
+    external_deps = ["@npm//@angular/material"],
     sourcemap = False,
 )
 
