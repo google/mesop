@@ -18,7 +18,7 @@ nav:
       - Testing: internal/testing.md
       - Type checking: internal/type_checking.md
       - CI: internal/ci.md
-      - Toolchain: internal/toolchain.md
+      - Build / Toolchain: internal/toolchain.md
 theme:
   name: material
   logo: assets/logo.png
