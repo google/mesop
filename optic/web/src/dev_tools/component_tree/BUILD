@@ -5,22 +5,22 @@ package(
 )
 
 ng_module(
-    name = "object_tree",
+    name = "component_tree",
     srcs = glob([
         "*.ts",
     ]),
     assets = glob([
         "*.ng.html",
-    ]) + [":object_tree.css"],
+    ]) + [":component_tree.css"],
     deps = [
         "//optic/protos:ui_jspb_proto",
-        "//web/src/component_renderer",
-        "//web/src/services",
+        "//optic/web/src/component_renderer",
+        "//optic/web/src/services",
     ] + ANGULAR_CORE_DEPS + ANGULAR_MATERIAL_TS_DEPS + ANGULAR_CDK_TS_DEPS,
 )
 
 sass_binary(
     name = "styles",
-    src = "object_tree.scss",
+    src = "component_tree.scss",
     sourcemap = False,
 )

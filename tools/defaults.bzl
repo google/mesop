@@ -17,7 +17,7 @@ load("//:packages.bzl", "NO_STAMP_NPM_PACKAGE_SUBSTITUTIONS", "NPM_PACKAGE_SUBST
 load("//:pkg-externals.bzl", "PKG_EXTERNALS")
 load("//tools/angular:index.bzl", "LINKER_PROCESSED_FW_PACKAGES")
 
-_DEFAULT_TSCONFIG_BUILD = "//web/src:bazel-tsconfig-build.json"
+_DEFAULT_TSCONFIG_BUILD = "//optic/web/src:bazel-tsconfig-build.json"
 
 npmPackageSubstitutions = select({
     "//tools:stamp": NPM_PACKAGE_SUBSTITUTIONS,

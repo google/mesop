@@ -10,7 +10,7 @@ ng_module(
         "*.ts",
     ]),
     deps = [
-        "//web/src/app",
+        "//optic/web/src/app",
     ] + ANGULAR_CORE_DEPS,
 )
 
@@ -28,12 +28,12 @@ pkg_web(
     name = "web_package",
     srcs = [
         ":bundles",
-        "//web/src/app:static_files",
+        "//optic/web/src/app:static_files",
     ],
     additional_root_paths = [
         "npm/node_modules",
         # Needed for index.html & style to be loaded.
-        "web/src/app",
+        "optic/web/src/app",
     ],
     tags = ["manual"],
 )

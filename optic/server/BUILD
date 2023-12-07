@@ -11,6 +11,6 @@ py_library(
         "//optic/protos:ui_py_pb2",
     ] + PYTHON_RUNFILES_DEP + THIRD_PARTY_PY_FLASK,
     # Note: prod_server.py has a runtime dependency on
-    # //web/src/app/prod:web_package, so you must include it
+    # //optic/web/src/app/prod:web_package, so you must include it
     # in the consuming py_binary's data attribute.
 )

@@ -14,11 +14,11 @@ ng_module(
     ],
     deps = [
         "//optic/protos:ui_jspb_proto",
-        "//web/src/component_renderer",
-        "//web/src/dev_tools",
-        "//web/src/dev_tools/services",
-        "//web/src/error",
-        "//web/src/services",
+        "//optic/web/src/component_renderer",
+        "//optic/web/src/dev_tools",
+        "//optic/web/src/dev_tools/services",
+        "//optic/web/src/error",
+        "//optic/web/src/services",
     ] + ANGULAR_CORE_DEPS + ANGULAR_CDK_TS_DEPS + ANGULAR_MATERIAL_TS_DEPS,
 )
 

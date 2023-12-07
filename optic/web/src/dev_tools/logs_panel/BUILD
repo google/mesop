@@ -14,10 +14,10 @@ ng_module(
     ]) + [":logs_panel.css"],
     deps = [
         "//optic/protos:ui_jspb_proto",
-        "//web/src/component_renderer",
-        "//web/src/dev_tools/object_tree",
-        "//web/src/dev_tools/services",
-        "//web/src/services",
+        "//optic/web/src/component_renderer",
+        "//optic/web/src/dev_tools/object_tree",
+        "//optic/web/src/dev_tools/services",
+        "//optic/web/src/services",
     ] + ANGULAR_CORE_DEPS + ANGULAR_CDK_TS_DEPS + THIRD_PARTY_JS_RXJS,
 )
 

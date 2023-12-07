@@ -10,13 +10,13 @@ ng_module(
         "*.ts",
     ]),
     deps = [
-        "//web/src/app",
+        "//optic/web/src/app",
     ] + ANGULAR_CORE_DEPS,
 )
 
 devmode_esbuild(
     name = "bundles",
-    config = "//web/src/app:esbuild_config",
+    config = "//optic/web/src/app:esbuild_config",
     entry_points = [":main.ts"],
     platform = "browser",
     splitting = True,
@@ -36,14 +36,14 @@ devmode_esbuild(
 filegroup(
     name = "dev_app_static_files",
     srcs = [
-        "//web/src/app:index.html",
-        "//web/src/app:styles",
+        "//optic/web/src/app:index.html",
+        "//optic/web/src/app:styles",
     ] + JS_STATIC_FILES,
 )
 
 http_server(
     name = "server",
-    srcs = ["//web/src/app:static_files"],
+    srcs = ["//optic/web/src/app:static_files"],
     additional_root_paths = [
         "npm/node_modules",
         # Needed for index.ng.html & style to be loaded.

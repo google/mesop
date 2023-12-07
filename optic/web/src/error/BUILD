@@ -14,8 +14,8 @@ ng_module(
     ]) + [":error_box.css"],
     deps = [
         "//optic/protos:ui_jspb_proto",
-        "//web/src/component_renderer",
-        "//web/src/services",
+        "//optic/web/src/component_renderer",
+        "//optic/web/src/services",
     ] + ANGULAR_CORE_DEPS + ANGULAR_MATERIAL_TS_DEPS,
 )
 

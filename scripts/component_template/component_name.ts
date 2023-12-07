@@ -6,7 +6,7 @@ import {
   UserEvent,
 } from 'optic/optic/protos/ui_jspb_proto_pb/optic/protos/ui_pb';
 import {ComponentNameType} from 'optic/optic/components/component_name/component_name_jspb_proto_pb/optic/components/component_name/component_name_pb';
-import {Channel} from '../../../web/src/services/channel';
+import {Channel} from '../../web/src/services/channel';
 
 @Component({
   selector: 'optic-{component-name}',

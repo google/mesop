@@ -5,22 +5,24 @@ package(
 )
 
 ng_module(
-    name = "dev_tools",
+    name = "components_panel",
     srcs = glob([
         "*.ts",
     ]),
     assets = glob([
         "*.ng.html",
-    ]) + [":dev_tools.css"],
+    ]) + [":components_panel.css"],
     deps = [
         "//optic/protos:ui_jspb_proto",
-        "//web/src/dev_tools/components_panel",
-        "//web/src/dev_tools/logs_panel",
+        "//optic/web/src/dev_tools/component_tree",
+        "//optic/web/src/dev_tools/object_tree",
+        "//optic/web/src/dev_tools/services",
+        "//optic/web/src/services",
     ] + ANGULAR_CORE_DEPS,
 )
 
 sass_binary(
     name = "styles",
-    src = "dev_tools.scss",
+    src = "components_panel.scss",
     sourcemap = False,
 )

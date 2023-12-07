@@ -14,7 +14,7 @@ py_binary(
     data = [
         "//optic/examples",
         "//optic/testing:index",
-        "//web/src/app/prod:web_package",
+        "//optic/web/src/app/prod:web_package",
     ],
     main = "cli.py",
     deps = COMMON_DEPS,
