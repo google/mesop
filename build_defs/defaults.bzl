@@ -54,6 +54,10 @@ PYTHON_RUNFILES_DEP = [
     "@rules_python//python/runfiles",
 ]
 
+THIRD_PARTY_JS_RXJS = [
+    "@npm//rxjs",
+]
+
 THIRD_PARTY_PY_ABSL_PY = [
     requirement("absl-py"),
 ]
