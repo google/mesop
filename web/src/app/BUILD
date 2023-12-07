@@ -1,4 +1,4 @@
-load("//build_defs:defaults.bzl", "ANGULAR_CDK_SASS_DEPS", "ANGULAR_CDK_TS_DEPS", "ANGULAR_CORE_DEPS", "ANGULAR_MATERIAL_SASS_DEPS", "ANGULAR_MATERIAL_TS_DEPS", "JS_STATIC_FILES", "esbuild_config", "ng_module", "npm_sass_library", "sass_binary")
+load("//build_defs:defaults.bzl", "ANGULAR_CDK_TS_DEPS", "ANGULAR_CORE_DEPS", "ANGULAR_MATERIAL_SASS_DEPS", "ANGULAR_MATERIAL_TS_DEPS", "JS_STATIC_FILES", "esbuild_config", "ng_module", "sass_external_binary")
 
 package(
     default_visibility = ["//build_defs:optic_internal"],
@@ -26,17 +26,11 @@ esbuild_config(
     config_file = "esbuild.config.mjs",
 )
 
-npm_sass_library(
-    name = "material_sass_deps",
-    deps = ANGULAR_CDK_SASS_DEPS + ANGULAR_MATERIAL_SASS_DEPS,
-)
-
-sass_binary(
+sass_external_binary(
     name = "styles",
     src = "styles.scss",
-    include_paths = ["external/npm/node_modules"],
+    external_deps = ANGULAR_MATERIAL_SASS_DEPS,
     sourcemap = False,
-    deps = [":material_sass_deps"],
 )
 
 # File group for all static files which are needed to serve the dev-app. These files are
