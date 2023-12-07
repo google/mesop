@@ -22,6 +22,18 @@ body {
 // Light theme
 $light-primary: mat.define-palette(mat.$blue-palette, 800, 200);
 $light-accent: mat.define-palette(mat.$indigo-palette, A200, A100, A400);
-$light-theme: mat.define-light-theme($light-primary, $light-accent);
+$light-warn: mat.define-palette(mat.$red-palette, 600, 200, 800);
+
+$light-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $light-primary,
+      accent: $light-accent,
+      warn: $light-warn,
+    ),
+    typography: null,
+    density: 0,
+  )
+);
 
 @include mat.all-component-themes($light-theme);
