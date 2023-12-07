@@ -1,11 +1,10 @@
 # New Component
 
-## Steps
+## How-to
 
-1. Define the Python API by creating a new file in `//optic/components/{component_name}.py`
-1. Define the protos sent from server to client.
-1. Define the client Angular component.
-1. Update Angular `component_renderer` to load component.
+```sh
+$ python scripts/gen_component.py $component_name
+```
 
 ## API Guidelines
 
@@ -22,8 +21,4 @@ Try to reuse the existing events when possible, but you may need to sometimes cr
 
 ## Potential exploration areas
 
-- Consider co-locating web and Python code for a component together.
-  - Would still need to register the web component in Angular.
-- Have each component define its own standalone proto file. Nothing outside of the client and Python component files can access this internal data representation.
 - Code-gen `component_renderer` using a shell/Python script. Initially, just run the script as-needed, but eventually can run it as part of a BUILD rule (a la [@angular/components examples](https://github.com/angular/components/tree/13629b0cd814ccc5fa01cf670b8b3001bc0021ff/tools/example-module))
-- Create a converter from Python to proto?
