@@ -67,10 +67,14 @@ THIRD_PARTY_PY_FLASK = [
     requirement("flask"),
 ]
 
-THIRD_PARTY_PYTEST = [
+THIRD_PARTY_PY_PYDANTIC = [
+    requirement("pydantic"),
+]
+
+THIRD_PARTY_PY_PYTEST = [
     requirement("pytest"),
 ]
 
-THIRD_PARTY_MYPY_PROTOBUF = [
+THIRD_PARTY_PY_MYPY_PROTOBUF = [
     requirement("mypy-protobuf"),
 ]

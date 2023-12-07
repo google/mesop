@@ -2,9 +2,7 @@
 Bazel macro for defining an Optic component, which includes the Python, client-side (TS) and proto targets.
 """
 
-load("@my_deps//:requirements.bzl", "requirement")
-load("@rules_proto//proto:defs.bzl", "proto_library")
-load("//build_defs:defaults.bzl", "ANGULAR_CORE_DEPS", "ANGULAR_MATERIAL_TS_DEPS", "jspb_proto_library", "ng_module", "py_proto_library")
+load("//build_defs:defaults.bzl", "ANGULAR_CORE_DEPS", "ANGULAR_MATERIAL_TS_DEPS", "THIRD_PARTY_PY_PYDANTIC", "jspb_proto_library", "ng_module", "proto_library", "py_library", "py_proto_library")
 
 def optic_component(name, ng_deps = [], py_deps = []):
     """
@@ -29,21 +27,18 @@ def optic_component(name, ng_deps = [], py_deps = []):
             ":" + jspb_proto_target,
             "//protos:ui_jspb_proto",
             "//web/src/services",
-            "@npm//@angular/compiler",
-            "@npm//@angular/material",
         ] + ANGULAR_CORE_DEPS + ANGULAR_MATERIAL_TS_DEPS + ng_deps,
     )
 
-    native.py_library(
+    py_library(
         name = "py",
         srcs = native.glob(["*.py"]),
         deps = [
             ":" + py_proto_target,
-            requirement("pydantic"),
             "//optic/component_helpers",
             "//optic/events",
             "//protos:ui_py_pb2",
-        ] + py_deps,
+        ] + THIRD_PARTY_PY_PYDANTIC + py_deps,
     )
 
     proto_library(
