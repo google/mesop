@@ -1,5 +1,4 @@
 <ng-container *ngIf="type()?.getName() == 'box'">
-  @defer (on viewport) {
   <optic-box [key]="key()" [type]="type()!">
     <ng-container
       *ngFor="let child of component.getChildrenList(); trackBy: trackByFn"
@@ -7,43 +6,24 @@
       <component-renderer [component]="child"> </component-renderer>
     </ng-container>
   </optic-box>
-  } @placeholder {
-  <component-loader />
-  }
 </ng-container>
 
 <ng-container *ngIf="type()?.getName() == 'text_input'">
-  <!-- @defer (on viewport) { -->
   <optic-text-input [key]="key()" [type]="type()!" />
-  <!-- } @placeholder { -->
-  <!-- <component-loader /> -->
-  <!-- } -->
 </ng-container>
 
 <!-- REF(//scripts/gen_component.py):insert_component -->
 
 <ng-container *ngIf="type()?.getName() == 'button'">
-  @defer (on viewport) {
   <optic-button [key]="key()" [type]="type()!" />
-  } @placeholder {
-  <component-loader />
-  }
 </ng-container>
 
 <ng-container *ngIf="type()?.getName() == 'checkbox'">
-  @defer (on viewport) {
   <optic-checkbox [key]="key()" [type]="type()!" />
-  } @placeholder {
-  <component-loader />
-  }
 </ng-container>
 
 <ng-container *ngIf="type()?.getName() == 'text'">
-  @defer (on viewport) {
   <optic-text [key]="key()" [type]="type()!" />
-  } @placeholder {
-  <component-loader />
-  }
 </ng-container>
 
 <ng-container *ngIf="type() == null">
