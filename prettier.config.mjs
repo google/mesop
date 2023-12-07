@@ -1,4 +1,4 @@
 /** @type {import("prettier").Config} */
-const config = {
+export default {
   trailingComma: "all",
 };
