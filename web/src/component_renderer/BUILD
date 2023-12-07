@@ -1,4 +1,4 @@
-load("//build_defs:defaults.bzl", "ANGULAR_CORE_DEPS", "ng_module")
+load("//build_defs:defaults.bzl", "ANGULAR_CORE_DEPS", "ANGULAR_MATERIAL_TS_DEPS", "ng_module")
 
 package(
     default_visibility = ["//build_defs:optic_internal"],
@@ -20,5 +20,5 @@ ng_module(
         "//optic/components/checkbox:ng",
         "//optic/components/text:ng",
         "//optic/protos:ui_jspb_proto",
-    ] + ANGULAR_CORE_DEPS,
+    ] + ANGULAR_CORE_DEPS + ANGULAR_MATERIAL_TS_DEPS,
 )

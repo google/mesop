@@ -16,6 +16,7 @@ ng_module(
         "//optic/protos:ui_jspb_proto",
         "//web/src/dev_tools/component_tree",
         "//web/src/dev_tools/object_tree",
+        "//web/src/dev_tools/services",
         "//web/src/services",
     ] + ANGULAR_CORE_DEPS,
 )
