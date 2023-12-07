@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from pydantic import validate_arguments
 
 from typing import Any, Callable
-import protos.ui_pb2 as pb
+import optic.protos.ui_pb2 as pb
 import optic.components.checkbox.checkbox_pb2 as checkbox_pb
 from optic.component_helpers import (
     insert_component,

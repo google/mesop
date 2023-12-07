@@ -1,7 +1,7 @@
 from dataclasses import asdict, is_dataclass
 import json
 from typing import Any, Callable, Generator, TypeVar, cast
-import protos.ui_pb2 as pb
+import optic.protos.ui_pb2 as pb
 from optic.dataclass_utils import update_dataclass_from_json
 
 T = TypeVar("T")

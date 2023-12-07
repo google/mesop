@@ -10,7 +10,7 @@ ng_module(
         "*.ts",
     ]),
     deps = [
-        "//protos:ui_jspb_proto",
+        "//optic/protos:ui_jspb_proto",
         "//web/src/dev_tools/services",
     ] + ANGULAR_CORE_DEPS,
 )

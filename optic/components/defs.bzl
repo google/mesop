@@ -25,7 +25,7 @@ def optic_component(name, ng_deps = [], py_deps = []):
         ]),
         deps = [
             ":" + jspb_proto_target,
-            "//protos:ui_jspb_proto",
+            "//optic/protos:ui_jspb_proto",
             "//web/src/services",
         ] + ANGULAR_CORE_DEPS + ANGULAR_MATERIAL_TS_DEPS + ng_deps,
     )
@@ -37,7 +37,7 @@ def optic_component(name, ng_deps = [], py_deps = []):
             ":" + py_proto_target,
             "//optic/component_helpers",
             "//optic/events",
-            "//protos:ui_py_pb2",
+            "//optic/protos:ui_py_pb2",
         ] + THIRD_PARTY_PY_PYDANTIC + py_deps,
     )
 

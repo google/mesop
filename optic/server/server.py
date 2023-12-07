@@ -3,7 +3,7 @@ import os
 
 from flask import Flask, Response, request
 
-import protos.ui_pb2 as pb
+import optic.protos.ui_pb2 as pb
 
 from optic.runtime import runtime
 from optic.exceptions import format_traceback

@@ -3,7 +3,7 @@ from typing import Any, Callable, Generator, Type, TypeVar, cast
 
 from optic.key import Key
 from optic.events import OpticEvent
-import protos.ui_pb2 as pb
+import optic.protos.ui_pb2 as pb
 from .context import Context
 from optic.exceptions import OpticUserException
 

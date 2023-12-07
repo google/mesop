@@ -3,7 +3,7 @@ import {
   Key,
   Type,
   UserEvent,
-} from "optic/protos/ui_jspb_proto_pb/protos/ui_pb";
+} from "optic/optic/protos/ui_jspb_proto_pb/optic/protos/ui_pb";
 import { CheckboxType } from "optic/optic/components/checkbox/checkbox_jspb_proto_pb/optic/components/checkbox/checkbox_pb";
 import { Channel } from "../../../web/src/services/channel";
 

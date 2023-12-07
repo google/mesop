@@ -1,5 +1,5 @@
 import { Injectable, NgZone } from "@angular/core";
-import * as pb from "optic/protos/ui_jspb_proto_pb/protos/ui_pb";
+import * as pb from "optic/optic/protos/ui_jspb_proto_pb/optic/protos/ui_pb";
 import { Logger } from "../dev_tools/services/logger";
 
 const anyWindow = window as any;

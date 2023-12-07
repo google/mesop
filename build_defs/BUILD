@@ -14,7 +14,7 @@ package(default_visibility = ["//visibility:private"])
 proto_lang_toolchain(
     name = "python_toolchain",
     command_line = "--python_out=%s",
-    plugin = "//protos/bin:protoc_gen_mypy",
+    plugin = "//optic/protos/bin:protoc_gen_mypy",
     plugin_format_flag = "--plugin=protoc-gen-mypy=%s",
     progress_message = "Generating Python proto_library %{label}",
     runtime = "@com_google_protobuf//:protobuf_python",

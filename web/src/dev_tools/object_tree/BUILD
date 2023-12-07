@@ -13,7 +13,7 @@ ng_module(
         "*.ng.html",
     ]) + [":object_tree.css"],
     deps = [
-        "//protos:ui_jspb_proto",
+        "//optic/protos:ui_jspb_proto",
         "//web/src/component_renderer",
         "//web/src/services",
     ] + ANGULAR_CORE_DEPS,

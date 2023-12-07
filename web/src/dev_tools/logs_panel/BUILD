@@ -13,7 +13,7 @@ ng_module(
         "*.ng.html",
     ]) + [":logs_panel.css"],
     deps = [
-        "//protos:ui_jspb_proto",
+        "//optic/protos:ui_jspb_proto",
         "//web/src/component_renderer",
         "//web/src/dev_tools/object_tree",
         "//web/src/services",

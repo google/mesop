@@ -13,7 +13,7 @@ ng_module(
         "*.ng.html",
     ]) + [":dev_tools.css"],
     deps = [
-        "//protos:ui_jspb_proto",
+        "//optic/protos:ui_jspb_proto",
         "//web/src/dev_tools/components_panel",
         "//web/src/dev_tools/logs_panel",
     ] + ANGULAR_CORE_DEPS,

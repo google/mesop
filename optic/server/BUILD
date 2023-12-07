@@ -8,7 +8,7 @@ py_library(
     name = "server",
     srcs = glob(["*.py"]),
     deps = [
-        "//protos:ui_py_pb2",
+        "//optic/protos:ui_py_pb2",
     ] + PYTHON_RUNFILES_DEP + THIRD_PARTY_PY_FLASK,
     # Note: prod_server.py has a runtime dependency on
     # //web/src/app/prod:web_package, so you must include it

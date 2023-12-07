@@ -8,7 +8,7 @@ py_library(
     name = "component_helpers",
     srcs = glob(["*.py"]),
     deps = [
+        "//optic/protos:ui_py_pb2",
         "//optic/runtime",
-        "//protos:ui_py_pb2",
     ],
 )

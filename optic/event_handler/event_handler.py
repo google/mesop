@@ -5,7 +5,7 @@ from optic.key import key_from_proto
 import optic.events as events
 from ..component_helpers.helper import get_qualified_fn_name
 from optic.runtime import runtime
-import protos.ui_pb2 as pb
+import optic.protos.ui_pb2 as pb
 
 E = TypeVar("E", bound=events.OpticEvent)
 Handler = Callable[[E], None | Generator[None, None, None]]

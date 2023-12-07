@@ -2,7 +2,7 @@ import traceback
 import sys
 import linecache
 
-import protos.ui_pb2 as pb
+import optic.protos.ui_pb2 as pb
 
 
 def format_traceback(lines_before: int = 2, lines_after: int = 4) -> pb.Traceback:

@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-import protos.ui_pb2 as pb
+import optic.protos.ui_pb2 as pb
 
 
 @dataclass

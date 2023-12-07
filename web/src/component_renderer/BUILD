@@ -19,6 +19,6 @@ ng_module(
         "//optic/components/button:ng",
         "//optic/components/checkbox:ng",
         "//optic/components/text:ng",
-        "//protos:ui_jspb_proto",
+        "//optic/protos:ui_jspb_proto",
     ] + ANGULAR_CORE_DEPS,
 )
