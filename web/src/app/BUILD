@@ -1,4 +1,4 @@
-load("//build_defs:defaults.bzl", "ANGULAR_CDK_SASS_DEPS", "ANGULAR_CORE_DEPS", "ANGULAR_MATERIAL_SASS_DEPS", "JS_STATIC_FILES", "esbuild_config", "ng_module", "npm_sass_library", "sass_binary")
+load("//build_defs:defaults.bzl", "ANGULAR_CDK_SASS_DEPS", "ANGULAR_CDK_TS_DEPS", "ANGULAR_CORE_DEPS", "ANGULAR_MATERIAL_SASS_DEPS", "ANGULAR_MATERIAL_TS_DEPS", "JS_STATIC_FILES", "esbuild_config", "ng_module", "npm_sass_library", "sass_binary")
 
 package(
     default_visibility = ["//build_defs:optic_internal"],
@@ -18,7 +18,7 @@ ng_module(
         "//web/src/dev_tools",
         "//web/src/error",
         "//web/src/services",
-    ] + ANGULAR_CORE_DEPS,
+    ] + ANGULAR_CORE_DEPS + ANGULAR_CDK_TS_DEPS + ANGULAR_MATERIAL_TS_DEPS,
 )
 
 esbuild_config(
