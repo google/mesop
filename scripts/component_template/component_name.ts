@@ -24,7 +24,7 @@ export class ComponentNameComponent {
 
   ngOnChanges() {
     this._config = ComponentNameType.deserializeBinary(
-      this.type.getValue() as Uint8Array,
+      this.type.getValue() as unknown as Uint8Array,
     );
   }
 

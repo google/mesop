@@ -25,7 +25,7 @@ export class ButtonComponent {
 
   ngOnChanges() {
     this._config = ButtonType.deserializeBinary(
-      this.type.getValue() as Uint8Array,
+      this.type.getValue() as unknown as Uint8Array,
     );
   }
 

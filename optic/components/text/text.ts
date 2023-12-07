@@ -18,7 +18,7 @@ export class TextComponent {
 
   ngOnChanges() {
     this._config = TextType.deserializeBinary(
-      this.type.getValue() as Uint8Array,
+      this.type.getValue() as unknown as Uint8Array,
     );
   }
 
