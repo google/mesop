@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+package optic.components.box;
+
 message BoxType {
     string background_color = 2;
 }

@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+package optic.components.text_input;
+
 message TextInputType {
     string label = 1;
     string on_change_handler_id = 2;

@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+package optic.components.checkbox;
+
 message CheckboxType {
     string label = 1;
     string on_update_handler_id = 2;

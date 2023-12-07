@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+package optic.components.component_name;
+
 message ComponentNameType {
     string label = 1;
     string on_click_handler_id = 2;
