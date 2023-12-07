@@ -1,6 +1,9 @@
 import { Component, Input } from "@angular/core";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
-import * as pb from "optic/optic/protos/ui_jspb_proto_pb/optic/protos/ui_pb";
+import {
+  ServerError,
+  StackFrame,
+} from "optic/optic/protos/ui_jspb_proto_pb/optic/protos/ui_pb";
 import { CommonModule } from "@angular/common";
 import { ComponentRenderer } from "../component_renderer/component_renderer";
 import { Channel } from "../services/channel";
@@ -15,8 +18,8 @@ import { Channel } from "../services/channel";
 })
 export class ErrorBox {
   _showFullTraceback: boolean = false;
-  _lastAppFrame: pb.StackFrame | undefined;
-  @Input({ required: true }) error!: pb.ServerError;
+  _lastAppFrame: StackFrame | undefined;
+  @Input({ required: true }) error!: ServerError;
 
   ngOnChanges() {
     for (const frame of this.error
@@ -45,11 +48,11 @@ export class ErrorBox {
       .every((frame) => !frame.getIsAppCode());
   }
 
-  formatFrame(frame: pb.StackFrame): string {
+  formatFrame(frame: StackFrame): string {
     return `${frame.getFilename()}:${frame.getLineNumber()} | ${frame.getCodeName()}`;
   }
 
-  isLastAppCode(frame: pb.StackFrame): boolean {
+  isLastAppCode(frame: StackFrame): boolean {
     return frame === this._lastAppFrame;
   }
 }

@@ -1,5 +1,9 @@
 import { Injectable } from "@angular/core";
-import * as pb from "optic/optic/protos/ui_jspb_proto_pb/optic/protos/ui_pb";
+import {
+  States,
+  UserEvent,
+  Component as ComponentProto,
+} from "optic/optic/protos/ui_jspb_proto_pb/optic/protos/ui_pb";
 import { TypeDeserializer } from "./type_deserializer";
 import { Observable, Subject } from "rxjs";
 import { jsonParse } from "../../utils/strict_types";
@@ -125,13 +129,13 @@ export interface StreamEndLogInput extends BaseLogInput {
 
 export interface UserEventLogInput extends BaseLogInput {
   type: "UserEventLog";
-  userEvent: pb.UserEvent;
+  userEvent: UserEvent;
 }
 
 export interface RenderLogInput extends BaseLogInput {
   type: "RenderLog";
-  rootComponent: pb.Component;
-  states: pb.States;
+  rootComponent: ComponentProto;
+  states: States;
 }
 
 export type LogInput =

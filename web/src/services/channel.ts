@@ -1,5 +1,13 @@
 import { Injectable, NgZone } from "@angular/core";
-import * as pb from "optic/optic/protos/ui_jspb_proto_pb/optic/protos/ui_pb";
+import {
+  InitRequest,
+  ServerError,
+  States,
+  UiRequest,
+  UserEvent,
+  Component as ComponentProto,
+  UiResponse,
+} from "optic/optic/protos/ui_jspb_proto_pb/optic/protos/ui_pb";
 import { Logger } from "../dev_tools/services/logger";
 
 const anyWindow = window as any;
@@ -7,8 +15,8 @@ const DEV_SERVER_HOST = anyWindow["OPTIC_SERVER_HOST"] || "";
 
 interface InitParams {
   zone: NgZone;
-  onRender: (rootComponent: pb.Component) => void;
-  onError: (error: pb.ServerError) => void;
+  onRender: (rootComponent: ComponentProto) => void;
+  onError: (error: ServerError) => void;
 }
 
 export enum ChannelStatus {
@@ -20,12 +28,12 @@ export enum ChannelStatus {
 export class Channel {
   private eventSource: EventSource;
   private initParams: InitParams;
-  private states: pb.States;
+  private states: States;
   private status: ChannelStatus;
 
   constructor(private logger: Logger) {
-    const request = new pb.UiRequest();
-    request.setInit(new pb.InitRequest());
+    const request = new UiRequest();
+    request.setInit(new InitRequest());
     this.eventSource = new EventSource(generateRequestUrl(request));
     this.status = ChannelStatus.OPEN;
     this.logger.log({ type: "StreamStart" });
@@ -50,12 +58,12 @@ export class Channel {
         }
 
         const array = toUint8Array(atob(e.data));
-        const UiResponse = pb.UiResponse.deserializeBinary(array);
-        console.debug("Server event: ", UiResponse.toObject());
-        switch (UiResponse.getTypeCase()) {
-          case pb.UiResponse.TypeCase.RENDER:
-            this.states = UiResponse.getRender()!.getStates()!;
-            const rootComponent = UiResponse.getRender()!.getRootComponent()!;
+        const uiResponse = UiResponse.deserializeBinary(array);
+        console.debug("Server event: ", uiResponse.toObject());
+        switch (uiResponse.getTypeCase()) {
+          case UiResponse.TypeCase.RENDER:
+            this.states = uiResponse.getRender()!.getStates()!;
+            const rootComponent = uiResponse.getRender()!.getRootComponent()!;
             onRender(rootComponent);
             this.logger.log({
               type: "RenderLog",
@@ -63,20 +71,20 @@ export class Channel {
               rootComponent: rootComponent,
             });
             break;
-          case pb.UiResponse.TypeCase.ERROR:
-            onError(UiResponse.getError()!);
-            console.log("error", UiResponse.getError());
+          case UiResponse.TypeCase.ERROR:
+            onError(uiResponse.getError()!);
+            console.log("error", uiResponse.getError());
             break;
-          case pb.UiResponse.TypeCase.TYPE_NOT_SET:
-            throw new Error("Unhandled case for server event: " + UiResponse);
+          case UiResponse.TypeCase.TYPE_NOT_SET:
+            throw new Error("Unhandled case for server event: " + uiResponse);
         }
       });
     };
   }
 
-  dispatch(userEvent: pb.UserEvent) {
+  dispatch(userEvent: UserEvent) {
     userEvent.setStates(this.states);
-    const request = new pb.UiRequest();
+    const request = new UiRequest();
     request.setUserEvent(userEvent);
 
     this.eventSource.close();
@@ -88,7 +96,7 @@ export class Channel {
   }
 }
 
-function generateRequestUrl(request: pb.UiRequest): string {
+function generateRequestUrl(request: UiRequest): string {
   request.setPath(window.location.pathname);
   const array = request.serializeBinary();
   const byteString = btoa(fromUint8Array(array));

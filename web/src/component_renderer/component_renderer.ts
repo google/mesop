@@ -1,6 +1,6 @@
 import { Component, Input } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import * as pb from "optic/optic/protos/ui_jspb_proto_pb/optic/protos/ui_pb";
+import { Component as ComponentProto } from "optic/optic/protos/ui_jspb_proto_pb/optic/protos/ui_pb";
 import { CheckboxComponent } from "../../../optic/components/checkbox/checkbox";
 import { ButtonComponent } from "../../../optic/components/button/button";
 import { TextComponent } from "../../../optic/components/text/text";
@@ -25,9 +25,9 @@ import { ComponentLoader } from "./component_loader";
   ],
 })
 export class ComponentRenderer {
-  @Input() component!: pb.Component;
+  @Input() component!: ComponentProto;
 
-  trackByFn(index: any, item: pb.Component) {
+  trackByFn(index: any, item: ComponentProto) {
     const key = item.getKey()?.getKey();
     if (key) {
       return key;

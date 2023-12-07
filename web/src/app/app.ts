@@ -6,7 +6,10 @@ import {
   ViewChild,
 } from "@angular/core";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
-import * as pb from "optic/optic/protos/ui_jspb_proto_pb/optic/protos/ui_pb";
+import {
+  ServerError,
+  Component as ComponentProto,
+} from "optic/optic/protos/ui_jspb_proto_pb/optic/protos/ui_pb";
 import { CommonModule } from "@angular/common";
 import { ComponentRenderer } from "../component_renderer/component_renderer";
 import { Channel, ChannelStatus } from "../services/channel";
@@ -67,8 +70,8 @@ import { TypeDeserializer } from "../dev_tools/services/type_deserializer";
   providers: [DevToolsSettings, Channel, Logger, TypeDeserializer],
 })
 class App {
-  rootComponent: pb.Component;
-  error: pb.ServerError;
+  rootComponent: ComponentProto;
+  error: ServerError;
   @ViewChild("dragHandle", { read: ElementRef }) dragHandle!: ElementRef;
   private isDragging: boolean = false;
   @ViewChild("sidenav", { read: ElementRef }) sidenav!: ElementRef;
