@@ -9,6 +9,7 @@ load("@rules_proto_grpc//js:defs.bzl", "js_proto_library")
 load("@rules_python//python:defs.bzl", _py_test = "py_test")
 load("//build_defs:py_proto_library.bzl", _py_proto_library = "py_proto_library")
 load("//tools:defaults.bzl", _esbuild = "esbuild", _esbuild_config = "esbuild_config", _ng_module = "ng_module", _npm_sass_library = "npm_sass_library", _sass_binary = "sass_binary", _ts_library = "ts_library")
+load("//tools/angular:index.bzl", _LINKER_PROCESSED_FW_PACKAGES = "LINKER_PROCESSED_FW_PACKAGES")
 
 # Re-export symbols
 proto_library = _proto_library
@@ -23,6 +24,8 @@ npm_sass_library = _npm_sass_library
 pkg_web = _pkg_web
 sass_binary = _sass_binary
 ts_library = _ts_library
+
+LINKER_PROCESSED_FW_PACKAGES = _LINKER_PROCESSED_FW_PACKAGES
 
 # Constants for deps
 ANGULAR_CORE_DEPS = [

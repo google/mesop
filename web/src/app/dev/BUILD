@@ -1,5 +1,4 @@
-load("//build_defs:defaults.bzl", "ANGULAR_CORE_DEPS", "JS_STATIC_FILES", "devmode_esbuild", "http_server", "ng_module")
-load("//tools/angular:index.bzl", "LINKER_PROCESSED_FW_PACKAGES")
+load("//build_defs:defaults.bzl", "ANGULAR_CORE_DEPS", "JS_STATIC_FILES", "LINKER_PROCESSED_FW_PACKAGES", "devmode_esbuild", "http_server", "ng_module")
 
 package(
     default_visibility = ["//build_defs:optic_internal"],
