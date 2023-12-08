@@ -1,5 +1,4 @@
 import base64
-import os
 
 from flask import Flask, Response, request
 
@@ -79,6 +78,3 @@ def ui_stream():
   ui_request.ParseFromString(base64.b64decode(param))
 
   return Response(generate_data(ui_request), content_type="text/event-stream")
-
-
-port = int(os.environ.get("PORT", 8080))

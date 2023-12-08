@@ -4,7 +4,8 @@ from flask import send_from_directory
 
 from optic.utils.runfiles import get_runfile_location
 
-from .server import app, port
+from .flags import port
+from .server import app
 
 
 def get_path():
@@ -25,7 +26,7 @@ def serve_file(path: str):
 
 
 def run():
-  app.run(host="0.0.0.0", port=port, use_reloader=False)
+  app.run(host="0.0.0.0", port=port(), use_reloader=False)
 
 
 def is_file_path(path: str) -> bool:
