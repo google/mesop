@@ -43,7 +43,7 @@ repos:
       - id: forbid-external-bazel-symbols
         name: Forbid external Bazel symbols in /optic/
         description: External Bazel symbols should be contained in /build_defs/
-        entry: sh -c '! git grep -E "@" "optic/**/BUILD"'
+        entry: sh -c '! git grep -E "@[^D][^)]" "optic/**/BUILD"'
         language: system
         pass_filenames: false
         files: BUILD$

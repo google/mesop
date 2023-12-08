@@ -1,4 +1,4 @@
-load("//build_defs:defaults.bzl", "ANGULAR_CORE_DEPS", "ng_js_binary", "ng_module", "pkg_web")
+load("//build_defs:defaults.bzl", "ANGULAR_CORE_DEPS", "JS_STATIC_FILES", "ng_js_binary", "ng_module", "pkg_web")
 
 package(
     default_visibility = ["//build_defs:optic_internal"],
@@ -15,11 +15,27 @@ ng_module(
 )
 
 ng_js_binary(
-    name = "bundles",
-    entry_points = [":main.ts"],
+    name = "prod",
+    entry_points = [":bundle.ts"],
     deps = [
         ":main",
     ],
+)
+
+genrule(
+    name = "styles",
+    srcs = ["//optic/web/src/app:styles.css"],
+    outs = ["styles.css"],
+    cmd = "cp $(SRCS) $(@D)/styles.css",
+)
+
+# File group for all static files which are needed to serve the prod version of the app.
+filegroup(
+    name = "prod_static_files",
+    srcs = [
+        ":index.html",
+        ":styles",
+    ] + JS_STATIC_FILES,
 )
 
 # Target that builds a static web package of the dev-app. The web package can be
@@ -27,8 +43,8 @@ ng_js_binary(
 pkg_web(
     name = "web_package",
     srcs = [
-        ":bundles",
-        "//optic/web/src/app:static_files",
+        ":prod",
+        ":prod_static_files",
     ],
     additional_root_paths = [
         "npm/node_modules",

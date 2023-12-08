@@ -30,24 +30,29 @@ devmode_esbuild(
     ],
 )
 
-# File group for all static files which are needed to serve the dev-app. These files are
-# used in the devserver as runfiles and will be copied into the static web package that can
-# be deployed on static hosting services (like firebase).
+genrule(
+    name = "styles",
+    srcs = ["//optic/web/src/app:styles.css"],
+    outs = ["styles.css"],
+    cmd = "cp $(SRCS) $(@D)/styles.css",
+)
+
+# File group for all static files which are needed to serve the dev version of the app.
 filegroup(
-    name = "dev_app_static_files",
+    name = "dev_static_files",
     srcs = [
-        "//optic/web/src/app:index.html",
-        "//optic/web/src/app:styles",
+        ":index.html",
+        ":styles",
     ] + JS_STATIC_FILES,
 )
 
 http_server(
     name = "server",
-    srcs = ["//optic/web/src/app:static_files"],
+    srcs = [":dev_static_files"],
     additional_root_paths = [
         "npm/node_modules",
         # Needed for index.ng.html & style to be loaded.
-        "optic/web/src/app",
+        "optic/web/src/app/dev",
         # Needed for compatibility with "pkg_web" which always uses the tree
         # artifact output as workspace root.
         "angular_material",
