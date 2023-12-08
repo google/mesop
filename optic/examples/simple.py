@@ -36,7 +36,6 @@ def main():
   state = op.state(State)
   op.button(label="click me", on_click=button_click)
   op.text(text=f"{state.count} clicks")
-  state.keys
   op.text(text=f"Selected keys: {state.keys}")
   for i in range(1000):
     op.checkbox(

@@ -3,7 +3,23 @@
 # it's imports are used for side effects
 # Skip error examples since there's intentionally incorrect Python code.
 extend-exclude = ["optic/testing/index.py", "optic/examples/error*"]
-extend-select = ["I"]
+select = [
+    # pycodestyle
+    "E",
+    # Pyflakes
+    "F",
+    # pyupgrade
+    "UP",
+    # flake8-bugbear
+    "B",
+    # flake8-simplify
+    "SIM",
+    # isort
+    "I",
+]
+ignore = [
+    "E501", # ignore line-length (e.g. long docstring)
+]
 line-length = 80
 indent-width = 2
 

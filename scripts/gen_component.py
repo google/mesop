@@ -168,7 +168,7 @@ def update_dev_tools_deserializer():
 
 
 def update_file(path: str, target: str, content: str, before: bool = False):
-  with open(path, "r") as f:
+  with open(path) as f:
     lines = f.readlines()
 
   for i in range(len(lines)):
@@ -199,7 +199,7 @@ def rename_and_update_file(extension: str):
 
 
 def replace_component_name_ref(path: str):
-  with open(path, "r") as f:
+  with open(path) as f:
     lines = f.readlines()
 
   for i in range(len(lines)):
