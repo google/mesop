@@ -1,18 +1,22 @@
 # Re-export of Bazel rules with repository-wide defaults
 
 load("@rules_pkg//:pkg.bzl", "pkg_tar")
+load(
+    "@npm//@bazel/concatjs:index.bzl",
+    _karma_web_test = "karma_web_test",
+    _karma_web_test_suite = "karma_web_test_suite",
+    _ts_library = "ts_library",
+)
 load("@build_bazel_rules_nodejs//:index.bzl", _pkg_npm = "pkg_npm")
 load("@io_bazel_rules_sass//:defs.bzl", _npm_sass_library = "npm_sass_library", _sass_binary = "sass_binary", _sass_library = "sass_library")
 load("@npm//@angular/bazel:index.bzl", _ng_module = "ng_module", _ng_package = "ng_package")
 load("@npm//@angular/build-tooling/bazel/integration:index.bzl", _integration_test = "integration_test")
-load("@npm//@angular/build-tooling/bazel/karma:index.bzl", _karma_web_test_suite = "karma_web_test_suite")
 load("@npm//@angular/build-tooling/bazel/esbuild:index.bzl", _esbuild = "esbuild", _esbuild_config = "esbuild_config")
 load("@npm//@angular/build-tooling/bazel/spec-bundling:index.bzl", _spec_bundle = "spec_bundle")
 load("@npm//@angular/build-tooling/bazel/http-server:index.bzl", _http_server = "http_server")
 load("@npm//@angular/build-tooling/bazel:extract_js_module_output.bzl", "extract_js_module_output")
 load("@npm//@bazel/jasmine:index.bzl", _jasmine_node_test = "jasmine_node_test")
 load("@npm//@bazel/protractor:index.bzl", _protractor_web_test_suite = "protractor_web_test_suite")
-load("@npm//@bazel/concatjs:index.bzl", _ts_library = "ts_library")
 load("//:packages.bzl", "NO_STAMP_NPM_PACKAGE_SUBSTITUTIONS", "NPM_PACKAGE_SUBSTITUTIONS")
 load("//:pkg-externals.bzl", "PKG_EXTERNALS")
 load("//tools/angular:index.bzl", "LINKER_PROCESSED_FW_PACKAGES")
@@ -239,6 +243,8 @@ def ng_e2e_test_library(deps = [], **kwargs):
     )
 
 def karma_web_test_suite(name, **kwargs):
+    """Wrapper for the default `karma_web_test_suite` with additional default browsers,
+      and a local target to ease debugging."""
     test_deps = kwargs.get("deps", [])
 
     kwargs["tags"] = ["partial-compilation-integration"] + kwargs.get("tags", [])
@@ -250,22 +256,24 @@ def karma_web_test_suite(name, **kwargs):
         platform = "browser",
     )
 
-    # Set up default browsers if no explicit `browsers` have been specified.
-    if not hasattr(kwargs, "browsers"):
-        kwargs["tags"] = ["native"] + kwargs.get("tags", [])
-        kwargs["browsers"] = [
-            # Note: when changing the browser names here, also update the "yarn test"
-            # script to reflect the new browser names.
-            "@npm//@angular/build-tooling/bazel/browsers/chromium:chromium",
-            "@npm//@angular/build-tooling/bazel/browsers/firefox:firefox",
-        ]
+    kwargs["tags"] = ["native"] + kwargs.get("tags", [])
+    kwargs["browsers"] = [
+        "@npm//@angular/build-tooling/bazel/browsers/chromium:chromium",
+    ]
 
-    # Default test suite with all configured browsers, and the debug target being
-    # setup from `angular/dev-infra`.
-    _karma_web_test_suite(
-        name = name,
-        **kwargs
-    )
+    # Filter out options which are specific to "karma_web_test" targets. We cannot
+    # pass options like "browsers" to the debug web test target.
+    web_test_args = {}
+    for opt_name in kwargs.keys():
+        if not opt_name in ["wrapped_test_tags", "browsers", "tags"]:
+            web_test_args[opt_name] = kwargs[opt_name]
+
+    # Custom standalone web test that can be run to test against any
+    # browser that is manually connected to.
+    _karma_debug_browsers_target(name = "%s_debug" % name, **web_test_args)
+
+    # Default test suite with all configured browsers.
+    _karma_web_test_suite(name = name, **kwargs)
 
 def protractor_web_test_suite(name, deps, **kwargs):
     spec_bundle(
@@ -317,7 +325,7 @@ def node_integration_test(setup_chromium = False, node_repository = "nodejs", **
         **kwargs
     )
 
-def ng_web_test_suite(deps = [], static_css = [], exclude_init_script = False, **kwargs):
+def ng_web_test_suite(browsers = [], deps = [], static_css = [], exclude_init_script = False, **kwargs):
     bootstrap = [
         # This matches the ZoneJS bundles used in default CLI projects. See:
         # https://github.com/angular/angular-cli/blob/main/packages/schematics/angular/application/files/src/polyfills.ts.template#L58
@@ -337,7 +345,8 @@ def ng_web_test_suite(deps = [], static_css = [], exclude_init_script = False, *
     # reduces the amount of setup that is needed to create a test suite Bazel target. Note that the
     # prebuilt theme will be also added to CDK test suites but shouldn't affect anything.
     static_css = static_css + [
-        "//src/material/prebuilt-themes:indigo-pink",
+        # TODO: re-enable later
+        # "//src/material/prebuilt-themes:indigo-pink",
     ]
 
     # Workaround for https://github.com/bazelbuild/rules_typescript/issues/301
@@ -371,8 +380,9 @@ def ng_web_test_suite(deps = [], static_css = [], exclude_init_script = False, *
 
     karma_web_test_suite(
         # Depend on our custom test initialization script. This needs to be the first dependency.
-        deps = deps if exclude_init_script else ["//test:angular_test_init"] + deps,
+        deps = deps if exclude_init_script else ["//tools/test:angular_test_init"] + deps,
         bootstrap = bootstrap,
+        browsers = browsers,
         **kwargs
     )
 
@@ -397,7 +407,7 @@ def spec_bundle(name, deps, **kwargs):
         # For specs, we always add the pre-processed linker FW packages so that these
         # are resolved instead of the unprocessed FW entry-points through the `node_modules`.
         deps = ["%s_devmode_deps" % name] + LINKER_PROCESSED_FW_PACKAGES,
-        workspace_name = "angular_material",
+        workspace_name = "optic",
         run_angular_linker = select({
             # Depending on whether partial compilation is enabled, we may want to run the linker
             # to test the Angular compiler linker AOT processing. Additionally, a config setting
@@ -430,4 +440,25 @@ def devmode_esbuild(name, deps, testonly = False, **kwargs):
         deps = ["%s_devmode_deps" % name],
         testonly = testonly,
         **kwargs
+    )
+
+def _karma_debug_browsers_target(name, **web_test_args):
+    """Macro for defining a standalone karma web test target that starts Karma
+      without a browser, allowing for manual debugging."""
+
+    # Custom standalone web test that can be run to test against any browser
+    # that is manually connected to.
+    _karma_web_test(
+        name = "%s_bin" % name,
+        config_file = "//bazel/karma:karma-debug-config.js",
+        tags = ["manual"],
+        **web_test_args
+    )
+
+    # Workaround for: https://github.com/bazelbuild/rules_nodejs/issues/1429
+    native.sh_test(
+        name = name,
+        srcs = ["%s_bin" % name],
+        tags = ["manual", "local", "ibazel_notify_changes"],
+        testonly = True,
     )
