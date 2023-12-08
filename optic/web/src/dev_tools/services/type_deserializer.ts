@@ -8,7 +8,9 @@ import {TextInputType} from 'optic/optic/components/text_input/text_input_jspb_p
 
 type Deserializer = (value: Uint8Array) => object;
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class TypeDeserializer {
   private _map = new Map<string, Deserializer>();
   constructor() {

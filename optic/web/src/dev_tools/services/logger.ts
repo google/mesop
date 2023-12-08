@@ -8,7 +8,9 @@ import {TypeDeserializer} from './type_deserializer';
 import {Observable, Subject} from 'rxjs';
 import {jsonParse} from '../../utils/strict_types';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class Logger {
   private logs: LogModel[] = [];
   private onLog?: () => void;

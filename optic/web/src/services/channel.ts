@@ -24,7 +24,9 @@ export enum ChannelStatus {
   CLOSED = 'CLOSED',
 }
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class Channel {
   private eventSource: EventSource;
   private initParams!: InitParams;

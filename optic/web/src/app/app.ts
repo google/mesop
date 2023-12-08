@@ -67,7 +67,6 @@ import {TypeDeserializer} from '../dev_tools/services/type_deserializer';
     background: rgb(252, 252, 252);
   }
   `,
-  providers: [DevToolsSettings, Channel, Logger, TypeDeserializer],
 })
 class App {
   rootComponent!: ComponentProto;
