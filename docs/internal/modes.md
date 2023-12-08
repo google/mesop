@@ -1,6 +1,7 @@
 # Modes
 
 There are several modes that you can run Optic in.
+TODO bad
 
 ## Uncompiled mode
 
