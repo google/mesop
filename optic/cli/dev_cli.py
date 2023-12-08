@@ -3,6 +3,9 @@ from absl import app, flags
 import optic.protos.ui_pb2 as pb
 from optic.cli.execute_module import execute_module
 from optic.exceptions import format_traceback
+from optic.server import dev_server
+from optic.server.flags import port
+from optic.server.server import flask_app
 from optic.utils.runfiles import get_runfile_location
 
 FLAGS = flags.FLAGS
@@ -24,10 +27,10 @@ def main(argv):
     )
     print("Exception executing module:", e)
 
-  print("Running in dev mode")
-  from optic.server import dev_server
-
-  dev_server.run()
+  print("Starting dev server...")
+  dev_server.configure_dev_server(flask_app)
+  flask_app.debug = True
+  flask_app.run(host="0.0.0.0", port=port(), use_reloader=False)
 
 
 if __name__ == "__main__":

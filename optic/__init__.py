@@ -1,4 +1,3 @@
-from optic.api import run as run
 from optic.api import state as state
 from optic.api import stateclass as stateclass
 

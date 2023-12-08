@@ -3,6 +3,10 @@ from absl import app, flags
 import optic.protos.ui_pb2 as pb
 from optic.cli.execute_module import execute_module
 from optic.exceptions import format_traceback
+from optic.runtime import runtime
+from optic.server.flags import port
+from optic.server.server import flask_app
+from optic.server.static_file_serving import configure_static_file_serving
 from optic.utils.runfiles import get_runfile_location
 
 FLAGS = flags.FLAGS
@@ -20,8 +24,6 @@ def main(argv):
   except Exception as e:
     # Only record error to runtime if in CI mode.
     if FLAGS.debug:
-      from optic.runtime import runtime
-
       runtime.add_loading_error(
         pb.ServerError(exception=str(e), traceback=format_traceback())
       )
@@ -30,9 +32,11 @@ def main(argv):
       raise e
 
   print("Running in prod mode")
-  from optic.server import prod_server
-
-  prod_server.run()
+  configure_static_file_serving(
+    flask_app,
+    static_file_runfiles_base="optic/optic/web/src/app/prod/web_package",
+  )
+  flask_app.run(host="0.0.0.0", port=port(), use_reloader=False)
 
 
 if __name__ == "__main__":

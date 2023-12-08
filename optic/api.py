@@ -2,7 +2,6 @@ from dataclasses import dataclass
 from typing import Any, TypeVar, cast
 
 from optic.runtime import runtime
-from optic.server.prod_server import run as prod_run
 
 T = TypeVar("T")
 
@@ -28,7 +27,3 @@ def stateclass(cls: type[T] | None, **kw_args: Any) -> type[T]:
     return anyWrapper
 
   return wrapper(cls)
-
-
-def run():
-  prod_run()

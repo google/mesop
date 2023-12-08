@@ -6,7 +6,7 @@ import optic.protos.ui_pb2 as pb
 from optic.exceptions import format_traceback
 from optic.runtime import runtime
 
-app = Flask(__name__)
+flask_app = Flask(__name__)
 
 
 def render_loop(path: str, keep_alive: bool = False):
@@ -69,7 +69,7 @@ def generate_data(ui_request: pb.UiRequest):
     )
 
 
-@app.route("/ui")
+@flask_app.route("/ui")
 def ui_stream():
   param = request.args.get("request", default=None)
   if param is None:
