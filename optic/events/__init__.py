@@ -1,5 +1,9 @@
 from .events import (
-  OpticEvent as OpticEvent,
-  ClickEvent as ClickEvent,
   ChangeEvent as ChangeEvent,
+)
+from .events import (
+  ClickEvent as ClickEvent,
+)
+from .events import (
+  OpticEvent as OpticEvent,
 )

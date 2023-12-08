@@ -1,6 +1,6 @@
-import traceback
-import sys
 import linecache
+import sys
+import traceback
 
 import optic.protos.ui_pb2 as pb
 

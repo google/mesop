@@ -1,6 +1,7 @@
-from dataclasses import asdict, is_dataclass
 import json
+from dataclasses import asdict, is_dataclass
 from typing import Any, Callable, Generator, TypeVar, cast
+
 import optic.protos.ui_pb2 as pb
 from optic.dataclass_utils import update_dataclass_from_json
 

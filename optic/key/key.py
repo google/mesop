@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+
 import optic.protos.ui_pb2 as pb
 
 

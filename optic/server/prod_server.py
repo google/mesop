@@ -1,7 +1,9 @@
 import os
+
 from flask import send_from_directory
-from .server import app, port
 from rules_python.python.runfiles import runfiles  # type: ignore
+
+from .server import app, port
 
 
 def get_path():

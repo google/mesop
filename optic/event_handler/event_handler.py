@@ -1,11 +1,11 @@
-from typing import Any, Generator, TypeVar, Callable, Type, cast
-
-from optic.key import key_from_proto
+from typing import Any, Callable, Generator, Type, TypeVar, cast
 
 import optic.events as events
-from ..component_helpers.helper import get_qualified_fn_name
-from optic.runtime import runtime
 import optic.protos.ui_pb2 as pb
+from optic.key import key_from_proto
+from optic.runtime import runtime
+
+from ..component_helpers.helper import get_qualified_fn_name
 
 E = TypeVar("E", bound=events.OpticEvent)
 Handler = Callable[[E], None | Generator[None, None, None]]

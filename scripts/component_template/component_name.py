@@ -1,9 +1,10 @@
+from typing import Any, Callable
+
 from pydantic import validate_arguments
 
-from typing import Any, Callable
-import optic.protos.ui_pb2 as pb
 import optic.components.component_name.component_name_pb2 as component_name_pb
-from optic.component_helpers import insert_component, handler_type
+import optic.protos.ui_pb2 as pb
+from optic.component_helpers import handler_type, insert_component
 from optic.events import ClickEvent
 
 

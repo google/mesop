@@ -3,6 +3,7 @@
 # it's imports are used for side effects
 # Skip error examples since there's intentionally incorrect Python code.
 extend-exclude = ["optic/testing/index.py", "optic/examples/error*"]
+extend-select = ["I"]
 line-length = 80
 indent-width = 2
 

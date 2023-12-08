@@ -1,5 +1,5 @@
-from dataclasses import fields
 import json
+from dataclasses import fields
 from typing import Any
 
 

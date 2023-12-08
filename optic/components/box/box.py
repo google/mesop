@@ -1,7 +1,7 @@
 from pydantic import validate_arguments
 
-import optic.protos.ui_pb2 as pb
 import optic.components.box.box_pb2 as box_pb
+import optic.protos.ui_pb2 as pb
 from optic.component_helpers import ComponentWithChildren
 
 

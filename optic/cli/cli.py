@@ -1,5 +1,4 @@
-from absl import app
-from absl import flags
+from absl import app, flags
 
 import optic.protos.ui_pb2 as pb
 from optic.cli.execute_module import execute_module

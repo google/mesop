@@ -1,8 +1,9 @@
 from typing import Any, Callable, Type, TypeVar
-from optic.runtime import runtime
+
+import optic.protos.ui_pb2 as pb
 from optic.events import OpticEvent
 from optic.key import Key
-import optic.protos.ui_pb2 as pb
+from optic.runtime import runtime
 
 
 class ComponentWithChildren:

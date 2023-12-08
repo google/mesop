@@ -1,11 +1,12 @@
 from dataclasses import dataclass
 from typing import Any, Callable, Generator, Type, TypeVar, cast
 
-from optic.key import Key
-from optic.events import OpticEvent
 import optic.protos.ui_pb2 as pb
-from .context import Context
+from optic.events import OpticEvent
 from optic.exceptions import OpticUserException
+from optic.key import Key
+
+from .context import Context
 
 Handler = Callable[[Any], None | Generator[None, None, None]]
 newline = "\n"

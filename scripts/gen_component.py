@@ -2,11 +2,9 @@
 Run from the root of the repo:
 python scripts/gen_component.py $component_name
 """
-import shutil
-import os
-
 import argparse
-
+import os
+import shutil
 
 parser = argparse.ArgumentParser(description="Process a single CLI argument.")
 parser.add_argument(
