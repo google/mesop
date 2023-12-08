@@ -3,6 +3,7 @@ from absl import app, flags
 import optic.protos.ui_pb2 as pb
 from optic.cli.execute_module import execute_module
 from optic.exceptions import format_traceback
+from optic.utils.runfiles import get_runfile_location
 
 FLAGS = flags.FLAGS
 
@@ -14,7 +15,7 @@ def main(argv):
     raise Exception("Required flag 'path'. Received: " + FLAGS.path)
 
   try:
-    execute_module(FLAGS.path)
+    execute_module(get_runfile_location(FLAGS.path))
   except Exception as e:
     from optic.runtime import runtime
 

@@ -5,6 +5,7 @@ COMMON_DEPS = [
     "//optic",  # Keep dep to ensure the entire Optic library is loaded.
     "//optic/exceptions",
     "//optic/runtime",
+    "//optic/utils",
 ] + THIRD_PARTY_PY_ABSL_PY
 
 # Prod CLI
