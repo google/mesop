@@ -1,5 +1,0 @@
-- id: forbid-import-star-ts-proto
-  name: Prohibit import * for TS protos
-  entry: ! git grep "import \* as .*_jspb"
-  language: system
-  files: \.(ts)$

@@ -12,6 +12,15 @@ We try to isolate as much of the differences between these two environments into
 
 Finally, all external dependencies, e.g. Python's `requirement('$package')` or NPM's `@npm//$package`, are referenced via an indirection to build_defs/defaults.bzl. This is because Google has a special approach to handling third-party dependencies.
 
+### Gotchas
+
+Here's a quick list of gotchas to watch out for:
+
+- Do not use `import * as` when importing protos from TS. This prevents tree-shaking downstream.
+- Do not use any external Bazel references (e.g. `@`) within `optic/`. Instead, reference them indirectly using a wrapper in `build_defs/`.
+- Avoid relying on implicit transitive dependencies, particularly for TS/NG modules.
+- Do not use raw `JSON.parse`, instead use `jsonParse` in `strict_types.ts`.
+
 ## Angular
 
 We rely heavily on Angular's toolchain, particularly around Bazel integration. Many of the Web-related Bazel rules, particularly for Angular/TS code was forked from [github.com/angular/components](https://github.com/angular/components).
