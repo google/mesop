@@ -1,13 +1,14 @@
 import os
 
 from flask import send_from_directory
-from rules_python.python.runfiles import runfiles  # type: ignore
+
+from optic.utils.runfiles import get_runfile_location
 
 from .server import app, port
 
 
 def get_path():
-  return runfiles.Create().Rlocation("optic/optic/web/src/app/prod/web_package")
+  return get_runfile_location("optic/optic/web/src/app/prod/web_package")
 
 
 @app.route("/")
