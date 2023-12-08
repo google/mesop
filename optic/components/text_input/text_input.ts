@@ -9,14 +9,13 @@ import {Channel} from '../../web/src/services/channel';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {FormsModule} from '@angular/forms';
-import {ObserversModule} from '@angular/cdk/observers';
 
 @Component({
   selector: 'optic-text-input',
   templateUrl: 'text_input.ng.html',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatFormFieldModule, MatInputModule, FormsModule, ObserversModule],
+  imports: [MatFormFieldModule, MatInputModule, FormsModule],
 })
 export class TextInputComponent {
   @Input({required: true}) type!: Type;
