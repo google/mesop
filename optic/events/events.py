@@ -4,14 +4,14 @@ from optic.key import Key
 
 @dataclass
 class OpticEvent:
-    key: Key
+  key: Key
 
 
 @dataclass
 class ClickEvent(OpticEvent):
-    pass
+  pass
 
 
 @dataclass
 class ChangeEvent(OpticEvent):
-    value: str
+  value: str

@@ -7,13 +7,13 @@ from optic.component_helpers import insert_component
 
 @validate_arguments
 def text(
-    *,
-    text: str,
-    key: str | None = None,
+  *,
+  text: str,
+  key: str | None = None,
 ):
-    insert_component(
-        key=key,
-        type=pb.Type(
-            name="text", value=text_pb2.TextType(text=text).SerializeToString()
-        ),
-    )
+  insert_component(
+    key=key,
+    type=pb.Type(
+      name="text", value=text_pb2.TextType(text=text).SerializeToString()
+    ),
+  )

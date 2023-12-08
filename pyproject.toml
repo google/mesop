@@ -3,6 +3,8 @@
 # it's imports are used for side effects
 # Skip error examples since there's intentionally incorrect Python code.
 extend-exclude = ["optic/testing/index.py", "optic/examples/error*"]
+line-length = 80
+indent-width = 2
 
 [build-system]
 requires = ["setuptools>=40.8.0", "wheel"]

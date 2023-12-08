@@ -3,10 +3,10 @@ import optic as op
 
 
 def test_hello_world():
-    assert isinstance(op, types.ModuleType)
+  assert isinstance(op, types.ModuleType)
 
 
 if __name__ == "__main__":
-    import pytest
+  import pytest
 
-    raise SystemExit(pytest.main([__file__]))
+  raise SystemExit(pytest.main([__file__]))

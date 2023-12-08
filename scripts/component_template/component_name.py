@@ -9,25 +9,25 @@ from optic.events import ClickEvent
 
 @validate_arguments
 def component_name(
-    *,
-    label: str,
-    on_click: Callable[[Any, ClickEvent], Any] | None = None,
-    key: str | None = None,
+  *,
+  label: str,
+  on_click: Callable[[Any, ClickEvent], Any] | None = None,
+  key: str | None = None,
 ):
-    """
-    This function creates a component_name.
+  """
+  This function creates a component_name.
 
-    Args:
-        label (str): The text to be displayed
-        on_click (Callable[..., Any]): The function to be called when the component is clicked.
-    """
-    insert_component(
-        key=key,
-        type=pb.Type(
-            name="component_name",
-            value=component_name_pb.ComponentNameType(
-                label=label,
-                on_click_handler_id=handler_type(on_click) if on_click else None,
-            ).SerializeToString(),
-        ),
-    )
+  Args:
+      label (str): The text to be displayed
+      on_click (Callable[..., Any]): The function to be called when the component is clicked.
+  """
+  insert_component(
+    key=key,
+    type=pb.Type(
+      name="component_name",
+      value=component_name_pb.ComponentNameType(
+        label=label,
+        on_click_handler_id=handler_type(on_click) if on_click else None,
+      ).SerializeToString(),
+    ),
+  )

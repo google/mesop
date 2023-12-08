@@ -2,17 +2,17 @@ from .format_traceback import format_traceback as format_traceback
 
 
 class OpticException(Exception):
-    pass
+  pass
 
 
 class OpticUserException(Exception):
-    def __str__(self):
-        return f"User Error: {super().__str__()}"
+  def __str__(self):
+    return f"User Error: {super().__str__()}"
 
 
 class OpticInternalException(Exception):
-    pass
+  pass
 
 
 class OpticDeveloperException(Exception):
-    pass
+  pass

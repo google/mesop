@@ -5,50 +5,50 @@ from typing import Any, Callable
 import optic.protos.ui_pb2 as pb
 import optic.components.checkbox.checkbox_pb2 as checkbox_pb
 from optic.component_helpers import (
-    insert_component,
-    handler_type,
-    register_event_mapper,
+  insert_component,
+  handler_type,
+  register_event_mapper,
 )
 from optic.events import OpticEvent
 
 
 @dataclass
 class CheckboxEvent(OpticEvent):
-    checked: bool
+  checked: bool
 
 
 @validate_arguments
 def checkbox(
-    *,
-    label: str,
-    on_update: Callable[[CheckboxEvent], Any],
-    key: str | None = None,
+  *,
+  label: str,
+  on_update: Callable[[CheckboxEvent], Any],
+  key: str | None = None,
 ):
-    """
-    Creates a checkbox component with a specified label and update action.
+  """
+  Creates a checkbox component with a specified label and update action.
 
-    Args:
-        label (str): The label for the checkbox.
-        on_update (Callable[..., Any]): The function to be called when the checkbox is updated.
+  Args:
+      label (str): The label for the checkbox.
+      on_update (Callable[..., Any]): The function to be called when the checkbox is updated.
 
-    The function appends the created checkbox component to the children of the current node in the runtime context.
-    """
-    insert_component(
-        key=key,
-        type=pb.Type(
-            name="checkbox",
-            value=checkbox_pb.CheckboxType(
-                label=label,
-                on_update_handler_id=handler_type(on_update),
-            ).SerializeToString(),
-        ),
-    )
+  The function appends the created checkbox component to the children of the current node in the runtime context.
+  """
+  insert_component(
+    key=key,
+    type=pb.Type(
+      name="checkbox",
+      value=checkbox_pb.CheckboxType(
+        label=label,
+        on_update_handler_id=handler_type(on_update),
+      ).SerializeToString(),
+    ),
+  )
 
 
 register_event_mapper(
-    CheckboxEvent,
-    lambda userEvent, key: CheckboxEvent(
-        key=key,
-        checked=userEvent.bool,
-    ),
+  CheckboxEvent,
+  lambda userEvent, key: CheckboxEvent(
+    key=key,
+    checked=userEvent.bool,
+  ),
 )
