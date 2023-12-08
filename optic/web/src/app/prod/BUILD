@@ -15,7 +15,7 @@ ng_module(
 )
 
 ng_js_binary(
-    name = "prod",
+    name = "prod_bundle",
     entry_points = [":bundle.ts"],
     deps = [
         ":main",
@@ -43,7 +43,7 @@ filegroup(
 pkg_web(
     name = "web_package",
     srcs = [
-        ":prod",
+        ":prod_bundle",
         ":prod_static_files",
     ],
     additional_root_paths = [
