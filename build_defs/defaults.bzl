@@ -39,10 +39,6 @@ ANGULAR_CORE_DEPS = [
     "@npm//@angular/compiler",
 ]
 
-ANGULAR_MATERIAL_SASS_DEPS = [
-    "@npm//@angular/material",
-]
-
 ANGULAR_MATERIAL_TS_DEPS = [
     "@npm//@angular/material",
 ]
