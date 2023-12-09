@@ -1,6 +1,6 @@
 import base64
 
-from flask import Flask, Response, request
+from flask import Flask, Response, request, stream_with_context
 
 import optic.protos.ui_pb2 as pb
 from optic.exceptions import format_traceback
@@ -44,8 +44,6 @@ def serialize(response: pb.UiResponse) -> str:
 
 def generate_data(ui_request: pb.UiRequest):
   try:
-    runtime.reset_context()
-
     if runtime.has_loading_errors():
       # Only showing the first error since our error UI only
       # shows one error at a time, and in practice there's usually
@@ -77,4 +75,7 @@ def ui_stream():
   ui_request = pb.UiRequest()
   ui_request.ParseFromString(base64.b64decode(param))
 
-  return Response(generate_data(ui_request), content_type="text/event-stream")
+  return Response(
+    stream_with_context(generate_data(ui_request)),
+    content_type="text/event-stream",
+  )

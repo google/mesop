@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 from typing import Any, Callable, Generator, Type, TypeVar, cast
 
+from flask import g
+
 import optic.protos.ui_pb2 as pb
 from optic.events import OpticEvent
 from optic.exceptions import OpticUserException
@@ -21,7 +23,6 @@ E = TypeVar("E", bound=OpticEvent)
 
 
 class Runtime:
-  _context: Context
   _path_fns: dict[str, Callable[[], None]]
   _handlers: dict[str, Handler]
   _state_classes: list[type[Any]]
@@ -35,10 +36,12 @@ class Runtime:
     self._state_classes = []
     self._loading_errors = []
 
-  def context(self):
-    return self._context
+  def context(self) -> Context:
+    if "context" not in g:
+      g.context = self.create_context()
+    return g.context
 
-  def reset_context(self):
+  def create_context(self) -> Context:
     if len(self._state_classes) == 0:
       print("No state class was registered, using an empty state")
       states = {EmptyState: EmptyState()}
@@ -48,7 +51,7 @@ class Runtime:
       for state_class in self._state_classes:
         states[state_class] = state_class()
 
-    self._context = Context(
+    return Context(
       get_handler=self.get_handler, states=cast(dict[Any, Any], states)
     )
 
