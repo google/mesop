@@ -22,20 +22,20 @@ def event_handler(actionType: Type[E]) -> Callable[[Handler[E]], Handler[E]]:
       proto_event = cast(pb.UserEvent, action)
       key = key_from_proto(proto_event.key)
 
-      event = runtime.get_event_mapper(actionType)(proto_event, key)
+      event = runtime().get_event_mapper(actionType)(proto_event, key)
 
       return func(cast(Any, event))
 
     wrapper.__module__ = func.__module__
     wrapper.__name__ = func.__name__
 
-    runtime.register_handler(get_qualified_fn_name(func), wrapper)
+    runtime().register_handler(get_qualified_fn_name(func), wrapper)
     return wrapper
 
   return register
 
 
-runtime.register_event_mapper(
+runtime().register_event_mapper(
   events.ChangeEvent,
   lambda userEvent, key: events.ChangeEvent(
     value=userEvent.string,
@@ -43,7 +43,7 @@ runtime.register_event_mapper(
   ),
 )
 
-runtime.register_event_mapper(
+runtime().register_event_mapper(
   events.ClickEvent,
   lambda userEvent, key: events.ClickEvent(
     key=key,

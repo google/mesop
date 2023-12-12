@@ -101,4 +101,13 @@ Try one of the following paths:
     return self._event_mappers[event]
 
 
-runtime = Runtime()
+_runtime = Runtime()
+
+
+def runtime():
+  return _runtime
+
+
+def reset_runtime():
+  global _runtime
+  _runtime = Runtime()

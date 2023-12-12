@@ -10,7 +10,7 @@ def page(
     def wrapper() -> None:
       return func()
 
-    runtime.register_path_fn(path, wrapper)
+    runtime().register_path_fn(path, wrapper)
     return wrapper
 
   return decorator

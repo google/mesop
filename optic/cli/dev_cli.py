@@ -22,7 +22,7 @@ def main(argv):
   except Exception as e:
     from optic.runtime import runtime
 
-    runtime.add_loading_error(
+    runtime().add_loading_error(
       pb.ServerError(exception=str(e), traceback=format_traceback())
     )
     print("Exception executing module:", e)
