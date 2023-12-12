@@ -33,6 +33,7 @@ export class Channel {
   private initParams!: InitParams;
   private states!: States;
   private status!: ChannelStatus;
+  private queuedEvents: (() => void)[] = [];
 
   constructor(private logger: Logger) {}
 
@@ -69,6 +70,10 @@ export class Channel {
           this.eventSource.close();
           this.status = ChannelStatus.CLOSED;
           this.logger.log({type: 'StreamEnd'});
+          if (this.queuedEvents.length) {
+            const queuedEvent = this.queuedEvents.shift()!;
+            queuedEvent();
+          }
           return;
         }
 
@@ -98,13 +103,20 @@ export class Channel {
   }
 
   dispatch(userEvent: UserEvent) {
-    userEvent.setStates(this.states);
-    const request = new UiRequest();
-    request.setUserEvent(userEvent);
-
-    this.eventSource.close();
+    const initUserEvent = () => {
+      userEvent.setStates(this.states);
+      const request = new UiRequest();
+      request.setUserEvent(userEvent);
+      this.init(this.initParams, request);
+    };
     this.logger.log({type: 'UserEventLog', userEvent: userEvent});
-    this.init(this.initParams, request);
+    if (this.status === ChannelStatus.CLOSED) {
+      initUserEvent();
+    } else {
+      this.queuedEvents.push(() => {
+        initUserEvent();
+      });
+    }
   }
 
   getStates(): States {
