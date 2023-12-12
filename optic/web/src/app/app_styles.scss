@@ -1,6 +1,12 @@
 .container {
   height: 100%;
 }
+
+.status {
+  position: fixed;
+  width: 100%;
+}
+
 .debug-buttons {
   position: absolute;
   top: 0px;
