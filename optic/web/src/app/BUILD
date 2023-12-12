@@ -1,4 +1,4 @@
-load("//build_defs:defaults.bzl", "ANGULAR_CDK_TS_DEPS", "ANGULAR_CORE_DEPS", "ANGULAR_MATERIAL_TS_DEPS", "esbuild_config", "ng_module", "sass_external_binary")
+load("//build_defs:defaults.bzl", "ANGULAR_CDK_TS_DEPS", "ANGULAR_CORE_DEPS", "ANGULAR_MATERIAL_TS_DEPS", "esbuild_config", "ng_module", "sass_binary", "sass_external_binary")
 
 package(
     default_visibility = ["//build_defs:optic_internal"],
@@ -11,6 +11,7 @@ ng_module(
     ]),
     assets = [
         "app.ng.html",
+        "app_styles.css",
     ],
     deps = [
         "//optic/protos:ui_jspb_proto",
@@ -20,6 +21,12 @@ ng_module(
         "//optic/web/src/error",
         "//optic/web/src/services",
     ] + ANGULAR_CORE_DEPS + ANGULAR_CDK_TS_DEPS + ANGULAR_MATERIAL_TS_DEPS,
+)
+
+sass_binary(
+    name = "app_styles",
+    src = "app_styles.scss",
+    sourcemap = False,
 )
 
 esbuild_config(

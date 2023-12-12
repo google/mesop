@@ -41,32 +41,7 @@ import {TypeDeserializer} from '../dev_tools/services/type_deserializer';
     MatButtonModule,
     MatSidenavModule,
   ],
-  styles: `
-  .container {
-    height: 100%;
-  }
-  .debug-buttons {
-    position: absolute;
-    top: 0px;
-    right: 0px;
-  }
-  .right-sidenav {
-    width: 420px;
-  }
-
-  .resize-handle {
-    border: 0.75px solid gainsboro;
-    border-radius: 1px;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0px;
-    width: 8px;
-    cursor: ew-resize;
-    z-index: 9999999;
-    background: rgb(252, 252, 252);
-  }
-  `,
+  styleUrl: 'app_styles.css',
 })
 class App {
   rootComponent!: ComponentProto;
