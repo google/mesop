@@ -6,6 +6,7 @@ import {
   UiRequest,
   UserEvent,
   Component as ComponentProto,
+  HotReloadEvent,
   UiResponse,
 } from 'optic/optic/protos/ui_jspb_proto_pb/optic/protos/ui_pb';
 import {Logger} from '../dev_tools/services/logger';
@@ -28,24 +29,36 @@ export enum ChannelStatus {
   providedIn: 'root',
 })
 export class Channel {
-  private eventSource: EventSource;
+  private eventSource!: EventSource;
   private initParams!: InitParams;
   private states!: States;
-  private status: ChannelStatus;
+  private status!: ChannelStatus;
 
-  constructor(private logger: Logger) {
-    const request = new UiRequest();
-    request.setInit(new InitRequest());
-    this.eventSource = new EventSource(generateRequestUrl(request));
-    this.status = ChannelStatus.OPEN;
-    this.logger.log({type: 'StreamStart'});
-  }
+  constructor(private logger: Logger) {}
 
   getStatus(): ChannelStatus {
     return this.status;
   }
 
-  init(initParams: InitParams) {
+  init(initParams: InitParams, request?: UiRequest) {
+    if (!request) {
+      // If there's no request but we have states, then we
+      // assume we're initializing from a hot reload event.
+      if (this.states) {
+        request = new UiRequest();
+        const userEvent = new UserEvent();
+        userEvent.setStates(this.states);
+        userEvent.setHotReload(new HotReloadEvent());
+        request.setUserEvent(userEvent);
+      } else {
+        request = new UiRequest();
+        request.setInit(new InitRequest());
+      }
+    }
+    this.eventSource = new EventSource(generateRequestUrl(request));
+    this.status = ChannelStatus.OPEN;
+    this.logger.log({type: 'StreamStart'});
+
     const {zone, onRender, onError} = initParams;
     this.initParams = initParams;
 
@@ -90,11 +103,16 @@ export class Channel {
     request.setUserEvent(userEvent);
 
     this.eventSource.close();
-    this.eventSource = new EventSource(generateRequestUrl(request));
-    this.status = ChannelStatus.OPEN;
-    this.logger.log({type: 'StreamStart'});
     this.logger.log({type: 'UserEventLog', userEvent: userEvent});
-    this.init(this.initParams);
+    this.init(this.initParams, request);
+  }
+
+  getStates(): States {
+    return this.states;
+  }
+
+  setStates(states: States) {
+    this.states = states;
   }
 }
 

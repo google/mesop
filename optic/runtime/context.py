@@ -48,6 +48,10 @@ class Context:
     for state, proto_state in zip(self._states.values(), event.states.states):
       update_dataclass_from_json(state, proto_state.data)
 
+    if event.HasField("hot_reload"):
+      yield  # empty yield so there's one tick of the render loop
+      return  # return early b/c there's no event handler for hot reload
+
     payload = cast(Any, event)
     handler = self._get_handler(event.handler_id)
     if handler:

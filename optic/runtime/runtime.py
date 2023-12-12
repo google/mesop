@@ -32,7 +32,7 @@ class Runtime:
   def __init__(self):
     self._path_fns = {}
     self._handlers = {}
-    self._event_mappers = {}
+    self.event_mappers: dict[Type[Any], Callable[[pb.UserEvent, Key], Any]] = {}
     self._state_classes = []
     self._loading_errors = []
 
@@ -93,12 +93,12 @@ Try one of the following paths:
   def register_event_mapper(
     self, event: Type[E], map_fn: Callable[[pb.UserEvent, Key], E]
   ):
-    self._event_mappers[event] = map_fn
+    self.event_mappers[event] = map_fn
 
   def get_event_mapper(
     self, event: Type[E]
   ) -> Callable[[pb.UserEvent, Key], E]:
-    return self._event_mappers[event]
+    return self.event_mappers[event]
 
 
 _runtime = Runtime()
@@ -110,4 +110,6 @@ def runtime():
 
 def reset_runtime():
   global _runtime
+  old_runtime = _runtime
   _runtime = Runtime()
+  _runtime.event_mappers = old_runtime.event_mappers

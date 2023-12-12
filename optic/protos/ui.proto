@@ -27,8 +27,11 @@ message UserEvent {
     oneof type {
         bool bool = 4;
         string string = 5;
+        HotReloadEvent hot_reload = 6;
     }
 }
+
+message HotReloadEvent{}
 
 // Sent from Python server to web client.
 // Multiple UiResponse messages may be sent in response to 1 UiRequest.

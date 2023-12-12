@@ -26,6 +26,7 @@ import {DevTools} from '../dev_tools/dev_tools';
 import {DevToolsSettings} from '../dev_tools/services/dev_tools_settings';
 import {Logger} from '../dev_tools/services/logger';
 import {TypeDeserializer} from '../dev_tools/services/type_deserializer';
+import {HotReloadWatcher} from '../services/hot_reload_watcher';
 
 @Component({
   selector: 'app',
@@ -55,7 +56,8 @@ class App {
   constructor(
     private zone: NgZone,
     private renderer: Renderer2,
-
+    // Injecting to ensure it's loaded in the app
+    private hotReloadWatcher: HotReloadWatcher,
     private channel: Channel,
     private iconRegistry: MatIconRegistry,
     private devToolsSettings: DevToolsSettings,
