@@ -79,20 +79,6 @@ def main():
 
   update_component_renderer()
 
-  update_dev_tools_deserializer()
-
-  # Update dev_tools/service/BUILD
-  update_file(
-    path=os.path.join(
-      web_src_dir(),
-      "dev_tools",
-      "services",
-      "BUILD",
-    ),
-    target="# REF(//scripts/gen_component.py):insert_component_jspb_proto_import",
-    content=f'    "//mesop/components/{component_name}:{component_name}_jspb_proto",',
-  )
-
   print("Finished generating new component: " + component_name)
 
 
@@ -134,29 +120,6 @@ def update_component_renderer():
     path=ts_path,
     target="// REF(//scripts/gen_component.py):insert_ng_import",
     content=f"    {camel_case()}Component,",
-  )
-
-
-def update_dev_tools_deserializer():
-  deserializer_path = os.path.join(
-    web_src_dir(),
-    "dev_tools",
-    "services",
-    "type_deserializer.ts",
-  )
-  type = "{" + f"{camel_case()}Type" + "}"
-  update_file(
-    path=deserializer_path,
-    target="// REF(//scripts/gen_component.py):insert_component_jspb_proto_import",
-    content=f'import {type} from "mesop/mesop/components/{component_name}/{component_name}_jspb_proto_pb/mesop/components/{component_name}/{component_name}_pb";',
-  )
-  update_file(
-    path=deserializer_path,
-    target="// REF(//scripts/gen_component.py):insert_register_deserializer",
-    content=f"""this.registerDeserializer("{component_name}", (value) =>
-      {camel_case()}Type.deserializeBinary(value).toObject(),
-    );
-    """,
   )
 
 
