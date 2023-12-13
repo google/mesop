@@ -98,4 +98,5 @@ message Key {
 message Type {
     string name = 4;
     bytes value = 5;
+    string debug_json = 6;
 }
