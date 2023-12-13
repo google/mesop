@@ -1,9 +1,11 @@
 import {Injectable} from '@angular/core';
 import {Channel} from './channel';
 import {States} from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
+import {jsonParse} from '../utils/strict_types';
 
 const HOT_RELOAD_STATE_KEY = '@mesop/HOT_RELOAD_STATE_KEY';
 const anyWindow = window as any;
+const localStorage: Storage = anyWindow.localStorage;
 
 @Injectable({
   providedIn: 'root',
@@ -23,7 +25,7 @@ export class HotReloadWatcher {
     }
 
     const states = States.deserializeBinary(
-      new Uint8Array(JSON.parse(stored_state)),
+      new Uint8Array(jsonParse(stored_state) as ArrayBuffer),
     );
     this.channel.setStates(states);
     // Clear from local storage so if the user does a hard reload,
@@ -43,7 +45,7 @@ export class HotReloadWatcher {
       if (!states) {
         return;
       }
-      anyWindow.localStorage.setItem(
+      localStorage.setItem(
         HOT_RELOAD_STATE_KEY,
         JSON.stringify(Array.from(this.channel.getStates().serializeBinary())),
       );
