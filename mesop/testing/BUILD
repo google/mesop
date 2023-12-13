@@ -12,6 +12,7 @@ py_library(
         "//mesop/components/markdown/e2e",
         "//mesop/components/text_input/e2e",
         "//mesop/components/box/e2e",
+        "//mesop/components/checkbox/e2e",
         "//mesop/components/text/e2e",
         "//mesop/examples",
     ],
