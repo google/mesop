@@ -1,8 +1,3 @@
-<div>
-  <input
-    type="checkbox"
-    [checked]="isChecked"
-    (change)="handleCheckboxChange($event)"
-  />
+<mat-checkbox [checked]="isChecked" (change)="handleCheckboxChange($event)">
   {{config().getLabel()}}
-</div>
+</mat-checkbox>
