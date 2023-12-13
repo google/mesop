@@ -128,7 +128,7 @@ def update_component_renderer():
   update_file(
     path=ts_path,
     target="// REF(//scripts/gen_component.py):insert_ts_import",
-    content=f'import {{ {camel_case()}Component }} from "../../../mesop/components/{component_name}/{component_name}";',
+    content=f'import {{ {camel_case()}Component }} from "../../../components/{component_name}/{component_name}";',
   )
   update_file(
     path=ts_path,
