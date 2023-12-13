@@ -5,7 +5,6 @@ import {
   Component as ComponentProto,
   Type,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
-import {TypeDeserializer} from './type_deserializer';
 import {Observable, Subject} from 'rxjs';
 import {jsonParse} from '../../utils/strict_types';
 
@@ -16,8 +15,6 @@ export class Logger {
   private logs: LogModel[] = [];
   private onLog?: () => void;
   private logSubject = new Subject<LogModel[]>();
-
-  constructor(private _typeDeserializer: TypeDeserializer) {}
 
   log(input: LogInput) {
     const logModel = this.mapLog(input);
