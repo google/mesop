@@ -8,6 +8,7 @@ import {
 import {CdkTreeModule} from '@angular/cdk/tree';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
+import {ComponentObject} from '../services/logger';
 
 /** Flat node with expandable and level information */
 export interface ExampleFlatNode {
@@ -26,7 +27,7 @@ export interface ExampleFlatNode {
   imports: [CdkTreeModule, MatTreeModule, MatButtonModule, MatIconModule],
 })
 export class ComponentTree {
-  @Input({required: true}) component!: InputNode;
+  @Input({required: true}) component!: ComponentObject;
   @Output() nodeSelected = new EventEmitter<ExampleFlatNode>();
 
   keys() {
@@ -73,7 +74,7 @@ export class ComponentTree {
   }
 }
 
-function mapObject(object: InputNode): DisplayNode {
+function mapObject(object: ComponentObject): DisplayNode {
   const node: DisplayNode = {
     componentName: '<undefined>',
     text: '',
@@ -87,15 +88,16 @@ function mapObject(object: InputNode): DisplayNode {
         return `${key}=${JSON.stringify(value)}`;
       })
       .join(', ');
-    node.text = `${object.type.name}(${values})`;
-    node.properties = object.type.value;
-    (node.properties as any).key = object.key?.key;
-    node.componentName = object.type.name;
+    const name = object.type.name;
+    node.text = `${name}(${values})`;
+    node.properties = object.type as any;
+    (node.properties as any).key = object.key;
+    node.componentName = name;
   } else {
     node.text = `<root>`;
   }
-  if (object.childrenList) {
-    node.children = object.childrenList.map((child) => mapObject(child));
+  if (object.children) {
+    node.children = object.children.map((child) => mapObject(child));
   }
   return node;
 }

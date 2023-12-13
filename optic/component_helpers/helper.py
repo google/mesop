@@ -1,5 +1,8 @@
 from typing import Any, Callable, Type, TypeVar
 
+from google.protobuf import json_format
+from google.protobuf.message import Message
+
 import optic.protos.ui_pb2 as pb
 from optic.events import OpticEvent
 from optic.key import Key
@@ -7,12 +10,9 @@ from optic.runtime import runtime
 
 
 class ComponentWithChildren:
-  def __init__(
-    self,
-    component: pb.Component,
-  ):
+  def __init__(self, type_name: str, proto: Message, key: str | None = None):
     self.prev_current_node = runtime().context().current_node()
-    self.component = component
+    self.component = create_component(type_name=type_name, proto=proto, key=key)
 
   def __enter__(self):
     runtime().context().set_current_node(self.component)
@@ -24,13 +24,24 @@ class ComponentWithChildren:
     self.prev_current_node.children.append(self.component)
 
 
-def insert_component(type: pb.Type, key: str | None = None):
+def create_component(
+  type_name: str, proto: Message, key: str | None = None
+) -> pb.Component:
+  type = pb.Type(name=type_name, value=proto.SerializeToString())
+  if runtime().debug_mode:
+    type.debug_json = json_format.MessageToJson(
+      proto, preserving_proto_field_name=True
+    )
+
+  return pb.Component(key=pb.Key(key=key) if key else None, type=type)
+
+
+def insert_component(type_name: str, proto: Message, key: str | None = None):
   """
   Inserts a component into the current context's current node.
   """
-
   runtime().context().current_node().children.append(
-    pb.Component(key=pb.Key(key=key) if key else None, type=type)
+    create_component(type_name=type_name, proto=proto, key=key)
   )
 
 

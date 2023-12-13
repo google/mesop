@@ -4,7 +4,6 @@ from typing import Any, Callable
 from pydantic import validate_arguments
 
 import optic.components.checkbox.checkbox_pb2 as checkbox_pb
-import optic.protos.ui_pb2 as pb
 from optic.component_helpers import (
   handler_type,
   insert_component,
@@ -36,12 +35,10 @@ def checkbox(
   """
   insert_component(
     key=key,
-    type=pb.Type(
-      name="checkbox",
-      value=checkbox_pb.CheckboxType(
-        label=label,
-        on_update_handler_id=handler_type(on_update),
-      ).SerializeToString(),
+    type_name="checkbox",
+    proto=checkbox_pb.CheckboxType(
+      label=label,
+      on_update_handler_id=handler_type(on_update),
     ),
   )
 

@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {Logger, RenderLogModel} from '../services/logger';
+import {ComponentObject, Logger, RenderLogModel} from '../services/logger';
 import {
   ComponentTree,
   ExampleFlatNode,
@@ -18,13 +18,13 @@ export class ComponentsPanel {
   selectedNode!: ExampleFlatNode;
   constructor(private logger: Logger) {}
 
-  component(): InputNode {
+  component(): ComponentObject {
     const renderLog = this.logger
       .getLogs()
       .slice()
       .reverse()
       .find((log) => log.type === 'Render') as RenderLogModel;
-    return renderLog?.rootComponent as InputNode;
+    return renderLog?.rootComponent as ComponentObject;
   }
 
   onNodeSelected(node: ExampleFlatNode): void {

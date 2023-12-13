@@ -1,7 +1,6 @@
 from pydantic import validate_arguments
 
 import optic.components.text.text_pb2 as text_pb2
-import optic.protos.ui_pb2 as pb
 from optic.component_helpers import insert_component
 
 
@@ -12,8 +11,5 @@ def text(
   key: str | None = None,
 ):
   insert_component(
-    key=key,
-    type=pb.Type(
-      name="text", value=text_pb2.TextType(text=text).SerializeToString()
-    ),
+    key=key, type_name="text", proto=text_pb2.TextType(text=text)
   )

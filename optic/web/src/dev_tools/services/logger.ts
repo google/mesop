@@ -3,6 +3,7 @@ import {
   States,
   UserEvent,
   Component as ComponentProto,
+  Type,
 } from 'optic/optic/protos/ui_jspb_proto_pb/optic/protos/ui_pb';
 import {TypeDeserializer} from './type_deserializer';
 import {Observable, Subject} from 'rxjs';
@@ -55,8 +56,6 @@ export class Logger {
           duration,
         };
       case 'RenderLog':
-        const rootComponent = input.rootComponent.toObject();
-        this.updateComponent(rootComponent);
         return {
           type: 'Render',
           timestamp: Date.now(),
@@ -64,26 +63,37 @@ export class Logger {
           states: input.states
             .getStatesList()
             .map((s) => jsonParse(s.getData())) as object[],
-          rootComponent,
+          rootComponent: this.mapComponent(input.rootComponent),
         };
     }
   }
 
-  updateComponent(component: object): void {
-    const type = (component as any)['type'];
-    if (type) {
-      type['value'] = this._typeDeserializer.deserialize(
-        type['name'],
-        type['value'],
-      );
+  mapComponent(component: ComponentProto): ComponentObject {
+    const debugJson = component.getType()?.getDebugJson();
+    let type;
+    if (debugJson) {
+      type = {
+        name: component.getType()!.getName(),
+        value: jsonParse(debugJson) as object,
+      };
     }
-    const children = (component as any)['childrenList'];
-    if (children) {
-      for (const child of children) {
-        this.updateComponent(child);
-      }
-    }
+    return {
+      type,
+      key: component.getKey()?.getKey(),
+      children: component
+        .getChildrenList()
+        .map((child) => this.mapComponent(child)),
+    };
   }
+}
+
+export interface ComponentObject {
+  type?: {
+    name: string;
+    value: object;
+  };
+  key?: string;
+  children: ComponentObject[];
 }
 
 export interface BaseLogModel {
@@ -107,7 +117,7 @@ export interface UserEventLogModel extends BaseLogModel {
 
 export interface RenderLogModel extends BaseLogModel {
   type: 'Render';
-  rootComponent: object;
+  rootComponent: ComponentObject;
   states: object[];
 }
 

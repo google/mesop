@@ -3,8 +3,10 @@ from typing import Any, Callable
 from pydantic import validate_arguments
 
 import optic.components.button.button_pb2 as button_pb
-import optic.protos.ui_pb2 as pb
-from optic.component_helpers import handler_type, insert_component
+from optic.component_helpers import (
+  handler_type,
+  insert_component,
+)
 from optic.events import ClickEvent
 
 
@@ -24,11 +26,9 @@ def button(
   """
   insert_component(
     key=key,
-    type=pb.Type(
-      name="button",
-      value=button_pb.ButtonType(
-        label=label,
-        on_click_handler_id=handler_type(on_click),
-      ).SerializeToString(),
+    type_name="button",
+    proto=button_pb.ButtonType(
+      label=label,
+      on_click_handler_id=handler_type(on_click),
     ),
   )
