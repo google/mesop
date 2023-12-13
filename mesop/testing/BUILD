@@ -9,6 +9,7 @@ py_library(
     srcs = ["index.py"],
     deps = [
         # REF(//scripts/gen_component.py):insert_component_e2e_import
+        "//mesop/components/markdown/e2e",
         "//mesop/components/text_input/e2e",
         "//mesop/components/box/e2e",
         "//mesop/components/text/e2e",

@@ -191,7 +191,7 @@
     "karma-sourcemap-loader": "^0.3.8",
     "luxon": "^3.0.0",
     "madge": "^4.0.0",
-    "marked": "^2.0.0",
+    "marked": "^11.1.0",
     "minimatch": "^3.0.4",
     "moment": "^2.29.1",
     "node-fetch": "^2.6.0",

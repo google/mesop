@@ -59,6 +59,10 @@ PYTHON_RUNFILES_DEP = [
     "@rules_python//python/runfiles",
 ]
 
+THIRD_PARTY_JS_MARKED = [
+    "@npm//marked",
+]
+
 THIRD_PARTY_JS_RXJS = [
     "@npm//rxjs",
 ]

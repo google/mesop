@@ -12,6 +12,7 @@ py_library(
     ],
     deps = [
         # REF(//scripts/gen_component.py):insert_component_import
+        "//mesop/components/markdown:py",
         "//mesop/components/text_input:py",
         "//mesop/components/box:py",
         "//mesop/components",

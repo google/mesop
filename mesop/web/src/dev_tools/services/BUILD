@@ -12,6 +12,7 @@ ng_module(
     deps = [
         "//mesop/web/src/utils",
         # REF(//scripts/gen_component.py):insert_component_jspb_proto_import
+        "//mesop/components/markdown:markdown_jspb_proto",
         "//mesop/components/box:box_jspb_proto",
         "//mesop/components/button:button_jspb_proto",
         "//mesop/components/checkbox:checkbox_jspb_proto",

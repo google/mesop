@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+package mesop.components.markdown;
+
+message MarkdownType {
+    string text = 1;
+}

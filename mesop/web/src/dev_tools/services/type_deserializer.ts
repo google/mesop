@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 // REF(//scripts/gen_component.py):insert_component_jspb_proto_import
+import {MarkdownType} from 'mesop/mesop/components/markdown/markdown_jspb_proto_pb/mesop/components/markdown/markdown_pb';
 import {ButtonType} from 'mesop/mesop/components/button/button_jspb_proto_pb/mesop/components/button/button_pb';
 import {TextType} from 'mesop/mesop/components/text/text_jspb_proto_pb/mesop/components/text/text_pb';
 import {BoxType} from 'mesop/mesop/components/box/box_jspb_proto_pb/mesop/components/box/box_pb';
@@ -15,6 +16,10 @@ export class TypeDeserializer {
   private _map = new Map<string, Deserializer>();
   constructor() {
     // REF(//scripts/gen_component.py):insert_register_deserializer
+    this.registerDeserializer('markdown', (value) =>
+      MarkdownType.deserializeBinary(value).toObject(),
+    );
+
     this.registerDeserializer('button', (value) =>
       ButtonType.deserializeBinary(value).toObject(),
     );

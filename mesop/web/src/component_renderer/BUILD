@@ -14,6 +14,7 @@ ng_module(
     ]),
     deps = [
         # REF(//scripts/gen_component.py):insert_component_import
+        "//mesop/components/markdown:ng",
         "//mesop/components/text_input:ng",
         "//mesop/components/box:ng",
         "//mesop/components/button:ng",
