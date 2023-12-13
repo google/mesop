@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {ComponentObject, Logger, RenderLogModel} from '../services/logger';
 import {
   ComponentTree,
-  ExampleFlatNode,
+  FlatNode,
   InputNode,
 } from '../component_tree/component_tree';
 import {ObjectTree} from '../object_tree/object_tree';
@@ -15,7 +15,7 @@ import {ObjectTree} from '../object_tree/object_tree';
   imports: [ComponentTree, ObjectTree],
 })
 export class ComponentsPanel {
-  selectedNode!: ExampleFlatNode;
+  selectedNode!: FlatNode;
   constructor(private logger: Logger) {}
 
   component(): ComponentObject {
@@ -27,7 +27,7 @@ export class ComponentsPanel {
     return renderLog?.rootComponent as ComponentObject;
   }
 
-  onNodeSelected(node: ExampleFlatNode): void {
+  onNodeSelected(node: FlatNode): void {
     this.selectedNode = node;
   }
 }

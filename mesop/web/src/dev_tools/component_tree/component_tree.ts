@@ -11,7 +11,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {ComponentObject} from '../services/logger';
 
 /** Flat node with expandable and level information */
-export interface ExampleFlatNode {
+export interface FlatNode {
   expandable: boolean;
   text: string;
   componentName: string;
@@ -28,7 +28,7 @@ export interface ExampleFlatNode {
 })
 export class ComponentTree {
   @Input({required: true}) component!: ComponentObject;
-  @Output() nodeSelected = new EventEmitter<ExampleFlatNode>();
+  @Output() nodeSelected = new EventEmitter<FlatNode>();
 
   keys() {
     return Object.keys(this.component);
@@ -43,7 +43,7 @@ export class ComponentTree {
     };
   };
 
-  treeControl = new FlatTreeControl<ExampleFlatNode>(
+  treeControl = new FlatTreeControl<FlatNode>(
     (node) => node.level,
     (node) => node.expandable,
   );
@@ -67,9 +67,9 @@ export class ComponentTree {
     });
   }
 
-  hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
+  hasChild = (_: number, node: FlatNode) => node.expandable;
 
-  selectNode(node: ExampleFlatNode): void {
+  selectNode(node: FlatNode): void {
     this.nodeSelected.emit(node);
   }
 }
