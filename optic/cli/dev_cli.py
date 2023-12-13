@@ -3,6 +3,7 @@ from absl import app, flags
 import optic.protos.ui_pb2 as pb
 from optic.cli.execute_module import execute_module
 from optic.exceptions import format_traceback
+from optic.runtime import enable_debug_mode, runtime
 from optic.server import dev_server
 from optic.server.flags import port
 from optic.server.server import flask_app
@@ -17,11 +18,11 @@ def main(argv):
   if len(FLAGS.path) < 1:
     raise Exception("Required flag 'path'. Received: " + FLAGS.path)
 
+  enable_debug_mode()
+
   try:
     execute_module(get_runfile_location(FLAGS.path))
   except Exception as e:
-    from optic.runtime import runtime
-
     runtime().add_loading_error(
       pb.ServerError(exception=str(e), traceback=format_traceback())
     )

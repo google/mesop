@@ -20,6 +20,7 @@ class EmptyState:
 
 
 E = TypeVar("E", bound=OpticEvent)
+T = TypeVar("T")
 
 
 class Runtime:
@@ -28,6 +29,7 @@ class Runtime:
   _state_classes: list[type[Any]]
   _loading_errors: list[pb.ServerError]
   _event_mappers: dict[Any, Callable[[pb.UserEvent, Key], Any]]
+  debug_mode: bool = False
 
   def __init__(self):
     self._path_fns = {}
@@ -112,4 +114,9 @@ def reset_runtime():
   global _runtime
   old_runtime = _runtime
   _runtime = Runtime()
+  _runtime.debug_mode = old_runtime.debug_mode
   _runtime.event_mappers = old_runtime.event_mappers
+
+
+def enable_debug_mode():
+  _runtime.debug_mode = True

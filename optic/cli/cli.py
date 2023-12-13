@@ -7,7 +7,7 @@ from absl import app, flags
 import optic.protos.ui_pb2 as pb
 from optic.cli.execute_module import execute_module
 from optic.exceptions import format_traceback
-from optic.runtime import reset_runtime, runtime
+from optic.runtime import enable_debug_mode, reset_runtime, runtime
 from optic.server.flags import port
 from optic.server.server import flask_app
 from optic.server.static_file_serving import configure_static_file_serving
@@ -41,6 +41,7 @@ def main(argv):
   except Exception as e:
     # Only record error to runtime if in CI mode.
     if FLAGS.debug:
+      enable_debug_mode()
       runtime().add_loading_error(
         pb.ServerError(exception=str(e), traceback=format_traceback())
       )
