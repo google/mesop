@@ -16,7 +16,7 @@ from mesop.utils.runfiles import get_runfile_location
 FLAGS = flags.FLAGS
 
 flags.DEFINE_string("path", "", "path to main python module of Mesop app.")
-flags.DEFINE_bool("debug", False, "set to true for debug mode.")
+flags.DEFINE_bool("debug", True, "set to true for debug mode.")
 
 
 def monitor_stdin():
@@ -36,12 +36,14 @@ def main(argv):
   if len(FLAGS.path) < 1:
     raise Exception("Required flag 'path'. Received: " + FLAGS.path)
 
+  if FLAGS.debug:
+    enable_debug_mode()
+
   try:
     execute_module(get_runfile_location(FLAGS.path))
   except Exception as e:
     # Only record error to runtime if in CI mode.
     if FLAGS.debug:
-      enable_debug_mode()
       runtime().add_loading_error(
         pb.ServerError(exception=str(e), traceback=format_traceback())
       )
