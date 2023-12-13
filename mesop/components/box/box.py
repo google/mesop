@@ -7,7 +7,7 @@ from mesop.component_helpers import ComponentWithChildren
 @validate_arguments
 def box(
   *,
-  background_color: str = "",
+  styles: str = "",
   key: str | None = None,
 ):
   """
@@ -19,5 +19,5 @@ def box(
   return ComponentWithChildren(
     key=key,
     type_name="box",
-    proto=box_pb.BoxType(background_color=background_color),
+    proto=box_pb.BoxType(styles=styles),
   )

@@ -59,8 +59,6 @@ export class ComponentRenderer {
       return '';
     }
 
-    return `
-       display: block;
-       background-color: ${this._boxType.getBackgroundColor()};`;
+    return this._boxType.getStyles().trim();
   }
 }
