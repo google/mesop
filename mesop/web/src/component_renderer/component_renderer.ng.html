@@ -1,12 +1,7 @@
-<ng-container *ngIf="type()?.getName() == 'box'">
-  <mesop-box [key]="key()" [type]="type()!">
-    <ng-container
-      *ngFor="let child of component.getChildrenList(); trackBy: trackByFn"
-    >
-      <component-renderer [component]="child"> </component-renderer>
-    </ng-container>
-  </mesop-box>
-</ng-container>
+<!-- box is a special component where we can't delegate it to another
+Angular component (e.g. mesop-box) because it will create an intermediate DOM node
+which interferes with Flexbox styling which requires children (direct descendants)
+to have certain styling properties -->
 
 <ng-container *ngIf="type()?.getName() == 'text_input'">
   <mesop-text-input [key]="key()" [type]="type()!" />
@@ -34,7 +29,7 @@
   <mesop-text [key]="key()" [type]="type()!" />
 </ng-container>
 
-<ng-container *ngIf="type() == null">
+<ng-container *ngIf="type()?.getName() === 'box' || type() == null">
   <ng-container
     *ngFor="let child of component.getChildrenList(); trackBy: trackByFn"
   >
