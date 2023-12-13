@@ -84,7 +84,10 @@ def main():
   # Update dev_tools/service/BUILD
   update_file(
     path=os.path.join(
-      current_dir(), "..", "web", "src", "dev_tools", "services", "BUILD"
+      web_src_dir(),
+      "dev_tools",
+      "services",
+      "BUILD",
     ),
     target="# REF(//scripts/gen_component.py):insert_component_jspb_proto_import",
     content=f'    "//mesop/components/{component_name}:{component_name}_jspb_proto",',
@@ -94,9 +97,7 @@ def main():
 
 
 def update_component_renderer():
-  component_renderer_path = os.path.join(
-    current_dir(), "..", "web", "src", "component_renderer"
-  )
+  component_renderer_path = os.path.join(web_src_dir(), "component_renderer")
 
   update_file(
     path=os.path.join(
@@ -138,10 +139,7 @@ def update_component_renderer():
 
 def update_dev_tools_deserializer():
   deserializer_path = os.path.join(
-    current_dir(),
-    "..",
-    "web",
-    "src",
+    web_src_dir(),
     "dev_tools",
     "services",
     "type_deserializer.ts",
@@ -227,6 +225,16 @@ def rename_file(
     new_file_path,
   )
   return new_file_path
+
+
+def web_src_dir():
+  return os.path.join(
+    current_dir(),
+    "..",
+    "mesop",
+    "web",
+    "src",
+  )
 
 
 def current_dir():
