@@ -47,33 +47,33 @@ def main():
     path=os.path.join(new_component_dir(), "BUILD"),
   )
 
-  # Update //optic/__init__.py
+  # Update //mesop/__init__.py
   update_file(
-    path=os.path.join(current_dir(), "..", "optic", "__init__.py"),
+    path=os.path.join(current_dir(), "..", "mesop", "__init__.py"),
     target="# REF(//scripts/gen_component.py):insert_component_import_export",
-    content=f"from optic.components.{component_name}.{component_name} import {component_name} as {component_name}",
+    content=f"from mesop.components.{component_name}.{component_name} import {component_name} as {component_name}",
     before=True,
   )
 
-  # Update //optic/BUILD
+  # Update //mesop/BUILD
   update_file(
-    path=os.path.join(current_dir(), "..", "optic", "BUILD"),
+    path=os.path.join(current_dir(), "..", "mesop", "BUILD"),
     target="# REF(//scripts/gen_component.py):insert_component_import",
-    content=f'    "//optic/components/{component_name}:py",',
+    content=f'    "//mesop/components/{component_name}:py",',
   )
 
   # Update testing BUILD file
   update_file(
-    path=os.path.join(current_dir(), "..", "optic", "testing", "BUILD"),
+    path=os.path.join(current_dir(), "..", "mesop", "testing", "BUILD"),
     target="# REF(//scripts/gen_component.py):insert_component_e2e_import",
-    content=f'    "//optic/components/{component_name}/e2e",',
+    content=f'    "//mesop/components/{component_name}/e2e",',
   )
 
   # Update testing index.py file
   update_file(
-    path=os.path.join(current_dir(), "..", "optic", "testing", "index.py"),
+    path=os.path.join(current_dir(), "..", "mesop", "testing", "index.py"),
     target="# REF(//scripts/gen_component.py):insert_component_e2e_import_export",
-    content=f"import optic.components.{component_name}.e2e as {component_name}_e2e",
+    content=f"import mesop.components.{component_name}.e2e as {component_name}_e2e",
     before=True,
   )
 
@@ -87,7 +87,7 @@ def main():
       current_dir(), "..", "web", "src", "dev_tools", "services", "BUILD"
     ),
     target="# REF(//scripts/gen_component.py):insert_component_jspb_proto_import",
-    content=f'    "//optic/components/{component_name}:{component_name}_jspb_proto",',
+    content=f'    "//mesop/components/{component_name}:{component_name}_jspb_proto",',
   )
 
   print("Finished generating new component: " + component_name)
@@ -106,7 +106,7 @@ def update_component_renderer():
     target="<!-- REF(//scripts/gen_component.py):insert_component -->",
     content="""<ng-container *ngIf="type()?.getName() == '[component_name]'">
   @defer (on viewport) {
-  <optic-[kebab-case] [key]="key()" [type]="type()!" />
+  <mesop-[kebab-case] [key]="key()" [type]="type()!" />
   } @placeholder {
   <component-loader />
   }
@@ -120,14 +120,14 @@ def update_component_renderer():
   update_file(
     path=os.path.join(component_renderer_path, "BUILD"),
     target="# REF(//scripts/gen_component.py):insert_component_import",
-    content=f'    "//optic/components/{component_name}:ng",',
+    content=f'    "//mesop/components/{component_name}:ng",',
   )
 
   ts_path = os.path.join(component_renderer_path, "component_renderer.ts")
   update_file(
     path=ts_path,
     target="// REF(//scripts/gen_component.py):insert_ts_import",
-    content=f'import {{ {camel_case()}Component }} from "../../../optic/components/{component_name}/{component_name}";',
+    content=f'import {{ {camel_case()}Component }} from "../../../mesop/components/{component_name}/{component_name}";',
   )
   update_file(
     path=ts_path,
@@ -150,7 +150,7 @@ def update_dev_tools_deserializer():
   update_file(
     path=deserializer_path,
     target="// REF(//scripts/gen_component.py):insert_component_jspb_proto_import",
-    content=f'import {type} from "optic/optic/components/{component_name}/{component_name}_jspb_proto_pb/optic/components/{component_name}/{component_name}_pb";',
+    content=f'import {type} from "mesop/mesop/components/{component_name}/{component_name}_jspb_proto_pb/mesop/components/{component_name}/{component_name}_pb";',
   )
   update_file(
     path=deserializer_path,
@@ -235,7 +235,7 @@ def current_dir():
 
 def new_component_dir():
   return os.path.join(
-    current_dir(), "..", "optic", "components", component_name
+    current_dir(), "..", "mesop", "components", component_name
   )
 
 

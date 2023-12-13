@@ -1,25 +1,25 @@
 # Overview
 
-Optic is a Python-based UI framework that allows you to rapidly build web demos. Engineers without frontend experience can build web UIs by writing idiomatic Python code.
+Mesop is a Python-based UI framework that allows you to rapidly build web demos. Engineers without frontend experience can build web UIs by writing idiomatic Python code.
 
 > Disclaimer: _This is not an officially supported Google product._
 
 ## Example app
 
 ```python
-import optic as op
+import mesop as me
 
-@op.on(op.ClickEvent)
-def chat(state: State, action: op.ClickEvent):
+@me.on(me.ClickEvent)
+def chat(state: State, action: me.ClickEvent):
     response = streaming_api_call(...)
     for chunk in response:
         state.text += chunk.text
         yield state
 
 def main():
-    op.button("Start chat", on_click=chat)
+    me.button("Start chat", on_click=chat)
 ```
 
 ## Getting Started
 
-> TODO: Optic is still under development
+> TODO: Mesop is still under development

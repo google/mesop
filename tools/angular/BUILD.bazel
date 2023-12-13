@@ -2,7 +2,7 @@ load("@npm//@angular/build-tooling/bazel/esbuild:index.bzl", "esbuild_config")
 load(":index.bzl", "create_angular_bundle_targets")
 
 package(
-    default_visibility = ["//build_defs:optic_internal"],
+    default_visibility = ["//build_defs:mesop_internal"],
 )
 
 esbuild_config(

@@ -1,6 +1,6 @@
-import optic as op
+import mesop as me
 
 
-@op.page(path="/components/component_name/e2e/component_name_app")
+@me.page(path="/components/component_name/e2e/component_name_app")
 def app():
-  op.component_name(label="Hello, world!")
+  me.component_name(label="Hello, world!")

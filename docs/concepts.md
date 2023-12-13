@@ -2,9 +2,9 @@
 
 ## High-level overview
 
-Optic is a Python library for building user interfaces. It uses a functional programming model, with inspiration from React and Redux.
+Mesop is a Python library for building user interfaces. It uses a functional programming model, with inspiration from React and Redux.
 
-The main idea of Optic is that the UI is a pure function of state.
+The main idea of Mesop is that the UI is a pure function of state.
 
 ```
 f(state) -> UI
@@ -14,27 +14,27 @@ f(state) -> UI
 
 Components are the building blocks of the UI. They are Python functions.
 
-There are two kinds of components in Optic:
+There are two kinds of components in Mesop:
 
-1. **Native** components are built using Angular. Optic comes with a default set of native components, but you will also be able to build your own <TODO>.
+1. **Native** components are built using Angular. Mesop comes with a default set of native components, but you will also be able to build your own <TODO>.
 1. **Composite** components are written in Python and simple aggregate other components, including native and other composites.
 
 Example usage of the native text component:
 
 ```python
-import optic as op
+import mesop as me
 
-op.text("Hello, world!")
+me.text("Hello, world!")
 ```
 
 Example usage of creating your own composite component:
 
 ```python
-import optic as op
+import mesop as me
 
 def my_composite():
-    op.text("Hello")
-    op.text("World")
+    me.text("Hello")
+    me.text("World")
 ```
 
 This will render "Hello" and "World" in two consecutive lines.
@@ -51,18 +51,18 @@ Here's a simple example showing interactivity:
 
 ```python
 from dataclasses import dataclass
-import optic as op
+import mesop as me
 
 @dataclass
 class State:
     text: str
 
-store = op.store(
+store = me.store(
     State(text="initial_state"),
 )
 
-@op.on(op.CheckboxEvent)
-def checkbox_change(state: State, event: op.CheckboxEvent):
+@me.on(me.CheckboxEvent)
+def checkbox_change(state: State, event: me.CheckboxEvent):
     if event.checked:
         state.text = "checked"
     else:
@@ -71,8 +71,8 @@ def checkbox_change(state: State, event: op.CheckboxEvent):
 
 def my_composite():
     state = store.get_state()
-    op.checkbox(label="Check?" on_change=checkbox_change)
-    op.text(state.text)
+    me.checkbox(label="Check?" on_change=checkbox_change)
+    me.text(state.text)
 ```
 
 ## Slow / async work
@@ -84,17 +84,17 @@ Oftentimes, you will need to do some heavy-processing, for example waiting for a
 If you are building a chat-style LLM application, you will oftentimes want to stream the response so that users can see something before waiting for the entire response to complete.
 
 ```python
-import optic as op
+import mesop as me
 
-@op.on(op.ClickEvent)
-def chat(state: State, action: op.ClickEvent):
+@me.on(me.ClickEvent)
+def chat(state: State, action: me.ClickEvent):
     response = streaming_api_call(...)
     for chunk in response:
         state.text += chunk.text
         yield state
 
 def main():
-    op.button("Start chat", on_click=chat)
+    me.button("Start chat", on_click=chat)
 ```
 
 ### Loading indicator
@@ -102,10 +102,10 @@ def main():
 If you're calling a heavy API which doesn't support streaming, you may instead want to show a loading indicator so that users know the system is working.
 
 ```python
-import optic as op
+import mesop as me
 
-@op.on(op.ClickEvent)
-def chat(state: State, action: op.ClickEvent):
+@me.on(me.ClickEvent)
+def chat(state: State, action: me.ClickEvent):
     state.in_progress = True
     yield state
     response = blocking_api_call(...)
@@ -114,7 +114,7 @@ def chat(state: State, action: op.ClickEvent):
     yield state
 
 def main():
-    op.button("Start chat", on_click=chat)
+    me.button("Start chat", on_click=chat)
 ```
 
 ## Tips

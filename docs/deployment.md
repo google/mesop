@@ -1,6 +1,6 @@
 # Deployment
 
-If you want to deploy your Optic application, we recommend using a container (e.g. Docker) for simplicity.
+If you want to deploy your Mesop application, we recommend using a container (e.g. Docker) for simplicity.
 
 ## Build Container image
 
@@ -20,7 +20,7 @@ You only need to run this once and then you can re-use the same repo for multipl
 
 ```sh
 gcloud artifacts repositories create {REPO_NAME} --repository-format=docker \
-    --location=us-west2 --description="Optic app: Docker repository"
+    --location=us-west2 --description="Mesop app: Docker repository"
 ```
 
 > NOTE: Keep in mind the location as you will be using it for the next step. Also, some locations do not support gcloud builds.
@@ -30,7 +30,7 @@ gcloud artifacts repositories create {REPO_NAME} --repository-format=docker \
 Google Cloud Build can create a container image based on a Dockerfile.
 
 ```sh
-$ gcloud builds submit --region=us-west2 --tag us-west2-docker.pkg.dev/optic-testing-404806/optic/optic:latest
+$ gcloud builds submit --region=us-west2 --tag us-west2-docker.pkg.dev/mesop-testing-404806/mesop/mesop:latest
 ```
 
 > TIP: If you want to inspect/debug the container image, you can [pull the container image](https://cloud.google.com/artifact-registry/docs/docker/store-docker-container-images#get-image) and run it locally
@@ -66,8 +66,8 @@ To help you get started, I will show one example using Google Cloud Run.
 **Tips:**
 
 - Set the "Container image URL" to the container that you created in the previous step.
-- Set "Container command" to `./bazel-bin/optic/cli`
-- Set "Container arguments" to `--path=/optic/optic/examples/simple.py` (note: you should configure this to your application)
+- Set "Container command" to `./bazel-bin/mesop/cli`
+- Set "Container arguments" to `--path=/mesop/mesop/examples/simple.py` (note: you should configure this to your application)
 - Under Resources, set Memory to at least "1 GiB".
 
 Once you deploy on Cloud Run, you should have a public URL for your application that will look something like: https://{APP_PREFIX}.run.app
@@ -79,5 +79,5 @@ Once you deploy on Cloud Run, you should have a public URL for your application 
 If you've finished building the container image, but you're having difficulty running it in a cloud environment, you can try running the container image locally:
 
 ```sh
-$ docker run -p 8080:8080 --platform linux/amd64 -it optic  /bin/bash
+$ docker run -p 8080:8080 --platform linux/amd64 -it mesop  /bin/bash
 ```

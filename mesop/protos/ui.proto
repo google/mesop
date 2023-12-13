@@ -1,0 +1,102 @@
+syntax = "proto3";
+
+package mesop;
+
+// Sent from web client to Python server.
+message UiRequest {
+    // Current path of UI client (browser).
+    string path = 3;
+    oneof type {
+        InitRequest init = 1;
+        UserEvent user_event = 2;
+    }
+}
+
+message InitRequest {
+
+}
+
+message UserEvent {
+    States states = 1;
+
+    // Used to determine which action handler to call.
+    string handler_id = 2;
+
+    Key key = 3;
+
+    oneof type {
+        bool bool = 4;
+        string string = 5;
+        HotReloadEvent hot_reload = 6;
+    }
+}
+
+message HotReloadEvent{}
+
+// Sent from Python server to web client.
+// Multiple UiResponse messages may be sent in response to 1 UiRequest.
+message UiResponse {
+    oneof type {
+        RenderEvent render = 1;
+        ServerError error = 2;
+    }
+}
+
+message ServerError {
+    string exception = 1;
+    Traceback traceback = 2;
+}
+
+message Traceback {
+    repeated StackFrame frames = 1;
+}
+
+message StackFrame {
+    // e.g. "mesop/mesop/cli/execute_module.py"
+    string filename = 1;
+    string code_name = 2;
+    int32 line_number = 3;
+
+    repeated ContextLine lines = 4;
+
+    // If this originates from application code, the developer wrote, we should highlight it.
+    bool is_app_code = 5;
+}
+
+message ContextLine {
+    string code = 1;
+    bool is_caller = 2;
+}
+
+message RenderEvent {
+    Component root_component = 1;
+    States states = 2;
+}
+
+message States {
+    repeated State states = 1;
+}
+
+// Serialized state of application. Sent from Python server to web client.
+// Web client doesn't parse this data, it just sends it back to the server.
+message State {
+    string data = 1;
+}
+
+// Represents an instance of a component.
+message Component {
+    Key key = 3;
+    // Type-specific component properties.
+    Type type = 1;
+    repeated Component children = 2;
+}
+
+message Key {
+    string key = 1;
+}
+
+message Type {
+    string name = 4;
+    bytes value = 5;
+    string debug_json = 6;
+}

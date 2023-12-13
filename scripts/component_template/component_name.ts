@@ -4,12 +4,12 @@ import {
   Key,
   Type,
   UserEvent,
-} from 'optic/optic/protos/ui_jspb_proto_pb/optic/protos/ui_pb';
-import {ComponentNameType} from 'optic/optic/components/component_name/component_name_jspb_proto_pb/optic/components/component_name/component_name_pb';
+} from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
+import {ComponentNameType} from 'mesop/mesop/components/component_name/component_name_jspb_proto_pb/mesop/components/component_name/component_name_pb';
 import {Channel} from '../../web/src/services/channel';
 
 @Component({
-  selector: 'optic-{component-name}',
+  selector: 'mesop-{component-name}',
   templateUrl: '{component_name}.ng.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,

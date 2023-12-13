@@ -1,0 +1,35 @@
+<ng-container *ngIf="type()?.getName() == 'box'">
+  <mesop-box [key]="key()" [type]="type()!">
+    <ng-container
+      *ngFor="let child of component.getChildrenList(); trackBy: trackByFn"
+    >
+      <component-renderer [component]="child"> </component-renderer>
+    </ng-container>
+  </mesop-box>
+</ng-container>
+
+<ng-container *ngIf="type()?.getName() == 'text_input'">
+  <mesop-text-input [key]="key()" [type]="type()!" />
+</ng-container>
+
+<!-- REF(//scripts/gen_component.py):insert_component -->
+
+<ng-container *ngIf="type()?.getName() == 'button'">
+  <mesop-button [key]="key()" [type]="type()!" />
+</ng-container>
+
+<ng-container *ngIf="type()?.getName() == 'checkbox'">
+  <mesop-checkbox [key]="key()" [type]="type()!" />
+</ng-container>
+
+<ng-container *ngIf="type()?.getName() == 'text'">
+  <mesop-text [key]="key()" [type]="type()!" />
+</ng-container>
+
+<ng-container *ngIf="type() == null">
+  <ng-container
+    *ngFor="let child of component.getChildrenList(); trackBy: trackByFn"
+  >
+    <component-renderer [component]="child"> </component-renderer>
+  </ng-container>
+</ng-container>

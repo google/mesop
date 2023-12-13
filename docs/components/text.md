@@ -1,1 +1,1 @@
-::: optic.components.text.text
+::: mesop.components.text.text

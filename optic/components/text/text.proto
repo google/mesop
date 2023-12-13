@@ -1,7 +1,0 @@
-syntax = "proto3";
-
-package optic.components.text;
-
-message TextType {
-    string text = 1;
-}

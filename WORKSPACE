@@ -1,6 +1,6 @@
 #Workspace for angular material
 workspace(
-    name = "optic",
+    name = "mesop",
     # managed_directories = {"@npm": ["node_modules"]},
 )
 
@@ -253,7 +253,7 @@ esbuild_repositories(
 )
 
 #####################
-# Optic
+# Mesop
 #####################
 
 load("@//:workspace.bzl", "op_workspace")

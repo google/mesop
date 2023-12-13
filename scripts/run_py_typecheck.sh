@@ -1,7 +1,7 @@
-# Build optic (need to generate protos)
-bazel build //optic/cli && \
+# Build mesop (need to generate protos)
+bazel build //mesop/cli && \
 # Create venv and activate it
-bazel run //optic/cli:cli.venv && \
+bazel run //mesop/cli:cli.venv && \
 source .cli.venv/bin/activate && \
 # Setup py modules for proto dirs
 ./scripts/setup_proto_py_modules.sh && \

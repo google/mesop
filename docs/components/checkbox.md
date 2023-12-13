@@ -1,1 +1,1 @@
-::: optic.components.checkbox.checkbox
+::: mesop.components.checkbox.checkbox

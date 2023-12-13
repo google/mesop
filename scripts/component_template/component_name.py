@@ -2,9 +2,9 @@ from typing import Any, Callable
 
 from pydantic import validate_arguments
 
-import optic.components.component_name.component_name_pb2 as component_name_pb
-from optic.component_helpers import handler_type, insert_component
-from optic.events import ClickEvent
+import mesop.components.component_name.component_name_pb2 as component_name_pb
+from mesop.component_helpers import handler_type, insert_component
+from mesop.events import ClickEvent
 
 
 @validate_arguments

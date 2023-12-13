@@ -36,7 +36,7 @@ $ ./scripts/run_py_dev.sh
 To run it in prod mode (which can be done locally or in an actual production environment), run the following:
 
 ```sh
-$ bazel run //optic/cli -- --path="optic/examples/simple.py"
+$ bazel run //mesop/cli -- --path="mesop/examples/simple.py"
 ```
 
 > NOTE: this automatically serves the angular app.
@@ -62,7 +62,7 @@ bazel run //tests/...:all
 To support IDE type-checking (Pylance) in VS Code, we use Aspect's [rules_py](https://docs.aspect.build/rulesets/aspect_rules_py/) which generates a venv target.
 
 ```sh
-$ bazel run //optic/server:dev_server.venv
+$ bazel run //mesop/server:dev_server.venv
 ```
 
 Then, you can activate the venv:
@@ -88,7 +88,7 @@ Copy the python interpreter path and paste it into VS Code.
 Finally, install third-party dependencies.
 
 ```sh
-$ pip install -r optic/requirements_lock.txt
+$ pip install -r mesop/requirements_lock.txt
 ```
 
 > NOTE: You may need to run the command with `sudo` if you get a permission denied error, particularly with "\_distutils_hack".

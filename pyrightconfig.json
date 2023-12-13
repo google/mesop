@@ -1,5 +1,5 @@
 {
-  "include": ["optic"],
+  "include": ["mesop"],
   "exclude": ["**/node_modules", "**/__pycache__"],
   "extraPaths": ["bazel-bin"],
   "reportMissingImports": true,

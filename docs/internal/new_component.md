@@ -16,7 +16,7 @@ $ python scripts/gen_component.py $component_name
 
 Try to reuse the existing events when possible, but you may need to sometimes create a new event.
 
-1. Define the event class in `//optic/events/{event_name}.py`
+1. Define the event class in `//mesop/events/{event_name}.py`
 1. In the same file, define an event mapper and register it: `runtime().register_event(EventClass, event_mapper)`
 
 ## Potential exploration areas

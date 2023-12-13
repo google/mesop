@@ -1,5 +1,5 @@
 /*
- * Forked from: https://github.com/optic-sh/ruff/blob/39728a1198f1ed6081a0fd159715737848a50aa2/docs/stylesheets/extra.css#L32
+ * Forked from: https://github.com/mesop-sh/ruff/blob/39728a1198f1ed6081a0fd159715737848a50aa2/docs/stylesheets/extra.css#L32
  */
 :root {
   --black: #261230;
@@ -25,14 +25,14 @@
   --crater: #f0dfdf;
 }
 
-[data-md-color-scheme='optic-light'] {
+[data-md-color-scheme='mesop-light'] {
   --md-default-bg-color--dark: var(--black);
   --md-primary-fg-color: var(--galaxy);
   --md-typeset-a-color: var(--flare);
   --md-accent-fg-color: var(--cosmic);
 }
 
-[data-md-color-scheme='optic-dark'] {
+[data-md-color-scheme='mesop-dark'] {
   --md-default-bg-color: var(--galaxy);
   --md-default-fg-color: var(--white);
   --md-default-fg-color--light: var(--white);
@@ -68,23 +68,23 @@
   --md-typeset-table-color--light: hsla(0, 0%, 100%, 0.035);
 }
 
-[data-md-color-scheme='optic-light'] img[src$='#only-dark'],
-[data-md-color-scheme='optic-light'] img[src$='#gh-dark-mode-only'] {
+[data-md-color-scheme='mesop-light'] img[src$='#only-dark'],
+[data-md-color-scheme='mesop-light'] img[src$='#gh-dark-mode-only'] {
   display: none; /* Hide dark images in light mode */
 }
 
-[data-md-color-scheme='optic-light'] img[src$='#only-light'],
-[data-md-color-scheme='optic-light'] img[src$='#gh-light-mode-only'] {
+[data-md-color-scheme='mesop-light'] img[src$='#only-light'],
+[data-md-color-scheme='mesop-light'] img[src$='#gh-light-mode-only'] {
   display: inline; /* Show light images in light mode */
 }
 
-[data-md-color-scheme='optic-dark'] img[src$='#only-light'],
-[data-md-color-scheme='optic-dark'] img[src$='#gh-light-mode-only'] {
+[data-md-color-scheme='mesop-dark'] img[src$='#only-light'],
+[data-md-color-scheme='mesop-dark'] img[src$='#gh-light-mode-only'] {
   display: none; /* Hide light images in dark mode */
 }
 
-[data-md-color-scheme='optic-dark'] img[src$='#only-dark'],
-[data-md-color-scheme='optic-dark'] img[src$='#gh-dark-mode-only'] {
+[data-md-color-scheme='mesop-dark'] img[src$='#only-dark'],
+[data-md-color-scheme='mesop-dark'] img[src$='#gh-dark-mode-only'] {
   display: inline; /* Show dark images in dark mode */
 }
 
@@ -96,8 +96,8 @@
   display: table;
 }
 
-/* See: https://github.com/optic-sh/ruff/issues/8519 */
-[data-md-color-scheme='optic-dark'] details summary a {
+/* See: https://github.com/mesop-sh/ruff/issues/8519 */
+[data-md-color-scheme='mesop-dark'] details summary a {
   color: var(--flare);
 }
 

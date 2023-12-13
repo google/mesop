@@ -21,7 +21,7 @@
     "**/tmp/**": true,
     "bazel-bin/**": true,
     "bazel-out/**": true,
-    "bazel-optic/**": true
+    "bazel-mesop/**": true
   },
   "python.analysis.extraPaths": ["./bazel-bin"]
 }

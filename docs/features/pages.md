@@ -2,14 +2,14 @@
 
 ## Simple, 1-page setup
 
-If you want to create a simple Optic app, you can do the following:
+If you want to create a simple Mesop app, you can do the following:
 
 ```python
-import optic as op
+import mesop as me
 
-@op.page()
+@me.page()
 def foo():
-    op.text("bar")
+    me.text("bar")
 ```
 
 This is the same as the following example which more explicitly sets the route to `"/"`.
@@ -17,23 +17,23 @@ This is the same as the following example which more explicitly sets the route t
 ## Explicit 1-page setup
 
 ```python
-import optic as op
+import mesop as me
 
-@op.page(path="/")
+@me.page(path="/")
 def foo():
-    op.text("bar")
+    me.text("bar")
 ```
 
 ## Multi-page setup
 
 ```python
-import optic as op
+import mesop as me
 
-@op.page(path="/1")
+@me.page(path="/1")
 def page1():
-    op.text("page 1")
+    me.text("page 1")
 
-@op.page(path="/2")
+@me.page(path="/2")
 def page2():
-    op.text("page 2")
+    me.text("page 2")
 ```

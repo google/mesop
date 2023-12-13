@@ -2,7 +2,7 @@
 # In addition to the standard set of exclusions, omit index.py because
 # it's imports are used for side effects
 # Skip error examples since there's intentionally incorrect Python code.
-extend-exclude = ["optic/testing/index.py", "optic/examples/error*"]
+extend-exclude = ["mesop/testing/index.py", "mesop/examples/error*"]
 select = [
     # pycodestyle
     "E",
@@ -26,3 +26,15 @@ indent-width = 2
 [build-system]
 requires = ["setuptools>=40.8.0", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "mesop"
+version = "0.0.1"
+authors = [{ name = "Will Chen" }]
+description = "Python UI framework"
+
+[project.license]
+file = "LICENSE"
+
+[tool.setuptools]
+packages = ["mesop"]

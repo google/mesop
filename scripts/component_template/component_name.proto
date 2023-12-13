@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package optic.components.component_name;
+package mesop.components.component_name;
 
 message ComponentNameType {
     string label = 1;

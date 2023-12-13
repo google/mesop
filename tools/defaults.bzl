@@ -21,7 +21,7 @@ load("//:packages.bzl", "NO_STAMP_NPM_PACKAGE_SUBSTITUTIONS", "NPM_PACKAGE_SUBST
 load("//:pkg-externals.bzl", "PKG_EXTERNALS")
 load("//tools/angular:index.bzl", "LINKER_PROCESSED_FW_PACKAGES")
 
-_DEFAULT_TSCONFIG_BUILD = "//optic/web/src:bazel-tsconfig-build.json"
+_DEFAULT_TSCONFIG_BUILD = "//mesop/web/src:bazel-tsconfig-build.json"
 
 npmPackageSubstitutions = select({
     "//tools:stamp": NPM_PACKAGE_SUBSTITUTIONS,
@@ -407,7 +407,7 @@ def spec_bundle(name, deps, **kwargs):
         # For specs, we always add the pre-processed linker FW packages so that these
         # are resolved instead of the unprocessed FW entry-points through the `node_modules`.
         deps = ["%s_devmode_deps" % name] + LINKER_PROCESSED_FW_PACKAGES,
-        workspace_name = "optic",
+        workspace_name = "mesop",
         run_angular_linker = select({
             # Depending on whether partial compilation is enabled, we may want to run the linker
             # to test the Angular compiler linker AOT processing. Additionally, a config setting

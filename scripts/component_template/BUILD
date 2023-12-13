@@ -1,9 +1,9 @@
-load("//optic/components:defs.bzl", "optic_component")
+load("//mesop/components:defs.bzl", "mesop_component")
 
 package(
-    default_visibility = ["//build_defs:optic_internal"],
+    default_visibility = ["//build_defs:mesop_internal"],
 )
 
-optic_component(
+mesop_component(
     name = "component_name",
 )

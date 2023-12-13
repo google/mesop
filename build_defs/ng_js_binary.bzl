@@ -7,7 +7,7 @@ load("//tools:defaults.bzl", "esbuild")
 def ng_js_binary(name, deps = [], entry_points = []):
     esbuild(
         name = name,
-        config = "//optic/web/src/app:esbuild_config",
+        config = "//mesop/web/src/app:esbuild_config",
         entry_points = entry_points,
         platform = "browser",
         splitting = True,
