@@ -126,12 +126,17 @@ message ElementProp {
     string key = 1;
     oneof value {
         // e.g. "checked" in `[checked]="someVal"`
-        string property_binding = 2;
+        PropertyBinding property_binding = 2;
         // (event)="handleChange($event)"
         EventBinding event_binding = 3;
         // dual-binding
         string model_binding = 4;
     }
+}
+
+message PropertyBinding {
+    string name = 1;
+    JsType type = 2;
 }
 
 message EventBinding {

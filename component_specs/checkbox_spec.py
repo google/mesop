@@ -1,4 +1,10 @@
 import mesop.protos.ui_pb2 as pb
+from component_specs.generate_from_spec import (
+  generate_ng_template,
+  generate_ng_ts,
+  generate_proto_schema,
+  generate_py_component,
+)
 
 # //   <mat-checkbox [checked]="isChecked" (change)="handleCheckboxChange($event)">
 # //   {{config().getLabel()}}
@@ -7,7 +13,10 @@ CHECKBOX_SPEC = pb.ComponentSpec(
   type_name="checkbox",
   element_name="mat-checkbox",
   props=[
-    # pb.ElementProp(key="checked", property_binding=""),
+    pb.ElementProp(
+      key="checked",
+      property_binding=pb.PropertyBinding(name="value", type=pb.JsType.STRING),
+    ),  # TODO: need a special marker for value (default value)
     pb.ElementProp(
       key="change",
       event_binding=pb.EventBinding(
@@ -19,45 +28,13 @@ CHECKBOX_SPEC = pb.ComponentSpec(
   content=pb.ContentSpec(name="label", type=pb.JsType.STRING),
 )
 
-"""
-Spec recipe:
-1. Generate Angular template
-2. Generate Angular TS
-3. Generate Python method
-"""
-
-
-def generate_ng_template(spec: pb.ComponentSpec) -> str:
-  element_props = [format_element_prop(prop) for prop in spec.props]
-  opening_braces = "{{"
-  closing_braces = "}}"
-
-  return f"""<{spec.element_name} {" ".join(element_props)}>
-  {opening_braces}config().getLabel({spec.content.name}){closing_braces}
-  </{spec.element_name}>
-    """
-
-
-def generate_ng_ts(spec: pb.ComponentSpec) -> str:
-  """
-  Read from component_name.ts
-  Do simple string replacements
-  Build event handlers
-  """
-  pass
-
-
-def format_element_prop(prop: pb.ElementProp) -> str:
-  if prop.HasField("event_binding"):
-    return f"""({prop.key})="on{prop.event_binding.event_name}($event)\""""
-  elif prop.HasField("property_binding"):
-    raise Exception("not yet implemented property_binding")
-  elif prop.HasField("model_binding"):
-    raise Exception("not yet implemented model_binding")
-  else:
-    raise Exception("not yet handled", prop)
-
 
 if __name__ == "__main__":
-  out = generate_ng_template(CHECKBOX_SPEC)
-  print(out)
+  print(".ng.html:")
+  print(generate_ng_template(CHECKBOX_SPEC))
+  print(".ts:")
+  print(generate_ng_ts(CHECKBOX_SPEC))
+  print(".proto:")
+  print(generate_proto_schema(CHECKBOX_SPEC))
+  print(":.py:")
+  print(generate_py_component(CHECKBOX_SPEC))

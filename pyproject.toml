@@ -2,7 +2,11 @@
 # In addition to the standard set of exclusions, omit index.py because
 # it's imports are used for side effects
 # Skip error examples since there's intentionally incorrect Python code.
-extend-exclude = ["mesop/testing/index.py", "mesop/examples/error*"]
+extend-exclude = [
+    "mesop/testing/index.py",
+    "mesop/examples/error*",
+    "component_specs/fixtures/*",
+]
 select = [
     # pycodestyle
     "E",
