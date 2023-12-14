@@ -38,7 +38,7 @@
       "defaultCategory": "error"
     }
   },
-  "include": ["mesop/**/*.ts"],
+  "include": ["mesop/**/*.ts", "component_specs/**/*.ts"],
   "exclude": [
     // IDEs should not type-check the different node_modules directories of the different packages.
     // This would cause the IDEs to be slower and also linters would check the node_modules.
