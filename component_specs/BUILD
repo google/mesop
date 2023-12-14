@@ -1,4 +1,4 @@
-load("//build_defs:defaults.bzl", "py_binary", "py_library")
+load("//build_defs:defaults.bzl", "THIRD_PARTY_PY_ABSL_PY", "py_binary", "py_library")
 
 package(
     default_visibility = ["//build_defs:mesop_internal"],
@@ -19,5 +19,5 @@ py_binary(
     deps = [
         # ":component_specs",
         "//mesop/protos:ui_py_pb2",
-    ],
+    ] + THIRD_PARTY_PY_ABSL_PY,
 )

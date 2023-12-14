@@ -114,6 +114,16 @@ message ComponentSpec {
     repeated ElementProp props = 3;
 
     ContentSpec content = 4;
+
+    // TODO: may need to make this multiple modules
+    NgModuleSpec ng_module = 5;
+}
+
+message NgModuleSpec {
+    string import_path = 1;
+    string module_name = 2;
+    // Other symbols that need to be imported
+    repeated string other_symbols = 3;
 }
 
 message ContentSpec {

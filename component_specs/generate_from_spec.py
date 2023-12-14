@@ -1,13 +1,19 @@
+from typing import Any
+
 import mesop.protos.ui_pb2 as pb
 
 """
-Spec recipe:
-1. Generate Angular template (done)
-2. Generate Angular TS (done)
-3. Generate proto (done)
-4. Generate Python method (done)
+Generates from component spec the following:
+1. Angular template (ng.html)
+2. Angular TS
+3. Proto schema (.proto)
+4. Python component
 
 TODOs:
+- seperate out component spec protos into its own file
+- make it clear what the spelling (camel vs. snake_case)
+
+MAYBEs:
 - doesn't handle event with multiple properties
 - have better naming for events (either explicit control, or implicitly strip out Mat)
 """
@@ -40,16 +46,24 @@ def generate_ng_ts(spec: pb.ComponentSpec) -> str:
   default_value_prop = [
     prop for prop in spec.props if prop.property_binding.name == "value"
   ][0]
+  symbols = ",".join(
+    [spec.ng_module.module_name] + list(spec.ng_module.other_symbols)
+  )
+  symbols = "{" + symbols + "}"
 
+  ts_template = (
+    f"import {symbols} from '{spec.ng_module.import_path}'\n" + ts_template
+  )
   # Do simple string replacements
   ts_template = (
     ts_template.replace("component_name", spec.type_name)
     .replace("ComponentName", upper_camel_case(spec.type_name))
     .replace(
-      "value: any;",
-      f"value: {format_js_type(default_value_prop.property_binding.type)};",
+      "value!: any;",
+      f"value!: {format_js_type(default_value_prop.property_binding.type)};",
     )
     .replace("// INSERT_EVENT_METHODS:", generate_ts_event_methods(spec))
+    .replace("// GENERATE_NG_IMPORTS:", generate_ng_imports(spec))
   )
 
   # Build event handlers
@@ -57,10 +71,14 @@ def generate_ng_ts(spec: pb.ComponentSpec) -> str:
     if prop.HasField("event_binding"):
       ts_template = ts_template.replace(
         f"on{prop.event_binding.event_name}",
-        f"handle{prop.event_binding.event_name}",
+        f"on{prop.event_binding.event_name}",
       )
 
   return ts_template
+
+
+def generate_ng_imports(spec: pb.ComponentSpec) -> str:
+  return f"imports: [{spec.ng_module.module_name}]"
 
 
 def generate_proto_schema(spec: pb.ComponentSpec) -> str:
@@ -70,14 +88,18 @@ def generate_proto_schema(spec: pb.ComponentSpec) -> str:
   for prop in spec.props:
     index += 1
     if prop.HasField("property_binding"):
-      fields.append(f"{prop.property_binding.name} = {index};")
+      fields.append(
+        f"{format_js_type_for_proto(prop.property_binding.type)} {prop.property_binding.name} = {index};"
+      )
     if prop.HasField("event_binding"):
       fields.append(
-        f"on_{snake_case(prop.event_binding.event_name)}_handler_id = {index};"
+        f"string on_{snake_case(prop.event_binding.event_name)}_handler_id = {index};"
       )
   if spec.HasField("content"):
     index += 1
-    fields.append(f"{spec.content.name} = {index};")
+    fields.append(
+      f"{format_js_type_for_proto(spec.content.type)} {spec.content.name} = {index};"
+    )
 
   message_contents = (
     "{\n" + "\n".join(["  " + field for field in fields]) + "\n}"
@@ -133,26 +155,26 @@ register_event_mapper(
   {event_binding.event_name}Event,
   lambda event, key: {event_binding.event_name}Event(
     key=key,
-    {event_binding.props[0].key}=event.{format_js_type_for_python(event_binding.props[0].type)},
+    {event_binding.props[0].key}=event.{format_js_type_for_proto(event_binding.props[0].type)},
   ),
 )
   """
 
 
 def generate_py_component_params(spec: pb.ComponentSpec) -> str:
-  out: list[str] = []
+  out: list[str] = ["key: str | None = None"]
   for prop in spec.props:
     if prop.HasField("property_binding"):
       out.append(
-        f"{prop.property_binding.name}: {format_js_type_for_python(prop.property_binding.type)}"
+        f"{prop.property_binding.name}: {format_js_type_for_python(prop.property_binding.type)}={format_js_type_default_value_for_python(prop.property_binding.type)}"
       )
     if prop.HasField("event_binding"):
       out.append(
-        f"on_{snake_case(prop.event_binding.event_name)}: Callable[[{prop.event_binding.event_name}Event], Any]"
+        f"on_{snake_case(prop.event_binding.event_name)}: Callable[[{prop.event_binding.event_name}Event], Any]|None=None"
       )
   if spec.HasField("content"):
     out.append(
-      f"{spec.content.name}: {format_js_type_for_python(spec.content.type)}"
+      f"{spec.content.name}: {format_js_type_for_python(spec.content.type)}={format_js_type_default_value_for_python(spec.content.type)}"
     )
   return ", ".join(out)
 
@@ -163,8 +185,9 @@ def generate_py_proto_callsite(spec: pb.ComponentSpec) -> str:
     if prop.HasField("property_binding"):
       out.append(f"{prop.property_binding.name}={prop.property_binding.name}")
     if prop.HasField("event_binding"):
+      # on_mat_checkbox_change_handler_id=handler_type(on_mat_checkbox_change) if on_mat_checkbox_change else ''
       out.append(
-        f"on_{snake_case(prop.event_binding.event_name)}_handler_id=handler_type(on_{snake_case(prop.event_binding.event_name)})"
+        f"on_{snake_case(prop.event_binding.event_name)}_handler_id=handler_type(on_{snake_case(prop.event_binding.event_name)}) if on_{snake_case(prop.event_binding.event_name)} else ''"
       )
   if spec.HasField("content"):
     out.append(f"{spec.content.name}={spec.content.name}")
@@ -181,9 +204,9 @@ def generate_ts_event_methods(spec: pb.ComponentSpec) -> str:
 
 def generate_ts_event_method(event_binding: pb.EventBinding) -> str:
   return f"""
-  handle{event_binding.event_name}(event: {event_binding.event_name}): void {{
+  on{event_binding.event_name}(event: {event_binding.event_name}): void {{
     const userEvent = new UserEvent();
-    userEvent.set{format_js_type(event_binding.props[0].type).capitalize()}(event.{event_binding.props[0].key})
+    userEvent.set{format_js_type_for_proto(event_binding.props[0].type).capitalize()}(event.{event_binding.props[0].key})
     userEvent.setHandlerId(this.config().getOn{event_binding.event_name}HandlerId())
     userEvent.setKey(this.key);
     this.channel.dispatch(userEvent);
@@ -205,6 +228,24 @@ def format_js_type_for_python(type: pb.JsType.ValueType) -> str:
     return "bool"
   elif type == pb.JsType.STRING:
     return "str"
+  else:
+    raise Exception("not yet handled", type)
+
+
+def format_js_type_default_value_for_python(type: pb.JsType.ValueType) -> Any:
+  if type == pb.JsType.BOOL:
+    return False
+  elif type == pb.JsType.STRING:
+    return "''"
+  else:
+    raise Exception("not yet handled", type)
+
+
+def format_js_type_for_proto(type: pb.JsType.ValueType) -> str:
+  if type == pb.JsType.BOOL:
+    return "bool"
+  elif type == pb.JsType.STRING:
+    return "string"
   else:
     raise Exception("not yet handled", type)
 

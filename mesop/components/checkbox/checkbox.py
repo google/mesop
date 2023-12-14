@@ -13,42 +13,38 @@ from mesop.events import MesopEvent
 
 
 @dataclass
-class CheckboxEvent(MesopEvent):
+class MatCheckboxChangeEvent(MesopEvent):
   checked: bool
+
+
+register_event_mapper(
+  MatCheckboxChangeEvent,
+  lambda event, key: MatCheckboxChangeEvent(
+    key=key,
+    checked=event.bool,
+  ),
+)
 
 
 @validate_arguments
 def checkbox(
   *,
-  label: str,
-  on_update: Callable[[CheckboxEvent], Any],
-  default_value: bool = False,
   key: str | None = None,
+  value: bool = False,
+  on_mat_checkbox_change: Callable[[MatCheckboxChangeEvent], Any] | None = None,
+  label: str = "",
 ):
   """
-  Creates a checkbox component with a specified label and update action.
-
-  Args:
-      label (str): The label for the checkbox.
-      on_update (Callable[..., Any]): The function to be called when the checkbox is updated.
-
-  The function appends the created checkbox component to the children of the current node in the runtime context.
+  TODO_doc_string
   """
   insert_component(
     key=key,
     type_name="checkbox",
     proto=checkbox_pb.CheckboxType(
+      value=value,
+      on_mat_checkbox_change_handler_id=handler_type(on_mat_checkbox_change)
+      if on_mat_checkbox_change
+      else "",
       label=label,
-      on_update_handler_id=handler_type(on_update),
-      default_value=default_value,
     ),
   )
-
-
-register_event_mapper(
-  CheckboxEvent,
-  lambda userEvent, key: CheckboxEvent(
-    key=key,
-    checked=userEvent.bool,
-  ),
-)

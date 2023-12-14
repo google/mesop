@@ -5,9 +5,6 @@ from mesop.api import stateclass as stateclass
 from mesop.components.box.box import box as box
 from mesop.components.button.button import button as button
 from mesop.components.checkbox.checkbox import (
-  CheckboxEvent as CheckboxEvent,
-)
-from mesop.components.checkbox.checkbox import (
   checkbox as checkbox,
 )
 from mesop.components.markdown.markdown import markdown as markdown

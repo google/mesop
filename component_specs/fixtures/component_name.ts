@@ -1,5 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {
+  UserEvent,
   Key,
   Type,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
@@ -7,15 +8,15 @@ import {ComponentNameType} from 'mesop/mesop/components/component_name/component
 import {Channel} from '../../web/src/services/channel';
 
 @Component({
-  // selector: 'mesop-{component-name}',
   templateUrl: 'component_name.ng.html',
   standalone: true,
+  // GENERATE_NG_IMPORTS:
 })
 export class ComponentNameComponent {
   @Input({required: true}) type!: Type;
   @Input() key!: Key;
   private _config!: ComponentNameType;
-  value: any;
+  value!: any;
 
   constructor(private readonly channel: Channel) {}
 
@@ -23,7 +24,7 @@ export class ComponentNameComponent {
     this._config = ComponentNameType.deserializeBinary(
       this.type.getValue() as unknown as Uint8Array,
     );
-    this.value = this._config.getDefaultValue();
+    this.value = this._config.getValue();
   }
 
   config(): ComponentNameType {

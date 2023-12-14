@@ -39,7 +39,9 @@ def main():
   me.text(text=f"Selected keys: {state.keys}")
   for i in range(1000):
     me.checkbox(
-      label=f"check {i}?", on_update=checkbox_update, key=f"check={i}"
+      label=f"check {i}?",
+      on_mat_checkbox_change=checkbox_update,
+      key=f"check={i}",
     )
   me.text(text=state.string)
 

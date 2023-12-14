@@ -16,7 +16,7 @@ def on_update(event: me.CheckboxEvent):
 def app():
   state = me.state(State)
   me.checkbox(
-    label="checkbox", on_update=on_update, default_value=state.checked
+    label="checkbox", on_mat_checkbox_change=on_update, value=state.checked
   )
   if state.checked:
     me.text(text="is checked")
