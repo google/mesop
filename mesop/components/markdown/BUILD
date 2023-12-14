@@ -1,5 +1,4 @@
 load("//mesop/components:defs.bzl", "mesop_component")
-load("//build_defs:defaults.bzl", "THIRD_PARTY_JS_MARKED")
 
 package(
     default_visibility = ["//build_defs:mesop_internal"],
@@ -7,5 +6,5 @@ package(
 
 mesop_component(
     name = "markdown",
-    ng_deps = THIRD_PARTY_JS_MARKED,
+    ng_deps = ["//mesop/web/third_party:marked"],
 )
