@@ -3,32 +3,6 @@ Angular component (e.g. mesop-box) because it will create an intermediate DOM no
 which interferes with Flexbox styling which requires children (direct descendants)
 to have certain styling properties -->
 
-<ng-container *ngIf="type()?.getName() == 'text_input'">
-  <mesop-text-input [key]="key()" [type]="type()!" />
-</ng-container>
-
-<ng-container *ngIf="type()?.getName() == 'markdown'">
-  @defer (on viewport) {
-  <mesop-markdown [key]="key()" [type]="type()!" />
-  } @placeholder {
-  <component-loader />
-  }
-</ng-container>
-
-<!-- REF(//scripts/gen_component.py):insert_component -->
-
-<ng-container *ngIf="type()?.getName() == 'button'">
-  <mesop-button [key]="key()" [type]="type()!" />
-</ng-container>
-
-<ng-container *ngIf="type()?.getName() == 'checkbox'">
-  <mesop-checkbox [key]="key()" [type]="type()!" />
-</ng-container>
-
-<ng-container *ngIf="type()?.getName() == 'text'">
-  <mesop-text [key]="key()" [type]="type()!" />
-</ng-container>
-
 <ng-container *ngIf="type()?.getName() === 'box' || type() == null">
   <ng-container
     *ngFor="let child of component.getChildrenList(); trackBy: trackByFn"

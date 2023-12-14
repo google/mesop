@@ -14,7 +14,6 @@ import {marked} from './marked';
 @Component({
   selector: 'mesop-markdown',
   templateUrl: 'markdown.ng.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
 export class MarkdownComponent {

@@ -12,7 +12,6 @@ import {MatCheckboxChange, MatCheckboxModule} from '@angular/material/checkbox';
   selector: 'mesop-checkbox',
   templateUrl: 'checkbox.ng.html',
   standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatCheckboxModule],
 })
 export class CheckboxComponent {

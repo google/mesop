@@ -11,7 +11,6 @@ import {Channel} from '../../web/src/services/channel';
 @Component({
   selector: 'mesop-{component-name}',
   templateUrl: '{component_name}.ng.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
 export class ComponentNameComponent {

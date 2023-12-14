@@ -12,7 +12,6 @@ import {MatButtonModule} from '@angular/material/button';
   selector: 'mesop-button',
   templateUrl: 'button.ng.html',
   standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatButtonModule],
 })
 export class ButtonComponent {

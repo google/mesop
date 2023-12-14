@@ -14,7 +14,6 @@ import {FormsModule} from '@angular/forms';
   selector: 'mesop-text-input',
   templateUrl: 'text_input.ng.html',
   standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatFormFieldModule, MatInputModule, FormsModule],
 })
 export class TextInputComponent {

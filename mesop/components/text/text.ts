@@ -9,7 +9,6 @@ import {TextType} from 'mesop/mesop/components/text/text_jspb_proto_pb/mesop/com
   selector: 'mesop-text',
   templateUrl: 'text.ng.html',
   standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TextComponent {
   @Input({required: true}) type!: Type;
