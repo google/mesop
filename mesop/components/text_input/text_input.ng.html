@@ -1,4 +1,4 @@
 <mat-form-field>
   <mat-label>{{config().getLabel()}}</mat-label>
-  <input matInput (change)="onChange($event)" />
+  <input matInput [value]="value" (change)="onChange($event)" />
 </mat-form-field>

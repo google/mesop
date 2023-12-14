@@ -12,6 +12,7 @@ def text_input(
   *,
   label: str,
   on_change: Callable[[ChangeEvent], Any],
+  default_value: str = "",
   key: str | None = None,
 ):
   """
@@ -26,6 +27,7 @@ def text_input(
     type_name="text_input",
     proto=text_input_pb.TextInputType(
       label=label,
+      default_value=default_value,
       on_change_handler_id=handler_type(on_change),
     ),
   )

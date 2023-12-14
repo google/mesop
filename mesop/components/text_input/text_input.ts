@@ -20,7 +20,7 @@ export class TextInputComponent {
   @Input({required: true}) type!: Type;
   @Input() key!: Key;
   private _config!: TextInputType;
-  isChecked = false;
+  value!: string;
 
   constructor(private readonly channel: Channel) {}
 
@@ -28,6 +28,7 @@ export class TextInputComponent {
     this._config = TextInputType.deserializeBinary(
       this.type.getValue() as unknown as Uint8Array,
     );
+    this.value = this._config.getDefaultValue();
   }
 
   config(): TextInputType {

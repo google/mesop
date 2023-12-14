@@ -4,6 +4,7 @@ import mesop as me
 @me.stateclass
 class State:
   string: str = "initial_text_state"
+  hide_text_input = False
 
 
 @me.on(me.ChangeEvent)
@@ -12,8 +13,18 @@ def change(action: me.ChangeEvent):
   state.string = action.value
 
 
+@me.on(me.CheckboxEvent)
+def change_checkbox(event: me.CheckboxEvent):
+  state = me.state(State)
+  state.hide_text_input = event.checked
+
+
 @me.page(path="/components/text_input/e2e/text_input_app")
 def app():
-  me.text_input(label="simple-text-input", on_change=change)
   state = me.state(State)
-  me.text(text="Text output:" + state.string)
+  me.checkbox(label="hide_text_input", on_update=change_checkbox)
+  if not state.hide_text_input:
+    me.text_input(
+      label="simple-text-input", default_value=state.string, on_change=change
+    )
+    me.text(text="Text output:" + state.string)
