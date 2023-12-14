@@ -3,7 +3,7 @@ import mesop as me
 
 @me.stateclass
 class State:
-  checked: bool = False
+  checked: bool = True
 
 
 @me.on(me.CheckboxEvent)
@@ -14,8 +14,10 @@ def on_update(event: me.CheckboxEvent):
 
 @me.page(path="/components/checkbox/e2e/checkbox_app")
 def app():
-  me.checkbox(label="checkbox", on_update=on_update)
   state = me.state(State)
+  me.checkbox(
+    label="checkbox", on_update=on_update, default_value=state.checked
+  )
   if state.checked:
     me.text(text="is checked")
   else:

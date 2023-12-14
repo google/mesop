@@ -22,6 +22,7 @@ def checkbox(
   *,
   label: str,
   on_update: Callable[[CheckboxEvent], Any],
+  default_value: bool = False,
   key: str | None = None,
 ):
   """
@@ -39,6 +40,7 @@ def checkbox(
     proto=checkbox_pb.CheckboxType(
       label=label,
       on_update_handler_id=handler_type(on_update),
+      default_value=default_value,
     ),
   )
 

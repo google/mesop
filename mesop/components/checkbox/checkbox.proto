@@ -5,4 +5,5 @@ package mesop.components.checkbox;
 message CheckboxType {
     string label = 1;
     string on_update_handler_id = 2;
+    bool default_value = 3;
 }

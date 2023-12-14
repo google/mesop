@@ -18,7 +18,7 @@ export class CheckboxComponent {
   @Input({required: true}) type!: Type;
   @Input() key!: Key;
   private _config!: CheckboxType;
-  isChecked = false;
+  value = false;
 
   constructor(private readonly channel: Channel) {}
 
@@ -26,6 +26,7 @@ export class CheckboxComponent {
     this._config = CheckboxType.deserializeBinary(
       this.type.getValue() as unknown as Uint8Array,
     );
+    this.value = this._config.getDefaultValue();
   }
 
   config(): CheckboxType {
@@ -33,7 +34,6 @@ export class CheckboxComponent {
   }
 
   handleCheckboxChange(event: MatCheckboxChange) {
-    this.isChecked = event.checked;
     const userEvent = new UserEvent();
     userEvent.setBool(event.checked);
     userEvent.setHandlerId(this.config().getOnUpdateHandlerId()!);
