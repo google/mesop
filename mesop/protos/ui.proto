@@ -111,10 +111,17 @@ message ComponentSpec {
     // Element to render, e.g. "mat-checkbox"
     string element_name = 2;
 
-    repeated ElementProps props = 3;
+    repeated ElementProp props = 3;
+
+    ContentSpec content = 4;
 }
 
-message ElementProps {
+message ContentSpec {
+    string name = 1;
+    JsType type = 2;
+}
+
+message ElementProp {
     // e.g. "checked"
     string key = 1;
     oneof value {
@@ -130,10 +137,10 @@ message ElementProps {
 message EventBinding {
     // e.g. MatCheckboxChange
     string event_name = 1;
-    repeated EventProps props = 2;
+    repeated EventProp props = 2;
 }
 
-message EventProps {
+message EventProp {
     // e.g. "changed"
     string key = 1;
     JsType type = 2;
