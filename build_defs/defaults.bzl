@@ -2,7 +2,7 @@
 """
 
 load("@aspect_rules_py//py:defs.bzl", _py_binary = "py_binary", _py_library = "py_library")
-load("@build_bazel_rules_nodejs//:index.bzl", _pkg_web = "pkg_web")
+load("@build_bazel_rules_nodejs//:index.bzl", _nodejs_binary = "nodejs_binary", _pkg_web = "pkg_web")
 load("@my_deps//:requirements.bzl", "requirement")
 load("@rules_proto//proto:defs.bzl", _proto_library = "proto_library")
 load("@rules_python//python:defs.bzl", _py_test = "py_test")
@@ -24,6 +24,7 @@ ng_js_binary = _ng_js_binary
 ng_module = _ng_module
 ng_test_library = _ng_test_library
 ng_web_test_suite = _ng_web_test_suite
+nodejs_binary = _nodejs_binary
 pkg_web = _pkg_web
 proto_library = _proto_library
 py_binary = _py_binary
