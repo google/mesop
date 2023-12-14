@@ -100,3 +100,47 @@ message Type {
     bytes value = 5;
     string debug_json = 6;
 }
+
+// Used to define a component which can generate a template such as:
+//   <mat-checkbox [checked]="isChecked" (change)="handleCheckboxChange($event)">
+//   {{config().getLabel()}}
+// </mat-checkbox>
+message ComponentSpec {
+    string type_name = 1;
+
+    // Element to render, e.g. "mat-checkbox"
+    string element_name = 2;
+
+    repeated ElementProps props = 3;
+}
+
+message ElementProps {
+    // e.g. "checked"
+    string key = 1;
+    oneof value {
+        // e.g. "checked" in `[checked]="someVal"`
+        string property_binding = 2;
+        // (event)="handleChange($event)"
+        EventBinding event_binding = 3;
+        // dual-binding
+        string model_binding = 4;
+    }
+}
+
+message EventBinding {
+    // e.g. MatCheckboxChange
+    string event_name = 1;
+    repeated EventProps props = 2;
+}
+
+message EventProps {
+    // e.g. "changed"
+    string key = 1;
+    JsType type = 2;
+}
+
+enum JsType {
+    JS_TYPE_UNDEFINED = 0;
+    STRING = 1;
+    BOOL = 2;
+}
