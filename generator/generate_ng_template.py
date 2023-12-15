@@ -1,5 +1,5 @@
-import component_specs.component_spec_pb2 as pb
-from component_specs.utils import (
+import generator.component_spec_pb2 as pb
+from generator.utils import (
   capitalize_first_letter,
 )
 

@@ -1,10 +1,10 @@
-import component_specs.component_spec_pb2 as pb
-from component_specs.format_types import (
+import generator.component_spec_pb2 as pb
+from generator.format_types import (
   format_js_type_default_value_for_python,
   format_type_for_python,
   format_xtype_for_proto,
 )
-from component_specs.utils import (
+from generator.utils import (
   snake_case,
   upper_camel_case,
 )
@@ -13,7 +13,7 @@ from component_specs.utils import (
 def generate_py_component(spec: pb.ComponentSpec) -> str:
   # TODO: should use runfiles
   with open(
-    "/Users/will/Documents/GitHub/mesop/component_specs/fixtures/component_name.py",
+    "/Users/will/Documents/GitHub/mesop/generator/fixtures/component_name.py",
   ) as f:
     py_template = f.read()
   py_template = (

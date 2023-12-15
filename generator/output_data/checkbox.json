@@ -2,7 +2,7 @@
   "input": {
     "name": "checkbox",
     "targetClass": "MatCheckbox",
-    "filePath": "/Users/will/Documents/GitHub/mesop/component_specs/input_data/checkbox.ts",
+    "filePath": "/Users/will/Documents/GitHub/mesop/generator/input_data/checkbox.ts",
     "hasContent": true,
     "elementName": "mat-checkbox",
     "ngModule": {

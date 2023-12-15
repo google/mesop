@@ -1,6 +1,6 @@
-import component_specs.component_spec_pb2 as pb
-from component_specs.format_types import format_xtype_for_proto
-from component_specs.utils import (
+import generator.component_spec_pb2 as pb
+from generator.format_types import format_xtype_for_proto
+from generator.utils import (
   capitalize_first_letter,
   upper_camel_case,
 )
@@ -15,7 +15,7 @@ def generate_ng_ts(spec: pb.ComponentSpec) -> str:
 
   # TODO: should use runfiles
   with open(
-    "/Users/will/Documents/GitHub/mesop/component_specs/fixtures/component_name.ts",
+    "/Users/will/Documents/GitHub/mesop/generator/fixtures/component_name.ts",
   ) as f:
     ts_template = f.read()
 

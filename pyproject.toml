@@ -5,7 +5,7 @@
 extend-exclude = [
     "mesop/testing/index.py",
     "mesop/examples/error*",
-    "component_specs/fixtures/*",
+    "generator/fixtures/*",
 ]
 select = [
     # pycodestyle

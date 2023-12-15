@@ -1,7 +1,7 @@
 from typing import Any
 
-import component_specs.component_spec_pb2 as pb
-from component_specs.utils import wrap_quote
+import generator.component_spec_pb2 as pb
+from generator.utils import wrap_quote
 
 
 def format_type_ts(type: pb.XType) -> str:

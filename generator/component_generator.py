@@ -2,12 +2,12 @@ import os.path
 
 from absl import app, flags
 
-import component_specs.component_spec_pb2 as pb
-from component_specs.generate_ng_template import generate_ng_template
-from component_specs.generate_ng_ts import generate_ng_ts
-from component_specs.generate_proto_schema import generate_proto_schema
-from component_specs.generate_py_component import generate_py_component
-from component_specs.utils import (
+import generator.component_spec_pb2 as pb
+from generator.generate_ng_template import generate_ng_template
+from generator.generate_ng_ts import generate_ng_ts
+from generator.generate_proto_schema import generate_proto_schema
+from generator.generate_py_component import generate_py_component
+from generator.utils import (
   get_bazel_workspace_directory,
 )
 
@@ -34,7 +34,7 @@ flags.DEFINE_string("component", "", "name of component (snake_case).")
 def main(argv):
   pb_path = os.path.join(
     get_bazel_workspace_directory(),
-    "component_specs",
+    "generator",
     "output_data",
     f"{FLAGS.component}.binarypb",
   )

@@ -1,6 +1,6 @@
-import component_specs.component_spec_pb2 as pb
-from component_specs.format_types import format_xtype_for_proto
-from component_specs.utils import (
+import generator.component_spec_pb2 as pb
+from generator.format_types import format_xtype_for_proto
+from generator.utils import (
   snake_case,
   upper_camel_case,
 )

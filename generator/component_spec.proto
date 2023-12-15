@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package mesop_internal.component_specs.protos;
+package mesop_internal.generator.protos;
 
 
 // Everything needed to generate a component spec

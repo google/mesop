@@ -4,13 +4,13 @@ import fs from 'fs';
 // @ts-ignore
 import path from 'path';
 
-import * as pb from './component_spec_jspb_proto_pb/component_specs/component_spec_pb';
+import * as pb from './component_spec_jspb_proto_pb/generator/component_spec_pb';
 import {assert, capitalize, parseArgs, upperCamelCase} from './utils';
 
 const checkboxSpec = new pb.ComponentSpecInput();
 checkboxSpec.setName('checkbox');
 checkboxSpec.setFilePath(
-  '/Users/will/Documents/GitHub/mesop/component_specs/input_data/checkbox.ts',
+  '/Users/will/Documents/GitHub/mesop/generator/input_data/checkbox.ts',
 );
 checkboxSpec.setTargetClass('MatCheckbox');
 checkboxSpec.setElementName('mat-checkbox');
