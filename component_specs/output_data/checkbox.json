@@ -6,160 +6,114 @@
     "hasContent": true,
     "elementName": ""
   },
-  "propsList": [
+  "inputPropsList": [
     {
-      "key": "ariaLabel",
-      "propertyBinding": {
-        "name": "ariaLabel",
-        "type": {
-          "simpleType": 1
-        },
-        "debugType": "string"
+      "name": "ariaLabel",
+      "type": {
+        "simpleType": 1
       },
-      "modelBinding": ""
+      "debugType": "string"
     },
     {
-      "key": "ariaLabelledby",
-      "propertyBinding": {
-        "name": "ariaLabelledby",
-        "type": {
-          "simpleType": 1
-        },
-        "debugType": "string | null"
+      "name": "ariaLabelledby",
+      "type": {
+        "simpleType": 1
       },
-      "modelBinding": ""
+      "debugType": "string | null"
     },
     {
-      "key": "ariaDescribedby",
-      "propertyBinding": {
-        "name": "ariaDescribedby",
-        "type": {
-          "simpleType": 1
-        },
-        "debugType": "string"
+      "name": "ariaDescribedby",
+      "type": {
+        "simpleType": 1
       },
-      "modelBinding": ""
+      "debugType": "string"
     },
     {
-      "key": "id",
-      "propertyBinding": {
-        "name": "id",
-        "type": {
-          "simpleType": 1
-        },
-        "debugType": "string"
+      "name": "id",
+      "type": {
+        "simpleType": 1
       },
-      "modelBinding": ""
+      "debugType": "string"
     },
     {
-      "key": "required",
-      "propertyBinding": {
-        "name": "required",
-        "type": {
-          "simpleType": 2
-        },
-        "debugType": "boolean"
+      "name": "required",
+      "type": {
+        "simpleType": 2
       },
-      "modelBinding": ""
+      "debugType": "boolean"
     },
     {
-      "key": "labelPosition",
-      "propertyBinding": {
-        "name": "labelPosition",
-        "type": {
-          "simpleType": 0,
-          "stringLiterals": {
-            "stringLiteralList": ["before", "after"]
-          }
-        },
-        "debugType": "'before' | 'after'"
+      "name": "labelPosition",
+      "type": {
+        "simpleType": 0,
+        "stringLiterals": {
+          "stringLiteralList": ["before", "after"]
+        }
       },
-      "modelBinding": ""
+      "debugType": "'before' | 'after'"
     },
     {
-      "key": "name",
-      "propertyBinding": {
-        "name": "name",
-        "type": {
-          "simpleType": 1
-        },
-        "debugType": "string | null"
+      "name": "name",
+      "type": {
+        "simpleType": 1
       },
-      "modelBinding": ""
+      "debugType": "string | null"
     },
     {
-      "key": "change",
-      "eventBinding": {
-        "eventName": "CheckboxChangeEvent",
-        "propsList": [
-          {
-            "key": "checked",
-            "type": {
-              "simpleType": 2
-            }
-          }
-        ]
+      "name": "value",
+      "type": {
+        "simpleType": 1
       },
-      "modelBinding": ""
+      "debugType": "string"
     },
     {
-      "key": "indeterminateChange",
-      "eventBinding": {
-        "eventName": "CheckboxIndeterminateChangeEvent",
-        "propsList": [
-          {
-            "key": "indeterminate",
-            "type": {
-              "simpleType": 2
-            }
-          }
-        ]
+      "name": "disableRipple",
+      "type": {
+        "simpleType": 2
       },
-      "modelBinding": ""
+      "debugType": "boolean"
     },
     {
-      "key": "value",
-      "propertyBinding": {
-        "name": "value",
-        "type": {
-          "simpleType": 1
-        },
-        "debugType": "string"
+      "name": "tabIndex",
+      "type": {
+        "simpleType": 3
       },
-      "modelBinding": ""
+      "debugType": "number"
     },
     {
-      "key": "disableRipple",
-      "propertyBinding": {
-        "name": "disableRipple",
-        "type": {
-          "simpleType": 2
-        },
-        "debugType": "boolean"
+      "name": "color",
+      "type": {
+        "simpleType": 1
       },
-      "modelBinding": ""
+      "debugType": "string | undefined"
+    }
+  ],
+  "outputPropsList": [
+    {
+      "name": "change",
+      "eventName": "CheckboxChangeEvent",
+      "eventPropsList": [
+        {
+          "name": "checked",
+          "type": {
+            "simpleType": 2
+          },
+          "debugType": ""
+        }
+      ]
     },
     {
-      "key": "tabIndex",
-      "propertyBinding": {
-        "name": "tabIndex",
-        "type": {
-          "simpleType": 3
-        },
-        "debugType": "number"
-      },
-      "modelBinding": ""
-    },
-    {
-      "key": "color",
-      "propertyBinding": {
-        "name": "color",
-        "type": {
-          "simpleType": 1
-        },
-        "debugType": "string | undefined"
-      },
-      "modelBinding": ""
+      "name": "indeterminateChange",
+      "eventName": "CheckboxIndeterminateChangeEvent",
+      "eventPropsList": [
+        {
+          "name": "indeterminate",
+          "type": {
+            "simpleType": 2
+          },
+          "debugType": ""
+        }
+      ]
     }
   ]
 }

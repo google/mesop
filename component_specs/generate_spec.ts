@@ -113,21 +113,16 @@ class NgParser {
     }
   }
 
-  processInput(m: ts.PropertyDeclaration): void {
-    this.currentNode = m;
-    // these are property claration which are input
-    const prop = m as ts.PropertyDeclaration;
+  processInput(prop: ts.PropertyDeclaration): void {
+    this.currentNode = prop;
     const name = prop.name;
     if (ts.isIdentifier(name)) {
       const elName = name.escapedText.toString();
-      const elProp = new pb.ElementProp();
-      elProp.setKey(elName);
-      const propBinding = new pb.PropertyBinding();
-      propBinding.setName(elName);
-      propBinding.setDebugType(prop.type!.getText());
-      propBinding.setType(this.getType(assert(prop.type)));
-      elProp.setPropertyBinding(propBinding);
-      this.proto.addProps(elProp);
+      const inputProp = new pb.Prop();
+      inputProp.setName(elName);
+      inputProp.setDebugType(prop.type!.getText());
+      inputProp.setType(this.getType(assert(prop.type)));
+      this.proto.addInputProps(inputProp);
     } else {
       throw new Error('Expected identifier for prop' + prop);
     }
@@ -139,43 +134,41 @@ class NgParser {
       const name = p.name.getText();
       const type = initializer.typeArguments![0].getText();
 
-      const elProp = new pb.ElementProp();
-      elProp.setKey(name);
-      const eventBinding = new pb.EventBinding();
+      const outputProp = new pb.OutputProp();
+      outputProp.setName(name);
       // If the type is simple, then we compute based on the name
       // else, we use the type directly
       const simpleType = this.getSimpleType(type);
       if (simpleType) {
-        eventBinding.setEventName(this.formatEventName(name));
-        const eventProp = new pb.EventProp();
-        eventProp.setKey(name.replace('Change', ''));
-        const type = new pb.JsType();
+        outputProp.setEventName(this.formatEventName(name));
+        const eventProp = new pb.Prop();
+        eventProp.setName(name.replace('Change', ''));
+        const type = new pb.XType();
         type.setSimpleType(simpleType);
         eventProp.setType(type);
-        eventBinding.addProps(eventProp);
+        outputProp.addEventProps(eventProp);
       } else {
-        eventBinding.setEventName(this.formatEventName(type));
-        eventBinding.setPropsList(this.getEventProps(type));
+        outputProp.setEventName(this.formatEventName(type));
+        outputProp.setEventPropsList(this.getEventProps(type));
       }
-      elProp.setEventBinding(eventBinding);
-      this.proto.addProps(elProp);
+      this.proto.addOutputProps(outputProp);
     }
   }
-  getEventProps(type: string): pb.EventProp[] {
+  getEventProps(type: string): pb.Prop[] {
     for (const statement of this.sourceFile.statements) {
       if (ts.isClassDeclaration(statement)) {
         const cls = statement;
         if (cls.name?.getText() === type) {
-          const eventProps: pb.EventProp[] = [];
+          const eventProps: pb.Prop[] = [];
           // This is the right one;
           for (const member of cls.members) {
             if (ts.isPropertyDeclaration(member)) {
               const property = member;
               const simpleType = this.getSimpleType(property.type?.getText()!);
               if (simpleType) {
-                const eventProp = new pb.EventProp();
-                eventProp.setKey(property.name.getText());
-                const typeProto = new pb.JsType();
+                const eventProp = new pb.Prop();
+                eventProp.setName(property.name.getText());
+                const typeProto = new pb.XType();
                 typeProto.setSimpleType(simpleType);
                 eventProp.setType(typeProto);
                 eventProps.push(eventProp);
@@ -209,7 +202,7 @@ class NgParser {
     return capitalize(name);
   }
 
-  getType(type: ts.TypeNode): pb.JsType {
+  getType(type: ts.TypeNode): pb.XType {
     const text = type.getText();
     const segments = text
       .split('|')
@@ -217,7 +210,7 @@ class NgParser {
       .filter((s) => ['null', 'undefined'].every((val) => val !== s));
     const simpleTypes = segments.map((s) => this.getSimpleType(s));
     if (simpleTypes.length === 1) {
-      const typeProto = new pb.JsType();
+      const typeProto = new pb.XType();
       if (simpleTypes[0]) {
         typeProto.setSimpleType(simpleTypes[0]);
       } else {
@@ -234,7 +227,7 @@ class NgParser {
         }
         return t.slice(1, -1);
       });
-      const typeProto = new pb.JsType();
+      const typeProto = new pb.XType();
       const sl = new pb.StringLiterals();
       sl.setStringLiteralList(stringLiterals);
       typeProto.setStringLiterals(sl);

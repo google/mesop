@@ -17,17 +17,6 @@ message ComponentSpecInput {
     NgModuleSpec ng_module = 6;
 }
 
-// Used to define a component which can generate a template such as:
-//   <mat-checkbox [checked]="isChecked" (change)="handleCheckboxChange($event)">
-//   {{config().getLabel()}}
-// </mat-checkbox>
-message ComponentSpec {
-    ComponentSpecInput input = 1;
-
-
-    repeated ElementProp props = 3;
-}
-
 message NgModuleSpec {
     string import_path = 1;
     string module_name = 2;
@@ -35,43 +24,33 @@ message NgModuleSpec {
     repeated string other_symbols = 3;
 }
 
-message ContentSpec {
-    string name = 1;
-    JsType type = 2;
+// Used to define a component which can generate the
+// necessary bindings in TS, Proto and Python.
+message ComponentSpec {
+    ComponentSpecInput input = 1;
+
+    repeated Prop input_props = 2;
+    repeated OutputProp output_props = 3;
 }
 
-message ElementProp {
-    // e.g. "checked"
-    string key = 1;
-    oneof value {
-        // e.g. "checked" in `[checked]="someVal"`
-        PropertyBinding property_binding = 2;
-        // (event)="handleChange($event)"
-        EventBinding event_binding = 3;
-        // dual-binding
-        string model_binding = 4;
-    }
-}
-
-message PropertyBinding {
+message Prop {
+    // Name of the property (e.g. JS property name on Angular component)
     string name = 1;
-    JsType type = 2;
+    XType type = 2;
     string debug_type = 3;
 }
 
-message EventBinding {
+message OutputProp {
+    // Name of the property
+    string name = 1;
     // e.g. MatCheckboxChange
-    string event_name = 1;
-    repeated EventProp props = 2;
+    string event_name = 2;
+    repeated Prop event_props = 3;
 }
 
-message EventProp {
-    // e.g. "changed"
-    string key = 1;
-    JsType type = 2;
-}
-
-message JsType {
+// Represents a platform-netural type.
+// Must representable in Python and JS.
+message XType {
   oneof type {
     SimpleType simple_type = 1;
     StringLiterals string_literals = 2;
@@ -79,7 +58,7 @@ message JsType {
 }
 
 enum SimpleType {
-    JS_TYPE_UNDEFINED = 0;
+    SIMPLE_TYPE_UNDEFINED = 0;
     STRING = 1;
     BOOL = 2;
     NUMBER = 3;
