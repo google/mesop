@@ -9,38 +9,10 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {
-  Component as ComponentProto,
-  Key,
-  Type,
-} from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
-import {CheckboxComponent} from '../../../components/checkbox/checkbox';
-import {ButtonComponent} from '../../../components/button/button';
-import {TextComponent} from '../../../components/text/text';
-// REF(//scripts/scaffold_component.py):insert_ts_import
-import {MarkdownComponent} from '../../../components/markdown/markdown';
-import {TextInputComponent} from '../../../components/text_input/text_input';
+import {Component as ComponentProto} from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 import {ComponentLoader} from './component_loader';
 import {BoxType} from 'mesop/mesop/components/box/box_jspb_proto_pb/mesop/components/box/box_pb';
-
-interface BaseComponent {
-  key: Key;
-  type: Type;
-
-  ngOnChanges(): void;
-}
-
-interface TypeToComponent {
-  [typeName: string]: new (...rest: any[]) => BaseComponent;
-}
-
-const typeToComponent = {
-  'button': ButtonComponent,
-  'checkbox': CheckboxComponent,
-  'text': TextComponent,
-  'markdown': MarkdownComponent,
-  'text_input': TextInputComponent,
-} as TypeToComponent;
+import {BaseComponent, typeToComponent} from './type_to_component';
 
 @Component({
   selector: 'component-renderer',
