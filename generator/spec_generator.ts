@@ -17,9 +17,15 @@ const checkboxSpecInput = new pb.ComponentSpecInput();
 checkboxSpecInput.setName('checkbox');
 checkboxSpecInput.setHasContent(true);
 
+const buttonSpecInput = new pb.ComponentSpecInput();
+buttonSpecInput.setName('button');
+// buttonSpecInput.setHasContent(true);
+
 const SYSTEM_IMPORT_PREFIX = '@angular/material/';
 const SYSTEM_PREFIX = 'Mat';
-const SPEC_INPUTS = [checkboxSpecInput].map(preprocessSpecInput);
+const SPEC_INPUTS = [buttonSpecInput, checkboxSpecInput].map(
+  preprocessSpecInput,
+);
 
 function preprocessSpecInput(
   input: pb.ComponentSpecInput,
