@@ -7,7 +7,6 @@ package mesop_internal.generator.protos;
 message ComponentSpecInput {
     string name = 1;
     string target_class = 4;
-    string file_path = 2;
     bool has_content = 3;
 
     // Element to render, e.g. "mat-checkbox"

@@ -9,9 +9,7 @@ import {assert, capitalize, parseArgs, upperCamelCase} from './utils';
 
 const checkboxSpec = new pb.ComponentSpecInput();
 checkboxSpec.setName('checkbox');
-checkboxSpec.setFilePath(
-  '/Users/will/Documents/GitHub/mesop/generator/input_data/checkbox.ts',
-);
+// checkboxSpec.setFilePath('checkbox.ts');
 checkboxSpec.setTargetClass('MatCheckbox');
 checkboxSpec.setElementName('mat-checkbox');
 const ngModule = new pb.NgModuleSpec();
@@ -33,10 +31,13 @@ class NgParser {
   private issues: Issue[] = [];
   private currentNode!: ts.Node;
   sourceFile!: ts.SourceFile;
-  constructor(private readonly input: pb.ComponentSpecInput) {
+  constructor(
+    private readonly input: pb.ComponentSpecInput,
+    filePath: string,
+  ) {
     this.proto = new pb.ComponentSpec();
     this.proto.setInput(input);
-    this.parseTs(this.input.getFilePath());
+    this.parseTs(filePath);
   }
 
   parseTs(filePath: string) {
@@ -286,21 +287,34 @@ class NgParser {
 
 function main() {
   const args = parseArgs();
-  if (!args['out']) {
-    console.log('Running in dry mode because --out (path) was not set');
+  const workspaceRoot = args['workspace_root'];
+  if (!workspaceRoot) {
+    throw new Error(
+      'Must set --workspace_root (path to Bazel workspace directory)',
+    );
   }
+  if (args['dry_run']) {
+    console.log('Running in dry mode.');
+  }
+  const inputFilePath = path.join(
+    workspaceRoot,
+    'generator',
+    'input_data',
+    `${checkboxSpec.getName()}.ts`,
+  );
 
-  const parser = new NgParser(checkboxSpec);
+  const parser = new NgParser(checkboxSpec, inputFilePath);
 
   console.log(JSON.stringify(parser.proto.toObject(), null, 2));
 
-  if (parser.validate() && args['out']) {
+  if (parser.validate() && workspaceRoot) {
+    const out_path = path.join(workspaceRoot, 'generator', 'output_data');
     fs.writeFileSync(
-      path.join(args['out'], `${parser.proto.getInput()!.getName()}.json`),
+      path.join(out_path, `${parser.proto.getInput()!.getName()}.json`),
       JSON.stringify(parser.proto.toObject(), null, 2),
     );
     fs.writeFileSync(
-      path.join(args['out'], `${parser.proto.getInput()!.getName()}.binarypb`),
+      path.join(out_path, `${parser.proto.getInput()!.getName()}.binarypb`),
       parser.proto.serializeBinary(),
     );
   }
