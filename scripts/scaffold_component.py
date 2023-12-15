@@ -79,32 +79,13 @@ def main():
     before=True,
   )
 
-  update_component_renderer()
+  update_type_to_components_ts()
 
   print("Finished generating new component: " + component_name)
 
 
-def update_component_renderer():
+def update_type_to_components_ts():
   component_renderer_path = os.path.join(web_src_dir(), "component_renderer")
-
-  update_file(
-    path=os.path.join(
-      component_renderer_path,
-      "component_renderer.ng.html",
-    ),
-    target="<!-- REF(//scripts/scaffold_component.py):insert_component -->",
-    content="""<ng-container *ngIf="type()?.getName() == '[component_name]'">
-  @defer (on viewport) {
-  <mesop-[kebab-case] [key]="key()" [type]="type()!" />
-  } @placeholder {
-  <component-loader />
-  }
-</ng-container>
-""".replace("[CamelCase]", camel_case())
-    .replace("[kebab-case]", kebab_case())
-    .replace("[component_name]", component_name),
-    before=True,
-  )
 
   update_file(
     path=os.path.join(component_renderer_path, "BUILD"),
@@ -112,16 +93,16 @@ def update_component_renderer():
     content=f'    "//mesop/components/{component_name}:ng",',
   )
 
-  ts_path = os.path.join(component_renderer_path, "component_renderer.ts")
+  ts_path = os.path.join(component_renderer_path, "type_to_component.ts")
   update_file(
     path=ts_path,
-    target="// REF(//scripts/scaffold_component.py):insert_ts_import",
     content=f'import {{ {camel_case()}Component }} from "../../../components/{component_name}/{component_name}";',
   )
+
   update_file(
     path=ts_path,
-    target="// REF(//scripts/scaffold_component.py):insert_ng_import",
-    content=f"    {camel_case()}Component,",
+    target="export const typeToComponent = {",
+    content=f"    '{component_name}': {camel_case()}Component,",
   )
 
 
@@ -130,14 +111,19 @@ def update_component_renderer():
 ##################
 
 
-def update_file(path: str, target: str, content: str, before: bool = False):
+def update_file(
+  path: str, content: str, target: str | None = None, before: bool = False
+):
   with open(path) as f:
     lines = f.readlines()
 
-  for i in range(len(lines)):
-    if target in lines[i]:
-      lines.insert(i + (0 if before else 1), content + "\n")
-      break
+  if target is None:
+    lines.insert(0, content + "\n")
+  else:
+    for i in range(len(lines)):
+      if target and target in lines[i]:
+        lines.insert(i + (0 if before else 1), content + "\n")
+        break
 
   with open(path, "w") as f:
     f.writelines(lines)
