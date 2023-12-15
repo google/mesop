@@ -2,20 +2,17 @@ import generator.component_spec_pb2 as pb
 from generator.format_types import format_proto_xtype
 from generator.utils import (
   capitalize_first_letter,
+  get_path_from_workspace_root,
   upper_camel_case,
 )
 
 
 def generate_ng_ts(spec: pb.ComponentSpec) -> str:
-  """
-  Read from component_name.ts
-  Do simple string replacements
-  Build event handlers
-  """
-
-  # TODO: should use runfiles
+  file_path = get_path_from_workspace_root(
+    "generator", "fixtures", "component_name.ts"
+  )
   with open(
-    "/Users/will/Documents/GitHub/mesop/generator/fixtures/component_name.ts",
+    file_path,
   ) as f:
     ts_template = f.read()
 

@@ -1,5 +1,3 @@
-import os.path
-
 from absl import app, flags
 
 import generator.component_spec_pb2 as pb
@@ -7,9 +5,7 @@ from generator.generate_ng_template import generate_ng_template
 from generator.generate_ng_ts import generate_ng_ts
 from generator.generate_proto_schema import generate_proto_schema
 from generator.generate_py_component import generate_py_component
-from generator.utils import (
-  get_bazel_workspace_directory,
-)
+from generator.utils import get_path_from_workspace_root
 
 """
 Generates from component spec the following:
@@ -32,11 +28,8 @@ flags.DEFINE_string("component", "", "name of component (snake_case).")
 
 
 def main(argv):
-  pb_path = os.path.join(
-    get_bazel_workspace_directory(),
-    "generator",
-    "output_data",
-    f"{FLAGS.component}.binarypb",
+  pb_path = get_path_from_workspace_root(
+    "generator", "output_data", f"{FLAGS.component}.binarypb"
   )
   spec = pb.ComponentSpec()
   with open(pb_path, "rb") as f:
@@ -54,8 +47,8 @@ def main(argv):
 def write(contents: str, name: str, ext: str):
   if FLAGS.write:
     with open(
-      os.path.join(
-        get_bazel_workspace_directory(), f"mesop/components/{name}/{name}.{ext}"
+      get_path_from_workspace_root(
+        "mesop", "components", name, f"{name}.{ext}"
       ),
       "w",
     ) as f:

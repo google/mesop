@@ -3,6 +3,7 @@ from typing import Any
 import generator.component_spec_pb2 as pb
 from generator.format_types import format_proto_xtype
 from generator.utils import (
+  get_path_from_workspace_root,
   snake_case,
   upper_camel_case,
   wrap_quote,
@@ -10,10 +11,10 @@ from generator.utils import (
 
 
 def generate_py_component(spec: pb.ComponentSpec) -> str:
-  # TODO: should use runfiles
-  with open(
-    "/Users/will/Documents/GitHub/mesop/generator/fixtures/component_name.py",
-  ) as f:
+  file_path = get_path_from_workspace_root(
+    "generator", "fixtures", "component_name.py"
+  )
+  with open(file_path) as f:
     py_template = f.read()
   py_template = (
     py_template.replace("component_name", spec.input.name)
