@@ -315,9 +315,12 @@ function main() {
   for (const specInput of SPEC_INPUTS) {
     const inputFilePath = path.join(
       workspaceRoot,
-      'generator',
-      'input_data',
-      `${specInput.getName()}.ts`,
+      'third_party',
+      'angular_components',
+      'src',
+      'material',
+      kebabCase(specInput.getName()),
+      `${kebabCase(specInput.getName())}.ts`,
     );
 
     const parser = new NgParser(specInput, inputFilePath);
