@@ -165,7 +165,8 @@ export class MatCheckbox
   @Output() readonly indeterminateChange: EventEmitter<boolean> =
     new EventEmitter<boolean>();
 
-  /** The value attribute of the native input element */
+  /** The value attribute of the native inpu
+   * t element */
   @Input() value: string;
 
   /** Whether the checkbox has a ripple. */

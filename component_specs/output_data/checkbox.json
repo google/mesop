@@ -1,0 +1,165 @@
+{
+  "input": {
+    "name": "checkbox",
+    "targetClass": "MatCheckbox",
+    "filePath": "/Users/will/Documents/GitHub/mesop/component_specs/input_data/checkbox.ts",
+    "hasContent": true,
+    "elementName": ""
+  },
+  "propsList": [
+    {
+      "key": "ariaLabel",
+      "propertyBinding": {
+        "name": "ariaLabel",
+        "type": {
+          "simpleType": 1
+        },
+        "debugType": "string"
+      },
+      "modelBinding": ""
+    },
+    {
+      "key": "ariaLabelledby",
+      "propertyBinding": {
+        "name": "ariaLabelledby",
+        "type": {
+          "simpleType": 1
+        },
+        "debugType": "string | null"
+      },
+      "modelBinding": ""
+    },
+    {
+      "key": "ariaDescribedby",
+      "propertyBinding": {
+        "name": "ariaDescribedby",
+        "type": {
+          "simpleType": 1
+        },
+        "debugType": "string"
+      },
+      "modelBinding": ""
+    },
+    {
+      "key": "id",
+      "propertyBinding": {
+        "name": "id",
+        "type": {
+          "simpleType": 1
+        },
+        "debugType": "string"
+      },
+      "modelBinding": ""
+    },
+    {
+      "key": "required",
+      "propertyBinding": {
+        "name": "required",
+        "type": {
+          "simpleType": 2
+        },
+        "debugType": "boolean"
+      },
+      "modelBinding": ""
+    },
+    {
+      "key": "labelPosition",
+      "propertyBinding": {
+        "name": "labelPosition",
+        "type": {
+          "simpleType": 0,
+          "stringLiterals": {
+            "stringLiteralList": ["before", "after"]
+          }
+        },
+        "debugType": "'before' | 'after'"
+      },
+      "modelBinding": ""
+    },
+    {
+      "key": "name",
+      "propertyBinding": {
+        "name": "name",
+        "type": {
+          "simpleType": 1
+        },
+        "debugType": "string | null"
+      },
+      "modelBinding": ""
+    },
+    {
+      "key": "change",
+      "eventBinding": {
+        "eventName": "CheckboxChangeEvent",
+        "propsList": [
+          {
+            "key": "checked",
+            "type": {
+              "simpleType": 2
+            }
+          }
+        ]
+      },
+      "modelBinding": ""
+    },
+    {
+      "key": "indeterminateChange",
+      "eventBinding": {
+        "eventName": "CheckboxIndeterminateChangeEvent",
+        "propsList": [
+          {
+            "key": "indeterminate",
+            "type": {
+              "simpleType": 2
+            }
+          }
+        ]
+      },
+      "modelBinding": ""
+    },
+    {
+      "key": "value",
+      "propertyBinding": {
+        "name": "value",
+        "type": {
+          "simpleType": 1
+        },
+        "debugType": "string"
+      },
+      "modelBinding": ""
+    },
+    {
+      "key": "disableRipple",
+      "propertyBinding": {
+        "name": "disableRipple",
+        "type": {
+          "simpleType": 2
+        },
+        "debugType": "boolean"
+      },
+      "modelBinding": ""
+    },
+    {
+      "key": "tabIndex",
+      "propertyBinding": {
+        "name": "tabIndex",
+        "type": {
+          "simpleType": 3
+        },
+        "debugType": "number"
+      },
+      "modelBinding": ""
+    },
+    {
+      "key": "color",
+      "propertyBinding": {
+        "name": "color",
+        "type": {
+          "simpleType": 1
+        },
+        "debugType": "string | undefined"
+      },
+      "modelBinding": ""
+    }
+  ]
+}

@@ -2,23 +2,30 @@ syntax = "proto3";
 
 package mesop_internal.component_specs.protos;
 
+
+// Everything needed to generate a component spec
+message ComponentSpecInput {
+    string name = 1;
+    string target_class = 4;
+    string file_path = 2;
+    bool has_content = 3;
+
+    // Element to render, e.g. "mat-checkbox"
+    string element_name = 5;
+
+    // TODO: may need to make this multiple modules
+    NgModuleSpec ng_module = 6;
+}
+
 // Used to define a component which can generate a template such as:
 //   <mat-checkbox [checked]="isChecked" (change)="handleCheckboxChange($event)">
 //   {{config().getLabel()}}
 // </mat-checkbox>
 message ComponentSpec {
-    // e.g. "checkbox", "text_input"
-    string name = 1;
+    ComponentSpecInput input = 1;
 
-    // Element to render, e.g. "mat-checkbox"
-    string element_name = 2;
 
     repeated ElementProp props = 3;
-
-    ContentSpec content = 4;
-
-    // TODO: may need to make this multiple modules
-    NgModuleSpec ng_module = 5;
 }
 
 message NgModuleSpec {
@@ -64,8 +71,20 @@ message EventProp {
     JsType type = 2;
 }
 
-enum JsType {
+message JsType {
+  oneof type {
+    SimpleType simple_type = 1;
+    StringLiterals string_literals = 2;
+  }
+}
+
+enum SimpleType {
     JS_TYPE_UNDEFINED = 0;
     STRING = 1;
     BOOL = 2;
+    NUMBER = 3;
+}
+
+message StringLiterals {
+    repeated string string_literal = 1;
 }
