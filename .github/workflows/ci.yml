@@ -42,7 +42,7 @@ jobs:
       - name: Install Chromium browser for Playwright
         run: yarn playwright install chromium --with-deps
       - name: Pre-build
-        run: bazel build //mesop/cli
+        run: bazel build //mesop/... && bazel build //generator/...
       - name: Python type-checking
         run: ./scripts/run_py_typecheck.sh
       - name: Bazel tests
