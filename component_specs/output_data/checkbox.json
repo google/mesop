@@ -102,6 +102,30 @@
         "simpleType": 1
       },
       "debugType": "string | undefined"
+    },
+    {
+      "name": "checked",
+      "alias": "",
+      "type": {
+        "simpleType": 2
+      },
+      "debugType": "boolean"
+    },
+    {
+      "name": "disabled",
+      "alias": "",
+      "type": {
+        "simpleType": 2
+      },
+      "debugType": "boolean"
+    },
+    {
+      "name": "indeterminate",
+      "alias": "",
+      "type": {
+        "simpleType": 2
+      },
+      "debugType": "boolean"
     }
   ],
   "outputPropsList": [

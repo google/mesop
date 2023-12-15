@@ -84,6 +84,23 @@ class NgParser {
 
   processClass(cls: ts.ClassDeclaration) {
     for (const member of cls.members) {
+      if (ts.isGetAccessor(member) && member.modifiers) {
+        for (const modifier of member.modifiers) {
+          if (
+            ts.isDecorator(modifier) &&
+            ts.isCallExpression(modifier.expression) &&
+            ts.isIdentifier(modifier.expression.expression)
+          ) {
+            const identifier = modifier.expression.expression;
+            if (identifier.escapedText === 'Input') {
+              this.processInputGetAccessor(member);
+              continue;
+            }
+          }
+        }
+
+        continue;
+      }
       if (!ts.isPropertyDeclaration(member)) {
         continue;
       }
@@ -93,25 +110,35 @@ class NgParser {
         continue;
       }
       for (const modifier of prop.modifiers) {
-        if (ts.isDecorator(modifier)) {
-          const decorator = modifier as ts.Decorator;
-          if (ts.isCallExpression(decorator.expression)) {
-            const callExpression = decorator.expression;
-            if (ts.isIdentifier(callExpression.expression)) {
-              const identifier = callExpression.expression as ts.Identifier;
-              if (identifier.escapedText === 'Input') {
-                this.processInput(prop, callExpression.arguments);
-              } else if (identifier.escapedText === 'Output') {
-                this.processOutput(prop);
-              }
-            }
+        if (
+          ts.isDecorator(modifier) &&
+          ts.isCallExpression(modifier.expression) &&
+          ts.isIdentifier(modifier.expression.expression)
+        ) {
+          const identifier = modifier.expression.expression;
+          if (identifier.escapedText === 'Input') {
+            this.processInputPropertyDeclaration(
+              prop,
+              modifier.expression.arguments,
+            );
+          } else if (identifier.escapedText === 'Output') {
+            this.processOutput(prop);
           }
         }
       }
     }
   }
+  processInputGetAccessor(member: ts.GetAccessorDeclaration) {
+    this.currentNode = member;
+    const inputProp = new pb.Prop();
+    const name = member.name.getText();
+    inputProp.setName(name);
+    inputProp.setDebugType(member.type!.getText());
+    inputProp.setType(this.getType(assert(member.type)));
+    this.proto.addInputProps(inputProp);
+  }
 
-  processInput(
+  processInputPropertyDeclaration(
     prop: ts.PropertyDeclaration,
     args: ts.NodeArray<ts.Expression>,
   ): void {

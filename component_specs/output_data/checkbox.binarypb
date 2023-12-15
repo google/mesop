@@ -15,7 +15,10 @@ aria-labelstring4
 valuestring
 disableRippleboolean
 tabIndexnumber
-colorstring | undefinedA
+colorstring | undefined
+checkedboolean
+disabledboolean
+indeterminatebooleanA
 changeCheckboxChangeEvent
 checked"
 MatCheckboxChangeY

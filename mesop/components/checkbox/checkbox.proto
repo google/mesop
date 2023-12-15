@@ -15,6 +15,9 @@ message CheckboxType {
   bool disable_ripple = 9;
   double tab_index = 10;
   string color = 11;
-  string on_checkbox_change_event_handler_id = 12;
-  string on_checkbox_indeterminate_change_event_handler_id = 13;
+  bool checked = 12;
+  bool disabled = 13;
+  bool indeterminate = 14;
+  string on_checkbox_change_event_handler_id = 15;
+  string on_checkbox_indeterminate_change_event_handler_id = 16;
 }

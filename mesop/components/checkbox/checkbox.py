@@ -55,6 +55,9 @@ def checkbox(
   disable_ripple: bool = False,
   tab_index: float = 0,
   color: str = "",
+  checked: bool = False,
+  disabled: bool = False,
+  indeterminate: bool = False,
   on_change: Callable[[CheckboxChangeEvent], Any] | None = None,
   on_indeterminate_change: Callable[[CheckboxIndeterminateChangeEvent], Any]
   | None = None,
@@ -77,6 +80,9 @@ def checkbox(
       disable_ripple=disable_ripple,
       tab_index=tab_index,
       color=color,
+      checked=checked,
+      disabled=disabled,
+      indeterminate=indeterminate,
       on_checkbox_change_event_handler_id=handler_type(on_change)
       if on_change
       else "",

@@ -4,6 +4,7 @@ import mesop as me
 @me.stateclass
 class State:
   checked: bool = True
+  indeterminate: bool = True
 
 
 @me.on(me.CheckboxChangeEvent)
@@ -12,11 +13,22 @@ def on_update(event: me.CheckboxChangeEvent):
   state.checked = event.checked
 
 
+@me.on(me.CheckboxIndeterminateChangeEvent)
+def on_indeterminate_change(event: me.CheckboxIndeterminateChangeEvent):
+  state = me.state(State)
+  state.indeterminate = event.indeterminate
+
+
 @me.page(path="/components/checkbox/e2e/checkbox_app")
 def app():
   state = me.state(State)
-  with me.checkbox(aria_label="checkbox", on_change=on_update):
-    me.text(text="labelewe")
+  with me.checkbox(
+    aria_label="aria_checkbox",
+    on_change=on_update,
+    checked=state.checked,
+    on_indeterminate_change=on_indeterminate_change,
+  ):
+    me.text(text="checked=True")
 
   if state.checked:
     me.text(text="is checked")
