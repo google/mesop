@@ -1,5 +1,5 @@
 import generator.component_spec_pb2 as pb
-from generator.format_types import format_xtype_for_proto
+from generator.format_types import format_proto_xtype
 from generator.utils import (
   capitalize_first_letter,
   upper_camel_case,
@@ -36,10 +36,6 @@ def generate_ng_ts(spec: pb.ComponentSpec) -> str:
   ts_template = (
     ts_template.replace("component_name", spec.input.name)
     .replace("ComponentName", upper_camel_case(spec.input.name))
-    # .replace(
-    #   "value!: any;",
-    #   f"value!: {format_type_ts(default_value_prop.type)};",
-    # )
     .replace("// INSERT_EVENT_METHODS:", generate_ts_methods(spec))
     .replace("// GENERATE_NG_IMPORTS:", generate_ng_imports(spec))
   )
@@ -82,7 +78,7 @@ def generate_ts_event_method(prop: pb.OutputProp) -> str:
   return f"""
   on{prop.event_name}(event: {prop.event_js_type.type_name}): void {{
     const userEvent = new UserEvent();
-    userEvent.set{format_xtype_for_proto(prop.event_props[0].type).capitalize()}({arg})
+    userEvent.set{format_proto_xtype(prop.event_props[0].type).capitalize()}({arg})
     userEvent.setHandlerId(this.config().getOn{prop.event_name}HandlerId())
     userEvent.setKey(this.key);
     this.channel.dispatch(userEvent);

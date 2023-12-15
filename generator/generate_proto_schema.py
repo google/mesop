@@ -1,5 +1,5 @@
 import generator.component_spec_pb2 as pb
-from generator.format_types import format_xtype_for_proto
+from generator.format_types import format_proto_xtype
 from generator.utils import (
   snake_case,
   upper_camel_case,
@@ -13,7 +13,7 @@ def generate_proto_schema(spec: pb.ComponentSpec) -> str:
   for prop in spec.input_props:
     index += 1
     fields.append(
-      f"{format_xtype_for_proto(prop.type)} {snake_case(prop.name)} = {index};"
+      f"{format_proto_xtype(prop.type)} {snake_case(prop.name)} = {index};"
     )
   for prop in spec.output_props:
     index += 1
