@@ -15,7 +15,9 @@ def on_update(event: me.CheckboxChangeEvent):
 @me.page(path="/components/checkbox/e2e/checkbox_app")
 def app():
   state = me.state(State)
-  me.checkbox(aria_label="checkbox", on_change=on_update, value="hello")
+  with me.checkbox(aria_label="checkbox", on_change=on_update):
+    me.text(text="labelewe")
+
   if state.checked:
     me.text(text="is checked")
   else:

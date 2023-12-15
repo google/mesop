@@ -10,3 +10,11 @@ to have certain styling properties -->
     <component-renderer [component]="child"> </component-renderer>
   </ng-container>
 </ng-container>
+
+<ng-template #childrenTemplate>
+  <ng-container
+    *ngFor="let child of component.getChildrenList(); trackBy: trackByFn"
+  >
+    <component-renderer [component]="child"> </component-renderer>
+  </ng-container>
+</ng-template>

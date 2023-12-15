@@ -93,12 +93,12 @@ def generate_ng_template(spec: pb.ComponentSpec) -> str:
   element_props = [format_input_prop(prop) for prop in spec.input_props] + [
     format_output_prop(prop) for prop in spec.output_props
   ]
-  # TODO: implmeent content
-  #   opening_braces = "{{"
-  #   closing_braces = "}}"
-  # {opening_braces}config().get{upper_camel_case(spec.content.name)}(){closing_braces}
-  return f"""<{spec.input.element_name} {" ".join(element_props)}>
 
+  content = ""
+  if spec.input.has_content:
+    content = "<ng-content></ng-content>"
+  return f"""<{spec.input.element_name} {" ".join(element_props)}>
+    {content}
   </{spec.input.element_name}>
     """
 
@@ -162,9 +162,6 @@ def generate_proto_schema(spec: pb.ComponentSpec) -> str:
     fields.append(
       f"string on_{snake_case(prop.event_name)}_handler_id = {index};"
     )
-  if spec.input.has_content:
-    # TODO: create a wrapper-style component
-    pass
 
   message_contents = (
     "{\n" + "\n".join(["  " + field for field in fields]) + "\n}"
@@ -197,9 +194,16 @@ def generate_py_component(spec: pb.ComponentSpec) -> str:
     .replace("# INSERT_EVENTS", generate_py_events(spec))
     .replace("# INSERT_COMPONENT_PARAMS", generate_py_component_params(spec))
     .replace("# INSERT_PROTO_CALLSITE", generate_py_proto_callsite(spec))
+    .replace("# INSERT_COMPONENT_CALL", generate_py_callsite(spec))
   )
 
   return py_template
+
+
+def generate_py_callsite(spec: pb.ComponentSpec):
+  if spec.input.has_content:
+    return "return insert_composite_component("
+  return "insert_component("
 
 
 def generate_py_events(spec: pb.ComponentSpec) -> str:

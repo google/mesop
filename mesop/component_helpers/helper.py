@@ -9,7 +9,7 @@ from mesop.key import Key
 from mesop.runtime import runtime
 
 
-class ComponentWithChildren:
+class _ComponentWithChildren:
   def __init__(self, type_name: str, proto: Message, key: str | None = None):
     self.prev_current_node = runtime().context().current_node()
     self.component = create_component(type_name=type_name, proto=proto, key=key)
@@ -36,7 +36,19 @@ def create_component(
   return pb.Component(key=pb.Key(key=key) if key else None, type=type)
 
 
-def insert_component(type_name: str, proto: Message, key: str | None = None):
+def insert_composite_component(
+  type_name: str,
+  proto: Message,
+  key: str | None = None,
+) -> _ComponentWithChildren:
+  return _ComponentWithChildren(type_name=type_name, proto=proto, key=key)
+
+
+def insert_component(
+  type_name: str,
+  proto: Message,
+  key: str | None = None,
+) -> None:
   """
   Inserts a component into the current context's current node.
   """

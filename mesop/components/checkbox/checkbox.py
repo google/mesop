@@ -6,7 +6,7 @@ from pydantic import validate_arguments
 import mesop.components.checkbox.checkbox_pb2 as checkbox_pb
 from mesop.component_helpers import (
   handler_type,
-  insert_component,
+  insert_composite_component,
   register_event_mapper,
 )
 from mesop.events import MesopEvent
@@ -62,7 +62,7 @@ def checkbox(
   """
   TODO_doc_string
   """
-  insert_component(
+  return insert_composite_component(
     key=key,
     type_name="checkbox",
     proto=checkbox_pb.CheckboxType(

@@ -1,8 +1,11 @@
 import {
+  ApplicationRef,
   Component,
   ComponentRef,
   HostBinding,
   Input,
+  TemplateRef,
+  ViewChild,
   ViewContainerRef,
 } from '@angular/core';
 import {CommonModule} from '@angular/common';
@@ -46,11 +49,17 @@ const typeToComponent = {
   imports: [CommonModule, ComponentLoader],
 })
 export class ComponentRenderer {
+  @ViewChild('childrenTemplate', {static: true})
+  childrenTemplate!: TemplateRef<any>;
+
   @Input() component!: ComponentProto;
   private _boxType: BoxType | undefined;
   private _componentRef!: ComponentRef<BaseComponent>;
 
-  constructor(private viewContainerRef: ViewContainerRef) {}
+  constructor(
+    private viewContainerRef: ViewContainerRef,
+    private applicationRef: ApplicationRef,
+  ) {}
 
   trackByFn(index: any, item: ComponentProto) {
     const key = item.getKey()?.getKey();
@@ -84,8 +93,21 @@ export class ComponentRenderer {
 
   createComponentRef() {
     const typeName = this.component.getType()?.getName()!;
+    let options = {};
+    if (this.component.getChildrenList().length) {
+      const projectedViewRef = this.childrenTemplate.createEmbeddedView(this);
+      // Need to attach view or it doesn't render.
+      // View automatically detaches when it is destroyed.
+      // Template will destroy each ViewRef when it is destroyed.
+      this.applicationRef.attachView(projectedViewRef);
+      const projectableNodes = [projectedViewRef.rootNodes];
+      options = {
+        projectableNodes,
+      };
+    }
     this._componentRef = this.viewContainerRef.createComponent(
       typeToComponent[typeName],
+      options,
     );
     this.updateComponentRef();
   }

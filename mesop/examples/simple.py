@@ -38,11 +38,12 @@ def main():
   me.text(text=f"{state.count} clicks")
   me.text(text=f"Selected keys: {state.keys}")
   for i in range(1000):
-    me.checkbox(
+    with me.checkbox(
       aria_label=f"check {i}?",
       on_change=checkbox_update,
       key=f"check={i}",
-    )
+    ):
+      me.text(text="check")
   me.text(text=state.string)
 
 
