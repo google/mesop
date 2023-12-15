@@ -153,7 +153,7 @@ class NgParser {
       }
       inputProp.setName(elName);
       inputProp.setDebugType(prop.type!.getText());
-      inputProp.setType(this.getType(assert(prop.type)));
+      inputProp.setType(this.getType(assert(prop.type), prop.initializer));
       this.proto.addInputProps(inputProp);
     } else {
       throw new Error('Expected identifier for prop' + prop);
@@ -237,7 +237,7 @@ class NgParser {
     return capitalize(name);
   }
 
-  getType(type: ts.TypeNode): pb.XType {
+  getType(type: ts.TypeNode, initializer?: ts.Expression): pb.XType {
     const text = type.getText();
     const segments = text
       .split('|')
@@ -254,17 +254,11 @@ class NgParser {
       return typeProto;
     } else {
       // We asumme these are string literals.
-      const stringLiterals = segments.map((t) => {
-        // Strip of quotes (but sanity check first)
-        if (t[0] !== "'" && t[t.length - 1] !== "'") {
-          this.logIssue('Unexpected type', {type: text});
-          return '<issue>';
-        }
-        return t.slice(1, -1);
-      });
+      const stringLiterals = segments.map(this.stripQuotes);
       const typeProto = new pb.XType();
       const sl = new pb.StringLiterals();
       sl.setStringLiteralList(stringLiterals);
+      sl.setDefaultValue(this.stripQuotes(initializer!.getText()));
       typeProto.setStringLiterals(sl);
       return typeProto;
     }
@@ -281,6 +275,15 @@ class NgParser {
       default:
         return null;
     }
+  }
+
+  stripQuotes(t: string): string {
+    // Strip off quotes (but sanity check first)
+    if (t[0] !== "'" && t[t.length - 1] !== "'") {
+      this.logIssue('Unexpected type');
+      return '<issue>';
+    }
+    return t.slice(1, -1);
   }
 }
 

@@ -76,4 +76,5 @@ enum SimpleType {
 
 message StringLiterals {
     repeated string string_literal = 1;
+    string default_value = 2;
 }

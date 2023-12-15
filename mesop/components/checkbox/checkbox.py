@@ -49,7 +49,7 @@ def checkbox(
   aria_describedby: str = "",
   id: str = "",
   required: bool = False,
-  label_position: Literal["before", "after"] | None = None,
+  label_position: Literal["before", "after"] = "after",
   name: str = "",
   value: str = "",
   disable_ripple: bool = False,

@@ -58,7 +58,8 @@
       "type": {
         "simpleType": 0,
         "stringLiterals": {
-          "stringLiteralList": ["before", "after"]
+          "stringLiteralList": ["before", "after"],
+          "defaultValue": "after"
         }
       },
       "debugType": "'before' | 'after'"

@@ -331,7 +331,7 @@ def format_type_for_python(type: pb.XType) -> str:
     literal_type = ",".join(
       [wrap_quote(literal) for literal in type.string_literals.string_literal]
     )
-    return f"Literal[{literal_type}]|None"
+    return f"Literal[{literal_type}]"
   else:
     raise Exception("not yet handled", type)
 
@@ -371,7 +371,7 @@ def format_js_type_default_value_for_python(
     else:
       raise Exception("not yet handled", type)
   elif type.string_literals:
-    return None
+    return '"' + type.string_literals.default_value + '"'
   else:
     raise Exception("not yet handled", type)
 

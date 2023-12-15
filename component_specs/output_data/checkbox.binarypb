@@ -7,10 +7,10 @@ aria-labelstring4
 ariaLabelledby"aria-labelledbystring | null/
 ariaDescribedby"aria-describedbystring
 idstring
-requiredboolean6
-labelPosition
+requiredboolean=
+labelPosition
 before
-after'before' | 'after'
+afterafter'before' | 'after'
 namestring | null
 valuestring
 disableRippleboolean
