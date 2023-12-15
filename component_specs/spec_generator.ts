@@ -5,7 +5,7 @@ import fs from 'fs';
 import path from 'path';
 
 import * as pb from './component_spec_jspb_proto_pb/component_specs/component_spec_pb';
-import {assert, capitalize, parseArgs, upperCamelCase} from './util';
+import {assert, capitalize, parseArgs, upperCamelCase} from './utils';
 
 const checkboxSpec = new pb.ComponentSpecInput();
 checkboxSpec.setName('checkbox');
@@ -40,10 +40,7 @@ class NgParser {
   }
 
   parseTs(filePath: string) {
-    // Read the TypeScript file
     const fileContents = fs.readFileSync(filePath, 'utf8');
-
-    // Parse the file contents into a TypeScript AST
     this.sourceFile = ts.createSourceFile(
       filePath,
       fileContents,
@@ -128,6 +125,7 @@ class NgParser {
       }
     }
   }
+
   processInputGetAccessor(member: ts.GetAccessorDeclaration) {
     this.currentNode = member;
     const inputProp = new pb.Prop();
@@ -148,8 +146,7 @@ class NgParser {
       const elName = name.escapedText.toString();
       const inputProp = new pb.Prop();
       if (args[0] && ts.isStringLiteral(args[0])) {
-        // Trim quotes
-        inputProp.setAlias(args[0].getText().slice(1, -1));
+        inputProp.setAlias(this.stripQuotes(args[0].getText()));
       }
       inputProp.setName(elName);
       inputProp.setDebugType(prop.type!.getText());
@@ -189,13 +186,13 @@ class NgParser {
       this.proto.addOutputProps(outputProp);
     }
   }
+
   getEventProps(type: string): pb.Prop[] {
     for (const statement of this.sourceFile.statements) {
       if (ts.isClassDeclaration(statement)) {
         const cls = statement;
         if (cls.name?.getText() === type) {
           const eventProps: pb.Prop[] = [];
-          // This is the right one;
           for (const member of cls.members) {
             if (ts.isPropertyDeclaration(member)) {
               const property = member;
@@ -253,7 +250,7 @@ class NgParser {
       }
       return typeProto;
     } else {
-      // We asumme these are string literals.
+      // We assume these are string literals.
       const stringLiterals = segments.map(this.stripQuotes);
       const typeProto = new pb.XType();
       const sl = new pb.StringLiterals();
@@ -290,14 +287,14 @@ class NgParser {
 function main() {
   const args = parseArgs();
   if (!args['out']) {
-    throw new Error('Must define --out flag (path to output data)');
+    console.log('Running in dry mode because --out (path) was not set');
   }
 
   const parser = new NgParser(checkboxSpec);
 
   console.log(JSON.stringify(parser.proto.toObject(), null, 2));
 
-  if (parser.validate()) {
+  if (parser.validate() && args['out']) {
     fs.writeFileSync(
       path.join(args['out'], `${parser.proto.getInput()!.getName()}.json`),
       JSON.stringify(parser.proto.toObject(), null, 2),
