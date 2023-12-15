@@ -12,6 +12,7 @@ py_library(
     ],
     deps = [
         # REF(//scripts/scaffold_component.py):insert_component_import
+        "//mesop/components/input:py",
         "//mesop/components/markdown:py",
         "//mesop/components/text_input:py",
         "//mesop/components/box:py",

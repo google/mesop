@@ -4,29 +4,29 @@ import {
   Type,
   UserEvent,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
-import {ComponentNameType} from 'mesop/mesop/components/component_name/component_name_jspb_proto_pb/mesop/components/component_name/component_name_pb';
+import {InputType} from 'mesop/mesop/components/input/input_jspb_proto_pb/mesop/components/input/input_pb';
 import {Channel} from '../../web/src/services/channel';
 
 @Component({
-  selector: 'mesop-{component-name}',
-  templateUrl: '{component_name}.ng.html',
+  selector: 'mesop-input',
+  templateUrl: 'input.ng.html',
   standalone: true,
 })
-export class ComponentNameComponent {
+export class InputComponent {
   @Input({required: true}) type!: Type;
   @Input() key!: Key;
-  private _config!: ComponentNameType;
+  private _config!: InputType;
   isChecked = false;
 
   constructor(private readonly channel: Channel) {}
 
   ngOnChanges() {
-    this._config = ComponentNameType.deserializeBinary(
+    this._config = InputType.deserializeBinary(
       this.type.getValue() as unknown as Uint8Array,
     );
   }
 
-  config(): ComponentNameType {
+  config(): InputType {
     return this._config;
   }
 }

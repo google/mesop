@@ -13,6 +13,7 @@ from mesop.components.checkbox.checkbox import (
 from mesop.components.checkbox.checkbox import (
   checkbox as checkbox,
 )
+from mesop.components.input.input import input as input
 from mesop.components.markdown.markdown import markdown as markdown
 from mesop.components.text.text import text as text
 from mesop.components.text_input.text_input import text_input as text_input
