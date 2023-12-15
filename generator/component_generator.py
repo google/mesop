@@ -1,3 +1,5 @@
+import os
+
 from absl import app, flags
 
 import generator.component_spec_pb2 as pb
@@ -23,14 +25,19 @@ MAYBEs:
 
 FLAGS = flags.FLAGS
 
-flags.DEFINE_bool("write", False, "set to true to write files.")
-flags.DEFINE_string("component", "", "name of component (snake_case).")
+flags.DEFINE_bool("dry_run", False, "set to true to write files.")
 
 
 def main(argv):
-  pb_path = get_path_from_workspace_root(
-    "generator", "output_data", f"{FLAGS.component}.binarypb"
-  )
+  # Process all binarypb files in output_data dir
+  output_data_path = get_path_from_workspace_root("generator", "output_data")
+  for file in os.listdir(output_data_path):
+    full_path = os.path.join(output_data_path, file)
+    if os.path.isfile(full_path) and file.endswith(".binarypb"):
+      process_component(full_path)
+
+
+def process_component(pb_path: str):
   spec = pb.ComponentSpec()
   with open(pb_path, "rb") as f:
     spec.ParseFromString(f.read())
@@ -40,12 +47,14 @@ def main(argv):
   write(generate_ng_ts(spec), name, ext="ts")
   write(generate_proto_schema(spec), name, ext="proto")
   write(generate_py_component(spec), name, ext="py")
-  if FLAGS.write:
+  if not FLAGS.dry_run:
     print("Written files")
 
 
 def write(contents: str, name: str, ext: str):
-  if FLAGS.write:
+  if FLAGS.dry_run:
+    print(f"Dry run for {name}.{ext}:", contents)
+  else:
     with open(
       get_path_from_workspace_root(
         "mesop", "components", name, f"{name}.{ext}"
@@ -53,8 +62,6 @@ def write(contents: str, name: str, ext: str):
       "w",
     ) as f:
       f.write(contents)
-  else:
-    print(f"Dry run for {name}.{ext}:", contents)
 
 
 if __name__ == "__main__":
