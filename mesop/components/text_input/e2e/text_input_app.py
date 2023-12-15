@@ -13,8 +13,8 @@ def change(action: me.ChangeEvent):
   state.string = action.value
 
 
-@me.on(me.CheckboxEvent)
-def change_checkbox(event: me.CheckboxEvent):
+@me.on(me.CheckboxChangeEvent)
+def change_checkbox(event: me.CheckboxChangeEvent):
   state = me.state(State)
   state.hide_text_input = event.checked
 
@@ -22,7 +22,7 @@ def change_checkbox(event: me.CheckboxEvent):
 @me.page(path="/components/text_input/e2e/text_input_app")
 def app():
   state = me.state(State)
-  me.checkbox(label="hide_text_input", on_mat_checkbox_change=change_checkbox)
+  me.checkbox(aria_label="hide_text_input", on_change=change_checkbox)
   if not state.hide_text_input:
     me.text_input(
       label="simple-text-input", default_value=state.string, on_change=change

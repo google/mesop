@@ -4,11 +4,17 @@
     "targetClass": "MatCheckbox",
     "filePath": "/Users/will/Documents/GitHub/mesop/component_specs/input_data/checkbox.ts",
     "hasContent": true,
-    "elementName": ""
+    "elementName": "mat-checkbox",
+    "ngModule": {
+      "importPath": "@angular/material/checkbox",
+      "moduleName": "MatCheckboxModule",
+      "otherSymbolsList": ["MatCheckboxChange"]
+    }
   },
   "inputPropsList": [
     {
       "name": "ariaLabel",
+      "alias": "aria-label",
       "type": {
         "simpleType": 1
       },
@@ -16,6 +22,7 @@
     },
     {
       "name": "ariaLabelledby",
+      "alias": "aria-labelledby",
       "type": {
         "simpleType": 1
       },
@@ -23,6 +30,7 @@
     },
     {
       "name": "ariaDescribedby",
+      "alias": "aria-describedby",
       "type": {
         "simpleType": 1
       },
@@ -30,6 +38,7 @@
     },
     {
       "name": "id",
+      "alias": "",
       "type": {
         "simpleType": 1
       },
@@ -37,6 +46,7 @@
     },
     {
       "name": "required",
+      "alias": "",
       "type": {
         "simpleType": 2
       },
@@ -44,6 +54,7 @@
     },
     {
       "name": "labelPosition",
+      "alias": "",
       "type": {
         "simpleType": 0,
         "stringLiterals": {
@@ -54,6 +65,7 @@
     },
     {
       "name": "name",
+      "alias": "",
       "type": {
         "simpleType": 1
       },
@@ -61,6 +73,7 @@
     },
     {
       "name": "value",
+      "alias": "",
       "type": {
         "simpleType": 1
       },
@@ -68,6 +81,7 @@
     },
     {
       "name": "disableRipple",
+      "alias": "",
       "type": {
         "simpleType": 2
       },
@@ -75,6 +89,7 @@
     },
     {
       "name": "tabIndex",
+      "alias": "",
       "type": {
         "simpleType": 3
       },
@@ -82,6 +97,7 @@
     },
     {
       "name": "color",
+      "alias": "",
       "type": {
         "simpleType": 1
       },
@@ -95,12 +111,17 @@
       "eventPropsList": [
         {
           "name": "checked",
+          "alias": "",
           "type": {
             "simpleType": 2
           },
           "debugType": ""
         }
-      ]
+      ],
+      "eventJsType": {
+        "typeName": "MatCheckboxChange",
+        "isPrimitive": false
+      }
     },
     {
       "name": "indeterminateChange",
@@ -108,12 +129,17 @@
       "eventPropsList": [
         {
           "name": "indeterminate",
+          "alias": "",
           "type": {
             "simpleType": 2
           },
           "debugType": ""
         }
-      ]
+      ],
+      "eventJsType": {
+        "typeName": "boolean",
+        "isPrimitive": true
+      }
     }
   ]
 }

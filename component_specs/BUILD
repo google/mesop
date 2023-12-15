@@ -1,19 +1,11 @@
-load("//build_defs:defaults.bzl", "THIRD_PARTY_PY_ABSL_PY", "jspb_proto_library", "nodejs_binary", "proto_library", "py_binary", "py_library", "py_proto_library", "ts_library")
+load("//build_defs:defaults.bzl", "THIRD_PARTY_PY_ABSL_PY", "jspb_proto_library", "nodejs_binary", "proto_library", "py_binary", "py_proto_library", "ts_library")
 
 # Intentionally do not expose this package as this an internal generator.
 
-py_library(
-    name = "component_specs",
-    srcs = glob(["*.py"]),
-    deps = [
-        ":component_spec_py_pb2",
-    ],
-)
-
 py_binary(
-    name = "checkbox_spec",
+    name = "component_generator",
     srcs = glob(["*.py"]),
-    main = "checkbox_spec.py",
+    main = "component_generator.py",
     deps = [
         ":component_spec_py_pb2",
     ] + THIRD_PARTY_PY_ABSL_PY,
@@ -31,9 +23,9 @@ ts_library(
 )
 
 nodejs_binary(
-    name = "generate_spec",
+    name = "spec_generator",
     data = [":ts_lib"],
-    entry_point = "generate_spec.ts",
+    entry_point = "spec_generator.ts",
 )
 
 proto_library(

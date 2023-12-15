@@ -7,22 +7,20 @@ import path from 'path';
 import * as pb from './component_spec_jspb_proto_pb/component_specs/component_spec_pb';
 import {assert, capitalize, parseArgs, upperCamelCase} from './util';
 
-/**
- * Event properties.
- *
- * Content. OK (manual)
- */
-
-// TO DO: not hard code
-const TARGET_CLASS_NAME = 'MatCheckbox';
-
-const SPEC = new pb.ComponentSpecInput();
-SPEC.setName('checkbox');
-SPEC.setFilePath(
+const checkboxSpec = new pb.ComponentSpecInput();
+checkboxSpec.setName('checkbox');
+checkboxSpec.setFilePath(
   '/Users/will/Documents/GitHub/mesop/component_specs/input_data/checkbox.ts',
 );
-SPEC.setTargetClass('MatCheckbox');
-SPEC.setHasContent(true);
+checkboxSpec.setTargetClass('MatCheckbox');
+checkboxSpec.setElementName('mat-checkbox');
+const ngModule = new pb.NgModuleSpec();
+ngModule.setModuleName('MatCheckboxModule');
+ngModule.addOtherSymbols('MatCheckboxChange');
+ngModule.setImportPath('@angular/material/checkbox');
+
+checkboxSpec.setNgModule(ngModule);
+checkboxSpec.setHasContent(true);
 
 interface Issue {
   msg: string;
@@ -102,7 +100,7 @@ class NgParser {
             if (ts.isIdentifier(callExpression.expression)) {
               const identifier = callExpression.expression as ts.Identifier;
               if (identifier.escapedText === 'Input') {
-                this.processInput(prop);
+                this.processInput(prop, callExpression.arguments);
               } else if (identifier.escapedText === 'Output') {
                 this.processOutput(prop);
               }
@@ -113,12 +111,19 @@ class NgParser {
     }
   }
 
-  processInput(prop: ts.PropertyDeclaration): void {
+  processInput(
+    prop: ts.PropertyDeclaration,
+    args: ts.NodeArray<ts.Expression>,
+  ): void {
     this.currentNode = prop;
     const name = prop.name;
     if (ts.isIdentifier(name)) {
       const elName = name.escapedText.toString();
       const inputProp = new pb.Prop();
+      if (args[0] && ts.isStringLiteral(args[0])) {
+        // Trim quotes
+        inputProp.setAlias(args[0].getText().slice(1, -1));
+      }
       inputProp.setName(elName);
       inputProp.setDebugType(prop.type!.getText());
       inputProp.setType(this.getType(assert(prop.type)));
@@ -136,19 +141,22 @@ class NgParser {
 
       const outputProp = new pb.OutputProp();
       outputProp.setName(name);
+      outputProp.setEventName(this.formatEventName(name));
       // If the type is simple, then we compute based on the name
       // else, we use the type directly
       const simpleType = this.getSimpleType(type);
+      const jsType = new pb.JsType();
+      jsType.setIsPrimitive(!!simpleType);
+      jsType.setTypeName(type);
+      outputProp.setEventJsType(jsType);
       if (simpleType) {
-        outputProp.setEventName(this.formatEventName(name));
         const eventProp = new pb.Prop();
         eventProp.setName(name.replace('Change', ''));
-        const type = new pb.XType();
-        type.setSimpleType(simpleType);
-        eventProp.setType(type);
+        const xType = new pb.XType();
+        xType.setSimpleType(simpleType);
+        eventProp.setType(xType);
         outputProp.addEventProps(eventProp);
       } else {
-        outputProp.setEventName(this.formatEventName(type));
         outputProp.setEventPropsList(this.getEventProps(type));
       }
       this.proto.addOutputProps(outputProp);
@@ -255,7 +263,7 @@ function main() {
     throw new Error('Must define --out flag (path to output data)');
   }
 
-  const parser = new NgParser(SPEC);
+  const parser = new NgParser(checkboxSpec);
 
   console.log(JSON.stringify(parser.proto.toObject(), null, 2));
 
@@ -263,6 +271,10 @@ function main() {
     fs.writeFileSync(
       path.join(args['out'], `${parser.proto.getInput()!.getName()}.json`),
       JSON.stringify(parser.proto.toObject(), null, 2),
+    );
+    fs.writeFileSync(
+      path.join(args['out'], `${parser.proto.getInput()!.getName()}.binarypb`),
+      parser.proto.serializeBinary(),
     );
   }
 }

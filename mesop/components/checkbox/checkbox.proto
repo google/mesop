@@ -4,7 +4,17 @@ syntax = "proto3";
 package mesop.components.checkbox;
 
 message CheckboxType {
-  bool value = 1;
-  string on_mat_checkbox_change_handler_id = 2;
-  string label = 3;
+  string aria_label = 1;
+  string aria_labelledby = 2;
+  string aria_describedby = 3;
+  string id = 4;
+  bool required = 5;
+  string label_position = 6;
+  string name = 7;
+  string value = 8;
+  bool disable_ripple = 9;
+  double tab_index = 10;
+  string color = 11;
+  string on_checkbox_change_event_handler_id = 12;
+  string on_checkbox_indeterminate_change_event_handler_id = 13;
 }

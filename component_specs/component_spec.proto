@@ -36,6 +36,8 @@ message ComponentSpec {
 message Prop {
     // Name of the property (e.g. JS property name on Angular component)
     string name = 1;
+    // https://angular.io/api/core/Input#alias
+    string alias = 4;
     XType type = 2;
     string debug_type = 3;
 }
@@ -46,6 +48,14 @@ message OutputProp {
     // e.g. MatCheckboxChange
     string event_name = 2;
     repeated Prop event_props = 3;
+    // Original type in JS (can be a primitive, e.g. `boolean`, or custom type, e.g.`MatCheckboxChange`).
+    JsType event_js_type = 4;
+}
+
+message JsType {
+    string type_name = 1;
+    // e.g. true if boolean, string, etc.
+    bool is_primitive = 2;
 }
 
 // Represents a platform-netural type.

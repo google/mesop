@@ -1,4 +1,7 @@
+import os.path
 from typing import Any
+
+from absl import app, flags
 
 import component_specs.component_spec_pb2 as pb
 
@@ -10,13 +13,80 @@ Generates from component spec the following:
 4. Python component
 
 TODOs:
-- seperate out component spec protos into its own file
 - make it clear what the spelling (camel vs. snake_case)
 
 MAYBEs:
 - doesn't handle event with multiple properties
-- have better naming for events (either explicit control, or implicitly strip out Mat)
 """
+
+FLAGS = flags.FLAGS
+
+flags.DEFINE_bool("write", False, "set to true to write files.")
+flags.DEFINE_string("component", "", "name of component (snake_case).")
+
+
+def main(argv):
+  spec = pb.ComponentSpec()
+  with open(
+    os.path.join(
+      get_bazel_workspace_directory(),
+      "component_specs",
+      "output_data",
+      f"{FLAGS.component}.binarypb",
+    ),
+    "rb",
+  ) as f:
+    spec.ParseFromString(f.read())
+
+  name = spec.input.name
+  if FLAGS.write:
+    write(
+      generate_ng_template(spec),
+      name,
+      ext="ng.html",
+    )
+    write(
+      generate_ng_ts(spec),
+      name,
+      ext="ts",
+    )
+    write(
+      generate_proto_schema(spec),
+      name,
+      ext="proto",
+    )
+    write(
+      generate_py_component(spec),
+      name,
+      ext="py",
+    )
+
+    print("Written files")
+  else:
+    print(".ng.html:")
+    print(generate_ng_template(spec))
+    print(".ts:")
+    print(generate_ng_ts(spec))
+    print(".proto:")
+    print(generate_proto_schema(spec))
+    print(":.py:")
+    print(generate_py_component(spec))
+
+
+def write(contents: str, name: str, ext: str):
+  with open(
+    os.path.join(
+      get_bazel_workspace_directory(), f"mesop/components/{name}/{name}.{ext}"
+    ),
+    "w",
+  ) as f:
+    f.write(contents)
+
+
+def get_bazel_workspace_directory() -> str:
+  value = os.environ.get("BUILD_WORKSPACE_DIRECTORY")
+  assert value
+  return value
 
 
 def generate_ng_template(spec: pb.ComponentSpec) -> str:
@@ -67,7 +137,7 @@ def generate_ng_ts(spec: pb.ComponentSpec) -> str:
     #   "value!: any;",
     #   f"value!: {format_type_ts(default_value_prop.type)};",
     # )
-    .replace("// INSERT_EVENT_METHODS:", generate_ts_event_methods(spec))
+    .replace("// INSERT_EVENT_METHODS:", generate_ts_methods(spec))
     .replace("// GENERATE_NG_IMPORTS:", generate_ng_imports(spec))
   )
 
@@ -84,12 +154,14 @@ def generate_proto_schema(spec: pb.ComponentSpec) -> str:
 
   for prop in spec.input_props:
     index += 1
-    fields.append(f"{format_xtype_for_proto(prop.type)} {prop.name} = {index};")
+    fields.append(
+      f"{format_xtype_for_proto(prop.type)} {snake_case(prop.name)} = {index};"
+    )
   for prop in spec.output_props:
-    if prop.HasField("event_binding"):
-      fields.append(
-        f"string on_{snake_case(prop.event_name)}_handler_id = {index};"
-      )
+    index += 1
+    fields.append(
+      f"string on_{snake_case(prop.event_name)}_handler_id = {index};"
+    )
   if spec.input.has_content:
     # TODO: create a wrapper-style component
     pass
@@ -140,12 +212,12 @@ def generate_py_events(spec: pb.ComponentSpec) -> str:
 def generate_py_event(output_prop: pb.OutputProp) -> str:
   return f"""
 @dataclass
-class {output_prop.event_name}Event(MesopEvent):
+class {output_prop.event_name}(MesopEvent):
   {output_prop.event_props[0].name}: {format_type_for_python(output_prop.event_props[0].type)}
 
 register_event_mapper(
-  {output_prop.event_name}Event,
-  lambda event, key: {output_prop.event_name}Event(
+  {output_prop.event_name},
+  lambda event, key: {output_prop.event_name}(
     key=key,
     {output_prop.event_props[0].name}=event.{format_xtype_for_proto(output_prop.event_props[0].type)},
   ),
@@ -157,11 +229,11 @@ def generate_py_component_params(spec: pb.ComponentSpec) -> str:
   out: list[str] = ["key: str | None = None"]
   for prop in spec.input_props:
     out.append(
-      f"{prop.name}: {format_type_for_python(prop.type)}={format_js_type_default_value_for_python(prop.type)}"
+      f"{snake_case(prop.name)}: {format_type_for_python(prop.type)}={format_js_type_default_value_for_python(prop.type)}"
     )
   for prop in spec.output_props:
     out.append(
-      f"on_{snake_case(prop.event_name)}: Callable[[{prop.event_name}Event], Any]|None=None"
+      f"on_{format_event_name(prop.event_name, spec)}: Callable[[{prop.event_name}], Any]|None=None"
     )
   return ", ".join(out)
 
@@ -169,31 +241,68 @@ def generate_py_component_params(spec: pb.ComponentSpec) -> str:
 def generate_py_proto_callsite(spec: pb.ComponentSpec) -> str:
   out: list[str] = []
   for prop in spec.input_props:
-    out.append(f"{prop.name}={prop.name}")
+    out.append(f"{snake_case(prop.name)}={snake_case(prop.name)}")
   for prop in spec.output_props:
+    event_param_name = f"on_{format_event_name(prop.event_name, spec)}"
     out.append(
-      f"on_{snake_case(prop.event_name)}_handler_id=handler_type(on_{snake_case(prop.event_name)}) if on_{snake_case(prop.event_name)} else ''"
+      f"on_{snake_case(prop.event_name)}_handler_id=handler_type({event_param_name}) if {event_param_name} else ''"
     )
   return ", ".join(out)
 
 
-def generate_ts_event_methods(spec: pb.ComponentSpec) -> str:
+def generate_ts_methods(spec: pb.ComponentSpec) -> str:
   out = ""
+  for input_prop in spec.input_props:
+    out += generate_ts_getter_method(input_prop)
   for prop in spec.output_props:
     out += generate_ts_event_method(prop)
   return out
 
 
+def generate_ts_getter_method(prop: pb.Prop) -> str:
+  string_literals = list(prop.type.string_literals.string_literal)
+  type = "|".join(["'" + literal + "'" for literal in string_literals])
+  capitalized_name = capitalize_first_letter(prop.name)
+  if string_literals:
+    return f"""
+    get{capitalized_name}(): {type} {{
+      return this.config().get{capitalized_name}() as {type};
+    }}
+    """
+  return ""
+
+
+def capitalize_first_letter(s: str) -> str:
+  if not s:
+    return s
+  return s[0].upper() + s[1:]
+
+
 def generate_ts_event_method(prop: pb.OutputProp) -> str:
+  arg = (
+    "event"
+    if prop.event_js_type.is_primitive
+    else f"event.{prop.event_props[0].name}"
+  )
   return f"""
-  on{prop.event_name}(event: {prop.event_name}): void {{
+  on{prop.event_name}(event: {prop.event_js_type.type_name}): void {{
     const userEvent = new UserEvent();
-    userEvent.set{format_xtype_for_proto(prop.event_props[0].type).capitalize()}(event.{prop.event_props[0].name})
+    userEvent.set{format_xtype_for_proto(prop.event_props[0].type).capitalize()}({arg})
     userEvent.setHandlerId(this.config().getOn{prop.event_name}HandlerId())
     userEvent.setKey(this.key);
     this.channel.dispatch(userEvent);
   }}
   """
+
+
+def format_event_name(name: str, spec: pb.ComponentSpec) -> str:
+  component_name = upper_camel_case(spec.input.name)
+  event_name = name
+  if name.startswith(component_name):
+    event_name = name[len(component_name) :]
+  if event_name.endswith("Event"):
+    event_name = event_name[: len("Event") * -1]
+  return snake_case(event_name)
 
 
 def format_type_ts(type: pb.XType) -> str:
@@ -215,7 +324,10 @@ def format_type_for_python(type: pb.XType) -> str:
     else:
       raise Exception("not yet handled", type)
   elif type.string_literals:
-    return f"Literal[{[  wrap_quote(literal) for literal in type.string_literals.string_literal]}]"
+    literal_type = ",".join(
+      [wrap_quote(literal) for literal in type.string_literals.string_literal]
+    )
+    return f"Literal[{literal_type}]|None"
   else:
     raise Exception("not yet handled", type)
 
@@ -255,7 +367,7 @@ def format_js_type_default_value_for_python(
     else:
       raise Exception("not yet handled", type)
   elif type.string_literals:
-    return "''"
+    return None
   else:
     raise Exception("not yet handled", type)
 
@@ -277,7 +389,12 @@ def format_xtype_for_proto(type: pb.XType) -> str:
 
 
 def format_input_prop(prop: pb.Prop) -> str:
-  return f'[{prop.name}]="{prop.name}"'
+  name = prop.alias if prop.alias else prop.name
+  string_literals = list(prop.type.string_literals.string_literal)
+  if string_literals:
+    return f'[{name}]="get{capitalize_first_letter(prop.name)}()"'
+
+  return f'[{name}]="config().get{capitalize_first_letter(prop.name)}()"'
 
 
 def format_output_prop(prop: pb.OutputProp) -> str:
@@ -301,3 +418,7 @@ def snake_case(str: str) -> str:
       snake_str.append("_")
     snake_str.append(char.lower())
   return "".join(snake_str)
+
+
+if __name__ == "__main__":
+  app.run(main)

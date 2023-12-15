@@ -14,8 +14,8 @@ class State:
   keys: list[str] = field(default_factory=list)
 
 
-@me.on(me.CheckboxEvent)
-def checkbox_update(action: me.CheckboxEvent) -> None:
+@me.on(me.CheckboxChangeEvent)
+def checkbox_update(action: me.CheckboxChangeEvent) -> None:
   state = me.state(State)
   if action.checked:
     state.keys.append(action.key.key)
@@ -39,8 +39,8 @@ def main():
   me.text(text=f"Selected keys: {state.keys}")
   for i in range(1000):
     me.checkbox(
-      label=f"check {i}?",
-      on_mat_checkbox_change=checkbox_update,
+      aria_label=f"check {i}?",
+      on_change=checkbox_update,
       key=f"check={i}",
     )
   me.text(text=state.string)

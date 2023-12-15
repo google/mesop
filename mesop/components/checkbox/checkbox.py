@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Any, Callable
+from typing import Any, Callable, Literal
 
 from pydantic import validate_arguments
 
@@ -13,15 +13,29 @@ from mesop.events import MesopEvent
 
 
 @dataclass
-class MatCheckboxChangeEvent(MesopEvent):
+class CheckboxChangeEvent(MesopEvent):
   checked: bool
 
 
 register_event_mapper(
-  MatCheckboxChangeEvent,
-  lambda event, key: MatCheckboxChangeEvent(
+  CheckboxChangeEvent,
+  lambda event, key: CheckboxChangeEvent(
     key=key,
     checked=event.bool,
+  ),
+)
+
+
+@dataclass
+class CheckboxIndeterminateChangeEvent(MesopEvent):
+  indeterminate: bool
+
+
+register_event_mapper(
+  CheckboxIndeterminateChangeEvent,
+  lambda event, key: CheckboxIndeterminateChangeEvent(
+    key=key,
+    indeterminate=event.bool,
   ),
 )
 
@@ -30,9 +44,20 @@ register_event_mapper(
 def checkbox(
   *,
   key: str | None = None,
-  value: bool = False,
-  on_mat_checkbox_change: Callable[[MatCheckboxChangeEvent], Any] | None = None,
-  label: str = "",
+  aria_label: str = "",
+  aria_labelledby: str = "",
+  aria_describedby: str = "",
+  id: str = "",
+  required: bool = False,
+  label_position: Literal["before", "after"] | None = None,
+  name: str = "",
+  value: str = "",
+  disable_ripple: bool = False,
+  tab_index: float = 0,
+  color: str = "",
+  on_change: Callable[[CheckboxChangeEvent], Any] | None = None,
+  on_indeterminate_change: Callable[[CheckboxIndeterminateChangeEvent], Any]
+  | None = None,
 ):
   """
   TODO_doc_string
@@ -41,10 +66,24 @@ def checkbox(
     key=key,
     type_name="checkbox",
     proto=checkbox_pb.CheckboxType(
+      aria_label=aria_label,
+      aria_labelledby=aria_labelledby,
+      aria_describedby=aria_describedby,
+      id=id,
+      required=required,
+      label_position=label_position,
+      name=name,
       value=value,
-      on_mat_checkbox_change_handler_id=handler_type(on_mat_checkbox_change)
-      if on_mat_checkbox_change
+      disable_ripple=disable_ripple,
+      tab_index=tab_index,
+      color=color,
+      on_checkbox_change_event_handler_id=handler_type(on_change)
+      if on_change
       else "",
-      label=label,
+      on_checkbox_indeterminate_change_event_handler_id=handler_type(
+        on_indeterminate_change
+      )
+      if on_indeterminate_change
+      else "",
     ),
   )

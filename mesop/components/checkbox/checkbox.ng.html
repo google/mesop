@@ -1,3 +1,16 @@
-<mat-checkbox [checked]="value" (change)="onMatCheckboxChange($event)">
-  {{config().getLabel()}}
+<mat-checkbox
+  [aria-label]="config().getAriaLabel()"
+  [aria-labelledby]="config().getAriaLabelledby()"
+  [aria-describedby]="config().getAriaDescribedby()"
+  [id]="config().getId()"
+  [required]="config().getRequired()"
+  [labelPosition]="getLabelPosition()"
+  [name]="config().getName()"
+  [value]="config().getValue()"
+  [disableRipple]="config().getDisableRipple()"
+  [tabIndex]="config().getTabIndex()"
+  [color]="config().getColor()"
+  (change)="onCheckboxChangeEvent($event)"
+  (indeterminateChange)="onCheckboxIndeterminateChangeEvent($event)"
+>
 </mat-checkbox>

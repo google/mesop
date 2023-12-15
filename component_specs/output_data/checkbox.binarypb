@@ -1,0 +1,24 @@
+
+¶
+checkbox"MatCheckboxI/Users/will/Documents/GitHub/mesop/component_specs/input_data/checkbox.ts*mat-checkbox2B
+@angular/material/checkboxMatCheckboxModuleMatCheckboxChange#
+	ariaLabel"
+aria-labelstring4
+ariaLabelledby"aria-labelledbystring | null/
+ariaDescribedby"aria-describedbystring
+idstring
+requiredboolean6
+labelPosition
+before
+after'before' | 'after'
+namestring | null
+valuestring
+disableRippleboolean
+tabIndexnumber
+colorstring | undefinedA
+changeCheckboxChangeEvent
+checked"
+MatCheckboxChangeY
+indeterminateChange CheckboxIndeterminateChangeEvent
+indeterminate"
+boolean

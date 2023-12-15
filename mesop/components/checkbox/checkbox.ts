@@ -9,7 +9,6 @@ import {CheckboxType} from 'mesop/mesop/components/checkbox/checkbox_jspb_proto_
 import {Channel} from '../../web/src/services/channel';
 
 @Component({
-  // selector: 'mesop-{component-name}',
   templateUrl: 'checkbox.ng.html',
   standalone: true,
   imports: [MatCheckboxModule],
@@ -18,7 +17,6 @@ export class CheckboxComponent {
   @Input({required: true}) type!: Type;
   @Input() key!: Key;
   private _config!: CheckboxType;
-  value!: boolean;
 
   constructor(private readonly channel: Channel) {}
 
@@ -26,17 +24,30 @@ export class CheckboxComponent {
     this._config = CheckboxType.deserializeBinary(
       this.type.getValue() as unknown as Uint8Array,
     );
-    this.value = this._config.getValue();
   }
 
   config(): CheckboxType {
     return this._config;
   }
 
-  onMatCheckboxChange(event: MatCheckboxChange): void {
+  getLabelPosition(): 'before' | 'after' {
+    return this.config().getLabelPosition() as 'before' | 'after';
+  }
+
+  onCheckboxChangeEvent(event: MatCheckboxChange): void {
     const userEvent = new UserEvent();
     userEvent.setBool(event.checked);
-    userEvent.setHandlerId(this.config().getOnMatCheckboxChangeHandlerId());
+    userEvent.setHandlerId(this.config().getOnCheckboxChangeEventHandlerId());
+    userEvent.setKey(this.key);
+    this.channel.dispatch(userEvent);
+  }
+
+  onCheckboxIndeterminateChangeEvent(event: boolean): void {
+    const userEvent = new UserEvent();
+    userEvent.setBool(event);
+    userEvent.setHandlerId(
+      this.config().getOnCheckboxIndeterminateChangeEventHandlerId(),
+    );
     userEvent.setKey(this.key);
     this.channel.dispatch(userEvent);
   }
