@@ -8,7 +8,7 @@ py_library(
     name = "index",
     srcs = ["index.py"],
     deps = [
-        # REF(//scripts/gen_component.py):insert_component_e2e_import
+        # REF(//scripts/scaffold_component.py):insert_component_e2e_import
         "//mesop/components/markdown/e2e",
         "//mesop/components/text_input/e2e",
         "//mesop/components/box/e2e",

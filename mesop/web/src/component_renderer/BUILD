@@ -13,7 +13,7 @@ ng_module(
         "*.ng.html",
     ]),
     deps = [
-        # REF(//scripts/gen_component.py):insert_component_import
+        # REF(//scripts/scaffold_component.py):insert_component_import
         "//mesop/components/markdown:ng",
         "//mesop/components/text_input:ng",
         "//mesop/components/box:ng",

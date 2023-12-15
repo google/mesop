@@ -17,7 +17,7 @@ import {
 import {CheckboxComponent} from '../../../components/checkbox/checkbox';
 import {ButtonComponent} from '../../../components/button/button';
 import {TextComponent} from '../../../components/text/text';
-// REF(//scripts/gen_component.py):insert_ts_import
+// REF(//scripts/scaffold_component.py):insert_ts_import
 import {MarkdownComponent} from '../../../components/markdown/markdown';
 import {TextInputComponent} from '../../../components/text_input/text_input';
 import {ComponentLoader} from './component_loader';

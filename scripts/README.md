@@ -11,5 +11,5 @@ scripts/${script_name}.sh
 **Example Python script usage:**
 
 ```shell
-python scripts/gen_component.py ${component_name}
+python scripts/scaffold_component.py ${component_name}
 ```

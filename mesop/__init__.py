@@ -1,7 +1,7 @@
 from mesop.api import state as state
 from mesop.api import stateclass as stateclass
 
-# REF(//scripts/gen_component.py):insert_component_import_export
+# REF(//scripts/scaffold_component.py):insert_component_import_export
 from mesop.components.box.box import box as box
 from mesop.components.button.button import button as button
 from mesop.components.checkbox.checkbox import (

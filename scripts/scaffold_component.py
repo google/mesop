@@ -1,6 +1,8 @@
 """
+This file generates all the boilerplate, but it's not idempotent (e.g. running it multiple times isn't good).
+
 Run from the root of the repo:
-python scripts/gen_component.py $component_name
+python scripts/scaffold_component.py $component_name
 """
 import argparse
 import os
@@ -50,7 +52,7 @@ def main():
   # Update //mesop/__init__.py
   update_file(
     path=os.path.join(current_dir(), "..", "mesop", "__init__.py"),
-    target="# REF(//scripts/gen_component.py):insert_component_import_export",
+    target="# REF(//scripts/scaffold_component.py):insert_component_import_export",
     content=f"from mesop.components.{component_name}.{component_name} import {component_name} as {component_name}",
     before=True,
   )
@@ -58,21 +60,21 @@ def main():
   # Update //mesop/BUILD
   update_file(
     path=os.path.join(current_dir(), "..", "mesop", "BUILD"),
-    target="# REF(//scripts/gen_component.py):insert_component_import",
+    target="# REF(//scripts/scaffold_component.py):insert_component_import",
     content=f'    "//mesop/components/{component_name}:py",',
   )
 
   # Update testing BUILD file
   update_file(
     path=os.path.join(current_dir(), "..", "mesop", "testing", "BUILD"),
-    target="# REF(//scripts/gen_component.py):insert_component_e2e_import",
+    target="# REF(//scripts/scaffold_component.py):insert_component_e2e_import",
     content=f'    "//mesop/components/{component_name}/e2e",',
   )
 
   # Update testing index.py file
   update_file(
     path=os.path.join(current_dir(), "..", "mesop", "testing", "index.py"),
-    target="# REF(//scripts/gen_component.py):insert_component_e2e_import_export",
+    target="# REF(//scripts/scaffold_component.py):insert_component_e2e_import_export",
     content=f"import mesop.components.{component_name}.e2e as {component_name}_e2e",
     before=True,
   )
@@ -90,7 +92,7 @@ def update_component_renderer():
       component_renderer_path,
       "component_renderer.ng.html",
     ),
-    target="<!-- REF(//scripts/gen_component.py):insert_component -->",
+    target="<!-- REF(//scripts/scaffold_component.py):insert_component -->",
     content="""<ng-container *ngIf="type()?.getName() == '[component_name]'">
   @defer (on viewport) {
   <mesop-[kebab-case] [key]="key()" [type]="type()!" />
@@ -106,19 +108,19 @@ def update_component_renderer():
 
   update_file(
     path=os.path.join(component_renderer_path, "BUILD"),
-    target="# REF(//scripts/gen_component.py):insert_component_import",
+    target="# REF(//scripts/scaffold_component.py):insert_component_import",
     content=f'    "//mesop/components/{component_name}:ng",',
   )
 
   ts_path = os.path.join(component_renderer_path, "component_renderer.ts")
   update_file(
     path=ts_path,
-    target="// REF(//scripts/gen_component.py):insert_ts_import",
+    target="// REF(//scripts/scaffold_component.py):insert_ts_import",
     content=f'import {{ {camel_case()}Component }} from "../../../components/{component_name}/{component_name}";',
   )
   update_file(
     path=ts_path,
-    target="// REF(//scripts/gen_component.py):insert_ng_import",
+    target="// REF(//scripts/scaffold_component.py):insert_ng_import",
     content=f"    {camel_case()}Component,",
   )
 
