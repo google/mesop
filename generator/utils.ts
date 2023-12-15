@@ -9,6 +9,10 @@ export function upperCamelCase(string: string): string {
     .join('');
 }
 
+export function kebabCase(str: string): string {
+  return str.split('_').join('-');
+}
+
 export function assert<T>(value: T | null | undefined): T {
   if (value === null || value === undefined) {
     throw new Error('Asserted value is null or undefined');

@@ -5,20 +5,34 @@ import fs from 'fs';
 import path from 'path';
 
 import * as pb from './component_spec_jspb_proto_pb/generator/component_spec_pb';
-import {assert, capitalize, parseArgs, upperCamelCase} from './utils';
+import {
+  assert,
+  capitalize,
+  kebabCase,
+  parseArgs,
+  upperCamelCase,
+} from './utils';
 
-const checkboxSpec = new pb.ComponentSpecInput();
-checkboxSpec.setName('checkbox');
-// checkboxSpec.setFilePath('checkbox.ts');
-checkboxSpec.setTargetClass('MatCheckbox');
-checkboxSpec.setElementName('mat-checkbox');
-const ngModule = new pb.NgModuleSpec();
-ngModule.setModuleName('MatCheckboxModule');
-ngModule.addOtherSymbols('MatCheckboxChange');
-ngModule.setImportPath('@angular/material/checkbox');
+const checkboxSpecInput = new pb.ComponentSpecInput();
+checkboxSpecInput.setName('checkbox');
+checkboxSpecInput.setHasContent(true);
 
-checkboxSpec.setNgModule(ngModule);
-checkboxSpec.setHasContent(true);
+const SYSTEM_IMPORT_PREFIX = '@angular/material/';
+const SYSTEM_PREFIX = 'Mat';
+const SPEC_INPUTS = [checkboxSpecInput].map(preprocessSpecInput);
+
+function preprocessSpecInput(
+  input: pb.ComponentSpecInput,
+): pb.ComponentSpecInput {
+  const name = input.getName();
+  input.setTargetClass(SYSTEM_PREFIX + upperCamelCase(name));
+  input.setElementName(SYSTEM_PREFIX.toLowerCase() + '-' + kebabCase(name));
+  const ngModule = input.getNgModule() || new pb.NgModuleSpec();
+  ngModule.setModuleName(SYSTEM_PREFIX + upperCamelCase(name) + 'Module');
+  ngModule.setImportPath(SYSTEM_IMPORT_PREFIX + kebabCase(name));
+  input.setNgModule(ngModule);
+  return input;
+}
 
 interface Issue {
   msg: string;
@@ -182,6 +196,8 @@ class NgParser {
         eventProp.setType(xType);
         outputProp.addEventProps(eventProp);
       } else {
+        // Need to import complex type.
+        this.input.getNgModule()!.addOtherSymbols(type);
         outputProp.setEventPropsList(this.getEventProps(type));
       }
       this.proto.addOutputProps(outputProp);
@@ -296,27 +312,29 @@ function main() {
   if (args['dry_run']) {
     console.log('Running in dry mode.');
   }
-  const inputFilePath = path.join(
-    workspaceRoot,
-    'generator',
-    'input_data',
-    `${checkboxSpec.getName()}.ts`,
-  );
-
-  const parser = new NgParser(checkboxSpec, inputFilePath);
-
-  console.log(JSON.stringify(parser.proto.toObject(), null, 2));
-
-  if (parser.validate() && workspaceRoot) {
-    const out_path = path.join(workspaceRoot, 'generator', 'output_data');
-    fs.writeFileSync(
-      path.join(out_path, `${parser.proto.getInput()!.getName()}.json`),
-      JSON.stringify(parser.proto.toObject(), null, 2),
+  for (const specInput of SPEC_INPUTS) {
+    const inputFilePath = path.join(
+      workspaceRoot,
+      'generator',
+      'input_data',
+      `${specInput.getName()}.ts`,
     );
-    fs.writeFileSync(
-      path.join(out_path, `${parser.proto.getInput()!.getName()}.binarypb`),
-      parser.proto.serializeBinary(),
-    );
+
+    const parser = new NgParser(specInput, inputFilePath);
+
+    console.log(JSON.stringify(parser.proto.toObject(), null, 2));
+
+    if (parser.validate() && workspaceRoot) {
+      const out_path = path.join(workspaceRoot, 'generator', 'output_data');
+      fs.writeFileSync(
+        path.join(out_path, `${parser.proto.getInput()!.getName()}.json`),
+        JSON.stringify(parser.proto.toObject(), null, 2),
+      );
+      fs.writeFileSync(
+        path.join(out_path, `${parser.proto.getInput()!.getName()}.binarypb`),
+        parser.proto.serializeBinary(),
+      );
+    }
   }
 }
 
