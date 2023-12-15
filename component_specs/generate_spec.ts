@@ -1,9 +1,11 @@
 import ts from 'typescript';
 // @ts-ignore
 import fs from 'fs';
+// @ts-ignore
 import path from 'path';
 
 import * as pb from './component_spec_jspb_proto_pb/component_specs/component_spec_pb';
+import {assert, capitalize, parseArgs, upperCamelCase} from './util';
 
 /**
  * Event properties.
@@ -254,40 +256,22 @@ class NgParser {
   }
 }
 
-function assert<T>(value: T | null | undefined): T {
-  if (value === null || value === undefined) {
-    throw new Error('Asserted value is null or undefined');
-  }
-  return value;
-}
-
 function main() {
+  const args = parseArgs();
+  if (!args['out']) {
+    throw new Error('Must define --out flag (path to output data)');
+  }
+
   const parser = new NgParser(SPEC);
+
   console.log(JSON.stringify(parser.proto.toObject(), null, 2));
+
   if (parser.validate()) {
-    // Write parser proto to file "output_data/${proto.name}"
     fs.writeFileSync(
-      path.join(
-        parser.proto.getInput()?.getFilePath()!,
-        '..',
-        '..',
-        'output_data',
-        `${parser.proto.getInput()!.getName()}.json`,
-      ),
+      path.join(args['out'], `${parser.proto.getInput()!.getName()}.json`),
       JSON.stringify(parser.proto.toObject(), null, 2),
     );
   }
-}
-
-function capitalize(string: string): string {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
-function upperCamelCase(string: string): string {
-  return string
-    .split('_')
-    .map((s) => capitalize(s))
-    .join('');
 }
 
 main();
