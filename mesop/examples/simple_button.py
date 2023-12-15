@@ -15,5 +15,6 @@ def button_click(action: me.ClickEvent):
 @me.page(path="/simple_button")
 def main():
   state = me.state(State)
-  me.button(label="click me", on_click=button_click)
+  with me.button(on_click=button_click):
+    me.text(text="click me")
   me.text(text=f"{state.count_clicks} clicks")

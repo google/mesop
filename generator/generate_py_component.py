@@ -67,6 +67,10 @@ def generate_py_component_params(spec: pb.ComponentSpec) -> str:
     out.append(
       f"on_{format_event_name(prop.event_name, spec)}: Callable[[{prop.event_name}], Any]|None=None"
     )
+  for native_event in spec.input.native_events:
+    out.append(
+      f"on_{native_event}: Callable[[{format_native_event_name(native_event)}], Any]|None=None"
+    )
   return ", ".join(out)
 
 
@@ -79,7 +83,16 @@ def generate_py_proto_callsite(spec: pb.ComponentSpec) -> str:
     out.append(
       f"on_{snake_case(prop.event_name)}_handler_id=handler_type({event_param_name}) if {event_param_name} else ''"
     )
+  for native_event in spec.input.native_events:
+    event_param_name = f"on_{native_event}"
+    out.append(
+      f"on_{native_event}_handler_id=handler_type({event_param_name}) if {event_param_name} else ''"
+    )
   return ", ".join(out)
+
+
+def format_native_event_name(name: str) -> str:
+  return upper_camel_case(name) + "Event"
 
 
 def format_event_name(name: str, spec: pb.ComponentSpec) -> str:

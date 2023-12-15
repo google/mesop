@@ -21,6 +21,10 @@ def generate_proto_schema(spec: pb.ComponentSpec) -> str:
       f"string on_{snake_case(prop.event_name)}_handler_id = {index};"
     )
 
+  for native_event in spec.input.native_events:
+    index += 1
+    fields.append(f"string on_{native_event}_handler_id = {index};")
+
   message_contents = (
     "{\n" + "\n".join(["  " + field for field in fields]) + "\n}"
   )

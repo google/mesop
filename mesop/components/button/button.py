@@ -5,7 +5,7 @@ from pydantic import validate_arguments
 import mesop.components.button.button_pb2 as button_pb
 from mesop.component_helpers import (
   handler_type,
-  insert_component,
+  insert_composite_component,
 )
 from mesop.events import ClickEvent
 
@@ -13,22 +13,24 @@ from mesop.events import ClickEvent
 @validate_arguments
 def button(
   *,
-  label: str,
-  on_click: Callable[[ClickEvent], Any],
   key: str | None = None,
+  color: str = "",
+  disable_ripple: bool = False,
+  disabled: bool = False,
+  aria_disabled: bool = False,
+  on_click: Callable[[ClickEvent], Any] | None = None,
 ):
   """
-  This function creates a button component with a label and an on_click event.
-
-  Args:
-      label (str): The text to be displayed on the button.
-      on_click (Callable[..., Any]): The function to be called when the button is clicked.
+  TODO_doc_string
   """
-  insert_component(
+  return insert_composite_component(
     key=key,
     type_name="button",
     proto=button_pb.ButtonType(
-      label=label,
-      on_click_handler_id=handler_type(on_click),
+      color=color,
+      disable_ripple=disable_ripple,
+      disabled=disabled,
+      aria_disabled=aria_disabled,
+      on_click_handler_id=handler_type(on_click) if on_click else "",
     ),
   )

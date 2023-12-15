@@ -19,7 +19,16 @@ checkboxSpecInput.setHasContent(true);
 
 const buttonSpecInput = new pb.ComponentSpecInput();
 buttonSpecInput.setName('button');
-// buttonSpecInput.setHasContent(true);
+buttonSpecInput.setElementName('button');
+buttonSpecInput.addDirectiveNames('mat-button');
+buttonSpecInput.addDirectiveNames('mat-raised-button');
+buttonSpecInput.addDirectiveNames('mat-flat-button');
+buttonSpecInput.addDirectiveNames('mat-stroked-button');
+buttonSpecInput.addNativeEvents('click');
+buttonSpecInput.setTsFilename('button-base.ts');
+buttonSpecInput.setTargetClass('MatButtonBase'); // Special-case: https://github.com/angular/components/blob/main/src/material/button/button-base.ts
+buttonSpecInput.setHasContent(true);
+buttonSpecInput.addSkipPropertyNames('disabledInteractive');
 
 const SYSTEM_IMPORT_PREFIX = '@angular/material/';
 const SYSTEM_PREFIX = 'Mat';
@@ -31,11 +40,19 @@ function preprocessSpecInput(
   input: pb.ComponentSpecInput,
 ): pb.ComponentSpecInput {
   const name = input.getName();
-  input.setTargetClass(SYSTEM_PREFIX + upperCamelCase(name));
-  input.setElementName(SYSTEM_PREFIX.toLowerCase() + '-' + kebabCase(name));
+  if (!input.getTargetClass()) {
+    input.setTargetClass(SYSTEM_PREFIX + upperCamelCase(name));
+  }
+  if (!input.getElementName()) {
+    input.setElementName(SYSTEM_PREFIX.toLowerCase() + '-' + kebabCase(name));
+  }
   const ngModule = input.getNgModule() || new pb.NgModuleSpec();
-  ngModule.setModuleName(SYSTEM_PREFIX + upperCamelCase(name) + 'Module');
-  ngModule.setImportPath(SYSTEM_IMPORT_PREFIX + kebabCase(name));
+  if (!ngModule.getModuleName()) {
+    ngModule.setModuleName(SYSTEM_PREFIX + upperCamelCase(name) + 'Module');
+  }
+  if (!ngModule.getImportPath()) {
+    ngModule.setImportPath(SYSTEM_IMPORT_PREFIX + kebabCase(name));
+  }
   input.setNgModule(ngModule);
   return input;
 }
@@ -86,7 +103,23 @@ class NgParser {
     const FgRed = '\x1b[31m';
     const FgGreen = '\x1b[32m';
     const Reset = '\x1b[0m';
-
+    // Filter out skipped property names
+    this.proto.setInputPropsList(
+      this.proto
+        .getInputPropsList()
+        .filter(
+          (prop) =>
+            !this.input.getSkipPropertyNamesList().includes(prop.getName()),
+        ),
+    );
+    this.proto.setOutputPropsList(
+      this.proto
+        .getOutputPropsList()
+        .filter(
+          (prop) =>
+            !this.input.getSkipPropertyNamesList().includes(prop.getName()),
+        ),
+    );
     if (this.issues.length) {
       console.error(FgRed, '========================');
       console.error(FgRed, this.issues.length + ' issues found', Reset);
@@ -319,6 +352,10 @@ function main() {
     console.log('Running in dry mode.');
   }
   for (const specInput of SPEC_INPUTS) {
+    let filename = `${kebabCase(specInput.getName())}.ts`;
+    if (specInput.getTsFilename()) {
+      filename = specInput.getTsFilename();
+    }
     const inputFilePath = path.join(
       workspaceRoot,
       'third_party',
@@ -326,7 +363,7 @@ function main() {
       'src',
       'material',
       kebabCase(specInput.getName()),
-      `${kebabCase(specInput.getName())}.ts`,
+      filename,
     );
 
     const parser = new NgParser(specInput, inputFilePath);

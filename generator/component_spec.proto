@@ -9,8 +9,20 @@ message ComponentSpecInput {
     string target_class = 4;
     bool has_content = 3;
 
-    // Element to render, e.g. "mat-checkbox"
+    // Element to render, e.g. "mat-checkbox", "button"
     string element_name = 5;
+    // By default, we will assume it's the kebab-cased version of |name|
+    // however, sometimes it's in a different file (assuming it's in the same directory).
+    string ts_filename = 8;
+
+    // e.g. "mat-button", "mat-raised-button"
+    repeated string directive_names = 7;
+
+    // e.g. "click"
+    repeated string native_events = 9;
+
+    // e.g. some properties such as "disabledInteractive" (for mat-button) causes type issues.
+    repeated string skip_property_names = 10;
 
     // TODO: may need to make this multiple modules
     NgModuleSpec ng_module = 6;

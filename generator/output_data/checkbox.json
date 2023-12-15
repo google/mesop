@@ -4,6 +4,10 @@
     "targetClass": "MatCheckbox",
     "hasContent": true,
     "elementName": "mat-checkbox",
+    "tsFilename": "",
+    "directiveNamesList": [],
+    "nativeEventsList": [],
+    "skipPropertyNamesList": [],
     "ngModule": {
       "importPath": "@angular/material/checkbox",
       "moduleName": "MatCheckboxModule",

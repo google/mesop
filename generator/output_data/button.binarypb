@@ -1,0 +1,9 @@
+
+¾
+button"MatButtonBase*buttonBbutton-base.ts:
+mat-button:mat-raised-button:mat-flat-button:mat-stroked-buttonJclickRdisabledInteractive2+
+@angular/material/buttonMatButtonModule
+colorstring | null
+disableRippleboolean
+disabledboolean'
+ariaDisabledboolean | undefined

@@ -25,5 +25,6 @@ def button_click(action: me.ClickEvent):
 @me.page(path="/generator")
 def main():
   state = me.state(State)
-  me.button(label="click", on_click=button_click)
+  with me.button(on_click=button_click):
+    me.text(text="click")
   me.text(text=f"{state.string}")

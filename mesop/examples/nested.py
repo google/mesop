@@ -20,6 +20,7 @@ def app():
     me.text(text="hi1")
     with me.box(styles="background-color: blue"):
       me.text(text="hi2")
-      me.button(label="a button", on_click=click, key="incredibly_long_key")
+      with me.button(on_click=click, key="incredibly_long_key"):
+        me.text(text="a button")
       with me.box(styles="background-color: oragne"):
         me.text(text=f"{state.val} clicks")

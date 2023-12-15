@@ -1,15 +1,14 @@
-import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
+import {MatButtonModule} from '@angular/material/button';
+import {Component, Input} from '@angular/core';
 import {
+  UserEvent,
   Key,
   Type,
-  UserEvent,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 import {ButtonType} from 'mesop/mesop/components/button/button_jspb_proto_pb/mesop/components/button/button_pb';
 import {Channel} from '../../web/src/services/channel';
-import {MatButtonModule} from '@angular/material/button';
 
 @Component({
-  selector: 'mesop-button',
   templateUrl: 'button.ng.html',
   standalone: true,
   imports: [MatButtonModule],
@@ -18,7 +17,6 @@ export class ButtonComponent {
   @Input({required: true}) type!: Type;
   @Input() key!: Key;
   private _config!: ButtonType;
-  isChecked = false;
 
   constructor(private readonly channel: Channel) {}
 
@@ -32,9 +30,10 @@ export class ButtonComponent {
     return this._config;
   }
 
-  handleClick(event: any) {
+  onClick(event: Event): void {
     const userEvent = new UserEvent();
-    userEvent.setHandlerId(this.config().getOnClickHandlerId()!);
+    userEvent.setHandlerId(this.config().getOnClickHandlerId());
+    userEvent.setKey(this.key);
     this.channel.dispatch(userEvent);
   }
 }

@@ -1,3 +1,10 @@
-<button mat-raised-button color="primary" (click)="handleClick($event)">
-  {{config().getLabel()}}
+<button
+  mat-button
+  [color]="config().getColor()"
+  [disableRipple]="config().getDisableRipple()"
+  [disabled]="config().getDisabled()"
+  [ariaDisabled]="config().getAriaDisabled()"
+  (click)="onClick($event)"
+>
+  <ng-content></ng-content>
 </button>

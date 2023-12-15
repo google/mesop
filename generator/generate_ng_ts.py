@@ -50,6 +50,8 @@ def generate_ts_methods(spec: pb.ComponentSpec) -> str:
     out += generate_ts_getter_method(input_prop)
   for prop in spec.output_props:
     out += generate_ts_event_method(prop)
+  for native_event in spec.input.native_events:
+    out += generate_ts_native_event_method(native_event)
   return out
 
 
@@ -77,6 +79,18 @@ def generate_ts_event_method(prop: pb.OutputProp) -> str:
     const userEvent = new UserEvent();
     userEvent.set{format_proto_xtype(prop.event_props[0].type).capitalize()}({arg})
     userEvent.setHandlerId(this.config().getOn{prop.event_name}HandlerId())
+    userEvent.setKey(this.key);
+    this.channel.dispatch(userEvent);
+  }}
+  """
+
+
+def generate_ts_native_event_method(native_event: str) -> str:
+  native_event_name = upper_camel_case(native_event)
+  return f"""
+  on{native_event_name}(event: Event): void {{
+    const userEvent = new UserEvent();
+    userEvent.setHandlerId(this.config().getOn{native_event_name}HandlerId())
     userEvent.setKey(this.key);
     this.channel.dispatch(userEvent);
   }}

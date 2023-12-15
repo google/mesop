@@ -1,0 +1,57 @@
+{
+  "input": {
+    "name": "button",
+    "targetClass": "MatButtonBase",
+    "hasContent": true,
+    "elementName": "button",
+    "tsFilename": "button-base.ts",
+    "directiveNamesList": [
+      "mat-button",
+      "mat-raised-button",
+      "mat-flat-button",
+      "mat-stroked-button"
+    ],
+    "nativeEventsList": ["click"],
+    "skipPropertyNamesList": ["disabledInteractive"],
+    "ngModule": {
+      "importPath": "@angular/material/button",
+      "moduleName": "MatButtonModule",
+      "otherSymbolsList": []
+    }
+  },
+  "inputPropsList": [
+    {
+      "name": "color",
+      "alias": "",
+      "type": {
+        "simpleType": 1
+      },
+      "debugType": "string | null"
+    },
+    {
+      "name": "disableRipple",
+      "alias": "",
+      "type": {
+        "simpleType": 2
+      },
+      "debugType": "boolean"
+    },
+    {
+      "name": "disabled",
+      "alias": "",
+      "type": {
+        "simpleType": 2
+      },
+      "debugType": "boolean"
+    },
+    {
+      "name": "ariaDisabled",
+      "alias": "",
+      "type": {
+        "simpleType": 2
+      },
+      "debugType": "boolean | undefined"
+    }
+  ],
+  "outputPropsList": []
+}
