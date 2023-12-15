@@ -6,7 +6,7 @@ py_library(
     name = "component_specs",
     srcs = glob(["*.py"]),
     deps = [
-        "//mesop/protos:ui_py_pb2",
+        ":component_spec_py_pb2",
     ],
 )
 
@@ -15,7 +15,7 @@ py_binary(
     srcs = glob(["*.py"]),
     main = "checkbox_spec.py",
     deps = [
-        "//mesop/protos:ui_py_pb2",
+        ":component_spec_py_pb2",
     ] + THIRD_PARTY_PY_ABSL_PY,
 )
 

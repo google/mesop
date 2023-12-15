@@ -16,7 +16,6 @@ export class ComponentNameComponent {
   @Input({required: true}) type!: Type;
   @Input() key!: Key;
   private _config!: ComponentNameType;
-  value!: any;
 
   constructor(private readonly channel: Channel) {}
 
@@ -24,7 +23,6 @@ export class ComponentNameComponent {
     this._config = ComponentNameType.deserializeBinary(
       this.type.getValue() as unknown as Uint8Array,
     );
-    this.value = this._config.getValue();
   }
 
   config(): ComponentNameType {

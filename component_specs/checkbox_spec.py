@@ -2,7 +2,7 @@ import os.path
 
 from absl import app, flags
 
-import mesop.protos.ui_pb2 as pb
+import component_specs.component_spec_pb2 as pb
 from component_specs.generate_from_spec import (
   generate_ng_template,
   generate_ng_ts,
@@ -18,51 +18,30 @@ flags.DEFINE_bool("write", False, "set to true to write files.")
 # //   <mat-checkbox [checked]="isChecked" (change)="handleCheckboxChange($event)">
 # //   {{config().getLabel()}}
 # // </mat-checkbox>
-CHECKBOX_SPEC = pb.ComponentSpec(
-  type_name="checkbox",
-  element_name="mat-checkbox",
-  ng_module=pb.NgModuleSpec(
-    import_path="@angular/material/checkbox",
-    module_name="MatCheckboxModule",
-    other_symbols=["MatCheckboxChange"],
-  ),
-  props=[
-    pb.ElementProp(
-      key="checked",
-      property_binding=pb.PropertyBinding(name="value", type=pb.JsType.BOOL),
-    ),  # TODO: need a special marker for value (default value)
-    pb.ElementProp(
-      key="change",
-      event_binding=pb.EventBinding(
-        event_name="MatCheckboxChange",
-        props=[pb.EventProp(key="checked", type=pb.JsType.BOOL)],
-      ),
-    ),
-  ],
-  content=pb.ContentSpec(name="label", type=pb.JsType.STRING),
-)
+CHECKBOX_SPEC = pb.ComponentSpec()
 
 
 def main(argv):
+  name = CHECKBOX_SPEC.input.name
   if FLAGS.write:
     write(
       generate_ng_template(CHECKBOX_SPEC),
-      CHECKBOX_SPEC.type_name,
+      name,
       ext="ng.html",
     )
     write(
       generate_ng_ts(CHECKBOX_SPEC),
-      CHECKBOX_SPEC.type_name,
+      name,
       ext="ts",
     )
     write(
       generate_proto_schema(CHECKBOX_SPEC),
-      CHECKBOX_SPEC.type_name,
+      name,
       ext="proto",
     )
     write(
       generate_py_component(CHECKBOX_SPEC),
-      CHECKBOX_SPEC.type_name,
+      name,
       ext="py",
     )
 
@@ -93,9 +72,6 @@ def get_bazel_workspace_directory() -> str:
   assert value
   return value
 
-
-# workspace_dir = get_bazel_workspace_directory()
-# print(f"Bazel workspace directory: {workspace_dir}")
 
 if __name__ == "__main__":
   app.run(main)

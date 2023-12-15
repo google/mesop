@@ -1,6 +1,6 @@
 from typing import Any
 
-import mesop.protos.ui_pb2 as pb
+import component_specs.component_spec_pb2 as pb
 
 """
 Generates from component spec the following:
@@ -20,13 +20,16 @@ MAYBEs:
 
 
 def generate_ng_template(spec: pb.ComponentSpec) -> str:
-  element_props = [format_element_prop(prop) for prop in spec.props]
-  opening_braces = "{{"
-  closing_braces = "}}"
+  element_props = [format_input_prop(prop) for prop in spec.input_props] + [
+    format_output_prop(prop) for prop in spec.output_props
+  ]
+  # TODO: implmeent content
+  #   opening_braces = "{{"
+  #   closing_braces = "}}"
+  # {opening_braces}config().get{upper_camel_case(spec.content.name)}(){closing_braces}
+  return f"""<{spec.input.element_name} {" ".join(element_props)}>
 
-  return f"""<{spec.element_name} {" ".join(element_props)}>
-  {opening_braces}config().get{upper_camel_case(spec.content.name)}(){closing_braces}
-  </{spec.element_name}>
+  </{spec.input.element_name}>
     """
 
 
@@ -43,63 +46,53 @@ def generate_ng_ts(spec: pb.ComponentSpec) -> str:
   ) as f:
     ts_template = f.read()
 
-  default_value_prop = [
-    prop for prop in spec.props if prop.property_binding.name == "value"
-  ][0]
+  # default_value_prop = [
+  #   prop for prop in spec.input_props if prop.name == "value"
+  # ][0]
   symbols = ",".join(
-    [spec.ng_module.module_name] + list(spec.ng_module.other_symbols)
+    [spec.input.ng_module.module_name]
+    + list(spec.input.ng_module.other_symbols)
   )
   symbols = "{" + symbols + "}"
 
   ts_template = (
-    f"import {symbols} from '{spec.ng_module.import_path}'\n" + ts_template
+    f"import {symbols} from '{spec.input.ng_module.import_path}'\n"
+    + ts_template
   )
   # Do simple string replacements
   ts_template = (
-    ts_template.replace("component_name", spec.type_name)
-    .replace("ComponentName", upper_camel_case(spec.type_name))
-    .replace(
-      "value!: any;",
-      f"value!: {format_js_type(default_value_prop.property_binding.type)};",
-    )
+    ts_template.replace("component_name", spec.input.name)
+    .replace("ComponentName", upper_camel_case(spec.input.name))
+    # .replace(
+    #   "value!: any;",
+    #   f"value!: {format_type_ts(default_value_prop.type)};",
+    # )
     .replace("// INSERT_EVENT_METHODS:", generate_ts_event_methods(spec))
     .replace("// GENERATE_NG_IMPORTS:", generate_ng_imports(spec))
   )
-
-  # Build event handlers
-  for prop in spec.props:
-    if prop.HasField("event_binding"):
-      ts_template = ts_template.replace(
-        f"on{prop.event_binding.event_name}",
-        f"on{prop.event_binding.event_name}",
-      )
 
   return ts_template
 
 
 def generate_ng_imports(spec: pb.ComponentSpec) -> str:
-  return f"imports: [{spec.ng_module.module_name}]"
+  return f"imports: [{spec.input.ng_module.module_name}]"
 
 
 def generate_proto_schema(spec: pb.ComponentSpec) -> str:
   fields: list[str] = []
   index = 0
 
-  for prop in spec.props:
+  for prop in spec.input_props:
     index += 1
-    if prop.HasField("property_binding"):
-      fields.append(
-        f"{format_js_type_for_proto(prop.property_binding.type)} {prop.property_binding.name} = {index};"
-      )
+    fields.append(f"{format_xtype_for_proto(prop.type)} {prop.name} = {index};")
+  for prop in spec.output_props:
     if prop.HasField("event_binding"):
       fields.append(
-        f"string on_{snake_case(prop.event_binding.event_name)}_handler_id = {index};"
+        f"string on_{snake_case(prop.event_name)}_handler_id = {index};"
       )
-  if spec.HasField("content"):
-    index += 1
-    fields.append(
-      f"{format_js_type_for_proto(spec.content.type)} {spec.content.name} = {index};"
-    )
+  if spec.input.has_content:
+    # TODO: create a wrapper-style component
+    pass
 
   message_contents = (
     "{\n" + "\n".join(["  " + field for field in fields]) + "\n}"
@@ -108,9 +101,9 @@ def generate_proto_schema(spec: pb.ComponentSpec) -> str:
   return f"""
 syntax = "proto3";
 
-package mesop.components.{spec.type_name};
+package mesop.components.{spec.input.name};
 
-message {upper_camel_case(spec.type_name)}Type {message_contents}
+message {upper_camel_case(spec.input.name)}Type {message_contents}
 
   """
 
@@ -127,8 +120,8 @@ def generate_py_component(spec: pb.ComponentSpec) -> str:
   ) as f:
     py_template = f.read()
   py_template = (
-    py_template.replace("component_name", spec.type_name)
-    .replace("ComponentName", upper_camel_case(spec.type_name))
+    py_template.replace("component_name", spec.input.name)
+    .replace("ComponentName", upper_camel_case(spec.input.name))
     .replace("# INSERT_EVENTS", generate_py_events(spec))
     .replace("# INSERT_COMPONENT_PARAMS", generate_py_component_params(spec))
     .replace("# INSERT_PROTO_CALLSITE", generate_py_proto_callsite(spec))
@@ -139,23 +132,22 @@ def generate_py_component(spec: pb.ComponentSpec) -> str:
 
 def generate_py_events(spec: pb.ComponentSpec) -> str:
   out: list[str] = []
-  for prop in spec.props:
-    if prop.HasField("event_binding"):
-      out.append(generate_py_event(prop.event_binding))
+  for prop in spec.output_props:
+    out.append(generate_py_event(prop))
   return "\n".join(out)
 
 
-def generate_py_event(event_binding: pb.EventBinding) -> str:
+def generate_py_event(output_prop: pb.OutputProp) -> str:
   return f"""
 @dataclass
-class {event_binding.event_name}Event(MesopEvent):
-  {event_binding.props[0].key}: {format_js_type_for_python(event_binding.props[0].type)}
+class {output_prop.event_name}Event(MesopEvent):
+  {output_prop.event_props[0].name}: {format_type_for_python(output_prop.event_props[0].type)}
 
 register_event_mapper(
-  {event_binding.event_name}Event,
-  lambda event, key: {event_binding.event_name}Event(
+  {output_prop.event_name}Event,
+  lambda event, key: {output_prop.event_name}Event(
     key=key,
-    {event_binding.props[0].key}=event.{format_js_type_for_proto(event_binding.props[0].type)},
+    {output_prop.event_props[0].name}=event.{format_xtype_for_proto(output_prop.event_props[0].type)},
   ),
 )
   """
@@ -163,102 +155,133 @@ register_event_mapper(
 
 def generate_py_component_params(spec: pb.ComponentSpec) -> str:
   out: list[str] = ["key: str | None = None"]
-  for prop in spec.props:
-    if prop.HasField("property_binding"):
-      out.append(
-        f"{prop.property_binding.name}: {format_js_type_for_python(prop.property_binding.type)}={format_js_type_default_value_for_python(prop.property_binding.type)}"
-      )
-    if prop.HasField("event_binding"):
-      out.append(
-        f"on_{snake_case(prop.event_binding.event_name)}: Callable[[{prop.event_binding.event_name}Event], Any]|None=None"
-      )
-  if spec.HasField("content"):
+  for prop in spec.input_props:
     out.append(
-      f"{spec.content.name}: {format_js_type_for_python(spec.content.type)}={format_js_type_default_value_for_python(spec.content.type)}"
+      f"{prop.name}: {format_type_for_python(prop.type)}={format_js_type_default_value_for_python(prop.type)}"
+    )
+  for prop in spec.output_props:
+    out.append(
+      f"on_{snake_case(prop.event_name)}: Callable[[{prop.event_name}Event], Any]|None=None"
     )
   return ", ".join(out)
 
 
 def generate_py_proto_callsite(spec: pb.ComponentSpec) -> str:
   out: list[str] = []
-  for prop in spec.props:
-    if prop.HasField("property_binding"):
-      out.append(f"{prop.property_binding.name}={prop.property_binding.name}")
-    if prop.HasField("event_binding"):
-      # on_mat_checkbox_change_handler_id=handler_type(on_mat_checkbox_change) if on_mat_checkbox_change else ''
-      out.append(
-        f"on_{snake_case(prop.event_binding.event_name)}_handler_id=handler_type(on_{snake_case(prop.event_binding.event_name)}) if on_{snake_case(prop.event_binding.event_name)} else ''"
-      )
-  if spec.HasField("content"):
-    out.append(f"{spec.content.name}={spec.content.name}")
+  for prop in spec.input_props:
+    out.append(f"{prop.name}={prop.name}")
+  for prop in spec.output_props:
+    out.append(
+      f"on_{snake_case(prop.event_name)}_handler_id=handler_type(on_{snake_case(prop.event_name)}) if on_{snake_case(prop.event_name)} else ''"
+    )
   return ", ".join(out)
 
 
 def generate_ts_event_methods(spec: pb.ComponentSpec) -> str:
   out = ""
-  for prop in spec.props:
-    if prop.HasField("event_binding"):
-      out += generate_ts_event_method(prop.event_binding)
+  for prop in spec.output_props:
+    out += generate_ts_event_method(prop)
   return out
 
 
-def generate_ts_event_method(event_binding: pb.EventBinding) -> str:
+def generate_ts_event_method(prop: pb.OutputProp) -> str:
   return f"""
-  on{event_binding.event_name}(event: {event_binding.event_name}): void {{
+  on{prop.event_name}(event: {prop.event_name}): void {{
     const userEvent = new UserEvent();
-    userEvent.set{format_js_type_for_proto(event_binding.props[0].type).capitalize()}(event.{event_binding.props[0].key})
-    userEvent.setHandlerId(this.config().getOn{event_binding.event_name}HandlerId())
+    userEvent.set{format_xtype_for_proto(prop.event_props[0].type).capitalize()}(event.{prop.event_props[0].name})
+    userEvent.setHandlerId(this.config().getOn{prop.event_name}HandlerId())
     userEvent.setKey(this.key);
     this.channel.dispatch(userEvent);
   }}
   """
 
 
-def format_js_type(type: pb.JsType.ValueType) -> str:
-  if type == pb.JsType.BOOL:
+def format_type_ts(type: pb.XType) -> str:
+  if type.simple_type:
+    return format_js_type(type.simple_type)
+  return "|".join(
+    [f"'{literal}'" for literal in type.string_literals.string_literal]
+  )
+
+
+def format_type_for_python(type: pb.XType) -> str:
+  if type.simple_type:
+    if type.simple_type == pb.SimpleType.BOOL:
+      return "bool"
+    elif type.simple_type == pb.SimpleType.STRING:
+      return "str"
+    elif type.simple_type == pb.SimpleType.NUMBER:
+      return "float"
+    else:
+      raise Exception("not yet handled", type)
+  elif type.string_literals:
+    return f"Literal[{[  wrap_quote(literal) for literal in type.string_literals.string_literal]}]"
+  else:
+    raise Exception("not yet handled", type)
+
+
+def wrap_quote(str: str) -> str:
+  return f"'{str}'"
+
+
+def format_js_type(type: pb.SimpleType.ValueType) -> str:
+  if type == pb.SimpleType.BOOL:
     return "boolean"
-  elif type == pb.JsType.STRING:
+  elif type == pb.SimpleType.STRING:
     return "string"
   else:
     raise Exception("not yet handled", type)
 
 
-def format_js_type_for_python(type: pb.JsType.ValueType) -> str:
-  if type == pb.JsType.BOOL:
+def format_js_type_for_python(type: pb.SimpleType.ValueType) -> str:
+  if type == pb.SimpleType.BOOL:
     return "bool"
-  elif type == pb.JsType.STRING:
+  elif type == pb.SimpleType.STRING:
     return "str"
   else:
     raise Exception("not yet handled", type)
 
 
-def format_js_type_default_value_for_python(type: pb.JsType.ValueType) -> Any:
-  if type == pb.JsType.BOOL:
-    return False
-  elif type == pb.JsType.STRING:
+def format_js_type_default_value_for_python(
+  type: pb.XType,
+) -> Any:
+  if type.simple_type:
+    if type.simple_type == pb.SimpleType.BOOL:
+      return False
+    elif type.simple_type == pb.SimpleType.STRING:
+      return "''"
+    elif type.simple_type == pb.SimpleType.NUMBER:
+      return 0
+    else:
+      raise Exception("not yet handled", type)
+  elif type.string_literals:
     return "''"
   else:
     raise Exception("not yet handled", type)
 
 
-def format_js_type_for_proto(type: pb.JsType.ValueType) -> str:
-  if type == pb.JsType.BOOL:
-    return "bool"
-  elif type == pb.JsType.STRING:
-    return "string"
+def format_xtype_for_proto(type: pb.XType) -> str:
+  if type.simple_type:
+    if type.simple_type == pb.SimpleType.BOOL:
+      return "bool"
+    elif type.simple_type == pb.SimpleType.STRING:
+      return "string"
+    elif type.simple_type == pb.SimpleType.NUMBER:
+      return "double"
+    else:
+      raise Exception("not yet handled", type)
+  elif type.string_literals:
+    return "string"  # protos doesn't support string literals
   else:
     raise Exception("not yet handled", type)
 
 
-def format_element_prop(prop: pb.ElementProp) -> str:
-  if prop.HasField("event_binding"):
-    return f"""({prop.key})="on{prop.event_binding.event_name}($event)\""""
-  elif prop.HasField("property_binding"):
-    return f'[{prop.key}]="{prop.property_binding.name}"'
-  elif prop.HasField("model_binding"):
-    raise Exception("not yet implemented model_binding")
-  else:
-    raise Exception("not yet handled", prop)
+def format_input_prop(prop: pb.Prop) -> str:
+  return f'[{prop.name}]="{prop.name}"'
+
+
+def format_output_prop(prop: pb.OutputProp) -> str:
+  return f"""({prop.name})="on{prop.event_name}($event)\""""
 
 
 def upper_camel_case(str: str) -> str:
