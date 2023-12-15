@@ -1,3 +1,4 @@
+@if(config().getVariantIndex() === 0) {
 <button
   mat-button
   [color]="config().getColor()"
@@ -8,3 +9,41 @@
 >
   <ng-content></ng-content>
 </button>
+
+} @if(config().getVariantIndex() === 1) {
+<button
+  mat-raised-button
+  [color]="config().getColor()"
+  [disableRipple]="config().getDisableRipple()"
+  [disabled]="config().getDisabled()"
+  [ariaDisabled]="config().getAriaDisabled()"
+  (click)="onClick($event)"
+>
+  <ng-content></ng-content>
+</button>
+
+} @if(config().getVariantIndex() === 2) {
+<button
+  mat-flat-button
+  [color]="config().getColor()"
+  [disableRipple]="config().getDisableRipple()"
+  [disabled]="config().getDisabled()"
+  [ariaDisabled]="config().getAriaDisabled()"
+  (click)="onClick($event)"
+>
+  <ng-content></ng-content>
+</button>
+
+} @if(config().getVariantIndex() === 3) {
+<button
+  mat-stroked-button
+  [color]="config().getColor()"
+  [disableRipple]="config().getDisableRipple()"
+  [disabled]="config().getDisabled()"
+  [ariaDisabled]="config().getAriaDisabled()"
+  (click)="onClick($event)"
+>
+  <ng-content></ng-content>
+</button>
+
+}

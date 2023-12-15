@@ -99,4 +99,7 @@ message Type {
     string name = 4;
     bytes value = 5;
     string debug_json = 6;
+    // Needed outside of |value| because ComponentRenderer (TS) needs to know
+    // the variant index in order to do content projection correctly.
+    int32 variant_index = 7;
 }

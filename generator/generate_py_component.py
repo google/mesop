@@ -23,6 +23,7 @@ def generate_py_component(spec: pb.ComponentSpec) -> str:
     .replace("# INSERT_COMPONENT_PARAMS", generate_py_component_params(spec))
     .replace("# INSERT_PROTO_CALLSITE", generate_py_proto_callsite(spec))
     .replace("# INSERT_COMPONENT_CALL", generate_py_callsite(spec))
+    .replace("# INSERT_VARIANT_INDEX_FN", generate_index_variant_fn(spec))
   )
 
   return py_template
@@ -71,6 +72,10 @@ def generate_py_component_params(spec: pb.ComponentSpec) -> str:
     out.append(
       f"on_{native_event}: Callable[[{format_native_event_name(native_event)}], Any]|None=None"
     )
+  if len(spec.input.directive_names):
+    out.append(
+      f"variant: {format_string_literals(list(spec.input.directive_names))} = {wrap_quote(spec.input.directive_names[0])}"
+    )
   return ", ".join(out)
 
 
@@ -88,7 +93,26 @@ def generate_py_proto_callsite(spec: pb.ComponentSpec) -> str:
     out.append(
       f"on_{native_event}_handler_id=handler_type({event_param_name}) if {event_param_name} else ''"
     )
+  if len(spec.input.directive_names):
+    out.append("variant_index=_get_variant_index(variant)")
   return ", ".join(out)
+
+
+def generate_index_variant_fn(spec: pb.ComponentSpec) -> str:
+  if not len(spec.input.directive_names):
+    return ""
+
+  exprs: list[str] = []
+  for index, variant in enumerate(spec.input.directive_names):
+    s = f"""
+  if variant == '{variant}':
+    return {index}"""
+    exprs.append(s)
+  return f"""
+def _get_variant_index(variant: str) -> int:
+  {''.join(exprs)}
+  raise Exception("Unexpected variant: " + variant)
+  """
 
 
 def format_native_event_name(name: str) -> str:
@@ -134,9 +158,11 @@ def format_py_xtype(type: pb.XType) -> str:
     else:
       raise Exception("not yet handled", type)
   elif type.string_literals:
-    literal_type = ",".join(
-      [wrap_quote(literal) for literal in type.string_literals.string_literal]
-    )
-    return f"Literal[{literal_type}]"
+    return format_string_literals(list(type.string_literals.string_literal))
   else:
     raise Exception("not yet handled", type)
+
+
+def format_string_literals(literals: list[str]) -> str:
+  literal_type = ",".join([wrap_quote(literal) for literal in literals])
+  return f"Literal[{literal_type}]"

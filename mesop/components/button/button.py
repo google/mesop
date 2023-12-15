@@ -1,4 +1,4 @@
-from typing import Any, Callable
+from typing import Any, Callable, Literal
 
 from pydantic import validate_arguments
 
@@ -19,6 +19,9 @@ def button(
   disabled: bool = False,
   aria_disabled: bool = False,
   on_click: Callable[[ClickEvent], Any] | None = None,
+  variant: Literal[
+    "mat-button", "mat-raised-button", "mat-flat-button", "mat-stroked-button"
+  ] = "mat-button",
 ):
   """
   TODO_doc_string
@@ -32,5 +35,18 @@ def button(
       disabled=disabled,
       aria_disabled=aria_disabled,
       on_click_handler_id=handler_type(on_click) if on_click else "",
+      variant_index=_get_variant_index(variant),
     ),
   )
+
+
+def _get_variant_index(variant: str) -> int:
+  if variant == "mat-button":
+    return 0
+  if variant == "mat-raised-button":
+    return 1
+  if variant == "mat-flat-button":
+    return 2
+  if variant == "mat-stroked-button":
+    return 3
+  raise Exception("Unexpected variant: " + variant)

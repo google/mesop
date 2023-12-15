@@ -9,4 +9,5 @@ message ButtonType {
   bool disabled = 3;
   bool aria_disabled = 4;
   string on_click_handler_id = 5;
+  int32 variant_index = 6;
 }

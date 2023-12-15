@@ -27,7 +27,16 @@ class _ComponentWithChildren:
 def create_component(
   type_name: str, proto: Message, key: str | None = None
 ) -> pb.Component:
-  type = pb.Type(name=type_name, value=proto.SerializeToString())
+  variant_index = 0
+  # This is not exactly type-safe, but it's a convenient way of grabbing the
+  # variant index value.
+  if hasattr(proto, "variant_index"):
+    variant_index = proto.variant_index  # type: ignore
+  type = pb.Type(
+    name=type_name,
+    value=proto.SerializeToString(),
+    variant_index=variant_index,  # type: ignore
+  )
   if runtime().debug_mode:
     type.debug_json = json_format.MessageToJson(
       proto, preserving_proto_field_name=True

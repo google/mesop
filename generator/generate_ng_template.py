@@ -11,17 +11,55 @@ def generate_ng_template(spec: pb.ComponentSpec) -> str:
       for native_event in spec.input.native_events
     ]
   )
-  # TODO: use dynamic directive
-  default_directive = (
-    spec.input.directive_names[0] if len(spec.input.directive_names) else ""
-  )
+
   content = ""
   if spec.input.has_content:
     content = "<ng-content></ng-content>"
-  return f"""<{spec.input.element_name} {default_directive} {" ".join(element_props)}>
+  template = f"""<{spec.input.element_name} {" ".join(element_props)}>
     {content}
   </{spec.input.element_name}>
     """
+  if not len(spec.input.directive_names):
+    return template
+  # You cannot dynamically set the directive (e.g. for button class)
+  # see: https://github.com/angular/components/issues/26350
+  # As a workaround, we print the template N times where N = # of variants
+  open_brace = "{"
+  closed_brace = "}"
+  outs: list[str] = []
+  for index, directive in enumerate(spec.input.directive_names):
+    template = f"""<{spec.input.element_name} {directive} {" ".join(element_props)}>
+    {content}
+  </{spec.input.element_name}>
+    """
+
+    outs.append(
+      f"""
+   @if(config().getVariantIndex() === {index}) {open_brace}
+      {template}
+   {closed_brace}
+   """
+    )
+
+  return "\n".join(outs)
+
+
+def format_directives(spec: pb.ComponentSpec) -> str:
+  if not len(spec.input.directive_names):
+    return ""
+  # assuming the first one is the default/main directive which can be overriden by the others
+  # via attributes
+  result = spec.input.directive_names[0]
+  return (
+    result
+    + " "
+    + "\n".join(
+      [
+        f"""[attr.{directive}]=\"config().getVariant() === '{directive}'\""""
+        for directive in spec.input.directive_names
+      ]
+    )
+  )
 
 
 def format_input_prop(prop: pb.Prop) -> str:

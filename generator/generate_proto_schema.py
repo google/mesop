@@ -25,6 +25,10 @@ def generate_proto_schema(spec: pb.ComponentSpec) -> str:
     index += 1
     fields.append(f"string on_{native_event}_handler_id = {index};")
 
+  if len(spec.input.directive_names):
+    index += 1
+    fields.append(f"int32 variant_index = {index};")
+
   message_contents = (
     "{\n" + "\n".join(["  " + field for field in fields]) + "\n}"
   )

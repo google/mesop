@@ -30,3 +30,5 @@ def component_name(
       # INSERT_PROTO_CALLSITE
     ),
   )
+
+# INSERT_VARIANT_INDEX_FN
