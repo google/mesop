@@ -1,1 +1,12 @@
-<div>{{config()}}</div>
+<input
+  matInput
+  [disabled]="config().getDisabled()"
+  [id]="config().getId()"
+  [placeholder]="config().getPlaceholder()"
+  [name]="config().getName()"
+  [required]="config().getRequired()"
+  [type]="config().getType()"
+  [aria-describedby]="config().getUserAriaDescribedBy()"
+  [value]="config().getValue()"
+  [readonly]="config().getReadonly()"
+/>

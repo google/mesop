@@ -1,6 +1,9 @@
 import generator.component_spec_pb2 as pb
 from generator.utils import capitalize_first_letter, upper_camel_case
 
+# Void elements like <input> should not and cannot be closed (Angular compiler will complain)
+SKIP_CLOSING_TAGS = ["input"]
+
 
 def generate_ng_template(spec: pb.ComponentSpec) -> str:
   element_props = (
@@ -11,13 +14,18 @@ def generate_ng_template(spec: pb.ComponentSpec) -> str:
       for native_event in spec.input.native_events
     ]
   )
+  closing_tag = (
+    ""
+    if spec.input.element_name in SKIP_CLOSING_TAGS
+    else f"</{spec.input.element_name}>"
+  )
 
   content = ""
   if spec.input.has_content:
     content = "<ng-content></ng-content>"
   template = f"""<{spec.input.element_name} {" ".join(element_props)}>
     {content}
-  </{spec.input.element_name}>
+  {closing_tag}
     """
   if not len(spec.input.directive_names):
     return template
@@ -30,7 +38,7 @@ def generate_ng_template(spec: pb.ComponentSpec) -> str:
   for index, directive in enumerate(spec.input.directive_names):
     template = f"""<{spec.input.element_name} {directive} {" ".join(element_props)}>
     {content}
-  </{spec.input.element_name}>
+  {closing_tag}
     """
 
     outs.append(

@@ -30,9 +30,15 @@ buttonSpecInput.setTargetClass('MatButtonBase'); // Special-case: https://github
 buttonSpecInput.setHasContent(true);
 buttonSpecInput.addSkipPropertyNames('disabledInteractive');
 
+const inputSpecInput = new pb.ComponentSpecInput();
+inputSpecInput.setName('input');
+inputSpecInput.setElementName('input');
+inputSpecInput.addDirectiveNames('matInput');
+inputSpecInput.addSkipPropertyNames('errorStateMatcher');
+
 const SYSTEM_IMPORT_PREFIX = '@angular/material/';
 const SYSTEM_PREFIX = 'Mat';
-const SPEC_INPUTS = [buttonSpecInput, checkboxSpecInput].map(
+const SPEC_INPUTS = [inputSpecInput, buttonSpecInput, checkboxSpecInput].map(
   preprocessSpecInput,
 );
 
@@ -135,6 +141,7 @@ class NgParser {
 
   processClass(cls: ts.ClassDeclaration) {
     for (const member of cls.members) {
+      console.log('member', member.getText());
       if (ts.isGetAccessor(member) && member.modifiers) {
         for (const modifier of member.modifiers) {
           if (
@@ -184,6 +191,10 @@ class NgParser {
     this.currentNode = member;
     const inputProp = new pb.Prop();
     const name = member.name.getText();
+    // Skip properties like errorStateMatcher on input which doesn't have an explicit type.
+    if (this.input.getSkipPropertyNamesList().includes(name)) {
+      return;
+    }
     inputProp.setName(name);
     inputProp.setDebugType(member.type!.getText());
     inputProp.setType(this.getType(assert(member.type)));

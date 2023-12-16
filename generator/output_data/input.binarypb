@@ -1,0 +1,13 @@
+
+`
+input"MatInput*input:matInputRerrorStateMatcher2)
+@angular/material/inputMatInputModule
+disabledboolean
+idstring
+placeholderstring
+namestring
+requiredboolean
+typestring3
+userAriaDescribedBy"aria-describedbystring
+valuestring
+readonlyboolean

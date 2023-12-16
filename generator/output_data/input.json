@@ -1,0 +1,92 @@
+{
+  "input": {
+    "name": "input",
+    "targetClass": "MatInput",
+    "hasContent": false,
+    "elementName": "input",
+    "tsFilename": "",
+    "directiveNamesList": ["matInput"],
+    "nativeEventsList": [],
+    "skipPropertyNamesList": ["errorStateMatcher"],
+    "ngModule": {
+      "importPath": "@angular/material/input",
+      "moduleName": "MatInputModule",
+      "otherSymbolsList": []
+    }
+  },
+  "inputPropsList": [
+    {
+      "name": "disabled",
+      "alias": "",
+      "type": {
+        "simpleType": 2
+      },
+      "debugType": "boolean"
+    },
+    {
+      "name": "id",
+      "alias": "",
+      "type": {
+        "simpleType": 1
+      },
+      "debugType": "string"
+    },
+    {
+      "name": "placeholder",
+      "alias": "",
+      "type": {
+        "simpleType": 1
+      },
+      "debugType": "string"
+    },
+    {
+      "name": "name",
+      "alias": "",
+      "type": {
+        "simpleType": 1
+      },
+      "debugType": "string"
+    },
+    {
+      "name": "required",
+      "alias": "",
+      "type": {
+        "simpleType": 2
+      },
+      "debugType": "boolean"
+    },
+    {
+      "name": "type",
+      "alias": "",
+      "type": {
+        "simpleType": 1
+      },
+      "debugType": "string"
+    },
+    {
+      "name": "userAriaDescribedBy",
+      "alias": "aria-describedby",
+      "type": {
+        "simpleType": 1
+      },
+      "debugType": "string"
+    },
+    {
+      "name": "value",
+      "alias": "",
+      "type": {
+        "simpleType": 1
+      },
+      "debugType": "string"
+    },
+    {
+      "name": "readonly",
+      "alias": "",
+      "type": {
+        "simpleType": 2
+      },
+      "debugType": "boolean"
+    }
+  ],
+  "outputPropsList": []
+}
