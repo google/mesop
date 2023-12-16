@@ -36,11 +36,21 @@ inputSpecInput.setElementName('input');
 inputSpecInput.addDirectiveNames('matInput');
 inputSpecInput.addSkipPropertyNames('errorStateMatcher');
 
+const formFieldSpecInput = (() => {
+  const i = new pb.ComponentSpecInput();
+  i.setName('form_field');
+  i.setHasContent(true);
+  return i;
+})();
+
 const SYSTEM_IMPORT_PREFIX = '@angular/material/';
 const SYSTEM_PREFIX = 'Mat';
-const SPEC_INPUTS = [inputSpecInput, buttonSpecInput, checkboxSpecInput].map(
-  preprocessSpecInput,
-);
+const SPEC_INPUTS = [
+  inputSpecInput,
+  buttonSpecInput,
+  checkboxSpecInput,
+  formFieldSpecInput,
+].map(preprocessSpecInput);
 
 function preprocessSpecInput(
   input: pb.ComponentSpecInput,
@@ -70,10 +80,23 @@ interface Issue {
 }
 
 class NgParser {
+  initDefaultMap(): Map<string, pb.XType> {
+    const map = new Map<string, pb.XType>();
+
+    // Hard to infer ThemePalette since it's in a central file.
+    const xType = new pb.XType();
+    const sl = new pb.StringLiterals();
+    sl.setStringLiteralList(['primary', 'accent', 'warn']);
+    sl.setDefaultValue('primary');
+    xType.setStringLiterals(sl);
+    map.set('ThemePalette', xType);
+    return map;
+  }
   proto: pb.ComponentSpec;
   private issues: Issue[] = [];
   private currentNode!: ts.Node;
   sourceFile!: ts.SourceFile;
+  private typeAliasMap: Map<string, pb.XType> = this.initDefaultMap();
   constructor(
     private readonly input: pb.ComponentSpecInput,
     filePath: string,
@@ -91,7 +114,11 @@ class NgParser {
       ts.ScriptTarget.Latest,
       true, // setParentNodes flag
     );
-
+    for (const statement of this.sourceFile.statements) {
+      if (ts.isTypeAliasDeclaration(statement)) {
+        this.collectTypeAliases(statement);
+      }
+    }
     this.sourceFile.statements.find((s) => {
       if (ts.isClassDeclaration(s)) {
         if (s.name?.escapedText === this.input.getTargetClass()) {
@@ -99,6 +126,13 @@ class NgParser {
         }
       }
     });
+  }
+  collectTypeAliases(statement: ts.TypeAliasDeclaration) {
+    const name = statement.name.getText();
+    if (statement.type) {
+      const xType = this.getType(statement.type);
+      this.typeAliasMap.set(name, xType);
+    }
   }
 
   logIssue(msg: string, context?: object | string) {
@@ -134,14 +168,13 @@ class NgParser {
       }
       return false;
     } else {
-      console.log(FgGreen, 'Validation succeeded!');
+      console.log(FgGreen, 'Validation succeeded!', Reset);
       return true;
     }
   }
 
   processClass(cls: ts.ClassDeclaration) {
     for (const member of cls.members) {
-      console.log('member', member.getText());
       if (ts.isGetAccessor(member) && member.modifiers) {
         for (const modifier of member.modifiers) {
           if (
@@ -313,7 +346,12 @@ class NgParser {
       if (simpleTypes[0]) {
         typeProto.setSimpleType(simpleTypes[0]);
       } else {
-        this.logIssue('Unhandled simple type', {type: simpleTypes[0]});
+        // Maybe it's a type alias
+        if (this.typeAliasMap.has(text)) {
+          return this.typeAliasMap.get(text)!;
+        } else {
+          this.logIssue('Unhandled single type', {type: text});
+        }
       }
       return typeProto;
     } else {
@@ -322,7 +360,13 @@ class NgParser {
       const typeProto = new pb.XType();
       const sl = new pb.StringLiterals();
       sl.setStringLiteralList(stringLiterals);
-      sl.setDefaultValue(this.stripQuotes(initializer!.getText()));
+      if (!initializer) {
+        // If there's no initializer, then we just pick the first value (somewhat arbitrary, but
+        // Angular Material seemes to default to it).
+        sl.setDefaultValue(stringLiterals[0]);
+      } else {
+        sl.setDefaultValue(this.stripQuotes(initializer.getText()));
+      }
       typeProto.setStringLiterals(sl);
       return typeProto;
     }
@@ -344,7 +388,8 @@ class NgParser {
   stripQuotes(t: string): string {
     // Strip off quotes (but sanity check first)
     if (t[0] !== "'" && t[t.length - 1] !== "'") {
-      this.logIssue('Unexpected type');
+      this.logIssue('Unexpected type', {string: t});
+      throw new Error('unexpected type=' + t);
       return '<issue>';
     }
     return t.slice(1, -1);
@@ -379,7 +424,7 @@ function main() {
 
     const parser = new NgParser(specInput, inputFilePath);
 
-    console.log(JSON.stringify(parser.proto.toObject(), null, 2));
+    // console.log(JSON.stringify(parser.proto.toObject(), null, 2));
 
     if (parser.validate() && workspaceRoot) {
       const out_path = path.join(workspaceRoot, 'generator', 'output_data');

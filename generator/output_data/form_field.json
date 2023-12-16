@@ -1,0 +1,84 @@
+{
+  "input": {
+    "name": "form_field",
+    "targetClass": "MatFormField",
+    "hasContent": true,
+    "elementName": "mat-form-field",
+    "tsFilename": "",
+    "directiveNamesList": [],
+    "nativeEventsList": [],
+    "skipPropertyNamesList": [],
+    "ngModule": {
+      "importPath": "@angular/material/form-field",
+      "moduleName": "MatFormFieldModule",
+      "otherSymbolsList": []
+    }
+  },
+  "inputPropsList": [
+    {
+      "name": "hideRequiredMarker",
+      "alias": "",
+      "type": {
+        "simpleType": 2
+      },
+      "debugType": "boolean"
+    },
+    {
+      "name": "color",
+      "alias": "",
+      "type": {
+        "simpleType": 0,
+        "stringLiterals": {
+          "stringLiteralList": ["primary", "accent", "warn"],
+          "defaultValue": "primary"
+        }
+      },
+      "debugType": "ThemePalette"
+    },
+    {
+      "name": "floatLabel",
+      "alias": "",
+      "type": {
+        "simpleType": 0,
+        "stringLiterals": {
+          "stringLiteralList": ["always", "auto"],
+          "defaultValue": "always"
+        }
+      },
+      "debugType": "FloatLabelType"
+    },
+    {
+      "name": "appearance",
+      "alias": "",
+      "type": {
+        "simpleType": 0,
+        "stringLiterals": {
+          "stringLiteralList": ["fill", "outline"],
+          "defaultValue": "fill"
+        }
+      },
+      "debugType": "MatFormFieldAppearance"
+    },
+    {
+      "name": "subscriptSizing",
+      "alias": "",
+      "type": {
+        "simpleType": 0,
+        "stringLiterals": {
+          "stringLiteralList": ["fixed", "dynamic"],
+          "defaultValue": "fixed"
+        }
+      },
+      "debugType": "SubscriptSizing"
+    },
+    {
+      "name": "hintLabel",
+      "alias": "",
+      "type": {
+        "simpleType": 1
+      },
+      "debugType": "string"
+    }
+  ],
+  "outputPropsList": []
+}

@@ -14,6 +14,7 @@ ng_module(
     ]),
     deps = [
         # REF(//scripts/scaffold_component.py):insert_component_import
+        "//mesop/components/form_field:ng",
         "//mesop/components/input:ng",
         "//mesop/components/markdown:ng",
         "//mesop/components/text_input:ng",

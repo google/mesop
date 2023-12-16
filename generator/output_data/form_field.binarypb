@@ -1,0 +1,22 @@
+
+`
+
+form_field"MatFormField*mat-form-field22
+@angular/material/form-fieldMatFormFieldModule!
+hideRequiredMarkerboolean9
+color" 
+primary
+accent
+warnprimaryThemePalette6
+
+floatLabel
+always
+autoalwaysFloatLabelType=
+
+appearance
+fill
+outlinefillMatFormFieldAppearance=
+subscriptSizing
+fixed
+dynamicfixedSubscriptSizing
+	hintLabelstring

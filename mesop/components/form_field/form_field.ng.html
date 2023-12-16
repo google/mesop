@@ -1,0 +1,14 @@
+<mat-form-field
+  [hideRequiredMarker]="config().getHideRequiredMarker()"
+  [color]="getColor()"
+  [floatLabel]="getFloatLabel()"
+  [appearance]="getAppearance()"
+  [subscriptSizing]="getSubscriptSizing()"
+  [hintLabel]="config().getHintLabel()"
+>
+  <!-- <div>
+
+  </div> -->
+  <ng-content></ng-content>
+  <input matInput hidden />
+</mat-form-field>
