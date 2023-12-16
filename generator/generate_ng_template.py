@@ -7,7 +7,11 @@ SKIP_CLOSING_TAGS = ["input"]
 
 def generate_ng_template(spec: pb.ComponentSpec) -> str:
   element_props = (
-    [format_input_prop(prop) for prop in spec.input_props]
+    [
+      format_input_prop(prop)
+      for prop in spec.input_props
+      if prop.target == pb.Target.TARGET_UNDEFINED
+    ]
     + [format_output_prop(prop) for prop in spec.output_props]
     + [
       format_native_event(native_event)
@@ -23,12 +27,29 @@ def generate_ng_template(spec: pb.ComponentSpec) -> str:
   content = ""
   if spec.input.has_content:
     content = "<ng-content></ng-content>"
-  template = f"""<{spec.input.element_name} {" ".join(element_props)}>
+
+  def template(directive: str = "") -> str:
+    out = f"""<{spec.input.element_name} {directive} {" ".join(element_props)}>
     {content}
   {closing_tag}
-    """
+  """
+    form_field_props = [
+      format_input_prop(prop)
+      for prop in spec.input_props
+      if prop.target == pb.Target.TARGET_FORM_FIELD
+    ]
+    if spec.input.is_form_field:
+      out = (
+        f"<mat-form-field {' '.join(form_field_props)}>"
+        # Hardcode label since it's a special case (assumed it's there when spec is form field)
+        + "<mat-label>{{config().getLabel()}}</mat-label>"
+        + out
+        + "</mat-form-field>"
+      )
+    return out
+
   if not len(spec.input.directive_names):
-    return template
+    return template()
   # You cannot dynamically set the directive (e.g. for button class)
   # see: https://github.com/angular/components/issues/26350
   # As a workaround, we print the template N times where N = # of variants
@@ -36,15 +57,10 @@ def generate_ng_template(spec: pb.ComponentSpec) -> str:
   closed_brace = "}"
   outs: list[str] = []
   for index, directive in enumerate(spec.input.directive_names):
-    template = f"""<{spec.input.element_name} {directive} {" ".join(element_props)}>
-    {content}
-  {closing_tag}
-    """
-
     outs.append(
       f"""
    @if(config().getVariantIndex() === {index}) {open_brace}
-      {template}
+      {template(directive=directive)}
    {closed_brace}
    """
     )

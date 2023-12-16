@@ -30,11 +30,15 @@ buttonSpecInput.setTargetClass('MatButtonBase'); // Special-case: https://github
 buttonSpecInput.setHasContent(true);
 buttonSpecInput.addSkipPropertyNames('disabledInteractive');
 
-const inputSpecInput = new pb.ComponentSpecInput();
-inputSpecInput.setName('input');
-inputSpecInput.setElementName('input');
-inputSpecInput.addDirectiveNames('matInput');
-inputSpecInput.addSkipPropertyNames('errorStateMatcher');
+const inputSpecInput = (() => {
+  const i = new pb.ComponentSpecInput();
+  i.setName('input');
+  i.setElementName('input');
+  i.addDirectiveNames('matInput');
+  i.setIsFormField(true);
+  i.addSkipPropertyNames('errorStateMatcher');
+  return i;
+})();
 
 const formFieldSpecInput = (() => {
   const i = new pb.ComponentSpecInput();
@@ -62,14 +66,17 @@ function preprocessSpecInput(
   if (!input.getElementName()) {
     input.setElementName(SYSTEM_PREFIX.toLowerCase() + '-' + kebabCase(name));
   }
-  const ngModule = input.getNgModule() || new pb.NgModuleSpec();
-  if (!ngModule.getModuleName()) {
+  const ngModules = input.getNgModulesList();
+  if (!ngModules.length) {
+    const ngModule = input.addNgModules();
     ngModule.setModuleName(SYSTEM_PREFIX + upperCamelCase(name) + 'Module');
-  }
-  if (!ngModule.getImportPath()) {
     ngModule.setImportPath(SYSTEM_IMPORT_PREFIX + kebabCase(name));
   }
-  input.setNgModule(ngModule);
+  if (input.getIsFormField()) {
+    const ngModule = input.addNgModules();
+    ngModule.setModuleName(SYSTEM_PREFIX + 'FormFieldModule');
+    ngModule.setImportPath(SYSTEM_IMPORT_PREFIX + 'form-field');
+  }
   return input;
 }
 
@@ -280,7 +287,7 @@ class NgParser {
         outputProp.addEventProps(eventProp);
       } else {
         // Need to import complex type.
-        this.input.getNgModule()!.addOtherSymbols(type);
+        this.input.getNgModulesList()[0].addOtherSymbols(type);
         outputProp.setEventPropsList(this.getEventProps(type));
       }
       this.proto.addOutputProps(outputProp);

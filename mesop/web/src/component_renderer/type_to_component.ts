@@ -1,4 +1,3 @@
-import {FormFieldComponent} from '../../../components/form_field/form_field';
 import {InputComponent} from '../../../components/input/input';
 import {
   Key,
@@ -23,7 +22,6 @@ export interface TypeToComponent {
 }
 
 export const typeToComponent = {
-  'form_field': FormFieldComponent,
   'input': InputComponent,
   'button': ButtonComponent,
   'checkbox': CheckboxComponent,

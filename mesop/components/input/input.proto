@@ -13,5 +13,12 @@ message InputType {
   string user_aria_described_by = 7;
   string value = 8;
   bool readonly = 9;
-  int32 variant_index = 10;
+  bool hide_required_marker = 10;
+  string color = 11;
+  string float_label = 12;
+  string appearance = 13;
+  string subscript_sizing = 14;
+  string hint_label = 15;
+  string label = 16;
+  int32 variant_index = 17;
 }

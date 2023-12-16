@@ -8,11 +8,19 @@
     "directiveNamesList": ["matInput"],
     "nativeEventsList": [],
     "skipPropertyNamesList": ["errorStateMatcher"],
-    "ngModule": {
-      "importPath": "@angular/material/input",
-      "moduleName": "MatInputModule",
-      "otherSymbolsList": []
-    }
+    "ngModulesList": [
+      {
+        "importPath": "@angular/material/input",
+        "moduleName": "MatInputModule",
+        "otherSymbolsList": []
+      },
+      {
+        "importPath": "@angular/material/form-field",
+        "moduleName": "MatFormFieldModule",
+        "otherSymbolsList": []
+      }
+    ],
+    "isFormField": true
   },
   "inputPropsList": [
     {
@@ -21,7 +29,8 @@
       "type": {
         "simpleType": 2
       },
-      "debugType": "boolean"
+      "debugType": "boolean",
+      "target": 0
     },
     {
       "name": "id",
@@ -29,7 +38,8 @@
       "type": {
         "simpleType": 1
       },
-      "debugType": "string"
+      "debugType": "string",
+      "target": 0
     },
     {
       "name": "placeholder",
@@ -37,7 +47,8 @@
       "type": {
         "simpleType": 1
       },
-      "debugType": "string"
+      "debugType": "string",
+      "target": 0
     },
     {
       "name": "name",
@@ -45,7 +56,8 @@
       "type": {
         "simpleType": 1
       },
-      "debugType": "string"
+      "debugType": "string",
+      "target": 0
     },
     {
       "name": "required",
@@ -53,7 +65,8 @@
       "type": {
         "simpleType": 2
       },
-      "debugType": "boolean"
+      "debugType": "boolean",
+      "target": 0
     },
     {
       "name": "type",
@@ -61,7 +74,8 @@
       "type": {
         "simpleType": 1
       },
-      "debugType": "string"
+      "debugType": "string",
+      "target": 0
     },
     {
       "name": "userAriaDescribedBy",
@@ -69,7 +83,8 @@
       "type": {
         "simpleType": 1
       },
-      "debugType": "string"
+      "debugType": "string",
+      "target": 0
     },
     {
       "name": "value",
@@ -77,7 +92,8 @@
       "type": {
         "simpleType": 1
       },
-      "debugType": "string"
+      "debugType": "string",
+      "target": 0
     },
     {
       "name": "readonly",
@@ -85,7 +101,8 @@
       "type": {
         "simpleType": 2
       },
-      "debugType": "boolean"
+      "debugType": "boolean",
+      "target": 0
     }
   ],
   "outputPropsList": []

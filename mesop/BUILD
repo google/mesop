@@ -12,7 +12,6 @@ py_library(
     ],
     deps = [
         # REF(//scripts/scaffold_component.py):insert_component_import
-        "//mesop/components/form_field:py",
         "//mesop/components/input:py",
         "//mesop/components/markdown:py",
         "//mesop/components/text_input:py",

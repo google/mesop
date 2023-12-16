@@ -1,12 +1,23 @@
-<input
-  matInput
-  [disabled]="config().getDisabled()"
-  [id]="config().getId()"
-  [placeholder]="config().getPlaceholder()"
-  [name]="config().getName()"
-  [required]="config().getRequired()"
-  [type]="config().getType()"
-  [aria-describedby]="config().getUserAriaDescribedBy()"
-  [value]="config().getValue()"
-  [readonly]="config().getReadonly()"
-/>
+@if(config().getVariantIndex() === 0) {
+<mat-form-field
+  [hideRequiredMarker]="config().getHideRequiredMarker()"
+  [color]="getColor()"
+  [floatLabel]="getFloatLabel()"
+  [appearance]="getAppearance()"
+  [subscriptSizing]="getSubscriptSizing()"
+  [hintLabel]="config().getHintLabel()"
+  ><mat-label>{{config().getLabel()}}</mat-label
+  ><input
+    matInput
+    [disabled]="config().getDisabled()"
+    [id]="config().getId()"
+    [placeholder]="config().getPlaceholder()"
+    [name]="config().getName()"
+    [required]="config().getRequired()"
+    [type]="config().getType()"
+    [aria-describedby]="config().getUserAriaDescribedBy()"
+    [value]="config().getValue()"
+    [readonly]="config().getReadonly()"
+  />
+</mat-form-field>
+}

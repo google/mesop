@@ -25,7 +25,11 @@ message ComponentSpecInput {
     repeated string skip_property_names = 10;
 
     // TODO: may need to make this multiple modules
-    NgModuleSpec ng_module = 6;
+    repeated NgModuleSpec ng_modules = 6;
+
+    // If this is a form component that needs to be wrapped by <mat-form-field> (https://material.angular.io/components/form-field/overview)
+    // then set this to true. This will merge all the properties from form field.
+    bool is_form_field = 11;
 }
 
 message NgModuleSpec {
@@ -44,6 +48,16 @@ message ComponentSpec {
     repeated OutputProp output_props = 3;
 }
 
+// If it's merged from form field, we need to keep track when generating the template.
+enum Target {
+    // If it belongs to the regular component
+    TARGET_UNDEFINED = 0;
+    // If it belongs to <mat-form-field>
+    TARGET_FORM_FIELD = 1;
+    // If it belongs to <mat-label>
+    TARGET_LABEL = 2;
+}
+
 message Prop {
     // Name of the property (e.g. JS property name on Angular component)
     string name = 1;
@@ -51,6 +65,7 @@ message Prop {
     string alias = 4;
     XType type = 2;
     string debug_type = 3;
+    Target target = 5;
 }
 
 message OutputProp {

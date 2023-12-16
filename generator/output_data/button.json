@@ -13,11 +13,14 @@
     ],
     "nativeEventsList": ["click"],
     "skipPropertyNamesList": ["disabledInteractive"],
-    "ngModule": {
-      "importPath": "@angular/material/button",
-      "moduleName": "MatButtonModule",
-      "otherSymbolsList": []
-    }
+    "ngModulesList": [
+      {
+        "importPath": "@angular/material/button",
+        "moduleName": "MatButtonModule",
+        "otherSymbolsList": []
+      }
+    ],
+    "isFormField": false
   },
   "inputPropsList": [
     {
@@ -26,7 +29,8 @@
       "type": {
         "simpleType": 1
       },
-      "debugType": "string | null"
+      "debugType": "string | null",
+      "target": 0
     },
     {
       "name": "disableRipple",
@@ -34,7 +38,8 @@
       "type": {
         "simpleType": 2
       },
-      "debugType": "boolean"
+      "debugType": "boolean",
+      "target": 0
     },
     {
       "name": "disabled",
@@ -42,7 +47,8 @@
       "type": {
         "simpleType": 2
       },
-      "debugType": "boolean"
+      "debugType": "boolean",
+      "target": 0
     },
     {
       "name": "ariaDisabled",
@@ -50,7 +56,8 @@
       "type": {
         "simpleType": 2
       },
-      "debugType": "boolean | undefined"
+      "debugType": "boolean | undefined",
+      "target": 0
     }
   ],
   "outputPropsList": []

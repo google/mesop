@@ -1,3 +1,4 @@
+import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {Component, Input} from '@angular/core';
 import {
@@ -11,7 +12,7 @@ import {Channel} from '../../web/src/services/channel';
 @Component({
   templateUrl: 'input.ng.html',
   standalone: true,
-  imports: [MatInputModule],
+  imports: [MatInputModule, MatFormFieldModule],
 })
 export class InputComponent {
   @Input({required: true}) type!: Type;
@@ -28,5 +29,21 @@ export class InputComponent {
 
   config(): InputType {
     return this._config;
+  }
+
+  getColor(): 'primary' | 'accent' | 'warn' {
+    return this.config().getColor() as 'primary' | 'accent' | 'warn';
+  }
+
+  getFloatLabel(): 'always' | 'auto' {
+    return this.config().getFloatLabel() as 'always' | 'auto';
+  }
+
+  getAppearance(): 'fill' | 'outline' {
+    return this.config().getAppearance() as 'fill' | 'outline';
+  }
+
+  getSubscriptSizing(): 'fixed' | 'dynamic' {
+    return this.config().getSubscriptSizing() as 'fixed' | 'dynamic';
   }
 }

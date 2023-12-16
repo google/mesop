@@ -21,6 +21,13 @@ def input(
   user_aria_described_by: str = "",
   value: str = "",
   readonly: bool = False,
+  hide_required_marker: bool = False,
+  color: Literal["primary", "accent", "warn"] = "primary",
+  float_label: Literal["always", "auto"] = "always",
+  appearance: Literal["fill", "outline"] = "fill",
+  subscript_sizing: Literal["fixed", "dynamic"] = "fixed",
+  hint_label: str = "",
+  label: str = "",
   variant: Literal["matInput"] = "matInput",
 ):
   """
@@ -39,6 +46,13 @@ def input(
       user_aria_described_by=user_aria_described_by,
       value=value,
       readonly=readonly,
+      hide_required_marker=hide_required_marker,
+      color=color,
+      float_label=float_label,
+      appearance=appearance,
+      subscript_sizing=subscript_sizing,
+      hint_label=hint_label,
+      label=label,
       variant_index=_get_variant_index(variant),
     ),
   )

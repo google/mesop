@@ -19,16 +19,13 @@ def generate_ng_ts(spec: pb.ComponentSpec) -> str:
   # default_value_prop = [
   #   prop for prop in spec.input_props if prop.name == "value"
   # ][0]
-  symbols = ",".join(
-    [spec.input.ng_module.module_name]
-    + list(spec.input.ng_module.other_symbols)
-  )
-  symbols = "{" + symbols + "}"
+  for ng_module in spec.input.ng_modules:
+    symbols = ",".join([ng_module.module_name] + list(ng_module.other_symbols))
+    symbols = "{" + symbols + "}"
 
-  ts_template = (
-    f"import {symbols} from '{spec.input.ng_module.import_path}'\n"
-    + ts_template
-  )
+    ts_template = (
+      f"import {symbols} from '{ng_module.import_path}'\n" + ts_template
+    )
   # Do simple string replacements
   ts_template = (
     ts_template.replace("component_name", spec.input.name)
@@ -41,7 +38,7 @@ def generate_ng_ts(spec: pb.ComponentSpec) -> str:
 
 
 def generate_ng_imports(spec: pb.ComponentSpec) -> str:
-  return f"imports: [{spec.input.ng_module.module_name}]"
+  return f"imports: [{','.join([ng_module.module_name for ng_module in spec.input.ng_modules])}]"
 
 
 def generate_ts_methods(spec: pb.ComponentSpec) -> str:
