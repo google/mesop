@@ -18,6 +18,7 @@
     [aria-describedby]="config().getUserAriaDescribedBy()"
     [value]="config().getValue()"
     [readonly]="config().getReadonly()"
+    (input)="onInput($event)"
   />
 </mat-form-field>
 }

@@ -1,11 +1,13 @@
-from typing import Literal
+from typing import Any, Callable, Literal
 
 from pydantic import validate_arguments
 
 import mesop.components.input.input_pb2 as input_pb
 from mesop.component_helpers import (
+  handler_type,
   insert_component,
 )
+from mesop.events import InputEvent
 
 
 @validate_arguments
@@ -28,6 +30,7 @@ def input(
   subscript_sizing: Literal["fixed", "dynamic"] = "fixed",
   hint_label: str = "",
   label: str = "",
+  on_input: Callable[[InputEvent], Any] | None = None,
   variant: Literal["matInput"] = "matInput",
 ):
   """
@@ -53,6 +56,7 @@ def input(
       subscript_sizing=subscript_sizing,
       hint_label=hint_label,
       label=label,
+      on_input_handler_id=handler_type(on_input) if on_input else "",
       variant_index=_get_variant_index(variant),
     ),
   )

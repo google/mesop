@@ -49,3 +49,11 @@ runtime().register_event_mapper(
     key=key,
   ),
 )
+
+runtime().register_event_mapper(
+  events.InputEvent,
+  lambda userEvent, key: events.InputEvent(
+    value=userEvent.string,
+    key=key,
+  ),
+)

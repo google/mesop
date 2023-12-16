@@ -6,7 +6,7 @@
     "elementName": "input",
     "tsFilename": "",
     "directiveNamesList": ["matInput"],
-    "nativeEventsList": [],
+    "nativeEventsList": ["input"],
     "skipPropertyNamesList": ["errorStateMatcher"],
     "ngModulesList": [
       {

@@ -10,7 +10,7 @@ from mesop.component_helpers import (
   insert_composite_component,
   register_event_mapper,
 )
-from mesop.events import MesopEvent, ClickEvent
+from mesop.events import MesopEvent, ClickEvent, InputEvent
 
 # INSERT_EVENTS
 

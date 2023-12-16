@@ -84,6 +84,17 @@ def generate_ts_event_method(prop: pb.OutputProp) -> str:
 
 def generate_ts_native_event_method(native_event: str) -> str:
   native_event_name = upper_camel_case(native_event)
+  if native_event == "input":
+    return f"""
+  on{native_event_name}(event: Event): void {{
+    const userEvent = new UserEvent();
+    userEvent.setHandlerId(this.config().getOn{native_event_name}HandlerId())
+    userEvent.setString((event.target as HTMLInputElement).value);
+    userEvent.setKey(this.key);
+    this.channel.dispatch(userEvent);
+  }}
+  """
+
   return f"""
   on{native_event_name}(event: Event): void {{
     const userEvent = new UserEvent();

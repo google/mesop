@@ -24,6 +24,9 @@ from mesop.events import (
 from mesop.events import (
   ClickEvent as ClickEvent,
 )
+from mesop.events import (
+  InputEvent as InputEvent,
+)
 from mesop.features import page as page
 from mesop.key import Key as Key
 

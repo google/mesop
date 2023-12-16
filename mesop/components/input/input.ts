@@ -46,4 +46,12 @@ export class InputComponent {
   getSubscriptSizing(): 'fixed' | 'dynamic' {
     return this.config().getSubscriptSizing() as 'fixed' | 'dynamic';
   }
+
+  onInput(event: Event): void {
+    const userEvent = new UserEvent();
+    userEvent.setHandlerId(this.config().getOnInputHandlerId());
+    userEvent.setString((event.target as HTMLInputElement).value);
+    userEvent.setKey(this.key);
+    this.channel.dispatch(userEvent);
+  }
 }

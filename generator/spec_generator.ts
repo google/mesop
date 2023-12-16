@@ -35,6 +35,7 @@ const inputSpecInput = (() => {
   i.setName('input');
   i.setElementName('input');
   i.addDirectiveNames('matInput');
+  i.addNativeEvents('input');
   i.setIsFormField(true);
   i.addSkipPropertyNames('errorStateMatcher');
   return i;

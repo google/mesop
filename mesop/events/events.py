@@ -14,5 +14,10 @@ class ClickEvent(MesopEvent):
 
 
 @dataclass
+class InputEvent(MesopEvent):
+  value: str
+
+
+@dataclass
 class ChangeEvent(MesopEvent):
   value: str
