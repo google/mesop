@@ -2,13 +2,13 @@
 ù
 input"MatInput*input:matInputJinputRerrorStateMatcher2)
 @angular/material/inputMatInputModule22
-@angular/material/form-fieldMatFormFieldModuleX
-disabledboolean
-idstring
-placeholderstring
-namestring
-requiredboolean
-typestring3
-userAriaDescribedBy"aria-describedbystring
-valuestring
-readonlyboolean
+@angular/material/form-fieldMatFormFieldModuleXR
+disabledboolean29Implemented as part of MatFormFieldControl. @docs-privateK
+idstring29Implemented as part of MatFormFieldControl. @docs-privateT
+placeholderstring29Implemented as part of MatFormFieldControl. @docs-private4
+namestring2 Name of the input. @docs-privateR
+requiredboolean29Implemented as part of MatFormFieldControl. @docs-private.
+typestring2Input type of the element.n
+userAriaDescribedBy"aria-describedbystring29Implemented as part of MatFormFieldControl. @docs-privateN
+valuestring29Implemented as part of MatFormFieldControl. @docs-private9
+readonlyboolean2 Whether the element is readonly.

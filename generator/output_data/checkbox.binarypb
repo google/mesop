@@ -1,27 +1,27 @@
 
 k
 checkbox"MatCheckbox*mat-checkbox2B
-@angular/material/checkboxMatCheckboxModuleMatCheckboxChange#
+@angular/material/checkboxMatCheckboxModuleMatCheckboxChange´
 	ariaLabel"
-aria-labelstring4
-ariaLabelledby"aria-labelledbystring | null/
-ariaDescribedby"aria-describedbystring
-idstring
-requiredboolean=
+aria-labelstring2ÖAttached to the aria-label attribute of the host element. In most cases, aria-labelledby will take precedence so this may be omitted.î
+ariaLabelledby"aria-labelledbystring | null2^Users can specify the `aria-labelledby` attribute which will be forwarded to the input elementÉ
+ariaDescribedby"aria-describedbystring2RThe 'aria-describedby' attribute is read after the element's label and field type.e
+idstring2SA unique id for the checkbox input. If none is supplied, it will be auto-generated.:
+requiredboolean2!Whether the checkbox is required.ê
 labelPosition
 before
-afterafter'before' | 'after'
-namestring | null
-valuestring
-disableRippleboolean
-tabIndexnumber
-colorstring | undefined
-checkedboolean
-disabledboolean
-indeterminatebooleanA
-changeCheckboxChangeEvent
-checked"
-MatCheckboxChangeY
+afterafter'before' | 'after'2QWhether the label should appear after or before the checkbox. Defaults to 'after'U
+namestring | null2:Name value will be applied to the input element if presentD
+valuestring2/The value attribute of the native input element@
+disableRippleboolean2"Whether the checkbox has a ripple.2
+tabIndexnumber2Tabindex for the checkbox.?
+colorstring | undefined2Palette color of the checkbox.8
+checkedboolean2 Whether the checkbox is checked.:
+disabledboolean2!Whether the checkbox is disabled.¡
+indeterminateboolean2¢Whether the checkbox is indeterminate. This is also known as "mixed" mode and can be used to represent a checkbox with three states, e.g. a checkbox that represents a nested list of checkable items. Note that whenever checkbox is manually clicked, indeterminate is immediately set to false.ß
+changeCheckboxChangeEvent7
+checked2(The new `checked` value of the checkbox."
+MatCheckboxChange*:Event emitted when the checkbox's `checked` value changes.õ
 indeterminateChange CheckboxIndeterminateChangeEvent
 indeterminate"
-boolean
+boolean*@Event emitted when the checkbox's `indeterminate` value changes.

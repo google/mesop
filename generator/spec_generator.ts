@@ -239,6 +239,7 @@ class NgParser {
     inputProp.setName(name);
     inputProp.setDebugType(member.type!.getText());
     inputProp.setType(this.getType(assert(member.type)));
+    inputProp.setDocs(this.getJsDoc(member));
     this.proto.addInputProps(inputProp);
   }
 
@@ -257,6 +258,7 @@ class NgParser {
       inputProp.setName(elName);
       inputProp.setDebugType(prop.type!.getText());
       inputProp.setType(this.getType(assert(prop.type), prop.initializer));
+      inputProp.setDocs(this.getJsDoc(prop));
       this.proto.addInputProps(inputProp);
     } else {
       throw new Error('Expected identifier for prop' + prop);
@@ -270,6 +272,7 @@ class NgParser {
       const type = initializer.typeArguments![0].getText();
 
       const outputProp = new pb.OutputProp();
+      outputProp.setDocs(this.getJsDoc(p));
       outputProp.setName(name);
       outputProp.setEventName(this.formatEventName(name));
       // If the type is simple, then we compute based on the name
@@ -311,6 +314,7 @@ class NgParser {
                 const typeProto = new pb.XType();
                 typeProto.setSimpleType(simpleType);
                 eventProp.setType(typeProto);
+                eventProp.setDocs(this.getJsDoc(property));
                 eventProps.push(eventProp);
               } else {
                 // Deliberately ignore since we can't transmit something like an element
@@ -369,9 +373,15 @@ class NgParser {
       const sl = new pb.StringLiterals();
       sl.setStringLiteralList(stringLiterals);
       if (!initializer) {
-        // If there's no initializer, then we just pick the first value (somewhat arbitrary, but
-        // Angular Material seemes to default to it).
-        sl.setDefaultValue(stringLiterals[0]);
+        // Special case for FloatLabelType (from form-field); it's hard to infer, but the default is 'auto'
+        // which breaks the convention.
+        if (type.getText() === "'always' | 'auto'") {
+          sl.setDefaultValue('auto');
+        } else {
+          // If there's no initializer, then we just pick the first value (somewhat arbitrary, but
+          // Angular Material seemes to default to it).
+          sl.setDefaultValue(stringLiterals[0]);
+        }
       } else {
         sl.setDefaultValue(this.stripQuotes(initializer.getText()));
       }
@@ -401,6 +411,19 @@ class NgParser {
       return '<issue>';
     }
     return t.slice(1, -1);
+  }
+
+  getJsDoc(node: ts.Node): string {
+    const jsDocs = ts.getJSDocCommentsAndTags(node);
+    return jsDocs
+      .map((d) => d.getText())
+      .join(' ')
+      .split('/**')
+      .join('')
+      .split('*/')
+      .join('')
+      .replace(/[\s]+\*/g, '')
+      .trim();
   }
 }
 

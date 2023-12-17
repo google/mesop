@@ -5,9 +5,13 @@ nav:
   - Overview: index.md
   - Concepts: concepts.md
   - Components:
+      - Box: components/box.md
       - Button: components/button.md
       - Checkbox: components/checkbox.md
+      - Input: components/input.md
       - Text: components/text.md
+  - Features:
+      - Pages: features/pages.md
   - Deployment: deployment.md
   - Troubleshooting: troubleshooting.md
   - Developing Mesop:
@@ -63,11 +67,12 @@ plugins:
           options:
             docstring_options:
               ignore_init_summary: true
-            docstring_section_style: list
+            docstring_section_style: spacy
             heading_level: 1
             inherited_members: true
             merge_init_into_class: true
-            separate_signature: true
+            separate_signature: false
+            show_signature: false
             show_root_heading: true
             show_root_full_path: false
             show_source: false

@@ -25,7 +25,8 @@
         "simpleType": 1
       },
       "debugType": "string",
-      "target": 0
+      "target": 0,
+      "docs": "Attached to the aria-label attribute of the host element. In most cases, aria-labelledby will take precedence so this may be omitted."
     },
     {
       "name": "ariaLabelledby",
@@ -34,7 +35,8 @@
         "simpleType": 1
       },
       "debugType": "string | null",
-      "target": 0
+      "target": 0,
+      "docs": "Users can specify the `aria-labelledby` attribute which will be forwarded to the input element"
     },
     {
       "name": "ariaDescribedby",
@@ -43,7 +45,8 @@
         "simpleType": 1
       },
       "debugType": "string",
-      "target": 0
+      "target": 0,
+      "docs": "The 'aria-describedby' attribute is read after the element's label and field type."
     },
     {
       "name": "id",
@@ -52,7 +55,8 @@
         "simpleType": 1
       },
       "debugType": "string",
-      "target": 0
+      "target": 0,
+      "docs": "A unique id for the checkbox input. If none is supplied, it will be auto-generated."
     },
     {
       "name": "required",
@@ -61,7 +65,8 @@
         "simpleType": 2
       },
       "debugType": "boolean",
-      "target": 0
+      "target": 0,
+      "docs": "Whether the checkbox is required."
     },
     {
       "name": "labelPosition",
@@ -74,7 +79,8 @@
         }
       },
       "debugType": "'before' | 'after'",
-      "target": 0
+      "target": 0,
+      "docs": "Whether the label should appear after or before the checkbox. Defaults to 'after'"
     },
     {
       "name": "name",
@@ -83,7 +89,8 @@
         "simpleType": 1
       },
       "debugType": "string | null",
-      "target": 0
+      "target": 0,
+      "docs": "Name value will be applied to the input element if present"
     },
     {
       "name": "value",
@@ -92,7 +99,8 @@
         "simpleType": 1
       },
       "debugType": "string",
-      "target": 0
+      "target": 0,
+      "docs": "The value attribute of the native input element"
     },
     {
       "name": "disableRipple",
@@ -101,7 +109,8 @@
         "simpleType": 2
       },
       "debugType": "boolean",
-      "target": 0
+      "target": 0,
+      "docs": "Whether the checkbox has a ripple."
     },
     {
       "name": "tabIndex",
@@ -110,7 +119,8 @@
         "simpleType": 3
       },
       "debugType": "number",
-      "target": 0
+      "target": 0,
+      "docs": "Tabindex for the checkbox."
     },
     {
       "name": "color",
@@ -119,7 +129,8 @@
         "simpleType": 1
       },
       "debugType": "string | undefined",
-      "target": 0
+      "target": 0,
+      "docs": "Palette color of the checkbox."
     },
     {
       "name": "checked",
@@ -128,7 +139,8 @@
         "simpleType": 2
       },
       "debugType": "boolean",
-      "target": 0
+      "target": 0,
+      "docs": "Whether the checkbox is checked."
     },
     {
       "name": "disabled",
@@ -137,7 +149,8 @@
         "simpleType": 2
       },
       "debugType": "boolean",
-      "target": 0
+      "target": 0,
+      "docs": "Whether the checkbox is disabled."
     },
     {
       "name": "indeterminate",
@@ -146,7 +159,8 @@
         "simpleType": 2
       },
       "debugType": "boolean",
-      "target": 0
+      "target": 0,
+      "docs": "Whether the checkbox is indeterminate. This is also known as \"mixed\" mode and can be used to represent a checkbox with three states, e.g. a checkbox that represents a nested list of checkable items. Note that whenever checkbox is manually clicked, indeterminate is immediately set to false."
     }
   ],
   "outputPropsList": [
@@ -161,13 +175,15 @@
             "simpleType": 2
           },
           "debugType": "",
-          "target": 0
+          "target": 0,
+          "docs": "The new `checked` value of the checkbox."
         }
       ],
       "eventJsType": {
         "typeName": "MatCheckboxChange",
         "isPrimitive": false
-      }
+      },
+      "docs": "Event emitted when the checkbox's `checked` value changes."
     },
     {
       "name": "indeterminateChange",
@@ -180,13 +196,15 @@
             "simpleType": 2
           },
           "debugType": "",
-          "target": 0
+          "target": 0,
+          "docs": ""
         }
       ],
       "eventJsType": {
         "typeName": "boolean",
         "isPrimitive": true
-      }
+      },
+      "docs": "Event emitted when the checkbox's `indeterminate` value changes."
     }
   ]
 }

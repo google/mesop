@@ -30,7 +30,8 @@
         "simpleType": 2
       },
       "debugType": "boolean",
-      "target": 0
+      "target": 0,
+      "docs": "Implemented as part of MatFormFieldControl. @docs-private"
     },
     {
       "name": "id",
@@ -39,7 +40,8 @@
         "simpleType": 1
       },
       "debugType": "string",
-      "target": 0
+      "target": 0,
+      "docs": "Implemented as part of MatFormFieldControl. @docs-private"
     },
     {
       "name": "placeholder",
@@ -48,7 +50,8 @@
         "simpleType": 1
       },
       "debugType": "string",
-      "target": 0
+      "target": 0,
+      "docs": "Implemented as part of MatFormFieldControl. @docs-private"
     },
     {
       "name": "name",
@@ -57,7 +60,8 @@
         "simpleType": 1
       },
       "debugType": "string",
-      "target": 0
+      "target": 0,
+      "docs": "Name of the input. @docs-private"
     },
     {
       "name": "required",
@@ -66,7 +70,8 @@
         "simpleType": 2
       },
       "debugType": "boolean",
-      "target": 0
+      "target": 0,
+      "docs": "Implemented as part of MatFormFieldControl. @docs-private"
     },
     {
       "name": "type",
@@ -75,7 +80,8 @@
         "simpleType": 1
       },
       "debugType": "string",
-      "target": 0
+      "target": 0,
+      "docs": "Input type of the element."
     },
     {
       "name": "userAriaDescribedBy",
@@ -84,7 +90,8 @@
         "simpleType": 1
       },
       "debugType": "string",
-      "target": 0
+      "target": 0,
+      "docs": "Implemented as part of MatFormFieldControl. @docs-private"
     },
     {
       "name": "value",
@@ -93,7 +100,8 @@
         "simpleType": 1
       },
       "debugType": "string",
-      "target": 0
+      "target": 0,
+      "docs": "Implemented as part of MatFormFieldControl. @docs-private"
     },
     {
       "name": "readonly",
@@ -102,7 +110,8 @@
         "simpleType": 2
       },
       "debugType": "boolean",
-      "target": 0
+      "target": 0,
+      "docs": "Whether the element is readonly."
     }
   ],
   "outputPropsList": []

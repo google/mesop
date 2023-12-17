@@ -20,8 +20,7 @@ def component_name(
   *,
   # INSERT_COMPONENT_PARAMS
 ):
-  """
-  TODO_doc_string
+  """INSERT_DOC_STRING
   """
   # INSERT_COMPONENT_CALL
     key=key,

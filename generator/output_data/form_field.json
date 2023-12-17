@@ -25,7 +25,8 @@
         "simpleType": 2
       },
       "debugType": "boolean",
-      "target": 0
+      "target": 0,
+      "docs": "Whether the required marker should be hidden."
     },
     {
       "name": "color",
@@ -38,7 +39,8 @@
         }
       },
       "debugType": "ThemePalette",
-      "target": 0
+      "target": 0,
+      "docs": "The color palette for the form field."
     },
     {
       "name": "floatLabel",
@@ -47,11 +49,12 @@
         "simpleType": 0,
         "stringLiterals": {
           "stringLiteralList": ["always", "auto"],
-          "defaultValue": "always"
+          "defaultValue": "auto"
         }
       },
       "debugType": "FloatLabelType",
-      "target": 0
+      "target": 0,
+      "docs": "Whether the label should always float or float as the user types."
     },
     {
       "name": "appearance",
@@ -64,7 +67,8 @@
         }
       },
       "debugType": "MatFormFieldAppearance",
-      "target": 0
+      "target": 0,
+      "docs": "The form field appearance style."
     },
     {
       "name": "subscriptSizing",
@@ -77,7 +81,8 @@
         }
       },
       "debugType": "SubscriptSizing",
-      "target": 0
+      "target": 0,
+      "docs": "Whether the form field should reserve space for one line of hint/error text (default) or to have the spacing grow from 0px as needed based on the size of the hint/error content. Note that when using dynamic sizing, layout shifts will occur when hint/error text changes."
     },
     {
       "name": "hintLabel",
@@ -86,7 +91,8 @@
         "simpleType": 1
       },
       "debugType": "string",
-      "target": 0
+      "target": 0,
+      "docs": "Text for the form field hint."
     }
   ],
   "outputPropsList": []

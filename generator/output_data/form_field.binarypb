@@ -2,21 +2,21 @@
 `
 
 form_field"MatFormField*mat-form-field22
-@angular/material/form-fieldMatFormFieldModule!
-hideRequiredMarkerboolean9
+@angular/material/form-fieldMatFormFieldModuleP
+hideRequiredMarkerboolean2-Whether the required marker should be hidden.`
 color" 
 primary
 accent
-warnprimaryThemePalette6
+warnprimaryThemePalette2%The color palette for the form field.w
 
-floatLabel
+floatLabel
 always
-autoalwaysFloatLabelType=
+autoautoFloatLabelType2AWhether the label should always float or float as the user types._
 
 appearance
 fill
-outlinefillMatFormFieldAppearance=
+outlinefillMatFormFieldAppearance2 The form field appearance style.Õ
 subscriptSizing
 fixed
-dynamicfixedSubscriptSizing
-	hintLabelstring
+dynamicfixedSubscriptSizing2çWhether the form field should reserve space for one line of hint/error text (default) or to have the spacing grow from 0px as needed based on the size of the hint/error content. Note that when using dynamic sizing, layout shifts will occur when hint/error text changes.6
+	hintLabelstring2Text for the form field hint.

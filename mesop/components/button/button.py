@@ -23,8 +23,17 @@ def button(
     "mat-button", "mat-raised-button", "mat-flat-button", "mat-stroked-button"
   ] = "mat-button",
 ):
-  """
-  TODO_doc_string
+  """Creates a Button component.
+  Button is a composite component.
+
+  Args:
+    key (str|None): Unique identifier for this component instance.
+    color (str): Theme color palette of the button
+    disable_ripple (bool): Whether the ripple effect is disabled or not.
+    disabled (bool): Whether the button is disabled.
+    aria_disabled (bool): `aria-disabled` value of the button.
+    on_click (Callable[[ClickEvent], Any]|None): [click](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/click_event) is a native browser event.
+    variant (Literal['mat-button','mat-raised-button','mat-flat-button','mat-stroked-button']): component variations
   """
   return insert_composite_component(
     key=key,

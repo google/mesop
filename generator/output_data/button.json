@@ -30,7 +30,8 @@
         "simpleType": 1
       },
       "debugType": "string | null",
-      "target": 0
+      "target": 0,
+      "docs": "Theme color palette of the button"
     },
     {
       "name": "disableRipple",
@@ -39,7 +40,8 @@
         "simpleType": 2
       },
       "debugType": "boolean",
-      "target": 0
+      "target": 0,
+      "docs": "Whether the ripple effect is disabled or not."
     },
     {
       "name": "disabled",
@@ -48,7 +50,8 @@
         "simpleType": 2
       },
       "debugType": "boolean",
-      "target": 0
+      "target": 0,
+      "docs": "Whether the button is disabled."
     },
     {
       "name": "ariaDisabled",
@@ -57,7 +60,8 @@
         "simpleType": 2
       },
       "debugType": "boolean | undefined",
-      "target": 0
+      "target": 0,
+      "docs": "`aria-disabled` value of the button."
     }
   ],
   "outputPropsList": []

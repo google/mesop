@@ -2,8 +2,8 @@
 ¾
 button"MatButtonBase*buttonBbutton-base.ts:
 mat-button:mat-raised-button:mat-flat-button:mat-stroked-buttonJclickRdisabledInteractive2+
-@angular/material/buttonMatButtonModule
-colorstring | null
-disableRippleboolean
-disabledboolean'
-ariaDisabledboolean | undefined
+@angular/material/buttonMatButtonModule=
+colorstring | null2!Theme color palette of the buttonK
+disableRippleboolean2-Whether the ripple effect is disabled or not.8
+disabledboolean2Whether the button is disabled.M
+ariaDisabledboolean | undefined2$`aria-disabled` value of the button.
