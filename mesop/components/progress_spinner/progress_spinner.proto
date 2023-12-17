@@ -1,0 +1,12 @@
+
+syntax = "proto3";
+
+package mesop.components.progress_spinner;
+
+message ProgressSpinnerType {
+  string color = 1;
+  string mode = 2;
+  double value = 3;
+  double diameter = 4;
+  double stroke_width = 5;
+}

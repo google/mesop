@@ -9,6 +9,8 @@ py_library(
     srcs = ["index.py"],
     deps = [
         # REF(//scripts/scaffold_component.py):insert_component_e2e_import
+        "//mesop/components/slide_toggle/e2e",
+        "//mesop/components/progress_spinner/e2e",
         "//mesop/components/progress_bar/e2e",
         "//mesop/components/icon/e2e",
         "//mesop/components/divider/e2e",

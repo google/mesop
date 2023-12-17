@@ -66,15 +66,18 @@ def generate_ts_getter_method(prop: pb.Prop) -> str:
 
 
 def generate_ts_event_method(prop: pb.OutputProp) -> str:
-  arg = (
-    "event"
-    if prop.event_js_type.is_primitive
-    else f"event.{prop.event_props[0].name}"
-  )
+  set_value = ""
+  if len(prop.event_props):
+    arg = (
+      "event"
+      if prop.event_js_type.is_primitive
+      else f"event.{prop.event_props[0].name}"
+    )
+    set_value = f"userEvent.set{format_proto_xtype(prop.event_props[0].type).capitalize()}({arg})"
   return f"""
   on{prop.event_name}(event: {prop.event_js_type.type_name}): void {{
     const userEvent = new UserEvent();
-    userEvent.set{format_proto_xtype(prop.event_props[0].type).capitalize()}({arg})
+    {set_value}
     userEvent.setHandlerId(this.config().getOn{prop.event_name}HandlerId())
     userEvent.setKey(this.key);
     this.channel.dispatch(userEvent);

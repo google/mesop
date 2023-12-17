@@ -21,6 +21,15 @@ from mesop.components.markdown.markdown import markdown as markdown
 from mesop.components.progress_bar.progress_bar import (
   progress_bar as progress_bar,
 )
+from mesop.components.progress_spinner.progress_spinner import (
+  progress_spinner as progress_spinner,
+)
+from mesop.components.slide_toggle.slide_toggle import (
+  SlideToggleChangeEvent as SlideToggleChangeEvent,
+)
+from mesop.components.slide_toggle.slide_toggle import (
+  slide_toggle as slide_toggle,
+)
 from mesop.components.text.text import text as text
 from mesop.components.text_input.text_input import text_input as text_input
 from mesop.components.tooltip.tooltip import tooltip as tooltip

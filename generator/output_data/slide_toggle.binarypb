@@ -1,0 +1,22 @@
+
+Œ
+slide_toggle"MatSlideToggle*mat-slide-toggleRtoggleChange2L
+@angular/material/slide-toggleMatSlideToggleModuleMatSlideToggleChangeV
+namestring | null2;Name value will be applied to the input element if present.i
+idstring2WA unique id for the slide-toggle input. If none is supplied, it will be auto-generated.•
+labelPosition
+before
+afterafter'before' | 'after'2VWhether the label should appear after or before the slide-toggle. Defaults to 'after'.q
+	ariaLabel"
+aria-labelstring | null2EUsed to set the aria-label attribute on the underlying input element.€
+ariaLabelledby"aria-labelledbystring | null2JUsed to set the aria-labelledby attribute on the underlying input element.|
+ariaDescribedby"aria-describedbystring2KUsed to set the aria-describedby attribute on the underlying input element.>
+requiredboolean2%Whether the slide-toggle is required.?
+colorstring | undefined2Palette color of slide toggle.>
+disabledboolean2%Whether the slide toggle is disabled.D
+disableRippleboolean2&Whether the slide toggle has a ripple.1
+tabIndexnumber2Tabindex of slide toggle.K
+checkedboolean23Whether the slide-toggle element is checked or not.M
+hideIconboolean24Whether to hide the icon inside of the slide toggle.ƒ
+changeSlideToggleChangeEvent"
+MatSlideToggleChange*IAn event will be dispatched each time the slide-toggle changes its value.

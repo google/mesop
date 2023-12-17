@@ -1,0 +1,168 @@
+{
+  "input": {
+    "name": "slide_toggle",
+    "targetClass": "MatSlideToggle",
+    "hasContent": false,
+    "elementName": "mat-slide-toggle",
+    "tsFilename": "",
+    "directiveNamesList": [],
+    "nativeEventsList": [],
+    "skipPropertyNamesList": ["toggleChange"],
+    "ngModulesList": [
+      {
+        "importPath": "@angular/material/slide-toggle",
+        "moduleName": "MatSlideToggleModule",
+        "otherSymbolsList": ["MatSlideToggleChange"]
+      }
+    ],
+    "isFormField": false
+  },
+  "inputPropsList": [
+    {
+      "name": "name",
+      "alias": "",
+      "type": {
+        "simpleType": 1
+      },
+      "debugType": "string | null",
+      "target": 0,
+      "docs": "Name value will be applied to the input element if present."
+    },
+    {
+      "name": "id",
+      "alias": "",
+      "type": {
+        "simpleType": 1
+      },
+      "debugType": "string",
+      "target": 0,
+      "docs": "A unique id for the slide-toggle input. If none is supplied, it will be auto-generated."
+    },
+    {
+      "name": "labelPosition",
+      "alias": "",
+      "type": {
+        "simpleType": 0,
+        "stringLiterals": {
+          "stringLiteralList": ["before", "after"],
+          "defaultValue": "after"
+        }
+      },
+      "debugType": "'before' | 'after'",
+      "target": 0,
+      "docs": "Whether the label should appear after or before the slide-toggle. Defaults to 'after'."
+    },
+    {
+      "name": "ariaLabel",
+      "alias": "aria-label",
+      "type": {
+        "simpleType": 1
+      },
+      "debugType": "string | null",
+      "target": 0,
+      "docs": "Used to set the aria-label attribute on the underlying input element."
+    },
+    {
+      "name": "ariaLabelledby",
+      "alias": "aria-labelledby",
+      "type": {
+        "simpleType": 1
+      },
+      "debugType": "string | null",
+      "target": 0,
+      "docs": "Used to set the aria-labelledby attribute on the underlying input element."
+    },
+    {
+      "name": "ariaDescribedby",
+      "alias": "aria-describedby",
+      "type": {
+        "simpleType": 1
+      },
+      "debugType": "string",
+      "target": 0,
+      "docs": "Used to set the aria-describedby attribute on the underlying input element."
+    },
+    {
+      "name": "required",
+      "alias": "",
+      "type": {
+        "simpleType": 2
+      },
+      "debugType": "boolean",
+      "target": 0,
+      "docs": "Whether the slide-toggle is required."
+    },
+    {
+      "name": "color",
+      "alias": "",
+      "type": {
+        "simpleType": 1
+      },
+      "debugType": "string | undefined",
+      "target": 0,
+      "docs": "Palette color of slide toggle."
+    },
+    {
+      "name": "disabled",
+      "alias": "",
+      "type": {
+        "simpleType": 2
+      },
+      "debugType": "boolean",
+      "target": 0,
+      "docs": "Whether the slide toggle is disabled."
+    },
+    {
+      "name": "disableRipple",
+      "alias": "",
+      "type": {
+        "simpleType": 2
+      },
+      "debugType": "boolean",
+      "target": 0,
+      "docs": "Whether the slide toggle has a ripple."
+    },
+    {
+      "name": "tabIndex",
+      "alias": "",
+      "type": {
+        "simpleType": 3
+      },
+      "debugType": "number",
+      "target": 0,
+      "docs": "Tabindex of slide toggle."
+    },
+    {
+      "name": "checked",
+      "alias": "",
+      "type": {
+        "simpleType": 2
+      },
+      "debugType": "boolean",
+      "target": 0,
+      "docs": "Whether the slide-toggle element is checked or not."
+    },
+    {
+      "name": "hideIcon",
+      "alias": "",
+      "type": {
+        "simpleType": 2
+      },
+      "debugType": "boolean",
+      "target": 0,
+      "docs": "Whether to hide the icon inside of the slide toggle."
+    }
+  ],
+  "outputPropsList": [
+    {
+      "name": "change",
+      "eventName": "SlideToggleChangeEvent",
+      "eventPropsList": [],
+      "eventJsType": {
+        "typeName": "MatSlideToggleChange",
+        "isPrimitive": false
+      },
+      "docs": "An event will be dispatched each time the slide-toggle changes its value."
+    }
+  ]
+}

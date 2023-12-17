@@ -79,7 +79,8 @@ def generate_py_events(spec: pb.ComponentSpec) -> str:
 
 
 def generate_py_event(output_prop: pb.OutputProp) -> str:
-  return f"""
+  if len(output_prop.event_props):
+    return f"""
 @dataclass
 class {output_prop.event_name}(MesopEvent):
   {output_prop.event_props[0].name}: {format_py_xtype(output_prop.event_props[0].type)}
@@ -89,6 +90,18 @@ register_event_mapper(
   lambda event, key: {output_prop.event_name}(
     key=key,
     {output_prop.event_props[0].name}=event.{format_proto_xtype(output_prop.event_props[0].type)},
+  ),
+)
+    """
+  return f"""
+@dataclass
+class {output_prop.event_name}(MesopEvent):
+  pass
+
+register_event_mapper(
+  {output_prop.event_name},
+  lambda event, key: {output_prop.event_name}(
+    key=key,
   ),
 )
   """

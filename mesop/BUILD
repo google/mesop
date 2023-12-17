@@ -12,6 +12,8 @@ py_library(
     ],
     deps = [
         # REF(//scripts/scaffold_component.py):insert_component_import
+        "//mesop/components/slide_toggle:py",
+        "//mesop/components/progress_spinner:py",
         "//mesop/components/progress_bar:py",
         "//mesop/components/icon:py",
         "//mesop/components/divider:py",

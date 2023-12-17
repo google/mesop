@@ -1,0 +1,17 @@
+<mat-slide-toggle
+  [name]="config().getName()"
+  [id]="config().getId()"
+  [labelPosition]="getLabelPosition()"
+  [aria-label]="config().getAriaLabel()"
+  [aria-labelledby]="config().getAriaLabelledby()"
+  [aria-describedby]="config().getAriaDescribedby()"
+  [required]="config().getRequired()"
+  [color]="config().getColor()"
+  [disabled]="config().getDisabled()"
+  [disableRipple]="config().getDisableRipple()"
+  [tabIndex]="config().getTabIndex()"
+  [checked]="config().getChecked()"
+  [hideIcon]="config().getHideIcon()"
+  (change)="onSlideToggleChangeEvent($event)"
+>
+</mat-slide-toggle>

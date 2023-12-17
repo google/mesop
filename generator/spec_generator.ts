@@ -85,6 +85,20 @@ const progressBarSpecInput = (() => {
   return i;
 })();
 
+const progressSpinnerSpecInput = (() => {
+  const i = new pb.ComponentSpecInput();
+  i.setName('progress_spinner');
+  return i;
+})();
+
+const slideToggleSpecInput = (() => {
+  const i = new pb.ComponentSpecInput();
+  i.setName('slide_toggle');
+  // This adds a very confusing event that doesn't seem to have a use case for us.
+  i.addSkipPropertyNames('toggleChange');
+  return i;
+})();
+
 const SYSTEM_IMPORT_PREFIX = '@angular/material/';
 const SYSTEM_PREFIX = 'Mat';
 const SPEC_INPUTS = [
@@ -97,6 +111,8 @@ const SPEC_INPUTS = [
   dividerSpecInput,
   iconSpecInput,
   progressBarSpecInput,
+  progressSpinnerSpecInput,
+  slideToggleSpecInput,
 ].map(preprocessSpecInput);
 
 function preprocessSpecInput(
@@ -300,7 +316,9 @@ class NgParser {
     } else if (
       !member.type &&
       name === 'color' &&
-      ['icon', 'progress_bar'].includes(this.input.getName())
+      ['icon', 'progress_bar', 'progress_spinner'].includes(
+        this.input.getName(),
+      )
     ) {
       // Technically this is a union between string and ThemePalette (which is a union of string literal)
       // string is the more flexible type.
@@ -380,7 +398,7 @@ class NgParser {
         xType.setSimpleType(simpleType);
         eventProp.setType(xType);
         outputProp.addEventProps(eventProp);
-      } else {
+      } else if (type !== 'void') {
         // Need to import complex type.
         this.input.getNgModulesList()[0].addOtherSymbols(type);
         outputProp.setEventPropsList(this.getEventProps(type));
@@ -390,6 +408,7 @@ class NgParser {
   }
 
   getEventProps(type: string): pb.Prop[] {
+    if (type === 'void') return [];
     for (const statement of this.sourceFile.statements) {
       if (ts.isClassDeclaration(statement)) {
         const cls = statement;

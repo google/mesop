@@ -1,0 +1,11 @@
+
+|
+progress_spinner"MatProgressSpinner*mat-progress-spinner2>
+"@angular/material/progress-spinnerMatProgressSpinnerModule9
+color2,Theme palette color of the progress spinner.é
+mode+)
+determinate
+indeterminatedeterminateProgressSpinnerMode2žMode of the progress bar. Input must be one of these values: determinate, indeterminate, buffer, query, defaults to 'determinate'. Mirrored to mode attribute.\
+valuenumber2GValue of the progress bar. Defaults to zero. Mirrored to aria-valuenow.`
+diameternumber2HThe diameter of the progress spinner (will set width and height of svg).@
+strokeWidthnumber2%Stroke width of the progress spinner.

@@ -1,0 +1,21 @@
+
+syntax = "proto3";
+
+package mesop.components.slide_toggle;
+
+message SlideToggleType {
+  string name = 1;
+  string id = 2;
+  string label_position = 3;
+  string aria_label = 4;
+  string aria_labelledby = 5;
+  string aria_describedby = 6;
+  bool required = 7;
+  string color = 8;
+  bool disabled = 9;
+  bool disable_ripple = 10;
+  double tab_index = 11;
+  bool checked = 12;
+  bool hide_icon = 13;
+  string on_slide_toggle_change_event_handler_id = 14;
+}

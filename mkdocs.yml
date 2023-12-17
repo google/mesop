@@ -13,6 +13,7 @@ nav:
       - Icon: components/icon.md
       - Input: components/input.md
       - Progress bar: components/progress_bar.md
+      - Progress spinner: components/progress_spinner.md
       - Text: components/text.md
       - Tooltip: components/tooltip.md
   - Features:

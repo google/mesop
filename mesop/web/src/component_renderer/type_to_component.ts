@@ -1,3 +1,5 @@
+import {SlideToggleComponent} from '../../../components/slide_toggle/slide_toggle';
+import {ProgressSpinnerComponent} from '../../../components/progress_spinner/progress_spinner';
 import {ProgressBarComponent} from '../../../components/progress_bar/progress_bar';
 import {IconComponent} from '../../../components/icon/icon';
 import {DividerComponent} from '../../../components/divider/divider';
@@ -27,6 +29,8 @@ export interface TypeToComponent {
 }
 
 export const typeToComponent = {
+  'slide_toggle': SlideToggleComponent,
+  'progress_spinner': ProgressSpinnerComponent,
   'progress_bar': ProgressBarComponent,
   'icon': IconComponent,
   'divider': DividerComponent,
