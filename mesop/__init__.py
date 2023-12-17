@@ -15,6 +15,7 @@ from mesop.components.checkbox.checkbox import (
   checkbox as checkbox,
 )
 from mesop.components.divider.divider import divider as divider
+from mesop.components.icon.icon import icon as icon
 from mesop.components.input.input import input as input
 from mesop.components.markdown.markdown import markdown as markdown
 from mesop.components.text.text import text as text

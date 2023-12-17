@@ -9,6 +9,7 @@ py_library(
     srcs = ["index.py"],
     deps = [
         # REF(//scripts/scaffold_component.py):insert_component_e2e_import
+        "//mesop/components/icon/e2e",
         "//mesop/components/divider/e2e",
         "//mesop/components/badge/e2e",
         "//mesop/components/tooltip/e2e",

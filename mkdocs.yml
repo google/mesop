@@ -10,6 +10,7 @@ nav:
       - Button: components/button.md
       - Checkbox: components/checkbox.md
       - Divider: components/divider.md
+      - Icon: components/icon.md
       - Input: components/input.md
       - Text: components/text.md
       - Tooltip: components/tooltip.md

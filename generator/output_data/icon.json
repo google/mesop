@@ -1,0 +1,73 @@
+{
+  "input": {
+    "name": "icon",
+    "targetClass": "MatIcon",
+    "hasContent": false,
+    "elementName": "mat-icon",
+    "tsFilename": "",
+    "directiveNamesList": [],
+    "nativeEventsList": [],
+    "skipPropertyNamesList": [],
+    "ngModulesList": [
+      {
+        "importPath": "@angular/material/icon",
+        "moduleName": "MatIconModule",
+        "otherSymbolsList": []
+      }
+    ],
+    "isFormField": false
+  },
+  "inputPropsList": [
+    {
+      "name": "color",
+      "alias": "",
+      "type": {
+        "simpleType": 1
+      },
+      "debugType": "",
+      "target": 0,
+      "docs": "Theme palette color of the icon."
+    },
+    {
+      "name": "inline",
+      "alias": "",
+      "type": {
+        "simpleType": 2
+      },
+      "debugType": "boolean",
+      "target": 0,
+      "docs": "Whether the icon should be inlined, automatically sizing the icon to match the font size of the element the icon is contained in."
+    },
+    {
+      "name": "svgIcon",
+      "alias": "",
+      "type": {
+        "simpleType": 1
+      },
+      "debugType": "string",
+      "target": 0,
+      "docs": "Name of the icon in the SVG icon set."
+    },
+    {
+      "name": "fontSet",
+      "alias": "",
+      "type": {
+        "simpleType": 1
+      },
+      "debugType": "string",
+      "target": 0,
+      "docs": "Font set that the icon is a part of."
+    },
+    {
+      "name": "fontIcon",
+      "alias": "",
+      "type": {
+        "simpleType": 1
+      },
+      "debugType": "string",
+      "target": 0,
+      "docs": "Name of an icon within a font set."
+    }
+  ],
+  "outputPropsList": []
+}

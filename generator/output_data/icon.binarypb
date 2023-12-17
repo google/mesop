@@ -1,0 +1,9 @@
+
+B
+icon"MatIcon*mat-icon2'
+@angular/material/iconMatIconModule-
+color2 Theme palette color of the icon.ô
+inlineboolean2ÅWhether the icon should be inlined, automatically sizing the icon to match the font size of the element the icon is contained in.<
+svgIconstring2%Name of the icon in the SVG icon set.;
+fontSetstring2$Font set that the icon is a part of.:
+fontIconstring2"Name of an icon within a font set.

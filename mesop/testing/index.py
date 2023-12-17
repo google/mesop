@@ -8,4 +8,5 @@ import mesop.components.input.e2e as input_e2e
 import mesop.components.tooltip.e2e as tooltip_e2e
 import mesop.components.badge.e2e as badge_e2e
 import mesop.components.divider.e2e as divider_e2e
+import mesop.components.icon.e2e as icon_e2e
 # REF(//scripts/scaffold_component.py):insert_component_e2e_import_export

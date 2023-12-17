@@ -73,6 +73,12 @@ const badgeSpecInput = (() => {
   return i;
 })();
 
+const iconSpecInput = (() => {
+  const i = new pb.ComponentSpecInput();
+  i.setName('icon');
+  return i;
+})();
+
 const SYSTEM_IMPORT_PREFIX = '@angular/material/';
 const SYSTEM_PREFIX = 'Mat';
 const SPEC_INPUTS = [
@@ -83,6 +89,7 @@ const SPEC_INPUTS = [
   formFieldSpecInput,
   badgeSpecInput,
   dividerSpecInput,
+  iconSpecInput,
 ].map(preprocessSpecInput);
 
 function preprocessSpecInput(
@@ -280,6 +287,16 @@ class NgParser {
       name === 'message' &&
       this.input.getName() === 'tooltip'
     ) {
+      const type = new pb.XType();
+      type.setSimpleType(pb.SimpleType.STRING);
+      inputProp.setType(type);
+    } else if (
+      !member.type &&
+      name === 'color' &&
+      this.input.getName() === 'icon'
+    ) {
+      // Technically this is a union between string and ThemePalette (which is a union of string literal)
+      // string is the more flexible type.
       const type = new pb.XType();
       type.setSimpleType(pb.SimpleType.STRING);
       inputProp.setType(type);

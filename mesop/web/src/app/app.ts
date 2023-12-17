@@ -16,7 +16,7 @@ import {Channel, ChannelStatus} from '../services/channel';
 import {ErrorBox} from '../error/error_box';
 import {provideAnimations} from '@angular/platform-browser/animations';
 import {bootstrapApplication} from '@angular/platform-browser';
-import {MatIconModule, MatIconRegistry} from '@angular/material/icon';
+import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {DevTools} from '../dev_tools/dev_tools';
@@ -54,11 +54,8 @@ class App {
     // Injecting to ensure it's loaded in the app
     private hotReloadWatcher: HotReloadWatcher,
     private channel: Channel,
-    private iconRegistry: MatIconRegistry,
     private devToolsSettings: DevToolsSettings,
-  ) {
-    this.iconRegistry.setDefaultFontSetClass('material-symbols-rounded');
-  }
+  ) {}
 
   ngOnInit() {
     this.channel.init({
