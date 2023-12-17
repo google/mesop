@@ -29,6 +29,7 @@ buttonSpecInput.setTsFilename('button-base.ts');
 buttonSpecInput.setTargetClass('MatButtonBase'); // Special-case: https://github.com/angular/components/blob/main/src/material/button/button-base.ts
 buttonSpecInput.setHasContent(true);
 buttonSpecInput.addSkipPropertyNames('disabledInteractive');
+buttonSpecInput.addSkipPropertyNames('ariaDisabled'); // not recognized by angular compiler
 
 const inputSpecInput = (() => {
   const i = new pb.ComponentSpecInput();
@@ -56,6 +57,16 @@ const tooltipSpecInput = (() => {
   return i;
 })();
 
+const badgeSpecInput = (() => {
+  const i = new pb.ComponentSpecInput();
+  i.setName('badge');
+  // Using div as a simple inline container (must be a block-element per https://material.angular.io/components/badge/overview)
+  i.setElementName('div');
+  i.addDirectiveNames('matBadge');
+  i.setHasContent(true);
+  return i;
+})();
+
 const SYSTEM_IMPORT_PREFIX = '@angular/material/';
 const SYSTEM_PREFIX = 'Mat';
 const SPEC_INPUTS = [
@@ -64,6 +75,7 @@ const SPEC_INPUTS = [
   buttonSpecInput,
   checkboxSpecInput,
   formFieldSpecInput,
+  badgeSpecInput,
 ].map(preprocessSpecInput);
 
 function preprocessSpecInput(
@@ -145,6 +157,7 @@ class NgParser {
     });
   }
   collectTypeAliases(statement: ts.TypeAliasDeclaration) {
+    this.currentNode = statement;
     const name = statement.name.getText();
     if (statement.type) {
       const xType = this.getType(statement.type);
@@ -252,8 +265,8 @@ class NgParser {
       return;
     }
     inputProp.setName(name);
-    if (args[0] && ts.isStringLiteral(args[0])) {
-      inputProp.setAlias(this.stripQuotes(args[0].getText()));
+    if (args[0]) {
+      inputProp.setAlias(this.getAliasFromInputCallArgument(args));
     }
     if (
       !member.type &&
@@ -283,8 +296,8 @@ class NgParser {
     if (ts.isIdentifier(name)) {
       const elName = name.escapedText.toString();
       const inputProp = new pb.Prop();
-      if (args[0] && ts.isStringLiteral(args[0])) {
-        inputProp.setAlias(this.stripQuotes(args[0].getText()));
+      if (args[0]) {
+        inputProp.setAlias(this.getAliasFromInputCallArgument(args));
       }
       inputProp.setName(elName);
       inputProp.setDebugType(prop.type!.getText());
@@ -294,6 +307,22 @@ class NgParser {
     } else {
       throw new Error('Expected identifier for prop' + prop);
     }
+  }
+
+  private getAliasFromInputCallArgument(
+    args: ts.NodeArray<ts.Expression>,
+  ): string {
+    if (ts.isObjectLiteralExpression(args[0])) {
+      const objectLiteral = args[0];
+      for (const p of objectLiteral.properties) {
+        if (ts.isPropertyAssignment(p) && p.name.getText() === 'alias') {
+          return this.stripQuotes(p.initializer.getText());
+        }
+      }
+      // Sometimes there's no alias.
+      return '';
+    }
+    return this.stripQuotes(args[0].getText());
   }
 
   processOutput(p: ts.PropertyDeclaration): void {
@@ -379,6 +408,15 @@ class NgParser {
 
   getType(type: ts.TypeNode, initializer?: ts.Expression): pb.XType {
     const text = type.getText();
+    // e.g. badge's content property has a very open union type,
+    // pick string since it's the most flexible. We don't support
+    // complex union types in the XType proto (and we can always coerce)
+    // a number to string if needed in py.
+    if (text === 'string | number | undefined | null') {
+      const typeProto = new pb.XType();
+      typeProto.setSimpleType(pb.SimpleType.STRING);
+      return typeProto;
+    }
     const segments = text
       .split('|')
       .map((s) => s.trim())
@@ -399,7 +437,10 @@ class NgParser {
       return typeProto;
     } else {
       // We assume these are string literals.
-      const stringLiterals = segments.map(this.stripQuotes);
+      const stringLiterals = segments
+        // Filter out empty string due to a leading "|" for long union types.
+        .filter((x) => x)
+        .map(this.stripQuotes);
       const typeProto = new pb.XType();
       const sl = new pb.StringLiterals();
       sl.setStringLiteralList(stringLiterals);
@@ -434,15 +475,14 @@ class NgParser {
     }
   }
 
-  stripQuotes(t: string): string {
+  stripQuotes = (t: string): string => {
     // Strip off quotes (but sanity check first)
     if (t[0] !== "'" && t[t.length - 1] !== "'") {
       this.logIssue('Unexpected type', {string: t});
-      throw new Error('unexpected type=' + t);
       return '<issue>';
     }
     return t.slice(1, -1);
-  }
+  };
 
   getJsDoc(node: ts.Node): string {
     const jsDocs = ts.getJSDocCommentsAndTags(node);

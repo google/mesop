@@ -1,0 +1,16 @@
+@if(config().getVariantIndex() === 0) {
+<div
+  matBadge
+  [matBadgeColor]="getColor()"
+  [matBadgeOverlap]="config().getOverlap()"
+  [matBadgeDisabled]="config().getDisabled()"
+  [matBadgePosition]="getPosition()"
+  [matBadge]="config().getContent()"
+  [matBadgeDescription]="config().getDescription()"
+  [matBadgeSize]="getSize()"
+  [matBadgeHidden]="config().getHidden()"
+>
+  <ng-content></ng-content>
+</div>
+
+}

@@ -1,5 +1,6 @@
 from mesop.api import state as state
 from mesop.api import stateclass as stateclass
+from mesop.components.badge.badge import badge as badge
 
 # REF(//scripts/scaffold_component.py):insert_component_import_export
 from mesop.components.box.box import box as box

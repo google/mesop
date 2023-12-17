@@ -1,0 +1,26 @@
+
+M
+badge"MatBadge*div:matBadge2)
+@angular/material/badgeMatBadgeModuleˆ
+color"matBadgeColor" 
+primary
+accent
+warnprimaryThemePalette2>The color of the badge. Can be `primary`, `accent`, or `warn`.]
+overlap"matBadgeOverlapboolean24Whether the badge should overlap its contents or notI
+disabled"matBadgeDisabledboolean2Whether the badge is disabled.õ
+position"matBadgePositionb`
+above after
+above before
+below before
+below after
+before
+after
+above
+belowabove afterMatBadgePosition2aPosition the badge should reside. Accepts any combination of 'above'|'below' and 'before'|'after'V
+content"matBadge"string | number | undefined | null2The content for the badges
+description"matBadgeDescriptionstring2CMessage used to describe the decorated element via aria-describedby}
+size"matBadgeSize
+small
+medium
+largesmallMatBadgeSize28Size of the badge. Can be 'small', 'medium', or 'large'.C
+hidden"matBadgeHiddenboolean2Whether the badge is hidden.

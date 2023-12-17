@@ -1,0 +1,124 @@
+{
+  "input": {
+    "name": "badge",
+    "targetClass": "MatBadge",
+    "hasContent": true,
+    "elementName": "div",
+    "tsFilename": "",
+    "directiveNamesList": ["matBadge"],
+    "nativeEventsList": [],
+    "skipPropertyNamesList": [],
+    "ngModulesList": [
+      {
+        "importPath": "@angular/material/badge",
+        "moduleName": "MatBadgeModule",
+        "otherSymbolsList": []
+      }
+    ],
+    "isFormField": false
+  },
+  "inputPropsList": [
+    {
+      "name": "color",
+      "alias": "matBadgeColor",
+      "type": {
+        "simpleType": 0,
+        "stringLiterals": {
+          "stringLiteralList": ["primary", "accent", "warn"],
+          "defaultValue": "primary"
+        }
+      },
+      "debugType": "ThemePalette",
+      "target": 0,
+      "docs": "The color of the badge. Can be `primary`, `accent`, or `warn`."
+    },
+    {
+      "name": "overlap",
+      "alias": "matBadgeOverlap",
+      "type": {
+        "simpleType": 2
+      },
+      "debugType": "boolean",
+      "target": 0,
+      "docs": "Whether the badge should overlap its contents or not"
+    },
+    {
+      "name": "disabled",
+      "alias": "matBadgeDisabled",
+      "type": {
+        "simpleType": 2
+      },
+      "debugType": "boolean",
+      "target": 0,
+      "docs": "Whether the badge is disabled."
+    },
+    {
+      "name": "position",
+      "alias": "matBadgePosition",
+      "type": {
+        "simpleType": 0,
+        "stringLiterals": {
+          "stringLiteralList": [
+            "above after",
+            "above before",
+            "below before",
+            "below after",
+            "before",
+            "after",
+            "above",
+            "below"
+          ],
+          "defaultValue": "above after"
+        }
+      },
+      "debugType": "MatBadgePosition",
+      "target": 0,
+      "docs": "Position the badge should reside. Accepts any combination of 'above'|'below' and 'before'|'after'"
+    },
+    {
+      "name": "content",
+      "alias": "matBadge",
+      "type": {
+        "simpleType": 1
+      },
+      "debugType": "string | number | undefined | null",
+      "target": 0,
+      "docs": "The content for the badge"
+    },
+    {
+      "name": "description",
+      "alias": "matBadgeDescription",
+      "type": {
+        "simpleType": 1
+      },
+      "debugType": "string",
+      "target": 0,
+      "docs": "Message used to describe the decorated element via aria-describedby"
+    },
+    {
+      "name": "size",
+      "alias": "matBadgeSize",
+      "type": {
+        "simpleType": 0,
+        "stringLiterals": {
+          "stringLiteralList": ["small", "medium", "large"],
+          "defaultValue": "small"
+        }
+      },
+      "debugType": "MatBadgeSize",
+      "target": 0,
+      "docs": "Size of the badge. Can be 'small', 'medium', or 'large'."
+    },
+    {
+      "name": "hidden",
+      "alias": "matBadgeHidden",
+      "type": {
+        "simpleType": 2
+      },
+      "debugType": "boolean",
+      "target": 0,
+      "docs": "Whether the badge is hidden."
+    }
+  ],
+  "outputPropsList": []
+}

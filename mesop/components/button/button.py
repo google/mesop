@@ -17,7 +17,6 @@ def button(
   color: str = "",
   disable_ripple: bool = False,
   disabled: bool = False,
-  aria_disabled: bool = False,
   on_click: Callable[[ClickEvent], Any] | None = None,
   variant: Literal[
     "mat-button", "mat-raised-button", "mat-flat-button", "mat-stroked-button"
@@ -31,7 +30,6 @@ def button(
     color (str): Theme color palette of the button
     disable_ripple (bool): Whether the ripple effect is disabled or not.
     disabled (bool): Whether the button is disabled.
-    aria_disabled (bool): `aria-disabled` value of the button.
     on_click (Callable[[ClickEvent], Any]|None): [click](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/click_event) is a native browser event.
     variant (Literal['mat-button','mat-raised-button','mat-flat-button','mat-stroked-button']): component variations
   """
@@ -42,7 +40,6 @@ def button(
       color=color,
       disable_ripple=disable_ripple,
       disabled=disabled,
-      aria_disabled=aria_disabled,
       on_click_handler_id=handler_type(on_click) if on_click else "",
       variant_index=_get_variant_index(variant),
     ),

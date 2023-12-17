@@ -12,7 +12,7 @@
       "mat-stroked-button"
     ],
     "nativeEventsList": ["click"],
-    "skipPropertyNamesList": ["disabledInteractive"],
+    "skipPropertyNamesList": ["disabledInteractive", "ariaDisabled"],
     "ngModulesList": [
       {
         "importPath": "@angular/material/button",
@@ -52,16 +52,6 @@
       "debugType": "boolean",
       "target": 0,
       "docs": "Whether the button is disabled."
-    },
-    {
-      "name": "ariaDisabled",
-      "alias": "",
-      "type": {
-        "simpleType": 2
-      },
-      "debugType": "boolean | undefined",
-      "target": 0,
-      "docs": "`aria-disabled` value of the button."
     }
   ],
   "outputPropsList": []

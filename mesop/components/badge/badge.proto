@@ -1,0 +1,16 @@
+
+syntax = "proto3";
+
+package mesop.components.badge;
+
+message BadgeType {
+  string color = 1;
+  bool overlap = 2;
+  bool disabled = 3;
+  string position = 4;
+  string content = 5;
+  string description = 6;
+  string size = 7;
+  bool hidden = 8;
+  int32 variant_index = 9;
+}

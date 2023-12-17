@@ -7,7 +7,6 @@ message ButtonType {
   string color = 1;
   bool disable_ripple = 2;
   bool disabled = 3;
-  bool aria_disabled = 4;
-  string on_click_handler_id = 5;
-  int32 variant_index = 6;
+  string on_click_handler_id = 4;
+  int32 variant_index = 5;
 }

@@ -5,6 +5,7 @@ nav:
   - Overview: index.md
   - Concepts: concepts.md
   - Components:
+      - Badge: components/badge.md
       - Box: components/box.md
       - Button: components/button.md
       - Checkbox: components/checkbox.md
