@@ -1,0 +1,11 @@
+<mat-tooltip
+  [matTooltipPosition]="getPosition()"
+  [matTooltipPositionAtOrigin]="config().getPositionAtOrigin()"
+  [matTooltipDisabled]="config().getDisabled()"
+  [matTooltipShowDelay]="config().getShowDelay()"
+  [matTooltipHideDelay]="config().getHideDelay()"
+  [matTooltipTouchGestures]="getTouchGestures()"
+  [matTooltip]="config().getMessage()"
+>
+  <ng-content></ng-content>
+</mat-tooltip>

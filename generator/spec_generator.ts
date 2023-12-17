@@ -48,9 +48,18 @@ const formFieldSpecInput = (() => {
   return i;
 })();
 
+const tooltipSpecInput = (() => {
+  const i = new pb.ComponentSpecInput();
+  i.setName('tooltip');
+  i.addSkipPropertyNames('tooltipClass');
+  i.setHasContent(true);
+  return i;
+})();
+
 const SYSTEM_IMPORT_PREFIX = '@angular/material/';
 const SYSTEM_PREFIX = 'Mat';
 const SPEC_INPUTS = [
+  tooltipSpecInput,
   inputSpecInput,
   buttonSpecInput,
   checkboxSpecInput,
@@ -192,7 +201,10 @@ class NgParser {
           ) {
             const identifier = modifier.expression.expression;
             if (identifier.escapedText === 'Input') {
-              this.processInputGetAccessor(member);
+              this.processInputGetAccessor(
+                member,
+                modifier.expression.arguments,
+              );
               continue;
             }
           }
@@ -228,7 +240,10 @@ class NgParser {
     }
   }
 
-  processInputGetAccessor(member: ts.GetAccessorDeclaration) {
+  processInputGetAccessor(
+    member: ts.GetAccessorDeclaration,
+    args: ts.NodeArray<ts.Expression>,
+  ) {
     this.currentNode = member;
     const inputProp = new pb.Prop();
     const name = member.name.getText();
@@ -237,8 +252,24 @@ class NgParser {
       return;
     }
     inputProp.setName(name);
-    inputProp.setDebugType(member.type!.getText());
-    inputProp.setType(this.getType(assert(member.type)));
+    if (args[0] && ts.isStringLiteral(args[0])) {
+      inputProp.setAlias(this.stripQuotes(args[0].getText()));
+    }
+    if (
+      !member.type &&
+      name === 'message' &&
+      this.input.getName() === 'tooltip'
+    ) {
+      const type = new pb.XType();
+      type.setSimpleType(pb.SimpleType.STRING);
+      inputProp.setType(type);
+    } else if (!member.type) {
+      this.logIssue('no type', {member: member.getText()});
+      return;
+    } else {
+      inputProp.setDebugType(member.type!.getText());
+      inputProp.setType(this.getType(assert(member.type)));
+    }
     inputProp.setDocs(this.getJsDoc(member));
     this.proto.addInputProps(inputProp);
   }

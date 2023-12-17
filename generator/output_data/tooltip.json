@@ -1,0 +1,108 @@
+{
+  "input": {
+    "name": "tooltip",
+    "targetClass": "MatTooltip",
+    "hasContent": true,
+    "elementName": "mat-tooltip",
+    "tsFilename": "",
+    "directiveNamesList": [],
+    "nativeEventsList": [],
+    "skipPropertyNamesList": ["tooltipClass"],
+    "ngModulesList": [
+      {
+        "importPath": "@angular/material/tooltip",
+        "moduleName": "MatTooltipModule",
+        "otherSymbolsList": []
+      }
+    ],
+    "isFormField": false
+  },
+  "inputPropsList": [
+    {
+      "name": "position",
+      "alias": "matTooltipPosition",
+      "type": {
+        "simpleType": 0,
+        "stringLiterals": {
+          "stringLiteralList": [
+            "left",
+            "right",
+            "above",
+            "below",
+            "before",
+            "after"
+          ],
+          "defaultValue": "left"
+        }
+      },
+      "debugType": "TooltipPosition",
+      "target": 0,
+      "docs": "Allows the user to define the position of the tooltip relative to the parent element"
+    },
+    {
+      "name": "positionAtOrigin",
+      "alias": "matTooltipPositionAtOrigin",
+      "type": {
+        "simpleType": 2
+      },
+      "debugType": "boolean",
+      "target": 0,
+      "docs": "Whether tooltip should be relative to the click or touch origin instead of outside the element bounding box."
+    },
+    {
+      "name": "disabled",
+      "alias": "matTooltipDisabled",
+      "type": {
+        "simpleType": 2
+      },
+      "debugType": "boolean",
+      "target": 0,
+      "docs": "Disables the display of the tooltip."
+    },
+    {
+      "name": "showDelay",
+      "alias": "matTooltipShowDelay",
+      "type": {
+        "simpleType": 3
+      },
+      "debugType": "number",
+      "target": 0,
+      "docs": "The default delay in ms before showing the tooltip after show is called"
+    },
+    {
+      "name": "hideDelay",
+      "alias": "matTooltipHideDelay",
+      "type": {
+        "simpleType": 3
+      },
+      "debugType": "number",
+      "target": 0,
+      "docs": "The default delay in ms before hiding the tooltip after hide is called"
+    },
+    {
+      "name": "touchGestures",
+      "alias": "matTooltipTouchGestures",
+      "type": {
+        "simpleType": 0,
+        "stringLiterals": {
+          "stringLiteralList": ["auto", "on", "off"],
+          "defaultValue": "auto"
+        }
+      },
+      "debugType": "TooltipTouchGestures",
+      "target": 0,
+      "docs": "How touch gestures should be handled by the tooltip. On touch devices the tooltip directive uses a long press gesture to show and hide, however it can conflict with the native browser gestures. To work around the conflict, Angular Material disables native gestures on the trigger, but that might not be desirable on particular elements (e.g. inputs and draggable elements). The different values for this option configure the touch event handling as follows: - `auto` - Enables touch gestures for all elements, but tries to avoid conflicts with native   browser gestures on particular elements. In particular, it allows text selection on inputs   and textareas, and preserves the native browser dragging on elements marked as `draggable`. - `on` - Enables touch gestures for all elements and disables native   browser gestures with no exceptions. - `off` - Disables touch gestures. Note that this will prevent the tooltip from   showing on touch devices."
+    },
+    {
+      "name": "message",
+      "alias": "matTooltip",
+      "type": {
+        "simpleType": 1
+      },
+      "debugType": "",
+      "target": 0,
+      "docs": "The message to be displayed in the tooltip"
+    }
+  ],
+  "outputPropsList": []
+}

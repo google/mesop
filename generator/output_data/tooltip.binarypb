@@ -1,0 +1,22 @@
+
+a
+tooltip"
+MatTooltip*mat-tooltipRtooltipClass2-
+@angular/material/tooltipMatTooltipModule¹
+position"matTooltipPosition20
+left
+right
+above
+below
+before
+afterleftTooltipPosition2TAllows the user to define the position of the tooltip relative to the parent element©
+positionAtOrigin"matTooltipPositionAtOriginboolean2lWhether tooltip should be relative to the click or touch origin instead of outside the element bounding box.Q
+disabled"matTooltipDisabledboolean2$Disables the display of the tooltip.u
+	showDelay"matTooltipShowDelaynumber2GThe default delay in ms before showing the tooltip after show is calledt
+	hideDelay"matTooltipHideDelaynumber2FThe default delay in ms before hiding the tooltip after hide is called“
+touchGestures"matTooltipTouchGestures
+auto
+on
+offautoTooltipTouchGestures2¹How touch gestures should be handled by the tooltip. On touch devices the tooltip directive uses a long press gesture to show and hide, however it can conflict with the native browser gestures. To work around the conflict, Angular Material disables native gestures on the trigger, but that might not be desirable on particular elements (e.g. inputs and draggable elements). The different values for this option configure the touch event handling as follows: - `auto` - Enables touch gestures for all elements, but tries to avoid conflicts with native   browser gestures on particular elements. In particular, it allows text selection on inputs   and textareas, and preserves the native browser dragging on elements marked as `draggable`. - `on` - Enables touch gestures for all elements and disables native   browser gestures with no exceptions. - `off` - Disables touch gestures. Note that this will prevent the tooltip from   showing on touch devices.E
+message"
+matTooltip2*The message to be displayed in the tooltip

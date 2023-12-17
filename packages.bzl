@@ -15,6 +15,7 @@ _CDK_ENTRY_POINTS = [
     "observers/private",
     "layout",
     "bidi",
+    "portal",
 ]
 
 _MATERIAL_ENTRY_POINTS = [

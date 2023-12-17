@@ -22,7 +22,8 @@ select = [
     "I",
 ]
 ignore = [
-    "E501", # ignore line-length (e.g. long docstring)
+    "E501",   # ignore line-length (e.g. long docstring)
+    "SIM117", # ignore combine with statements (it leads to harder to read code)
 ]
 line-length = 80
 indent-width = 2

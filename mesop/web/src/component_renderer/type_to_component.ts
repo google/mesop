@@ -1,3 +1,4 @@
+import {TooltipComponent} from '../../../components/tooltip/tooltip';
 import {InputComponent} from '../../../components/input/input';
 import {
   Key,
@@ -22,6 +23,7 @@ export interface TypeToComponent {
 }
 
 export const typeToComponent = {
+  'tooltip': TooltipComponent,
   'input': InputComponent,
   'button': ButtonComponent,
   'checkbox': CheckboxComponent,

@@ -10,6 +10,7 @@ nav:
       - Checkbox: components/checkbox.md
       - Input: components/input.md
       - Text: components/text.md
+      - Tooltip: components/tooltip.md
   - Features:
       - Pages: features/pages.md
   - Deployment: deployment.md
