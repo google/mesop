@@ -1,3 +1,4 @@
+import {DividerComponent} from '../../../components/divider/divider';
 import {BadgeComponent} from '../../../components/badge/badge';
 import {TooltipComponent} from '../../../components/tooltip/tooltip';
 import {InputComponent} from '../../../components/input/input';
@@ -24,6 +25,7 @@ export interface TypeToComponent {
 }
 
 export const typeToComponent = {
+  'divider': DividerComponent,
   'badge': BadgeComponent,
   'tooltip': TooltipComponent,
   'input': InputComponent,

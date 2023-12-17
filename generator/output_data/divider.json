@@ -1,0 +1,43 @@
+{
+  "input": {
+    "name": "divider",
+    "targetClass": "MatDivider",
+    "hasContent": false,
+    "elementName": "mat-divider",
+    "tsFilename": "",
+    "directiveNamesList": [],
+    "nativeEventsList": [],
+    "skipPropertyNamesList": [],
+    "ngModulesList": [
+      {
+        "importPath": "@angular/material/divider",
+        "moduleName": "MatDividerModule",
+        "otherSymbolsList": []
+      }
+    ],
+    "isFormField": false
+  },
+  "inputPropsList": [
+    {
+      "name": "vertical",
+      "alias": "",
+      "type": {
+        "simpleType": 2
+      },
+      "debugType": "boolean",
+      "target": 0,
+      "docs": "Whether the divider is vertically aligned."
+    },
+    {
+      "name": "inset",
+      "alias": "",
+      "type": {
+        "simpleType": 2
+      },
+      "debugType": "boolean",
+      "target": 0,
+      "docs": "Whether the divider is an inset divider."
+    }
+  ],
+  "outputPropsList": []
+}

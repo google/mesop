@@ -14,6 +14,7 @@ ng_module(
     ]),
     deps = [
         # REF(//scripts/scaffold_component.py):insert_component_import
+        "//mesop/components/divider:ng",
         "//mesop/components/badge:ng",
         "//mesop/components/tooltip:ng",
         "//mesop/components/input:ng",

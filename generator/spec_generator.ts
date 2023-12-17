@@ -57,6 +57,12 @@ const tooltipSpecInput = (() => {
   return i;
 })();
 
+const dividerSpecInput = (() => {
+  const i = new pb.ComponentSpecInput();
+  i.setName('divider');
+  return i;
+})();
+
 const badgeSpecInput = (() => {
   const i = new pb.ComponentSpecInput();
   i.setName('badge');
@@ -76,6 +82,7 @@ const SPEC_INPUTS = [
   checkboxSpecInput,
   formFieldSpecInput,
   badgeSpecInput,
+  dividerSpecInput,
 ].map(preprocessSpecInput);
 
 function preprocessSpecInput(

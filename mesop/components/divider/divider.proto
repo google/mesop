@@ -1,0 +1,9 @@
+
+syntax = "proto3";
+
+package mesop.components.divider;
+
+message DividerType {
+  bool vertical = 1;
+  bool inset = 2;
+}
