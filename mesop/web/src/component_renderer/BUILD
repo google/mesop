@@ -14,6 +14,7 @@ ng_module(
     ]),
     deps = [
         # REF(//scripts/scaffold_component.py):insert_component_import
+        "//mesop/components/progress_bar:ng",
         "//mesop/components/icon:ng",
         "//mesop/components/divider:ng",
         "//mesop/components/badge:ng",

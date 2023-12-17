@@ -79,6 +79,12 @@ const iconSpecInput = (() => {
   return i;
 })();
 
+const progressBarSpecInput = (() => {
+  const i = new pb.ComponentSpecInput();
+  i.setName('progress_bar');
+  return i;
+})();
+
 const SYSTEM_IMPORT_PREFIX = '@angular/material/';
 const SYSTEM_PREFIX = 'Mat';
 const SPEC_INPUTS = [
@@ -90,6 +96,7 @@ const SPEC_INPUTS = [
   badgeSpecInput,
   dividerSpecInput,
   iconSpecInput,
+  progressBarSpecInput,
 ].map(preprocessSpecInput);
 
 function preprocessSpecInput(
@@ -293,7 +300,7 @@ class NgParser {
     } else if (
       !member.type &&
       name === 'color' &&
-      this.input.getName() === 'icon'
+      ['icon', 'progress_bar'].includes(this.input.getName())
     ) {
       // Technically this is a union between string and ThemePalette (which is a union of string literal)
       // string is the more flexible type.
@@ -407,6 +414,30 @@ class NgParser {
             }
           }
 
+          return eventProps;
+        }
+      }
+      if (ts.isInterfaceDeclaration(statement)) {
+        const iface = statement;
+        if (iface.name.getText() === type) {
+          const eventProps: pb.Prop[] = [];
+          for (const member of iface.members) {
+            if (ts.isPropertySignature(member)) {
+              const simpleType = this.getSimpleType(member.type?.getText()!);
+              if (simpleType) {
+                const eventProp = new pb.Prop();
+                eventProp.setName(member.name.getText());
+                const typeProto = new pb.XType();
+                typeProto.setSimpleType(simpleType);
+                eventProp.setType(typeProto);
+                eventProp.setDocs(this.getJsDoc(member));
+                eventProps.push(eventProp);
+              } else {
+                // Deliberately ignore since we can't transmit something like an element
+                // reference through our protocol.
+              }
+            }
+          }
           return eventProps;
         }
       }

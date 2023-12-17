@@ -18,6 +18,9 @@ from mesop.components.divider.divider import divider as divider
 from mesop.components.icon.icon import icon as icon
 from mesop.components.input.input import input as input
 from mesop.components.markdown.markdown import markdown as markdown
+from mesop.components.progress_bar.progress_bar import (
+  progress_bar as progress_bar,
+)
 from mesop.components.text.text import text as text
 from mesop.components.text_input.text_input import text_input as text_input
 from mesop.components.tooltip.tooltip import tooltip as tooltip

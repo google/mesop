@@ -1,0 +1,8 @@
+<mat-progress-bar
+  [color]="config().getColor()"
+  [value]="config().getValue()"
+  [bufferValue]="config().getBufferValue()"
+  [mode]="getMode()"
+  (animationEnd)="onProgressBarAnimationEndEvent($event)"
+>
+</mat-progress-bar>

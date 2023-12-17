@@ -12,6 +12,7 @@ nav:
       - Divider: components/divider.md
       - Icon: components/icon.md
       - Input: components/input.md
+      - Progress bar: components/progress_bar.md
       - Text: components/text.md
       - Tooltip: components/tooltip.md
   - Features:

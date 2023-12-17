@@ -1,3 +1,4 @@
+import {ProgressBarComponent} from '../../../components/progress_bar/progress_bar';
 import {IconComponent} from '../../../components/icon/icon';
 import {DividerComponent} from '../../../components/divider/divider';
 import {BadgeComponent} from '../../../components/badge/badge';
@@ -26,6 +27,7 @@ export interface TypeToComponent {
 }
 
 export const typeToComponent = {
+  'progress_bar': ProgressBarComponent,
   'icon': IconComponent,
   'divider': DividerComponent,
   'badge': BadgeComponent,

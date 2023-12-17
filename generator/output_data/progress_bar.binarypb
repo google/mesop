@@ -1,0 +1,15 @@
+
+~
+progress_bar"MatProgressBar*mat-progress-bar2L
+@angular/material/progress-barMatProgressBarModuleProgressAnimationEnd5
+color2(Theme palette color of the progress bar.\
+valuenumber2GValue of the progress bar. Defaults to zero. Mirrored to aria-valuenow.N
+bufferValuenumber23Buffer value of the progress bar. Defaults to zero.ô
+mode:8
+determinate
+indeterminate
+buffer
+querydeterminateProgressBarMode2žMode of the progress bar. Input must be one of these values: determinate, indeterminate, buffer, query, defaults to 'determinate'. Mirrored to mode attribute.«
+animationEndProgressBarAnimationEndEvent
+value"
+ProgressAnimationEnd*×Event emitted when animation of the primary progress bar completes. This event will not be emitted when animations are disabled, nor will it be emitted for modes with continuous animations (indeterminate and query).

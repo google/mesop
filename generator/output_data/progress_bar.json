@@ -1,0 +1,94 @@
+{
+  "input": {
+    "name": "progress_bar",
+    "targetClass": "MatProgressBar",
+    "hasContent": false,
+    "elementName": "mat-progress-bar",
+    "tsFilename": "",
+    "directiveNamesList": [],
+    "nativeEventsList": [],
+    "skipPropertyNamesList": [],
+    "ngModulesList": [
+      {
+        "importPath": "@angular/material/progress-bar",
+        "moduleName": "MatProgressBarModule",
+        "otherSymbolsList": ["ProgressAnimationEnd"]
+      }
+    ],
+    "isFormField": false
+  },
+  "inputPropsList": [
+    {
+      "name": "color",
+      "alias": "",
+      "type": {
+        "simpleType": 1
+      },
+      "debugType": "",
+      "target": 0,
+      "docs": "Theme palette color of the progress bar."
+    },
+    {
+      "name": "value",
+      "alias": "",
+      "type": {
+        "simpleType": 3
+      },
+      "debugType": "number",
+      "target": 0,
+      "docs": "Value of the progress bar. Defaults to zero. Mirrored to aria-valuenow."
+    },
+    {
+      "name": "bufferValue",
+      "alias": "",
+      "type": {
+        "simpleType": 3
+      },
+      "debugType": "number",
+      "target": 0,
+      "docs": "Buffer value of the progress bar. Defaults to zero."
+    },
+    {
+      "name": "mode",
+      "alias": "",
+      "type": {
+        "simpleType": 0,
+        "stringLiterals": {
+          "stringLiteralList": [
+            "determinate",
+            "indeterminate",
+            "buffer",
+            "query"
+          ],
+          "defaultValue": "determinate"
+        }
+      },
+      "debugType": "ProgressBarMode",
+      "target": 0,
+      "docs": "Mode of the progress bar. Input must be one of these values: determinate, indeterminate, buffer, query, defaults to 'determinate'. Mirrored to mode attribute."
+    }
+  ],
+  "outputPropsList": [
+    {
+      "name": "animationEnd",
+      "eventName": "ProgressBarAnimationEndEvent",
+      "eventPropsList": [
+        {
+          "name": "value",
+          "alias": "",
+          "type": {
+            "simpleType": 3
+          },
+          "debugType": "",
+          "target": 0,
+          "docs": ""
+        }
+      ],
+      "eventJsType": {
+        "typeName": "ProgressAnimationEnd",
+        "isPrimitive": false
+      },
+      "docs": "Event emitted when animation of the primary progress bar completes. This event will not be emitted when animations are disabled, nor will it be emitted for modes with continuous animations (indeterminate and query)."
+    }
+  ]
+}

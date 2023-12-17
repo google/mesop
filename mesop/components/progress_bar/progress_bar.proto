@@ -1,0 +1,12 @@
+
+syntax = "proto3";
+
+package mesop.components.progress_bar;
+
+message ProgressBarType {
+  string color = 1;
+  double value = 2;
+  double buffer_value = 3;
+  string mode = 4;
+  string on_progress_bar_animation_end_event_handler_id = 5;
+}

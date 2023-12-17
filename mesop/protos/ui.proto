@@ -27,6 +27,7 @@ message UserEvent {
     oneof type {
         bool bool = 4;
         string string = 5;
+        double double = 7;
         HotReloadEvent hot_reload = 6;
     }
 }
