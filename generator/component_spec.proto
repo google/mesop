@@ -66,6 +66,7 @@ message Prop {
     XType type = 2;
     string debug_type = 3;
     Target target = 5;
+    string docs = 6;
 }
 
 message OutputProp {
@@ -76,6 +77,7 @@ message OutputProp {
     repeated Prop event_props = 3;
     // Original type in JS (can be a primitive, e.g. `boolean`, or custom type, e.g.`MatCheckboxChange`).
     JsType event_js_type = 4;
+    string docs = 5;
 }
 
 message JsType {
