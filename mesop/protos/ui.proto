@@ -28,6 +28,7 @@ message UserEvent {
         bool bool = 4;
         string string = 5;
         double double = 7;
+        int32 int = 8;
         HotReloadEvent hot_reload = 6;
     }
 }

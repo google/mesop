@@ -1,0 +1,27 @@
+<mat-radio-group
+  [color]="getColor()"
+  [labelPosition]="getLabelPosition()"
+  [value]="config().getValue()"
+  [disabled]="config().getDisabled()"
+  [required]="config().getRequired()"
+  (change)="onRadioChangeEvent($event)"
+>
+  @for(option of config().getRadioOptionsList(); track index; let index =
+  $index) {
+  <mat-radio-button
+    [aria-label]="config().getRadioOptionsList()[index].getLabel()"
+    [aria-labelledby]="config().getRadioOptionsList()[index].getAriaLabelledby()"
+    [aria-describedby]="config().getRadioOptionsList()[index].getAriaDescribedby()"
+    [disableRipple]="config().getRadioOptionsList()[index].getDisableRipple()"
+    [tabIndex]="config().getRadioOptionsList()[index].getTabIndex()"
+    [checked]="config().getRadioOptionsList()[index].getChecked()"
+    [value]="config().getRadioOptionsList()[index].getValue()"
+    [labelPosition]="getRadioOptionLabelPosition(index)"
+    [disabled]="config().getRadioOptionsList()[index].getDisabled()"
+    [required]="config().getRadioOptionsList()[index].getRequired()"
+    [color]="getRadioOptionColor(index)"
+  >
+    {{config().getRadioOptionsList()[index].getLabel()}}
+  </mat-radio-button>
+  }
+</mat-radio-group>

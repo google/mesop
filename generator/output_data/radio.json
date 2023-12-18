@@ -1,0 +1,250 @@
+{
+  "input": {
+    "name": "radio",
+    "targetClassesList": ["MatRadioGroup", "MatRadioButton"],
+    "hasContent": false,
+    "elementName": "mat-radio",
+    "tsFilename": "",
+    "directiveNamesList": [],
+    "nativeEventsList": [],
+    "skipPropertyNamesList": ["selected"],
+    "ngModulesList": [
+      {
+        "importPath": "@angular/material/radio",
+        "moduleName": "MatRadioModule",
+        "otherSymbolsList": ["MatRadioChange", "MatRadioChange"]
+      }
+    ],
+    "isFormField": false
+  },
+  "inputPropsList": [
+    {
+      "name": "color",
+      "alias": "",
+      "type": {
+        "simpleType": 0,
+        "stringLiterals": {
+          "stringLiteralList": ["primary", "accent", "warn"],
+          "defaultValue": "primary"
+        }
+      },
+      "debugType": "ThemePalette",
+      "target": 0,
+      "docs": "Theme color for all of the radio buttons in the group."
+    },
+    {
+      "name": "name",
+      "alias": "",
+      "type": {
+        "simpleType": 1
+      },
+      "debugType": "string",
+      "target": 0,
+      "docs": "Name of the radio button group. All radio buttons inside this group will use this name."
+    },
+    {
+      "name": "labelPosition",
+      "alias": "",
+      "type": {
+        "simpleType": 0,
+        "stringLiterals": {
+          "stringLiteralList": ["before", "after"],
+          "defaultValue": "before"
+        }
+      },
+      "debugType": "'before' | 'after'",
+      "target": 0,
+      "docs": "Whether the labels should appear after or before the radio-buttons. Defaults to 'after'"
+    },
+    {
+      "name": "value",
+      "alias": "",
+      "type": {
+        "simpleType": 1
+      },
+      "debugType": "",
+      "target": 0,
+      "docs": "Value for the radio-group. Should equal the value of the selected radio button if there is a corresponding radio button with a matching value. If there is not such a corresponding radio button, this value persists to be applied in case a new radio button is added with a matching value."
+    },
+    {
+      "name": "disabled",
+      "alias": "",
+      "type": {
+        "simpleType": 2
+      },
+      "debugType": "boolean",
+      "target": 0,
+      "docs": "Whether the radio group is disabled"
+    },
+    {
+      "name": "required",
+      "alias": "",
+      "type": {
+        "simpleType": 2
+      },
+      "debugType": "boolean",
+      "target": 0,
+      "docs": "Whether the radio group is required"
+    },
+    {
+      "name": "id",
+      "alias": "",
+      "type": {
+        "simpleType": 1
+      },
+      "debugType": "string",
+      "target": 0,
+      "docs": "The unique ID for the radio button."
+    },
+    {
+      "name": "name",
+      "alias": "",
+      "type": {
+        "simpleType": 1
+      },
+      "debugType": "string",
+      "target": 0,
+      "docs": "Analog to HTML 'name' attribute used to group radios for unique selection."
+    },
+    {
+      "name": "ariaLabel",
+      "alias": "aria-label",
+      "type": {
+        "simpleType": 1
+      },
+      "debugType": "string",
+      "target": 0,
+      "docs": "Used to set the 'aria-label' attribute on the underlying input element."
+    },
+    {
+      "name": "ariaLabelledby",
+      "alias": "aria-labelledby",
+      "type": {
+        "simpleType": 1
+      },
+      "debugType": "string",
+      "target": 0,
+      "docs": "The 'aria-labelledby' attribute takes precedence as the element's text alternative."
+    },
+    {
+      "name": "ariaDescribedby",
+      "alias": "aria-describedby",
+      "type": {
+        "simpleType": 1
+      },
+      "debugType": "string",
+      "target": 0,
+      "docs": "The 'aria-describedby' attribute is read after the element's label and field type."
+    },
+    {
+      "name": "disableRipple",
+      "alias": "",
+      "type": {
+        "simpleType": 2
+      },
+      "debugType": "boolean",
+      "target": 0,
+      "docs": "Whether ripples are disabled inside the radio button"
+    },
+    {
+      "name": "tabIndex",
+      "alias": "",
+      "type": {
+        "simpleType": 3
+      },
+      "debugType": "number",
+      "target": 0,
+      "docs": "Tabindex of the radio button."
+    },
+    {
+      "name": "checked",
+      "alias": "",
+      "type": {
+        "simpleType": 2
+      },
+      "debugType": "boolean",
+      "target": 0,
+      "docs": "Whether this radio button is checked."
+    },
+    {
+      "name": "value",
+      "alias": "",
+      "type": {
+        "simpleType": 1
+      },
+      "debugType": "",
+      "target": 0,
+      "docs": "The value of this radio button."
+    },
+    {
+      "name": "labelPosition",
+      "alias": "",
+      "type": {
+        "simpleType": 0,
+        "stringLiterals": {
+          "stringLiteralList": ["before", "after"],
+          "defaultValue": "before"
+        }
+      },
+      "debugType": "'before' | 'after'",
+      "target": 0,
+      "docs": "Whether the label should appear after or before the radio button. Defaults to 'after'"
+    },
+    {
+      "name": "disabled",
+      "alias": "",
+      "type": {
+        "simpleType": 2
+      },
+      "debugType": "boolean",
+      "target": 0,
+      "docs": "Whether the radio button is disabled."
+    },
+    {
+      "name": "required",
+      "alias": "",
+      "type": {
+        "simpleType": 2
+      },
+      "debugType": "boolean",
+      "target": 0,
+      "docs": "Whether the radio button is required."
+    },
+    {
+      "name": "color",
+      "alias": "",
+      "type": {
+        "simpleType": 0,
+        "stringLiterals": {
+          "stringLiteralList": ["primary", "accent", "warn"],
+          "defaultValue": "primary"
+        }
+      },
+      "debugType": "ThemePalette",
+      "target": 0,
+      "docs": "Theme color of the radio button."
+    }
+  ],
+  "outputPropsList": [
+    {
+      "name": "change",
+      "eventName": "RadioChangeEvent",
+      "eventPropsList": [],
+      "eventJsType": {
+        "typeName": "MatRadioChange",
+        "isPrimitive": false
+      },
+      "docs": "Event emitted when the group value changes. Change events are only emitted when the value changes due to user interaction with a radio button (the same behavior as `<input type-\"radio\">`)."
+    },
+    {
+      "name": "change",
+      "eventName": "RadioChangeEvent",
+      "eventPropsList": [],
+      "eventJsType": {
+        "typeName": "MatRadioChange",
+        "isPrimitive": false
+      },
+      "docs": "Event emitted when the checked state of this radio button changes. Change events are only emitted when the value changes due to user interaction with the radio button (the same behavior as `<input type-\"radio\">`)."
+    }
+  ]
+}

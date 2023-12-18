@@ -1,7 +1,7 @@
 {
   "input": {
     "name": "progress_spinner",
-    "targetClass": "MatProgressSpinner",
+    "targetClassesList": ["MatProgressSpinner"],
     "hasContent": false,
     "elementName": "mat-progress-spinner",
     "tsFilename": "",

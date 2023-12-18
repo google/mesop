@@ -1,7 +1,7 @@
 {
   "input": {
     "name": "checkbox",
-    "targetClass": "MatCheckbox",
+    "targetClassesList": ["MatCheckbox"],
     "hasContent": true,
     "elementName": "mat-checkbox",
     "tsFilename": "",

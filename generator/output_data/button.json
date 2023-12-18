@@ -1,7 +1,7 @@
 {
   "input": {
     "name": "button",
-    "targetClass": "MatButtonBase",
+    "targetClassesList": ["MatButtonBase"],
     "hasContent": true,
     "elementName": "button",
     "tsFilename": "button-base.ts",

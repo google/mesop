@@ -1,7 +1,7 @@
 {
   "input": {
     "name": "badge",
-    "targetClass": "MatBadge",
+    "targetClassesList": ["MatBadge"],
     "hasContent": true,
     "elementName": "div",
     "tsFilename": "",

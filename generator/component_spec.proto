@@ -6,7 +6,7 @@ package mesop_internal.generator.protos;
 // Everything needed to generate a component spec
 message ComponentSpecInput {
     string name = 1;
-    string target_class = 4;
+    repeated string target_classes = 4;
     bool has_content = 3;
 
     // Element to render, e.g. "mat-checkbox", "button"

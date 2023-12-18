@@ -1,0 +1,30 @@
+
+syntax = "proto3";
+
+package mesop.components.radio;
+
+message RadioType {
+  string color = 1;
+  string name = 2;
+  string label_position = 3;
+  string value = 4;
+  bool disabled = 5;
+  bool required = 6;
+  string on_radio_change_event_handler_id = 20;
+  repeated RadioOption radio_options = 7;
+}
+
+message RadioOption {
+  string id = 7;
+  string label = 8;
+  string aria_labelledby = 10;
+  string aria_describedby = 11;
+  bool disable_ripple = 12;
+  double tab_index = 13;
+  bool checked = 14;
+  string value = 15;
+  string label_position = 16;
+  bool disabled = 17;
+  bool required = 18;
+  string color = 19;
+}

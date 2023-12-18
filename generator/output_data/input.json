@@ -1,7 +1,7 @@
 {
   "input": {
     "name": "input",
-    "targetClass": "MatInput",
+    "targetClassesList": ["MatInput"],
     "hasContent": false,
     "elementName": "input",
     "tsFilename": "",

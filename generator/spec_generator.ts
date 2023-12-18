@@ -26,7 +26,7 @@ buttonSpecInput.addDirectiveNames('mat-flat-button');
 buttonSpecInput.addDirectiveNames('mat-stroked-button');
 buttonSpecInput.addNativeEvents('click');
 buttonSpecInput.setTsFilename('button-base.ts');
-buttonSpecInput.setTargetClass('MatButtonBase'); // Special-case: https://github.com/angular/components/blob/main/src/material/button/button-base.ts
+buttonSpecInput.addTargetClasses('MatButtonBase'); // Special-case: https://github.com/angular/components/blob/main/src/material/button/button-base.ts
 buttonSpecInput.setHasContent(true);
 buttonSpecInput.addSkipPropertyNames('disabledInteractive');
 buttonSpecInput.addSkipPropertyNames('ariaDisabled'); // not recognized by angular compiler
@@ -99,6 +99,14 @@ const slideToggleSpecInput = (() => {
   return i;
 })();
 
+const radioSpecInput = (() => {
+  const i = new pb.ComponentSpecInput();
+  i.setName('radio');
+  i.setTargetClassesList(['MatRadioGroup', 'MatRadioButton']);
+  i.setSkipPropertyNamesList(['selected']); // This is a complex type which would require some shimming.
+  return i;
+})();
+
 const SYSTEM_IMPORT_PREFIX = '@angular/material/';
 const SYSTEM_PREFIX = 'Mat';
 const SPEC_INPUTS = [
@@ -113,14 +121,15 @@ const SPEC_INPUTS = [
   progressBarSpecInput,
   progressSpinnerSpecInput,
   slideToggleSpecInput,
+  radioSpecInput,
 ].map(preprocessSpecInput);
 
 function preprocessSpecInput(
   input: pb.ComponentSpecInput,
 ): pb.ComponentSpecInput {
   const name = input.getName();
-  if (!input.getTargetClass()) {
-    input.setTargetClass(SYSTEM_PREFIX + upperCamelCase(name));
+  if (!input.getTargetClassesList().length) {
+    input.addTargetClasses(SYSTEM_PREFIX + upperCamelCase(name));
   }
   if (!input.getElementName()) {
     input.setElementName(SYSTEM_PREFIX.toLowerCase() + '-' + kebabCase(name));
@@ -166,6 +175,7 @@ class NgParser {
   constructor(
     private readonly input: pb.ComponentSpecInput,
     filePath: string,
+    private readonly targetClass: string,
   ) {
     this.proto = new pb.ComponentSpec();
     this.proto.setInput(input);
@@ -187,7 +197,7 @@ class NgParser {
     }
     this.sourceFile.statements.find((s) => {
       if (ts.isClassDeclaration(s)) {
-        if (s.name?.escapedText === this.input.getTargetClass()) {
+        if (s.name?.escapedText === this.targetClass) {
           this.processClass(s);
         }
       }
@@ -310,6 +320,10 @@ class NgParser {
       name === 'message' &&
       this.input.getName() === 'tooltip'
     ) {
+      const type = new pb.XType();
+      type.setSimpleType(pb.SimpleType.STRING);
+      inputProp.setType(type);
+    } else if (name === 'value' && this.input.getName() === 'radio') {
       const type = new pb.XType();
       type.setSimpleType(pb.SimpleType.STRING);
       inputProp.setType(type);
@@ -598,19 +612,36 @@ function main() {
       filename,
     );
 
-    const parser = new NgParser(specInput, inputFilePath);
+    let outProto!: pb.ComponentSpec;
+    let valid = true;
+    for (const targetClass of specInput.getTargetClassesList()) {
+      const parser = new NgParser(specInput, inputFilePath, targetClass);
+      if (!outProto) {
+        outProto = parser.proto;
+      } else {
+        for (const inputProp of parser.proto.getInputPropsList()) {
+          outProto.addInputProps(inputProp);
+        }
+        for (const outputProp of parser.proto.getOutputPropsList()) {
+          outProto.addOutputProps(outputProp);
+        }
+      }
+      if (!parser.validate()) {
+        valid = false;
+      }
+    }
 
     // console.log(JSON.stringify(parser.proto.toObject(), null, 2));
 
-    if (parser.validate() && workspaceRoot) {
+    if (valid && workspaceRoot) {
       const out_path = path.join(workspaceRoot, 'generator', 'output_data');
       fs.writeFileSync(
-        path.join(out_path, `${parser.proto.getInput()!.getName()}.json`),
-        JSON.stringify(parser.proto.toObject(), null, 2),
+        path.join(out_path, `${outProto.getInput()!.getName()}.json`),
+        JSON.stringify(outProto.toObject(), null, 2),
       );
       fs.writeFileSync(
-        path.join(out_path, `${parser.proto.getInput()!.getName()}.binarypb`),
-        parser.proto.serializeBinary(),
+        path.join(out_path, `${outProto.getInput()!.getName()}.binarypb`),
+        outProto.serializeBinary(),
       );
     }
   }

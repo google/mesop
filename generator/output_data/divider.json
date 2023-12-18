@@ -1,7 +1,7 @@
 {
   "input": {
     "name": "divider",
-    "targetClass": "MatDivider",
+    "targetClassesList": ["MatDivider"],
     "hasContent": false,
     "elementName": "mat-divider",
     "tsFilename": "",

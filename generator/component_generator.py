@@ -47,7 +47,9 @@ def main(argv):
     if (
       os.path.isfile(full_path)
       and file.endswith(".binarypb")
-      and not file.endswith("form_field.binarypb")
+      and not (
+        file.endswith("form_field.binarypb") or file.endswith("radio.binarypb")
+      )
     ):
       process_component(full_path, form_field_spec)
 

@@ -1,7 +1,7 @@
 {
   "input": {
     "name": "tooltip",
-    "targetClass": "MatTooltip",
+    "targetClassesList": ["MatTooltip"],
     "hasContent": true,
     "elementName": "mat-tooltip",
     "tsFilename": "",

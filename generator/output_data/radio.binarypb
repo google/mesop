@@ -1,0 +1,38 @@
+
+†
+radio"MatRadioGroup"MatRadioButton*	mat-radioRselected2I
+@angular/material/radioMatRadioModuleMatRadioChangeMatRadioChangeq
+color" 
+primary
+accent
+warnprimaryThemePalette26Theme color for all of the radio buttons in the group.k
+namestring2WName of the radio button group. All radio buttons inside this group will use this name.—
+labelPosition
+before
+afterbefore'before' | 'after'2WWhether the labels should appear after or before the radio-buttons. Defaults to 'after'¬
+value2žValue for the radio-group. Should equal the value of the selected radio button if there is a corresponding radio button with a matching value. If there is not such a corresponding radio button, this value persists to be applied in case a new radio button is added with a matching value.<
+disabledboolean2#Whether the radio group is disabled<
+requiredboolean2#Whether the radio group is required5
+idstring2#The unique ID for the radio button.^
+namestring2JAnalog to HTML 'name' attribute used to group radios for unique selection.l
+	ariaLabel"
+aria-labelstring2GUsed to set the 'aria-label' attribute on the underlying input element.‚
+ariaLabelledby"aria-labelledbystring2SThe 'aria-labelledby' attribute takes precedence as the element's text alternative.ƒ
+ariaDescribedby"aria-describedbystring2RThe 'aria-describedby' attribute is read after the element's label and field type.R
+disableRippleboolean24Whether ripples are disabled inside the radio button5
+tabIndexnumber2Tabindex of the radio button.=
+checkedboolean2%Whether this radio button is checked.,
+value2The value of this radio button.•
+labelPosition
+before
+afterbefore'before' | 'after'2UWhether the label should appear after or before the radio button. Defaults to 'after'>
+disabledboolean2%Whether the radio button is disabled.>
+requiredboolean2%Whether the radio button is required.[
+color" 
+primary
+accent
+warnprimaryThemePalette2 Theme color of the radio button.ë
+changeRadioChangeEvent"
+MatRadioChange*¼Event emitted when the group value changes. Change events are only emitted when the value changes due to user interaction with a radio button (the same behavior as `<input type-"radio">`).„
+changeRadioChangeEvent"
+MatRadioChange*ÕEvent emitted when the checked state of this radio button changes. Change events are only emitted when the value changes due to user interaction with the radio button (the same behavior as `<input type-"radio">`).

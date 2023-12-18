@@ -42,6 +42,7 @@ _MATERIAL_ENTRY_POINTS = [
     "sidenav",
     "badge",
     "divider",
+    "radio",
 ]
 
 # Forked from: https://github.com/angular/components/blob/ff67a416d19e9237607605bec0d7cc372025387f/packages.bzl

@@ -1,7 +1,7 @@
 {
   "input": {
     "name": "slide_toggle",
-    "targetClass": "MatSlideToggle",
+    "targetClassesList": ["MatSlideToggle"],
     "hasContent": false,
     "elementName": "mat-slide-toggle",
     "tsFilename": "",

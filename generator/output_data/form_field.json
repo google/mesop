@@ -1,7 +1,7 @@
 {
   "input": {
     "name": "form_field",
-    "targetClass": "MatFormField",
+    "targetClassesList": ["MatFormField"],
     "hasContent": true,
     "elementName": "mat-form-field",
     "tsFilename": "",

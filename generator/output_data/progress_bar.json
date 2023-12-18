@@ -1,7 +1,7 @@
 {
   "input": {
     "name": "progress_bar",
-    "targetClass": "MatProgressBar",
+    "targetClassesList": ["MatProgressBar"],
     "hasContent": false,
     "elementName": "mat-progress-bar",
     "tsFilename": "",
