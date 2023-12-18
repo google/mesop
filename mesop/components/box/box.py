@@ -14,7 +14,7 @@ def box(
   This function creates a box.
 
   Args:
-      label (str): The text to be displayed
+      label: The text to be displayed
   """
   return insert_composite_component(
     key=key,

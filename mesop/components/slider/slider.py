@@ -43,16 +43,16 @@ def slider(
   """Creates a Slider component.
 
   Args:
-    key (str|None): Unique identifier for this component instance.
-    disabled (bool): Whether the slider is disabled.
-    discrete (bool): Whether the slider displays a numeric value label upon pressing the thumb.
-    show_tick_marks (bool): Whether the slider displays tick marks along the slider track.
-    min (float): The minimum value that the slider can have.
-    color (Literal['primary','accent','warn']): Palette color of the slider.
-    disable_ripple (bool): Whether ripples are disabled in the slider.
-    max (float): The maximum value that the slider can have.
-    step (float): The values at which the thumb will snap.
-    on_value_change (Callable[[SliderValueChangeEvent], Any]|None): An event will be dispatched each time the slider changes its value.
+    key: Unique identifier for this component instance.
+    disabled: Whether the slider is disabled.
+    discrete: Whether the slider displays a numeric value label upon pressing the thumb.
+    show_tick_marks: Whether the slider displays tick marks along the slider track.
+    min: The minimum value that the slider can have.
+    color: Palette color of the slider.
+    disable_ripple: Whether ripples are disabled in the slider.
+    max: The maximum value that the slider can have.
+    step: The values at which the thumb will snap.
+    on_value_change: An event will be dispatched each time the slider changes its value.
   """
   insert_component(
     key=key,

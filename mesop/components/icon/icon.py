@@ -19,12 +19,12 @@ def icon(
   """Creates a Icon component.
 
   Args:
-    key (str|None): Unique identifier for this component instance.
-    color (str): Theme palette color of the icon.
-    inline (bool): Whether the icon should be inlined, automatically sizing the icon to match the font size of the element the icon is contained in.
-    svg_icon (str): Name of the icon in the SVG icon set.
-    font_set (str): Font set that the icon is a part of.
-    font_icon (str): Name of an icon within a font set.
+    key: Unique identifier for this component instance.
+    color: Theme palette color of the icon.
+    inline: Whether the icon should be inlined, automatically sizing the icon to match the font size of the element the icon is contained in.
+    svg_icon: Name of the icon in the SVG icon set.
+    font_set: Font set that the icon is a part of.
+    font_icon: Name of an icon within a font set.
   """
   insert_component(
     key=key,

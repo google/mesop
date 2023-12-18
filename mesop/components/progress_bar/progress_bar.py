@@ -41,12 +41,12 @@ def progress_bar(
   """Creates a Progress bar component.
 
   Args:
-    key (str|None): Unique identifier for this component instance.
-    color (str): Theme palette color of the progress bar.
-    value (float): Value of the progress bar. Defaults to zero. Mirrored to aria-valuenow.
-    buffer_value (float): Buffer value of the progress bar. Defaults to zero.
-    mode (Literal['determinate','indeterminate','buffer','query']): Mode of the progress bar. Input must be one of these values: determinate, indeterminate, buffer, query, defaults to 'determinate'. Mirrored to mode attribute.
-    on_animation_end (Callable[[ProgressBarAnimationEndEvent], Any]|None): Event emitted when animation of the primary progress bar completes. This event will not be emitted when animations are disabled, nor will it be emitted for modes with continuous animations (indeterminate and query).
+    key: Unique identifier for this component instance.
+    color: Theme palette color of the progress bar.
+    value: Value of the progress bar. Defaults to zero. Mirrored to aria-valuenow.
+    buffer_value: Buffer value of the progress bar. Defaults to zero.
+    mode: Mode of the progress bar. Input must be one of these values: determinate, indeterminate, buffer, query, defaults to 'determinate'. Mirrored to mode attribute.
+    on_animation_end: Event emitted when animation of the primary progress bar completes. This event will not be emitted when animations are disabled, nor will it be emitted for modes with continuous animations (indeterminate and query).
   """
   insert_component(
     key=key,

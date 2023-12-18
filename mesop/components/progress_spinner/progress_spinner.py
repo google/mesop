@@ -21,12 +21,12 @@ def progress_spinner(
   """Creates a Progress spinner component.
 
   Args:
-    key (str|None): Unique identifier for this component instance.
-    color (str): Theme palette color of the progress spinner.
-    mode (Literal['determinate','indeterminate']): Mode of the progress bar. Input must be one of these values: determinate, indeterminate, buffer, query, defaults to 'determinate'. Mirrored to mode attribute.
-    value (float): Value of the progress bar. Defaults to zero. Mirrored to aria-valuenow.
-    diameter (float): The diameter of the progress spinner (will set width and height of svg).
-    stroke_width (float): Stroke width of the progress spinner.
+    key: Unique identifier for this component instance.
+    color: Theme palette color of the progress spinner.
+    mode: Mode of the progress bar. Input must be one of these values: determinate, indeterminate, buffer, query, defaults to 'determinate'. Mirrored to mode attribute.
+    value: Value of the progress bar. Defaults to zero. Mirrored to aria-valuenow.
+    diameter: The diameter of the progress spinner (will set width and height of svg).
+    stroke_width: Stroke width of the progress spinner.
   """
   insert_component(
     key=key,

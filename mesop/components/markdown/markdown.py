@@ -14,7 +14,7 @@ def markdown(
   This function creates a markdown.
 
   Args:
-      text (str): Markdown text
+      text: Markdown text
   """
   insert_component(
     key=key,

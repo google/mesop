@@ -19,8 +19,8 @@ def text_input(
   Creates a text input.
 
   Args:
-      label (str): The text to be displayed
-      on_change (Callable[..., Any]): Called when user changes text input value.
+      label: The text to be displayed
+      on_change: Called when user changes text input value.
   """
   insert_component(
     key=key,

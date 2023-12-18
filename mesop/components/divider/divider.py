@@ -13,9 +13,9 @@ def divider(
   """Creates a Divider component.
 
   Args:
-    key (str|None): Unique identifier for this component instance.
-    vertical (bool): Whether the divider is vertically aligned.
-    inset (bool): Whether the divider is an inset divider.
+    key: Unique identifier for this component instance.
+    vertical: Whether the divider is vertically aligned.
+    inset: Whether the divider is an inset divider.
   """
   insert_component(
     key=key,

@@ -27,18 +27,18 @@ register_event_mapper(
 class RadioOption:
   """
   Members:
-    id (str): The unique ID for the radio button.
-    label (str): Content to show for the radio option
-    aria_labelledby (str): The 'aria-labelledby' attribute takes precedence as the element's text alternative.
-    aria_describedby (str): The 'aria-describedby' attribute is read after the element's label and field type.
-    disable_ripple (bool): Whether ripples are disabled inside the radio button
-    tab_index (float): Tabindex of the radio button.
-    checked (bool): Whether this radio button is checked.
-    value (str): The value of this radio button.
-    label_position (Literal['before','after']): Whether the label should appear after or before the radio button. Defaults to 'after'
-    disabled (bool): Whether the radio button is disabled.
-    required (bool): Whether the radio button is required.
-    color (Literal['primary','accent','warn']): Theme color of the radio button.
+    id: The unique ID for the radio button.
+    label: Content to show for the radio option
+    aria_labelledby: The 'aria-labelledby' attribute takes precedence as the element's text alternative.
+    aria_describedby: The 'aria-describedby' attribute is read after the element's label and field type.
+    disable_ripple: Whether ripples are disabled inside the radio button
+    tab_index: Tabindex of the radio button.
+    checked: Whether this radio button is checked.
+    value: The value of this radio button.
+    label_position: Whether the label should appear after or before the radio button. Defaults to 'after'
+    disabled: Whether the radio button is disabled.
+    required: Whether the radio button is required.
+    color: Theme color of the radio button.
   """
 
   label: str
@@ -72,15 +72,15 @@ def radio(
   """Creates a Radio component.
 
   Args:
-    key (str|None): Unique identifier for this component instance.
-    radio_options (List[RadioOption]): List of radio options
-    color (Literal['primary','accent','warn']): Theme color for all of the radio buttons in the group.
-    label_position (Literal['before','after']): Whether the labels should appear after or before the radio-buttons. Defaults to 'after'
-    value (str): Value for the radio-group. Should equal the value of the selected radio button if there is a corresponding radio button with a matching value. If there is not such a corresponding radio button, this value persists to be applied in case a new radio button is added with a matching value.
-    disabled (bool): Whether the radio group is disabled
-    required (bool): Whether the radio group is required
+    key: Unique identifier for this component instance.
+    radio_options: List of radio options
+    color: Theme color for all of the radio buttons in the group.
+    label_position: Whether the labels should appear after or before the radio-buttons. Defaults to 'after'
+    value: Value for the radio-group. Should equal the value of the selected radio button if there is a corresponding radio button with a matching value. If there is not such a corresponding radio button, this value persists to be applied in case a new radio button is added with a matching value.
+    disabled: Whether the radio group is disabled
+    required: Whether the radio group is required
 
-    on_change (Callable[[RadioChangeEvent], Any]|None): Event emitted when the group value changes. Change events are only emitted when the value changes due to user interaction with a radio button (the same behavior as `<input type-"radio">`).
+    on_change: Event emitted when the group value changes. Change events are only emitted when the value changes due to user interaction with a radio button (the same behavior as `<input type-"radio">`).
   """
   insert_component(
     key=key,

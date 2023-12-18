@@ -14,7 +14,7 @@ def component_name(
   This function creates a component_name.
 
   Args:
-      label (str): The text to be displayed
+      label: The text to be displayed
   """
   insert_component(
     key=key,

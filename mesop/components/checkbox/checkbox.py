@@ -66,23 +66,23 @@ def checkbox(
   Checkbox is a composite component.
 
   Args:
-    key (str|None): Unique identifier for this component instance.
-    aria_label (str): Attached to the aria-label attribute of the host element. In most cases, aria-labelledby will take precedence so this may be omitted.
-    aria_labelledby (str): Users can specify the `aria-labelledby` attribute which will be forwarded to the input element
-    aria_describedby (str): The 'aria-describedby' attribute is read after the element's label and field type.
-    id (str): A unique id for the checkbox input. If none is supplied, it will be auto-generated.
-    required (bool): Whether the checkbox is required.
-    label_position (Literal['before','after']): Whether the label should appear after or before the checkbox. Defaults to 'after'
-    name (str): Name value will be applied to the input element if present
-    value (str): The value attribute of the native input element
-    disable_ripple (bool): Whether the checkbox has a ripple.
-    tab_index (float): Tabindex for the checkbox.
-    color (str): Palette color of the checkbox.
-    checked (bool): Whether the checkbox is checked.
-    disabled (bool): Whether the checkbox is disabled.
-    indeterminate (bool): Whether the checkbox is indeterminate. This is also known as "mixed" mode and can be used to represent a checkbox with three states, e.g. a checkbox that represents a nested list of checkable items. Note that whenever checkbox is manually clicked, indeterminate is immediately set to false.
-    on_change (Callable[[CheckboxChangeEvent], Any]|None): Event emitted when the checkbox's `checked` value changes.
-    on_indeterminate_change (Callable[[CheckboxIndeterminateChangeEvent], Any]|None): Event emitted when the checkbox's `indeterminate` value changes.
+    key: Unique identifier for this component instance.
+    aria_label: Attached to the aria-label attribute of the host element. In most cases, aria-labelledby will take precedence so this may be omitted.
+    aria_labelledby: Users can specify the `aria-labelledby` attribute which will be forwarded to the input element
+    aria_describedby: The 'aria-describedby' attribute is read after the element's label and field type.
+    id: A unique id for the checkbox input. If none is supplied, it will be auto-generated.
+    required: Whether the checkbox is required.
+    label_position: Whether the label should appear after or before the checkbox. Defaults to 'after'
+    name: Name value will be applied to the input element if present
+    value: The value attribute of the native input element
+    disable_ripple: Whether the checkbox has a ripple.
+    tab_index: Tabindex for the checkbox.
+    color: Palette color of the checkbox.
+    checked: Whether the checkbox is checked.
+    disabled: Whether the checkbox is disabled.
+    indeterminate: Whether the checkbox is indeterminate. This is also known as "mixed" mode and can be used to represent a checkbox with three states, e.g. a checkbox that represents a nested list of checkable items. Note that whenever checkbox is manually clicked, indeterminate is immediately set to false.
+    on_change: Event emitted when the checkbox's `checked` value changes.
+    on_indeterminate_change: Event emitted when the checkbox's `indeterminate` value changes.
   """
   return insert_composite_component(
     key=key,

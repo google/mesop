@@ -26,12 +26,12 @@ def button(
   Button is a composite component.
 
   Args:
-    key (str|None): Unique identifier for this component instance.
-    color (str): Theme color palette of the button
-    disable_ripple (bool): Whether the ripple effect is disabled or not.
-    disabled (bool): Whether the button is disabled.
-    on_click (Callable[[ClickEvent], Any]|None): [click](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/click_event) is a native browser event.
-    variant (Literal['mat-button','mat-raised-button','mat-flat-button','mat-stroked-button']): component variations
+    key: Unique identifier for this component instance.
+    color: Theme color palette of the button
+    disable_ripple: Whether the ripple effect is disabled or not.
+    disabled: Whether the button is disabled.
+    on_click: [click](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/click_event) is a native browser event.
+    variant: component variations
   """
   return insert_composite_component(
     key=key,

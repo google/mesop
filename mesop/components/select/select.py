@@ -72,22 +72,22 @@ def select(
   """Creates a Select component.
 
   Args:
-    key (str|None): Unique identifier for this component instance.
-    user_aria_described_by (str): Implemented as part of MatFormFieldControl. @docs-private
-    disabled (bool): Whether the select is disabled.
-    disable_ripple (bool): Whether ripples in the select are disabled.
-    tab_index (float): Tab index of the select.
-    hide_single_selection_indicator (bool): Whether checkmark indicator for single-selection options is hidden.
-    placeholder (str): Placeholder to be shown if no value has been selected.
-    required (bool): Whether the component is required.
-    multiple (bool): Whether the user should be allowed to select multiple options.
-    value (str): Value of the select control.
-    aria_label (str): Aria label of the select.
-    aria_labelledby (str): Input that can be used to specify the `aria-labelledby` attribute.
-    typeahead_debounce_interval (float): Time to wait in milliseconds after the last keystroke before moving focus to an item.
-    id (str): Unique id of the element.
-    on_opened_change (Callable[[SelectOpenedChangeEvent], Any]|None): Event emitted when the select panel has been toggled.
-    on_selection_change (Callable[[SelectSelectionChangeEvent], Any]|None): Event emitted when the selected value has been changed by the user.
+    key: Unique identifier for this component instance.
+    user_aria_described_by: Implemented as part of MatFormFieldControl. @docs-private
+    disabled: Whether the select is disabled.
+    disable_ripple: Whether ripples in the select are disabled.
+    tab_index: Tab index of the select.
+    hide_single_selection_indicator: Whether checkmark indicator for single-selection options is hidden.
+    placeholder: Placeholder to be shown if no value has been selected.
+    required: Whether the component is required.
+    multiple: Whether the user should be allowed to select multiple options.
+    value: Value of the select control.
+    aria_label: Aria label of the select.
+    aria_labelledby: Input that can be used to specify the `aria-labelledby` attribute.
+    typeahead_debounce_interval: Time to wait in milliseconds after the last keystroke before moving focus to an item.
+    id: Unique id of the element.
+    on_opened_change: Event emitted when the select panel has been toggled.
+    on_selection_change: Event emitted when the selected value has been changed by the user.
   """
   insert_component(
     key=key,

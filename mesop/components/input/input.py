@@ -51,24 +51,24 @@ def input(
   """Creates a Input component.
 
   Args:
-    key (str|None): Unique identifier for this component instance.
-    disabled (bool): Implemented as part of MatFormFieldControl. @docs-private
-    id (str): Implemented as part of MatFormFieldControl. @docs-private
-    placeholder (str): Implemented as part of MatFormFieldControl. @docs-private
-    name (str): Name of the input. @docs-private
-    required (bool): Implemented as part of MatFormFieldControl. @docs-private
-    type (str): Input type of the element.
-    user_aria_described_by (str): Implemented as part of MatFormFieldControl. @docs-private
-    value (str): Implemented as part of MatFormFieldControl. @docs-private
-    readonly (bool): Whether the element is readonly.
-    hide_required_marker (bool): Whether the required marker should be hidden.
-    color (Literal['primary','accent','warn']): The color palette for the form field.
-    float_label (Literal['always','auto']): Whether the label should always float or float as the user types.
-    appearance (Literal['fill','outline']): The form field appearance style.
-    subscript_sizing (Literal['fixed','dynamic']): Whether the form field should reserve space for one line of hint/error text (default) or to have the spacing grow from 0px as needed based on the size of the hint/error content. Note that when using dynamic sizing, layout shifts will occur when hint/error text changes.
-    hint_label (str): Text for the form field hint.
+    key: Unique identifier for this component instance.
+    disabled: Implemented as part of MatFormFieldControl. @docs-private
+    id: Implemented as part of MatFormFieldControl. @docs-private
+    placeholder: Implemented as part of MatFormFieldControl. @docs-private
+    name: Name of the input. @docs-private
+    required: Implemented as part of MatFormFieldControl. @docs-private
+    type: Input type of the element.
+    user_aria_described_by: Implemented as part of MatFormFieldControl. @docs-private
+    value: Implemented as part of MatFormFieldControl. @docs-private
+    readonly: Whether the element is readonly.
+    hide_required_marker: Whether the required marker should be hidden.
+    color: The color palette for the form field.
+    float_label: Whether the label should always float or float as the user types.
+    appearance: The form field appearance style.
+    subscript_sizing: Whether the form field should reserve space for one line of hint/error text (default) or to have the spacing grow from 0px as needed based on the size of the hint/error content. Note that when using dynamic sizing, layout shifts will occur when hint/error text changes.
+    hint_label: Text for the form field hint.
     label (str):
-    on_input (Callable[[InputEvent], Any]|None): [input](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/input_event) is a native browser event.
+    on_input: [input](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/input_event) is a native browser event.
   """
   insert_component(
     key=key,

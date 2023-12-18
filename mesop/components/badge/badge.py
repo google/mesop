@@ -35,16 +35,16 @@ def badge(
   Badge is a composite component.
 
   Args:
-    key (str|None): Unique identifier for this component instance.
-    color (Literal['primary','accent','warn']): The color of the badge. Can be `primary`, `accent`, or `warn`.
-    overlap (bool): Whether the badge should overlap its contents or not
-    disabled (bool): Whether the badge is disabled.
-    position (Literal['above after','above before','below before','below after','before','after','above','below']): Position the badge should reside. Accepts any combination of 'above'|'below' and 'before'|'after'
-    content (str): The content for the badge
-    description (str): Message used to describe the decorated element via aria-describedby
-    size (Literal['small','medium','large']): Size of the badge. Can be 'small', 'medium', or 'large'.
-    hidden (bool): Whether the badge is hidden.
-    variant (Literal['matBadge']): component variations
+    key: Unique identifier for this component instance.
+    color: The color of the badge. Can be `primary`, `accent`, or `warn`.
+    overlap: Whether the badge should overlap its contents or not
+    disabled: Whether the badge is disabled.
+    position: Position the badge should reside. Accepts any combination of 'above'|'below' and 'before'|'after'
+    content: The content for the badge
+    description: Message used to describe the decorated element via aria-describedby
+    size: Size of the badge. Can be 'small', 'medium', or 'large'.
+    hidden: Whether the badge is hidden.
+    variant: component variations
   """
   return insert_composite_component(
     key=key,
