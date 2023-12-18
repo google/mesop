@@ -102,11 +102,13 @@ def checkbox(
       checked=checked,
       disabled=disabled,
       indeterminate=indeterminate,
-      on_checkbox_change_event_handler_id=handler_type(on_change)
+      on_checkbox_change_event_handler_id=handler_type(
+        on_change, event=CheckboxChangeEvent
+      )
       if on_change
       else "",
       on_checkbox_indeterminate_change_event_handler_id=handler_type(
-        on_indeterminate_change
+        on_indeterminate_change, event=CheckboxIndeterminateChangeEvent
       )
       if on_indeterminate_change
       else "",

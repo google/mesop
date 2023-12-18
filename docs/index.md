@@ -9,7 +9,7 @@ Mesop is a Python-based UI framework that allows you to rapidly build web demos.
 ```python
 import mesop as me
 
-@me.on(me.ClickEvent)
+
 def chat(state: State, action: me.ClickEvent):
     response = streaming_api_call(...)
     for chunk in response:

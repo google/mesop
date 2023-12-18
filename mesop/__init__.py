@@ -33,7 +33,6 @@ from mesop.components.slide_toggle.slide_toggle import (
 from mesop.components.text.text import text as text
 from mesop.components.text_input.text_input import text_input as text_input
 from mesop.components.tooltip.tooltip import tooltip as tooltip
-from mesop.event_handler import event_handler
 from mesop.events import (
   ChangeEvent as ChangeEvent,
 )
@@ -45,6 +44,3 @@ from mesop.events import (
 )
 from mesop.features import page as page
 from mesop.key import Key as Key
-
-# Give a short alias for event handler since it's ubiquitous.
-on = event_handler

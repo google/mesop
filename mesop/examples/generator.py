@@ -14,7 +14,6 @@ class State:
   string: str = ""
 
 
-@me.on(me.ClickEvent)
 def button_click(action: me.ClickEvent):
   state = me.state(State)
   for val in generate_str():

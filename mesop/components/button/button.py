@@ -40,7 +40,9 @@ def button(
       color=color,
       disable_ripple=disable_ripple,
       disabled=disabled,
-      on_click_handler_id=handler_type(on_click) if on_click else "",
+      on_click_handler_id=handler_type(on_click, event=ClickEvent)
+      if on_click
+      else "",
       variant_index=_get_variant_index(variant),
     ),
   )

@@ -9,9 +9,9 @@ from mesop.runtime import runtime
 flask_app = Flask(__name__)
 
 
-def render_loop(path: str, keep_alive: bool = False):
+def render_loop(path: str, keep_alive: bool = False, trace_mode: bool = False):
   try:
-    runtime().run_path(path=path)
+    runtime().run_path(path=path, trace_mode=trace_mode)
     root_component = runtime().context().current_node()
 
     data = pb.UiResponse(
@@ -53,6 +53,11 @@ def generate_data(ui_request: pb.UiRequest):
     if ui_request.HasField("init"):
       yield from render_loop(path=ui_request.path)
     if ui_request.HasField("user_event"):
+      for _ in render_loop(
+        path=ui_request.path, keep_alive=True, trace_mode=True
+      ):
+        runtime().context().reset_current_node()
+        pass
       result = runtime().context().process_event(ui_request.user_event)
       for _ in result:
         yield from render_loop(path=ui_request.path, keep_alive=True)

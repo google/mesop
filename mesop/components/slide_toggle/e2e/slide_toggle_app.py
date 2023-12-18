@@ -6,7 +6,6 @@ class State:
   toggled: bool = False
 
 
-@me.on(me.SlideToggleChangeEvent)
 def on_change(event: me.SlideToggleChangeEvent):
   s = me.state(State)
   s.toggled = not s.toggled

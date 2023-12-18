@@ -12,6 +12,7 @@ Handler = Callable[[Any], Generator[None, None, None] | None]
 
 class Context:
   _states: dict[type[Any], object]
+  _handlers: dict[str, Handler]
 
   def __init__(
     self,
@@ -21,6 +22,15 @@ class Context:
     self._get_handler = get_handler
     self._current_node = pb.Component()
     self._states = states
+    self._trace_mode = False
+    self._handlers = {}
+
+  def register_event_handler(self, fn_id: str, handler: Handler) -> None:
+    if self._trace_mode:
+      self._handlers[fn_id] = handler
+
+  def set_trace_mode(self, trace_mode: bool) -> None:
+    self._trace_mode = trace_mode
 
   def current_node(self) -> pb.Component:
     return self._current_node
@@ -53,7 +63,7 @@ class Context:
       return  # return early b/c there's no event handler for hot reload
 
     payload = cast(Any, event)
-    handler = self._get_handler(event.handler_id)
+    handler = self._handlers.get(event.handler_id)
     if handler:
       result = handler(payload)
       if result is not None:

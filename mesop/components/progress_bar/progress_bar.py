@@ -57,7 +57,7 @@ def progress_bar(
       buffer_value=buffer_value,
       mode=mode,
       on_progress_bar_animation_end_event_handler_id=handler_type(
-        on_animation_end
+        on_animation_end, event=ProgressBarAnimationEndEvent
       )
       if on_animation_end
       else "",

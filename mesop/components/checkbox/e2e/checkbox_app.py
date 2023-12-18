@@ -7,13 +7,11 @@ class State:
   indeterminate: bool = True
 
 
-@me.on(me.CheckboxChangeEvent)
 def on_update(event: me.CheckboxChangeEvent):
   state = me.state(State)
   state.checked = event.checked
 
 
-@me.on(me.CheckboxIndeterminateChangeEvent)
 def on_indeterminate_change(event: me.CheckboxIndeterminateChangeEvent):
   state = me.state(State)
   state.indeterminate = event.indeterminate

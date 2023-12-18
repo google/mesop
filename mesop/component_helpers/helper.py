@@ -1,11 +1,13 @@
-from typing import Any, Callable, Type, TypeVar
+import hashlib
+import inspect
+from typing import Any, Callable, Generator, Type, TypeVar, cast
 
 from google.protobuf import json_format
 from google.protobuf.message import Message
 
 import mesop.protos.ui_pb2 as pb
-from mesop.events import MesopEvent
-from mesop.key import Key
+from mesop.events import ChangeEvent, ClickEvent, InputEvent, MesopEvent
+from mesop.key import Key, key_from_proto
 from mesop.runtime import runtime
 
 
@@ -66,18 +68,73 @@ def insert_component(
   )
 
 
-def handler_type(handler_fn: Callable[..., Any]) -> str:
-  return get_qualified_fn_name(handler_fn)
+E = TypeVar("E", bound=MesopEvent)
+Handler = Callable[[E], None | Generator[None, None, None]]
+
+
+def wrap_handler_with_event(func: Handler[E], actionType: Type[E]):
+  def wrapper(action: E):
+    # This is guaranteed to be a UserEvent because only Mesop
+    # framework will call the wrapper.
+    proto_event = cast(pb.UserEvent, action)
+    key = key_from_proto(proto_event.key)
+
+    event = runtime().get_event_mapper(actionType)(proto_event, key)
+
+    return func(cast(Any, event))
+
+  wrapper.__module__ = func.__module__
+  wrapper.__name__ = func.__name__
+
+  return wrapper
+
+
+def handler_type(handler_fn: Callable[..., Any], event: Type[Any]) -> str:
+  fn_id = compute_fn_id(handler_fn)
+
+  runtime().context().register_event_handler(
+    fn_id, wrap_handler_with_event(handler_fn, event)
+  )
+  return fn_id
+
+
+def compute_fn_id(fn: Callable[..., Any]) -> str:
+  # Hashing id...
+  source_code = inspect.getsource(fn)
+  input = f"{fn.__module__}.{fn.__name__}.{source_code}"
+
+  return hashlib.sha256(input.encode()).hexdigest()
 
 
 def get_qualified_fn_name(fn: Callable[..., Any]) -> str:
   return f"{fn.__module__}.{fn.__name__}"
 
 
-E = TypeVar("E", bound=MesopEvent)
-
-
 def register_event_mapper(
   event: Type[E], map_fn: Callable[[pb.UserEvent, Key], E]
 ):
   runtime().register_event_mapper(event=event, map_fn=map_fn)
+
+
+runtime().register_event_mapper(
+  ChangeEvent,
+  lambda userEvent, key: ChangeEvent(
+    value=userEvent.string,
+    key=key,
+  ),
+)
+
+runtime().register_event_mapper(
+  ClickEvent,
+  lambda userEvent, key: ClickEvent(
+    key=key,
+  ),
+)
+
+runtime().register_event_mapper(
+  InputEvent,
+  lambda userEvent, key: InputEvent(
+    value=userEvent.string,
+    key=key,
+  ),
+)

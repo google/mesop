@@ -14,7 +14,6 @@ class State:
   keys: list[str] = field(default_factory=list)
 
 
-@me.on(me.CheckboxChangeEvent)
 def checkbox_update(action: me.CheckboxChangeEvent) -> None:
   state = me.state(State)
   if action.checked:
@@ -25,7 +24,6 @@ def checkbox_update(action: me.CheckboxChangeEvent) -> None:
     state.string = "unchecked"
 
 
-@me.on(me.ClickEvent)
 def button_click(action: me.ClickEvent):
   state = me.state(State)
   state.count += 1

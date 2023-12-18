@@ -8,13 +8,11 @@ class State:
   checked: bool = False
 
 
-@me.on(me.InputEvent)
 def on_input(e: me.InputEvent):
   state = me.state(State)
   state.input = e.value
 
 
-@me.on(me.CheckboxChangeEvent)
 def on_change(e: me.CheckboxChangeEvent):
   state = me.state(State)
   state.checked = e.checked

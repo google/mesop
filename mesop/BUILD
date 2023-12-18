@@ -27,7 +27,6 @@ py_library(
         "//mesop/components/button:py",
         "//mesop/components/checkbox:py",
         "//mesop/components/text:py",
-        "//mesop/event_handler",
         "//mesop/events",
         "//mesop/features",
         "//mesop/server",

@@ -61,7 +61,7 @@ store = me.store(
     State(text="initial_state"),
 )
 
-@me.on(me.CheckboxEvent)
+
 def checkbox_change(state: State, event: me.CheckboxEvent):
     if event.checked:
         state.text = "checked"
@@ -86,7 +86,7 @@ If you are building a chat-style LLM application, you will oftentimes want to st
 ```python
 import mesop as me
 
-@me.on(me.ClickEvent)
+
 def chat(state: State, action: me.ClickEvent):
     response = streaming_api_call(...)
     for chunk in response:
@@ -104,7 +104,7 @@ If you're calling a heavy API which doesn't support streaming, you may instead w
 ```python
 import mesop as me
 
-@me.on(me.ClickEvent)
+
 def chat(state: State, action: me.ClickEvent):
     state.in_progress = True
     yield state

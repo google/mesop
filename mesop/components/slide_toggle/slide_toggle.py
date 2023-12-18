@@ -80,7 +80,9 @@ def slide_toggle(
       tab_index=tab_index,
       checked=checked,
       hide_icon=hide_icon,
-      on_slide_toggle_change_event_handler_id=handler_type(on_change)
+      on_slide_toggle_change_event_handler_id=handler_type(
+        on_change, event=SlideToggleChangeEvent
+      )
       if on_change
       else "",
     ),

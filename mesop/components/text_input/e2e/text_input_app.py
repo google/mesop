@@ -7,13 +7,11 @@ class State:
   hide_text_input = False
 
 
-@me.on(me.ChangeEvent)
 def change(action: me.ChangeEvent):
   state = me.state(State)
   state.string = action.value
 
 
-@me.on(me.CheckboxChangeEvent)
 def change_checkbox(event: me.CheckboxChangeEvent):
   state = me.state(State)
   state.hide_text_input = event.checked

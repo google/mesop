@@ -6,7 +6,6 @@ class State:
   val: int = 0
 
 
-@me.on(me.ClickEvent)
 def click(event: me.ClickEvent):
   state = me.state(State)
   state.val += 1

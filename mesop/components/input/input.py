@@ -76,7 +76,9 @@ def input(
       subscript_sizing=subscript_sizing,
       hint_label=hint_label,
       label=label,
-      on_input_handler_id=handler_type(on_input) if on_input else "",
+      on_input_handler_id=handler_type(on_input, event=InputEvent)
+      if on_input
+      else "",
       variant_index=_get_variant_index(variant),
     ),
   )

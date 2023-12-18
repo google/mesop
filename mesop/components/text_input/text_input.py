@@ -28,6 +28,6 @@ def text_input(
     proto=text_input_pb.TextInputType(
       label=label,
       default_value=default_value,
-      on_change_handler_id=handler_type(on_change),
+      on_change_handler_id=handler_type(on_change, event=ChangeEvent),
     ),
   )
