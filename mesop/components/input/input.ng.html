@@ -19,6 +19,7 @@
     [value]="config().getValue()"
     [readonly]="config().getReadonly()"
     (input)="onInput($event)"
+    [rows]="config().getTextareaRows()"
   ></textarea>
   } @else {
   <input

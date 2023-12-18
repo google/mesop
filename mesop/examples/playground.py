@@ -3,5 +3,31 @@ import mesop as me
 
 @me.page()
 def app():
-  me.text("hello", type=me.Typography.H1)
-  me.text("body")
+  header()
+  body()
+
+
+def header():
+  with me.box(
+    style="""
+    background: white;
+  border-bottom: 1px solid #ececf1;
+  padding: 12px;
+  """
+  ):
+    me.text(
+      "Playground",
+      type=me.Typography.H5,
+      style="""
+    margin: 0;
+    """,
+    )
+
+
+def body():
+  with me.box(
+    style="""
+
+  """
+  ):
+    me.input(label="Input", type=me.Textarea(rows=10))

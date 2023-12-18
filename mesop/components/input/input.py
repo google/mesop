@@ -1,4 +1,5 @@
-from typing import Any, Callable, Literal
+from dataclasses import dataclass
+from typing import Any, Callable, Literal, cast
 
 from pydantic import validate_arguments
 
@@ -8,6 +9,18 @@ from mesop.component_helpers import (
   register_event_handler,
 )
 from mesop.events import InputEvent
+
+
+@dataclass
+class Textarea:
+  """
+  Represents a multi-line text input control.
+
+  Attributes:
+      rows: The number of lines to show in the text area.
+  """
+
+  rows: int = 5
 
 
 @validate_arguments
@@ -21,7 +34,6 @@ def input(
   required: bool = False,
   type: Literal[
     "",
-    "textarea",
     "color",
     "date",
     "datetime-local",
@@ -35,7 +47,8 @@ def input(
     "time",
     "url",
     "week",
-  ] = "",
+  ]
+  | Textarea = "",
   user_aria_described_by: str = "",
   value: str = "",
   readonly: bool = False,
@@ -57,7 +70,7 @@ def input(
     placeholder: Implemented as part of MatFormFieldControl. @docs-private
     name: Name of the input. @docs-private
     required: Implemented as part of MatFormFieldControl. @docs-private
-    type: Input type of the element.
+    type: Input type of the element. For textarea, use `me.Textarea(...)`
     user_aria_described_by: Implemented as part of MatFormFieldControl. @docs-private
     value: Implemented as part of MatFormFieldControl. @docs-private
     readonly: Whether the element is readonly.
@@ -70,16 +83,23 @@ def input(
     label (str):
     on_input: [input](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/input_event) is a native browser event.
   """
+  textarea = None
+  if isinstance(type, Textarea):
+    textarea = type
+    type_string = "textarea"
+  else:
+    type_string = cast(str, type)
   insert_component(
     key=key,
     type_name="input",
     proto=input_pb.InputType(
+      textarea_rows=textarea.rows if textarea else 0,
       disabled=disabled,
       id=id,
       placeholder=placeholder,
       name=name,
       required=required,
-      type=type,
+      type=type_string,
       user_aria_described_by=user_aria_described_by,
       value=value,
       readonly=readonly,
