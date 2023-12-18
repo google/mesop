@@ -4,7 +4,7 @@ import mesop as me
 @me.page(path="/components/box/e2e/box_app")
 def app():
   with me.box(
-    styles="""
+    style="""
     display: block;
   background-color: pink;
   height: 50px;

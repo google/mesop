@@ -6,7 +6,7 @@ def app():
   with me.tooltip(message="Hello, world!"):
     me.text(text="sometext")
   with me.box(
-    styles="""
+    style="""
     display: block;
   height: 50px;
   background: pink;

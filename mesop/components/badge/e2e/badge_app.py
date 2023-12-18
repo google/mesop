@@ -4,7 +4,7 @@ import mesop as me
 @me.page(path="/components/badge/e2e/badge_app")
 def app():
   with me.box(
-    styles="""
+    style="""
     display: block;
     padding: 16px;
               height: 50px;
