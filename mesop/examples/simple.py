@@ -29,7 +29,7 @@ def button_click(action: me.ClickEvent):
   state.count += 1
 
 
-@me.page()
+@me.page(path="/many_checkboxes")
 def main():
   state = me.state(State)
   with me.button(on_click=button_click):
