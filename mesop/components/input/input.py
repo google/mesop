@@ -4,8 +4,8 @@ from pydantic import validate_arguments
 
 import mesop.components.input.input_pb2 as input_pb
 from mesop.component_helpers import (
-  handler_type,
   insert_component,
+  register_event_handler,
 )
 from mesop.events import InputEvent
 
@@ -76,7 +76,7 @@ def input(
       subscript_sizing=subscript_sizing,
       hint_label=hint_label,
       label=label,
-      on_input_handler_id=handler_type(on_input, event=InputEvent)
+      on_input_handler_id=register_event_handler(on_input, event=InputEvent)
       if on_input
       else "",
       variant_index=_get_variant_index(variant),

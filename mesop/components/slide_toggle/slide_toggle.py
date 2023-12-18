@@ -5,8 +5,8 @@ from pydantic import validate_arguments
 
 import mesop.components.slide_toggle.slide_toggle_pb2 as slide_toggle_pb
 from mesop.component_helpers import (
-  handler_type,
   insert_component,
+  register_event_handler,
   register_event_mapper,
 )
 from mesop.events import MesopEvent
@@ -80,7 +80,7 @@ def slide_toggle(
       tab_index=tab_index,
       checked=checked,
       hide_icon=hide_icon,
-      on_slide_toggle_change_event_handler_id=handler_type(
+      on_slide_toggle_change_event_handler_id=register_event_handler(
         on_change, event=SlideToggleChangeEvent
       )
       if on_change

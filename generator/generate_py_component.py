@@ -133,14 +133,15 @@ def generate_py_proto_callsite(spec: pb.ComponentSpec) -> str:
   for prop in spec.input_props:
     out.append(f"{snake_case(prop.name)}={snake_case(prop.name)}")
   for prop in spec.output_props:
-    event_param_name = f"on_{format_event_name(prop.event_name, spec)}"
+    event_name = format_event_name(prop.event_name, spec)
+    event_param_name = f"on_{event_name}"
     out.append(
-      f"on_{snake_case(prop.event_name)}_handler_id=handler_type({event_param_name}) if {event_param_name} else ''"
+      f"on_{snake_case(prop.event_name)}_handler_id=register_event_handler({event_param_name}, event={prop.event_name}) if {event_param_name} else ''"
     )
   for native_event in spec.input.native_events:
     event_param_name = f"on_{native_event}"
     out.append(
-      f"on_{native_event}_handler_id=handler_type({event_param_name}) if {event_param_name} else ''"
+      f"on_{native_event}_handler_id=register_event_handler({event_param_name}, event={format_native_event_name(native_event)}) if {event_param_name} else ''"
     )
   if len(spec.input.directive_names):
     out.append("variant_index=_get_variant_index(variant)")

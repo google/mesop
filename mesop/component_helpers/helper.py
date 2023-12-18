@@ -89,7 +89,9 @@ def wrap_handler_with_event(func: Handler[E], actionType: Type[E]):
   return wrapper
 
 
-def handler_type(handler_fn: Callable[..., Any], event: Type[Any]) -> str:
+def register_event_handler(
+  handler_fn: Callable[..., Any], event: Type[Any]
+) -> str:
   fn_id = compute_fn_id(handler_fn)
 
   runtime().context().register_event_handler(

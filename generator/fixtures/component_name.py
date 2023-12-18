@@ -5,7 +5,7 @@ from pydantic import validate_arguments
 
 import mesop.components.component_name.component_name_pb2 as component_name_pb
 from mesop.component_helpers import (
-  handler_type,
+  register_event_handler,
   insert_component,
   insert_composite_component,
   register_event_mapper,

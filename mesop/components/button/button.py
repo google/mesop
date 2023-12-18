@@ -4,8 +4,8 @@ from pydantic import validate_arguments
 
 import mesop.components.button.button_pb2 as button_pb
 from mesop.component_helpers import (
-  handler_type,
   insert_composite_component,
+  register_event_handler,
 )
 from mesop.events import ClickEvent
 
@@ -40,7 +40,7 @@ def button(
       color=color,
       disable_ripple=disable_ripple,
       disabled=disabled,
-      on_click_handler_id=handler_type(on_click, event=ClickEvent)
+      on_click_handler_id=register_event_handler(on_click, event=ClickEvent)
       if on_click
       else "",
       variant_index=_get_variant_index(variant),

@@ -3,7 +3,7 @@ from typing import Any, Callable
 from pydantic import validate_arguments
 
 import mesop.components.text_input.text_input_pb2 as text_input_pb
-from mesop.component_helpers import handler_type, insert_component
+from mesop.component_helpers import insert_component, register_event_handler
 from mesop.events import ChangeEvent
 
 
@@ -28,6 +28,6 @@ def text_input(
     proto=text_input_pb.TextInputType(
       label=label,
       default_value=default_value,
-      on_change_handler_id=handler_type(on_change, event=ChangeEvent),
+      on_change_handler_id=register_event_handler(on_change, event=ChangeEvent),
     ),
   )

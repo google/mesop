@@ -5,8 +5,8 @@ from pydantic import validate_arguments
 
 import mesop.components.checkbox.checkbox_pb2 as checkbox_pb
 from mesop.component_helpers import (
-  handler_type,
   insert_composite_component,
+  register_event_handler,
   register_event_mapper,
 )
 from mesop.events import MesopEvent
@@ -102,12 +102,12 @@ def checkbox(
       checked=checked,
       disabled=disabled,
       indeterminate=indeterminate,
-      on_checkbox_change_event_handler_id=handler_type(
+      on_checkbox_change_event_handler_id=register_event_handler(
         on_change, event=CheckboxChangeEvent
       )
       if on_change
       else "",
-      on_checkbox_indeterminate_change_event_handler_id=handler_type(
+      on_checkbox_indeterminate_change_event_handler_id=register_event_handler(
         on_indeterminate_change, event=CheckboxIndeterminateChangeEvent
       )
       if on_indeterminate_change

@@ -5,8 +5,8 @@ from pydantic import validate_arguments
 
 import mesop.components.progress_bar.progress_bar_pb2 as progress_bar_pb
 from mesop.component_helpers import (
-  handler_type,
   insert_component,
+  register_event_handler,
   register_event_mapper,
 )
 from mesop.events import MesopEvent
@@ -56,7 +56,7 @@ def progress_bar(
       value=value,
       buffer_value=buffer_value,
       mode=mode,
-      on_progress_bar_animation_end_event_handler_id=handler_type(
+      on_progress_bar_animation_end_event_handler_id=register_event_handler(
         on_animation_end, event=ProgressBarAnimationEndEvent
       )
       if on_animation_end
