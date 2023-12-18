@@ -100,7 +100,9 @@ export class ComponentRenderer {
       return '';
     }
 
-    return this._boxType.getStyle().trim();
+    // `display: block` because box should have "div"-like semantics.
+    // Custom elements like Angular component tags are treated as inline by default.
+    return 'display: block;' + this._boxType.getStyle().trim();
   }
 }
 
