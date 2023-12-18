@@ -38,7 +38,11 @@ export class ComponentRenderer {
     if (key) {
       return key;
     }
-    return index;
+    // Include the component type so that Angular
+    // knows that it's a new child, otherwise it gets confused
+    // and tries to pass in the new component properties into the
+    // old component and we get an error.
+    return index + '___' + item.getType()?.getName();
   }
 
   type() {
