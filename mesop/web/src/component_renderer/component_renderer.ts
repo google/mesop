@@ -100,7 +100,7 @@ export class ComponentRenderer {
       return '';
     }
 
-    return this._boxType.getStyles().trim();
+    return this._boxType.getStyle().trim();
   }
 }
 

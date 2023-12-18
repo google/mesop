@@ -3,5 +3,5 @@ syntax = "proto3";
 package mesop.components.box;
 
 message BoxType {
-    string styles = 1;
+    string style = 1;
 }

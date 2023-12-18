@@ -7,17 +7,17 @@ from mesop.component_helpers import insert_composite_component
 @validate_arguments
 def box(
   *,
-  styles: str = "",
+  style: str = "",
   key: str | None = None,
 ):
   """
   This function creates a box.
 
   Args:
-      label: The text to be displayed
+      style: Style to apply to component. Follows [HTML Element inline style API](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/style).
   """
   return insert_composite_component(
     key=key,
     type_name="box",
-    proto=box_pb.BoxType(styles=styles),
+    proto=box_pb.BoxType(style=style),
   )
