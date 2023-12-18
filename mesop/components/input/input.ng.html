@@ -1,4 +1,3 @@
-@if(config().getVariantIndex() === 0) {
 <mat-form-field
   [hideRequiredMarker]="config().getHideRequiredMarker()"
   [color]="getColor()"
@@ -6,8 +5,23 @@
   [appearance]="getAppearance()"
   [subscriptSizing]="getSubscriptSizing()"
   [hintLabel]="config().getHintLabel()"
-  ><mat-label>{{config().getLabel()}}</mat-label
-  ><input
+  ><mat-label>{{config().getLabel()}}</mat-label>
+  @if(config().getType() === "textarea") {
+  <textarea
+    matInput
+    [disabled]="config().getDisabled()"
+    [id]="config().getId()"
+    [placeholder]="config().getPlaceholder()"
+    [name]="config().getName()"
+    [required]="config().getRequired()"
+    [type]="config().getType()"
+    [aria-describedby]="config().getUserAriaDescribedBy()"
+    [value]="config().getValue()"
+    [readonly]="config().getReadonly()"
+    (input)="onInput($event)"
+  ></textarea>
+  } @else {
+  <input
     matInput
     [disabled]="config().getDisabled()"
     [id]="config().getId()"
@@ -20,5 +34,5 @@
     [readonly]="config().getReadonly()"
     (input)="onInput($event)"
   />
+  }
 </mat-form-field>
-}

@@ -19,7 +19,23 @@ def input(
   placeholder: str = "",
   name: str = "",
   required: bool = False,
-  type: str = "",
+  type: Literal[
+    "",
+    "textarea",
+    "color",
+    "date",
+    "datetime-local",
+    "email",
+    "month",
+    "number",
+    "password",
+    "search",
+    "tel",
+    "text",
+    "time",
+    "url",
+    "week",
+  ] = "",
   user_aria_described_by: str = "",
   value: str = "",
   readonly: bool = False,
@@ -31,7 +47,6 @@ def input(
   hint_label: str = "",
   label: str = "",
   on_input: Callable[[InputEvent], Any] | None = None,
-  variant: Literal["matInput"] = "matInput",
 ):
   """Creates a Input component.
 
@@ -54,7 +69,6 @@ def input(
     hint_label (str): Text for the form field hint.
     label (str):
     on_input (Callable[[InputEvent], Any]|None): [input](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/input_event) is a native browser event.
-    variant (Literal['matInput']): component variations
   """
   insert_component(
     key=key,
@@ -79,12 +93,5 @@ def input(
       on_input_handler_id=register_event_handler(on_input, event=InputEvent)
       if on_input
       else "",
-      variant_index=_get_variant_index(variant),
     ),
   )
-
-
-def _get_variant_index(variant: str) -> int:
-  if variant == "matInput":
-    return 0
-  raise Exception("Unexpected variant: " + variant)

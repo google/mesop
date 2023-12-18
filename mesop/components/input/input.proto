@@ -21,5 +21,4 @@ message InputType {
   string hint_label = 15;
   string label = 16;
   string on_input_handler_id = 17;
-  int32 variant_index = 18;
 }
