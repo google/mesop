@@ -18,9 +18,7 @@ def button(
   disable_ripple: bool = False,
   disabled: bool = False,
   on_click: Callable[[ClickEvent], Any] | None = None,
-  variant: Literal[
-    "mat-button", "mat-raised-button", "mat-flat-button", "mat-stroked-button"
-  ] = "mat-button",
+  variant: Literal["", "raised", "flat", "stroked"] = "",
 ):
   """Creates a Button component.
   Button is a composite component.
@@ -49,12 +47,12 @@ def button(
 
 
 def _get_variant_index(variant: str) -> int:
-  if variant == "mat-button":
+  if variant == "":
     return 0
-  if variant == "mat-raised-button":
+  if variant == "raised":
     return 1
-  if variant == "mat-flat-button":
+  if variant == "flat":
     return 2
-  if variant == "mat-stroked-button":
+  if variant == "stroked":
     return 3
   raise Exception("Unexpected variant: " + variant)
