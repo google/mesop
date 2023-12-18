@@ -4,9 +4,6 @@ syntax = "proto3";
 package mesop.components.icon;
 
 message IconType {
-  string color = 1;
-  bool inline = 2;
-  string svg_icon = 3;
-  string font_set = 4;
-  string font_icon = 5;
+  string font_icon = 1;
+  string style = 2;
 }
