@@ -107,6 +107,21 @@ const radioSpecInput = (() => {
   return i;
 })();
 
+const selectSpecInput = (() => {
+  const i = new pb.ComponentSpecInput();
+  i.setName('select');
+  i.setSkipPropertyNamesList([
+    'panelClass',
+    'errorStateMatcher',
+    'sortComparator',
+    'disableOptionCentering',
+    'compareWith',
+    'valueChange',
+    'panelWidth',
+  ]);
+  return i;
+})();
+
 const SYSTEM_IMPORT_PREFIX = '@angular/material/';
 const SYSTEM_PREFIX = 'Mat';
 const SPEC_INPUTS = [
@@ -122,6 +137,7 @@ const SPEC_INPUTS = [
   progressSpinnerSpecInput,
   slideToggleSpecInput,
   radioSpecInput,
+  selectSpecInput,
 ].map(preprocessSpecInput);
 
 function preprocessSpecInput(
@@ -323,7 +339,17 @@ class NgParser {
       const type = new pb.XType();
       type.setSimpleType(pb.SimpleType.STRING);
       inputProp.setType(type);
-    } else if (name === 'value' && this.input.getName() === 'radio') {
+    } else if (
+      name === 'panelWidth' &&
+      ['select'].includes(this.input.getName())
+    ) {
+      const type = new pb.XType();
+      type.setSimpleType(pb.SimpleType.STRING);
+      inputProp.setType(type);
+    } else if (
+      name === 'value' &&
+      ['radio', 'select'].includes(this.input.getName())
+    ) {
       const type = new pb.XType();
       type.setSimpleType(pb.SimpleType.STRING);
       inputProp.setType(type);
@@ -358,15 +384,24 @@ class NgParser {
     const name = prop.name;
     if (ts.isIdentifier(name)) {
       const elName = name.escapedText.toString();
+      // Skip problematic properties
+      if (this.input.getSkipPropertyNamesList().includes(elName)) {
+        return;
+      }
       const inputProp = new pb.Prop();
       if (args[0]) {
         inputProp.setAlias(this.getAliasFromInputCallArgument(args));
       }
       inputProp.setName(elName);
-      inputProp.setDebugType(prop.type!.getText());
-      inputProp.setType(this.getType(assert(prop.type), prop.initializer));
-      inputProp.setDocs(this.getJsDoc(prop));
-      this.proto.addInputProps(inputProp);
+      if (!prop.type) {
+        this.logIssue('no type');
+        return;
+      } else {
+        inputProp.setDebugType(prop.type!.getText());
+        inputProp.setType(this.getType(assert(prop.type), prop.initializer));
+        inputProp.setDocs(this.getJsDoc(prop));
+        this.proto.addInputProps(inputProp);
+      }
     } else {
       throw new Error('Expected identifier for prop' + prop);
     }
@@ -392,6 +427,10 @@ class NgParser {
     const initializer = p.initializer!;
     if (ts.isNewExpression(initializer)) {
       const name = p.name.getText();
+      // Skip problematic properties
+      if (this.input.getSkipPropertyNamesList().includes(name)) {
+        return;
+      }
       const type = initializer.typeArguments![0].getText();
 
       const outputProp = new pb.OutputProp();

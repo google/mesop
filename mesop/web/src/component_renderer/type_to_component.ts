@@ -1,3 +1,4 @@
+import {SelectComponent} from '../../../components/select/select';
 import {RadioComponent} from '../../../components/radio/radio';
 import {SlideToggleComponent} from '../../../components/slide_toggle/slide_toggle';
 import {ProgressSpinnerComponent} from '../../../components/progress_spinner/progress_spinner';
@@ -30,6 +31,7 @@ export interface TypeToComponent {
 }
 
 export const typeToComponent = {
+  'select': SelectComponent,
   'radio': RadioComponent,
   'slide_toggle': SlideToggleComponent,
   'progress_spinner': ProgressSpinnerComponent,

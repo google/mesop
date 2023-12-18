@@ -1,0 +1,193 @@
+{
+  "input": {
+    "name": "select",
+    "targetClassesList": ["MatSelect"],
+    "hasContent": false,
+    "elementName": "mat-select",
+    "tsFilename": "",
+    "directiveNamesList": [],
+    "nativeEventsList": [],
+    "skipPropertyNamesList": [
+      "panelClass",
+      "errorStateMatcher",
+      "sortComparator",
+      "disableOptionCentering",
+      "compareWith",
+      "valueChange",
+      "panelWidth"
+    ],
+    "ngModulesList": [
+      {
+        "importPath": "@angular/material/select",
+        "moduleName": "MatSelectModule",
+        "otherSymbolsList": ["MatSelectChange"]
+      }
+    ],
+    "isFormField": false
+  },
+  "inputPropsList": [
+    {
+      "name": "userAriaDescribedBy",
+      "alias": "aria-describedby",
+      "type": {
+        "simpleType": 1
+      },
+      "debugType": "string",
+      "target": 0,
+      "docs": "Implemented as part of MatFormFieldControl. @docs-private"
+    },
+    {
+      "name": "disabled",
+      "alias": "",
+      "type": {
+        "simpleType": 2
+      },
+      "debugType": "boolean",
+      "target": 0,
+      "docs": "Whether the select is disabled."
+    },
+    {
+      "name": "disableRipple",
+      "alias": "",
+      "type": {
+        "simpleType": 2
+      },
+      "debugType": "boolean",
+      "target": 0,
+      "docs": "Whether ripples in the select are disabled."
+    },
+    {
+      "name": "tabIndex",
+      "alias": "",
+      "type": {
+        "simpleType": 3
+      },
+      "debugType": "number",
+      "target": 0,
+      "docs": "Tab index of the select."
+    },
+    {
+      "name": "hideSingleSelectionIndicator",
+      "alias": "",
+      "type": {
+        "simpleType": 2
+      },
+      "debugType": "boolean",
+      "target": 0,
+      "docs": "Whether checkmark indicator for single-selection options is hidden."
+    },
+    {
+      "name": "placeholder",
+      "alias": "",
+      "type": {
+        "simpleType": 1
+      },
+      "debugType": "string",
+      "target": 0,
+      "docs": "Placeholder to be shown if no value has been selected."
+    },
+    {
+      "name": "required",
+      "alias": "",
+      "type": {
+        "simpleType": 2
+      },
+      "debugType": "boolean",
+      "target": 0,
+      "docs": "Whether the component is required."
+    },
+    {
+      "name": "multiple",
+      "alias": "",
+      "type": {
+        "simpleType": 2
+      },
+      "debugType": "boolean",
+      "target": 0,
+      "docs": "Whether the user should be allowed to select multiple options."
+    },
+    {
+      "name": "value",
+      "alias": "",
+      "type": {
+        "simpleType": 1
+      },
+      "debugType": "",
+      "target": 0,
+      "docs": "Value of the select control."
+    },
+    {
+      "name": "ariaLabel",
+      "alias": "aria-label",
+      "type": {
+        "simpleType": 1
+      },
+      "debugType": "string",
+      "target": 0,
+      "docs": "Aria label of the select."
+    },
+    {
+      "name": "ariaLabelledby",
+      "alias": "aria-labelledby",
+      "type": {
+        "simpleType": 1
+      },
+      "debugType": "string",
+      "target": 0,
+      "docs": "Input that can be used to specify the `aria-labelledby` attribute."
+    },
+    {
+      "name": "typeaheadDebounceInterval",
+      "alias": "",
+      "type": {
+        "simpleType": 3
+      },
+      "debugType": "number",
+      "target": 0,
+      "docs": "Time to wait in milliseconds after the last keystroke before moving focus to an item."
+    },
+    {
+      "name": "id",
+      "alias": "",
+      "type": {
+        "simpleType": 1
+      },
+      "debugType": "string",
+      "target": 0,
+      "docs": "Unique id of the element."
+    }
+  ],
+  "outputPropsList": [
+    {
+      "name": "openedChange",
+      "eventName": "SelectOpenedChangeEvent",
+      "eventPropsList": [
+        {
+          "name": "opened",
+          "alias": "",
+          "type": {
+            "simpleType": 2
+          },
+          "debugType": "",
+          "target": 0,
+          "docs": ""
+        }
+      ],
+      "eventJsType": {
+        "typeName": "boolean",
+        "isPrimitive": true
+      },
+      "docs": "Event emitted when the select panel has been toggled."
+    },
+    {
+      "name": "selectionChange",
+      "eventName": "SelectSelectionChangeEvent",
+      "eventPropsList": [],
+      "eventJsType": {
+        "typeName": "MatSelectChange",
+        "isPrimitive": false
+      },
+      "docs": "Event emitted when the selected value has been changed by the user."
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+<mat-form-field>
+  <mat-label>{{config().getLabel()}}</mat-label>
+  <mat-select
+    [aria-describedby]="config().getUserAriaDescribedBy()"
+    [disabled]="config().getDisabled()"
+    [disableRipple]="config().getDisableRipple()"
+    [tabIndex]="config().getTabIndex()"
+    [hideSingleSelectionIndicator]="config().getHideSingleSelectionIndicator()"
+    [placeholder]="config().getPlaceholder()"
+    [required]="config().getRequired()"
+    [multiple]="config().getMultiple()"
+    [value]="config().getValue()"
+    [aria-label]="config().getAriaLabel()"
+    [aria-labelledby]="config().getAriaLabelledby()"
+    [typeaheadDebounceInterval]="config().getTypeaheadDebounceInterval()"
+    [id]="config().getId()"
+    (openedChange)="onSelectOpenedChangeEvent($event)"
+    (selectionChange)="onSelectSelectionChangeEvent($event)"
+  >
+    @for(option of config().getOptionsList(); track $index) {
+    <mat-option [value]="option.getValue()">{{option.getLabel()}}</mat-option>
+    }
+  </mat-select>
+</mat-form-field>

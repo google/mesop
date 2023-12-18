@@ -1,0 +1,26 @@
+
+Ê
+select"	MatSelect*
+mat-selectR
+panelClassRerrorStateMatcherRsortComparatorRdisableOptionCenteringRcompareWithRvalueChangeR
+panelWidth2<
+@angular/material/selectMatSelectModuleMatSelectChangen
+userAriaDescribedBy"aria-describedbystring29Implemented as part of MatFormFieldControl. @docs-private8
+disabledboolean2Whether the select is disabled.I
+disableRippleboolean2+Whether ripples in the select are disabled.0
+tabIndexnumber2Tab index of the select.p
+hideSingleSelectionIndicatorboolean2CWhether checkmark indicator for single-selection options is hidden.Q
+placeholderstring26Placeholder to be shown if no value has been selected.;
+requiredboolean2"Whether the component is required.W
+multipleboolean2>Whether the user should be allowed to select multiple options.)
+value2Value of the select control.>
+	ariaLabel"
+aria-labelstring2Aria label of the select.q
+ariaLabelledby"aria-labelledbystring2BInput that can be used to specify the `aria-labelledby` attribute.~
+typeaheadDebounceIntervalnumber2UTime to wait in milliseconds after the last keystroke before moving focus to an item.+
+idstring2Unique id of the element.y
+openedChangeSelectOpenedChangeEvent
+opened"
+boolean*5Event emitted when the select panel has been toggled.…
+selectionChangeSelectSelectionChangeEvent"
+MatSelectChange*CEvent emitted when the selected value has been changed by the user.

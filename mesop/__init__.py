@@ -33,6 +33,15 @@ from mesop.components.radio.radio import (
 from mesop.components.radio.radio import (
   radio as radio,
 )
+from mesop.components.select.select import (
+  SelectOption as SelectOption,
+)
+from mesop.components.select.select import (
+  SelectSelectionChangeEvent as SelectSelectionChangeEvent,
+)
+from mesop.components.select.select import (
+  select as select,
+)
 from mesop.components.slide_toggle.slide_toggle import (
   SlideToggleChangeEvent as SlideToggleChangeEvent,
 )
