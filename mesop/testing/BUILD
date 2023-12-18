@@ -9,6 +9,7 @@ py_library(
     srcs = ["index.py"],
     deps = [
         # REF(//scripts/scaffold_component.py):insert_component_e2e_import
+        "//mesop/components/slider/e2e",
         "//mesop/components/select/e2e",
         "//mesop/components/radio/e2e",
         "//mesop/components/slide_toggle/e2e",

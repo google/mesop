@@ -122,6 +122,13 @@ const selectSpecInput = (() => {
   return i;
 })();
 
+const sliderSpecInput = (() => {
+  const i = new pb.ComponentSpecInput();
+  i.setName('slider');
+  i.setSkipPropertyNamesList(['displayWith']);
+  return i;
+})();
+
 const SYSTEM_IMPORT_PREFIX = '@angular/material/';
 const SYSTEM_PREFIX = 'Mat';
 const SPEC_INPUTS = [
@@ -138,6 +145,7 @@ const SPEC_INPUTS = [
   slideToggleSpecInput,
   radioSpecInput,
   selectSpecInput,
+  sliderSpecInput,
 ].map(preprocessSpecInput);
 
 function preprocessSpecInput(

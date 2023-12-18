@@ -48,6 +48,12 @@ from mesop.components.slide_toggle.slide_toggle import (
 from mesop.components.slide_toggle.slide_toggle import (
   slide_toggle as slide_toggle,
 )
+from mesop.components.slider.slider import (
+  SliderValueChangeEvent as SliderValueChangeEvent,
+)
+from mesop.components.slider.slider import (
+  slider as slider,
+)
 from mesop.components.text.text import text as text
 from mesop.components.text_input.text_input import text_input as text_input
 from mesop.components.tooltip.tooltip import tooltip as tooltip

@@ -1,3 +1,4 @@
+import {SliderComponent} from '../../../components/slider/slider';
 import {SelectComponent} from '../../../components/select/select';
 import {RadioComponent} from '../../../components/radio/radio';
 import {SlideToggleComponent} from '../../../components/slide_toggle/slide_toggle';
@@ -31,6 +32,7 @@ export interface TypeToComponent {
 }
 
 export const typeToComponent = {
+  'slider': SliderComponent,
   'select': SelectComponent,
   'radio': RadioComponent,
   'slide_toggle': SlideToggleComponent,

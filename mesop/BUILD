@@ -12,6 +12,7 @@ py_library(
     ],
     deps = [
         # REF(//scripts/scaffold_component.py):insert_component_import
+        "//mesop/components/slider:py",
         "//mesop/components/select:py",
         "//mesop/components/radio:py",
         "//mesop/components/slide_toggle:py",

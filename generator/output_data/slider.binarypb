@@ -1,0 +1,16 @@
+
+Y
+slider"	MatSlider*
+mat-sliderRdisplayWith2+
+@angular/material/sliderMatSliderModule8
+disabledboolean2Whether the slider is disabled.c
+discreteboolean2JWhether the slider displays a numeric value label upon pressing the thumb.\
+showTickMarksboolean2>Whether the slider displays tick marks along the slider track.>
+minnumber2+The minimum value that the slider can have.W
+color" 
+primary
+accent
+warnprimaryThemePalette2Palette color of the slider.I
+disableRippleboolean2+Whether ripples are disabled in the slider.>
+maxnumber2+The maximum value that the slider can have.<
+stepnumber2(The values at which the thumb will snap.

@@ -1,0 +1,17 @@
+
+syntax = "proto3";
+
+package mesop.components.slider;
+
+message SliderType {
+  bool disabled = 1;
+  bool discrete = 2;
+  bool show_tick_marks = 3;
+  double min = 4;
+  string color = 5;
+  bool disable_ripple = 6;
+  double max = 7;
+  double step = 8;
+
+  string on_value_change_handler_id = 9;
+}

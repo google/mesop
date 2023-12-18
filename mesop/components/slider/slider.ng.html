@@ -1,0 +1,12 @@
+<mat-slider
+  [disabled]="config().getDisabled()"
+  [discrete]="config().getDiscrete()"
+  [showTickMarks]="config().getShowTickMarks()"
+  [min]="config().getMin()"
+  [color]="getColor()"
+  [disableRipple]="config().getDisableRipple()"
+  [max]="config().getMax()"
+  [step]="config().getStep()"
+>
+  <input matSliderThumb (valueChange)="onValueChange($event)" />
+</mat-slider>

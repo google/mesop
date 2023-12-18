@@ -1,0 +1,107 @@
+{
+  "input": {
+    "name": "slider",
+    "targetClassesList": ["MatSlider"],
+    "hasContent": false,
+    "elementName": "mat-slider",
+    "tsFilename": "",
+    "directiveNamesList": [],
+    "nativeEventsList": [],
+    "skipPropertyNamesList": ["displayWith"],
+    "ngModulesList": [
+      {
+        "importPath": "@angular/material/slider",
+        "moduleName": "MatSliderModule",
+        "otherSymbolsList": []
+      }
+    ],
+    "isFormField": false
+  },
+  "inputPropsList": [
+    {
+      "name": "disabled",
+      "alias": "",
+      "type": {
+        "simpleType": 2
+      },
+      "debugType": "boolean",
+      "target": 0,
+      "docs": "Whether the slider is disabled."
+    },
+    {
+      "name": "discrete",
+      "alias": "",
+      "type": {
+        "simpleType": 2
+      },
+      "debugType": "boolean",
+      "target": 0,
+      "docs": "Whether the slider displays a numeric value label upon pressing the thumb."
+    },
+    {
+      "name": "showTickMarks",
+      "alias": "",
+      "type": {
+        "simpleType": 2
+      },
+      "debugType": "boolean",
+      "target": 0,
+      "docs": "Whether the slider displays tick marks along the slider track."
+    },
+    {
+      "name": "min",
+      "alias": "",
+      "type": {
+        "simpleType": 3
+      },
+      "debugType": "number",
+      "target": 0,
+      "docs": "The minimum value that the slider can have."
+    },
+    {
+      "name": "color",
+      "alias": "",
+      "type": {
+        "simpleType": 0,
+        "stringLiterals": {
+          "stringLiteralList": ["primary", "accent", "warn"],
+          "defaultValue": "primary"
+        }
+      },
+      "debugType": "ThemePalette",
+      "target": 0,
+      "docs": "Palette color of the slider."
+    },
+    {
+      "name": "disableRipple",
+      "alias": "",
+      "type": {
+        "simpleType": 2
+      },
+      "debugType": "boolean",
+      "target": 0,
+      "docs": "Whether ripples are disabled in the slider."
+    },
+    {
+      "name": "max",
+      "alias": "",
+      "type": {
+        "simpleType": 3
+      },
+      "debugType": "number",
+      "target": 0,
+      "docs": "The maximum value that the slider can have."
+    },
+    {
+      "name": "step",
+      "alias": "",
+      "type": {
+        "simpleType": 3
+      },
+      "debugType": "number",
+      "target": 0,
+      "docs": "The values at which the thumb will snap."
+    }
+  ],
+  "outputPropsList": []
+}
