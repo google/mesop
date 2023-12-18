@@ -42,4 +42,15 @@
   <ng-content></ng-content>
 </button>
 
+} @if(config().getVariantIndex() === 4) {
+<button
+  mat-icon-button
+  [color]="config().getColor()"
+  [disableRipple]="config().getDisableRipple()"
+  [disabled]="config().getDisabled()"
+  (click)="onClick($event)"
+>
+  <ng-content></ng-content>
+</button>
+
 }
