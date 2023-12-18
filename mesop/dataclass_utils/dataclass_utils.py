@@ -9,7 +9,6 @@ def clear_dataclass(instance: Any):
 
 
 def update_dataclass_from_json(instance: Any, json_string: str):
-  print("updating dataclass from json", instance, json_string)
   clear_dataclass(instance)  # Clear the instance first
   data = json.loads(json_string)
   for key, value in data.items():
