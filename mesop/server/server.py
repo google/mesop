@@ -73,7 +73,7 @@ def ui_stream():
   if param is None:
     raise Exception("Missing request parameter")
   ui_request = pb.UiRequest()
-  ui_request.ParseFromString(base64.b64decode(param))
+  ui_request.ParseFromString(base64.urlsafe_b64decode(param))
 
   return Response(
     stream_with_context(generate_data(ui_request)),

@@ -131,16 +131,15 @@ export class Channel {
 function generateRequestUrl(request: UiRequest): string {
   request.setPath(window.location.pathname);
   const array = request.serializeBinary();
-  const byteString = btoa(fromUint8Array(array));
+  const byteString = btoa(fromUint8Array(array))
+    // Make this URL-safe:
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_');
   return DEV_SERVER_HOST + '/ui?request=' + byteString;
 }
 
 function fromUint8Array(array: Uint8Array): string {
-  let binary = '';
-  for (let i = 0; i < array.length; i++) {
-    binary += String.fromCharCode(array[i]);
-  }
-  return binary;
+  return String.fromCodePoint(...(array as unknown as number[]));
 }
 
 function toUint8Array(byteString: string): Uint8Array {
