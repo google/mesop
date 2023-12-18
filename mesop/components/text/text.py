@@ -28,6 +28,7 @@ def text(
   text: str,
   *,
   type: Typography = Typography.TYPOGRAPHY_UNSET,
+  style: str = "",
   key: str | None = None,
 ):
   """
@@ -36,6 +37,7 @@ def text(
   Args:
       text: The text to display.
       type: The typography level for the text.
+      style: Style to apply to component. Follows [HTML Element inline style API](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/style).
       key: An optional key to uniquely identify the component. Defaults to None.
 
   """
@@ -46,5 +48,7 @@ def text(
   insert_component(
     key=key,
     type_name="text",
-    proto=text_pb2.TextType(text=text, typography_level=typography_level),
+    proto=text_pb2.TextType(
+      text=text, typography_level=typography_level, style=style
+    ),
   )

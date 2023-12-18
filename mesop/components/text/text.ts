@@ -1,4 +1,9 @@
-import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  HostBinding,
+  Input,
+} from '@angular/core';
 import {
   Key,
   Type,
@@ -51,5 +56,9 @@ export class TextComponent {
 
   config(): TextType {
     return this._config;
+  }
+
+  getStyle(): string {
+    return this.config().getStyle().trim();
   }
 }
