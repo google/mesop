@@ -41,24 +41,18 @@ def generate_doc_string(spec: pb.ComponentSpec):
     composite_comment = f"{component_name} is a composite component.\n"
   PADDING = "    "
   out: list[str] = [
-    PADDING + "key (str|None): Unique identifier for this component instance."
+    PADDING + "key : Unique identifier for this component instance."
   ]
   for prop in spec.input_props:
-    out.append(
-      f"{snake_case(prop.name)} ({format_py_xtype(prop.type)}): {prop.docs}"
-    )
+    out.append(f"{snake_case(prop.name)}: {prop.docs}")
   for prop in spec.output_props:
-    out.append(
-      f"on_{format_event_name(prop.event_name, spec)} (Callable[[{prop.event_name}], Any]|None): {prop.docs}"
-    )
+    out.append(f"on_{format_event_name(prop.event_name, spec)}: {prop.docs}")
   for native_event in spec.input.native_events:
     out.append(
-      f"on_{native_event} (Callable[[{format_native_event_name(native_event)}], Any]|None): [{native_event}](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/{native_event}_event) is a native browser event."
+      f"on_{native_event}: [{native_event}](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/{native_event}_event) is a native browser event."
     )
   if len(spec.input.directive_names):
-    out.append(
-      f"variant ({format_string_literals(list(spec.input.directive_names))}): component variations"
-    )
+    out.append("variant: component variations")
   return f"""Creates a {component_name} component.
   {composite_comment}
   Args:
