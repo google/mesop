@@ -59,6 +59,7 @@ def input(
   subscript_sizing: Literal["fixed", "dynamic"] = "fixed",
   hint_label: str = "",
   label: str = "",
+  style: str = "",
   on_input: Callable[[InputEvent], Any] | None = None,
 ):
   """Creates a Input component.
@@ -80,7 +81,8 @@ def input(
     appearance: The form field appearance style.
     subscript_sizing: Whether the form field should reserve space for one line of hint/error text (default) or to have the spacing grow from 0px as needed based on the size of the hint/error content. Note that when using dynamic sizing, layout shifts will occur when hint/error text changes.
     hint_label: Text for the form field hint.
-    label (str):
+    label: Label for input.
+    style: Style for input.
     on_input: [input](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/input_event) is a native browser event.
   """
   textarea = None
@@ -110,6 +112,7 @@ def input(
       subscript_sizing=subscript_sizing,
       hint_label=hint_label,
       label=label,
+      style=style,
       on_input_handler_id=register_event_handler(on_input, event=InputEvent)
       if on_input
       else "",

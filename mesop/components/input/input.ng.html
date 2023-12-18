@@ -5,6 +5,7 @@
   [appearance]="getAppearance()"
   [subscriptSizing]="getSubscriptSizing()"
   [hintLabel]="config().getHintLabel()"
+  [style]="config().getStyle()"
   ><mat-label>{{config().getLabel()}}</mat-label>
   @if(config().getType() === "textarea") {
   <textarea
