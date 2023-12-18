@@ -4,4 +4,19 @@ package mesop.components.text;
 
 message TextType {
     string text = 1;
+    enum TypographyLevel {
+        TYPOGRAPHY_LEVEL_UNSET = 0;
+        H1 = 1;
+        H2 = 2;
+        H3 = 3;
+        H4 = 4;
+        H5 = 5;
+        H6 = 6;
+        SUBTITLE1 = 7;
+        SUBTITLE2 = 8;
+        BODY1 = 9;
+        BODY2 = 10;
+        CAPTION = 11;
+    }
+    TypographyLevel typography_level = 2;
 }

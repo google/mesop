@@ -1,13 +1,33 @@
+from enum import Enum
+from typing import cast
+
 from pydantic import validate_arguments
 
 import mesop.components.text.text_pb2 as text_pb2
 from mesop.component_helpers import insert_component
 
 
+# Must be kept in sync with enum in text.proto
+class Typography(Enum):
+  TYPOGRAPHY_UNSET = 0
+  H1 = 1
+  H2 = 2
+  H3 = 3
+  H4 = 4
+  H5 = 5
+  H6 = 6
+  SUBTITLE1 = 7
+  SUBTITLE2 = 8
+  BODY1 = 9
+  BODY2 = 10
+  CAPTION = 11
+
+
 @validate_arguments
 def text(
   text: str,
   *,
+  type: Typography = Typography.TYPOGRAPHY_UNSET,
   key: str | None = None,
 ):
   """
@@ -15,9 +35,16 @@ def text(
 
   Args:
       text: The text to display.
-      key: An optional key to uniquely identify the component.
+      type: The typography level for the text.
+      key: An optional key to uniquely identify the component. Defaults to None.
 
   """
+  # The Python and Proto enum values should be exactly 1:1
+  typography_level = cast(
+    text_pb2.TextType.TypographyLevel.ValueType, type.value
+  )
   insert_component(
-    key=key, type_name="text", proto=text_pb2.TextType(text=text)
+    key=key,
+    type_name="text",
+    proto=text_pb2.TextType(text=text, typography_level=typography_level),
   )

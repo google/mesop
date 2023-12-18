@@ -54,6 +54,7 @@ from mesop.components.slider.slider import (
 from mesop.components.slider.slider import (
   slider as slider,
 )
+from mesop.components.text.text import Typography as Typography
 from mesop.components.text.text import text as text
 from mesop.components.text_input.text_input import text_input as text_input
 from mesop.components.tooltip.tooltip import tooltip as tooltip
