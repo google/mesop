@@ -25,8 +25,14 @@ def monitor_stdin():
   while True:
     line = sys.stdin.readline().strip()
     if line == "IBAZEL_BUILD_COMPLETED SUCCESS":
-      reset_runtime()
-      execute_module(get_runfile_location(FLAGS.path))
+      logging.log(logging.INFO, "ibazel build complete; starting hot reload")
+      try:
+        reset_runtime()
+        execute_module(get_runfile_location(FLAGS.path))
+      except Exception as e:
+        logging.log(
+          logging.ERROR, "Could not hot reload due to error:", exc_info=e
+        )
 
 
 stdin_thread = threading.Thread(target=monitor_stdin)

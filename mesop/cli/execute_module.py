@@ -14,6 +14,8 @@ def execute_module(module_path: str) -> ModuleType:
   # from the main app module.
   for module_name in _app_modules:
     del sys.modules[module_name]
+  # Clear app modules early on in case we hit an error later.
+  _app_modules.clear()
 
   # Keep track of all the sys modules in a set
   # so we can compare it after we load the module
