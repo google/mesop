@@ -1,7 +1,7 @@
 import time
 
 import mesop as me
-from mesop.examples.shared.navmenu import navmenu
+from mesop.examples.shared.navmenu import scaffold
 
 
 class Fake:
@@ -20,17 +20,15 @@ class State:
 
 @me.page(path="/playground")
 def app():
-  navmenu(url="/playground")
-  with me.box(
-    style="""
-    background-color: white;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    """
-  ):
-    header()
-    body()
+  with scaffold(url="/playground"):
+    with me.box(
+      style="""
+      display: flex;
+      flex-direction: column;
+      """
+    ):
+      header()
+      body()
 
 
 def header():

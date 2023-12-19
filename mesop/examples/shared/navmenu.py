@@ -4,8 +4,9 @@ import mesop as me
 def navmenu(url: str):
   with me.box(
     style="""
+    background: white;
       position: fixed;
-    width: 96px;
+    width: 84px;
     border-right: 1px solid #f6f5f6;
     height: 100%;
     """
@@ -49,3 +50,10 @@ def menu_item(label: str, icon: str, url: str, current_url: str):
             font-size: 14px;
             """,
           )
+
+
+@me.composite
+def scaffold(url: str):
+  navmenu(url=url)
+  with me.box(style="padding-left: 84px; background: white; height: 100%"):
+    pass

@@ -10,16 +10,20 @@ from mesop.examples import playground as playground
 
 # Do not import error_state_missing_init_prop because it cause all examples to fail.
 from mesop.examples import simple as simple
-from mesop.examples.shared.navmenu import navmenu
+from mesop.examples.shared.navmenu import scaffold
 
 
 @me.page(path="/")
 def index():
-  navmenu(url="/")
-  body()
+  with scaffold(url="/"):
+    body()
 
 
 def body():
-  with me.box(style="margin-left: 108px; background: white;"):
-    for _ in range(100):
-      me.text("Hello world")
+  with me.box(style="""background: white; padding: 16px;"""):
+    me.markdown(
+      """
+# Welcome
+This is an example multi-page Mesop application which features common use cases.
+"""
+    )
