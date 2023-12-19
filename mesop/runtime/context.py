@@ -15,6 +15,7 @@ class Context:
   _handlers: dict[str, Handler]
   _commands: list[pb.Command]
   _node_slot: pb.Component | None
+  _node_slot_children_count: int | None
 
   def __init__(
     self,
@@ -28,6 +29,7 @@ class Context:
     self._handlers = {}
     self._commands = []
     self._node_slot = None
+    self._node_slot_children_count = None
 
   def commands(self) -> list[pb.Command]:
     return self._commands
@@ -47,9 +49,13 @@ class Context:
 
   def save_current_node_as_slot(self) -> None:
     self._node_slot = self._current_node
+    self._node_slot_children_count = len(self._current_node.children)
 
   def node_slot(self) -> pb.Component | None:
     return self._node_slot
+
+  def node_slot_children_count(self) -> int | None:
+    return self._node_slot_children_count
 
   def set_current_node(self, node: pb.Component) -> None:
     self._current_node = node

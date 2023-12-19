@@ -36,16 +36,25 @@ class _UserCompositeComponent:
     self.prev_current_node = runtime().context().current_node()
     fn()
     node_slot = runtime().context().node_slot()
-    if not node_slot:
+    node_slot_children_count = runtime().context().node_slot_children_count()
+    if not node_slot or node_slot_children_count is None:
       raise MesopDeveloperException(
         "Must configure a child slot when defining a composite component."
       )
     runtime().context().set_current_node(node_slot)
+    # Temporarily remove children that are after the slot
+    self.after_children = node_slot.children[node_slot_children_count:]
+    for child in self.after_children:
+      node_slot.children.remove(child)
 
   def __enter__(self):
     pass
 
   def __exit__(self, exc_type, exc_val, exc_tb):  # type: ignore
+    # Re-add the children temporarily removed in __init__
+    for child in self.after_children:
+      insert = runtime().context().current_node().children.add()
+      insert.MergeFrom(child)
     runtime().context().set_current_node(self.prev_current_node)
 
 
