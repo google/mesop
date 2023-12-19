@@ -65,7 +65,6 @@ def generate_data(ui_request: pb.UiRequest):
         for command in runtime().context().commands():
           if command.HasField("navigate"):
             path = command.navigate.url
-            print("path", path)
         yield from render_loop(path=path, keep_alive=True)
         runtime().context().reset_current_node()
       yield "data: <stream_end>\n\n"

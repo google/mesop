@@ -45,7 +45,6 @@ class Runtime:
 
   def create_context(self) -> Context:
     if len(self._state_classes) == 0:
-      print("No state class was registered, using an empty state")
       states = {EmptyState: EmptyState()}
     else:
       states = {}
