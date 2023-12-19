@@ -1,6 +1,7 @@
 import {
   Component,
   ElementRef,
+  HostListener,
   NgZone,
   Renderer2,
   ViewChild,
@@ -10,6 +11,8 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {
   ServerError,
   Component as ComponentProto,
+  UserEvent,
+  NavigationEvent,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 import {CommonModule} from '@angular/common';
 import {ComponentRenderer} from '../component_renderer/component_renderer';
@@ -93,6 +96,14 @@ class App {
     this.renderer.listen(document, 'mouseup', (event) => {
       this.isDragging = false;
     });
+  }
+
+  /** Listen to browser navigation events (go back/forward). */
+  @HostListener('window:popstate', ['$event'])
+  onPopState(event: Event) {
+    const userEvent = new UserEvent();
+    userEvent.setNavigation(new NavigationEvent());
+    this.channel.dispatch(userEvent);
   }
 
   isConnectionOpen() {

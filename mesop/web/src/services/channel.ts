@@ -6,8 +6,8 @@ import {
   UiRequest,
   UserEvent,
   Component as ComponentProto,
-  HotReloadEvent,
   UiResponse,
+  NavigationEvent,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 import {Logger} from '../dev_tools/services/logger';
 
@@ -50,7 +50,7 @@ export class Channel {
         request = new UiRequest();
         const userEvent = new UserEvent();
         userEvent.setStates(this.states);
-        userEvent.setHotReload(new HotReloadEvent());
+        userEvent.setNavigation(new NavigationEvent());
         request.setUserEvent(userEvent);
       } else {
         request = new UiRequest();

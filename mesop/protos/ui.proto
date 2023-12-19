@@ -29,11 +29,12 @@ message UserEvent {
         string string = 5;
         double double = 7;
         int32 int = 8;
-        HotReloadEvent hot_reload = 6;
+        NavigationEvent navigation = 6;
     }
 }
 
-message HotReloadEvent{}
+// This is a user-triggered navigation (e.g. go back/forwards) or a hot reload event.
+message NavigationEvent{}
 
 // Sent from Python server to web client.
 // Multiple UiResponse messages may be sent in response to 1 UiRequest.

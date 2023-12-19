@@ -66,7 +66,7 @@ class Context:
     for state, proto_state in zip(self._states.values(), event.states.states):
       update_dataclass_from_json(state, proto_state.data)
 
-    if event.HasField("hot_reload"):
+    if event.HasField("navigation"):
       yield  # empty yield so there's one tick of the render loop
       return  # return early b/c there's no event handler for hot reload
 
