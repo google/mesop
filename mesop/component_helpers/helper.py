@@ -26,6 +26,29 @@ class _ComponentWithChildren:
     self.prev_current_node.children.append(self.component)
 
 
+class _UserCompositeComponent:
+  def __init__(self, fn: Callable[[], Any]):
+    self.prev_current_node = runtime().context().current_node()
+    fn()
+
+  def __enter__(self):
+    current_children = runtime().context().current_node().children
+    runtime().context().set_current_node(
+      current_children[len(current_children) - 1]
+    )
+    return self
+
+  def __exit__(self, exc_type, exc_val, exc_tb):  # type: ignore
+    runtime().context().set_current_node(self.prev_current_node)
+
+
+def composite(fn: Callable[..., Any]):
+  def wrapper(*args: Any, **kwargs: Any):
+    return _UserCompositeComponent(lambda: fn(*args, **kwargs))
+
+  return wrapper
+
+
 def create_component(
   type_name: str, proto: Message, key: str | None = None
 ) -> pb.Component:
