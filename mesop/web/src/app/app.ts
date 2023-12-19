@@ -5,6 +5,7 @@ import {
   Renderer2,
   ViewChild,
 } from '@angular/core';
+import {Router, RouterOutlet, Routes, provideRouter} from '@angular/router';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {
   ServerError,
@@ -56,6 +57,7 @@ class App {
     private channel: Channel,
     private devToolsSettings: DevToolsSettings,
     iconRegistry: MatIconRegistry,
+    private router: Router,
   ) {
     iconRegistry.setDefaultFontSetClass('material-symbols-rounded');
   }
@@ -65,6 +67,9 @@ class App {
       zone: this.zone,
       onRender: (rootComponent) => {
         this.rootComponent = rootComponent;
+      },
+      onNavigate: (route) => {
+        this.router.navigateByUrl(route);
       },
       onError: (error) => {
         this.error = error;
@@ -107,8 +112,18 @@ class App {
   }
 }
 
+const routes: Routes = [{path: '**', component: App}];
+
+@Component({
+  selector: 'optic-app',
+  template: `<router-outlet></router-outlet>`,
+  standalone: true,
+  imports: [App, RouterOutlet],
+})
+class OpticShell {}
+
 export function bootstrapApp() {
-  bootstrapApplication(App, {
-    providers: [provideAnimations()],
+  bootstrapApplication(OpticShell, {
+    providers: [provideAnimations(), provideRouter(routes)],
   });
 }

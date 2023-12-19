@@ -38,6 +38,7 @@ ts_library = _ts_library
 # Constants for deps
 ANGULAR_CORE_DEPS = [
     "@npm//@angular/compiler",
+    "@npm//@angular/router",
 ]
 
 ANGULAR_MATERIAL_TS_DEPS = [

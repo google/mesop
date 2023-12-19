@@ -18,6 +18,7 @@ def render_loop(path: str, keep_alive: bool = False, trace_mode: bool = False):
       render=pb.RenderEvent(
         root_component=root_component,
         states=runtime().context().serialize_state(),
+        commands=runtime().context().commands(),
       )
     )
     yield serialize(data)
@@ -60,7 +61,12 @@ def generate_data(ui_request: pb.UiRequest):
         pass
       result = runtime().context().process_event(ui_request.user_event)
       for _ in result:
-        yield from render_loop(path=ui_request.path, keep_alive=True)
+        path = ui_request.path
+        for command in runtime().context().commands():
+          if command.HasField("navigate"):
+            path = command.navigate.url
+            print("path", path)
+        yield from render_loop(path=path, keep_alive=True)
         runtime().context().reset_current_node()
       yield "data: <stream_end>\n\n"
     else:

@@ -73,6 +73,18 @@ message ContextLine {
 message RenderEvent {
     Component root_component = 1;
     States states = 2;
+    repeated Command commands = 3;
+}
+
+message Command {
+    oneof command {
+        NavigateCommand navigate = 1;
+    }
+}
+
+message NavigateCommand {
+    // absolute route path, e.g. "/foo/bar"
+    string url = 1;
 }
 
 message States {

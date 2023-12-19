@@ -13,6 +13,7 @@ Handler = Callable[[Any], Generator[None, None, None] | None]
 class Context:
   _states: dict[type[Any], object]
   _handlers: dict[str, Handler]
+  _commands: list[pb.Command]
 
   def __init__(
     self,
@@ -24,6 +25,13 @@ class Context:
     self._states = states
     self._trace_mode = False
     self._handlers = {}
+    self._commands = []
+
+  def commands(self) -> list[pb.Command]:
+    return self._commands
+
+  def navigate(self, url: str) -> None:
+    self._commands.append(pb.Command(navigate=pb.NavigateCommand(url=url)))
 
   def register_event_handler(self, fn_id: str, handler: Handler) -> None:
     if self._trace_mode:

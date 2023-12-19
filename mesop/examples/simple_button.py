@@ -16,10 +16,10 @@ def main():
   state = me.state(State)
   with me.button(on_click=button_click):
     me.text(text="default")
-  with me.button(on_click=button_click, variant="mat-flat-button"):
+  with me.button(on_click=button_click, variant="flat"):
     me.text(text="mat-flat-button")
-  with me.button(on_click=button_click, variant="mat-raised-button"):
+  with me.button(on_click=button_click, variant="raised"):
     me.text(text="mat-raised-button")
-  with me.button(on_click=button_click, variant="mat-stroked-button"):
+  with me.button(on_click=button_click, variant="stroked"):
     me.text(text="mat-stroked-button")
   me.text(text=f"{state.count_clicks} clicks")

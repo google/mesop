@@ -18,6 +18,7 @@ interface InitParams {
   zone: NgZone;
   onRender: (rootComponent: ComponentProto) => void;
   onError: (error: ServerError) => void;
+  onNavigate: (route: string) => void;
 }
 
 export enum ChannelStatus {
@@ -60,7 +61,7 @@ export class Channel {
     this.status = ChannelStatus.OPEN;
     this.logger.log({type: 'StreamStart'});
 
-    const {zone, onRender, onError} = initParams;
+    const {zone, onRender, onError, onNavigate} = initParams;
     this.initParams = initParams;
 
     this.eventSource.onmessage = (e) => {
@@ -84,6 +85,13 @@ export class Channel {
           case UiResponse.TypeCase.RENDER:
             this.states = uiResponse.getRender()!.getStates()!;
             const rootComponent = uiResponse.getRender()!.getRootComponent()!;
+            for (const command of uiResponse.getRender()!.getCommandsList()) {
+              const navigate = command.getNavigate();
+              if (navigate) {
+                onNavigate(navigate.getUrl());
+              }
+            }
+
             onRender(rootComponent);
             this.logger.log({
               type: 'RenderLog',

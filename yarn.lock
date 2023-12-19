@@ -478,10 +478,10 @@
     tslib "^2.3.0"
     xhr2 "^0.2.0"
 
-"@angular/router@^17.0.0":
-  version "17.0.2"
-  resolved "https://registry.yarnpkg.com/@angular/router/-/router-17.0.2.tgz#f4a743087b7ca62a7b36c0a00285f69f783ea3ac"
-  integrity sha512-A1Ulv4qBAtJyK5g1yBlK1qZHe+KaaL5vMPAaPWUxICH8lHEodDkJlbYAUI2e4VL2BN7zBmdOep6tlBKPmHY3mw==
+"@angular/router@^17.0.7":
+  version "17.0.7"
+  resolved "https://registry.yarnpkg.com/@angular/router/-/router-17.0.7.tgz#a1bc4f49ad2f0bb1f6e1ab0a0e63d92836d7cbea"
+  integrity sha512-rUFPe1uDlYYw6+3Gq68czW7WxBH7zT/D3UsT1otqwUV4RnQQsVze4fIit9FqJh7tuP4y3WpB4XBNf7p7Oi6TJw==
   dependencies:
     tslib "^2.3.0"
 

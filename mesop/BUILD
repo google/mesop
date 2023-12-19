@@ -31,6 +31,7 @@ py_library(
         "//mesop/components/checkbox:py",
         "//mesop/components/text:py",
         "//mesop/events",
+        "//mesop/commands",
         "//mesop/features",
         "//mesop/server",
     ],
