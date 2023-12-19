@@ -22,7 +22,6 @@ class _ComponentWithChildren:
 
   def __enter__(self):
     runtime().context().set_current_node(self.component)
-    return self
 
   def __exit__(self, exc_type, exc_val, exc_tb):  # type: ignore
     runtime().context().set_current_node(self.prev_current_node)
@@ -44,7 +43,7 @@ class _UserCompositeComponent:
     runtime().context().set_current_node(node_slot)
 
   def __enter__(self):
-    return self
+    pass
 
   def __exit__(self, exc_type, exc_val, exc_tb):  # type: ignore
     runtime().context().set_current_node(self.prev_current_node)
