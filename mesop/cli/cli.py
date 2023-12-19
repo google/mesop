@@ -1,3 +1,4 @@
+import logging
 import os
 import sys
 import threading
@@ -17,6 +18,7 @@ FLAGS = flags.FLAGS
 
 flags.DEFINE_string("path", "", "path to main python module of Mesop app.")
 flags.DEFINE_bool("debug", True, "set to true for debug mode.")
+flags.DEFINE_bool("verbose", False, "set to true for verbose logging.")
 
 
 def monitor_stdin():
@@ -58,6 +60,21 @@ def main(argv):
     static_file_runfiles_base="mesop/mesop/web/src/app/prod/web_package",
     livereload_script_url=os.environ.get("IBAZEL_LIVERELOAD_URL"),
   )
+
+  if FLAGS.verbose:
+    logging.getLogger("werkzeug").setLevel(logging.INFO)
+  else:
+    # Log basic information about where the server is running since
+    # we don't get it printed by werkzeurg:
+    # https://github.com/pallets/werkzeug/blob/eafbed0ce2a6bdf60e62de82bf4a8365188ac334/src/werkzeug/serving.py#L820C9-L820C17
+    FgGreen = "\x1b[32m"
+    Reset = "\x1b[0m"
+    logging.log(
+      logging.INFO,
+      f"\n{FgGreen}Running server on: http://127.0.0.1:{port()}{Reset}",
+    )
+    logging.getLogger("werkzeug").setLevel(logging.WARN)
+
   flask_app.run(host="0.0.0.0", port=port(), use_reloader=False)
 
 
