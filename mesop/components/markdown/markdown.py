@@ -6,8 +6,8 @@ from mesop.component_helpers import insert_component
 
 @validate_arguments
 def markdown(
-  *,
   text: str,
+  *,
   key: str | None = None,
 ):
   """
