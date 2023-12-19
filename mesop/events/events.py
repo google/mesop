@@ -1,11 +1,9 @@
 from dataclasses import dataclass
 
-from mesop.key import Key
-
 
 @dataclass
 class MesopEvent:
-  key: Key
+  key: str
 
 
 @dataclass

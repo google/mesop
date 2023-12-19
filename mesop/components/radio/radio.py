@@ -19,7 +19,7 @@ class RadioChangeEvent(MesopEvent):
 
 register_event_mapper(
   RadioChangeEvent,
-  lambda event, key: RadioChangeEvent(key=key, value=event.string),
+  lambda event, key: RadioChangeEvent(key=key.key, value=event.string),
 )
 
 

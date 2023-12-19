@@ -20,7 +20,7 @@ class SelectOpenedChangeEvent(MesopEvent):
 register_event_mapper(
   SelectOpenedChangeEvent,
   lambda event, key: SelectOpenedChangeEvent(
-    key=key,
+    key=key.key,
     opened=event.bool,
   ),
 )
@@ -34,7 +34,7 @@ class SelectSelectionChangeEvent(MesopEvent):
 register_event_mapper(
   SelectSelectionChangeEvent,
   lambda event, key: SelectSelectionChangeEvent(
-    key=key,
+    key=key.key,
     value=event.string,
   ),
 )

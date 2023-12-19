@@ -17,10 +17,10 @@ class State:
 def checkbox_update(action: me.CheckboxChangeEvent) -> None:
   state = me.state(State)
   if action.checked:
-    state.keys.append(action.key.key)
+    state.keys.append(action.key)
     state.string = "checked"
   else:
-    state.keys.remove(action.key.key)
+    state.keys.remove(action.key)
     state.string = "unchecked"
 
 

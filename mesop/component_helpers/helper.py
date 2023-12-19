@@ -122,14 +122,14 @@ runtime().register_event_mapper(
   ChangeEvent,
   lambda userEvent, key: ChangeEvent(
     value=userEvent.string,
-    key=key,
+    key=key.key,
   ),
 )
 
 runtime().register_event_mapper(
   ClickEvent,
   lambda userEvent, key: ClickEvent(
-    key=key,
+    key=key.key,
   ),
 )
 
@@ -137,6 +137,6 @@ runtime().register_event_mapper(
   InputEvent,
   lambda userEvent, key: InputEvent(
     value=userEvent.string,
-    key=key,
+    key=key.key,
   ),
 )

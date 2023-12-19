@@ -41,7 +41,7 @@ def body():
 
 def menu_item(label: str, icon: str, url: str):
   def on_click(event: me.ClickEvent):
-    me.navigate(url)
+    me.navigate(event.key)
 
   with me.box(
     style="""
@@ -50,7 +50,7 @@ def menu_item(label: str, icon: str, url: str):
   """
   ):
     with me.box(style="margin-bottom: 8px;"):
-      with me.button(variant="icon", on_click=on_click):
+      with me.button(variant="icon", on_click=on_click, key=url):
         with me.box(
           style="""
         display: flex;

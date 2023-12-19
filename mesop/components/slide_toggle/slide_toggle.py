@@ -20,7 +20,7 @@ class SlideToggleChangeEvent(MesopEvent):
 register_event_mapper(
   SlideToggleChangeEvent,
   lambda event, key: SlideToggleChangeEvent(
-    key=key,
+    key=key.key,
   ),
 )
 

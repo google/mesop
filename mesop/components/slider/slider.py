@@ -20,7 +20,7 @@ class SliderValueChangeEvent(MesopEvent):
 register_event_mapper(
   SliderValueChangeEvent,
   lambda event, key: SliderValueChangeEvent(
-    key=key,
+    key=key.key,
     value=event.double,
   ),
 )
