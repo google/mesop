@@ -1,4 +1,5 @@
 import mesop as me
+from mesop.examples.shared.navmenu import navmenu
 
 
 @me.stateclass
@@ -11,8 +12,9 @@ def button_click(action: me.ClickEvent):
   state.count_clicks += 1
 
 
-@me.page(path="/simple_button")
+@me.page(path="/buttons")
 def main():
+  navmenu(url="/buttons")
   state = me.state(State)
   with me.button(on_click=button_click):
     me.text(text="default")

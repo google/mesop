@@ -1,6 +1,7 @@
 import time
 
 import mesop as me
+from mesop.examples.shared.navmenu import navmenu
 
 
 class Fake:
@@ -19,6 +20,7 @@ class State:
 
 @me.page(path="/playground")
 def app():
+  navmenu(url="/playground")
   with me.box(
     style="""
     background-color: white;
