@@ -15,6 +15,12 @@ def navmenu(url: str):
     menu_item(
       label="Playground", icon="ar_stickers", url="/playground", current_url=url
     )
+    menu_item(
+      label="Playground Critic",
+      icon="ar_stickers",
+      url="/playground-critic",
+      current_url=url,
+    )
     menu_item(label="Buttons", icon="gamepad", url="/buttons", current_url=url)
 
 
