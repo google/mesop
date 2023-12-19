@@ -7,4 +7,7 @@ package(
 py_library(
     name = "exceptions",
     srcs = glob(["*.py"]),
+    deps = [
+        "//mesop/protos:ui_py_pb2",
+    ],
 )
