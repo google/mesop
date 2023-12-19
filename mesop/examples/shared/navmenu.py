@@ -54,6 +54,7 @@ def menu_item(label: str, icon: str, url: str, current_url: str):
 
 @me.composite
 def scaffold(url: str):
-  navmenu(url=url)
-  with me.box(style="padding-left: 84px; background: white; height: 100%"):
-    pass
+  with me.box(style="background: white; height: 100%"):
+    navmenu(url=url)
+    with me.box(style="padding-left: 84px; height: 100%"):
+      me.slot()

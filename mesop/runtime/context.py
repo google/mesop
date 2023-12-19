@@ -14,6 +14,7 @@ class Context:
   _states: dict[type[Any], object]
   _handlers: dict[str, Handler]
   _commands: list[pb.Command]
+  _node_slot: pb.Component | None
 
   def __init__(
     self,
@@ -26,6 +27,7 @@ class Context:
     self._trace_mode = False
     self._handlers = {}
     self._commands = []
+    self._node_slot = None
 
   def commands(self) -> list[pb.Command]:
     return self._commands
@@ -42,6 +44,12 @@ class Context:
 
   def current_node(self) -> pb.Component:
     return self._current_node
+
+  def save_current_node_as_slot(self) -> None:
+    self._node_slot = self._current_node
+
+  def node_slot(self) -> pb.Component | None:
+    return self._node_slot
 
   def set_current_node(self, node: pb.Component) -> None:
     self._current_node = node

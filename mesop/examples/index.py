@@ -2,6 +2,7 @@
 # Use import alias so Ruff doesn't complain about unused imports
 import mesop as me
 from mesop.examples import buttons as buttons
+from mesop.examples import composite as composite
 from mesop.examples import error as error
 from mesop.examples import generator as generator
 from mesop.examples import hello_world as hello_world

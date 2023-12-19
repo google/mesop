@@ -66,7 +66,7 @@ def on_input(e: me.InputEvent):
   me.state(State).input = e.value
 
 
-def on_submit(event):
+def on_submit(event: me.ClickEvent):
   fake = Fake()
   state = me.state(State)
   state.is_loading = True

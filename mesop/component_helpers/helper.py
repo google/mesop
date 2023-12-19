@@ -7,6 +7,7 @@ from google.protobuf.message import Message
 
 import mesop.protos.ui_pb2 as pb
 from mesop.events import ChangeEvent, ClickEvent, InputEvent, MesopEvent
+from mesop.exceptions import MesopDeveloperException
 from mesop.key import Key, key_from_proto
 from mesop.runtime import runtime
 
@@ -14,28 +15,35 @@ from mesop.runtime import runtime
 class _ComponentWithChildren:
   def __init__(self, type_name: str, proto: Message, key: str | None = None):
     self.prev_current_node = runtime().context().current_node()
-    self.component = create_component(type_name=type_name, proto=proto, key=key)
+    self.component = self.prev_current_node.children.add()
+    self.component.MergeFrom(
+      create_component(type_name=type_name, proto=proto, key=key)
+    )
 
   def __enter__(self):
     runtime().context().set_current_node(self.component)
     return self
 
   def __exit__(self, exc_type, exc_val, exc_tb):  # type: ignore
-    # TODO: not sure why I can't append this in `__enter__`
     runtime().context().set_current_node(self.prev_current_node)
-    self.prev_current_node.children.append(self.component)
+
+
+def slot():
+  runtime().context().save_current_node_as_slot()
 
 
 class _UserCompositeComponent:
-  def __init__(self, fn: Callable[[], Any]):
+  def __init__(self, fn: Callable[..., Any]):
     self.prev_current_node = runtime().context().current_node()
     fn()
+    node_slot = runtime().context().node_slot()
+    if not node_slot:
+      raise MesopDeveloperException(
+        "Must configure a child slot when defining a composite component."
+      )
+    runtime().context().set_current_node(node_slot)
 
   def __enter__(self):
-    current_children = runtime().context().current_node().children
-    runtime().context().set_current_node(
-      current_children[len(current_children) - 1]
-    )
     return self
 
   def __exit__(self, exc_type, exc_val, exc_tb):  # type: ignore

@@ -1,7 +1,12 @@
 from mesop.api import state as state
 from mesop.api import stateclass as stateclass
 from mesop.commands.navigate import navigate as navigate
-from mesop.component_helpers.helper import composite as composite
+from mesop.component_helpers.helper import (
+  composite as composite,
+)
+from mesop.component_helpers.helper import (
+  slot as slot,
+)
 from mesop.components.badge.badge import badge as badge
 
 # REF(//scripts/scaffold_component.py):insert_component_import_export
