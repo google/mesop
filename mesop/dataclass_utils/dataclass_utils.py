@@ -1,8 +1,37 @@
 import json
-from dataclasses import asdict, is_dataclass
-from typing import Any
+from dataclasses import asdict, dataclass, field, is_dataclass
+from typing import Any, Type, TypeVar, get_type_hints
 
 from mesop.exceptions import MesopException
+
+C = TypeVar("C")
+
+
+def dataclass_with_defaults(cls: Type[C]) -> Type[C]:
+  """
+  Provides defaults for every attribute in a dataclass (recursively) so
+  Mesop developers don't need to manually set default values
+  """
+  pass
+  annotations = get_type_hints(cls)
+  for name, type_hint in annotations.items():
+    if name not in cls.__dict__:  # Skip if default already set
+      if type_hint == int:
+        setattr(cls, name, field(default=0))
+      elif type_hint == float:
+        setattr(cls, name, field(default=0.0))
+      elif type_hint == str:
+        setattr(cls, name, field(default=""))
+      elif type_hint == bool:
+        setattr(cls, name, field(default=False))
+      elif type_hint == list:
+        setattr(cls, name, field(default_factory=list))
+      elif isinstance(type_hint, type):
+        setattr(
+          cls, name, field(default_factory=dataclass_with_defaults(type_hint))
+        )
+
+  return dataclass(cls)
 
 
 def serialize_dataclass(state: Any):

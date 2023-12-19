@@ -1,6 +1,6 @@
-from dataclasses import dataclass
 from typing import Any, TypeVar, cast
 
+from mesop.dataclass_utils import dataclass_with_defaults
 from mesop.runtime import runtime
 
 T = TypeVar("T")
@@ -16,7 +16,7 @@ def stateclass(cls: type[T] | None, **kw_args: Any) -> type[T]:
   """
 
   def wrapper(cls: type[T]) -> type[T]:
-    dataclass_cls = dataclass(cls, **kw_args)
+    dataclass_cls = dataclass_with_defaults(cls, **kw_args)
     runtime().register_state_class(dataclass_cls)
     return dataclass_cls
 

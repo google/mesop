@@ -1,5 +1,4 @@
 import time
-from dataclasses import dataclass, field
 
 import mesop as me
 from mesop.examples.shared.navmenu import scaffold
@@ -12,17 +11,16 @@ class Fake:
     return "Some random text from input: " + input
 
 
-@dataclass
 class Output:
-  text: str = ""
-  loading: bool = False
+  text: str
+  loading: bool
 
 
 @me.stateclass
 class State:
-  input: str = ""
-  initial_output: Output = field(default_factory=Output)
-  critic_output: Output = field(default_factory=Output)
+  input: str
+  initial_output: Output
+  critic_output: Output
 
 
 @me.page(path="/playground-critic")

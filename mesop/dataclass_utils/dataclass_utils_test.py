@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field
 
 from mesop.dataclass_utils.dataclass_utils import (
+  dataclass_with_defaults,
   serialize_dataclass,
   update_dataclass_from_json,
 )
@@ -22,6 +23,26 @@ class A:
 
 
 JSON_STR = """{"b": {"c": {"val": "<init>"}}}"""
+
+
+@dataclass_with_defaults
+class DataclassNoDefaults:
+  foo: int
+
+
+@dataclass_with_defaults
+class NestedDataclassNoDefaults:
+  a: DataclassNoDefaults
+
+
+def test_dataclass_defaults():
+  d = DataclassNoDefaults()
+  assert d.foo == 0
+
+
+def test_dataclass_defaults_recursive():
+  d = NestedDataclassNoDefaults()
+  assert d.a.foo == 0
 
 
 def test_serialize_dataclass():
