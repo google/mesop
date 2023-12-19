@@ -1,11 +1,10 @@
 """Wrapper for commonly used Bazel rules.
 """
 
-load("@aspect_rules_py//py:defs.bzl", _py_binary = "py_binary", _py_library = "py_library")
+load("@aspect_rules_py//py:defs.bzl", _py_binary = "py_binary", _py_library = "py_library", _py_test = "py_test")
 load("@build_bazel_rules_nodejs//:index.bzl", _nodejs_binary = "nodejs_binary", _pkg_web = "pkg_web")
 load("@my_deps//:requirements.bzl", "requirement")
 load("@rules_proto//proto:defs.bzl", _proto_library = "proto_library")
-load("@rules_python//python:defs.bzl", _py_test = "py_test")
 load("//build_defs:jspb_proto_library.bzl", _jspb_proto_library = "jspb_proto_library")
 load("//build_defs:ng_js_binary.bzl", _ng_js_binary = "ng_js_binary")
 load("//build_defs:py_proto_library.bzl", _py_proto_library = "py_proto_library")
