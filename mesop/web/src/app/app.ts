@@ -1,6 +1,7 @@
 import {
   Component,
   ElementRef,
+  ErrorHandler,
   HostListener,
   NgZone,
   Renderer2,
@@ -26,6 +27,7 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {DevTools} from '../dev_tools/dev_tools';
 import {DevToolsSettings} from '../dev_tools/services/dev_tools_settings';
 import {HotReloadWatcher} from '../services/hot_reload_watcher';
+import {GlobalErrorHandlerService} from '../services/global_error_handler';
 
 @Component({
   selector: 'app',
@@ -41,11 +43,12 @@ import {HotReloadWatcher} from '../services/hot_reload_watcher';
     MatButtonModule,
     MatSidenavModule,
   ],
+  providers: [{provide: ErrorHandler, useClass: GlobalErrorHandlerService}],
   styleUrl: 'app_styles.css',
 })
 class App {
   rootComponent!: ComponentProto;
-  error!: ServerError;
+  errors: ServerError[] = [];
   @ViewChild('dragHandle', {read: ElementRef}) dragHandle!: ElementRef;
   private isDragging: boolean = false;
   @ViewChild('sidenav', {read: ElementRef}) sidenav!: ElementRef;
@@ -61,8 +64,14 @@ class App {
     private devToolsSettings: DevToolsSettings,
     iconRegistry: MatIconRegistry,
     private router: Router,
+    errorHandler: ErrorHandler,
   ) {
     iconRegistry.setDefaultFontSetClass('material-symbols-rounded');
+    (errorHandler as GlobalErrorHandlerService).setOnError((error) => {
+      const errorProto = new ServerError();
+      errorProto.setException('JS Error: ' + error.toString());
+      this.errors.push(errorProto);
+    });
   }
 
   ngOnInit() {
@@ -75,7 +84,7 @@ class App {
         this.router.navigateByUrl(route);
       },
       onError: (error) => {
-        this.error = error;
+        this.errors.push(error);
       },
     });
   }

@@ -19,14 +19,23 @@ import {Channel} from '../services/channel';
 export class ErrorBox {
   _showFullTraceback: boolean = false;
   _lastAppFrame: StackFrame | undefined;
+  _hiddenErrors: Set<ServerError> = new Set();
   @Input({required: true}) error!: ServerError;
 
+  isHidden(error: ServerError): boolean {
+    return this._hiddenErrors.has(error);
+  }
+
+  hideError(error: ServerError): void {
+    this._hiddenErrors.add(error);
+  }
+
   ngOnChanges() {
-    for (const frame of this.error
-      .getTraceback()!
-      .getFramesList()
-      .slice()
-      .reverse()) {
+    const traceback = this.error.getTraceback();
+    if (!traceback) {
+      return;
+    }
+    for (const frame of traceback.getFramesList().slice().reverse()) {
       if (frame.getIsAppCode()) {
         this._lastAppFrame = frame;
         return;
@@ -42,10 +51,11 @@ export class ErrorBox {
     if (this._showFullTraceback) {
       return true;
     }
-    return this.error
-      .getTraceback()!
-      .getFramesList()
-      .every((frame) => !frame.getIsAppCode());
+    const traceback = this.error.getTraceback();
+    if (!traceback) {
+      return false;
+    }
+    return traceback.getFramesList().every((frame) => !frame.getIsAppCode());
   }
 
   formatFrame(frame: StackFrame): string {
