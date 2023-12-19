@@ -27,5 +27,5 @@ def app():
   me.input(label="Basic input", on_input=on_input, key=str(s.checked))
   me.text(text=s.input)
 
-  me.input(label="Textarea", type="textarea", on_input=on_input)
+  me.input(label="Textarea", type=me.Textarea(), on_input=on_input)
   me.input(label="Number input", type="number", on_input=on_input)
