@@ -3,7 +3,11 @@ repo_url: https://github.com/google/mesop
 repo_name: google/mesop
 nav:
   - Overview: index.md
-  - Concepts: concepts.md
+  - Getting Started: getting_started.md
+  - Concepts:
+      - Components: concepts/components.md
+      - Interactivity: concepts/interactivity.md
+      - Pages: concepts/pages.md
   - Components:
       - Badge: components/badge.md
       - Box: components/box.md
@@ -16,11 +20,10 @@ nav:
       - Progress spinner: components/progress_spinner.md
       - Text: components/text.md
       - Tooltip: components/tooltip.md
-  - Features:
-      - Pages: features/pages.md
-  - Deployment: deployment.md
-  - Troubleshooting: troubleshooting.md
-  - Developing Mesop:
+  - Guides:
+      - Deployment: guides/deployment.md
+      - Troubleshooting: guides/troubleshooting.md
+  - Internal:
       - Goals: goals.md
       - New component: internal/new_component.md
       - Development: internal/development.md
@@ -33,6 +36,8 @@ theme:
   name: material
   logo: assets/logo.png
   favicon: assets/logo.png
+  font:
+    text: Inter
 
   palette:
     # Palette toggle for light mode
@@ -53,6 +58,11 @@ theme:
     - content.code.copy
     - navigation.path
     - navigation.instant
+    - navigation.tracking
+    - navigation.expand
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - search.highlight
 
 extra_css:
   - stylesheets/extra.css
@@ -63,8 +73,10 @@ markdown_extensions:
       auto_title: true
 
   - pymdownx.superfences
+  - pymdownx.snippets
 
 plugins:
+  - search
   - mkdocstrings:
       default_handler: python
 
