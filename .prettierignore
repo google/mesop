@@ -1,1 +1,3 @@
 .yarn
+# Prettier destroys some of the special markdown directives
+docs/**/*.md
