@@ -4,17 +4,10 @@ package(
     default_visibility = ["//build_defs:mesop_internal"],
 )
 
-filegroup(
-    name = "examples_files",
-    srcs = glob(["**/*.py"]),
-)
-
 py_library(
-    name = "examples",
+    name = "docs",
     srcs = glob(["*.py"]),
     deps = [
         "//mesop",
-        "//mesop/examples/docs",
-        "//mesop/examples/shared",
     ],
 )

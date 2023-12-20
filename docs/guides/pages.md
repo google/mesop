@@ -1,5 +1,7 @@
 # Pages
 
+You can define multi-page Mesop applications by using the page feature you learned from [Getting Started](../getting_started.md)
+
 ## Simple, 1-page setup
 
 If you want to create a simple Mesop app, you can do the following:

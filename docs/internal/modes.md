@@ -1,7 +1,6 @@
 # Modes
 
 There are several modes that you can run Mesop in.
-TODO bad
 
 ## Uncompiled mode
 

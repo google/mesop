@@ -4,10 +4,12 @@ repo_name: google/mesop
 nav:
   - Overview: index.md
   - Getting Started: getting_started.md
-  - Concepts:
-      - Components: concepts/components.md
-      - Interactivity: concepts/interactivity.md
-      - Pages: concepts/pages.md
+  - Guides:
+      - Components: guides/components.md
+      - Interactivity: guides/interactivity.md
+      - Pages: guides/pages.md
+      - Deployment: guides/deployment.md
+      - Troubleshooting: guides/troubleshooting.md
   - Components:
       - Badge: components/badge.md
       - Box: components/box.md
@@ -20,9 +22,6 @@ nav:
       - Progress spinner: components/progress_spinner.md
       - Text: components/text.md
       - Tooltip: components/tooltip.md
-  - Guides:
-      - Deployment: guides/deployment.md
-      - Troubleshooting: guides/troubleshooting.md
   - Internal:
       - Goals: goals.md
       - New component: internal/new_component.md

@@ -15,7 +15,7 @@ Mesop is a Python-based UI framework that allows you to rapidly build web demos.
 - Mesop is built on battle-tested [Angular](https://angular.dev/) web framework and [Angular Material](https://material.angular.io/) components.
 - Mesop provides a flexible and composable component system and allows you to build custom UIs _without_ writing Javascript/CSS/HTML.
 
-Learn more in [Getting Started](getting_started)
+Learn more in [Getting Started](./getting_started.md)
 
 ## Example app
 
