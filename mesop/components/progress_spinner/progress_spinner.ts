@@ -28,8 +28,4 @@ export class ProgressSpinnerComponent {
   config(): ProgressSpinnerType {
     return this._config;
   }
-
-  getMode(): 'determinate' | 'indeterminate' {
-    return this.config().getMode() as 'determinate' | 'indeterminate';
-  }
 }
