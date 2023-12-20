@@ -1,0 +1,40 @@
+{
+  "$schema": "https://biomejs.dev/schemas/1.4.1/schema.json",
+  "files": {
+    "ignore": [
+      "**/third_party/**",
+      "third_party/**",
+      "tools/**",
+      "bazel-*/**",
+      "mesop/**/*.json",
+      "scripts/**",
+      "**/esbuild*"
+    ]
+  },
+  "organizeImports": {
+    "enabled": true
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "nursery": {
+        "noUnusedImports": "error"
+      },
+      "recommended": true,
+      "complexity": {
+        "useLiteralKeys": "off",
+        "noForEach": "off"
+      },
+      "style": {
+        "noParameterAssign": "off",
+        "noNonNullAssertion": "off"
+      },
+      "suspicious": {
+        "noExplicitAny": "off"
+      }
+    }
+  },
+  "formatter": {
+    "enabled": false
+  }
+}
