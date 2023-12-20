@@ -87,6 +87,14 @@ The `on_click` argument is how you wire the event handler defined above to a spe
 
 In summary, you've learned how to define a state class, an event handler and wire them together using interactive components.
 
+## Prompt app
+
+At this point, you've learned all the basics of building a Mesop app and now you should be able to understand how the example app on the home page works:
+
+```python
+--8<-- "mesop/examples/readme_app.py"
+```
+
 ## What's next
 
 To learn more about Mesop, I recommend reading the [Guides](./guides/components.md) and then spend time looking at the [examples on GitHub](https://github.com/google/mesop/tree/main/mesop/examples). As you build your own applications, you'll want to reference the [Components API reference](./components/button.md) docs.
