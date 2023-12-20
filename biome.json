@@ -1,11 +1,13 @@
 {
   "$schema": "https://biomejs.dev/schemas/1.4.1/schema.json",
+  "vcs": {
+    "useIgnoreFile": true
+  },
   "files": {
     "ignore": [
       "**/third_party/**",
       "third_party/**",
       "tools/**",
-      "bazel-*/**",
       "mesop/**/*.json",
       "scripts/**",
       "**/esbuild*"

@@ -24,3 +24,12 @@ repos:
     rev: v3.1.0
     hooks:
       - id: prettier
+  - repo: local
+    hooks:
+      - id: biome-lint
+        name: Run Biome lint
+        description: Run biome lint
+        entry: sh -c 'yarn biome lint mesop --apply-unsafe'
+        files: \.(ts)$
+        language: system
+        pass_filenames: false
