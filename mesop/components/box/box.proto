@@ -4,4 +4,5 @@ package mesop.components.box;
 
 message BoxType {
     string style = 1;
+    string on_click_handler_id = 2;
 }

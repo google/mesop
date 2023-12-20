@@ -3,16 +3,21 @@ import {
   Component,
   ComponentRef,
   HostBinding,
+  HostListener,
   Input,
   TemplateRef,
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {Component as ComponentProto} from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
+import {
+  Component as ComponentProto,
+  UserEvent,
+} from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 import {ComponentLoader} from './component_loader';
 import {BoxType} from 'mesop/mesop/components/box/box_jspb_proto_pb/mesop/components/box/box_pb';
 import {BaseComponent, typeToComponent} from './type_to_component';
+import {Channel} from '../services/channel';
 
 @Component({
   selector: 'component-renderer',
@@ -29,6 +34,7 @@ export class ComponentRenderer {
   private _componentRef!: ComponentRef<BaseComponent>;
 
   constructor(
+    private channel: Channel,
     private viewContainerRef: ViewContainerRef,
     private applicationRef: ApplicationRef,
   ) {}
@@ -99,6 +105,10 @@ export class ComponentRenderer {
     }
   }
 
+  //////////////
+  // Box-specific implementation:
+  //////////////
+
   @HostBinding('style') get style(): string {
     if (!this._boxType) {
       return '';
@@ -107,6 +117,17 @@ export class ComponentRenderer {
     // `display: block` because box should have "div"-like semantics.
     // Custom elements like Angular component tags are treated as inline by default.
     return 'display: block;' + this._boxType.getStyle().trim();
+  }
+
+  @HostListener('click', ['$event'])
+  onClick(event: Event) {
+    if (!this._boxType) {
+      return;
+    }
+    const userEvent = new UserEvent();
+    userEvent.setHandlerId(this._boxType.getOnClickHandlerId());
+    userEvent.setKey(this.component.getKey());
+    this.channel.dispatch(userEvent);
   }
 }
 
