@@ -1,7 +1,6 @@
 import {MatDividerModule} from '@angular/material/divider';
 import {Component, Input} from '@angular/core';
 import {
-  UserEvent,
   Key,
   Type,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';

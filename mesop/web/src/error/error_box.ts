@@ -17,7 +17,7 @@ import {Channel} from '../services/channel';
   providers: [Channel],
 })
 export class ErrorBox {
-  _showFullTraceback: boolean = false;
+  _showFullTraceback = false;
   _lastAppFrame: StackFrame | undefined;
   _hiddenErrors: Set<ServerError> = new Set();
   @Input({required: true}) error!: ServerError;

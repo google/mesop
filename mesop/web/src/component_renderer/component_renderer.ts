@@ -48,7 +48,7 @@ export class ComponentRenderer {
     // knows that it's a new child, otherwise it gets confused
     // and tries to pass in the new component properties into the
     // old component and we get an error.
-    return index + '___' + item.getType()?.getName();
+    return `${index}___${item.getType()?.getName()}`;
   }
 
   type() {
@@ -116,7 +116,7 @@ export class ComponentRenderer {
 
     // `display: block` because box should have "div"-like semantics.
     // Custom elements like Angular component tags are treated as inline by default.
-    return 'display: block;' + this._boxType.getStyle().trim();
+    return `display: block;${this._boxType.getStyle().trim()}`;
   }
 
   @HostListener('click', ['$event'])

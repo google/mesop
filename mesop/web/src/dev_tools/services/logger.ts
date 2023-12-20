@@ -3,7 +3,6 @@ import {
   States,
   UserEvent,
   Component as ComponentProto,
-  Type,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 import {Observable, Subject} from 'rxjs';
 import {jsonParse} from '../../utils/strict_types';

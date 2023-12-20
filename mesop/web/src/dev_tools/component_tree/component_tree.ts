@@ -94,7 +94,7 @@ function mapObject(object: ComponentObject): DisplayNode {
     (node.properties as any).key = object.key;
     node.componentName = name;
   } else {
-    node.text = `<root>`;
+    node.text = '<root>';
   }
   if (object.children) {
     node.children = object.children.map((child) => mapObject(child));

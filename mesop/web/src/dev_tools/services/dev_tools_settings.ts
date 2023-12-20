@@ -36,6 +36,6 @@ export class DevToolsSettings {
 }
 
 export enum Panel {
-  Components,
-  Logs,
+  Components = 0,
+  Logs = 1,
 }

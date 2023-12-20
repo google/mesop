@@ -1,10 +1,6 @@
 import {Component} from '@angular/core';
 import {ComponentObject, Logger, RenderLogModel} from '../services/logger';
-import {
-  ComponentTree,
-  FlatNode,
-  InputNode,
-} from '../component_tree/component_tree';
+import {ComponentTree, FlatNode} from '../component_tree/component_tree';
 import {ObjectTree} from '../object_tree/object_tree';
 
 @Component({

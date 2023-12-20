@@ -1,9 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  Input,
-} from '@angular/core';
+import {ChangeDetectorRef, Component, Input} from '@angular/core';
 import {
   Key,
   Type,
@@ -19,7 +14,7 @@ import {marked} from '../../web/third_party/marked';
 export class MarkdownComponent {
   @Input({required: true}) type!: Type;
   @Input() key!: Key;
-  markdownHTML: string = '';
+  markdownHTML = '';
 
   private _config!: MarkdownType;
   isChecked = false;

@@ -50,7 +50,7 @@ class App {
   rootComponent!: ComponentProto;
   errors: ServerError[] = [];
   @ViewChild('dragHandle', {read: ElementRef}) dragHandle!: ElementRef;
-  private isDragging: boolean = false;
+  private isDragging = false;
   @ViewChild('sidenav', {read: ElementRef}) sidenav!: ElementRef;
   @ViewChild('sidenavContent', {read: ElementRef})
   sidenavContent!: ElementRef;
@@ -69,7 +69,7 @@ class App {
     iconRegistry.setDefaultFontSetClass('material-symbols-rounded');
     (errorHandler as GlobalErrorHandlerService).setOnError((error) => {
       const errorProto = new ServerError();
-      errorProto.setException('JS Error: ' + error.toString());
+      errorProto.setException(`JS Error: ${error.toString()}`);
       this.errors.push(errorProto);
     });
   }
@@ -116,7 +116,7 @@ class App {
   }
 
   isConnectionOpen() {
-    return this.channel.getStatus() == ChannelStatus.OPEN;
+    return this.channel.getStatus() === ChannelStatus.OPEN;
   }
 
   showDebugButton() {
@@ -136,7 +136,7 @@ const routes: Routes = [{path: '**', component: App}];
 
 @Component({
   selector: 'optic-app',
-  template: `<router-outlet></router-outlet>`,
+  template: '<router-outlet></router-outlet>',
   standalone: true,
   imports: [App, RouterOutlet],
 })

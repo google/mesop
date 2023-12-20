@@ -67,7 +67,7 @@ export class Channel {
     this.eventSource.onmessage = (e) => {
       // Looks like Angular has a bug where it's not intercepting EventSource onmessage.
       zone.run(() => {
-        if (e.data == '<stream_end>') {
+        if (e.data === '<stream_end>') {
           this.eventSource.close();
           this.status = ChannelStatus.CLOSED;
           this.logger.log({type: 'StreamEnd'});
@@ -82,7 +82,7 @@ export class Channel {
         const uiResponse = UiResponse.deserializeBinary(array);
         console.debug('Server event: ', uiResponse.toObject());
         switch (uiResponse.getTypeCase()) {
-          case UiResponse.TypeCase.RENDER:
+          case UiResponse.TypeCase.RENDER: {
             this.states = uiResponse.getRender()!.getStates()!;
             const rootComponent = uiResponse.getRender()!.getRootComponent()!;
             for (const command of uiResponse.getRender()!.getCommandsList()) {
@@ -99,12 +99,13 @@ export class Channel {
               rootComponent: rootComponent,
             });
             break;
+          }
           case UiResponse.TypeCase.ERROR:
             onError(uiResponse.getError()!);
             console.log('error', uiResponse.getError());
             break;
           case UiResponse.TypeCase.TYPE_NOT_SET:
-            throw new Error('Unhandled case for server event: ' + uiResponse);
+            throw new Error(`Unhandled case for server event: ${uiResponse}`);
         }
       });
     };
@@ -143,7 +144,7 @@ function generateRequestUrl(request: UiRequest): string {
     // Make this URL-safe:
     .replace(/\+/g, '-')
     .replace(/\//g, '_');
-  return DEV_SERVER_HOST + '/ui?request=' + byteString;
+  return `${DEV_SERVER_HOST}/ui?request=${byteString}`;
 }
 
 function fromUint8Array(array: Uint8Array): string {
