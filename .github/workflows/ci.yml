@@ -18,16 +18,6 @@ defaults:
     shell: bash
 
 jobs:
-  # This runs fast and doesn't require doing a bazel build.
-  pre-commit:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-      - uses: actions/setup-python@65d7f2d534ac1bc67fcd62888c5f4f3d2cb2b236 # v4.7.1
-        with:
-          python-version: 3.10.13
-      - uses: pre-commit/action@646c83fcd040023954eafda54b4db0192ce70507 # v3.0.0
-
   test:
     runs-on: ubuntu-latest
     steps:
@@ -39,6 +29,8 @@ jobs:
         uses: angular/dev-infra/github-actions/bazel/setup@af6d1c371f387efd5703a24739412ea862c3218e
       - name: Install node modules
         run: yarn install --frozen-lockfile
+      - name: Pre-commit hook (requires yarn install)
+        uses: pre-commit/action@646c83fcd040023954eafda54b4db0192ce70507 # v3.0.0
       - name: Install Chromium browser for Playwright
         run: yarn playwright install chromium --with-deps
       - name: Pre-build
