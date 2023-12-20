@@ -33,6 +33,7 @@ genrule(
 filegroup(
     name = "prod_static_files",
     srcs = [
+        ":favicon.ico",
         ":index.html",
         ":styles",
     ] + JS_STATIC_FILES,
