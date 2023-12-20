@@ -3,7 +3,8 @@
  */
 :root {
   --black: #0f0f11;
-  --white: #e3e3e3;
+  --almost-white: #e3e3e3;
+  --white: white;
   --radiate: #d7ff64;
   --flare: #6340ac;
   --rock: #78876e;
@@ -35,18 +36,18 @@
 
 [data-md-color-scheme='mesop-dark'] {
   --md-default-bg-color: var(--black); /* var(--galaxy);*/
-  --md-default-fg-color: var(--white);
-  --md-default-fg-color--light: var(--white);
-  --md-default-fg-color--lighter: var(--white);
+  --md-default-fg-color: var(--almost-white);
+  --md-default-fg-color--light: var(--almost-white);
+  --md-default-fg-color--lighter: var(--almost-white);
   --md-primary-fg-color: var(--black); /* var(--space); */
-  --md-primary-bg-color: var(--white);
+  --md-primary-bg-color: var(--almost-white);
   --md-accent-fg-color: var(--cosmic);
 
-  --md-typeset-color: var(--white);
+  --md-typeset-color: var(--almost-white);
   --md-typeset-a-color: var(--radiate);
   --md-typeset-mark-color: var(--sun);
 
-  --md-code-fg-color: var(--white);
+  --md-code-fg-color: var(--almost-white);
   --md-code-bg-color: var(--space);
 
   --md-code-hl-comment-color: var(--asteroid);
