@@ -20,5 +20,5 @@ Learn more in [Getting Started](getting_started)
 ## Example app
 
 ```python
---8<-- "/Users/will/Documents/GitHub/mesop/mesop/examples/readme_app.py"
+--8<-- "mesop/examples/readme_app.py"
 ```
