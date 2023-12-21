@@ -28,7 +28,7 @@ def button_click(event: me.ClickEvent):
 def main():
   state = me.state(State)
   if state.is_loading:
-    me.progress_spinner(mode="indeterminate", diameter=40, stroke_width=10)
+    me.progress_spinner()
   me.text(state.data)
   with me.button(on_click=button_click):
     me.text("Call API")

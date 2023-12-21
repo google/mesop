@@ -128,8 +128,8 @@ def right_panel():
       me.text("Output", style="font-weight: 500;")
     state = me.state(State)
     if state.initial_output.loading:
-      me.progress_spinner(diameter=48, stroke_width=4, mode="indeterminate")
+      me.progress_spinner()
     me.text(state.initial_output.text)
     if state.critic_output.loading:
-      me.progress_spinner(diameter=48, stroke_width=4, mode="indeterminate")
+      me.progress_spinner()
     me.text(state.critic_output.text)

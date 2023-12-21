@@ -109,5 +109,5 @@ def right_panel():
       me.text("Output", style="font-weight: 500;")
     state = me.state(State)
     if state.is_loading:
-      me.progress_spinner(diameter=48, stroke_width=4, mode="indeterminate")
+      me.progress_spinner()
     me.text(state.response)
