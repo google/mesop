@@ -35,17 +35,17 @@ def monitor_stdin():
         )
 
 
-stdin_thread = threading.Thread(target=monitor_stdin)
-stdin_thread.daemon = True
-stdin_thread.start()
-
-
 def main(argv):
   if len(FLAGS.path) < 1:
     raise Exception("Required flag 'path'. Received: " + FLAGS.path)
 
   if FLAGS.debug:
     enable_debug_mode()
+    stdin_thread = threading.Thread(
+      target=monitor_stdin, name="mesop_build_watcher_thread"
+    )
+    stdin_thread.daemon = True
+    stdin_thread.start()
 
   try:
     execute_module(get_runfile_location(FLAGS.path))
