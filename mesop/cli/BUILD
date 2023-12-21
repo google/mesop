@@ -12,6 +12,14 @@ COMMON_DEPS = [
     "//mesop/utils",
 ] + THIRD_PARTY_PY_ABSL_PY
 
+exports_files(["cli.py"])
+
+py_library(
+    name = "cli_lib",
+    srcs = ["cli.py"],
+    deps = COMMON_DEPS,
+)
+
 # Prod CLI
 py_binary(
     name = "cli",
@@ -28,7 +36,7 @@ py_binary(
         # This tag instructs ibazel to pipe into stdin a event describing actions.
         "ibazel_notify_changes",
     ],
-    deps = COMMON_DEPS,
+    deps = [":cli_lib"],
 )
 
 # Dev CLI
