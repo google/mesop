@@ -77,7 +77,7 @@ def main(argv):
     Reset = "\x1b[0m"
     logging.log(
       logging.INFO,
-      f"\n{FgGreen}Running server on: http://127.0.0.1:{port()}{Reset}",
+      f"\n{FgGreen}Running server on: http://localhost:{port()}{Reset}",
     )
     logging.getLogger("werkzeug").setLevel(logging.WARN)
 
