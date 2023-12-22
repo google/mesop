@@ -25,7 +25,7 @@ register_event_mapper(
 @dataclass
 class RadioOption:
   """
-  Members:
+  Attributes:
     id: The unique ID for the radio button.
     label: Content to show for the radio option
     aria_labelledby: The 'aria-labelledby' attribute takes precedence as the element's text alternative.
