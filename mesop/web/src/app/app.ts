@@ -26,7 +26,10 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {DevTools} from '../dev_tools/dev_tools';
 import {DevToolsSettings} from '../dev_tools/services/dev_tools_settings';
-import {HotReloadWatcher} from '../services/hot_reload_watcher';
+import {
+  HotReloadWatcher,
+  IbazelHotReloadWatcher,
+} from '../services/hot_reload_watcher';
 import {GlobalErrorHandlerService} from '../services/global_error_handler';
 
 @Component({
@@ -43,7 +46,10 @@ import {GlobalErrorHandlerService} from '../services/global_error_handler';
     MatButtonModule,
     MatSidenavModule,
   ],
-  providers: [{provide: ErrorHandler, useClass: GlobalErrorHandlerService}],
+  providers: [
+    {provide: ErrorHandler, useClass: GlobalErrorHandlerService},
+    {provide: HotReloadWatcher, useClass: IbazelHotReloadWatcher},
+  ],
   styleUrl: 'app_styles.css',
 })
 class App {
