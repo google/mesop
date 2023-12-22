@@ -8,7 +8,12 @@ from absl import app, flags
 import mesop.protos.ui_pb2 as pb
 from mesop.cli.execute_module import execute_module
 from mesop.exceptions import format_traceback
-from mesop.runtime import enable_debug_mode, reset_runtime, runtime
+from mesop.runtime import (
+  enable_debug_mode,
+  hot_reload_finished,
+  reset_runtime,
+  runtime,
+)
 from mesop.server.flags import port
 from mesop.server.server import flask_app
 from mesop.server.static_file_serving import configure_static_file_serving
@@ -28,6 +33,7 @@ def monitor_stdin():
       try:
         reset_runtime()
         execute_module(runfile_path=FLAGS.path)
+        hot_reload_finished()
       except Exception as e:
         logging.log(
           logging.ERROR, "Could not hot reload due to error:", exc_info=e

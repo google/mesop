@@ -7,6 +7,7 @@ import mesop.protos.ui_pb2 as pb
 from mesop.events import MesopEvent
 from mesop.exceptions import MesopUserException
 from mesop.key import Key
+from mesop.utils.backoff import exponential_backoff
 
 from .context import Context
 
@@ -30,6 +31,7 @@ class Runtime:
   _loading_errors: list[pb.ServerError]
   _event_mappers: dict[Any, Callable[[pb.UserEvent, Key], Any]]
   debug_mode: bool = False
+  is_hot_reload_in_progress: bool = False
 
   def __init__(self):
     self._path_fns = {}
@@ -58,6 +60,13 @@ class Runtime:
 
   def run_path(self, path: str, trace_mode: bool = False) -> None:
     self.context().set_trace_mode(trace_mode)
+    # If hot reload is in-progress, the path may not be registered yet because the client reload
+    # happened before the server module re-execution completed.
+    if self.is_hot_reload_in_progress:
+      exponential_backoff(
+        lambda: not self.is_hot_reload_in_progress, initial_delay=0.100
+      )
+
     if path not in self._path_fns:
       paths = list(self._path_fns.keys())
       paths.sort()
@@ -114,9 +123,14 @@ def reset_runtime():
   global _runtime
   old_runtime = _runtime
   _runtime = Runtime()
+  _runtime.is_hot_reload_in_progress = True
   _runtime.debug_mode = old_runtime.debug_mode
   _runtime.event_mappers = old_runtime.event_mappers
 
 
 def enable_debug_mode():
   _runtime.debug_mode = True
+
+
+def hot_reload_finished():
+  _runtime.is_hot_reload_in_progress = False
