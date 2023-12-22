@@ -4,7 +4,7 @@
     <span class="exception-title">ERROR: </span>{{error.getException()}}
   </div>
   <div *ngIf="error.hasTraceback()">
-    <div class="traceback-heading">Traceback</div>
+    <div *ngIf="showFullTraceback()" class="traceback-heading">Traceback</div>
     <div class="traceback">
       <ng-container *ngFor="let frame of error.getTraceback()?.getFramesList()">
         <div
