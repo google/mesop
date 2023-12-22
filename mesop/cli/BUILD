@@ -43,7 +43,6 @@ py_binary(
     srcs = ["dev_cli.py"],
     data = [
         "//mesop/examples",
-        "//mesop/testing:index",
     ],
     main = "dev_cli.py",
     deps = COMMON_DEPS,

@@ -1,14 +1,14 @@
-from mesop.cli.execute_module import get_module_name, get_submodules
+from mesop.cli.execute_module import get_app_modules, get_module_name
 
 
 def test_get_module_name():
   assert (
-    get_module_name("mesop/mesop/testing/index.py") == "mesop.testing.index"
+    get_module_name("mesop/mesop/examples/index.py") == "mesop.examples.index"
   )
 
 
-def test_get_submodules():
-  assert get_submodules(
+def test_get_app_modules():
+  assert get_app_modules(
     "mesop.testing.index",
     loaded_module_names=set(
       [

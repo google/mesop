@@ -3,7 +3,7 @@
 # it's imports are used for side effects
 # Skip error examples since there's intentionally incorrect Python code.
 extend-exclude = [
-    "mesop/testing/index.py",
+    "mesop/examples/index.py",
     "mesop/examples/error*",
     "generator/fixtures/*",
 ]

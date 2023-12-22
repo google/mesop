@@ -28,8 +28,8 @@ def get_module_name(runfile_path: str) -> str:
   Creates a synthetic Python module name based on the runfile path.
 
   Example:
-  Input: "mesop/mesop/testing/index.py"
-  Output: "mesop.testing.index"
+  Input: "mesop/mesop/examples/index.py"
+  Output: "mesop.examples.index"
   """
 
   # Intentionally skip the first segment which will be the workspace root (e.g. "mesop").
