@@ -18,8 +18,13 @@ nav:
       - Divider: components/divider.md
       - Icon: components/icon.md
       - Input: components/input.md
+      - Markdown: components/markdown.md
       - Progress bar: components/progress_bar.md
       - Progress spinner: components/progress_spinner.md
+      - Radio: components/radio.md
+      - Select: components/select.md
+      - Slide toggle: components/slide_toggle.md
+      - Slider: components/slider.md
       - Text: components/text.md
       - Tooltip: components/tooltip.md
   - Internal:
