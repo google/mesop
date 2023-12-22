@@ -1,10 +1,9 @@
-from pydantic import validate_arguments
-
 import mesop.components.component_name.component_name_pb2 as component_name_pb
 from mesop.component_helpers import insert_component
+from mesop.utils.validate import validate
 
 
-@validate_arguments
+@validate
 def component_name(
   *,
   label: str,

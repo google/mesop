@@ -1,12 +1,11 @@
-from pydantic import validate_arguments
-
 import mesop.components.divider.divider_pb2 as divider_pb
 from mesop.component_helpers import (
   insert_component,
 )
+from mesop.utils.validate import validate
 
 
-@validate_arguments
+@validate
 def divider(
   *, key: str | None = None, vertical: bool = False, inset: bool = False
 ):

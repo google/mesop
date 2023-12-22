@@ -1,14 +1,13 @@
 from dataclasses import dataclass
 from typing import Any, Callable, Literal, cast
 
-from pydantic import validate_arguments
-
 import mesop.components.input.input_pb2 as input_pb
 from mesop.component_helpers import (
   insert_component,
   register_event_handler,
 )
 from mesop.events import InputEvent
+from mesop.utils.validate import validate
 
 
 @dataclass
@@ -23,7 +22,7 @@ class Textarea:
   rows: int = 5
 
 
-@validate_arguments
+@validate
 def input(
   *,
   key: str | None = None,

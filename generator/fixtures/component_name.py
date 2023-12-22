@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Any, Callable, Literal
 
-from pydantic import validate_arguments
+from mesop.utils.validate import validate
 
 import mesop.components.component_name.component_name_pb2 as component_name_pb
 from mesop.component_helpers import (
@@ -15,7 +15,7 @@ from mesop.events import MesopEvent, ClickEvent, InputEvent
 # INSERT_EVENTS
 
 
-@validate_arguments
+@validate
 def component_name(
   *,
   # INSERT_COMPONENT_PARAMS

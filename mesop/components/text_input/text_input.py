@@ -1,13 +1,12 @@
 from typing import Any, Callable
 
-from pydantic import validate_arguments
-
 import mesop.components.text_input.text_input_pb2 as text_input_pb
 from mesop.component_helpers import insert_component, register_event_handler
 from mesop.events import ChangeEvent
+from mesop.utils.validate import validate
 
 
-@validate_arguments
+@validate
 def text_input(
   *,
   label: str,

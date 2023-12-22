@@ -2,7 +2,7 @@
 Bazel macro for defining an Mesop component, which includes the Python, client-side (TS) and proto targets.
 """
 
-load("//build_defs:defaults.bzl", "ANGULAR_CORE_DEPS", "ANGULAR_MATERIAL_TS_DEPS", "THIRD_PARTY_PY_PYDANTIC", "jspb_proto_library", "ng_module", "proto_library", "py_library", "py_proto_library")
+load("//build_defs:defaults.bzl", "ANGULAR_CORE_DEPS", "ANGULAR_MATERIAL_TS_DEPS", "jspb_proto_library", "ng_module", "proto_library", "py_library", "py_proto_library")
 
 def mesop_component(name, ng_deps = [], py_deps = []):
     """
@@ -38,7 +38,8 @@ def mesop_component(name, ng_deps = [], py_deps = []):
             "//mesop/component_helpers",
             "//mesop/events",
             "//mesop/protos:ui_py_pb2",
-        ] + THIRD_PARTY_PY_PYDANTIC + py_deps,
+            "//mesop/utils",
+        ] + py_deps,
     )
 
     proto_library(

@@ -1,10 +1,9 @@
-from pydantic import validate_arguments
-
 import mesop.components.markdown.markdown_pb2 as markdown_pb
 from mesop.component_helpers import insert_component
+from mesop.utils.validate import validate
 
 
-@validate_arguments
+@validate
 def markdown(
   text: str,
   *,

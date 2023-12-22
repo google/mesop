@@ -1,14 +1,13 @@
 from typing import Literal
 
-from pydantic import validate_arguments
-
 import mesop.components.tooltip.tooltip_pb2 as tooltip_pb
 from mesop.component_helpers import (
   insert_composite_component,
 )
+from mesop.utils.validate import validate
 
 
-@validate_arguments
+@validate
 def tooltip(
   *,
   key: str | None = None,

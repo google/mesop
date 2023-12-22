@@ -1,8 +1,6 @@
 from dataclasses import dataclass
 from typing import Any, Callable, Literal
 
-from pydantic import validate_arguments
-
 import mesop.components.progress_bar.progress_bar_pb2 as progress_bar_pb
 from mesop.component_helpers import (
   insert_component,
@@ -10,6 +8,7 @@ from mesop.component_helpers import (
   register_event_mapper,
 )
 from mesop.events import MesopEvent
+from mesop.utils.validate import validate
 
 
 @dataclass
@@ -26,7 +25,7 @@ register_event_mapper(
 )
 
 
-@validate_arguments
+@validate
 def progress_bar(
   *,
   key: str | None = None,

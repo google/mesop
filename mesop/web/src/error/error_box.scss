@@ -13,20 +13,16 @@
   font-weight: 500;
   font-size: 23px;
   cursor: pointer;
-  top: 8px;
+  top: 6px;
   position: absolute;
-  left: 4px;
+  left: 0px;
 }
 
 .exception {
   font-size: 1.5rem;
   font-weight: 500;
-  padding-bottom: 16px;
+  padding-bottom: 12px;
   white-space: preserve;
-}
-
-.exception-title {
-  font-weight: bold;
 }
 
 .traceback-heading {

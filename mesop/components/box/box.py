@@ -1,16 +1,15 @@
 from typing import Any, Callable
 
-from pydantic import validate_arguments
-
 import mesop.components.box.box_pb2 as box_pb
 from mesop.component_helpers import (
   insert_composite_component,
   register_event_handler,
 )
 from mesop.events import ClickEvent
+from mesop.utils.validate import validate
 
 
-@validate_arguments
+@validate
 def box(
   *,
   style: str = "",

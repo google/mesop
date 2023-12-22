@@ -7,12 +7,14 @@ class MesopException(Exception):
 
 class MesopUserException(Exception):
   def __str__(self):
-    return f"User Error: {super().__str__()}"
+    return f"**User Error:** {super().__str__()}"
 
 
 class MesopInternalException(Exception):
-  pass
+  def __str__(self):
+    return f"**Mesop Internal Error:** {super().__str__()}"
 
 
 class MesopDeveloperException(Exception):
-  pass
+  def __str__(self):
+    return f"**Mesop Developer Error:** {super().__str__()}"

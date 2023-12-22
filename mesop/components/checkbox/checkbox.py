@@ -1,8 +1,6 @@
 from dataclasses import dataclass
 from typing import Any, Callable, Literal
 
-from pydantic import validate_arguments
-
 import mesop.components.checkbox.checkbox_pb2 as checkbox_pb
 from mesop.component_helpers import (
   insert_composite_component,
@@ -10,6 +8,7 @@ from mesop.component_helpers import (
   register_event_mapper,
 )
 from mesop.events import MesopEvent
+from mesop.utils.validate import validate
 
 
 @dataclass
@@ -40,7 +39,7 @@ register_event_mapper(
 )
 
 
-@validate_arguments
+@validate
 def checkbox(
   *,
   key: str | None = None,

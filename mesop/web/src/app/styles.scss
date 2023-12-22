@@ -19,6 +19,13 @@ body {
   box-sizing: border-box;
 }
 
+// Need these as global styles since markdown HTML is rendered specially.
+.markdown * {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
 // Light theme
 $light-primary: mat.define-palette(mat.$blue-palette, 800, 200);
 $light-accent: mat.define-palette(mat.$indigo-palette, A200, A100, A400);

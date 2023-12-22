@@ -1,8 +1,6 @@
 from dataclasses import dataclass
 from typing import Any, Callable
 
-from pydantic import validate_arguments
-
 import mesop.components.select.select_pb2 as select_pb
 from mesop.component_helpers import (
   insert_component,
@@ -10,6 +8,7 @@ from mesop.component_helpers import (
   register_event_mapper,
 )
 from mesop.events import MesopEvent
+from mesop.utils.validate import validate
 
 
 @dataclass
@@ -46,7 +45,7 @@ class SelectOption:
   value: str
 
 
-@validate_arguments
+@validate
 def select(
   options: list[SelectOption],
   *,

@@ -1,12 +1,11 @@
-from pydantic import validate_arguments
-
 import mesop.components.icon.icon_pb2 as icon_pb
 from mesop.component_helpers import (
   insert_component,
 )
+from mesop.utils.validate import validate
 
 
-@validate_arguments
+@validate
 def icon(
   icon: str,
   *,

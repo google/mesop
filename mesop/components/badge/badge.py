@@ -1,14 +1,13 @@
 from typing import Literal
 
-from pydantic import validate_arguments
-
 import mesop.components.badge.badge_pb2 as badge_pb
 from mesop.component_helpers import (
   insert_composite_component,
 )
+from mesop.utils.validate import validate
 
 
-@validate_arguments
+@validate
 def badge(
   *,
   key: str | None = None,

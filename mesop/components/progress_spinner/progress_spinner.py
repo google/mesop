@@ -1,12 +1,11 @@
-from pydantic import validate_arguments
-
 import mesop.components.progress_spinner.progress_spinner_pb2 as progress_spinner_pb
 from mesop.component_helpers import (
   insert_component,
 )
+from mesop.utils.validate import validate
 
 
-@validate_arguments
+@validate
 def progress_spinner(
   *,
   key: str | None = None,

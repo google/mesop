@@ -1,10 +1,9 @@
 from enum import Enum
 from typing import cast
 
-from pydantic import validate_arguments
-
 import mesop.components.text.text_pb2 as text_pb2
 from mesop.component_helpers import insert_component
+from mesop.utils.validate import validate
 
 
 # Must be kept in sync with enum in text.proto
@@ -23,7 +22,7 @@ class Typography(Enum):
   CAPTION = 11
 
 
-@validate_arguments
+@validate
 def text(
   text: str,
   *,

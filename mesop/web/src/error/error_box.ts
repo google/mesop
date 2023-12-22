@@ -4,16 +4,24 @@ import {
   ServerError,
   StackFrame,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
+
 import {CommonModule} from '@angular/common';
 import {ComponentRenderer} from '../component_renderer/component_renderer';
 import {Channel} from '../services/channel';
+import {marked} from '../../third_party/marked';
+import {MatIconModule} from '@angular/material/icon';
 
 @Component({
   selector: 'mesop-error-box',
   templateUrl: 'error_box.ng.html',
   styleUrl: 'error_box.css',
   standalone: true,
-  imports: [CommonModule, ComponentRenderer, MatProgressBarModule],
+  imports: [
+    CommonModule,
+    ComponentRenderer,
+    MatProgressBarModule,
+    MatIconModule,
+  ],
   providers: [Channel],
 })
 export class ErrorBox {
@@ -21,6 +29,7 @@ export class ErrorBox {
   _lastAppFrame: StackFrame | undefined;
   _hiddenErrors: Set<ServerError> = new Set();
   @Input({required: true}) error!: ServerError;
+  markdownHTML = '';
 
   isHidden(error: ServerError): boolean {
     return this._hiddenErrors.has(error);
@@ -30,7 +39,10 @@ export class ErrorBox {
     this._hiddenErrors.add(error);
   }
 
-  ngOnChanges() {
+  async ngOnChanges() {
+    this.markdownHTML = (
+      await marked.parse(this.error.getException().trim())
+    ).trim();
     const traceback = this.error.getTraceback();
     if (!traceback) {
       return;
