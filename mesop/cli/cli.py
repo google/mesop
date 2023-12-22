@@ -12,7 +12,6 @@ from mesop.runtime import enable_debug_mode, reset_runtime, runtime
 from mesop.server.flags import port
 from mesop.server.server import flask_app
 from mesop.server.static_file_serving import configure_static_file_serving
-from mesop.utils.runfiles import get_runfile_location
 
 FLAGS = flags.FLAGS
 
@@ -28,7 +27,7 @@ def monitor_stdin():
       logging.log(logging.INFO, "ibazel build complete; starting hot reload")
       try:
         reset_runtime()
-        execute_module(get_runfile_location(FLAGS.path))
+        execute_module(runfile_path=FLAGS.path)
       except Exception as e:
         logging.log(
           logging.ERROR, "Could not hot reload due to error:", exc_info=e
@@ -48,7 +47,7 @@ def main(argv):
     stdin_thread.start()
 
   try:
-    execute_module(get_runfile_location(FLAGS.path))
+    execute_module(runfile_path=FLAGS.path)
   except Exception as e:
     # Only record error to runtime if in CI mode.
     if FLAGS.debug:

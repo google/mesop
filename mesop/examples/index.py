@@ -18,6 +18,8 @@ from mesop.examples.docs import loading as loading
 from mesop.examples.docs import streaming as streaming
 from mesop.examples.shared.navmenu import scaffold
 
+# REF(//scripts/scaffold_component.py):insert_component_e2e_import_export
+
 
 @me.page(path="/")
 def index():

@@ -1,4 +1,4 @@
-load("//build_defs:defaults.bzl", "THIRD_PARTY_PY_ABSL_PY", "py_binary", "py_library")
+load("//build_defs:defaults.bzl", "THIRD_PARTY_PY_ABSL_PY", "THIRD_PARTY_PY_PYTEST", "py_binary", "py_library", "py_test")
 
 package(
     default_visibility = ["//build_defs:mesop_internal"],
@@ -9,7 +9,6 @@ COMMON_DEPS = [
     "//mesop",  # Keep dep to ensure the entire Mesop library is loaded.
     "//mesop/exceptions",
     "//mesop/runtime",
-    "//mesop/utils",
 ] + THIRD_PARTY_PY_ABSL_PY
 
 exports_files(["cli.py"])
@@ -26,7 +25,6 @@ py_binary(
     srcs = ["cli.py"],
     data = [
         "//mesop/examples",
-        "//mesop/testing:index",
         "//mesop/web/src/app/prod:web_package",
     ],
     main = "cli.py",
@@ -57,4 +55,13 @@ py_library(
         "__init__.py",
         "execute_module.py",
     ],
+)
+
+py_test(
+    name = "execute_module_test",
+    srcs = ["execute_module_test.py"],
+    deps = [
+        ":execute_module",
+        "//mesop/utils",
+    ] + THIRD_PARTY_PY_PYTEST,
 )

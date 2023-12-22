@@ -64,16 +64,16 @@ def main():
     content=f'    "//mesop/components/{component_name}:py",',
   )
 
-  # Update testing BUILD file
+  # Update examples BUILD file
   update_file(
-    path=os.path.join(current_dir(), "..", "mesop", "testing", "BUILD"),
+    path=os.path.join(current_dir(), "..", "mesop", "examples", "BUILD"),
     target="# REF(//scripts/scaffold_component.py):insert_component_e2e_import",
     content=f'    "//mesop/components/{component_name}/e2e",',
   )
 
-  # Update testing index.py file
+  # Update examples index.py file
   update_file(
-    path=os.path.join(current_dir(), "..", "mesop", "testing", "index.py"),
+    path=os.path.join(current_dir(), "..", "mesop", "examples", "index.py"),
     target="# REF(//scripts/scaffold_component.py):insert_component_e2e_import_export",
     content=f"import mesop.components.{component_name}.e2e as {component_name}_e2e",
     before=True,

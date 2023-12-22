@@ -7,7 +7,6 @@ from mesop.runtime import enable_debug_mode, runtime
 from mesop.server import dev_server
 from mesop.server.flags import port
 from mesop.server.server import flask_app
-from mesop.utils.runfiles import get_runfile_location
 
 FLAGS = flags.FLAGS
 
@@ -21,7 +20,7 @@ def main(argv):
   enable_debug_mode()
 
   try:
-    execute_module(get_runfile_location(FLAGS.path))
+    execute_module(runfile_path=FLAGS.path)
   except Exception as e:
     runtime().add_loading_error(
       pb.ServerError(exception=str(e), traceback=format_traceback())
