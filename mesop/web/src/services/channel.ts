@@ -12,7 +12,7 @@ import {
 import {Logger} from '../dev_tools/services/logger';
 
 const anyWindow = window as any;
-const DEV_SERVER_HOST = anyWindow['OPTIC_SERVER_HOST'] || '';
+const DEV_SERVER_HOST = anyWindow['MESOP_SERVER_HOST'] || '';
 
 interface InitParams {
   zone: NgZone;

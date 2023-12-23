@@ -62,7 +62,7 @@ http_server(
     # served `index.ng.html` throuhg an injected script. Useful for allowing developers to
     # configure API keys without requiring secrets to be committed.
     environment_variables = [
-        "OPTIC_SERVER_HOST",
+        "MESOP_SERVER_HOST",
     ],
     tags = ["manual"],
     deps = [
