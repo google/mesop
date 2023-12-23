@@ -17,8 +17,8 @@ def app():
   me.radio(
     on_change=on_change,
     options=[
-      me.RadioOption(label="Hello", value="1"),
-      me.RadioOption(label="Hello2", value="2"),
+      me.RadioOption(label="Option 1", value="1"),
+      me.RadioOption(label="Option 2", value="2"),
     ],
     value=s.radio_value,
   )

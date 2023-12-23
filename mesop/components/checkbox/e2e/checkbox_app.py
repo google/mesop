@@ -12,11 +12,6 @@ def on_update(event: me.CheckboxChangeEvent):
   state.checked = event.checked
 
 
-def on_indeterminate_change(event: me.CheckboxIndeterminateChangeEvent):
-  state = me.state(State)
-  state.indeterminate = event.indeterminate
-
-
 @me.page(path="/components/checkbox/e2e/checkbox_app")
 def app():
   state = me.state(State)
@@ -24,9 +19,8 @@ def app():
     aria_label="aria_checkbox",
     on_change=on_update,
     checked=state.checked,
-    on_indeterminate_change=on_indeterminate_change,
   ):
-    me.text(text="checked=True")
+    me.text(text="label")
 
   if state.checked:
     me.text(text="is checked")

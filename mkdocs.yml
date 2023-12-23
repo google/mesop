@@ -11,22 +11,26 @@ nav:
       - Deployment: guides/deployment.md
       - Troubleshooting: guides/troubleshooting.md
   - Components:
-      - Badge: components/badge.md
-      - Box: components/box.md
-      - Button: components/button.md
-      - Checkbox: components/checkbox.md
-      - Divider: components/divider.md
-      - Icon: components/icon.md
-      - Input: components/input.md
-      - Markdown: components/markdown.md
-      - Progress bar: components/progress_bar.md
-      - Progress spinner: components/progress_spinner.md
-      - Radio: components/radio.md
-      - Select: components/select.md
-      - Slide toggle: components/slide_toggle.md
-      - Slider: components/slider.md
-      - Text: components/text.md
-      - Tooltip: components/tooltip.md
+      - Layout:
+          - Box: components/box.md
+      - Text:
+          - Text: components/text.md
+          - Markdown: components/markdown.md
+      - Form controls:
+          - Button: components/button.md
+          - Checkbox: components/checkbox.md
+          - Input: components/input.md
+          - Radio: components/radio.md
+          - Select: components/select.md
+          - Slide toggle: components/slide_toggle.md
+          - Slider: components/slider.md
+      - Material:
+          - Badge: components/badge.md
+          - Divider: components/divider.md
+          - Icon: components/icon.md
+          - Progress bar: components/progress_bar.md
+          - Progress spinner: components/progress_spinner.md
+          - Tooltip: components/tooltip.md
   - Internal:
       - Goals: goals.md
       - New component: internal/new_component.md
@@ -67,6 +71,7 @@ theme:
     - navigation.expand
     - navigation.tabs
     - navigation.tabs.sticky
+    - navigation.sections
     - search.highlight
 
 extra_css:
@@ -91,7 +96,7 @@ plugins:
             docstring_options:
               ignore_init_summary: true
             docstring_section_style: spacy
-            heading_level: 1
+            heading_level: 3
             inherited_members: true
             merge_init_into_class: true
             separate_signature: false

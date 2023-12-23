@@ -6,7 +6,7 @@ test('test', async ({page}) => {
     await page.getByText('Selected radio value: ').textContent(),
   ).toContain('Selected radio value: 2');
 
-  await page.getByRole('radio', {name: 'Hello', exact: true}).check();
+  await page.getByRole('radio', {name: 'Option 1', exact: true}).check();
   expect(
     await page.getByText('Selected radio value: 1').textContent(),
   ).toContain('Selected radio value: 1');
