@@ -74,7 +74,7 @@ class Runtime:
         f"""Accessed path: {path} not registered
 
 Try one of the following paths:
-{newline.join(paths)}
+{newline.join([f"[{p}]({p})" for p in paths])}
                                      """
       )
     self._path_fns[path]()
