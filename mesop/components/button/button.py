@@ -12,7 +12,7 @@ from mesop.utils.validate import validate
 @validate
 def button(
   *,
-  on_click: Callable[[ClickEvent], Any] | None = None,
+  on_click: Callable[[ClickEvent], Any] | Callable[[], Any] | None = None,
   variant: Literal["raised", "flat", "stroked", "icon"] | None = None,
   color: str = "",
   disable_ripple: bool = False,

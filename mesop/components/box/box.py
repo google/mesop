@@ -13,7 +13,7 @@ from mesop.utils.validate import validate
 def box(
   *,
   style: str = "",
-  on_click: Callable[[ClickEvent], Any] | None = None,
+  on_click: Callable[[ClickEvent], Any] | Callable[[], Any] | None = None,
   key: str | None = None,
 ) -> Any:
   """Creates a box component.
