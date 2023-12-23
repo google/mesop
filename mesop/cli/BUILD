@@ -4,6 +4,10 @@ package(
     default_visibility = ["//build_defs:mesop_internal"],
 )
 
+COMMON_DATA = [
+    "//mesop:index",
+]
+
 COMMON_DEPS = [
     ":execute_module",
     "//mesop",  # Keep dep to ensure the entire Mesop library is loaded.
@@ -23,8 +27,7 @@ py_library(
 py_binary(
     name = "cli",
     srcs = ["cli.py"],
-    data = [
-        "//mesop/examples",
+    data = COMMON_DATA + [
         "//mesop/web/src/app/prod:web_package",
     ],
     main = "cli.py",
@@ -41,9 +44,7 @@ py_binary(
 py_binary(
     name = "dev_cli",
     srcs = ["dev_cli.py"],
-    data = [
-        "//mesop/examples",
-    ],
+    data = COMMON_DATA,
     main = "dev_cli.py",
     deps = COMMON_DEPS,
 )

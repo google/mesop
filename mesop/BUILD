@@ -35,3 +35,31 @@ py_library(
         "//mesop/server",
     ],
 )
+
+py_library(
+    name = "index",
+    srcs = ["index.py"],
+    visibility = ["//build_defs:mesop_internal"],
+    deps = [
+        "//mesop",
+        # REF(//scripts/scaffold_component.py):insert_component_e2e_import
+        "//mesop/components/slider/e2e",
+        "//mesop/components/select/e2e",
+        "//mesop/components/radio/e2e",
+        "//mesop/components/slide_toggle/e2e",
+        "//mesop/components/progress_spinner/e2e",
+        "//mesop/components/progress_bar/e2e",
+        "//mesop/components/icon/e2e",
+        "//mesop/components/divider/e2e",
+        "//mesop/components/badge/e2e",
+        "//mesop/components/tooltip/e2e",
+        "//mesop/components/input/e2e",
+        "//mesop/components/markdown/e2e",
+        "//mesop/components/box/e2e",
+        "//mesop/components/checkbox/e2e",
+        "//mesop/components/text/e2e",
+        "//mesop/examples",
+        "//mesop/examples/docs",
+        "//mesop/examples/shared",
+    ],
+)

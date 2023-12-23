@@ -46,8 +46,7 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command:
-      'bazel run //mesop/cli -- --path=mesop/mesop/examples/index.py --debug',
+    command: 'bazel run //mesop/cli -- --path=mesop/mesop/index.py --debug',
     url: 'http://127.0.0.1:8080/',
     reuseExistingServer: !process.env.CI,
   },
