@@ -6,7 +6,7 @@ from google.protobuf import json_format
 from google.protobuf.message import Message
 
 import mesop.protos.ui_pb2 as pb
-from mesop.events import ChangeEvent, ClickEvent, InputEvent, MesopEvent
+from mesop.events import ClickEvent, InputEvent, MesopEvent
 from mesop.exceptions import MesopDeveloperException
 from mesop.key import Key, key_from_proto
 from mesop.runtime import runtime
@@ -156,14 +156,6 @@ def register_event_mapper(
 ):
   runtime().register_event_mapper(event=event, map_fn=map_fn)
 
-
-runtime().register_event_mapper(
-  ChangeEvent,
-  lambda userEvent, key: ChangeEvent(
-    value=userEvent.string,
-    key=key.key,
-  ),
-)
 
 runtime().register_event_mapper(
   ClickEvent,

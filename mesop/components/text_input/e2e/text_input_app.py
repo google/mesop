@@ -1,3 +1,5 @@
+from typing import Any
+
 import mesop as me
 
 
@@ -7,7 +9,7 @@ class State:
   hide_text_input = False
 
 
-def change(action: me.ChangeEvent):
+def change(action: Any):
   state = me.state(State)
   state.string = action.value
 
@@ -20,7 +22,7 @@ def change_checkbox(event: me.CheckboxChangeEvent):
 @me.page(path="/components/text_input/e2e/text_input_app")
 def app():
   state = me.state(State)
-  me.checkbox(aria_label="hide_text_input", on_change=change_checkbox)
+  me.checkbox(on_change=change_checkbox)
   if not state.hide_text_input:
     me.text_input(
       label="simple-text-input", default_value=state.string, on_change=change

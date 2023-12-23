@@ -1,6 +1,6 @@
 ## Overview
 
-Box is a container component which is used for grouping children components and styling them.
+Box is a [composite component](../guides/components.md#composite-components) which acts as a container to group children components and styling them.
 
 ## Examples
 

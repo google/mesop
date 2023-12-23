@@ -1,6 +1,6 @@
 ## Overview
 
-Button is based on the [Angular Material button component](https://material.angular.io/components/button/overview).
+Button is based on the [Angular Material button component](https://material.angular.io/components/button/overview). Button is a [composite component](../guides/components.md#composite-components) and frequently used as a parent of the [Text](./text.md) component.
 
 ## Examples
 

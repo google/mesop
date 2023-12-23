@@ -10,7 +10,6 @@ from mesop.utils.validate import validate
 @validate
 def badge(
   *,
-  key: str | None = None,
   color: Literal["primary", "accent", "warn"] = "primary",
   overlap: bool = False,
   disabled: bool = False,
@@ -28,13 +27,12 @@ def badge(
   description: str = "",
   size: Literal["small", "medium", "large"] = "small",
   hidden: bool = False,
-  variant: Literal["matBadge"] = "matBadge",
+  key: str | None = None,
 ):
   """Creates a Badge component.
   Badge is a composite component.
 
   Args:
-    key: Unique identifier for this component instance.
     color: The color of the badge. Can be `primary`, `accent`, or `warn`.
     overlap: Whether the badge should overlap its contents or not
     disabled: Whether the badge is disabled.
@@ -43,7 +41,7 @@ def badge(
     description: Message used to describe the decorated element via aria-describedby
     size: Size of the badge. Can be 'small', 'medium', or 'large'.
     hidden: Whether the badge is hidden.
-    variant: component variations
+    key: Unique identifier for this component instance.
   """
   return insert_composite_component(
     key=key,
@@ -57,12 +55,5 @@ def badge(
       description=description,
       size=size,
       hidden=hidden,
-      variant_index=_get_variant_index(variant),
     ),
   )
-
-
-def _get_variant_index(variant: str) -> int:
-  if variant == "matBadge":
-    return 0
-  raise Exception("Unexpected variant: " + variant)

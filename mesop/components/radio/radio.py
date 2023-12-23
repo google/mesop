@@ -17,6 +17,7 @@ class RadioChangeEvent(MesopEvent):
 
   Attributes:
       value: The new value of the radio component after the change.
+      key (str): key of the component that emitted this event.
   """
 
   value: str

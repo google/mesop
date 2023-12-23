@@ -12,5 +12,4 @@ message BadgeType {
   string description = 6;
   string size = 7;
   bool hidden = 8;
-  int32 variant_index = 9;
 }

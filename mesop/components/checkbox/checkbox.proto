@@ -4,10 +4,6 @@ syntax = "proto3";
 package mesop.components.checkbox;
 
 message CheckboxType {
-  string aria_label = 1;
-  string aria_labelledby = 2;
-  string aria_describedby = 3;
-  string id = 4;
   bool required = 5;
   string label_position = 6;
   string name = 7;

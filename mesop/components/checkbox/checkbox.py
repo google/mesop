@@ -13,6 +13,13 @@ from mesop.utils.validate import validate
 
 @dataclass
 class CheckboxChangeEvent(MesopEvent):
+  """Represents a checkbox state change event.
+
+  Attributes:
+      checked: The new checked state of the checkbox.
+      key (str): key of the component that emitted this event.
+  """
+
   checked: bool
 
 
@@ -27,6 +34,13 @@ register_event_mapper(
 
 @dataclass
 class CheckboxIndeterminateChangeEvent(MesopEvent):
+  """Represents a checkbox indeterminate state change event.
+
+  Attributes:
+      checked: The new indeterminate state of the checkbox.
+      key (str): key of the component that emitted this event.
+  """
+
   indeterminate: bool
 
 
@@ -42,11 +56,9 @@ register_event_mapper(
 @validate
 def checkbox(
   *,
-  key: str | None = None,
-  aria_label: str = "",
-  aria_labelledby: str = "",
-  aria_describedby: str = "",
-  id: str = "",
+  on_change: Callable[[CheckboxChangeEvent], Any] | None = None,
+  on_indeterminate_change: Callable[[CheckboxIndeterminateChangeEvent], Any]
+  | None = None,
   required: bool = False,
   label_position: Literal["before", "after"] = "after",
   name: str = "",
@@ -57,19 +69,14 @@ def checkbox(
   checked: bool = False,
   disabled: bool = False,
   indeterminate: bool = False,
-  on_change: Callable[[CheckboxChangeEvent], Any] | None = None,
-  on_indeterminate_change: Callable[[CheckboxIndeterminateChangeEvent], Any]
-  | None = None,
+  key: str | None = None,
 ):
   """Creates a Checkbox component.
   Checkbox is a composite component.
 
   Args:
-    key: Unique identifier for this component instance.
-    aria_label: Attached to the aria-label attribute of the host element. In most cases, aria-labelledby will take precedence so this may be omitted.
-    aria_labelledby: Users can specify the `aria-labelledby` attribute which will be forwarded to the input element
-    aria_describedby: The 'aria-describedby' attribute is read after the element's label and field type.
-    id: A unique id for the checkbox input. If none is supplied, it will be auto-generated.
+    on_change: Event emitted when the checkbox's `checked` value changes.
+    on_indeterminate_change: Event emitted when the checkbox's `indeterminate` value changes.
     required: Whether the checkbox is required.
     label_position: Whether the label should appear after or before the checkbox. Defaults to 'after'
     name: Name value will be applied to the input element if present
@@ -80,17 +87,12 @@ def checkbox(
     checked: Whether the checkbox is checked.
     disabled: Whether the checkbox is disabled.
     indeterminate: Whether the checkbox is indeterminate. This is also known as "mixed" mode and can be used to represent a checkbox with three states, e.g. a checkbox that represents a nested list of checkable items. Note that whenever checkbox is manually clicked, indeterminate is immediately set to false.
-    on_change: Event emitted when the checkbox's `checked` value changes.
-    on_indeterminate_change: Event emitted when the checkbox's `indeterminate` value changes.
+    key: Unique identifier for this component instance.
   """
   return insert_composite_component(
     key=key,
     type_name="checkbox",
     proto=checkbox_pb.CheckboxType(
-      aria_label=aria_label,
-      aria_labelledby=aria_labelledby,
-      aria_describedby=aria_describedby,
-      id=id,
       required=required,
       label_position=label_position,
       name=name,

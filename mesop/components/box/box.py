@@ -15,12 +15,17 @@ def box(
   style: str = "",
   on_click: Callable[[ClickEvent], Any] | None = None,
   key: str | None = None,
-):
-  """
-  This function creates a box.
+) -> Any:
+  """Creates a box component.
 
   Args:
-      style: Style to apply to component. Follows [HTML Element inline style API](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/style).
+    style: Style to apply to component. Follows [HTML Element inline style API](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/style).
+    on_click: The callback function that is called when the box is clicked.
+      It receives a ClickEvent as its only argument.
+    key: A unique identifier for the box component.
+
+  Returns:
+    The created box component.
   """
   return insert_composite_component(
     key=key,

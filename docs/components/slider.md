@@ -11,3 +11,4 @@ Slider allows the user to select from a range of values and is based on the [Ang
 ## API
 
 ::: mesop.components.slider.slider.slider
+::: mesop.components.slider.slider.SliderValueChangeEvent

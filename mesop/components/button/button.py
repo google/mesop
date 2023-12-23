@@ -12,23 +12,23 @@ from mesop.utils.validate import validate
 @validate
 def button(
   *,
-  key: str | None = None,
+  on_click: Callable[[ClickEvent], Any] | None = None,
+  variant: Literal["raised", "flat", "stroked", "icon"] | None = None,
   color: str = "",
   disable_ripple: bool = False,
   disabled: bool = False,
-  on_click: Callable[[ClickEvent], Any] | None = None,
-  variant: Literal["", "raised", "flat", "stroked", "icon"] = "",
+  key: str | None = None,
 ):
   """Creates a Button component.
   Button is a composite component.
 
   Args:
-    key: Unique identifier for this component instance.
+    on_click: [click](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/click_event) is a native browser event.
+    variant: Type of button style to use
     color: Theme color palette of the button
     disable_ripple: Whether the ripple effect is disabled or not.
     disabled: Whether the button is disabled.
-    on_click: [click](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/click_event) is a native browser event.
-    variant: component variations
+    key: Unique identifier for this component instance.
   """
   return insert_composite_component(
     key=key,
@@ -45,8 +45,10 @@ def button(
   )
 
 
-def _get_variant_index(variant: str) -> int:
-  if variant == "":
+def _get_variant_index(
+  variant: Literal["raised", "flat", "stroked", "icon"] | None,
+) -> int:
+  if variant is None:
     return 0
   if variant == "raised":
     return 1

@@ -13,6 +13,14 @@ from mesop.utils.validate import validate
 
 @dataclass
 class SliderValueChangeEvent(MesopEvent):
+  """
+  Event triggered when the slider value changes.
+
+  Attributes:
+      value: The new value of the slider after the change.
+      key (str): Key of the component that emitted this event.
+  """
+
   value: float
 
 
@@ -28,30 +36,30 @@ register_event_mapper(
 @validate
 def slider(
   *,
-  key: str | None = None,
+  on_value_change: Callable[[SliderValueChangeEvent], Any] | None = None,
+  min: float = 0,
+  max: float = 100,
+  step: float = 1,
+  color: Literal["primary", "accent", "warn"] = "primary",
   disabled: bool = False,
   discrete: bool = False,
   show_tick_marks: bool = False,
-  min: float = 0,
-  color: Literal["primary", "accent", "warn"] = "primary",
   disable_ripple: bool = False,
-  max: float = 100,
-  step: float = 1,
-  on_value_change: Callable[[SliderValueChangeEvent], Any] | None = None,
+  key: str | None = None,
 ):
   """Creates a Slider component.
 
   Args:
-    key: Unique identifier for this component instance.
+    on_value_change: An event will be dispatched each time the slider changes its value.
+    min: The minimum value that the slider can have.
+    max: The maximum value that the slider can have.
+    step: The values at which the thumb will snap.
     disabled: Whether the slider is disabled.
     discrete: Whether the slider displays a numeric value label upon pressing the thumb.
     show_tick_marks: Whether the slider displays tick marks along the slider track.
-    min: The minimum value that the slider can have.
     color: Palette color of the slider.
     disable_ripple: Whether ripples are disabled in the slider.
-    max: The maximum value that the slider can have.
-    step: The values at which the thumb will snap.
-    on_value_change: An event will be dispatched each time the slider changes its value.
+    key: Unique identifier for this component instance.
   """
   insert_component(
     key=key,

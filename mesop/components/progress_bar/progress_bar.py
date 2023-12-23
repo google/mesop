@@ -13,6 +13,14 @@ from mesop.utils.validate import validate
 
 @dataclass
 class ProgressBarAnimationEndEvent(MesopEvent):
+  """
+  Event emitted when the animation of the progress bar ends.
+
+  Attributes:
+      value: The value of the progress bar when the animation ends.
+      key (str): Key of the component that emitted this event.
+  """
+
   value: float
 
 
@@ -34,7 +42,7 @@ def progress_bar(
   buffer_value: float = 0,
   mode: Literal[
     "determinate", "indeterminate", "buffer", "query"
-  ] = "determinate",
+  ] = "indeterminate",
   on_animation_end: Callable[[ProgressBarAnimationEndEvent], Any] | None = None,
 ):
   """Creates a Progress bar component.

@@ -8,14 +8,22 @@ class MesopEvent:
 
 @dataclass
 class ClickEvent(MesopEvent):
+  """Represents a user click event.
+
+  Attributes:
+      key (str): key of the component that emitted this event.
+  """
+
   pass
 
 
 @dataclass
 class InputEvent(MesopEvent):
-  value: str
+  """Represents a user input event.
 
+  Attributes:
+      value: Input value.
+      key (str): key of the component that emitted this event.
+  """
 
-@dataclass
-class ChangeEvent(MesopEvent):
   value: str

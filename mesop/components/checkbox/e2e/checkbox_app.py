@@ -16,7 +16,6 @@ def on_update(event: me.CheckboxChangeEvent):
 def app():
   state = me.state(State)
   with me.checkbox(
-    aria_label="aria_checkbox",
     on_change=on_update,
     checked=state.checked,
   ):

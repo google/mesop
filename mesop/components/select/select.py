@@ -13,6 +13,13 @@ from mesop.utils.validate import validate
 
 @dataclass
 class SelectOpenedChangeEvent(MesopEvent):
+  """Event representing the opened state change of the select component.
+
+  Attributes:
+      opened: A boolean indicating whether the select component is opened (True) or closed (False).
+      key (str): key of the component that emitted this event.
+  """
+
   opened: bool
 
 
@@ -27,6 +34,13 @@ register_event_mapper(
 
 @dataclass
 class SelectSelectionChangeEvent(MesopEvent):
+  """Event representing a change in the select component's value.
+
+  Attributes:
+      value: The new value of the select component after the change.
+      key (str): Key of the component that emitted this event.
+  """
+
   value: str
 
 
@@ -41,6 +55,13 @@ register_event_mapper(
 
 @dataclass
 class SelectOption:
+  """Represents an option within a select component.
+
+  Attributes:
+      label: The content shown for the select option.
+      value: The value associated with the select option.
+  """
+
   label: str
   value: str
 
@@ -49,9 +70,11 @@ class SelectOption:
 def select(
   options: list[SelectOption],
   *,
+  on_selection_change: Callable[[SelectSelectionChangeEvent], Any]
+  | None = None,
+  on_opened_change: Callable[[SelectOpenedChangeEvent], Any] | None = None,
   key: str | None = None,
   label: str = "",
-  user_aria_described_by: str = "",
   disabled: bool = False,
   disable_ripple: bool = False,
   tab_index: float = 0,
@@ -60,19 +83,13 @@ def select(
   required: bool = False,
   multiple: bool = False,
   value: str = "",
-  aria_label: str = "",
-  aria_labelledby: str = "",
-  typeahead_debounce_interval: float = 0,
-  id: str = "",
-  on_opened_change: Callable[[SelectOpenedChangeEvent], Any] | None = None,
-  on_selection_change: Callable[[SelectSelectionChangeEvent], Any]
-  | None = None,
 ):
   """Creates a Select component.
 
   Args:
-    key: Unique identifier for this component instance.
-    user_aria_described_by: Implemented as part of MatFormFieldControl. @docs-private
+    options: List of select options.
+    on_selection_change: Event emitted when the selected value has been changed by the user.
+    on_opened_change: Event emitted when the select panel has been toggled.
     disabled: Whether the select is disabled.
     disable_ripple: Whether ripples in the select are disabled.
     tab_index: Tab index of the select.
@@ -81,12 +98,7 @@ def select(
     required: Whether the component is required.
     multiple: Whether the user should be allowed to select multiple options.
     value: Value of the select control.
-    aria_label: Aria label of the select.
-    aria_labelledby: Input that can be used to specify the `aria-labelledby` attribute.
-    typeahead_debounce_interval: Time to wait in milliseconds after the last keystroke before moving focus to an item.
-    id: Unique id of the element.
-    on_opened_change: Event emitted when the select panel has been toggled.
-    on_selection_change: Event emitted when the selected value has been changed by the user.
+    key: Unique identifier for this component instance.
   """
   insert_component(
     key=key,
@@ -97,7 +109,6 @@ def select(
         for option in options
       ],
       label=label,
-      user_aria_described_by=user_aria_described_by,
       disabled=disabled,
       disable_ripple=disable_ripple,
       tab_index=tab_index,
@@ -106,10 +117,6 @@ def select(
       required=required,
       multiple=multiple,
       value=value,
-      aria_label=aria_label,
-      aria_labelledby=aria_labelledby,
-      typeahead_debounce_interval=typeahead_debounce_interval,
-      id=id,
       on_select_opened_change_event_handler_id=register_event_handler(
         on_opened_change, event=SelectOpenedChangeEvent
       )

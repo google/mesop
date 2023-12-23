@@ -11,3 +11,4 @@ Progress Bar is used to indicate something is in progress and is based on the [A
 ## API
 
 ::: mesop.components.progress_bar.progress_bar.progress_bar
+::: mesop.components.progress_bar.progress_bar.ProgressBarAnimationEndEvent

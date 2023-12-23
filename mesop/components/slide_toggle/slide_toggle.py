@@ -13,7 +13,13 @@ from mesop.utils.validate import validate
 
 @dataclass
 class SlideToggleChangeEvent(MesopEvent):
-  pass
+  """Event triggered when the slide toggle state changes.
+
+  Attributes:
+      key (str): Key of the component that emitted this event.
+  """
+
+  key: str
 
 
 register_event_mapper(
@@ -28,12 +34,7 @@ register_event_mapper(
 def slide_toggle(
   *,
   key: str | None = None,
-  name: str = "",
-  id: str = "",
   label_position: Literal["before", "after"] = "after",
-  aria_label: str = "",
-  aria_labelledby: str = "",
-  aria_describedby: str = "",
   required: bool = False,
   color: str = "",
   disabled: bool = False,
@@ -46,13 +47,8 @@ def slide_toggle(
   """Creates a Slide toggle component.
 
   Args:
-    key: Unique identifier for this component instance.
-    name: Name value will be applied to the input element if present.
-    id: A unique id for the slide-toggle input. If none is supplied, it will be auto-generated.
+    on_change: An event will be dispatched each time the slide-toggle changes its value.
     label_position: Whether the label should appear after or before the slide-toggle. Defaults to 'after'.
-    aria_label: Used to set the aria-label attribute on the underlying input element.
-    aria_labelledby: Used to set the aria-labelledby attribute on the underlying input element.
-    aria_describedby: Used to set the aria-describedby attribute on the underlying input element.
     required: Whether the slide-toggle is required.
     color: Palette color of slide toggle.
     disabled: Whether the slide toggle is disabled.
@@ -60,18 +56,13 @@ def slide_toggle(
     tab_index: Tabindex of slide toggle.
     checked: Whether the slide-toggle element is checked or not.
     hide_icon: Whether to hide the icon inside of the slide toggle.
-    on_change: An event will be dispatched each time the slide-toggle changes its value.
+    key: Unique identifier for this component instance.
   """
   insert_component(
     key=key,
     type_name="slide_toggle",
     proto=slide_toggle_pb.SlideToggleType(
-      name=name,
-      id=id,
       label_position=label_position,
-      aria_label=aria_label,
-      aria_labelledby=aria_labelledby,
-      aria_describedby=aria_describedby,
       required=required,
       color=color,
       disabled=disabled,

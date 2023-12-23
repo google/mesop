@@ -38,7 +38,6 @@ def main():
   me.text(text=f"Selected keys: {state.keys}")
   for i in range(1000):
     with me.checkbox(
-      aria_label=f"check {i}?",
       on_change=checkbox_update,
       key=f"check={i}",
     ):

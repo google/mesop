@@ -1,4 +1,4 @@
-from typing import Any, Callable
+from typing import Any, Callable, TypeVar, cast
 
 from pydantic import ValidationError, validate_arguments
 
@@ -8,8 +8,10 @@ from mesop.utils.str_utils import snake_case
 newline = "\n"
 dash = "\\- "
 
+F = TypeVar("F", bound=Callable[..., Any])
 
-def validate(fn: Callable[..., Any]):
+
+def validate(fn: F) -> F:
   validated_fn = validate_arguments(fn)
 
   def wrapper(*args: Any, **kw_args: Any):
@@ -22,4 +24,4 @@ def validate(fn: Callable[..., Any]):
 {newline.join([dash + error['msg'] for error in e.errors()])}"""
       ) from e
 
-  return wrapper
+  return cast(F, wrapper)
