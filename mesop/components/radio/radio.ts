@@ -38,19 +38,6 @@ export class RadioComponent {
     return this.config().getLabelPosition() as 'before' | 'after';
   }
 
-  getRadioOptionLabelPosition(index: number): 'before' | 'after' {
-    return this.config().getRadioOptionsList()[index].getLabelPosition() as
-      | 'before'
-      | 'after';
-  }
-
-  getRadioOptionColor(index: number): 'primary' | 'accent' | 'warn' {
-    return this.config().getRadioOptionsList()[index].getColor() as
-      | 'primary'
-      | 'accent'
-      | 'warn';
-  }
-
   onRadioChangeEvent(event: MatRadioChange): void {
     const userEvent = new UserEvent();
     userEvent.setHandlerId(this.config().getOnRadioChangeEventHandlerId());

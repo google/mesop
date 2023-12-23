@@ -13,3 +13,5 @@ Radio is a single selection form control based on the [Angular Material radio co
 ::: mesop.components.radio.radio.radio
 
 ::: mesop.components.radio.radio.RadioOption
+
+::: mesop.components.radio.radio.RadioChangeEvent
