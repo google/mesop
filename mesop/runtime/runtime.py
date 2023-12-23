@@ -69,6 +69,10 @@ class Runtime:
 
     if path not in self._path_fns:
       paths = list(self._path_fns.keys())
+      if not paths:
+        raise MesopUserException(
+          "No page has been registered. Read the [page docs](https://google.github.io/mesop/guides/pages/) to configure a page."
+        )
       paths.sort()
       raise MesopUserException(
         f"""Accessed path: {path} not registered
