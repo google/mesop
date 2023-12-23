@@ -12,7 +12,7 @@ def fetch(url):
 
 
 def main():
-  url = "http://localhost:8080/ui?request=GikvY29tcG9uZW50cy90ZXh0X2lucHV0L2UyZS90ZXh0X2lucHV0X2FwcAoA"  # Replace with your Flask server URL
+  url = "http://localhost:32123/ui?request=GikvY29tcG9uZW50cy90ZXh0X2lucHV0L2UyZS90ZXh0X2lucHV0X2FwcAoA"  # Replace with your Flask server URL
   num_requests = 10  # Number of concurrent requests
 
   # Spawn a set of greenlets

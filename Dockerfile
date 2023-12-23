@@ -20,8 +20,8 @@ RUN wget https://github.com/bazelbuild/bazelisk/releases/latest/download/bazelis
 RUN groupadd -r myuser && useradd -r -g myuser myuser && mkdir -p /home/myuser && chown myuser:myuser /home/myuser && chown -R myuser /mesop
 USER myuser
 
-# Expose port 8080
-EXPOSE 8080
+# Expose port 32123
+EXPOSE 32123
 
 # Make sure Bazel is working
 RUN bazel version

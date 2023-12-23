@@ -79,5 +79,5 @@ Once you deploy on Cloud Run, you should have a public URL for your application 
 If you've finished building the container image, but you're having difficulty running it in a cloud environment, you can try running the container image locally:
 
 ```sh
-$ docker run -p 8080:8080 --platform linux/amd64 -it mesop  /bin/bash
+$ docker run -p 32123:32123 --platform linux/amd64 -it mesop  /bin/bash
 ```
