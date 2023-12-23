@@ -5,6 +5,7 @@ from mesop.dataclass_utils import (
   serialize_dataclass,
   update_dataclass_from_json,
 )
+from mesop.exceptions import MesopDeveloperException
 
 T = TypeVar("T")
 
@@ -65,6 +66,12 @@ class Context:
     self._current_node = pb.Component()
 
   def state(self, state: type[T]) -> T:
+    if state not in self._states:
+      raise MesopDeveloperException(
+        f"""Tried to get the state instance for `{state.__name__}`, but it's not a state class.
+
+Did you forget to decorate your state class `{state.__name__}` with @stateclass?"""
+      )
     return cast(T, self._states[state])
 
   def serialize_state(self) -> pb.States:

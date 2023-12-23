@@ -7,6 +7,7 @@
 from mesop.examples import buttons as buttons
 from mesop.examples import composite as composite
 from mesop.examples import error as error
+from mesop.examples import error_no_stateclass_decorator as error_no_stateclass_decorator
 from mesop.examples import generator as generator
 from mesop.examples import index as index
 from mesop.examples import nested as nested
