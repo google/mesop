@@ -1,6 +1,6 @@
 import json
 from dataclasses import asdict, dataclass, field, is_dataclass
-from typing import Any, Type, TypeVar, get_type_hints
+from typing import Any, Type, TypeVar, get_origin, get_type_hints
 
 from mesop.exceptions import MesopException
 
@@ -24,7 +24,7 @@ def dataclass_with_defaults(cls: Type[C]) -> Type[C]:
         setattr(cls, name, field(default=""))
       elif type_hint == bool:
         setattr(cls, name, field(default=False))
-      elif type_hint == list:
+      elif get_origin(type_hint) == list:
         setattr(cls, name, field(default_factory=list))
       elif isinstance(type_hint, type):
         setattr(

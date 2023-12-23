@@ -33,6 +33,7 @@ class DataclassNoDefaults:
 @dataclass_with_defaults
 class NestedDataclassNoDefaults:
   a: DataclassNoDefaults
+  list_a: list[DataclassNoDefaults]
 
 
 def test_dataclass_defaults():
@@ -43,6 +44,7 @@ def test_dataclass_defaults():
 def test_dataclass_defaults_recursive():
   d = NestedDataclassNoDefaults()
   assert d.a.foo == 0
+  assert d.list_a == []
 
 
 def test_serialize_dataclass():
