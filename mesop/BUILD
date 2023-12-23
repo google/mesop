@@ -24,7 +24,6 @@ py_library(
         "//mesop/components/tooltip:py",
         "//mesop/components/input:py",
         "//mesop/components/markdown:py",
-        "//mesop/components/text_input:py",
         "//mesop/components/box:py",
         "//mesop/components",
         "//mesop/components/button:py",

@@ -18,7 +18,6 @@ import {CheckboxComponent} from '../../../components/checkbox/checkbox';
 import {ButtonComponent} from '../../../components/button/button';
 import {TextComponent} from '../../../components/text/text';
 import {MarkdownComponent} from '../../../components/markdown/markdown';
-import {TextInputComponent} from '../../../components/text_input/text_input';
 
 export interface BaseComponent {
   key: Key;
@@ -47,5 +46,4 @@ export const typeToComponent = {
   'checkbox': CheckboxComponent,
   'text': TextComponent,
   'markdown': MarkdownComponent,
-  'text_input': TextInputComponent,
 } as TypeToComponent;

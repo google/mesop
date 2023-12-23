@@ -26,7 +26,6 @@ ng_module(
         "//mesop/components/tooltip:ng",
         "//mesop/components/input:ng",
         "//mesop/components/markdown:ng",
-        "//mesop/components/text_input:ng",
         "//mesop/components/box:ng",
         "//mesop/components/box:box_jspb_proto",
         "//mesop/components/button:ng",

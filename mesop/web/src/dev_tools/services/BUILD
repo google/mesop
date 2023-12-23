@@ -17,7 +17,6 @@ ng_module(
         "//mesop/components/button:button_jspb_proto",
         "//mesop/components/checkbox:checkbox_jspb_proto",
         "//mesop/components/text:text_jspb_proto",
-        "//mesop/components/text_input:text_input_jspb_proto",
         "//mesop/protos:ui_jspb_proto",
     ] + ANGULAR_CORE_DEPS + THIRD_PARTY_JS_RXJS,
 )
