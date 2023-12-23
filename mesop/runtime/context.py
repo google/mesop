@@ -1,9 +1,10 @@
-import json
-from dataclasses import asdict, is_dataclass
 from typing import Any, Callable, Generator, TypeVar, cast
 
 import mesop.protos.ui_pb2 as pb
-from mesop.dataclass_utils import update_dataclass_from_json
+from mesop.dataclass_utils import (
+  serialize_dataclass,
+  update_dataclass_from_json,
+)
 
 T = TypeVar("T")
 
@@ -69,11 +70,7 @@ class Context:
   def serialize_state(self) -> pb.States:
     states = pb.States()
     for state in self._states.values():
-      if is_dataclass(state):
-        json_str = json.dumps(asdict(state))
-        states.states.append(pb.State(data=json_str))
-      else:
-        raise Exception(f"State must be a dataclass. Instead got {state}")
+      states.states.append(pb.State(data=serialize_dataclass(state)))
     return states
 
   def process_event(self, event: pb.UserEvent) -> Generator[None, None, None]:
