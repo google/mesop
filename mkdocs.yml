@@ -31,6 +31,8 @@ nav:
           - Progress bar: components/progress_bar.md
           - Progress spinner: components/progress_spinner.md
           - Tooltip: components/tooltip.md
+  - Blog:
+      - blog/index.md
   - Internal:
       - Goals: goals.md
       - New component: internal/new_component.md
@@ -86,6 +88,7 @@ markdown_extensions:
   - pymdownx.snippets
 
 plugins:
+  - blog
   - search
   - mkdocstrings:
       default_handler: python
