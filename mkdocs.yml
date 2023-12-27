@@ -34,6 +34,7 @@ nav:
   - Blog:
       - blog/index.md
   - Internal:
+      - Architecture: internal/architecture.md
       - Goals: goals.md
       - New component: internal/new_component.md
       - Development: internal/development.md
