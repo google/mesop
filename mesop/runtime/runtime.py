@@ -58,14 +58,16 @@ class Runtime:
       get_handler=self.get_handler, states=cast(dict[Any, Any], states)
     )
 
-  def run_path(self, path: str, trace_mode: bool = False) -> None:
-    self.context().set_trace_mode(trace_mode)
+  def wait_for_hot_reload(self):
     # If hot reload is in-progress, the path may not be registered yet because the client reload
     # happened before the server module re-execution completed.
     if self.is_hot_reload_in_progress:
       exponential_backoff(
         lambda: not self.is_hot_reload_in_progress, initial_delay=0.100
       )
+
+  def run_path(self, path: str, trace_mode: bool = False) -> None:
+    self.context().set_trace_mode(trace_mode)
 
     if path not in self._path_fns:
       paths = list(self._path_fns.keys())

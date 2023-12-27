@@ -45,6 +45,11 @@ def serialize(response: pb.UiResponse) -> str:
 
 def generate_data(ui_request: pb.UiRequest):
   try:
+    # Wait for hot reload to complete on the server-side before processing the
+    # request. This avoids a race condition where the client-side reloads before
+    # the server has reloaded.
+    runtime().wait_for_hot_reload()
+
     if runtime().has_loading_errors():
       # Only showing the first error since our error UI only
       # shows one error at a time, and in practice there's usually
