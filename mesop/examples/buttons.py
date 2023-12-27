@@ -7,7 +7,7 @@ class State:
   count_clicks: int = 0
 
 
-def button_click(action: me.ClickEvent):
+def button_click(event: me.ClickEvent):
   state = me.state(State)
   state.count_clicks += 1
 
