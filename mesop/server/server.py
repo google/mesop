@@ -59,12 +59,13 @@ def generate_data(ui_request: pb.UiRequest):
     if ui_request.HasField("init"):
       yield from render_loop(path=ui_request.path)
     if ui_request.HasField("user_event"):
+      runtime().context().update_state(ui_request.user_event.states)
       for _ in render_loop(
         path=ui_request.path, keep_alive=True, trace_mode=True
       ):
         runtime().context().reset_current_node()
         pass
-      result = runtime().context().process_event(ui_request.user_event)
+      result = runtime().context().run_event_handler(ui_request.user_event)
       for _ in result:
         path = ui_request.path
         for command in runtime().context().commands():

@@ -80,10 +80,13 @@ Did you forget to decorate your state class `{state.__name__}` with @stateclass?
       states.states.append(pb.State(data=serialize_dataclass(state)))
     return states
 
-  def process_event(self, event: pb.UserEvent) -> Generator[None, None, None]:
-    for state, proto_state in zip(self._states.values(), event.states.states):
+  def update_state(self, states: pb.States) -> None:
+    for state, proto_state in zip(self._states.values(), states.states):
       update_dataclass_from_json(state, proto_state.data)
 
+  def run_event_handler(
+    self, event: pb.UserEvent
+  ) -> Generator[None, None, None]:
     if event.HasField("navigation"):
       yield  # empty yield so there's one tick of the render loop
       return  # return early b/c there's no event handler for hot reload

@@ -4,6 +4,8 @@
 # which is needed for hot reloading to work properly.
 
 # Use import alias so Ruff doesn't complain about unused imports
+from mesop import examples as examples
+
 from mesop.examples import buttons as buttons
 from mesop.examples import composite as composite
 from mesop.examples import error as error

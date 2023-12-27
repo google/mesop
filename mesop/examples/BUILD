@@ -32,5 +32,6 @@ py_library(
         "//mesop/components/text/e2e",
         "//mesop/examples/docs",
         "//mesop/examples/shared",
+        "//mesop/examples/testing",
     ],
 )
