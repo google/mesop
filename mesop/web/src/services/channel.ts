@@ -112,6 +112,12 @@ export class Channel {
   }
 
   dispatch(userEvent: UserEvent) {
+    // Except for navigation user event, every user event should have
+    // an event handler.
+    if (!userEvent.getHandlerId() && !userEvent.getNavigation()) {
+      // This is a no-op user event, so we don't send it.
+      return;
+    }
     const initUserEvent = () => {
       userEvent.setStates(this.states);
       const request = new UiRequest();

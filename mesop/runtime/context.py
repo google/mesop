@@ -5,7 +5,7 @@ from mesop.dataclass_utils import (
   serialize_dataclass,
   update_dataclass_from_json,
 )
-from mesop.exceptions import MesopDeveloperException
+from mesop.exceptions import MesopDeveloperException, MesopException
 
 T = TypeVar("T")
 
@@ -97,4 +97,6 @@ Did you forget to decorate your state class `{state.__name__}` with @stateclass?
       else:
         yield
     else:
-      print(f"Unknown handler id: {event.handler_id}")
+      raise MesopException(
+        f"Unknown handler id: {event.handler_id} from event {event}"
+      )
