@@ -1,6 +1,5 @@
 ---
 date: 2023-12-25
-draft: true
 ---
 
 # Hello, Mesop
@@ -61,3 +60,7 @@ Today Mesop is good for internal apps with relatively un-stringent demands in te
 Some of these directions are potentially mutually exclusive. For example, having a **stateful server** may make **optimistic UI** practically more difficult because a stateful server means that non-serializable state could start to creep in to Mesop applications which makes undoing optimistic UI updates tricky
 
 There's, of course, even more directions than what I've listed here. For example, it's technically possible to compile Python into WebAssembly and run it in the browser and this could be another way of tackling latency to user interactions. However, this seems like a longer-term exploration, which is why I've left it out for now.
+
+## Interested in contributing?
+
+If any of this excites you, please reach out. The easiest way is to raise a [GitHub issue](https://github.com/google/mesop/issues) and let me know if there's something specific you'd like to contribute.
