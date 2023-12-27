@@ -1,4 +1,4 @@
-@if(config().getVariantIndex() === 0) {
+@if(config().getTypeIndex() === 0) {
 <button
   mat-button
   [color]="config().getColor()"
@@ -9,7 +9,7 @@
   <ng-content></ng-content>
 </button>
 
-} @if(config().getVariantIndex() === 1) {
+} @if(config().getTypeIndex() === 1) {
 <button
   mat-raised-button
   [color]="config().getColor()"
@@ -20,7 +20,7 @@
   <ng-content></ng-content>
 </button>
 
-} @if(config().getVariantIndex() === 2) {
+} @if(config().getTypeIndex() === 2) {
 <button
   mat-flat-button
   [color]="config().getColor()"
@@ -31,7 +31,7 @@
   <ng-content></ng-content>
 </button>
 
-} @if(config().getVariantIndex() === 3) {
+} @if(config().getTypeIndex() === 3) {
 <button
   mat-stroked-button
   [color]="config().getColor()"
@@ -42,7 +42,7 @@
   <ng-content></ng-content>
 </button>
 
-} @if(config().getVariantIndex() === 4) {
+} @if(config().getTypeIndex() === 4) {
 <button
   mat-icon-button
   [color]="config().getColor()"

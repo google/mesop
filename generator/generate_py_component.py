@@ -24,7 +24,7 @@ def generate_py_component(spec: pb.ComponentSpec) -> str:
     .replace("# INSERT_COMPONENT_PARAMS", generate_py_component_params(spec))
     .replace("# INSERT_PROTO_CALLSITE", generate_py_proto_callsite(spec))
     .replace("# INSERT_COMPONENT_CALL", generate_py_callsite(spec))
-    .replace("# INSERT_VARIANT_INDEX_FN", generate_index_variant_fn(spec))
+    .replace("# INSERT_TYPE_INDEX_FN", generate_index_type_fn(spec))
     .replace("INSERT_DOC_STRING", generate_doc_string(spec))
   )
 
@@ -52,7 +52,7 @@ def generate_doc_string(spec: pb.ComponentSpec):
       f"on_{native_event}: [{native_event}](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/{native_event}_event) is a native browser event."
     )
   if len(spec.input.directive_names):
-    out.append("variant: component variations")
+    out.append("type: component variations")
   return f"""Creates a {component_name} component.
   {composite_comment}
   Args:
@@ -117,7 +117,7 @@ def generate_py_component_params(spec: pb.ComponentSpec) -> str:
     )
   if len(spec.input.directive_names):
     out.append(
-      f"variant: {format_string_literals(list(spec.input.directive_names))} = {wrap_quote(spec.input.directive_names[0])}"
+      f"type: {format_string_literals(list(spec.input.directive_names))} = {wrap_quote(spec.input.directive_names[0])}"
     )
   return ", ".join(out)
 
@@ -138,24 +138,24 @@ def generate_py_proto_callsite(spec: pb.ComponentSpec) -> str:
       f"on_{native_event}_handler_id=register_event_handler({event_param_name}, event={format_native_event_name(native_event)}) if {event_param_name} else ''"
     )
   if len(spec.input.directive_names):
-    out.append("variant_index=_get_variant_index(variant)")
+    out.append("type_index=_get_type_index(type)")
   return ", ".join(out)
 
 
-def generate_index_variant_fn(spec: pb.ComponentSpec) -> str:
+def generate_index_type_fn(spec: pb.ComponentSpec) -> str:
   if not len(spec.input.directive_names):
     return ""
 
   exprs: list[str] = []
-  for index, variant in enumerate(spec.input.directive_names):
+  for index, type in enumerate(spec.input.directive_names):
     s = f"""
-  if variant == '{variant}':
+  if type == '{type}':
     return {index}"""
     exprs.append(s)
   return f"""
-def _get_variant_index(variant: str) -> int:
+def _get_type_index(type: str) -> int:
   {''.join(exprs)}
-  raise Exception("Unexpected variant: " + variant)
+  raise Exception("Unexpected type: " + type)
   """
 
 

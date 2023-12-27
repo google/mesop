@@ -30,4 +30,4 @@ def component_name(
     ),
   )
 
-# INSERT_VARIANT_INDEX_FN
+# INSERT_TYPE_INDEX_FN

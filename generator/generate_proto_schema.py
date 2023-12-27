@@ -27,7 +27,7 @@ def generate_proto_schema(spec: pb.ComponentSpec) -> str:
 
   if len(spec.input.directive_names):
     index += 1
-    fields.append(f"int32 variant_index = {index};")
+    fields.append(f"int32 type_index = {index};")
 
   message_contents = (
     "{\n" + "\n".join(["  " + field for field in fields]) + "\n}"

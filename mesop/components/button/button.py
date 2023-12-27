@@ -13,7 +13,7 @@ from mesop.utils.validate import validate
 def button(
   *,
   on_click: Callable[[ClickEvent], Any] | None = None,
-  variant: Literal["raised", "flat", "stroked", "icon"] | None = None,
+  type: Literal["raised", "flat", "stroked", "icon"] | None = None,
   color: str = "",
   disable_ripple: bool = False,
   disabled: bool = False,
@@ -24,7 +24,7 @@ def button(
 
   Args:
     on_click: [click](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/click_event) is a native browser event.
-    variant: Type of button style to use
+    type: Type of button style to use
     color: Theme color palette of the button
     disable_ripple: Whether the ripple effect is disabled or not.
     disabled: Whether the button is disabled.
@@ -40,22 +40,22 @@ def button(
       on_click_handler_id=register_event_handler(on_click, event=ClickEvent)
       if on_click
       else "",
-      variant_index=_get_variant_index(variant),
+      type_index=_get_type_index(type),
     ),
   )
 
 
-def _get_variant_index(
-  variant: Literal["raised", "flat", "stroked", "icon"] | None,
+def _get_type_index(
+  type: Literal["raised", "flat", "stroked", "icon"] | None,
 ) -> int:
-  if variant is None:
+  if type is None:
     return 0
-  if variant == "raised":
+  if type == "raised":
     return 1
-  if variant == "flat":
+  if type == "flat":
     return 2
-  if variant == "stroked":
+  if type == "stroked":
     return 3
-  if variant == "icon":
+  if type == "icon":
     return 4
-  raise Exception("Unexpected variant: " + variant)
+  raise Exception("Unexpected type: " + type)

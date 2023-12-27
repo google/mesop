@@ -105,7 +105,7 @@ def left_panel():
         on_input=on_input,
       )
 
-    with me.button(variant="stroked", on_click=on_submit):
+    with me.button(type="stroked", on_click=on_submit):
       me.text("Submit")
 
     with me.box(style="margin: 16px 0"):

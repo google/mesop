@@ -81,7 +81,7 @@ export class ComponentRenderer {
       // Need to attach view or it doesn't render.
       // View automatically detaches when it is destroyed.
       // Template will destroy each ViewRef when it is destroyed.
-      const index = this.component.getType()?.getVariantIndex() ?? 0;
+      const index = this.component.getType()?.getTypeIndex() ?? 0;
       this.applicationRef.attachView(projectedViewRef);
       const projectableNodes = [];
       projectableNodes[index] = projectedViewRef.rootNodes;

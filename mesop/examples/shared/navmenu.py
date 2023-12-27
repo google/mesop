@@ -39,7 +39,7 @@ def menu_item(label: str, icon: str, url: str, current_url: str):
   """
   ):
     with me.box(style="margin-bottom: 8px;"):
-      with me.button(variant="icon", on_click=on_click, key=url):
+      with me.button(type="icon", on_click=on_click, key=url):
         with me.box(
           style="""
         display: flex;

@@ -52,14 +52,14 @@ def generate_ng_template(spec: pb.ComponentSpec) -> str:
     return template()
   # You cannot dynamically set the directive (e.g. for button class)
   # see: https://github.com/angular/components/issues/26350
-  # As a workaround, we print the template N times where N = # of variants
+  # As a workaround, we print the template N times where N = # of types
   open_brace = "{"
   closed_brace = "}"
   outs: list[str] = []
   for index, directive in enumerate(spec.input.directive_names):
     outs.append(
       f"""
-   @if(config().getVariantIndex() === {index}) {open_brace}
+   @if(config().getTypeIndex() === {index}) {open_brace}
       {template(directive=directive)}
    {closed_brace}
    """
@@ -79,7 +79,7 @@ def format_directives(spec: pb.ComponentSpec) -> str:
     + " "
     + "\n".join(
       [
-        f"""[attr.{directive}]=\"config().getVariant() === '{directive}'\""""
+        f"""[attr.{directive}]=\"config().getType() === '{directive}'\""""
         for directive in spec.input.directive_names
       ]
     )
