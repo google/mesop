@@ -140,10 +140,12 @@ def register_event_handler(
 
 
 def compute_fn_id(fn: Callable[..., Any]) -> str:
-  # Hashing id...
   source_code = inspect.getsource(fn)
+  # Skip hashing the fn/module name in debug mode because it makes it hard to debug.
+  if runtime().debug_mode:
+    source_code_hash = hashlib.sha256(source_code.encode()).hexdigest()
+    return f"{fn.__module__}.{fn.__name__}.{source_code_hash}"
   input = f"{fn.__module__}.{fn.__name__}.{source_code}"
-
   return hashlib.sha256(input.encode()).hexdigest()
 
 
