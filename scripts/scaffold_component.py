@@ -71,9 +71,9 @@ def main():
     content=f'    "//mesop/components/{component_name}/e2e",',
   )
 
-  # Update examples index.py file
+  # Update examples example_index.py file
   update_file(
-    path=os.path.join(current_dir(), "..", "mesop", "examples", "index.py"),
+    path=os.path.join(current_dir(), "..", "mesop", "example_index.py"),
     target="# REF(//scripts/scaffold_component.py):insert_component_e2e_import_export",
     content=f"import mesop.components.{component_name}.e2e as {component_name}_e2e",
     before=True,

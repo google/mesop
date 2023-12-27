@@ -37,8 +37,8 @@ py_library(
 )
 
 py_library(
-    name = "index",
-    srcs = ["index.py"],
+    name = "example_index",
+    srcs = ["example_index.py"],
     visibility = ["//build_defs:mesop_internal"],
     deps = [
         "//mesop",

@@ -1,9 +1,9 @@
 [tool.ruff]
-# In addition to the standard set of exclusions, omit index.py because
+# In addition to the standard set of exclusions, omit example_index.py because
 # it's imports are used for side effects
 # Skip error examples since there's intentionally incorrect Python code.
 extend-exclude = [
-    "mesop/index.py",
+    "mesop/example_index.py",
     "mesop/examples/error*",
     "generator/fixtures/*",
 ]

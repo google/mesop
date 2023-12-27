@@ -28,8 +28,8 @@ def get_module_name(runfile_path: str) -> str:
   Creates a synthetic Python module name based on the runfile path.
 
   Example:
-  Input: "mesop/mesop/index.py"
-  Output: "mesop.examples.index"
+  Input: "mesop/mesop/example_index.py"
+  Output: "mesop.examples.example_index"
   """
 
   # Intentionally skip the first segment which will be the workspace root (e.g. "mesop").
@@ -57,7 +57,7 @@ def get_app_modules(
 
   submodules: set[str] = set()
   for module in loaded_module_names:
-    # Special case for mesop/index.py, which would normally consider
+    # Special case for mesop/example_index.py, which would normally consider
     # mesop.runtime a sub-package/sub-module, however reloading runtime
     # is problematic because it's a stateful singleton and it causes
     # strange bugs. Thus, we avoid reloading mesop.runtime modules

@@ -2,7 +2,9 @@ from mesop.cli.execute_module import get_app_modules, get_module_name
 
 
 def test_get_module_name():
-  assert get_module_name("mesop/mesop/index.py") == "mesop.index"
+  assert (
+    get_module_name("mesop/mesop/example_index.py") == "mesop.example_index"
+  )
 
 
 def test_get_app_modules():

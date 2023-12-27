@@ -14,7 +14,7 @@ Only used for developing the Mesop framework itself. Developers _using_ Mesop sh
 
 Recommended for developers using Mesop when they are developing the apps locally. This provides good error messages and, in the future, will provide hot reloading.
 
-- **How to run:** `$ bazel run //mesop/cli -- --path=mesop/index.py --ci`
+- **How to run:** `$ bazel run //mesop/cli -- --path=mesop/mesop/example_index.py --ci`
 - Angular should run in dev mode.
 - Developer Tools are available.
 

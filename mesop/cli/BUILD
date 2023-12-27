@@ -5,7 +5,7 @@ package(
 )
 
 COMMON_DATA = [
-    "//mesop:index",
+    "//mesop:example_index",
 ]
 
 COMMON_DEPS = [
