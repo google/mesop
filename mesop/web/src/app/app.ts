@@ -31,6 +31,8 @@ import {
   IbazelHotReloadWatcher,
 } from '../services/hot_reload_watcher';
 import {GlobalErrorHandlerService} from '../services/global_error_handler';
+// Keep the following comment to ensure there's a hook for adding TS imports in the downstream sync.
+// ADD_TS_IMPORT_HERE
 
 @Component({
   selector: 'app',
