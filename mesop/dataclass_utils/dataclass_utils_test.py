@@ -1,5 +1,7 @@
 from dataclasses import dataclass, field
 
+import pytest
+
 from mesop.dataclass_utils.dataclass_utils import (
   dataclass_with_defaults,
   serialize_dataclass,
@@ -36,10 +38,15 @@ class DataclassNoDefaults:
   foo: int
 
 
+class UnannotatedClass:
+  val: str
+
+
 @dataclass_with_defaults
 class NestedDataclassNoDefaults:
   a: DataclassNoDefaults
   list_a: list[DataclassNoDefaults]
+  unannotated: UnannotatedClass
 
 
 def test_dataclass_defaults():
@@ -51,6 +58,34 @@ def test_dataclass_defaults_recursive():
   d = NestedDataclassNoDefaults()
   assert d.a.foo == 0
   assert d.list_a == []
+  assert d.unannotated.val == ""
+
+
+def test_dataclass_defaults_works_with_already_annotated_nested_class_requires_default():
+  @dataclass
+  class NestedDataclass:
+    val: str = field(default="<default>")
+
+  @dataclass_with_defaults
+  class RootDataclass:
+    nested: NestedDataclass
+
+  instance = RootDataclass()
+  assert instance.nested.val == "<default>"
+
+
+def test_dataclass_defaults_works_with_already_annotated_nested_class_fails_without_default():
+  @dataclass
+  class NestedDataclass:
+    val: str
+
+  @dataclass_with_defaults
+  class RootDataclass:
+    nested: NestedDataclass
+
+  with pytest.raises(TypeError) as exc_info:
+    RootDataclass()
+  assert "missing 1 required positional argument: 'val'" in str(exc_info.value)
 
 
 def test_serialize_dataclass():
@@ -79,6 +114,4 @@ def test_update_dataclass_from_json_list_nested_dataclass():
 
 
 if __name__ == "__main__":
-  import pytest
-
   raise SystemExit(pytest.main([__file__]))
