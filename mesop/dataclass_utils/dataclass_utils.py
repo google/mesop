@@ -1,6 +1,6 @@
 import json
 from dataclasses import asdict, dataclass, field, is_dataclass
-from typing import Any, Type, TypeVar, get_origin, get_type_hints
+from typing import Any, Type, TypeVar, cast, get_origin, get_type_hints
 
 from mesop.exceptions import MesopException
 
@@ -50,14 +50,30 @@ def update_dataclass_from_json(instance: Any, json_string: str):
 def _recursive_update_dataclass_from_json_obj(instance: Any, json_dict: Any):
   for key, value in json_dict.items():
     if hasattr(instance, key):
+      attr = getattr(instance, key)
       if isinstance(value, dict):
+        # If the value is a dict, recursively update the dataclass.
         setattr(
           instance,
           key,
-          _recursive_update_dataclass_from_json_obj(
-            getattr(instance, key), value
-          ),
+          _recursive_update_dataclass_from_json_obj(attr, value),
         )
+      elif isinstance(value, list):
+        updated_list: list[Any] = []
+        for item in cast(list[Any], value):
+          if isinstance(item, dict):
+            # If the json item value is an instance of dict,
+            # we assume it should be converted into a dataclass
+            attr = getattr(instance, key)
+            item_instance = instance.__annotations__[key].__args__[0]()
+            updated_list.append(
+              _recursive_update_dataclass_from_json_obj(item_instance, item)
+            )
+          else:
+            # If the item is not a dict, append it directly.
+            updated_list.append(item)
+        setattr(instance, key, updated_list)
       else:
+        # For other types, set the value directly.
         setattr(instance, key, value)
   return instance

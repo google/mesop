@@ -20,9 +20,15 @@ class B:
 @dataclass
 class A:
   b: B = field(default_factory=B)
+  list_b: list[B] = field(default_factory=list)
+  strs: list[str] = field(default_factory=list)
 
 
-JSON_STR = """{"b": {"c": {"val": "<init>"}}}"""
+JSON_STR = """{"b": {"c": {"val": "<init>"}},
+"list_b": [
+  {"c": {"val": "1"}},
+  {"c": {"val": "2"}}
+], "strs": ["a", "b"]}"""
 
 
 @dataclass_with_defaults
@@ -49,7 +55,7 @@ def test_dataclass_defaults_recursive():
 
 def test_serialize_dataclass():
   val = serialize_dataclass(A())
-  assert val == """{"b": {"c": {"val": "<init>"}}}"""
+  assert val == """{"b": {"c": {"val": "<init>"}}, "list_b": [], "strs": []}"""
 
 
 def test_update_dataclass_from_json_nested_dataclass():
@@ -60,6 +66,16 @@ def test_update_dataclass_from_json_nested_dataclass():
   a = A()
   update_dataclass_from_json(a, JSON_STR)
   assert a.b.c.val == "<init>"
+
+
+def test_update_dataclass_from_json_list_nested_dataclass():
+  a = A()
+  update_dataclass_from_json(a, JSON_STR)
+  assert a.list_b == [
+    B(c=C(val="1")),
+    B(c=C(val="2")),
+  ]
+  assert a.strs == ["a", "b"]
 
 
 if __name__ == "__main__":
