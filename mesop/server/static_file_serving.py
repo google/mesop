@@ -1,5 +1,6 @@
 import io
 import os
+from typing import Callable
 
 from flask import Flask, send_file
 from werkzeug.security import safe_join
@@ -7,10 +8,15 @@ from werkzeug.security import safe_join
 from mesop.utils.runfiles import get_runfile_location
 
 
+def noop():
+  pass
+
+
 def configure_static_file_serving(
   app: Flask,
   static_file_runfiles_base: str,
   livereload_script_url: str | None = None,
+  preprocess_request: Callable[[], None] = noop,
 ):
   def get_path(path: str):
     safe_path = safe_join(static_file_runfiles_base, path)
@@ -36,10 +42,12 @@ def configure_static_file_serving(
 
   @app.route("/")
   def serve_root():
+    preprocess_request()
     return send_file(retrieve_index_html(), download_name="index.html")
 
   @app.route("/<path:path>")
   def serve_file(path: str):
+    preprocess_request()
     if is_file_path(path):
       return send_file(get_path(path))
     else:
