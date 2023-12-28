@@ -6,7 +6,7 @@ from mesop.exceptions import format_traceback
 from mesop.runtime import enable_debug_mode, runtime
 from mesop.server import dev_server
 from mesop.server.flags import port
-from mesop.server.server import flask_app
+from mesop.server.server import configure_flask_app
 
 FLAGS = flags.FLAGS
 
@@ -14,6 +14,7 @@ flags.DEFINE_string("path", "", "path to main python module of Mesop app.")
 
 
 def main(argv):
+  flask_app = configure_flask_app()
   if len(FLAGS.path) < 1:
     raise Exception("Required flag 'path'. Received: " + FLAGS.path)
 

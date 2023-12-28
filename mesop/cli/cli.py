@@ -15,7 +15,7 @@ from mesop.runtime import (
   runtime,
 )
 from mesop.server.flags import port
-from mesop.server.server import flask_app
+from mesop.server.server import configure_flask_app
 from mesop.server.static_file_serving import configure_static_file_serving
 
 FLAGS = flags.FLAGS
@@ -41,6 +41,7 @@ def monitor_stdin():
 
 
 def main(argv):
+  flask_app = configure_flask_app()
   if len(FLAGS.path) < 1:
     raise Exception("Required flag 'path'. Received: " + FLAGS.path)
 
