@@ -6,5 +6,5 @@ package(
 
 mesop_component(
     name = "markdown",
-    ng_deps = ["//mesop/web/third_party:marked"],
+    ng_deps = ["//mesop/web/external:marked"],
 )

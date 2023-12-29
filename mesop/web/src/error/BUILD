@@ -14,9 +14,9 @@ ng_module(
     ]) + [":error_box.css"],
     deps = [
         "//mesop/protos:ui_jspb_proto",
+        "//mesop/web/external:marked",
         "//mesop/web/src/component_renderer",
         "//mesop/web/src/services",
-        "//mesop/web/third_party:marked",
     ] + ANGULAR_CORE_DEPS + ANGULAR_MATERIAL_TS_DEPS,
 )
 

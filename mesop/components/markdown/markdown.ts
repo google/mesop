@@ -4,7 +4,7 @@ import {
   Type,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 import {MarkdownType} from 'mesop/mesop/components/markdown/markdown_jspb_proto_pb/mesop/components/markdown/markdown_pb';
-import {marked} from '../../web/third_party/marked';
+import {marked} from '../../web/external/marked';
 
 @Component({
   selector: 'mesop-markdown',

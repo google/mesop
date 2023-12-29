@@ -8,7 +8,7 @@ import {
 import {CommonModule} from '@angular/common';
 import {ComponentRenderer} from '../component_renderer/component_renderer';
 import {Channel} from '../services/channel';
-import {marked} from '../../third_party/marked';
+import {marked} from '../../external/marked';
 import {MatIconModule} from '@angular/material/icon';
 
 @Component({
