@@ -4,7 +4,6 @@ syntax = "proto3";
 package mesop.components.select;
 
 message SelectType {
-  string user_aria_described_by = 1;
   bool disabled = 2;
   bool disable_ripple = 3;
   double tab_index = 4;
@@ -13,10 +12,6 @@ message SelectType {
   bool required = 7;
   bool multiple = 8;
   string value = 9;
-  string aria_label = 10;
-  string aria_labelledby = 11;
-  double typeahead_debounce_interval = 12;
-  string id = 13;
   string on_select_opened_change_event_handler_id = 14;
   string on_select_selection_change_event_handler_id = 15;
 

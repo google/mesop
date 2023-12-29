@@ -1,7 +1,6 @@
 <mat-form-field>
   <mat-label>{{config().getLabel()}}</mat-label>
   <mat-select
-    [aria-describedby]="config().getUserAriaDescribedBy()"
     [disabled]="config().getDisabled()"
     [disableRipple]="config().getDisableRipple()"
     [tabIndex]="config().getTabIndex()"
@@ -10,10 +9,6 @@
     [required]="config().getRequired()"
     [multiple]="config().getMultiple()"
     [value]="config().getValue()"
-    [aria-label]="config().getAriaLabel()"
-    [aria-labelledby]="config().getAriaLabelledby()"
-    [typeaheadDebounceInterval]="config().getTypeaheadDebounceInterval()"
-    [id]="config().getId()"
     (openedChange)="onSelectOpenedChangeEvent($event)"
     (selectionChange)="onSelectSelectionChangeEvent($event)"
   >
