@@ -27,7 +27,7 @@ register_event_mapper(
   SelectOpenedChangeEvent,
   lambda event, key: SelectOpenedChangeEvent(
     key=key.key,
-    opened=event.bool,
+    opened=event.bool_value,
   ),
 )
 
@@ -48,7 +48,7 @@ register_event_mapper(
   SelectSelectionChangeEvent,
   lambda event, key: SelectSelectionChangeEvent(
     key=key.key,
-    value=event.string,
+    value=event.string_value,
   ),
 )
 

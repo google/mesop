@@ -32,7 +32,7 @@ export class SelectComponent {
 
   onSelectOpenedChangeEvent(event: boolean): void {
     const userEvent = new UserEvent();
-    userEvent.setBool(event);
+    userEvent.setBoolValue(event);
     userEvent.setHandlerId(
       this.config().getOnSelectOpenedChangeEventHandlerId(),
     );
@@ -46,7 +46,7 @@ export class SelectComponent {
     userEvent.setHandlerId(
       this.config().getOnSelectSelectionChangeEventHandlerId(),
     );
-    userEvent.setString(event.value);
+    userEvent.setStringValue(event.value);
     userEvent.setKey(this.key);
     this.channel.dispatch(userEvent);
   }

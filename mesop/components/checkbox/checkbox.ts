@@ -36,7 +36,7 @@ export class CheckboxComponent {
 
   onCheckboxChangeEvent(event: MatCheckboxChange): void {
     const userEvent = new UserEvent();
-    userEvent.setBool(event.checked);
+    userEvent.setBoolValue(event.checked);
     userEvent.setHandlerId(this.config().getOnCheckboxChangeEventHandlerId());
     userEvent.setKey(this.key);
     this.channel.dispatch(userEvent);
@@ -44,7 +44,7 @@ export class CheckboxComponent {
 
   onCheckboxIndeterminateChangeEvent(event: boolean): void {
     const userEvent = new UserEvent();
-    userEvent.setBool(event);
+    userEvent.setBoolValue(event);
     userEvent.setHandlerId(
       this.config().getOnCheckboxIndeterminateChangeEventHandlerId(),
     );

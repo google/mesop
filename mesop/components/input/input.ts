@@ -50,7 +50,7 @@ export class InputComponent {
   onInput(event: Event): void {
     const userEvent = new UserEvent();
     userEvent.setHandlerId(this.config().getOnInputHandlerId());
-    userEvent.setString((event.target as HTMLInputElement).value);
+    userEvent.setStringValue((event.target as HTMLInputElement).value);
     userEvent.setKey(this.key);
     this.channel.dispatch(userEvent);
   }

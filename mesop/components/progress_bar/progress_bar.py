@@ -28,7 +28,7 @@ register_event_mapper(
   ProgressBarAnimationEndEvent,
   lambda event, key: ProgressBarAnimationEndEvent(
     key=key.key,
-    value=event.double,
+    value=event.double_value,
   ),
 )
 

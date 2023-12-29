@@ -28,7 +28,7 @@ register_event_mapper(
   SliderValueChangeEvent,
   lambda event, key: SliderValueChangeEvent(
     key=key.key,
-    value=event.double,
+    value=event.double_value,
   ),
 )
 

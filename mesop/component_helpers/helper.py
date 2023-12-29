@@ -169,7 +169,7 @@ runtime().register_event_mapper(
 runtime().register_event_mapper(
   InputEvent,
   lambda userEvent, key: InputEvent(
-    value=userEvent.string,
+    value=userEvent.string_value,
     key=key.key,
   ),
 )

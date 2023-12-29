@@ -38,7 +38,7 @@ export class SliderComponent {
     const userEvent = new UserEvent();
 
     userEvent.setHandlerId(this.config().getOnValueChangeHandlerId());
-    userEvent.setDouble(value);
+    userEvent.setDoubleValue(value);
     userEvent.setKey(this.key);
     this.channel.dispatch(userEvent);
   }

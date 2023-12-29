@@ -41,7 +41,7 @@ export class RadioComponent {
   onRadioChangeEvent(event: MatRadioChange): void {
     const userEvent = new UserEvent();
     userEvent.setHandlerId(this.config().getOnRadioChangeEventHandlerId());
-    userEvent.setString(event.value);
+    userEvent.setStringValue(event.value);
     userEvent.setKey(this.key);
     this.channel.dispatch(userEvent);
   }

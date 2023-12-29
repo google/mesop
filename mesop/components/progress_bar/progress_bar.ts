@@ -43,7 +43,7 @@ export class ProgressBarComponent {
 
   onProgressBarAnimationEndEvent(event: ProgressAnimationEnd): void {
     const userEvent = new UserEvent();
-    userEvent.setDouble(event.value);
+    userEvent.setDoubleValue(event.value);
     userEvent.setHandlerId(
       this.config().getOnProgressBarAnimationEndEventHandlerId(),
     );

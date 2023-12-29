@@ -25,10 +25,10 @@ message UserEvent {
     Key key = 3;
 
     oneof type {
-        bool bool = 4;
-        string string = 5;
-        double double = 7;
-        int32 int = 8;
+        bool bool_value = 4;
+        string string_value = 5;
+        double double_value = 7;
+        int32 int_value = 8;
         NavigationEvent navigation = 6;
     }
 }

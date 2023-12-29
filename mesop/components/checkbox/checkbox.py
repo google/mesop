@@ -27,7 +27,7 @@ register_event_mapper(
   CheckboxChangeEvent,
   lambda event, key: CheckboxChangeEvent(
     key=key.key,
-    checked=event.bool,
+    checked=event.bool_value,
   ),
 )
 
@@ -48,7 +48,7 @@ register_event_mapper(
   CheckboxIndeterminateChangeEvent,
   lambda event, key: CheckboxIndeterminateChangeEvent(
     key=key.key,
-    indeterminate=event.bool,
+    indeterminate=event.bool_value,
   ),
 )
 
