@@ -49,7 +49,7 @@ theme:
   logo: assets/logo.png
   favicon: assets/favicon.ico
   font:
-    text: Inter
+    text: Poppins
 
   palette:
     # Palette toggle for light mode
