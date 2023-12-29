@@ -1,5 +1,5 @@
 import base64
-from typing import Sequence
+from typing import Generator, Sequence
 
 from flask import Flask, Response, request, stream_with_context
 
@@ -15,7 +15,7 @@ def configure_flask_app(
 
   def render_loop(
     path: str, keep_alive: bool = False, trace_mode: bool = False
-  ):
+  ) -> Generator[str, None, None]:
     try:
       runtime().run_path(path=path, trace_mode=trace_mode)
       root_component = runtime().context().current_node()
@@ -38,7 +38,7 @@ def configure_flask_app(
         error=pb.ServerError(exception=str(e), traceback=format_traceback())
       )
 
-  def yield_errors(error: pb.ServerError):
+  def yield_errors(error: pb.ServerError) -> Generator[str, None, None]:
     ui_response = pb.UiResponse(error=error)
 
     yield serialize(ui_response)
@@ -48,7 +48,7 @@ def configure_flask_app(
     encoded = base64.b64encode(response.SerializeToString()).decode("utf-8")
     return f"data: {encoded}\n\n"
 
-  def generate_data(ui_request: pb.UiRequest):
+  def generate_data(ui_request: pb.UiRequest) -> Generator[str, None, None]:
     try:
       # Wait for hot reload to complete on the server-side before processing the
       # request. This avoids a race condition where the client-side reloads before
@@ -90,7 +90,7 @@ def configure_flask_app(
       )
 
   @flask_app.route("/ui")
-  def ui_stream():
+  def ui_stream() -> Response:
     param = request.args.get("request", default=None)
     if param is None:
       raise Exception("Missing request parameter")
