@@ -7,8 +7,8 @@ message TooltipType {
   string position = 1;
   bool position_at_origin = 2;
   bool disabled = 3;
-  double show_delay = 4;
-  double hide_delay = 5;
+  double show_delay_ms = 4;
+  double hide_delay_ms = 5;
   string touch_gestures = 6;
   string message = 7;
 }
