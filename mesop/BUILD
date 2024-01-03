@@ -4,6 +4,10 @@ package(
     default_visibility = ["//build_defs:mesop_internal"],
 )
 
+licenses(["notice"])
+
+exports_files(["LICENSE"])
+
 py_library(
     name = "mesop",
     srcs = [
