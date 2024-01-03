@@ -14,6 +14,7 @@ py_library(
         "__init__.py",
         "api.py",
     ],
+    visibility = ["//build_defs:mesop_users"],
     deps = [
         # REF(//scripts/scaffold_component.py):insert_component_import
         "//mesop/components/slider:py",
