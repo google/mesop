@@ -12,7 +12,6 @@ py_library(
     name = "mesop",
     srcs = [
         "__init__.py",
-        "api.py",
     ],
     visibility = ["//build_defs:mesop_users"],
     deps = [

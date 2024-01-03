@@ -1,5 +1,5 @@
-from mesop.api import state as state
-from mesop.api import stateclass as stateclass
+from typing import Any, TypeVar, cast
+
 from mesop.commands.navigate import navigate as navigate
 from mesop.component_helpers.helper import (
   composite as composite,
@@ -65,6 +65,7 @@ from mesop.components.slider.slider import (
 from mesop.components.text.text import Typography as Typography
 from mesop.components.text.text import text as text
 from mesop.components.tooltip.tooltip import tooltip as tooltip
+from mesop.dataclass_utils import dataclass_with_defaults
 from mesop.events import (
   ClickEvent as ClickEvent,
 )
@@ -73,6 +74,32 @@ from mesop.events import (
 )
 from mesop.features import page as page
 from mesop.key import Key as Key
+from mesop.runtime import runtime
 
 # Similar to angular_material, we alias spinner to progress spinner.
 spinner = progress_spinner
+
+_T = TypeVar("_T")
+
+
+def state(state: type[_T]) -> _T:
+  return runtime().context().state(state)
+
+
+def stateclass(cls: type[_T] | None, **kw_args: Any) -> type[_T]:
+  """
+  Similar as dataclass, but it also registers with Mesop runtime().
+  """
+
+  def wrapper(cls: type[_T]) -> type[_T]:
+    dataclass_cls = dataclass_with_defaults(cls, **kw_args)
+    runtime().register_state_class(dataclass_cls)
+    return dataclass_cls
+
+  if cls is None:
+    # too difficult to properly type annotate
+    anyWrapper = cast(Any, wrapper)
+    # We're called with parens.
+    return anyWrapper
+
+  return wrapper(cls)
