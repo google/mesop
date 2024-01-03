@@ -86,7 +86,7 @@ message JsType {
     bool is_primitive = 2;
 }
 
-// Represents a platform-netural type.
+// Represents a platform-neutral type.
 // Must representable in Python and JS.
 message XType {
   oneof type {

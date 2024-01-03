@@ -8,7 +8,7 @@
  * e.g. https://github.com/tensorflow/tensorboard/blob/master/tensorboard/defs/strict_type_check.d.ts
  *
  * @param text
- * @returns
+ * @return
  */
 export function jsonParse(text: string): unknown {
   // Explicitly type as unknown due to https://github.com/bazelbuild/rules_nodejs/issues/2367

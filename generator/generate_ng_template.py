@@ -71,7 +71,7 @@ def generate_ng_template(spec: pb.ComponentSpec) -> str:
 def format_directives(spec: pb.ComponentSpec) -> str:
   if not len(spec.input.directive_names):
     return ""
-  # assuming the first one is the default/main directive which can be overriden by the others
+  # assuming the first one is the default/main directive which can be overridden by the others
   # via attributes
   result = spec.input.directive_names[0]
   return (
