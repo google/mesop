@@ -9,7 +9,7 @@ load("//build_defs:jspb_proto_library.bzl", _jspb_proto_library = "jspb_proto_li
 load("//build_defs:ng_js_binary.bzl", _ng_js_binary = "ng_js_binary")
 load("//build_defs:py_proto_library.bzl", _py_proto_library = "py_proto_library")
 load("//build_defs:sass_external_binary.bzl", _sass_external_binary = "sass_external_binary")
-load("//tools:defaults.bzl", _devmode_esbuild = "devmode_esbuild", _esbuild = "esbuild", _esbuild_config = "esbuild_config", _http_server = "http_server", _karma_web_test_suite = "karma_web_test_suite", _ng_module = "ng_module", _ng_test_library = "ng_test_library", _ng_web_test_suite = "ng_web_test_suite", _sass_binary = "sass_binary", _ts_library = "ts_library")
+load("//tools:defaults.bzl", _devmode_esbuild = "devmode_esbuild", _esbuild = "esbuild", _esbuild_config = "esbuild_config", _http_server = "http_server", _karma_web_test_suite = "karma_web_test_suite", _ng_module = "ng_module", _ng_test_library = "ng_test_library", _ng_web_test_suite = "ng_web_test_suite", _sass_binary = "sass_binary", _sass_library = "sass_library", _ts_library = "ts_library")
 load("//tools/angular:index.bzl", _LINKER_PROCESSED_FW_PACKAGES = "LINKER_PROCESSED_FW_PACKAGES")
 
 # Re-export symbols
@@ -32,6 +32,7 @@ py_proto_library = _py_proto_library
 py_test = _py_test
 sass_binary = _sass_binary
 sass_external_binary = _sass_external_binary
+sass_library = _sass_library
 ts_library = _ts_library
 
 # Constants for deps

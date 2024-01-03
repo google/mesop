@@ -1,4 +1,4 @@
-load("//build_defs:defaults.bzl", "ANGULAR_CDK_TS_DEPS", "ANGULAR_CORE_DEPS", "ANGULAR_MATERIAL_TS_DEPS", "esbuild_config", "ng_module", "sass_binary", "sass_external_binary")
+load("//build_defs:defaults.bzl", "ANGULAR_CDK_TS_DEPS", "ANGULAR_CORE_DEPS", "ANGULAR_MATERIAL_TS_DEPS", "esbuild_config", "ng_module", "sass_binary", "sass_external_binary", "sass_library")
 
 package(
     default_visibility = ["//build_defs:mesop_internal"],
@@ -34,6 +34,13 @@ esbuild_config(
     config_file = "esbuild.config.mjs",
 )
 
+sass_library(
+    name = "normalize",
+    srcs = [
+        "_normalize.scss",
+    ],
+)
+
 sass_external_binary(
     name = "styles",
     src = "styles.scss",
@@ -41,4 +48,7 @@ sass_external_binary(
         "@npm//@angular/material",
     ],
     sourcemap = False,
+    deps = [
+        ":normalize",
+    ],
 )
