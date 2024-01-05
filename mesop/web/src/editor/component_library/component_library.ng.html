@@ -1,1 +1,8 @@
-<div>component library</div>
+<div class="header">Components</div>
+<div class="background">
+  @for(config of componentConfigs; track $index) {
+  <div class="block">
+    {{config.getComponentName()}} <mat-icon>drag_indicator</mat-icon>
+  </div>
+  }
+</div>

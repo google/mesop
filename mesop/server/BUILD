@@ -8,6 +8,7 @@ py_library(
     name = "server",
     srcs = glob(["*.py"]),
     deps = [
+        "//mesop/editor",
         "//mesop/protos:ui_py_pb2",
         "//mesop/utils",
     ] + THIRD_PARTY_PY_FLASK,

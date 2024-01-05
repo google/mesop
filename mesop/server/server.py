@@ -4,6 +4,7 @@ from typing import Generator, Sequence
 from flask import Flask, Response, request, stream_with_context
 
 import mesop.protos.ui_pb2 as pb
+from mesop.editor.component_configs import get_component_configs
 from mesop.exceptions import format_traceback
 from mesop.runtime import runtime
 
@@ -25,6 +26,7 @@ def configure_flask_app(
           root_component=root_component,
           states=runtime().context().serialize_state(),
           commands=runtime().context().commands(),
+          component_configs=get_component_configs(),
         )
       )
       yield serialize(data)

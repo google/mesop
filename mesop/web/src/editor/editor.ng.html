@@ -16,7 +16,9 @@
       position="start"
       class="left-sidenav"
     >
-      <mesop-component-library></mesop-component-library>
+      <mesop-component-library
+        [componentConfigs]="componentConfigs()"
+      ></mesop-component-library>
     </mat-sidenav>
     <mat-sidenav-content #sidenavContent>
       @for(error of this.errors; track $index) {

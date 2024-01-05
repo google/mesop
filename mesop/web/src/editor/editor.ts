@@ -11,6 +11,7 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {
   ServerError,
   Component as ComponentProto,
+  ComponentConfig,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 import {CommonModule} from '@angular/common';
 import {ComponentRenderer} from '../component_renderer/component_renderer';
@@ -62,7 +63,7 @@ class Editor {
   @ViewChild('sidenav', {read: ElementRef}) sidenav!: ElementRef;
   @ViewChild('sidenavContent', {read: ElementRef})
   sidenavContent!: ElementRef;
-  @ViewChild(Shell, {static: false}) shell!: Shell;
+  @ViewChild(Shell, {static: false}) shell?: Shell;
 
   constructor(
     private zone: NgZone,
@@ -132,6 +133,11 @@ class Editor {
 
   toggleRightSidenav() {
     this.devToolsSettings.toggleShowRightSidenav();
+  }
+
+  componentConfigs(): ComponentConfig[] {
+    if (!this.shell) return [];
+    return this.shell.componentConfigs;
   }
 }
 

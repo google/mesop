@@ -75,6 +75,9 @@ message RenderEvent {
     Component root_component = 1;
     States states = 2;
     repeated Command commands = 3;
+
+    // Only sent in editor mode:
+    repeated ComponentConfig component_configs = 4;
 }
 
 message Command {
@@ -117,4 +120,9 @@ message Type {
     // Needed outside of |value| because ComponentRenderer (TS) needs to know
     // the type index in order to do content projection correctly.
     int32 type_index = 7;
+}
+
+message ComponentConfig {
+    string component_name = 1;
+    string category = 2;
 }

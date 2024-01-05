@@ -8,6 +8,7 @@ import {
   Component as ComponentProto,
   UiResponse,
   NavigationEvent,
+  ComponentConfig,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 import {Logger} from '../dev_tools/services/logger';
 
@@ -16,7 +17,10 @@ const DEV_SERVER_HOST = anyWindow['MESOP_SERVER_HOST'] || '';
 
 interface InitParams {
   zone: NgZone;
-  onRender: (rootComponent: ComponentProto) => void;
+  onRender: (
+    rootComponent: ComponentProto,
+    componentConfigs: ComponentConfig[],
+  ) => void;
   onError: (error: ServerError) => void;
   onNavigate: (route: string) => void;
 }
@@ -92,7 +96,10 @@ export class Channel {
               }
             }
 
-            onRender(rootComponent);
+            onRender(
+              rootComponent,
+              uiResponse.getRender()!.getComponentConfigsList(),
+            );
             this.logger.log({
               type: 'RenderLog',
               states: this.states,

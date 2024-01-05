@@ -5,6 +5,7 @@ import {
   ServerError,
   Component as ComponentProto,
   UserEvent,
+  ComponentConfig,
   NavigationEvent,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 import {CommonModule} from '@angular/common';
@@ -29,6 +30,7 @@ import {MatIconModule, MatIconRegistry} from '@angular/material/icon';
 export class Shell {
   rootComponent!: ComponentProto;
   errors: ServerError[] = [];
+  componentConfigs: ComponentConfig[] = [];
 
   constructor(
     private zone: NgZone,
@@ -43,8 +45,9 @@ export class Shell {
   ngOnInit() {
     this.channel.init({
       zone: this.zone,
-      onRender: (rootComponent) => {
+      onRender: (rootComponent, componentConfigs) => {
         this.rootComponent = rootComponent;
+        this.componentConfigs = componentConfigs;
       },
       onNavigate: (route) => {
         this.router.navigateByUrl(route);
