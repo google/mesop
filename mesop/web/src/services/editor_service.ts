@@ -12,4 +12,8 @@ export class EditorService {
   getFocusedComponent(): ComponentProto {
     return this.component;
   }
+
+  clearFocusedComponent() {
+    this.component = new ComponentProto();
+  }
 }

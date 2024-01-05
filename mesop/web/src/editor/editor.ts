@@ -76,6 +76,7 @@ class Editor {
     iconRegistry: MatIconRegistry,
     private router: Router,
     errorHandler: ErrorHandler,
+    private editorService: EditorService,
   ) {
     iconRegistry.setDefaultFontSetClass('material-symbols-rounded');
     (errorHandler as GlobalErrorHandlerService).setOnError((error) => {
@@ -106,6 +107,11 @@ class Editor {
     this.renderer.listen(document, 'mouseup', (event) => {
       this.isDragging = false;
     });
+  }
+
+  clearFocusedElement() {
+    this.editorService.clearFocusedComponent();
+    console.log('clear');
   }
 
   showDebugButton() {
@@ -157,6 +163,10 @@ class EditorServiceImpl implements EditorService {
 
   getFocusedComponent(): ComponentProto {
     return this.component;
+  }
+
+  clearFocusedComponent() {
+    this.component = new ComponentProto();
   }
 }
 

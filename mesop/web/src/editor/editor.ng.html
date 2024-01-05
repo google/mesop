@@ -21,11 +21,13 @@
       ></mesop-component-library>
     </mat-sidenav>
     <mat-sidenav-content #sidenavContent class="content-frame">
+      <div class="top-content-padding" (click)="clearFocusedElement()"></div>
       <div class="content-frame-border">
         @for(error of this.errors; track $index) {
         <mesop-error-box *ngIf="error != null" [error]="error" />
         }
         <mesop-shell></mesop-shell>
+        <div class="remaining-space" (click)="clearFocusedElement()"></div>
         <div #dragHandle class="resize-handle"></div>
       </div>
     </mat-sidenav-content>
