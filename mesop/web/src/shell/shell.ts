@@ -35,8 +35,8 @@ import {GlobalErrorHandlerService} from '../services/global_error_handler';
 // ADD_TS_IMPORT_HERE
 
 @Component({
-  selector: 'app',
-  templateUrl: 'app.ng.html',
+  selector: 'optic-shell',
+  templateUrl: 'shell.ng.html',
   standalone: true,
   imports: [
     CommonModule,
@@ -52,9 +52,9 @@ import {GlobalErrorHandlerService} from '../services/global_error_handler';
     {provide: ErrorHandler, useClass: GlobalErrorHandlerService},
     {provide: HotReloadWatcher, useClass: IbazelHotReloadWatcher},
   ],
-  styleUrl: 'app_styles.css',
+  styleUrl: 'shell.css',
 })
-class App {
+class Shell {
   rootComponent!: ComponentProto;
   errors: ServerError[] = [];
   @ViewChild('dragHandle', {read: ElementRef}) dragHandle!: ElementRef;
@@ -140,18 +140,18 @@ class App {
   }
 }
 
-const routes: Routes = [{path: '**', component: App}];
+const routes: Routes = [{path: '**', component: Shell}];
 
 @Component({
   selector: 'optic-app',
   template: '<router-outlet></router-outlet>',
   standalone: true,
-  imports: [App, RouterOutlet],
+  imports: [Shell, RouterOutlet],
 })
-class OpticShell {}
+class OpticApp {}
 
 export function bootstrapApp() {
-  bootstrapApplication(OpticShell, {
+  bootstrapApplication(OpticApp, {
     providers: [provideAnimations(), provideRouter(routes)],
   });
 }

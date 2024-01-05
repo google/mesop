@@ -1,3 +1,3 @@
-import {bootstrapApp} from '../app';
+import {bootstrapApp} from '../../shell/shell';
 
 bootstrapApp();
