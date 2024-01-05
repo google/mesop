@@ -20,12 +20,14 @@
         [componentConfigs]="componentConfigs()"
       ></mesop-component-library>
     </mat-sidenav>
-    <mat-sidenav-content #sidenavContent>
-      @for(error of this.errors; track $index) {
-      <mesop-error-box *ngIf="error != null" [error]="error" />
-      }
-      <mesop-shell></mesop-shell>
-      <div #dragHandle class="resize-handle"></div>
+    <mat-sidenav-content #sidenavContent class="content-frame">
+      <div class="content-frame-border">
+        @for(error of this.errors; track $index) {
+        <mesop-error-box *ngIf="error != null" [error]="error" />
+        }
+        <mesop-shell></mesop-shell>
+        <div #dragHandle class="resize-handle"></div>
+      </div>
     </mat-sidenav-content>
     <mat-sidenav
       #sidenav
