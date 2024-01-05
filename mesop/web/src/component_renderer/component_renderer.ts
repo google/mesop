@@ -2,6 +2,7 @@ import {
   ApplicationRef,
   Component,
   ComponentRef,
+  ElementRef,
   HostBinding,
   HostListener,
   Input,
@@ -42,6 +43,9 @@ export class ComponentRenderer {
   @ViewChild('childrenTemplate', {static: true})
   childrenTemplate!: TemplateRef<any>;
 
+  @ViewChild('insertion', {read: ViewContainerRef, static: true})
+  insertionRef!: ViewContainerRef;
+
   @Input() component!: ComponentProto;
   private _boxType: BoxType | undefined;
   private _componentRef!: ComponentRef<BaseComponent>;
@@ -50,11 +54,27 @@ export class ComponentRenderer {
 
   constructor(
     private channel: Channel,
-    private viewContainerRef: ViewContainerRef,
     private applicationRef: ApplicationRef,
     private editorService: EditorService,
+    private elementRef: ElementRef,
   ) {
     this.isEditorMode = this.editorService.isEditorMode();
+  }
+
+  ngAfterViewInit() {
+    (this.elementRef.nativeElement as HTMLElement).addEventListener(
+      'click',
+      this.onContainerClick,
+      {capture: true},
+    );
+  }
+
+  ngOnDestroy() {
+    (this.elementRef.nativeElement as HTMLElement).removeEventListener(
+      'click',
+      this.onContainerClick,
+      {capture: true},
+    );
   }
 
   trackByFn(index: any, item: ComponentProto) {
@@ -107,7 +127,9 @@ export class ComponentRenderer {
         projectableNodes,
       };
     }
-    this._componentRef = this.viewContainerRef.createComponent(
+    // Need to insert at insertionRef and *not* viewContainerRef, otherwise
+    // the component (e.g. <mesop-text> will not be properly nested inside <component-renderer>).
+    this._componentRef = this.insertionRef.createComponent(
       typeToComponent[typeName],
       options,
     );
@@ -146,6 +168,22 @@ export class ComponentRenderer {
     userEvent.setHandlerId(this._boxType.getOnClickHandlerId());
     userEvent.setKey(this.component.getKey());
     this.channel.dispatch(userEvent);
+  }
+
+  //////////////
+  // Editor-specific implementation:
+  //////////////
+
+  onContainerClick = () => {
+    if (!this.isEditorMode) {
+      return;
+    }
+
+    this.editorService.setFocusedComponent(this.component);
+  };
+
+  isEditorFocusedComponent() {
+    return this.editorService.getFocusedComponent() === this.component;
   }
 }
 

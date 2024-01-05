@@ -3,11 +3,9 @@ Angular component (e.g. mesop-box) because it will create an intermediate DOM no
 which interferes with Flexbox styling which requires children (direct descendants)
 to have certain styling properties -->
 
-<div
-  (click)="isEditorMode ? isEditorOverlayOpen = !isEditorOverlayOpen : null"
-  cdkOverlayOrigin
-  #trigger="cdkOverlayOrigin"
->
+<span #insertion></span>
+
+<span #container cdkOverlayOrigin #trigger="cdkOverlayOrigin">
   <ng-container *ngIf="type()?.getName() === 'box' || type() == null">
     <ng-container
       *ngFor="let child of component.getChildrenList(); trackBy: trackByFn"
@@ -15,24 +13,24 @@ to have certain styling properties -->
       <component-renderer [component]="child"> </component-renderer>
     </ng-container>
   </ng-container>
+</span>
 
-  <ng-template #childrenTemplate>
-    <ng-container
-      *ngFor="let child of component.getChildrenList(); trackBy: trackByFn"
-    >
-      <component-renderer [component]="child"> </component-renderer>
-    </ng-container>
-  </ng-template>
-</div>
+<ng-template #childrenTemplate>
+  <ng-container
+    *ngFor="let child of component.getChildrenList(); trackBy: trackByFn"
+  >
+    <component-renderer [component]="child"> </component-renderer>
+  </ng-container>
+</ng-template>
 
 <!-- Editor overlay -->
 <ng-template
   cdkConnectedOverlay
   [cdkConnectedOverlayOrigin]="trigger"
-  [cdkConnectedOverlayOpen]="isEditorOverlayOpen"
+  [cdkConnectedOverlayOpen]="isEditorFocusedComponent()"
 >
   <div class="editor-overlay">
-    Component name
+    {{type() ? type()!.getName() : "[root]"}}
     <span class="divider"></span>
     <button mat-icon-button>
       <mat-icon color="white">delete</mat-icon>

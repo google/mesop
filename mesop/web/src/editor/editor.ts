@@ -145,8 +145,18 @@ class Editor {
 const routes: Routes = [{path: '**', component: Editor}];
 
 class EditorServiceImpl implements EditorService {
+  component = new ComponentProto();
   isEditorMode(): boolean {
     return true;
+  }
+
+  setFocusedComponent(component: ComponentProto): void {
+    this.component = component;
+    console.log('focused', component.getType()?.getName() || 'root');
+  }
+
+  getFocusedComponent(): ComponentProto {
+    return this.component;
   }
 }
 
