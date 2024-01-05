@@ -5,9 +5,8 @@ import mesop as me
 def app():
   with me.box(
     style="""
-    display: block;
   background-color: pink;
-  height: 50px;
+  height: 50px
   """
   ):
     me.text(text="hi1")

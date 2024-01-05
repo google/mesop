@@ -8,7 +8,7 @@ def navmenu(url: str):
       position: fixed;
     width: 84px;
     border-right: 1px solid #f6f5f6;
-    height: 100%;
+    height: 100%
     """
   ):
     menu_item(label="Home", icon="home", url="/", current_url=url)
@@ -35,16 +35,16 @@ def menu_item(label: str, icon: str, url: str, current_url: str):
     style=f"""
     {is_active_border}
   padding: 16px;
-  text-align: center;
+  text-align: center
   """
   ):
-    with me.box(style="margin-bottom: 8px;"):
+    with me.box(style="margin-bottom: 8px"):
       with me.button(type="icon", on_click=on_click, key=url):
         with me.box(
           style="""
         display: flex;
         flex-direction: column;
-        align-items: center;
+        align-items: center
         """
         ):
           me.icon(icon=icon, style=f"color: {color}")
@@ -53,7 +53,7 @@ def menu_item(label: str, icon: str, url: str, current_url: str):
             style=f"""
             color: {color};
             font-weight: 500;
-            font-size: 14px;
+            font-size: 14px
             """,
           )
 

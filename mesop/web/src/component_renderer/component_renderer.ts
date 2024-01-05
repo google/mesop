@@ -3,7 +3,6 @@ import {
   Component,
   ComponentRef,
   ElementRef,
-  HostBinding,
   HostListener,
   Input,
   TemplateRef,
@@ -109,6 +108,20 @@ export class ComponentRenderer {
         this.component.getType()!.getValue() as unknown as Uint8Array,
       );
     }
+
+    this.computeStyles();
+  }
+
+  ngDoCheck() {
+    // Only need to re-compute styles in editor mode to properly
+    // show focused component highlight.
+    if (this.isEditorMode) {
+      this.computeStyles();
+    }
+  }
+
+  computeStyles() {
+    this.elementRef.nativeElement.style = this.getStyle();
   }
 
   createComponentRef() {
@@ -149,14 +162,27 @@ export class ComponentRenderer {
   // Box-specific implementation:
   //////////////
 
-  @HostBinding('style') get style(): string {
+  getStyle(): string {
     if (!this._boxType) {
+      if (this.isEditorFocusedComponent()) {
+        return `display: block; ${this.getFocusedStyle()}`;
+      }
       return '';
     }
 
     // `display: block` because box should have "div"-like semantics.
     // Custom elements like Angular component tags are treated as inline by default.
-    return `display: block;${this._boxType.getStyle().trim()}`;
+    let style = `display: block; ${this._boxType
+      .getStyle()
+      .split('\n')
+      .join('')
+      .trim()}`;
+    if (!style.endsWith(';')) {
+      style += ';';
+    }
+    return (
+      style + (this.isEditorFocusedComponent() ? this.getFocusedStyle() : '')
+    );
   }
 
   @HostListener('click', ['$event'])
@@ -173,6 +199,14 @@ export class ComponentRenderer {
   //////////////
   // Editor-specific implementation:
   //////////////
+
+  getFocusedStyle(): string {
+    return `
+    background: rgb(119 166 245);
+    opacity: 0.7;
+    border-radius: 2px;
+    `;
+  }
 
   onContainerClick = () => {
     if (!this.isEditorMode) {

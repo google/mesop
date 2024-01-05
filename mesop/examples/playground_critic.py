@@ -110,7 +110,7 @@ def left_panel():
 
     with me.box(style="margin: 16px 0"):
       me.divider()
-    with me.box(style="margin-bottom: 8px;"):
+    with me.box(style="margin-bottom: 8px"):
       me.text("Critic prompt", style="font-weight: 500")
 
     me.text(
