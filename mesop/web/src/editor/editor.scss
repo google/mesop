@@ -1,11 +1,25 @@
-.container {
+.overall {
+  display: flex;
+  flex-direction: column;
   height: 100%;
 }
 
-.debug-buttons {
-  position: absolute;
-  top: 0px;
-  right: 0px;
+.header {
+  border-bottom: 1px solid rgb(220, 220, 220);
+  height: 48px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-title {
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.container {
+  flex-grow: 1;
 }
 
 .right-sidenav {

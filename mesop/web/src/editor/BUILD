@@ -18,6 +18,7 @@ ng_module(
         "//mesop/web/src/component_renderer",
         "//mesop/web/src/dev_tools",
         "//mesop/web/src/dev_tools/services",
+        "//mesop/web/src/editor/component_library",
         "//mesop/web/src/error",
         "//mesop/web/src/services",
         "//mesop/web/src/shell",

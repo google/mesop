@@ -28,6 +28,7 @@ import {
 } from '../services/hot_reload_watcher';
 import {GlobalErrorHandlerService} from '../services/global_error_handler';
 import {Shell} from '../shell/shell';
+import {ComponentLibrary} from './component_library/component_library';
 // Keep the following comment to ensure there's a hook for adding TS imports in the downstream sync.
 // ADD_TS_IMPORT_HERE
 
@@ -45,6 +46,7 @@ import {Shell} from '../shell/shell';
     MatButtonModule,
     MatSidenavModule,
     Shell,
+    ComponentLibrary,
   ],
   providers: [
     {provide: ErrorHandler, useClass: GlobalErrorHandlerService},
@@ -114,6 +116,22 @@ class Editor {
 
   toggleDevTools() {
     this.devToolsSettings.toggleShowDevTools();
+  }
+
+  showLeftSidenav() {
+    return this.devToolsSettings.showLeftSidenav();
+  }
+
+  toggleLeftSidenav() {
+    this.devToolsSettings.toggleShowLeftSidenav();
+  }
+
+  showRightSidenav() {
+    return this.devToolsSettings.showRightSidenav();
+  }
+
+  toggleRightSidenav() {
+    this.devToolsSettings.toggleShowRightSidenav();
   }
 }
 
