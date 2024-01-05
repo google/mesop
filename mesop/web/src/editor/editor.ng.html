@@ -1,0 +1,23 @@
+<mat-sidenav-container class="container">
+  <mat-sidenav-content #sidenavContent>
+    @for(error of this.errors; track $index) {
+    <mesop-error-box *ngIf="error != null" [error]="error" />
+    }
+    <optic-shell></optic-shell>
+    <div class="debug-buttons" *ngIf="showDebugButton()">
+      <button mat-icon-button (click)="toggleDevTools()">
+        <mat-icon>settings</mat-icon>
+      </button>
+    </div>
+    <div [hidden]="!showDevTools()" #dragHandle class="resize-handle"></div>
+  </mat-sidenav-content>
+  <mat-sidenav
+    #sidenav
+    [opened]="showDevTools()"
+    mode="side"
+    position="end"
+    class="right-sidenav"
+  >
+    <mesop-dev-tools *ngIf="showDevTools()"></mesop-dev-tools>
+  </mat-sidenav>
+</mat-sidenav-container>

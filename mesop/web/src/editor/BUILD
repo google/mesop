@@ -5,23 +5,27 @@ package(
 )
 
 ng_module(
-    name = "shell",
+    name = "editor",
     srcs = glob([
         "*.ts",
     ]),
     assets = [
-        "shell.ng.html",
-        "shell.css",
+        "editor.ng.html",
+        "editor.css",
     ],
     deps = [
         "//mesop/protos:ui_jspb_proto",
         "//mesop/web/src/component_renderer",
+        "//mesop/web/src/dev_tools",
+        "//mesop/web/src/dev_tools/services",
+        "//mesop/web/src/error",
         "//mesop/web/src/services",
+        "//mesop/web/src/shell",
     ] + ANGULAR_CORE_DEPS + ANGULAR_CDK_TS_DEPS + ANGULAR_MATERIAL_TS_DEPS,
 )
 
 sass_binary(
-    name = "shell_styles",
-    src = "shell.scss",
+    name = "editor_styles",
+    src = "editor.scss",
     sourcemap = False,
 )
