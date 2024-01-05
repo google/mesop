@@ -138,15 +138,15 @@ class Editor {
 const routes: Routes = [{path: '**', component: Editor}];
 
 @Component({
-  selector: 'mesop-app',
+  selector: 'mesop-editor-app',
   template: '<router-outlet></router-outlet>',
   standalone: true,
   imports: [Editor, RouterOutlet],
 })
-class OpticApp {}
+class MesopEditorApp {}
 
 export function bootstrapApp() {
-  bootstrapApplication(OpticApp, {
+  bootstrapApplication(MesopEditorApp, {
     providers: [provideAnimations(), provideRouter(routes)],
   });
 }

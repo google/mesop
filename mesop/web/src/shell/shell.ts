@@ -76,10 +76,10 @@ const routes: Routes = [{path: '**', component: Shell}];
   standalone: true,
   imports: [Shell, RouterOutlet],
 })
-class OpticApp {}
+class MesopApp {}
 
 export function bootstrapApp() {
-  bootstrapApplication(OpticApp, {
+  bootstrapApplication(MesopApp, {
     providers: [provideAnimations(), provideRouter(routes)],
   });
 }
