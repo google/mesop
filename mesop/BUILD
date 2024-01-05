@@ -1,3 +1,5 @@
+# Description:
+#   Mesop is a Python UI framework that allows you to build web demos.
 load("//build_defs:defaults.bzl", "py_library")
 
 package(
