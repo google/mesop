@@ -58,7 +58,7 @@ export class ComponentTree {
   dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
   ngOnChanges() {
-    this.dataSource.data = [mapObject(this.component)];
+    this.dataSource.data = [mapComponentObjectToDisplay(this.component)];
 
     this.treeControl.dataNodes.forEach((node) => {
       if (node.level < 5) {
@@ -74,7 +74,9 @@ export class ComponentTree {
   }
 }
 
-function mapObject(object: ComponentObject): DisplayNode {
+export function mapComponentObjectToDisplay(
+  object: ComponentObject,
+): DisplayNode {
   const node: DisplayNode = {
     componentName: '<undefined>',
     text: '',
@@ -97,7 +99,9 @@ function mapObject(object: ComponentObject): DisplayNode {
     node.text = '<root>';
   }
   if (object.children) {
-    node.children = object.children.map((child) => mapObject(child));
+    node.children = object.children.map((child) =>
+      mapComponentObjectToDisplay(child),
+    );
   }
   return node;
 }
@@ -113,7 +117,7 @@ export interface InputNode {
   childrenList: InputNode[];
 }
 
-interface DisplayNode {
+export interface DisplayNode {
   text: string; // foo(bar=blue)
   componentName: string;
   properties: [string: any];

@@ -59,28 +59,30 @@ export class Logger {
           states: input.states
             .getStatesList()
             .map((s) => jsonParse(s.getData())) as object[],
-          rootComponent: this.mapComponent(input.rootComponent),
+          rootComponent: mapComponentToObject(input.rootComponent),
         };
     }
   }
+}
 
-  mapComponent(component: ComponentProto): ComponentObject {
-    const debugJson = component.getType()?.getDebugJson();
-    let type;
-    if (debugJson) {
-      type = {
-        name: component.getType()!.getName(),
-        value: jsonParse(debugJson) as object,
-      };
-    }
-    return {
-      type,
-      key: component.getKey()?.getKey(),
-      children: component
-        .getChildrenList()
-        .map((child) => this.mapComponent(child)),
+export function mapComponentToObject(
+  component: ComponentProto,
+): ComponentObject {
+  const debugJson = component.getType()?.getDebugJson();
+  let type;
+  if (debugJson) {
+    type = {
+      name: component.getType()!.getName(),
+      value: jsonParse(debugJson) as object,
     };
   }
+  return {
+    type,
+    key: component.getKey()?.getKey(),
+    children: component
+      .getChildrenList()
+      .map((child) => mapComponentToObject(child)),
+  };
 }
 
 export interface ComponentObject {
