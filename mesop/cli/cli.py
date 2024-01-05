@@ -21,7 +21,9 @@ from mesop.server.static_file_serving import configure_static_file_serving
 FLAGS = flags.FLAGS
 
 flags.DEFINE_string("path", "", "path to main python module of Mesop app.")
-flags.DEFINE_bool("debug", True, "set to true for debug mode.")
+flags.DEFINE_bool(
+  "prod", False, "set to true for prod mode; otherwise editor mode."
+)
 flags.DEFINE_bool("verbose", False, "set to true for verbose logging.")
 
 
@@ -45,7 +47,7 @@ def main(argv):
   if len(FLAGS.path) < 1:
     raise Exception("Required flag 'path'. Received: " + FLAGS.path)
 
-  if FLAGS.debug:
+  if not FLAGS.prod:
     enable_debug_mode()
     stdin_thread = threading.Thread(
       target=monitor_stdin, name="mesop_build_watcher_thread"
@@ -57,7 +59,7 @@ def main(argv):
     execute_module(runfile_path=FLAGS.path)
   except Exception as e:
     # Only record error to runtime if in CI mode.
-    if FLAGS.debug:
+    if not FLAGS.prod:
       runtime().add_loading_error(
         pb.ServerError(exception=str(e), traceback=format_traceback())
       )
@@ -69,7 +71,9 @@ def main(argv):
 
   configure_static_file_serving(
     flask_app,
-    static_file_runfiles_base="mesop/mesop/web/src/app/prod/web_package",
+    static_file_runfiles_base="mesop/mesop/web/src/app/prod/web_package"
+    if FLAGS.prod
+    else "mesop/mesop/web/src/app/editor/web_package",
     livereload_script_url=os.environ.get("IBAZEL_LIVERELOAD_URL"),
   )
 
