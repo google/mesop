@@ -18,6 +18,7 @@ import {ComponentLoader} from './component_loader';
 import {BoxType} from 'mesop/mesop/components/box/box_jspb_proto_pb/mesop/components/box/box_pb';
 import {BaseComponent, typeToComponent} from './type_to_component';
 import {Channel} from '../services/channel';
+import {EditorModeService} from '../services/editor_mode_service';
 
 @Component({
   selector: 'component-renderer',
@@ -37,6 +38,7 @@ export class ComponentRenderer {
     private channel: Channel,
     private viewContainerRef: ViewContainerRef,
     private applicationRef: ApplicationRef,
+    private editorModeService: EditorModeService,
   ) {}
 
   trackByFn(index: any, item: ComponentProto) {

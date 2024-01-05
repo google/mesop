@@ -30,6 +30,7 @@ import {
 import {GlobalErrorHandlerService} from '../services/global_error_handler';
 import {Shell} from '../shell/shell';
 import {ComponentLibrary} from './component_library/component_library';
+import {EditorModeService} from '../services/editor_mode_service';
 // Keep the following comment to ensure there's a hook for adding TS imports in the downstream sync.
 // ADD_TS_IMPORT_HERE
 
@@ -143,10 +144,17 @@ class Editor {
 
 const routes: Routes = [{path: '**', component: Editor}];
 
+class EditorModeServiceImpl implements EditorModeService {
+  isEditorMode(): boolean {
+    return true;
+  }
+}
+
 @Component({
   selector: 'mesop-editor-app',
   template: '<router-outlet></router-outlet>',
   standalone: true,
+  providers: [{provide: EditorModeService, useClass: EditorModeServiceImpl}],
   imports: [Editor, RouterOutlet],
 })
 class MesopEditorApp {}

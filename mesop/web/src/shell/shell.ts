@@ -14,6 +14,7 @@ import {Channel, ChannelStatus} from '../services/channel';
 import {provideAnimations} from '@angular/platform-browser/animations';
 import {bootstrapApplication} from '@angular/platform-browser';
 import {MatIconModule, MatIconRegistry} from '@angular/material/icon';
+import {EditorModeService} from '../services/editor_mode_service';
 
 @Component({
   selector: 'mesop-shell',
@@ -78,6 +79,7 @@ const routes: Routes = [{path: '**', component: Shell}];
   template: '<router-outlet></router-outlet>',
   standalone: true,
   imports: [Shell, RouterOutlet],
+  providers: [EditorModeService],
 })
 class MesopApp {}
 
