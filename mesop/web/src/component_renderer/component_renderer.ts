@@ -19,12 +19,24 @@ import {BoxType} from 'mesop/mesop/components/box/box_jspb_proto_pb/mesop/compon
 import {BaseComponent, typeToComponent} from './type_to_component';
 import {Channel} from '../services/channel';
 import {EditorModeService} from '../services/editor_mode_service';
+import {OverlayModule} from '@angular/cdk/overlay';
+import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
+import {MatDividerModule} from '@angular/material/divider';
 
 @Component({
   selector: 'component-renderer',
   templateUrl: 'component_renderer.ng.html',
+  styleUrl: 'component_renderer.css',
   standalone: true,
-  imports: [CommonModule, ComponentLoader],
+  imports: [
+    CommonModule,
+    ComponentLoader,
+    OverlayModule,
+    MatButtonModule,
+    MatIconModule,
+    MatDividerModule,
+  ],
 })
 export class ComponentRenderer {
   @ViewChild('childrenTemplate', {static: true})
@@ -33,13 +45,17 @@ export class ComponentRenderer {
   @Input() component!: ComponentProto;
   private _boxType: BoxType | undefined;
   private _componentRef!: ComponentRef<BaseComponent>;
+  isEditorMode: boolean;
+  isEditorOverlayOpen = false;
 
   constructor(
     private channel: Channel,
     private viewContainerRef: ViewContainerRef,
     private applicationRef: ApplicationRef,
     private editorModeService: EditorModeService,
-  ) {}
+  ) {
+    this.isEditorMode = this.editorModeService.isEditorMode();
+  }
 
   trackByFn(index: any, item: ComponentProto) {
     const key = item.getKey()?.getKey();

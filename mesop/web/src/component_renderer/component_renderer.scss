@@ -1,0 +1,17 @@
+.editor-overlay {
+  display: flex;
+  align-items: center;
+  background: #111;
+  color: #ddd;
+  border-radius: 12px;
+  padding: 0px 12px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.divider {
+  width: 1px;
+  background: #eee;
+  height: 24px;
+  margin-left: 12px;
+}

@@ -1,4 +1,4 @@
-load("//build_defs:defaults.bzl", "ANGULAR_CORE_DEPS", "ANGULAR_MATERIAL_TS_DEPS", "ng_module")
+load("//build_defs:defaults.bzl", "ANGULAR_CORE_DEPS", "ANGULAR_MATERIAL_TS_DEPS", "ng_module", "sass_binary")
 
 package(
     default_visibility = ["//build_defs:mesop_internal"],
@@ -11,7 +11,7 @@ ng_module(
     ]),
     assets = glob([
         "*.ng.html",
-    ]),
+    ]) + ["component_renderer.css"],
     deps = [
         # REF(//scripts/scaffold_component.py):insert_component_import
         "//mesop/components/slider:ng",
@@ -33,4 +33,10 @@ ng_module(
         "//mesop/components/text:ng",
         "//mesop/protos:ui_jspb_proto",
     ] + ANGULAR_CORE_DEPS + ANGULAR_MATERIAL_TS_DEPS,
+)
+
+sass_binary(
+    name = "component_renderer_styles",
+    src = "component_renderer.scss",
+    sourcemap = False,
 )
