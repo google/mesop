@@ -33,7 +33,7 @@ import {ComponentLibrary} from './component_library/component_library';
 // ADD_TS_IMPORT_HERE
 
 @Component({
-  selector: 'optic-editor',
+  selector: 'mesop-editor',
   templateUrl: 'editor.ng.html',
   standalone: true,
   imports: [
@@ -138,7 +138,7 @@ class Editor {
 const routes: Routes = [{path: '**', component: Editor}];
 
 @Component({
-  selector: 'optic-app',
+  selector: 'mesop-app',
   template: '<router-outlet></router-outlet>',
   standalone: true,
   imports: [Editor, RouterOutlet],

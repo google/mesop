@@ -15,7 +15,7 @@ import {bootstrapApplication} from '@angular/platform-browser';
 import {MatIconModule, MatIconRegistry} from '@angular/material/icon';
 
 @Component({
-  selector: 'optic-shell',
+  selector: 'mesop-shell',
   templateUrl: 'shell.ng.html',
   standalone: true,
   imports: [
@@ -71,7 +71,7 @@ export class Shell {
 const routes: Routes = [{path: '**', component: Shell}];
 
 @Component({
-  selector: 'optic-app',
+  selector: 'mesop-app',
   template: '<router-outlet></router-outlet>',
   standalone: true,
   imports: [Shell, RouterOutlet],

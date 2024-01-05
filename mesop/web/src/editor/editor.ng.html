@@ -22,7 +22,7 @@
       @for(error of this.errors; track $index) {
       <mesop-error-box *ngIf="error != null" [error]="error" />
       }
-      <optic-shell></optic-shell>
+      <mesop-shell></mesop-shell>
       <div #dragHandle class="resize-handle"></div>
     </mat-sidenav-content>
     <mat-sidenav
