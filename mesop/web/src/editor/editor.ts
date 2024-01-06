@@ -111,7 +111,6 @@ class Editor {
 
   clearFocusedElement() {
     this.editorService.clearFocusedComponent();
-    console.log('clear');
   }
 
   showDebugButton() {
@@ -158,7 +157,6 @@ class EditorServiceImpl implements EditorService {
 
   setFocusedComponent(component: ComponentProto): void {
     this.component = component;
-    console.log('focused', component.getType()?.getName() || 'root');
   }
 
   getFocusedComponent(): ComponentProto {

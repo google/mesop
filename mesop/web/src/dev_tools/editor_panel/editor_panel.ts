@@ -8,16 +8,15 @@ import {
   ComponentConfig,
   EditorField,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
 import {MatDividerModule} from '@angular/material/divider';
+import {EditorFields} from './editor_fields/editor_fields';
 
 @Component({
   selector: 'mesop-editor-panel',
   templateUrl: 'editor_panel.ng.html',
   styleUrl: 'editor_panel.css',
   standalone: true,
-  imports: [ObjectTree, MatFormFieldModule, MatInputModule, MatDividerModule],
+  imports: [ObjectTree, EditorFields, MatDividerModule],
 })
 export class EditorPanel {
   @Input()
@@ -43,11 +42,5 @@ export class EditorPanel {
 
   getFields(): EditorField[] {
     return this.getComponentConfig()?.getFieldsList() ?? [];
-  }
-
-  getValueFor(fieldName: string) {
-    return this.getFocusedComponent().properties['value' as any][
-      fieldName as any
-    ];
   }
 }

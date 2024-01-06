@@ -5,18 +5,17 @@ package(
 )
 
 ng_module(
-    name = "editor_panel",
+    name = "editor_fields",
     srcs = glob([
         "*.ts",
     ]),
     assets = glob([
         "*.ng.html",
-    ]) + [":editor_panel.css"],
+    ]) + [":editor_fields.css"],
     deps = [
         "//mesop/protos:ui_jspb_proto",
         "//mesop/web/src/component_renderer",
         "//mesop/web/src/dev_tools/component_tree",
-        "//mesop/web/src/dev_tools/editor_panel/editor_fields",
         "//mesop/web/src/dev_tools/object_tree",
         "//mesop/web/src/dev_tools/services",
         "//mesop/web/src/services",
@@ -25,6 +24,6 @@ ng_module(
 
 sass_binary(
     name = "styles",
-    src = "editor_panel.scss",
+    src = "editor_fields.scss",
     sourcemap = False,
 )

@@ -1,44 +1,17 @@
-<!--  -->
-
 <div class="container">
   <div class="component-name">{{getFocusedComponent().componentName}}</div>
+  <mesop-editor-fields [fields]="getFields()"></mesop-editor-fields>
   <mat-divider></mat-divider>
-  <div class="fields-section">
-    @for(field of getFields(); track $index) {
-    <div class="field-block">
-      <div class="field-name">{{field.getName()}}</div>
-      @switch(field.getType()?.getTypeCase()) { @case(FieldTypeCase.BOOL_TYPE) {
-      <div>Bool</div>
-      } @case(FieldTypeCase.INT_TYPE) {
-      <div>Int</div>
-      } @case(FieldTypeCase.LIST_TYPE) {
-      <div>List</div>
-      } @case(FieldTypeCase.STRING_TYPE) {
-      <mat-form-field appearance="outline" style="width: 100%">
-        <!-- <mat-label>{{field.getName()}}</mat-label> -->
-        <input matInput [value]="getValueFor(field.getName())" />
-      </mat-form-field>
-      } @case(FieldTypeCase.STRING_LITERAL_TYPE) {
-      <div>String Literal</div>
-      }@case(FieldTypeCase.STRUCT_TYPE) {
-      <div>Struct Type</div>
-      } @default {
-      <div class="field-name">{{field.getName()}}</div>
-      } }
-    </div>
-    <mat-divider></mat-divider>
+  <div class="debug-section">
+    <div>Props:</div>
+    <mesop-object-tree
+      [object]="getFocusedComponent().properties"
+    ></mesop-object-tree>
+
+    Fields: @if(getComponentConfig()) {
+    <mesop-object-tree
+      [object]="getComponentConfig()!.toObject()"
+    ></mesop-object-tree>
     }
   </div>
-
-  <div>Props:</div>
-
-  <mesop-object-tree
-    [object]="getFocusedComponent().properties"
-  ></mesop-object-tree>
-
-  Fields: @if(getComponentConfig()) {
-  <mesop-object-tree
-    [object]="getComponentConfig()!.toObject()"
-  ></mesop-object-tree>
-  }
 </div>

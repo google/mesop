@@ -1,11 +1,12 @@
 import collections.abc
 import inspect
 from types import NoneType
-from typing import Any, Callable, Literal
+from typing import Any, Callable, ItemsView, Literal
 
 import mesop.protos.ui_pb2 as pb
 from mesop.components.badge.badge import badge
 from mesop.components.box.box import box
+from mesop.components.button.button import button
 from mesop.components.checkbox.checkbox import checkbox
 from mesop.components.divider.divider import divider
 from mesop.components.icon.icon import icon
@@ -26,6 +27,7 @@ def get_component_configs() -> list[pb.ComponentConfig]:
   return [
     generate_component_config(badge),
     generate_component_config(box),
+    generate_component_config(button),
     generate_component_config(checkbox),
     generate_component_config(divider),
     generate_component_config(icon),
@@ -47,10 +49,16 @@ def generate_component_config(fn: Callable[..., Any]) -> pb.ComponentConfig:
   component_config = pb.ComponentConfig(
     component_name=fn.__name__,
     category="Default",
-    fields=[],
+    fields=get_fields(sig.parameters.items()),
   )
+  return component_config
 
-  for name, param in sig.parameters.items():
+
+def get_fields(
+  items: ItemsView[str, inspect.Parameter],
+) -> list[pb.EditorField]:
+  fields: list[pb.EditorField] = []
+  for name, param in items:
     editor_field = pb.EditorField(name=name, type=pb.FieldType())
     editor_field.name = name
     param_type = param.annotation
@@ -66,11 +74,22 @@ def generate_component_config(fn: Callable[..., Any]) -> pb.ComponentConfig:
     field_type = None
     if param_type is bool:
       field_type = pb.FieldType(bool_type=pb.BoolType(default_value=False))
+    elif param_type is float:
+      field_type = pb.FieldType(float_type=pb.FloatType(default_value=0))
     elif param_type is str:
       field_type = pb.FieldType(string_type=pb.StringType())
     elif getattr(param_type, "__origin__", None) is Literal:
       field_type = pb.FieldType(
         string_literal_type=pb.StringLiteralType(literals=param_type.__args__)
+      )
+    elif getattr(param_type, "__origin__", None) is list:
+      el_fields = get_fields(
+        inspect.signature(param_type.__args__[0]).parameters.items()
+      )
+      field_type = pb.FieldType(
+        list_type=pb.ListType(
+          type=pb.FieldType(struct_type=pb.StructType(fields=el_fields))
+        )
       )
     elif isinstance(param_type, collections.abc.Callable):
       field_type = None
@@ -79,6 +98,6 @@ def generate_component_config(fn: Callable[..., Any]) -> pb.ComponentConfig:
         "Unhandled param type", param_type, "field_name", name
       )
 
-    component_config.fields.append(pb.EditorField(name=name, type=field_type))
+    fields.append(pb.EditorField(name=name, type=field_type))
 
-  return component_config
+  return fields

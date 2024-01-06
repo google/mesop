@@ -21,6 +21,12 @@ def app():
   ):
     me.text(text="label")
 
+  with me.checkbox(
+    on_change=on_update,
+    # checked=state.checked,
+  ):
+    me.text(text="second checkbox1")
+
   if state.checked:
     me.text(text="is checked")
   else:

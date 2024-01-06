@@ -138,10 +138,11 @@ message FieldType {
     oneof type {
         BoolType bool_type = 1;
         IntType int_type = 2;
-        StringType string_type = 3;
-        StringLiteralType string_literal_type = 4;
-        ListType list_type = 5;
-        StructType struct_type =6;
+        FloatType float_type = 3;
+        StringType string_type = 4;
+        StringLiteralType string_literal_type = 5;
+        ListType list_type = 6;
+        StructType struct_type = 7;
     }
 }
 
@@ -157,6 +158,10 @@ message IntType {
     int32 default_value = 1;
 }
 
+message FloatType {
+    double default_value = 1;
+}
+
 message StringType {
     string default_value = 1;
 }
@@ -166,5 +171,5 @@ message StringLiteralType {
 }
 
 message ListType {
-    repeated FieldType type = 1;
+    FieldType type = 1;
 }

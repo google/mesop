@@ -2,6 +2,7 @@ import pytest
 
 import mesop.protos.ui_pb2 as pb
 from mesop.components.button.button import button
+from mesop.components.radio.radio import radio
 from mesop.editor.component_configs import (
   generate_component_config,
   get_component_configs,
@@ -22,8 +23,15 @@ def test_generate_component_config_button():
   )
 
 
+def test_generate_component_config_radio():
+  proto = generate_component_config(radio)
+  assert proto.component_name == "radio"
+  assert proto.fields[0] == pb.EditorField(name="options")
+  assert proto.fields[0] == 1
+
+
 def test_get_component_configs():
-  assert len(get_component_configs()) == 15
+  assert len(get_component_configs()) == 16
 
 
 if __name__ == "__main__":

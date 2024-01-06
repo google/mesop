@@ -1,0 +1,50 @@
+<div class="fields-section">
+  @for(field of getRegularFields(); track $index) {
+  <div class="field-block">
+    @switch(field.getType()?.getTypeCase()) {@case(FieldTypeCase.INT_TYPE) {
+    <div>Int</div>
+    } @case(FieldTypeCase.FLOAT_TYPE) {
+    <mat-form-field appearance="outline" style="width: 100%">
+      <mat-label>{{field.getName()}}</mat-label>
+      <input type="number" matInput [value]="getValueFor(field.getName())" />
+    </mat-form-field>
+    } @case(FieldTypeCase.LIST_TYPE) {
+    <div>List</div>
+    <mesop-editor-fields
+      [fields]="getFieldsForListField(field)"
+    ></mesop-editor-fields>
+
+    } @case(FieldTypeCase.STRING_TYPE) {
+    <mat-form-field appearance="outline" style="width: 100%">
+      <mat-label>{{field.getName()}}</mat-label>
+      <input matInput [value]="getValueFor(field.getName())" />
+    </mat-form-field>
+    } @case(FieldTypeCase.STRING_LITERAL_TYPE) {
+    <mat-form-field style="width: 100%">
+      <mat-label>{{field.getName()}}</mat-label>
+      <mat-select>
+        @for(option of
+        field.getType()!.getStringLiteralType()?.getLiteralsList(); track
+        $index) {
+        <mat-option [value]="option">{{option}}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    } @case(FieldTypeCase.STRUCT_TYPE) {
+    <div>Struct Type</div>
+    } @default {
+    <div class="field-name">
+      Error: unhandled field name {{field.getName()}}
+    </div>
+    } }
+  </div>
+
+  } @for(field of getBoolFields(); track $index) {
+  <mat-checkbox>{{field.getName()}}</mat-checkbox>
+  }
+  <mat-divider class="other-fields-divider"></mat-divider>
+  <div class="other-fields-title">Other fields</div>
+  @for(field of getNonTypedFields(); track $index) {
+  <div class="non-typed-field-name">{{field.getName()}}</div>
+  }
+</div>
