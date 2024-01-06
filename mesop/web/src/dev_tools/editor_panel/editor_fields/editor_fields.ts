@@ -6,6 +6,7 @@ import {ObjectTree} from '../../object_tree/object_tree';
 import {
   FieldType,
   EditorField,
+  EditorEvent,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
@@ -13,6 +14,7 @@ import {MatDividerModule} from '@angular/material/divider';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatSelectModule} from '@angular/material/select';
 import {CommonModule} from '@angular/common';
+import {Channel} from '../../../services/channel';
 
 @Component({
   selector: 'mesop-editor-fields',
@@ -35,7 +37,25 @@ export class EditorFields {
 
   FieldTypeCase = FieldType.TypeCase;
 
-  constructor(private editorService: EditorService) {}
+  constructor(
+    private editorService: EditorService,
+    private channel: Channel,
+  ) {}
+
+  onBlur(event: FocusEvent) {
+    const target = event.target as HTMLInputElement;
+    const editorEvent = new EditorEvent();
+    editorEvent.setSourceCodeLocation(
+      this.editorService.getFocusedComponent().getSourceCodeLocation(),
+    );
+    const name = target.getAttribute('data-name');
+    if (!name) {
+      throw new Error('Expected to get data-name attribute from event.');
+    }
+    editorEvent.setKeywordArgument(name);
+    editorEvent.setNewCode(target.value);
+    this.channel.dispatchEditorEvent(editorEvent);
+  }
 
   getFocusedComponent() {
     const obj = mapComponentToObject(this.editorService.getFocusedComponent());

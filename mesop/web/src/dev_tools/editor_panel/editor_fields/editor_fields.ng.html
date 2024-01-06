@@ -17,7 +17,12 @@
     } @case(FieldTypeCase.STRING_TYPE) {
     <mat-form-field appearance="outline" style="width: 100%">
       <mat-label>{{field.getName()}}</mat-label>
-      <input matInput [value]="getValueFor(field.getName())" />
+      <input
+        (blur)="onBlur($event)"
+        matInput
+        [attr.data-name]="field.getName()"
+        [value]="getValueFor(field.getName())"
+      />
     </mat-form-field>
     } @case(FieldTypeCase.STRING_LITERAL_TYPE) {
     <mat-form-field style="width: 100%">

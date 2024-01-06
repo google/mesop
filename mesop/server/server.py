@@ -5,6 +5,7 @@ from flask import Flask, Response, request, stream_with_context
 
 import mesop.protos.ui_pb2 as pb
 from mesop.editor.component_configs import get_component_configs
+from mesop.editor.editor_handler import handle_editor_event
 from mesop.exceptions import format_traceback
 from mesop.runtime import runtime
 
@@ -80,6 +81,9 @@ def configure_flask_app(
               path = command.navigate.url
           yield from render_loop(path=path, keep_alive=True)
           runtime().context().reset_current_node()
+        yield "data: <stream_end>\n\n"
+      elif ui_request.HasField("editor_event"):
+        handle_editor_event(ui_request.editor_event)
         yield "data: <stream_end>\n\n"
       else:
         raise Exception(f"Unknown request type: {ui_request}")

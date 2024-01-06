@@ -3,6 +3,7 @@ import {
   States,
   UserEvent,
   Component as ComponentProto,
+  EditorEvent,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 import {Observable, Subject} from 'rxjs';
 import {jsonParse} from '../../utils/strict_types';
@@ -49,6 +50,13 @@ export class Logger {
           type: 'User Event',
           timestamp: Date.now(),
           userEvent: input.userEvent.toObject(),
+          duration,
+        };
+      case 'EditorEventLog':
+        return {
+          type: 'Editor Event',
+          timestamp: Date.now(),
+          editorEvent: input.editorEvent.toObject(),
           duration,
         };
       case 'RenderLog':
@@ -115,6 +123,11 @@ export interface UserEventLogModel extends BaseLogModel {
   userEvent: object;
 }
 
+export interface EditorEventLogModel extends BaseLogModel {
+  type: 'Editor Event';
+  editorEvent: object;
+}
+
 export interface RenderLogModel extends BaseLogModel {
   type: 'Render';
   rootComponent: ComponentObject;
@@ -125,6 +138,7 @@ export type LogModel =
   | StreamStartLogModel
   | StreamEndLogModel
   | UserEventLogModel
+  | EditorEventLogModel
   | RenderLogModel;
 
 export interface BaseLogInput {
@@ -144,6 +158,11 @@ export interface UserEventLogInput extends BaseLogInput {
   userEvent: UserEvent;
 }
 
+export interface EditorEventLogInput extends BaseLogInput {
+  type: 'EditorEventLog';
+  editorEvent: EditorEvent;
+}
+
 export interface RenderLogInput extends BaseLogInput {
   type: 'RenderLog';
   rootComponent: ComponentProto;
@@ -154,4 +173,5 @@ export type LogInput =
   | StreamStartLogInput
   | StreamEndLogInput
   | UserEventLogInput
+  | EditorEventLogInput
   | RenderLogInput;

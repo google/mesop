@@ -9,6 +9,7 @@ message UiRequest {
     oneof type {
         InitRequest init = 1;
         UserEvent user_event = 2;
+        EditorEvent editor_event = 4;
     }
 }
 
@@ -31,6 +32,12 @@ message UserEvent {
         int32 int_value = 8;
         NavigationEvent navigation = 6;
     }
+}
+
+message EditorEvent {
+    SourceCodeLocation source_code_location = 1;
+    string keyword_argument = 2; // TODO: handle positional arguments
+    string new_code = 3;
 }
 
 // This is a user-triggered navigation (e.g. go back/forwards) or a hot reload event.
