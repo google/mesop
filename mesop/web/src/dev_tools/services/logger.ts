@@ -79,6 +79,7 @@ export function mapComponentToObject(
   return {
     type,
     key: component.getKey()?.getKey(),
+    sourceCodeLocation: component.getSourceCodeLocation()?.toObject() ?? {},
     children: component
       .getChildrenList()
       .map((child) => mapComponentToObject(child)),
@@ -92,6 +93,7 @@ export interface ComponentObject {
   };
   key?: string;
   children: ComponentObject[];
+  sourceCodeLocation: object;
 }
 
 export interface BaseLogModel {

@@ -107,6 +107,15 @@ message Component {
     // Type-specific component properties.
     Type type = 1;
     repeated Component children = 2;
+
+    // Only sent in editor mode.
+    SourceCodeLocation source_code_location = 4;
+}
+
+message SourceCodeLocation {
+    string  module = 1;
+    int32 line = 2;
+    int32 col = 3;
 }
 
 message Key {

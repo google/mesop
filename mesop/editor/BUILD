@@ -35,7 +35,6 @@ py_library(
 py_test(
     name = "component_configs_test",
     srcs = ["component_configs_test.py"],
-    args = ["-vv"],
     deps = [
         ":editor",
         "//mesop/components",

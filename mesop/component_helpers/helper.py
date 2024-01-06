@@ -10,14 +10,26 @@ from mesop.events import ClickEvent, InputEvent, MesopEvent
 from mesop.exceptions import MesopDeveloperException
 from mesop.key import Key, key_from_proto
 from mesop.runtime import runtime
+from mesop.utils.caller import get_caller_source_code_location
 
 
 class _ComponentWithChildren:
-  def __init__(self, type_name: str, proto: Message, key: str | None = None):
+  def __init__(
+    self,
+    type_name: str,
+    proto: Message,
+    key: str | None = None,
+    source_code_location: pb.SourceCodeLocation | None = None,
+  ):
     self.prev_current_node = runtime().context().current_node()
     self.component = self.prev_current_node.children.add()
     self.component.MergeFrom(
-      create_component(type_name=type_name, proto=proto, key=key)
+      create_component(
+        type_name=type_name,
+        proto=proto,
+        key=key,
+        source_code_location=source_code_location,
+      )
     )
 
   def __enter__(self):
@@ -66,7 +78,10 @@ def composite(fn: Callable[..., Any]):
 
 
 def create_component(
-  type_name: str, proto: Message, key: str | None = None
+  type_name: str,
+  proto: Message,
+  key: str | None = None,
+  source_code_location: pb.SourceCodeLocation | None = None,
 ) -> pb.Component:
   type_index = 0
   # This is not exactly type-safe, but it's a convenient way of grabbing the
@@ -83,7 +98,11 @@ def create_component(
       proto, preserving_proto_field_name=True
     )
 
-  return pb.Component(key=pb.Key(key=key) if key else None, type=type)
+  return pb.Component(
+    key=pb.Key(key=key) if key else None,
+    type=type,
+    source_code_location=source_code_location,
+  )
 
 
 def insert_composite_component(
@@ -91,7 +110,15 @@ def insert_composite_component(
   proto: Message,
   key: str | None = None,
 ) -> _ComponentWithChildren:
-  return _ComponentWithChildren(type_name=type_name, proto=proto, key=key)
+  source_code_location = None
+  if runtime().debug_mode:
+    source_code_location = get_caller_source_code_location(levels=4)
+  return _ComponentWithChildren(
+    type_name=type_name,
+    proto=proto,
+    key=key,
+    source_code_location=source_code_location,
+  )
 
 
 def insert_component(
@@ -102,8 +129,16 @@ def insert_component(
   """
   Inserts a component into the current context's current node.
   """
+  source_code_location = None
+  if runtime().debug_mode:
+    source_code_location = get_caller_source_code_location(levels=4)
   runtime().context().current_node().children.append(
-    create_component(type_name=type_name, proto=proto, key=key)
+    create_component(
+      type_name=type_name,
+      proto=proto,
+      key=key,
+      source_code_location=source_code_location,
+    )
   )
 
 
