@@ -1,3 +1,20 @@
 .container {
   height: 100%;
 }
+
+.component-name {
+  font-weight: 500;
+  font-size: 18px;
+  padding: 16px;
+  text-transform: capitalize;
+}
+.field-name {
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+.fields-section {
+}
+
+.field-block {
+  margin: 16px 16px 0 16px;
+}

@@ -1,9 +1,10 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {LogsPanel} from './logs_panel/logs_panel';
 import {ComponentsPanel} from './components_panel/components_panel';
 import {CommonModule} from '@angular/common';
 import {DevToolsSettings, Panel} from './services/dev_tools_settings';
 import {EditorPanel} from './editor_panel/editor_panel';
+import {ComponentConfig} from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 
 @Component({
   selector: 'mesop-dev-tools',
@@ -13,6 +14,9 @@ import {EditorPanel} from './editor_panel/editor_panel';
   imports: [LogsPanel, ComponentsPanel, CommonModule, EditorPanel],
 })
 export class DevTools {
+  @Input()
+  componentConfigs!: ComponentConfig[];
+
   Panel = Panel; // Make it accessible by template.
 
   get selectedPanel(): Panel {
