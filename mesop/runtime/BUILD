@@ -1,4 +1,4 @@
-load("//build_defs:defaults.bzl", "py_library")
+load("//build_defs:defaults.bzl", "THIRD_PARTY_PY_FLASK", "py_library")
 
 package(
     default_visibility = ["//build_defs:mesop_internal"],
@@ -11,5 +11,5 @@ py_library(
         "//mesop/dataclass_utils",
         "//mesop/exceptions",
         "//mesop/protos:ui_py_pb2",
-    ],
+    ] + THIRD_PARTY_PY_FLASK,
 )

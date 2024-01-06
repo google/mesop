@@ -1,3 +1,4 @@
+from functools import wraps
 from typing import Any, Callable, TypeVar, cast
 
 from pydantic import ValidationError, validate_arguments
@@ -14,6 +15,7 @@ F = TypeVar("F", bound=Callable[..., Any])
 def validate(fn: F) -> F:
   validated_fn = validate_arguments(fn)
 
+  @wraps(fn)
   def wrapper(*args: Any, **kw_args: Any):
     try:
       return validated_fn(*args, **kw_args)

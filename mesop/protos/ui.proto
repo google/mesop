@@ -125,4 +125,46 @@ message Type {
 message ComponentConfig {
     string component_name = 1;
     string category = 2;
+    repeated EditorField fields = 3;
+}
+
+
+message EditorField {
+    string name = 1;
+    FieldType type = 2;
+}
+
+message FieldType {
+    oneof type {
+        BoolType bool_type = 1;
+        IntType int_type = 2;
+        StringType string_type = 3;
+        StringLiteralType string_literal_type = 4;
+        ListType list_type = 5;
+        StructType struct_type =6;
+    }
+}
+
+message BoolType {
+    bool default_value = 1;
+}
+
+message StructType {
+    repeated EditorField fields =1;
+}
+
+message IntType {
+    int32 default_value = 1;
+}
+
+message StringType {
+    string default_value = 1;
+}
+
+message StringLiteralType {
+    repeated string literals = 1; // note: defaults to first element
+}
+
+message ListType {
+    repeated FieldType type = 1;
 }
