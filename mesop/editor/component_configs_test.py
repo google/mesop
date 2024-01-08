@@ -26,8 +26,25 @@ def test_generate_component_config_button():
 def test_generate_component_config_radio():
   proto = generate_component_config(radio)
   assert proto.component_name == "radio"
-  assert proto.fields[0] == pb.EditorField(name="options")
-  assert proto.fields[0] == 1
+  assert proto.fields[0] == pb.EditorField(
+    name="options",
+    type=pb.FieldType(
+      list_type=pb.ListType(
+        type=pb.FieldType(
+          struct_type=pb.StructType(
+            fields=[
+              pb.EditorField(
+                name="label", type=pb.FieldType(string_type=pb.StringType())
+              ),
+              pb.EditorField(
+                name="value", type=pb.FieldType(string_type=pb.StringType())
+              ),
+            ]
+          )
+        )
+      )
+    ),
+  )
 
 
 def test_get_component_configs():
