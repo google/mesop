@@ -5,11 +5,12 @@
 }
 
 .panel-header {
-  border-bottom: 1px solid #e8e8e8;
+  border-bottom: 1px solid #dcdcdc;
+  border-left: 1px solid #dcdcdc;
   display: flex;
   font-size: 1rem;
   position: sticky;
-  line-height: 2;
+  line-height: 1.5;
   align-items: center;
   font-weight: 500;
 }

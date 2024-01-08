@@ -49,3 +49,7 @@ $light-theme: mat.define-light-theme(
 );
 
 @include mat.all-component-themes($light-theme);
+
+.mat-drawer-side {
+  border: 0 !important;
+}

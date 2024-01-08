@@ -1,46 +1,29 @@
-<div class="overall">
-  <div class="header">
-    <button mat-icon-button (click)="toggleLeftSidenav()">
-      <mat-icon>dock_to_right</mat-icon>
-    </button>
-    <span class="header-title">Mesop Editor</span>
-    <button mat-icon-button (click)="toggleRightSidenav()">
-      <mat-icon>dock_to_left</mat-icon>
-    </button>
-  </div>
-  <mat-sidenav-container class="container">
-    <mat-sidenav
-      #leftSidenav
-      [opened]="showLeftSidenav()"
-      mode="side"
-      position="start"
-      class="left-sidenav"
-    >
-      <mesop-component-library
-        [componentConfigs]="componentConfigs()"
-      ></mesop-component-library>
-    </mat-sidenav>
-    <mat-sidenav-content #sidenavContent class="content-frame">
-      <div class="top-content-padding" (click)="clearFocusedElement()"></div>
-      <div class="content-frame-border">
-        @for(error of this.errors; track $index) {
-        <mesop-error-box *ngIf="error != null" [error]="error" />
-        }
-        <mesop-shell></mesop-shell>
-        <div class="remaining-space" (click)="clearFocusedElement()"></div>
-        <div #dragHandle class="resize-handle"></div>
+<mat-sidenav-container class="container">
+  <mat-sidenav-content #sidenavContent class="content">
+    <div class="content-frame-border">
+      @for(error of this.errors; track $index) {
+      <mesop-error-box *ngIf="error != null" [error]="error" />
+      }
+      <mesop-shell></mesop-shell>
+      <div #dragHandle class="resize-handle"></div>
+      <div class="editor-button-container">
+        <button
+          class="editor-button"
+          mat-icon-button
+          (click)="toggleDevTools()"
+        >
+          <mat-icon>code</mat-icon>
+        </button>
       </div>
-    </mat-sidenav-content>
-    <mat-sidenav
-      #sidenav
-      [opened]="showRightSidenav()"
-      mode="side"
-      position="end"
-      class="right-sidenav"
-    >
-      <mesop-dev-tools
-        [componentConfigs]="componentConfigs()"
-      ></mesop-dev-tools>
-    </mat-sidenav>
-  </mat-sidenav-container>
-</div>
+    </div>
+  </mat-sidenav-content>
+  <mat-sidenav
+    #sidenav
+    [opened]="showDevTools()"
+    mode="side"
+    position="end"
+    class="right-sidenav"
+  >
+    <mesop-dev-tools [componentConfigs]="componentConfigs()"></mesop-dev-tools>
+  </mat-sidenav>
+</mat-sidenav-container>

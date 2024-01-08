@@ -2,6 +2,7 @@ import {
   Component,
   ElementRef,
   ErrorHandler,
+  Injectable,
   NgZone,
   Renderer2,
   ViewChild,
@@ -29,7 +30,6 @@ import {
 } from '../services/hot_reload_watcher';
 import {GlobalErrorHandlerService} from '../services/global_error_handler';
 import {Shell} from '../shell/shell';
-import {ComponentLibrary} from './component_library/component_library';
 import {EditorService} from '../services/editor_service';
 // Keep the following comment to ensure there's a hook for adding TS imports in the downstream sync.
 // ADD_TS_IMPORT_HERE
@@ -48,7 +48,6 @@ import {EditorService} from '../services/editor_service';
     MatButtonModule,
     MatSidenavModule,
     Shell,
-    ComponentLibrary,
   ],
   providers: [
     {provide: ErrorHandler, useClass: GlobalErrorHandlerService},
@@ -109,10 +108,6 @@ class Editor {
     });
   }
 
-  clearFocusedElement() {
-    this.editorService.clearFocusedComponent();
-  }
-
   showDebugButton() {
     return this.devToolsSettings.isDebugMode();
   }
@@ -123,22 +118,11 @@ class Editor {
 
   toggleDevTools() {
     this.devToolsSettings.toggleShowDevTools();
-  }
-
-  showLeftSidenav() {
-    return this.devToolsSettings.showLeftSidenav();
-  }
-
-  toggleLeftSidenav() {
-    this.devToolsSettings.toggleShowLeftSidenav();
-  }
-
-  showRightSidenav() {
-    return this.devToolsSettings.showRightSidenav();
-  }
-
-  toggleRightSidenav() {
-    this.devToolsSettings.toggleShowRightSidenav();
+    // If we're collapsing devtools, then clear focused component.
+    if (!this.devToolsSettings.showDevTools()) {
+      console.log('CLEAR');
+      this.editorService.clearFocusedComponent();
+    }
   }
 
   componentConfigs(): ComponentConfig[] {
@@ -149,13 +133,20 @@ class Editor {
 
 const routes: Routes = [{path: '**', component: Editor}];
 
+@Injectable()
 class EditorServiceImpl implements EditorService {
+  constructor(private devToolsSettings: DevToolsSettings) {}
+
   component = new ComponentProto();
   isEditorMode(): boolean {
     return true;
   }
 
   setFocusedComponent(component: ComponentProto): void {
+    if (!this.devToolsSettings.showDevTools()) {
+      // Do not focus component if devtools isn't open.
+      return;
+    }
     this.component = component;
   }
 
