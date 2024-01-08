@@ -49,18 +49,8 @@ export class Channel {
 
   init(initParams: InitParams, request?: UiRequest) {
     if (!request) {
-      // If there's no request but we have states, then we
-      // assume we're initializing from a hot reload event.
-      if (this.states) {
-        request = new UiRequest();
-        const userEvent = new UserEvent();
-        userEvent.setStates(this.states);
-        userEvent.setNavigation(new NavigationEvent());
-        request.setUserEvent(userEvent);
-      } else {
-        request = new UiRequest();
-        request.setInit(new InitRequest());
-      }
+      request = new UiRequest();
+      request.setInit(new InitRequest());
     }
     this.eventSource = new EventSource(generateRequestUrl(request));
     this.status = ChannelStatus.OPEN;
@@ -149,12 +139,13 @@ export class Channel {
     this.init(this.initParams, request);
   }
 
-  getStates(): States {
-    return this.states;
-  }
-
-  setStates(states: States) {
-    this.states = states;
+  hotReload() {
+    const request = new UiRequest();
+    const userEvent = new UserEvent();
+    userEvent.setStates(this.states);
+    userEvent.setNavigation(new NavigationEvent());
+    request.setUserEvent(userEvent);
+    this.init(this.initParams, request);
   }
 }
 

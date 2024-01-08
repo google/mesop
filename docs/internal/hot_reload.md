@@ -7,7 +7,7 @@ One of Mesop's key benefits is that it provides a fast iteration cycle through h
 - Developer edits application source code.
 - This triggers an ibazel rebuild. Note: this does not restart the server because we tag the CLI binary target with `"ibazel_live_reload"`. This tells ibazel to keep the server alive and trigger a live reload via a script which is provided via the environmental variable `IBAZEL_LIVERELOAD_URL`. This script is passed by `cli.py` into `configure_static_file_serving` which injects the script into index.html.
 - ibazel notifies Mesop's server via stdin because our binary target has the tag: `"ibazel_notify_changes"`. The Mesop server, when in debug mode, starts a daemon thread which monitors for a successful build and does two things: 1. resets the Mesop runtime, 2. re-executes the main module, which was passed via the `--path` flag.
-- On the client-side, in `HotReloaderService`, we monkey-patch the injected LiveReload service so that before a reload, we save all the current state into LocalStorage and then reload. Upon reload, we load all the state persisted in LocalStorage previously and then clear LocalStorage (so that a user-triggered reload get a clean state).
+- On the client-side, in `HotReloaderService`, we monkey-patch the injected LiveReload service so that instead of doing a reload, we simply doing another request via the Channel service with the existing state. The advantage of this is that we preserve DOM state (e.g. input controls, scroll) and it's faster than doing a full page reload.
 
 ## Design decisions
 
