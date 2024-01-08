@@ -7,7 +7,7 @@
 absl-py==2.0.0 \
     --hash=sha256:9a28abb62774ae4e8edbe2dd4c49ffcd45a6a848952a5eccc6a49f3f0fc1e2f3 \
     --hash=sha256:d9690211c5fcfefcdd1a45470ac2b5c5acd45241c3af71eed96bc5441746c0d5
-    # via -r mesop/requirements.txt
+    # via -r build_defs/requirements.txt
 babel==2.13.1 \
     --hash=sha256:33e0952d7dd6374af8dbf6768cc4ddf3ccfefc244f9986d4074704f2fbd18900 \
     --hash=sha256:7077a4984b02b6727ac10f1f7294484f737443d7e2e66c5e4380e41a3ae0b4ed
@@ -131,7 +131,7 @@ exceptiongroup==1.1.3 \
 flask==3.0.0 \
     --hash=sha256:21128f47e4e3b9d597a3e8521a329bf56909b690fcc3fa3e477725aa81367638 \
     --hash=sha256:cfadcdb638b609361d29ec22360d6070a77d7463dcb3ab08d2c2f2f168845f58
-    # via -r mesop/requirements.txt
+    # via -r build_defs/requirements.txt
 ghp-import==2.1.0 \
     --hash=sha256:8337dd7b50877f163d4c0289bc1f1c7f127550241988d568c1db512c4324a619 \
     --hash=sha256:9c535c4c61193c2df8871222567d7fd7e5014d835f97dc7b7439069e2413d343
@@ -160,6 +160,39 @@ jinja2==3.1.2 \
     #   mkdocs
     #   mkdocs-material
     #   mkdocstrings
+libcst==1.1.0 \
+    --hash=sha256:003e5e83a12eed23542c4ea20fdc8de830887cc03662432bb36f84f8c4841b81 \
+    --hash=sha256:0acbacb9a170455701845b7e940e2d7b9519db35a86768d86330a0b0deae1086 \
+    --hash=sha256:0bf69cbbab5016d938aac4d3ae70ba9ccb3f90363c588b3b97be434e6ba95403 \
+    --hash=sha256:2d37326bd6f379c64190a28947a586b949de3a76be00176b0732c8ee87d67ebe \
+    --hash=sha256:3a07ecfabbbb8b93209f952a365549e65e658831e9231649f4f4e4263cad24b1 \
+    --hash=sha256:3ebbb9732ae3cc4ae7a0e97890bed0a57c11d6df28790c2b9c869f7da653c7c7 \
+    --hash=sha256:4bc745d0c06420fe2644c28d6ddccea9474fb68a2135904043676deb4fa1e6bc \
+    --hash=sha256:5297a16e575be8173185e936b7765c89a3ca69d4ae217a4af161814a0f9745a7 \
+    --hash=sha256:5f1cd308a4c2f71d5e4eec6ee693819933a03b78edb2e4cc5e3ad1afd5fb3f07 \
+    --hash=sha256:63f75656fd733dc20354c46253fde3cf155613e37643c3eaf6f8818e95b7a3d1 \
+    --hash=sha256:73c086705ed34dbad16c62c9adca4249a556c1b022993d511da70ea85feaf669 \
+    --hash=sha256:75816647736f7e09c6120bdbf408456f99b248d6272277eed9a58cf50fb8bc7d \
+    --hash=sha256:78b7a38ec4c1c009ac39027d51558b52851fb9234669ba5ba62283185963a31c \
+    --hash=sha256:7ccaf53925f81118aeaadb068a911fac8abaff608817d7343da280616a5ca9c1 \
+    --hash=sha256:82d1271403509b0a4ee6ff7917c2d33b5a015f44d1e208abb1da06ba93b2a378 \
+    --hash=sha256:8ae11eb1ea55a16dc0cdc61b41b29ac347da70fec14cc4381248e141ee2fbe6c \
+    --hash=sha256:8afb6101b8b3c86c5f9cec6b90ab4da16c3c236fe7396f88e8b93542bb341f7c \
+    --hash=sha256:8c1f2da45f1c45634090fd8672c15e0159fdc46853336686959b2d093b6e10fa \
+    --hash=sha256:97fbc73c87e9040e148881041fd5ffa2a6ebf11f64b4ccb5b52e574b95df1a15 \
+    --hash=sha256:99fdc1929703fd9e7408aed2e03f58701c5280b05c8911753a8d8619f7dfdda5 \
+    --hash=sha256:9dffa1795c2804d183efb01c0f1efd20a7831db6a21a0311edf90b4100d67436 \
+    --hash=sha256:bca1841693941fdd18371824bb19a9702d5784cd347cb8231317dbdc7062c5bc \
+    --hash=sha256:c653d9121d6572d8b7f8abf20f88b0a41aab77ff5a6a36e5a0ec0f19af0072e8 \
+    --hash=sha256:c8f26250f87ca849a7303ed7a4fd6b2c7ac4dec16b7d7e68ca6a476d7c9bfcdb \
+    --hash=sha256:cc9b6ac36d7ec9db2f053014ea488086ca2ed9c322be104fbe2c71ca759da4bb \
+    --hash=sha256:d22d1abfe49aa60fc61fa867e10875a9b3024ba5a801112f4d7ba42d8d53242e \
+    --hash=sha256:d68c34e3038d3d1d6324eb47744cbf13f2c65e1214cf49db6ff2a6603c1cd838 \
+    --hash=sha256:e3d8cf974cfa2487b28f23f56c4bff90d550ef16505e58b0dca0493d5293784b \
+    --hash=sha256:f36f592e035ef84f312a12b75989dde6a5f6767fe99146cdae6a9ee9aff40dd0 \
+    --hash=sha256:f561c9a84eca18be92f4ad90aa9bd873111efbea995449301719a1a7805dbc5c \
+    --hash=sha256:fe41b33aa73635b1651f64633f429f7aa21f86d2db5748659a99d9b7b1ed2a90
+    # via -r build_defs/requirements.txt
 markdown==3.5.1 \
     --hash=sha256:5874b47d4ee3f0b14d764324d2c94c03ea66bee56f2d929da9f2508d65e722dc \
     --hash=sha256:b65d7beb248dc22f2e8a31fb706d93798093c308dc1aba295aedeb9d41a813bd
@@ -253,7 +286,7 @@ mkdocs-autorefs==0.5.0 \
 mkdocs-material==9.4.8 \
     --hash=sha256:8b20f6851bddeef37dced903893cd176cf13a21a482e97705a103c45f06ce9b9 \
     --hash=sha256:f0c101453e8bc12b040e8b64ca39a405d950d8402609b1378cc2b98976e74b5f
-    # via -r mesop/requirements.txt
+    # via -r build_defs/requirements.txt
 mkdocs-material-extensions==1.3 \
     --hash=sha256:0297cc48ba68a9fdd1ef3780a3b41b534b0d0df1d1181a44676fda5f464eeadc \
     --hash=sha256:f0446091503acb110a7cab9349cbc90eeac51b58d1caa92a704a81ca1e24ddbd
@@ -262,16 +295,20 @@ mkdocstrings[python]==0.23.0 \
     --hash=sha256:051fa4014dfcd9ed90254ae91de2dbb4f24e166347dae7be9a997fe16316c65e \
     --hash=sha256:d9c6a37ffbe7c14a7a54ef1258c70b8d394e6a33a1c80832bce40b9567138d1c
     # via
-    #   -r mesop/requirements.txt
+    #   -r build_defs/requirements.txt
     #   mkdocstrings-python
 mkdocstrings-python==1.7.3 \
     --hash=sha256:2439d6ad3e34f0bb4c643b845fb3c06ae9233499a1736f9fa273424b75cc5894 \
     --hash=sha256:c20128fa96c24dbc6437b10dfedaf33b0415d4503e51ce9ce5e84b271278268e
     # via mkdocstrings
+mypy-extensions==1.0.0 \
+    --hash=sha256:4392f6c0eb8a5668a69e23d168ffa70f0be9ccfd32b5cc2d26a34ae5b844552d \
+    --hash=sha256:75dbf8955dc00442a438fc4d0666508a9a97b6bd41aa2f0ffe9d2f2725af0782
+    # via typing-inspect
 mypy-protobuf==3.5.0 \
     --hash=sha256:0d0548c6b9a6faf14ce1a9ce2831c403a5c1f2a9363e85b1e2c51d5d57aa8393 \
     --hash=sha256:21f270da0a9792a9dac76b0df463c027e561664ab6973c59be4e4d064dfe67dc
-    # via -r mesop/requirements.txt
+    # via -r build_defs/requirements.txt
 packaging==23.2 \
     --hash=sha256:048fb0e9405036518eaaf48a55953c750c11e1a1b68e0dd1a9d62ed0c092cfc5 \
     --hash=sha256:8c491190033a9af7e1d931d0b5dacc2ef47509b34dd0de67ed209b5203fc88c7
@@ -343,7 +380,7 @@ pydantic==1.10.0 \
     --hash=sha256:e290915a0ed53d3c59d6071fc7d2c843ed04c33affcd752dd1f3daa859b44a76 \
     --hash=sha256:ed4e5c18cac70fadd4cf339f444c4f1795f0876dfd5b70cf0a841890b52f0001 \
     --hash=sha256:f0985ba95af937389c9ce8d747138417303569cb736bd12469646ef53cd66e1c
-    # via -r mesop/requirements.txt
+    # via -r build_defs/requirements.txt
 pygments==2.16.1 \
     --hash=sha256:13fc09fa63bc8d8671a6d247e1eb303c4b343eaee81d861f3404db2935653692 \
     --hash=sha256:1daff0494820c69bc8941e407aa20f577374ee88364ee10a98fdbe0aece96e29
@@ -357,7 +394,7 @@ pymdown-extensions==10.4 \
 pytest==7.4.3 \
     --hash=sha256:0d009c083ea859a71b76adf7c1d502e4bc170b80a8ef002da5806527b9591fac \
     --hash=sha256:d989d136982de4e3b29dabcc838ad581c64e8ed52c11fbe86ddebd9da0818cd5
-    # via -r mesop/requirements.txt
+    # via -r build_defs/requirements.txt
 python-dateutil==2.8.2 \
     --hash=sha256:0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86 \
     --hash=sha256:961d03dc3453ebbc59dbdea9e4e11c5651520a876d0f4db161e8674aae935da9
@@ -414,6 +451,7 @@ pyyaml==6.0.1 \
     --hash=sha256:fd1592b3fdf65fff2ad0004b5e363300ef59ced41c2e6b3a99d4089fa8c5435d \
     --hash=sha256:fd66fc5d0da6d9815ba2cebeb4205f95818ff4b79c3ebe268e75d961704af52f
     # via
+    #   libcst
     #   mkdocs
     #   pymdown-extensions
     #   pyyaml-env-tag
@@ -530,7 +568,14 @@ types-protobuf==4.24.0.4 \
 typing-extensions==4.8.0 \
     --hash=sha256:8f92fc8806f9a6b641eaa5318da32b44d401efaac0f6678c9bc448ba3605faa0 \
     --hash=sha256:df8e4339e9cb77357558cbdbceca33c303714cf861d1eef15e1070055ae8b7ef
-    # via pydantic
+    # via
+    #   libcst
+    #   pydantic
+    #   typing-inspect
+typing-inspect==0.9.0 \
+    --hash=sha256:9ee6fc59062311ef8547596ab6b955e1b8aa46242d854bfc78f4f6b0eff35f9f \
+    --hash=sha256:b23fc42ff6f6ef6954e4852c1fb512cdd18dbea03134f91f856a95ccc9461f78
+    # via libcst
 urllib3==2.0.7 \
     --hash=sha256:c97dfde1f7bd43a71c8d2a58e369e9b2bf692d1334ea9f9cae55add7d0dd0f84 \
     --hash=sha256:fdb6d215c776278489906c2f8916e6e7d4f5a9b602ccbcfdf7f016fc8da0596e
