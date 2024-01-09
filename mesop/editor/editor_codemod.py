@@ -25,12 +25,14 @@ from libcst.codemod import (
   CodemodContext,
   VisitorBasedCodemodCommand,
 )
+from libcst.metadata import CodeRange, PositionProvider
 
 import mesop.protos.ui_pb2 as pb
 
 
 class ReplaceKeywordArg(VisitorBasedCodemodCommand):
   DESCRIPTION: str = "Converts keyword arg."
+  METADATA_DEPENDENCIES = (PositionProvider,)
 
   def __init__(
     self, context: CodemodContext, input: pb.EditorUpdateCallsite
@@ -41,10 +43,14 @@ class ReplaceKeywordArg(VisitorBasedCodemodCommand):
   def leave_Call(
     self, original_node: cst.Call, updated_node: cst.Call
   ) -> cst.BaseExpression:
+    position = self.get_metadata(PositionProvider, original_node)
+    assert isinstance(position, CodeRange)
+
     # Return original node if the function name doesn't match.
     if not (
       isinstance(updated_node.func, cst.Attribute)
       and updated_node.func.attr.value == self.input.component_name
+      and position.start.line == self.input.source_code_location.line
     ):
       return original_node
 

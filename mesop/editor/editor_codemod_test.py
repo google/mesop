@@ -19,11 +19,25 @@ def load_testdata(dir: str, filename: str) -> str:
 class TestReplaceKeywordArg(CodemodTest):
   TRANSFORM = ReplaceKeywordArg
 
-  def test_replace(self) -> None:
+  def test_simple_callsite(self) -> None:
     self.assertEditorUpdate(
       "simple_callsite",
       pb.EditorUpdateCallsite(
-        component_name="input", keyword_argument="label", new_code="defa"
+        component_name="input",
+        keyword_argument="label",
+        new_code="defa",
+        source_code_location=pb.SourceCodeLocation(line=5),
+      ),
+    )
+
+  def test_multi_callsite(self) -> None:
+    self.assertEditorUpdate(
+      "multi_callsite",
+      pb.EditorUpdateCallsite(
+        component_name="input",
+        keyword_argument="label",
+        new_code="defa",
+        source_code_location=pb.SourceCodeLocation(line=6),
       ),
     )
 
