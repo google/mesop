@@ -41,6 +41,28 @@ class TestReplaceKeywordArg(CodemodTest):
       ),
     )
 
+  def test_text(self) -> None:
+    self.assertEditorUpdate(
+      "text",
+      pb.EditorUpdateCallsite(
+        component_name="text",
+        keyword_argument="text",
+        new_code="after",
+        source_code_location=pb.SourceCodeLocation(line=5),
+      ),
+    )
+
+  def test_markdown(self) -> None:
+    self.assertEditorUpdate(
+      "markdown",
+      pb.EditorUpdateCallsite(
+        component_name="markdown",
+        keyword_argument="text",
+        new_code="after",
+        source_code_location=pb.SourceCodeLocation(line=5),
+      ),
+    )
+
   def assertEditorUpdate(
     self, test_case_name: str, input: pb.EditorUpdateCallsite
   ):

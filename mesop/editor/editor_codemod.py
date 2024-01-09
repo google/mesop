@@ -59,6 +59,9 @@ class ReplaceKeywordArg(VisitorBasedCodemodCommand):
       if (
         isinstance(arg.keyword, cst.Name)
         and arg.keyword.value == self.input.keyword_argument
+      ) or (
+        self.input.component_name in ["text", "markdown"]
+        and self.input.keyword_argument == "text"
       ):
         # Replace the argument value
         new_arg = arg.with_changes(
