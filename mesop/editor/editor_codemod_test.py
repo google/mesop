@@ -27,7 +27,7 @@ class TestReplaceKeywordArg(CodemodTest):
         arg_path=pb.ArgPath(
           segments=[pb.ArgPathSegment(keyword_argument="label")]
         ),
-        new_code="defa",
+        new_code=pb.CodeValue(string_value="defa"),
         source_code_location=pb.SourceCodeLocation(line=5),
       ),
     )
@@ -40,7 +40,7 @@ class TestReplaceKeywordArg(CodemodTest):
         arg_path=pb.ArgPath(
           segments=[pb.ArgPathSegment(keyword_argument="label")]
         ),
-        new_code="defa",
+        new_code=pb.CodeValue(string_value="defa"),
         source_code_location=pb.SourceCodeLocation(line=6),
       ),
     )
@@ -53,7 +53,7 @@ class TestReplaceKeywordArg(CodemodTest):
         arg_path=pb.ArgPath(
           segments=[pb.ArgPathSegment(keyword_argument="text")]
         ),
-        new_code="after",
+        new_code=pb.CodeValue(string_value="after"),
         source_code_location=pb.SourceCodeLocation(line=5),
       ),
     )
@@ -66,7 +66,7 @@ class TestReplaceKeywordArg(CodemodTest):
         arg_path=pb.ArgPath(
           segments=[pb.ArgPathSegment(keyword_argument="text")]
         ),
-        new_code="after",
+        new_code=pb.CodeValue(string_value="after"),
         source_code_location=pb.SourceCodeLocation(line=5),
       ),
     )
@@ -82,7 +82,39 @@ class TestReplaceKeywordArg(CodemodTest):
             pb.ArgPathSegment(keyword_argument="background"),
           ]
         ),
-        new_code="pink",
+        new_code=pb.CodeValue(string_value="pink"),
+        source_code_location=pb.SourceCodeLocation(line=5),
+      ),
+    )
+
+  def test_style_nested_struct(self) -> None:
+    self.assertEditorUpdate(
+      "style_nested_struct",
+      pb.EditorUpdateCallsite(
+        component_name="box",
+        arg_path=pb.ArgPath(
+          segments=[
+            pb.ArgPathSegment(keyword_argument="style"),
+            pb.ArgPathSegment(keyword_argument="margin"),
+            pb.ArgPathSegment(keyword_argument="top"),
+          ]
+        ),
+        new_code=pb.CodeValue(int_value=8),
+        source_code_location=pb.SourceCodeLocation(line=5),
+      ),
+    )
+
+  def test_bool(self) -> None:
+    self.assertEditorUpdate(
+      "bool",
+      pb.EditorUpdateCallsite(
+        component_name="checkbox",
+        arg_path=pb.ArgPath(
+          segments=[
+            pb.ArgPathSegment(keyword_argument="checked"),
+          ]
+        ),
+        new_code=pb.CodeValue(bool_value=False),
         source_code_location=pb.SourceCodeLocation(line=5),
       ),
     )

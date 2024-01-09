@@ -43,8 +43,17 @@ message EditorEvent {
 message EditorUpdateCallsite {
     SourceCodeLocation source_code_location = 1;
     ArgPath arg_path = 2;
-    string new_code = 3;
+    CodeValue new_code = 3;
     string component_name = 4;
+}
+
+message CodeValue {
+    oneof value {
+        string string_value = 1;
+        bool bool_value = 2;
+        int32 int_value = 3;
+        double double_value = 4;
+    }
 }
 
 message ArgPath {

@@ -10,6 +10,7 @@ import {
   EditorUpdateCallsite,
   ArgPath,
   ArgPathSegment,
+  CodeValue,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
@@ -65,7 +66,9 @@ export class EditorFields {
     segment.setKeywordArgument(name);
     argPath.addSegments(segment);
     editorUpdate.setArgPath(argPath);
-    editorUpdate.setNewCode(target.value);
+    const codeValue = new CodeValue();
+    codeValue.setStringValue(target.value);
+    editorUpdate.setNewCode(codeValue);
     this.channel.dispatchEditorEvent(editorEvent);
   }
 

@@ -86,9 +86,7 @@ class ReplaceKeywordArg(VisitorBasedCodemodCommand):
     if len(segments) == 1:
       maybe_call = input_arg.value
       if not isinstance(maybe_call, cst.Call):
-        mod = input_arg.with_changes(
-          value=cst.SimpleString(f'"{self.input.new_code}"')
-        )
+        mod = input_arg.with_changes(value=get_value(self.input.new_code))
         return mod
       call = maybe_call
       return input_arg.with_changes(value=self._update_call(call, segments))
@@ -98,3 +96,15 @@ class ReplaceKeywordArg(VisitorBasedCodemodCommand):
         raise Exception("unexpected input_arg", input_arg)
 
       return input_arg.with_changes(value=self._update_call(call, segments[1:]))
+
+
+def get_value(code: pb.CodeValue):
+  if code.HasField("string_value"):
+    return cst.SimpleString(f'"{code.string_value}"')
+  if code.HasField("double_value"):
+    return cst.Float(str(code.double_value))
+  if code.HasField("int_value"):
+    return cst.Integer(str(code.int_value))
+  if code.HasField("bool_value"):
+    return cst.Name(str(code.bool_value))
+  raise Exception("Code value", code)
