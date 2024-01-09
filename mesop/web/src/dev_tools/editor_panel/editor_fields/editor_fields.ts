@@ -11,6 +11,7 @@ import {
   ArgPath,
   ArgPathSegment,
   CodeValue,
+  LiteralElement,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
@@ -39,6 +40,9 @@ export class EditorFields {
   @Input()
   fields!: EditorField[];
 
+  @Input()
+  prefixes: string[] = [];
+
   FieldTypeCase = FieldType.TypeCase;
 
   constructor(
@@ -62,6 +66,11 @@ export class EditorFields {
       this.editorService.getFocusedComponent().getType()!.getName(),
     );
     const argPath = new ArgPath();
+    for (const prefix of this.prefixes) {
+      const segment = new ArgPathSegment();
+      segment.setKeywordArgument(prefix);
+      argPath.addSegments(segment);
+    }
     const segment = new ArgPathSegment();
     segment.setKeywordArgument(name);
     argPath.addSegments(segment);
@@ -112,10 +121,31 @@ export class EditorFields {
     return this.fields.filter((field) => !field.getType()) ?? [];
   }
 
+  getPrefixFor(fieldName: string) {
+    return [...this.prefixes, fieldName];
+  }
+
   getValueFor(fieldName: string) {
-    return (
-      this.getFocusedComponent().properties['value' as any][fieldName as any] ??
-      ''
-    );
+    let valueObj = this.getFocusedComponent().properties['value' as any];
+    console.log('init valueObj', valueObj);
+    for (const prefix of this.prefixes) {
+      valueObj = valueObj[prefix as any];
+      if (!valueObj) {
+        return '';
+      }
+    }
+    const value = valueObj[fieldName as any] ?? '';
+    return value;
+  }
+
+  getLiteralValue(literal: LiteralElement): string {
+    switch (literal.getLiteralCase()) {
+      case LiteralElement.LiteralCase.INT_LITERAL:
+        return literal.getIntLiteral().toString();
+      case LiteralElement.LiteralCase.STRING_LITERAL:
+        return literal.getStringLiteral();
+      case LiteralElement.LiteralCase.LITERAL_NOT_SET:
+        throw new Error(`Unhandled literal element case ${literal.toObject()}`);
+    }
   }
 }

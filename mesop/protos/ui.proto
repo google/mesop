@@ -138,6 +138,9 @@ message State {
 message Component {
     Key key = 3;
     Style style = 5;
+    // Sent down only in debug mode; used for editor mode.
+    string style_debug_json = 6;
+
     // Type-specific component properties.
     Type type = 1;
     repeated Component children = 2;
@@ -221,7 +224,7 @@ message FieldType {
         IntType int_type = 2;
         FloatType float_type = 3;
         StringType string_type = 4;
-        StringLiteralType string_literal_type = 5;
+        LiteralType literal_type = 5;
         ListType list_type = 6;
         StructType struct_type = 7;
     }
@@ -247,8 +250,15 @@ message StringType {
     string default_value = 1;
 }
 
-message StringLiteralType {
-    repeated string literals = 1; // note: defaults to first element
+message LiteralType {
+    repeated LiteralElement literals = 1; // note: defaults to first element
+}
+
+message LiteralElement {
+    oneof literal {
+        string string_literal = 1;
+        int32 int_literal = 2;
+    }
 }
 
 message ListType {

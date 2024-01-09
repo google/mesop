@@ -1,6 +1,7 @@
 import pytest
 
 import mesop.protos.ui_pb2 as pb
+from mesop.components.box.box import box
 from mesop.components.button.button import button
 from mesop.components.radio.radio import radio
 from mesop.editor.component_configs import (
@@ -16,11 +17,23 @@ def test_generate_component_config_button():
   assert proto.fields[1] == pb.EditorField(
     name="type",
     type=pb.FieldType(
-      string_literal_type=pb.StringLiteralType(
-        literals=["raised", "flat", "stroked", "icon"]
+      literal_type=pb.LiteralType(
+        literals=[
+          pb.LiteralElement(string_literal="raised"),
+          pb.LiteralElement(string_literal="flat"),
+          pb.LiteralElement(string_literal="stroked"),
+          pb.LiteralElement(string_literal="icon"),
+        ],
       )
     ),
   )
+
+
+def test_generate_component_config_box():
+  proto = generate_component_config(box)
+  assert proto.component_name == "box"
+  assert proto.fields[0].name == "style"
+  assert len(proto.fields[0].type.struct_type.fields) == 15
 
 
 def test_generate_component_config_radio():

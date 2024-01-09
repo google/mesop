@@ -96,15 +96,21 @@ def create_component(
     value=proto.SerializeToString(),
     type_index=type_index,  # type: ignore
   )
+  style_debug_json = ""
   if runtime().debug_mode:
     type.debug_json = json_format.MessageToJson(
       proto, preserving_proto_field_name=True
     )
+    if style:
+      style_debug_json = json_format.MessageToJson(
+        style, preserving_proto_field_name=True
+      )
 
   return pb.Component(
     key=pb.Key(key=key) if key else None,
     type=type,
     style=style,
+    style_debug_json=style_debug_json,
     source_code_location=source_code_location,
   )
 

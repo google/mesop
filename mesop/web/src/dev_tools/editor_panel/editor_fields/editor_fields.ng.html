@@ -24,19 +24,25 @@
         [value]="getValueFor(field.getName())"
       />
     </mat-form-field>
-    } @case(FieldTypeCase.STRING_LITERAL_TYPE) {
+    } @case(FieldTypeCase.LITERAL_TYPE) {
     <mat-form-field style="width: 100%">
       <mat-label>{{field.getName()}}</mat-label>
       <mat-select>
-        @for(option of
-        field.getType()!.getStringLiteralType()?.getLiteralsList(); track
-        $index) {
-        <mat-option [value]="option">{{option}}</mat-option>
+        @for(literal of field.getType()!.getLiteralType()?.getLiteralsList();
+        track $index) {
+        <mat-option [value]="getLiteralValue(literal)"
+          >{{getLiteralValue(literal)}}</mat-option
+        >
         }
       </mat-select>
     </mat-form-field>
     } @case(FieldTypeCase.STRUCT_TYPE) {
-    <div>Struct Type</div>
+    <div>{{field.getName()}}</div>
+    <mesop-editor-fields
+      [fields]="field.getType()!.getStructType()!.getFieldsList()"
+      [prefixes]="getPrefixFor(field.getName())"
+    >
+    </mesop-editor-fields>
     } @default {
     <div class="field-name">
       Error: unhandled field name {{field.getName()}}

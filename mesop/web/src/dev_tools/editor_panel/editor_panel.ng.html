@@ -1,6 +1,9 @@
 <div class="container">
   <div class="component-name">{{getFocusedComponent().componentName}}</div>
-  <mesop-editor-fields [fields]="getFields()"></mesop-editor-fields>
+  <mesop-editor-fields
+    [fields]="getFields()"
+    [prefixes]="[]"
+  ></mesop-editor-fields>
   <mat-divider></mat-divider>
   <div class="debug-section">
     <div>Props:</div>

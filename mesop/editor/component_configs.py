@@ -1,7 +1,8 @@
 import collections.abc
 import inspect
+from dataclasses import is_dataclass
 from types import NoneType
-from typing import Any, Callable, ItemsView, Literal
+from typing import Any, Callable, ItemsView, Literal, Sequence
 
 import mesop.protos.ui_pb2 as pb
 from mesop.components.badge.badge import badge
@@ -76,11 +77,14 @@ def get_fields(
       field_type = pb.FieldType(bool_type=pb.BoolType(default_value=False))
     elif param_type is float:
       field_type = pb.FieldType(float_type=pb.FloatType(default_value=0))
-    elif param_type is str:
+    elif param_type is str or (
+      # special case, for int|str (used for styles, e.g. pixel value), use str
+      args and len(args) == 2 and args[0] is int and args[1] is str
+    ):
       field_type = pb.FieldType(string_type=pb.StringType())
     elif getattr(param_type, "__origin__", None) is Literal:
       field_type = pb.FieldType(
-        string_literal_type=pb.StringLiteralType(literals=param_type.__args__)
+        literal_type=pb.LiteralType(literals=map_literals(param_type.__args__))
       )
     elif getattr(param_type, "__origin__", None) is list:
       el_fields = get_fields(
@@ -91,6 +95,11 @@ def get_fields(
           type=pb.FieldType(struct_type=pb.StructType(fields=el_fields))
         )
       )
+    elif is_dataclass(param_type):
+      param_items = inspect.signature(param_type).parameters.items()
+      el_fields = get_fields(param_items)
+
+      field_type = pb.FieldType(struct_type=pb.StructType(fields=el_fields))
     elif isinstance(param_type, collections.abc.Callable):
       field_type = None
     else:
@@ -101,3 +110,16 @@ def get_fields(
     fields.append(pb.EditorField(name=name, type=field_type))
 
   return fields
+
+
+def map_literals(literals: Sequence[int | str]) -> list[pb.LiteralElement]:
+  out: list[pb.LiteralElement] = []
+  for literal in literals:
+    if isinstance(literal, str):
+      out.append(pb.LiteralElement(string_literal=literal))
+    elif isinstance(literal, int):  # type: ignore
+      out.append(pb.LiteralElement(int_literal=literal))
+    else:
+      raise MesopInternalException("Unhandled literal case", literal)
+
+  return out

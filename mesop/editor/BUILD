@@ -38,7 +38,9 @@ py_test(
     deps = [
         ":editor",
         "//mesop/components",
+        "//mesop/components/box:py",
         "//mesop/components/button:py",
+        "//mesop/components/radio:py",
     ] + THIRD_PARTY_PY_PYTEST,
 )
 

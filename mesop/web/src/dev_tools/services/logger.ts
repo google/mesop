@@ -80,9 +80,12 @@ export function mapComponentToObject(
   let type;
   if (debugJson) {
     type = {
-      name: component.getType()!.getName(),
-      value: jsonParse(debugJson) as object,
+      'name': component.getType()!.getName(),
+      'value': jsonParse(debugJson) as object,
     };
+  }
+  if (component.getStyleDebugJson()) {
+    (type as any)['value']['style'] = jsonParse(component.getStyleDebugJson());
   }
   return {
     type,

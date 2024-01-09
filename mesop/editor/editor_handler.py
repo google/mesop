@@ -7,6 +7,7 @@ from mesop.utils.path_utils import get_path_from_workspace_root
 
 
 def handle_editor_event(event: pb.EditorEvent):
+  print("Handling editor event", event)
   if event.HasField("update_callsite"):
     handle_update_callsite(event.update_callsite)
     return
