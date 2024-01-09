@@ -15,34 +15,32 @@
     ></mesop-editor-fields>
 
     } @case(FieldTypeCase.STRING_TYPE) {
-    <mat-form-field appearance="outline" style="width: 100%">
-      <mat-label>{{field.getName()}}</mat-label>
-      <input
-        (blur)="onBlur($event)"
-        matInput
-        [attr.data-name]="field.getName()"
-        [value]="getValueFor(field.getName())"
-      />
-    </mat-form-field>
+    <label class="input-label">{{field.getName()}}</label>:
+    <input
+      class="input"
+      (blur)="onBlur($event)"
+      [attr.data-name]="field.getName()"
+      [value]="getValueFor(field.getName())"
+    />
     } @case(FieldTypeCase.LITERAL_TYPE) {
-    <mat-form-field style="width: 100%">
-      <mat-label>{{field.getName()}}</mat-label>
-      <mat-select>
-        @for(literal of field.getType()!.getLiteralType()?.getLiteralsList();
-        track $index) {
-        <mat-option [value]="getLiteralValue(literal)"
-          >{{getLiteralValue(literal)}}</mat-option
-        >
-        }
-      </mat-select>
-    </mat-form-field>
+    <label class="input-label">{{field.getName()}}</label>:
+    <select class="select">
+      @for(literal of field.getType()!.getLiteralType()?.getLiteralsList();
+      track $index) {
+      <option [value]="getLiteralValue(literal)">
+        {{getLiteralValue(literal)}}
+      </option>
+      }
+    </select>
     } @case(FieldTypeCase.STRUCT_TYPE) {
-    <div>{{field.getName()}}</div>
-    <mesop-editor-fields
-      [fields]="field.getType()!.getStructType()!.getFieldsList()"
-      [prefixes]="getPrefixFor(field.getName())"
-    >
-    </mesop-editor-fields>
+    <div class="struct-section">
+      <div class="struct-name">{{field.getName()}}</div>
+      <mesop-editor-fields
+        [fields]="field.getType()!.getStructType()!.getFieldsList()"
+        [prefixes]="getPrefixFor(field.getName())"
+      >
+      </mesop-editor-fields>
+    </div>
     } @default {
     <div class="field-name">
       Error: unhandled field name {{field.getName()}}
@@ -52,10 +50,10 @@
 
   } @for(field of getBoolFields(); track $index) {
   <mat-checkbox>{{field.getName()}}</mat-checkbox>
-  }
+  } @if(getNonTypedFields().length) {
   <mat-divider class="other-fields-divider"></mat-divider>
   <div class="other-fields-title">Other fields</div>
   @for(field of getNonTypedFields(); track $index) {
   <div class="non-typed-field-name">{{field.getName()}}</div>
-  }
+  } }
 </div>

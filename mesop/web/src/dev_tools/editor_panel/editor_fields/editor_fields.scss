@@ -1,13 +1,3 @@
-.container {
-  height: 100%;
-}
-
-.component-name {
-  font-weight: 500;
-  font-size: 18px;
-  padding: 16px;
-  text-transform: capitalize;
-}
 .field-name {
   font-weight: 500;
   margin-bottom: 12px;
@@ -15,8 +5,42 @@
 .fields-section {
 }
 
+.struct-section {
+  margin: 8px 0;
+  border: 1px solid #dcdcdc;
+  border-radius: 8px;
+}
+
+.struct-name {
+  padding: 8px 0 0 8px;
+  font-weight: 700;
+}
+
+.select {
+  border: 0;
+}
+
+.select:focus {
+  outline: none;
+}
+
+.input-label {
+  // font-family: monospace;
+  color: #bd1b1b;
+}
+
+.input {
+  border: 0;
+  // font-family: monospace;
+}
+
+.input:focus {
+  outline: none;
+}
+
 .field-block {
-  margin: 0 16px 0 16px;
+  margin: 0 8px;
+  font-family: monospace;
 }
 
 .other-fields-divider {
