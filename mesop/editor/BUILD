@@ -1,4 +1,4 @@
-load("//build_defs:defaults.bzl", "THIRD_PARTY_PY_PYTEST", "py_library", "py_test")
+load("//build_defs:defaults.bzl", "THIRD_PARTY_PY_LIBCST", "THIRD_PARTY_PY_PYTEST", "py_library", "py_test")
 
 package(
     default_visibility = ["//build_defs:mesop_internal"],
@@ -40,4 +40,12 @@ py_test(
         "//mesop/components",
         "//mesop/components/button:py",
     ] + THIRD_PARTY_PY_PYTEST,
+)
+
+py_test(
+    name = "editor_codemod_test",
+    srcs = ["editor_codemod_test.py"],
+    deps = [
+        ":editor",
+    ] + THIRD_PARTY_PY_LIBCST,
 )
