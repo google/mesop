@@ -5,5 +5,4 @@ package mesop.components.icon;
 
 message IconType {
   string font_icon = 1;
-  string style = 2;
 }

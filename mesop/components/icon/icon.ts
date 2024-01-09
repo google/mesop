@@ -2,10 +2,12 @@ import {MatIconModule} from '@angular/material/icon';
 import {Component, Input} from '@angular/core';
 import {
   Key,
+  Style,
   Type,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 import {IconType} from 'mesop/mesop/components/icon/icon_jspb_proto_pb/mesop/components/icon/icon_pb';
 import {Channel} from '../../web/src/services/channel';
+import {formatStyle} from '../../web/src/utils/styles';
 
 @Component({
   templateUrl: 'icon.ng.html',
@@ -15,6 +17,7 @@ import {Channel} from '../../web/src/services/channel';
 export class IconComponent {
   @Input({required: true}) type!: Type;
   @Input() key!: Key;
+  @Input() style!: Style;
   private _config!: IconType;
 
   constructor(private readonly channel: Channel) {}
@@ -27,5 +30,9 @@ export class IconComponent {
 
   config(): IconType {
     return this._config;
+  }
+
+  getStyle(): string {
+    return formatStyle(this.style);
   }
 }

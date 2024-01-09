@@ -7,4 +7,5 @@ package(
 ts_library(
     name = "utils",
     srcs = glob(["*.ts"]),
+    deps = ["//mesop/protos:ui_jspb_proto"],
 )

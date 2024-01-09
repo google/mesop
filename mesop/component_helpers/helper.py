@@ -131,6 +131,7 @@ def insert_component(
   type_name: str,
   proto: Message,
   key: str | None = None,
+  style: pb.Style | None = None,
 ) -> None:
   """
   Inserts a component into the current context's current node.
@@ -143,6 +144,7 @@ def insert_component(
       type_name=type_name,
       proto=proto,
       key=key,
+      style=style,
       source_code_location=source_code_location,
     )
   )

@@ -51,7 +51,7 @@ def menu_item(label: str, icon: str, url: str, current_url: str):
             display="flex", flex_direction="column", align_items="center"
           )
         ):
-          me.icon(icon=icon, style=f"color: {color}")
+          me.icon(icon=icon, style=me.Style(color=color))
           me.text(
             label,
             style=f"""

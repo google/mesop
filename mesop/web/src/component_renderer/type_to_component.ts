@@ -11,6 +11,7 @@ import {TooltipComponent} from '../../../components/tooltip/tooltip';
 import {InputComponent} from '../../../components/input/input';
 import {
   Key,
+  Style,
   Type,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 
@@ -22,6 +23,7 @@ import {MarkdownComponent} from '../../../components/markdown/markdown';
 export interface BaseComponent {
   key: Key;
   type: Type;
+  style?: Style;
 
   ngOnChanges(): void;
 }
