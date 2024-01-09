@@ -2,6 +2,8 @@
 codemods to the rest of the Mesop editor package.
 """
 
+from typing import Sequence
+
 import libcst as cst
 from libcst.codemod import (
   CodemodContext,
@@ -47,21 +49,52 @@ class ReplaceKeywordArg(VisitorBasedCodemodCommand):
     ):
       return original_node
 
+    return self._update_call(
+      updated_node,
+      self.input.arg_path.segments,
+      first_positional_arg=(
+        "text" if self.input.component_name in ["text", "markdown"] else None
+      ),
+    )
+
+  def _update_call(
+    self,
+    call: cst.Call,
+    segments: Sequence[pb.ArgPathSegment],
+    first_positional_arg: str | None = None,
+  ) -> cst.Call:
+    segment = segments[0]
+    keyword_argument = segment.keyword_argument
     new_args: list[cst.Arg] = []
-    for arg in updated_node.args:
+    for arg in call.args:
       if (
         isinstance(arg.keyword, cst.Name)
-        and arg.keyword.value == self.input.keyword_argument
+        and arg.keyword.value == keyword_argument
       ) or (
-        self.input.component_name in ["text", "markdown"]
-        and self.input.keyword_argument == "text"
-        and arg == updated_node.args[0]
+        first_positional_arg is not None
+        and keyword_argument == first_positional_arg
+        and arg == call.args[0]
       ):
-        # Replace the argument value
-        new_arg = arg.with_changes(
-          value=cst.SimpleString(f'"{self.input.new_code}"')
-        )
-        new_args.append(new_arg)
+        new_args.append(self.modify_arg(arg, segments))
       else:
         new_args.append(arg)
-    return updated_node.with_changes(args=new_args)
+    return call.with_changes(args=new_args)
+
+  def modify_arg(
+    self, input_arg: cst.Arg, segments: Sequence[pb.ArgPathSegment]
+  ) -> cst.Arg:
+    if len(segments) == 1:
+      maybe_call = input_arg.value
+      if not isinstance(maybe_call, cst.Call):
+        mod = input_arg.with_changes(
+          value=cst.SimpleString(f'"{self.input.new_code}"')
+        )
+        return mod
+      call = maybe_call
+      return input_arg.with_changes(value=self._update_call(call, segments))
+    else:
+      call = input_arg.value
+      if not isinstance(call, cst.Call):
+        raise Exception("unexpected input_arg", input_arg)
+
+      return input_arg.with_changes(value=self._update_call(call, segments[1:]))

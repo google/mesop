@@ -42,9 +42,19 @@ message EditorEvent {
 
 message EditorUpdateCallsite {
     SourceCodeLocation source_code_location = 1;
-    string keyword_argument = 2; // TODO: handle positional arguments
+    ArgPath arg_path = 2;
     string new_code = 3;
     string component_name = 4;
+}
+
+message ArgPath {
+    repeated ArgPathSegment segments = 1;
+}
+
+message ArgPathSegment {
+    oneof type {
+        string keyword_argument = 1;
+    }
 }
 
 // This is a user-triggered navigation (e.g. go back/forwards) or a hot reload event.

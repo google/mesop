@@ -24,7 +24,9 @@ class TestReplaceKeywordArg(CodemodTest):
       "simple_callsite",
       pb.EditorUpdateCallsite(
         component_name="input",
-        keyword_argument="label",
+        arg_path=pb.ArgPath(
+          segments=[pb.ArgPathSegment(keyword_argument="label")]
+        ),
         new_code="defa",
         source_code_location=pb.SourceCodeLocation(line=5),
       ),
@@ -35,7 +37,9 @@ class TestReplaceKeywordArg(CodemodTest):
       "multi_callsite",
       pb.EditorUpdateCallsite(
         component_name="input",
-        keyword_argument="label",
+        arg_path=pb.ArgPath(
+          segments=[pb.ArgPathSegment(keyword_argument="label")]
+        ),
         new_code="defa",
         source_code_location=pb.SourceCodeLocation(line=6),
       ),
@@ -46,7 +50,9 @@ class TestReplaceKeywordArg(CodemodTest):
       "text",
       pb.EditorUpdateCallsite(
         component_name="text",
-        keyword_argument="text",
+        arg_path=pb.ArgPath(
+          segments=[pb.ArgPathSegment(keyword_argument="text")]
+        ),
         new_code="after",
         source_code_location=pb.SourceCodeLocation(line=5),
       ),
@@ -57,8 +63,26 @@ class TestReplaceKeywordArg(CodemodTest):
       "markdown",
       pb.EditorUpdateCallsite(
         component_name="markdown",
-        keyword_argument="text",
+        arg_path=pb.ArgPath(
+          segments=[pb.ArgPathSegment(keyword_argument="text")]
+        ),
         new_code="after",
+        source_code_location=pb.SourceCodeLocation(line=5),
+      ),
+    )
+
+  def test_style_struct(self) -> None:
+    self.assertEditorUpdate(
+      "style_struct",
+      pb.EditorUpdateCallsite(
+        component_name="box",
+        arg_path=pb.ArgPath(
+          segments=[
+            pb.ArgPathSegment(keyword_argument="style"),
+            pb.ArgPathSegment(keyword_argument="background"),
+          ]
+        ),
+        new_code="pink",
         source_code_location=pb.SourceCodeLocation(line=5),
       ),
     )
