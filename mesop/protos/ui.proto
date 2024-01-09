@@ -118,6 +118,7 @@ message State {
 // Represents an instance of a component.
 message Component {
     Key key = 3;
+    Style style = 5;
     // Type-specific component properties.
     Type type = 1;
     repeated Component children = 2;
@@ -143,6 +144,42 @@ message Type {
     // Needed outside of |value| because ComponentRenderer (TS) needs to know
     // the type index in order to do content projection correctly.
     int32 type_index = 7;
+}
+
+message Style {
+    string background = 1;
+    string color = 2;
+    string height = 5;
+    string width = 12;
+    EdgeInsets margin = 3;
+    EdgeInsets padding = 4;
+    string display = 6;
+    string flex_direction = 7;
+    int32 flex_grow = 13;
+    string align_items = 8;
+    string position = 9;
+    string text_align = 10;
+    Border border = 11;
+}
+
+message EdgeInsets {
+    string top = 1;
+    string bottom = 2;
+    string left = 3;
+    string right = 4;
+}
+
+message Border {
+    BorderSide top = 1;
+    BorderSide bottom = 2;
+    BorderSide left = 3;
+    BorderSide right = 4;
+}
+
+message BorderSide {
+    string width = 1;
+    string color = 2;
+    string style = 3;
 }
 
 message ComponentConfig {

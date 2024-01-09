@@ -2,17 +2,21 @@ from typing import Any, Callable
 
 import mesop.components.box.box_pb2 as box_pb
 from mesop.component_helpers import (
+  Style,
   insert_composite_component,
   register_event_handler,
+  to_style_proto,
 )
 from mesop.events import ClickEvent
 from mesop.utils.validate import validate
+
+STYLE = Style()
 
 
 @validate
 def box(
   *,
-  style: str = "",
+  style: Style = STYLE,
   on_click: Callable[[ClickEvent], Any] | None = None,
   key: str | None = None,
 ) -> Any:
@@ -31,9 +35,9 @@ def box(
     key=key,
     type_name="box",
     proto=box_pb.BoxType(
-      style=style,
       on_click_handler_id=register_event_handler(on_click, event=ClickEvent)
       if on_click
       else "",
     ),
+    style=to_style_proto(style),
   )

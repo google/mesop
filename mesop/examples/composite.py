@@ -9,8 +9,23 @@ def app():
 
 @me.composite
 def composite():
-  with me.box(style="background-color: pink; padding: 15px"):
-    with me.box(style="background-color: orange; padding: 15px"):
-      with me.box(style="background-color: green; padding: 15px"):
+  with me.box(
+    style=me.Style(
+      background="pink",
+      padding=me.Padding(top=15, right=15, bottom=15, left=15),
+    )
+  ):
+    with me.box(
+      style=me.Style(
+        background="orange",
+        padding=me.Padding(top=15, right=15, bottom=15, left=15),
+      )
+    ):
+      with me.box(
+        style=me.Style(
+          background="green",
+          padding=me.Padding(top=15, right=15, bottom=15, left=15),
+        )
+      ):
         me.slot()
         me.text("hello")

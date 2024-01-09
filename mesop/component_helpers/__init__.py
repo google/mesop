@@ -13,3 +13,9 @@ from .helper import (
 from .helper import (
   register_event_mapper as register_event_mapper,
 )
+from .style import Border as Border
+from .style import BorderSide as BorderSide
+from .style import Margin as Margin
+from .style import Padding as Padding
+from .style import Style as Style
+from .style import to_style_proto as to_style_proto

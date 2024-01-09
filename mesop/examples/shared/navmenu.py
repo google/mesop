@@ -3,13 +3,15 @@ import mesop as me
 
 def navmenu(url: str):
   with me.box(
-    style="""
-    background: white;
-      position: fixed;
-    width: 84px;
-    border-right: 1px solid #f6f5f6;
-    height: 100%
-    """
+    style=me.Style(
+      background="white",
+      position="fixed",
+      width=84,
+      border=me.Border(
+        right=me.BorderSide(width=1, style="solid", color="#f6f5f6")
+      ),
+      height="100%",
+    )
   ):
     menu_item(label="Home", icon="home", url="/", current_url=url)
     menu_item(
@@ -30,22 +32,24 @@ def menu_item(label: str, icon: str, url: str, current_url: str):
 
   is_active = url == current_url
   color = "black" if is_active else "oklch(0.5484 0.023 304.99)"
-  is_active_border = "border-left: 3px solid black;" if is_active else ""
+
   with me.box(
-    style=f"""
-    {is_active_border}
-  padding: 16px;
-  text-align: center
-  """
+    style=me.Style(
+      padding=me.Padding(top=16, bottom=16, left=16, right=16),
+      text_align="center",
+      border=me.Border(
+        left=me.BorderSide(width=3, style="solid", color="black")
+      )
+      if is_active
+      else None,
+    )
   ):
-    with me.box(style="margin-bottom: 8px"):
+    with me.box(style=me.Style(margin=me.Margin(bottom=8))):
       with me.button(type="icon", on_click=on_click, key=url):
         with me.box(
-          style="""
-        display: flex;
-        flex-direction: column;
-        align-items: center
-        """
+          style=me.Style(
+            display="flex", flex_direction="column", align_items="center"
+          )
         ):
           me.icon(icon=icon, style=f"color: {color}")
           me.text(
@@ -60,7 +64,7 @@ def menu_item(label: str, icon: str, url: str, current_url: str):
 
 @me.composite
 def scaffold(url: str):
-  with me.box(style="background: white; height: 100%"):
+  with me.box(style=me.Style(background="white", height="100%")):
     navmenu(url=url)
-    with me.box(style="padding-left: 84px; height: 100%"):
+    with me.box(style=me.Style(padding=me.Padding(left=84), height="100%")):
       me.slot()

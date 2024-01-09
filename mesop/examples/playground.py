@@ -21,22 +21,19 @@ class State:
 @me.page(path="/playground")
 def app():
   with scaffold(url="/playground"):
-    with me.box(
-      style="""
-      display: flex;
-      flex-direction: column;
-      """
-    ):
+    with me.box(style=me.Style(display="flex", flex_direction="column")):
       header()
       body()
 
 
 def header():
   with me.box(
-    style="""
-  border-bottom: 1px solid #ececf1;
-  padding: 12px;
-  """
+    style=me.Style(
+      padding=me.Padding(left=12, right=12, top=12, bottom=12),
+      border=me.Border(
+        bottom=me.BorderSide(width=1, style="solid", color="#ececf1")
+      ),
+    )
   ):
     me.text(
       "Playground",
@@ -49,15 +46,15 @@ def header():
 
 def body():
   with me.box(
-    style="""
-    flex-grow: 1;
-    padding: 24px;
-    display: flex;
-    flex-direction: row;
-  """
+    style=me.Style(
+      flex_grow=1,
+      display="flex",
+      flex_direction="row",
+      padding=me.Padding(top=24, bottom=24, left=24, right=24),
+    )
   ):
     left_panel()
-    with me.box(style="width: 24px"):
+    with me.box(style=me.Style(width=24)):
       pass
     right_panel()
 
@@ -79,15 +76,11 @@ def on_submit(event: me.ClickEvent):
 
 def left_panel():
   with me.box(
-    style="""
-    display: flex:
-    flex-direction: column;
-    width: 50%;
-    """
+    style=me.Style(display="flex", flex_direction="column", width="50%")
   ):
-    with me.box(style="padding-bottom: 16px;"):
+    with me.box(style=me.Style(padding=me.Padding(bottom=16))):
       me.text("Input", style="font-weight: 500;")
-    with me.box(style="""width: 100%;"""):
+    with me.box(style=me.Style(width="100%")):
       me.input(
         label="Input",
         type=me.Textarea(rows=10),
@@ -100,12 +93,8 @@ def left_panel():
 
 
 def right_panel():
-  with me.box(
-    style="""
-    width: 50%;
-    """
-  ):
-    with me.box(style="padding-bottom: 16px;"):
+  with me.box(style=me.Style(width="50%")):
+    with me.box(style=me.Style(padding=me.Padding(bottom=16))):
       me.text("Output", style="font-weight: 500;")
     state = me.state(State)
     if state.is_loading:

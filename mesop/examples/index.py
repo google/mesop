@@ -9,7 +9,12 @@ def index():
 
 
 def body():
-  with me.box(style="""background: white; padding: 16px"""):
+  with me.box(
+    style=me.Style(
+      background="white",
+      padding=me.Padding(top=16, bottom=16, left=16, right=16),
+    )
+  ):
     me.markdown(
       """
 # Welcome

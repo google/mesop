@@ -19,6 +19,7 @@ class _ComponentWithChildren:
     type_name: str,
     proto: Message,
     key: str | None = None,
+    style: pb.Style | None = None,
     source_code_location: pb.SourceCodeLocation | None = None,
   ):
     self.prev_current_node = runtime().context().current_node()
@@ -28,6 +29,7 @@ class _ComponentWithChildren:
         type_name=type_name,
         proto=proto,
         key=key,
+        style=style,
         source_code_location=source_code_location,
       )
     )
@@ -81,6 +83,7 @@ def create_component(
   type_name: str,
   proto: Message,
   key: str | None = None,
+  style: pb.Style | None = None,
   source_code_location: pb.SourceCodeLocation | None = None,
 ) -> pb.Component:
   type_index = 0
@@ -101,6 +104,7 @@ def create_component(
   return pb.Component(
     key=pb.Key(key=key) if key else None,
     type=type,
+    style=style,
     source_code_location=source_code_location,
   )
 
@@ -109,6 +113,7 @@ def insert_composite_component(
   type_name: str,
   proto: Message,
   key: str | None = None,
+  style: pb.Style | None = None,
 ) -> _ComponentWithChildren:
   source_code_location = None
   if runtime().debug_mode:
@@ -117,6 +122,7 @@ def insert_composite_component(
     type_name=type_name,
     proto=proto,
     key=key,
+    style=style,
     source_code_location=source_code_location,
   )
 

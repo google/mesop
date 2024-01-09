@@ -1,6 +1,21 @@
 from typing import Any, TypeVar, cast
 
 from mesop.commands.navigate import navigate as navigate
+from mesop.component_helpers import (
+  Border as Border,
+)
+from mesop.component_helpers import (
+  BorderSide as BorderSide,
+)
+from mesop.component_helpers import (
+  Margin as Margin,
+)
+from mesop.component_helpers import (
+  Padding as Padding,
+)
+from mesop.component_helpers import (
+  Style as Style,
+)
 from mesop.component_helpers.helper import (
   composite as composite,
 )
