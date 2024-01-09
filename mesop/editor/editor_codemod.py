@@ -66,6 +66,7 @@ class ReplaceKeywordArg(VisitorBasedCodemodCommand):
     segment = segments[0]
     keyword_argument = segment.keyword_argument
     new_args: list[cst.Arg] = []
+    found_arg = False
     for arg in call.args:
       if (
         isinstance(arg.keyword, cst.Name)
@@ -75,9 +76,17 @@ class ReplaceKeywordArg(VisitorBasedCodemodCommand):
         and keyword_argument == first_positional_arg
         and arg == call.args[0]
       ):
+        found_arg = True
         new_args.append(self.modify_arg(arg, segments))
       else:
         new_args.append(arg)
+    if not found_arg:
+      new_args.append(
+        cst.Arg(
+          keyword=cst.Name(segment.keyword_argument),
+          value=get_value(self.input.new_code),
+        )
+      )
     return call.with_changes(args=new_args)
 
   def modify_arg(
