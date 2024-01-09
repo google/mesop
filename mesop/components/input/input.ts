@@ -5,9 +5,11 @@ import {
   UserEvent,
   Key,
   Type,
+  Style,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 import {InputType} from 'mesop/mesop/components/input/input_jspb_proto_pb/mesop/components/input/input_pb';
 import {Channel} from '../../web/src/services/channel';
+import {formatStyle} from '../../web/src/utils/styles';
 
 @Component({
   templateUrl: 'input.ng.html',
@@ -17,6 +19,7 @@ import {Channel} from '../../web/src/services/channel';
 export class InputComponent {
   @Input({required: true}) type!: Type;
   @Input() key!: Key;
+  @Input() style!: Style;
   private _config!: InputType;
 
   constructor(private readonly channel: Channel) {}
@@ -29,6 +32,10 @@ export class InputComponent {
 
   config(): InputType {
     return this._config;
+  }
+
+  getStyle(): string {
+    return formatStyle(this.style);
   }
 
   getColor(): 'primary' | 'accent' | 'warn' {

@@ -3,8 +3,10 @@ from typing import Any, Callable, Literal, cast
 
 import mesop.components.input.input_pb2 as input_pb
 from mesop.component_helpers import (
+  Style,
   insert_component,
   register_event_handler,
+  to_style_proto,
 )
 from mesop.events import InputEvent
 from mesop.utils.validate import validate
@@ -45,7 +47,7 @@ def input(
   | Textarea
   | None = None,
   appearance: Literal["fill", "outline"] = "fill",
-  style: str = "",
+  style: Style | None = None,
   disabled: bool = False,
   placeholder: str = "",
   name: str = "",
@@ -107,9 +109,9 @@ def input(
       subscript_sizing=subscript_sizing,
       hint_label=hint_label,
       label=label,
-      style=style,
       on_input_handler_id=register_event_handler(on_input, event=InputEvent)
       if on_input
       else "",
     ),
+    style=to_style_proto(style) if style else None,
   )

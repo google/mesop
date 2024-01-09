@@ -92,7 +92,7 @@ def left_panel():
       me.input(
         label="Input",
         type=me.Textarea(rows=10),
-        style="width: 100%",
+        style=me.Style(width="100%"),
         on_input=on_input,
       )
 
