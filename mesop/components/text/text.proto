@@ -19,5 +19,4 @@ message TextType {
         CAPTION = 11;
     }
     TypographyLevel typography_level = 2;
-    string style = 3;
 }

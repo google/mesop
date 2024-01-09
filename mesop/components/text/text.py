@@ -2,7 +2,7 @@ from enum import Enum
 from typing import cast
 
 import mesop.components.text.text_pb2 as text_pb2
-from mesop.component_helpers import insert_component
+from mesop.component_helpers import Style, insert_component, to_style_proto
 from mesop.utils.validate import validate
 
 
@@ -27,7 +27,7 @@ def text(
   text: str,
   *,
   type: Typography = Typography.TYPOGRAPHY_UNSET,
-  style: str = "",
+  style: Style | None = None,
   key: str | None = None,
 ):
   """
@@ -48,6 +48,8 @@ def text(
     key=key,
     type_name="text",
     proto=text_pb2.TextType(
-      text=text, typography_level=typography_level, style=style
+      text=text,
+      typography_level=typography_level,
     ),
+    style=to_style_proto(style) if style else None,
   )

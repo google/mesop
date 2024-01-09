@@ -41,6 +41,20 @@ class Padding(EdgeInsets):
 class Style:
   background: str = ""
   color: str = ""
+  font_size: int | str = ""
+  font_weight: Literal[
+    "normal",
+    "bold",
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900,
+  ] | None = None
   margin: Margin | None = None
   padding: Padding | None = None
   border: Border | None = None
@@ -104,7 +118,15 @@ def to_style_proto(s: Style) -> pb.Style:
     position=_str_or_none(s.position),
     text_align=_str_or_none(s.text_align),
     border=_map_border(s.border),
+    font_weight=_map_font_weight(s.font_weight),
+    font_size=_px_str(s.font_size),
   )
+
+
+def _map_font_weight(fw: int | str | None) -> str:
+  if fw is None:
+    return ""
+  return str(fw)
 
 
 def _str_or_none(input: str | None) -> str:

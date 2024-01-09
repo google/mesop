@@ -54,11 +54,7 @@ def menu_item(label: str, icon: str, url: str, current_url: str):
           me.icon(icon=icon, style=me.Style(color=color))
           me.text(
             label,
-            style=f"""
-            color: {color};
-            font-weight: 500;
-            font-size: 14px
-            """,
+            style=me.Style(color=color, font_weight=500, font_size=14),
           )
 
 

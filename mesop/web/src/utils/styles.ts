@@ -11,6 +11,12 @@ export function formatStyle(styleObj: Style): string {
   if (styleObj.getColor()) {
     style += `color: ${styleObj.getColor()};`;
   }
+  if (styleObj.getFontWeight()) {
+    style += `font-weight: ${styleObj.getFontWeight()};`;
+  }
+  if (styleObj.getFontSize()) {
+    style += `font-size: ${styleObj.getFontSize()};`;
+  }
   if (styleObj.getHeight()) {
     style += `height: ${styleObj.getHeight()};`;
   }

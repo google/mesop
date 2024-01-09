@@ -1,9 +1,11 @@
 import {Component, Input} from '@angular/core';
 import {
   Key,
+  Style,
   Type,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 import {TextType} from 'mesop/mesop/components/text/text_jspb_proto_pb/mesop/components/text/text_pb';
+import {formatStyle} from '../../web/src/utils/styles';
 
 @Component({
   selector: 'mesop-text',
@@ -13,6 +15,7 @@ import {TextType} from 'mesop/mesop/components/text/text_jspb_proto_pb/mesop/com
 export class TextComponent {
   @Input({required: true}) type!: Type;
   @Input() key!: Key;
+  @Input() style!: Style;
   _config!: TextType;
 
   getClass(): string {
@@ -54,6 +57,6 @@ export class TextComponent {
   }
 
   getStyle(): string {
-    return this.config().getStyle().trim();
+    return formatStyle(this.style);
   }
 }

@@ -160,6 +160,8 @@ message Style {
     string position = 9;
     string text_align = 10;
     Border border = 11;
+    string font_weight = 14;
+    string font_size = 15;
 }
 
 message EdgeInsets {

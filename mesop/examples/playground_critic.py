@@ -43,7 +43,7 @@ def header():
     me.text(
       "Hello world",
       type=me.Typography.H5,
-      style="    margin: 0;    ",
+      style=me.Style(margin=me.Margin(top=0, right=0, bottom=0, left=0)),
     )
 
 
@@ -87,7 +87,7 @@ def left_panel():
     style=me.Style(display="flex", flex_direction="column", width="50%")
   ):
     with me.box(style=me.Style(padding=me.Padding(bottom=16))):
-      me.text("Input", style="font-weight: 500;")
+      me.text("Input", style=me.Style(font_weight=500))
     with me.box(style=me.Style(width="100%")):
       me.input(
         label="Input",
@@ -102,7 +102,7 @@ def left_panel():
     with me.box(style=me.Style(margin=me.Margin(top=16, bottom=16))):
       me.divider()
     with me.box(style=me.Style(margin=me.Margin(bottom=8))):
-      me.text("Critic prompt", style="font-weight: 500")
+      me.text("Critic prompt", style=me.Style(font_weight=500))
 
     me.text("Think about something better")
 
@@ -110,7 +110,7 @@ def left_panel():
 def right_panel():
   with me.box(style=me.Style(width="50%")):
     with me.box(style=me.Style(padding=me.Padding(bottom=16))):
-      me.text("Output", style="font-weight: 500;")
+      me.text("Output", style=me.Style(font_weight=500))
     state = me.state(State)
     if state.initial_output.loading:
       me.progress_spinner()
