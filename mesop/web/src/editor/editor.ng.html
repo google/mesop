@@ -24,6 +24,9 @@
     position="end"
     class="right-sidenav"
   >
-    <mesop-dev-tools [componentConfigs]="componentConfigs()"></mesop-dev-tools>
+    <mesop-dev-tools
+      *ngIf="showDevTools()"
+      [componentConfigs]="componentConfigs()"
+    ></mesop-dev-tools>
   </mat-sidenav>
 </mat-sidenav-container>
