@@ -1,5 +1,15 @@
 <div class="fields-section">
-  @for(field of getRegularFields(); track $index) {
+  @if(getHiddenFields().length) {
+  <div class="add-property">
+    <label class="input-label">+</label>:
+    <select class="select">
+      <option value=""></option>
+      @for(fieldName of getHiddenFields(); track $index) {
+      <option [value]="fieldName">{{fieldName}}</option>
+      }
+    </select>
+  </div>
+  } @for(field of getRegularFields(); track $index) {
   <div class="field-block">
     @switch(field.getType()?.getTypeCase()) {@case(FieldTypeCase.INT_TYPE) {
     <div>Int</div>

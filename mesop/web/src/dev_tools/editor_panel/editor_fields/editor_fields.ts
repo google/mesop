@@ -103,8 +103,22 @@ export class EditorFields {
       this.fields.filter(
         (field) =>
           field.getType()?.getTypeCase() !== this.FieldTypeCase.BOOL_TYPE &&
-          field.getType(),
+          field.getType() &&
+          this.getValueFor(field.getName()),
       ) ?? []
+    );
+  }
+
+  getHiddenFields() {
+    return (
+      this.fields
+        .filter(
+          (field) =>
+            field.getType()?.getTypeCase() !== this.FieldTypeCase.BOOL_TYPE &&
+            field.getType() &&
+            !this.getValueFor(field.getName()),
+        )
+        .map((field) => field.getName()) ?? []
     );
   }
 
