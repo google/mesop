@@ -173,3 +173,5 @@ export function bootstrapApp() {
     providers: [provideAnimations(), provideRouter(routes)],
   });
 }
+
+export const TEST_ONLY = {EditorServiceImpl};

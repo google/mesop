@@ -27,7 +27,11 @@ ng_module(
 ng_test_library(
     name = "dev_tools_tests_lib",
     srcs = glob(["*_spec.ts"]),
-    deps = [":dev_tools"],
+    deps = [
+        ":dev_tools",
+        "//mesop/web/src/editor",
+        "//mesop/web/src/services",
+    ],
 )
 
 ng_web_test_suite(
