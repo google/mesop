@@ -53,5 +53,5 @@ py_test(
 
 filegroup(
     name = "testdata_files",
-    srcs = glob(["testdata/*.py"]),
+    srcs = glob(["testdata/**/*.py"]),
 )
