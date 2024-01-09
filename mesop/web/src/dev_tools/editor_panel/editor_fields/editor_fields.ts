@@ -7,6 +7,7 @@ import {
   FieldType,
   EditorField,
   EditorEvent,
+  EditorUpdateCallsite,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
@@ -45,15 +46,17 @@ export class EditorFields {
   onBlur(event: FocusEvent) {
     const target = event.target as HTMLInputElement;
     const editorEvent = new EditorEvent();
-    editorEvent.setSourceCodeLocation(
+    const editorUpdate = new EditorUpdateCallsite();
+    editorEvent.setUpdateCallsite(editorUpdate);
+    editorUpdate.setSourceCodeLocation(
       this.editorService.getFocusedComponent().getSourceCodeLocation(),
     );
     const name = target.getAttribute('data-name');
     if (!name) {
       throw new Error('Expected to get data-name attribute from event.');
     }
-    editorEvent.setKeywordArgument(name);
-    editorEvent.setNewCode(target.value);
+    editorUpdate.setKeywordArgument(name);
+    editorUpdate.setNewCode(target.value);
     this.channel.dispatchEditorEvent(editorEvent);
   }
 

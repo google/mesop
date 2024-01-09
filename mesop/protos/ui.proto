@@ -35,6 +35,12 @@ message UserEvent {
 }
 
 message EditorEvent {
+    oneof type {
+        EditorUpdateCallsite update_callsite = 1;
+    }
+}
+
+message EditorUpdateCallsite {
     SourceCodeLocation source_code_location = 1;
     string keyword_argument = 2; // TODO: handle positional arguments
     string new_code = 3;
