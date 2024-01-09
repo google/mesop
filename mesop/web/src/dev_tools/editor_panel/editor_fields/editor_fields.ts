@@ -55,6 +55,9 @@ export class EditorFields {
     if (!name) {
       throw new Error('Expected to get data-name attribute from event.');
     }
+    editorUpdate.setComponentName(
+      this.editorService.getFocusedComponent().getType()!.getName(),
+    );
     editorUpdate.setKeywordArgument(name);
     editorUpdate.setNewCode(target.value);
     this.channel.dispatchEditorEvent(editorEvent);

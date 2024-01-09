@@ -1,23 +1,5 @@
-"""
-Interface:
-
-codemod(...) ->
-
-Inputs:
-- code
-- SourceCodeLocation
-- function name
-- keyword_arg name
-- arg value
-
-Outputs:
-- code
-(just print warnings?)
-
-
-apply_codemod()
-
-Description: actually executes the codemod and updates the filesystem.
+"""Responsible for the code transformation logic. This exposes a simple API for doing
+codemods to the rest of the Mesop editor package.
 """
 
 import libcst as cst
@@ -28,6 +10,17 @@ from libcst.codemod import (
 from libcst.metadata import CodeRange, PositionProvider
 
 import mesop.protos.ui_pb2 as pb
+
+
+def execute_codemod(source_code: str, input: pb.EditorUpdateCallsite) -> str:
+  context = CodemodContext()
+  tree = cst.parse_module(source_code)
+
+  codemod = ReplaceKeywordArg(context, input)
+
+  modified_tree = codemod.transform_module(tree)
+
+  return modified_tree.code
 
 
 class ReplaceKeywordArg(VisitorBasedCodemodCommand):
@@ -62,6 +55,7 @@ class ReplaceKeywordArg(VisitorBasedCodemodCommand):
       ) or (
         self.input.component_name in ["text", "markdown"]
         and self.input.keyword_argument == "text"
+        and arg == updated_node.args[0]
       ):
         # Replace the argument value
         new_arg = arg.with_changes(

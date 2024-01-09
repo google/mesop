@@ -2,4 +2,4 @@ import mesop as me
 
 
 def app():
-  me.text("before")
+  me.text("before", type=me.Typography.BODY1)

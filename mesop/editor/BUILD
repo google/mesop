@@ -29,7 +29,7 @@ py_library(
         "//mesop/components/text:py",
         "//mesop/components/tooltip:py",
         "//mesop/protos:ui_py_pb2",
-    ],
+    ] + THIRD_PARTY_PY_LIBCST,
 )
 
 py_test(

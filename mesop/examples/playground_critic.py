@@ -44,11 +44,9 @@ def header():
   """
   ):
     me.text(
-      "Playground Critic",
+      "Hello world",
       type=me.Typography.H5,
-      style="""
-    margin: 0;
-    """,
+      style="    margin: 0;    ",
     )
 
 
@@ -113,9 +111,7 @@ def left_panel():
     with me.box(style="margin-bottom: 8px"):
       me.text("Critic prompt", style="font-weight: 500")
 
-    me.text(
-      "Look at the previous output and decide whether there's a better response"
-    )
+    me.text("Think about something better")
 
 
 def right_panel():
