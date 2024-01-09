@@ -20,28 +20,23 @@ apply_codemod()
 Description: actually executes the codemod and updates the filesystem.
 """
 
-
 import libcst as cst
 from libcst.codemod import (
   CodemodContext,
   VisitorBasedCodemodCommand,
 )
 
+import mesop.protos.ui_pb2 as pb
+
 
 class ReplaceKeywordArg(VisitorBasedCodemodCommand):
   DESCRIPTION: str = "Converts keyword arg."
 
   def __init__(
-    self,
-    context: CodemodContext,
-    fn_name: str,
-    keyword_arg: str,
-    arg_value: str,
+    self, context: CodemodContext, input: pb.EditorUpdateCallsite
   ) -> None:
     super().__init__(context)
-    self.fn_name = fn_name
-    self.keyword_arg = keyword_arg
-    self.arg_value = arg_value
+    self.input = input
 
   def leave_Call(
     self, original_node: cst.Call, updated_node: cst.Call
@@ -49,7 +44,7 @@ class ReplaceKeywordArg(VisitorBasedCodemodCommand):
     # Return original node if the function name doesn't match.
     if not (
       isinstance(updated_node.func, cst.Attribute)
-      and updated_node.func.attr.value == self.fn_name
+      and updated_node.func.attr.value == self.input.component_name
     ):
       return original_node
 
@@ -57,11 +52,11 @@ class ReplaceKeywordArg(VisitorBasedCodemodCommand):
     for arg in updated_node.args:
       if (
         isinstance(arg.keyword, cst.Name)
-        and arg.keyword.value == self.keyword_arg
+        and arg.keyword.value == self.input.keyword_argument
       ):
         # Replace the argument value
         new_arg = arg.with_changes(
-          value=cst.SimpleString(f'"{self.arg_value}"')
+          value=cst.SimpleString(f'"{self.input.new_code}"')
         )
         new_args.append(new_arg)
       else:

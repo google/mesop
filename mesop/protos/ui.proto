@@ -44,6 +44,7 @@ message EditorUpdateCallsite {
     SourceCodeLocation source_code_location = 1;
     string keyword_argument = 2; // TODO: handle positional arguments
     string new_code = 3;
+    string component_name = 4;
 }
 
 // This is a user-triggered navigation (e.g. go back/forwards) or a hot reload event.

@@ -4,6 +4,7 @@ from libcst.codemod import (
   CodemodTest,
 )
 
+import mesop.protos.ui_pb2 as pb
 from mesop.editor.editor_codemod import ReplaceKeywordArg
 from mesop.utils.runfiles import get_runfile_location
 
@@ -19,14 +20,20 @@ class TestReplaceKeywordArg(CodemodTest):
   TRANSFORM = ReplaceKeywordArg
 
   def test_replace(self) -> None:
-    test_case_name = "simple_callsite"
+    self.assertEditorUpdate(
+      "simple_callsite",
+      pb.EditorUpdateCallsite(
+        component_name="input", keyword_argument="label", new_code="defa"
+      ),
+    )
 
+  def assertEditorUpdate(
+    self, test_case_name: str, input: pb.EditorUpdateCallsite
+  ):
     self.assertCodemod(
       load_testdata(dir=test_case_name, filename="before.py"),
       load_testdata(dir=test_case_name, filename="after.py"),
-      fn_name="input",
-      keyword_arg="label",
-      arg_value="defa",
+      input=input,
     )
 
 
