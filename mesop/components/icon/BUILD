@@ -6,4 +6,5 @@ package(
 
 mesop_component(
     name = "icon",
+    ng_deps = ["//mesop/web/src/utils"],
 )

@@ -32,6 +32,7 @@ ng_module(
         "//mesop/components/checkbox:ng",
         "//mesop/components/text:ng",
         "//mesop/protos:ui_jspb_proto",
+        "//mesop/web/src/utils",
     ] + ANGULAR_CORE_DEPS + ANGULAR_MATERIAL_TS_DEPS,
 )
 
