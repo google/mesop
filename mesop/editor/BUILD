@@ -45,7 +45,13 @@ py_test(
 py_test(
     name = "editor_codemod_test",
     srcs = ["editor_codemod_test.py"],
+    data = [":testdata_files"],
     deps = [
         ":editor",
     ] + THIRD_PARTY_PY_LIBCST,
+)
+
+filegroup(
+    name = "testdata_files",
+    srcs = glob(["testdata/*.py"]),
 )
