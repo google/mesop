@@ -137,7 +137,18 @@ export class EditorFields {
     segment.setKeywordArgument(fieldName);
     const replacement = new CodeReplacement();
     replacement.setDeleteCode(new DeleteCode());
-    this.dispatchEdit(segment, replacement);
+    this.dispatchEdit([segment], replacement);
+  }
+
+  deleteFieldWithIndex(fieldName: string, index: number) {
+    const segment1 = new ArgPathSegment();
+    segment1.setKeywordArgument(fieldName);
+    const segment2 = new ArgPathSegment();
+    segment2.setListIndex(index);
+
+    const replacement = new CodeReplacement();
+    replacement.setDeleteCode(new DeleteCode());
+    this.dispatchEdit([segment1, segment2], replacement);
   }
 
   private editWithNewCode(
@@ -146,11 +157,11 @@ export class EditorFields {
   ) {
     const replacement = new CodeReplacement();
     replacement.setNewCode(codeValue);
-    this.dispatchEdit(argPathSegment, replacement);
+    this.dispatchEdit([argPathSegment], replacement);
   }
 
   private dispatchEdit(
-    argPathSegment: ArgPathSegment,
+    argPathSegments: ArgPathSegment[],
     replacement: CodeReplacement,
   ) {
     const editorEvent = new EditorEvent();
@@ -172,7 +183,9 @@ export class EditorFields {
       }
       argPath.addSegments(segment);
     }
-    argPath.addSegments(argPathSegment);
+    for (const segment of argPathSegments) {
+      argPath.addSegments(segment);
+    }
     editorUpdate.setArgPath(argPath);
     editorUpdate.setReplacement(replacement);
     this.channel.dispatchEditorEvent(editorEvent);

@@ -42,6 +42,14 @@
     >
     } @case(FieldTypeCase.LIST_TYPE) { @for(prefixes of
     getPrefixesListForListField(field.getName()!); track $index) {
+    <div class="struct-header">
+      <span class="struct-name">[{{$index}}]</span>
+      <mat-icon
+        class="delete-field"
+        (click)="deleteFieldWithIndex(field.getName()!, $index)"
+        >delete</mat-icon
+      >
+    </div>
     <mesop-editor-fields
       [fields]="getFieldsForListField(field)"
       [prefixes]="prefixes"
