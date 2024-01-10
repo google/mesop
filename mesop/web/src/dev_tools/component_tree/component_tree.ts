@@ -1,22 +1,27 @@
 import {FlatTreeControl} from '@angular/cdk/tree';
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {
   MatTreeFlatDataSource,
   MatTreeFlattener,
   MatTreeModule,
 } from '@angular/material/tree';
+import {Component as ComponentProto} from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 import {CdkTreeModule} from '@angular/cdk/tree';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {ComponentObject} from '../services/logger';
+import {EditorService} from '../../services/editor_service';
+import {CommonModule} from '@angular/common';
 
 /** Flat node with expandable and level information */
 export interface FlatNode {
   expandable: boolean;
   text: string;
+  label: string;
   componentName: string;
   properties: [string: any];
   level: number;
+  proto: ComponentProto;
 }
 
 @Component({
@@ -24,22 +29,32 @@ export interface FlatNode {
   templateUrl: 'component_tree.ng.html',
   styleUrl: 'component_tree.css',
   standalone: true,
-  imports: [CdkTreeModule, MatTreeModule, MatButtonModule, MatIconModule],
+  imports: [
+    CdkTreeModule,
+    MatTreeModule,
+    MatButtonModule,
+    MatIconModule,
+    CommonModule,
+  ],
 })
 export class ComponentTree {
   @Input({required: true}) component!: ComponentObject;
-  @Output() nodeSelected = new EventEmitter<FlatNode>();
+  @Input() selectedComponent!: ComponentProto | undefined;
+
+  constructor(private editorService: EditorService) {}
 
   keys() {
     return Object.keys(this.component);
   }
-  private _transformer = (node: DisplayNode, level: number) => {
+  private _transformer = (node: DisplayNode, level: number): FlatNode => {
     return {
       expandable: !!node.children && node.children.length > 0,
       text: node.text,
+      label: node.label,
       properties: node.properties,
       level: level,
       componentName: node.componentName,
+      proto: node.proto,
     };
   };
 
@@ -61,7 +76,10 @@ export class ComponentTree {
     this.dataSource.data = [mapComponentObjectToDisplay(this.component)];
 
     this.treeControl.dataNodes.forEach((node) => {
-      if (node.level < 5) {
+      if (node.level < 20) {
+        this.treeControl.expand(node);
+      }
+      if (this.selectedComponent === node.proto) {
         this.treeControl.expand(node);
       }
     });
@@ -70,7 +88,11 @@ export class ComponentTree {
   hasChild = (_: number, node: FlatNode) => node.expandable;
 
   selectNode(node: FlatNode): void {
-    this.nodeSelected.emit(node);
+    this.editorService.setFocusedComponent(node.proto);
+  }
+
+  isNodeSelected(node: FlatNode): boolean {
+    return this.editorService.getFocusedComponent() === node.proto;
   }
 }
 
@@ -80,18 +102,16 @@ export function mapComponentObjectToDisplay(
   const node: DisplayNode = {
     componentName: '<undefined>',
     text: '',
+    label: '',
     properties: {} as any,
     children: [],
+    proto: object.proto,
   };
   if (object.type) {
-    const values = Object.entries(object.type.value)
-      .map((entry) => {
-        const [key, value] = entry;
-        return `${key}=${JSON.stringify(value)}`;
-      })
-      .join(', ');
+    const label = (object.type.value as any)['text'];
     const name = object.type.name;
-    node.text = `${name}(${values})`;
+    node.text = `${name}`;
+    node.label = label;
     node.properties = object.type as any;
     (node.properties as any).key = object.key;
     node.componentName = name;
@@ -118,8 +138,10 @@ export interface InputNode {
 }
 
 export interface DisplayNode {
-  text: string; // foo(bar=blue)
+  text: string;
+  label: string;
   componentName: string;
   properties: [string: any];
   children: DisplayNode[];
+  proto: ComponentProto;
 }

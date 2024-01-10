@@ -1,11 +1,23 @@
 @if(hasFocusedComponent()) {
-<div class="container">
-  <div class="component-name">{{getFocusedComponent().componentName}}</div>
-  <mesop-editor-fields
-    [fields]="getFields()"
-    [prefixes]="[]"
-  ></mesop-editor-fields>
+<div class="component-name">
+  {{getFocusedComponent()?.getType()?.getName() ?? "[root]"}}
 </div>
+<mesop-editor-fields
+  [fields]="getFields()"
+  [prefixes]="[]"
+></mesop-editor-fields>
 } @else {
 <div class="empty-state-message">Select a component</div>
 }
+<mat-divider></mat-divider>
+<!-- Component tree -->
+@if(component()) {
+<div class="tree-container">
+  <div class="component-tree-title">Component Tree</div>
+  <mesop-component-tree
+    [component]="component()!"
+    [selectedComponent]="getFocusedComponent()"
+  >
+  </mesop-component-tree>
+</div>
+} @else { No component rendered. }

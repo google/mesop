@@ -9,6 +9,13 @@
   margin-left: 16px;
 }
 
+.selected-node {
+  background: #a1c1f99c;
+  padding: 6px;
+  margin: -6px;
+  border-radius: 6px;
+}
+
 .button {
   height: 24px;
   width: 24px;
@@ -22,4 +29,10 @@
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+}
+
+.label {
+  font-size: 0.8rem;
+  margin-left: 6px;
+  font-style: italic;
 }

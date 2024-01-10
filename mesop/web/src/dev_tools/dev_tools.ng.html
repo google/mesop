@@ -8,13 +8,6 @@
   </div>
   <div
     class="panel-button"
-    [ngClass]="{'selected-panel-button': selectedPanel === Panel.Components}"
-    (click)="selectComponentsPanel()"
-  >
-    Tree
-  </div>
-  <div
-    class="panel-button"
     [ngClass]="{'selected-panel-button': selectedPanel === Panel.Logs}"
     (click)="selectLogsPanel()"
   >
@@ -26,10 +19,6 @@
     [componentConfigs]="componentConfigs"
     [ngClass]="{'hide-panel': selectedPanel !== Panel.Editor}"
   ></mesop-editor-panel>
-
-  <mesop-components-panel
-    [ngClass]="{'hide-panel': selectedPanel !== Panel.Components}"
-  ></mesop-components-panel>
 
   <mesop-logs-panel
     [ngClass]="{'hide-panel': selectedPanel !== Panel.Logs}"

@@ -17,7 +17,6 @@ ng_module(
     ]) + [":dev_tools.css"],
     deps = [
         "//mesop/protos:ui_jspb_proto",
-        "//mesop/web/src/dev_tools/components_panel",
         "//mesop/web/src/dev_tools/editor_panel",
         "//mesop/web/src/dev_tools/logs_panel",
         "//mesop/web/src/dev_tools/services",

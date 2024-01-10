@@ -91,6 +91,7 @@ export function mapComponentToObject(
     type,
     key: component.getKey()?.getKey(),
     sourceCodeLocation: component.getSourceCodeLocation()?.toObject() ?? {},
+    proto: component,
     children: component
       .getChildrenList()
       .map((child) => mapComponentToObject(child)),
@@ -105,6 +106,7 @@ export interface ComponentObject {
   key?: string;
   children: ComponentObject[];
   sourceCodeLocation: object;
+  proto: ComponentProto;
 }
 
 export interface BaseLogModel {

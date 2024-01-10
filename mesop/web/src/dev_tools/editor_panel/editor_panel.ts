@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {EditorService} from '../../services/editor_service';
-import {mapComponentToObject} from '../services/logger';
-import {mapComponentObjectToDisplay} from '../component_tree/component_tree';
+import {ComponentObject, Logger, RenderLogModel} from '../services/logger';
+import {ComponentTree, FlatNode} from '../component_tree/component_tree';
 import {ObjectTree} from '../object_tree/object_tree';
 import {
   FieldType,
@@ -16,24 +16,26 @@ import {EditorFields} from './editor_fields/editor_fields';
   templateUrl: 'editor_panel.ng.html',
   styleUrl: 'editor_panel.css',
   standalone: true,
-  imports: [ObjectTree, EditorFields, MatDividerModule],
+  imports: [ObjectTree, EditorFields, MatDividerModule, ComponentTree],
 })
 export class EditorPanel {
   @Input()
   componentConfigs!: ComponentConfig[];
 
   FieldTypeCase = FieldType.TypeCase;
+  selectedNode!: FlatNode;
 
-  constructor(private editorService: EditorService) {}
+  constructor(
+    private logger: Logger,
+    private editorService: EditorService,
+  ) {}
 
   hasFocusedComponent(): boolean {
     return Boolean(this.editorService.getFocusedComponent());
   }
 
   getFocusedComponent() {
-    const obj = mapComponentToObject(this.editorService.getFocusedComponent()!);
-    const display = mapComponentObjectToDisplay(obj);
-    return display;
+    return this.editorService.getFocusedComponent();
   }
 
   getComponentConfig() {
@@ -46,5 +48,14 @@ export class EditorPanel {
 
   getFields(): EditorField[] {
     return this.getComponentConfig()?.getFieldsList() ?? [];
+  }
+
+  component(): ComponentObject {
+    const renderLog = this.logger
+      .getLogs()
+      .slice()
+      .reverse()
+      .find((log) => log.type === 'Render') as RenderLogModel;
+    return renderLog?.rootComponent as ComponentObject;
   }
 }
