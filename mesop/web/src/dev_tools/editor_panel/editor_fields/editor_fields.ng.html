@@ -12,12 +12,23 @@
   } @for(field of getRegularFields(); track $index) {
   <div class="field-block">
     @switch(field.getType()?.getTypeCase()) {@case(FieldTypeCase.INT_TYPE) {
-    <div>Int</div>
+    <label class="input-label">{{field.getName()}}</label>:
+    <input
+      class="input"
+      type="number"
+      (blur)="onBlur($event)"
+      [attr.data-name]="field.getName()"
+      [value]="getValueFor(field.getName())"
+    />
     } @case(FieldTypeCase.FLOAT_TYPE) {
-    <mat-form-field appearance="outline" style="width: 100%">
-      <mat-label>{{field.getName()}}</mat-label>
-      <input type="number" matInput [value]="getValueFor(field.getName())" />
-    </mat-form-field>
+    <label class="input-label">{{field.getName()}}</label>:
+    <input
+      class="input"
+      type="number"
+      (blur)="onBlur($event)"
+      [attr.data-name]="field.getName()"
+      [value]="getValueFor(field.getName())"
+    />
     } @case(FieldTypeCase.LIST_TYPE) {
     <div>List</div>
     <mesop-editor-fields

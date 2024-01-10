@@ -75,6 +75,8 @@ def get_fields(
     field_type = None
     if param_type is bool:
       field_type = pb.FieldType(bool_type=pb.BoolType(default_value=False))
+    elif param_type is int:
+      field_type = pb.FieldType(int_type=pb.IntType(default_value=0))
     elif param_type is float:
       field_type = pb.FieldType(float_type=pb.FloatType(default_value=0))
     elif param_type is str or (
