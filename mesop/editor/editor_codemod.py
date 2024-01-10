@@ -109,13 +109,13 @@ class ReplaceKeywordArg(VisitorBasedCodemodCommand):
 
 def get_value(code: pb.CodeValue):
   if code.HasField("string_value"):
-    return cst.SimpleString(f'"{code.string_value}"')
+    return cst.SimpleString(f'"{code.string_value or "<insert>"}"')
   if code.HasField("double_value"):
-    return cst.Float(str(code.double_value))
+    return cst.Float(str(code.double_value or 1.0))
   if code.HasField("int_value"):
-    return cst.Integer(str(code.int_value))
+    return cst.Integer(str(code.int_value or 1))
   if code.HasField("bool_value"):
-    return cst.Name(str(code.bool_value))
+    return cst.Name(str(code.bool_value or True))
   if code.HasField("struct_name"):
     return cst.Call(
       func=cst.Attribute(value=cst.Name("me"), attr=cst.Name(code.struct_name))
