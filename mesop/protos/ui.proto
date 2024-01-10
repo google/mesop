@@ -53,6 +53,7 @@ message CodeValue {
         bool bool_value = 2;
         int32 int_value = 3;
         double double_value = 4;
+        string struct_name = 5;
     }
 }
 

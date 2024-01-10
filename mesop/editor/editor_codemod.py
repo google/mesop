@@ -116,4 +116,8 @@ def get_value(code: pb.CodeValue):
     return cst.Integer(str(code.int_value))
   if code.HasField("bool_value"):
     return cst.Name(str(code.bool_value))
+  if code.HasField("struct_name"):
+    return cst.Call(
+      func=cst.Attribute(value=cst.Name("me"), attr=cst.Name(code.struct_name))
+    )
   raise Exception("Code value", code)

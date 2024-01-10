@@ -134,6 +134,22 @@ class TestReplaceKeywordArg(CodemodTest):
       ),
     )
 
+  def test_input_add_complex_property(self) -> None:
+    self.assertEditorUpdate(
+      "input_add_complex_property",
+      pb.EditorUpdateCallsite(
+        component_name="input",
+        arg_path=pb.ArgPath(
+          segments=[
+            pb.ArgPathSegment(keyword_argument="style"),
+            pb.ArgPathSegment(keyword_argument="padding"),
+          ]
+        ),
+        new_code=pb.CodeValue(struct_name="Padding"),
+        source_code_location=pb.SourceCodeLocation(line=5),
+      ),
+    )
+
   def assertEditorUpdate(
     self, test_case_name: str, input: pb.EditorUpdateCallsite
   ):
