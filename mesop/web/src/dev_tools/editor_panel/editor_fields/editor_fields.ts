@@ -56,12 +56,16 @@ export class EditorFields {
 
   onNewProperty(event: Event) {
     const target = event.target as HTMLSelectElement;
+
     const segment = new ArgPathSegment();
     segment.setKeywordArgument(target.value);
     const type = this.fields
       .find((f) => f.getName() === target.value)!
       .getType()!;
     this.editWithNewCode(segment, getCodeFromType(type));
+
+    // Reset to the first option (empty) to avoid cutoff text
+    target.selectedIndex = 0;
   }
 
   onSelectLiteral(event: Event) {
