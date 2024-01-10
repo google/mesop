@@ -1,13 +1,20 @@
 import base64
 from typing import Generator, Sequence
 
-from flask import Flask, Response, request, stream_with_context
+from flask import Flask, Response, abort, request, stream_with_context
 
 import mesop.protos.ui_pb2 as pb
 from mesop.editor.component_configs import get_component_configs
 from mesop.editor.editor_handler import handle_editor_event
 from mesop.exceptions import format_traceback
 from mesop.runtime import runtime
+
+LOCALHOSTS = (
+  # For IPv4 localhost
+  "127.0.0.1",
+  # For IPv6 localhost
+  "::1",
+)
 
 
 def configure_flask_app(
@@ -83,6 +90,11 @@ def configure_flask_app(
           runtime().context().reset_current_node()
         yield "data: <stream_end>\n\n"
       elif ui_request.HasField("editor_event"):
+        # Prevent accidental usages of editor mode outside of
+        # one's local computer
+        if request.remote_addr not in LOCALHOSTS:
+          abort(403)  # Throws a Forbidden Error
+
         handle_editor_event(ui_request.editor_event)
         yield "data: <stream_end>\n\n"
       else:
