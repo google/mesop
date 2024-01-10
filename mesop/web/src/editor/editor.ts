@@ -110,10 +110,6 @@ class Editor {
     });
   }
 
-  showDebugButton() {
-    return this.devToolsSettings.isDebugMode();
-  }
-
   showDevTools() {
     return this.devToolsSettings.showDevTools();
   }

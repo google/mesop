@@ -7,11 +7,6 @@ const CURRENT_DEV_TOOLS_PANEL_KEY = 'MESOP://CURRENT_DEV_TOOLS_PANEL_KEY';
   providedIn: 'root',
 })
 export class DevToolsSettings {
-  isDebugMode(): boolean {
-    // TODO: configure this.
-    return true;
-  }
-
   showDevTools(): boolean {
     return window.localStorage.getItem(SHOW_DEV_TOOLS_KEY) === 'true';
   }
