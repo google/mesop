@@ -34,12 +34,14 @@
     />
     } @case(FieldTypeCase.LITERAL_TYPE) {
     <label class="input-label">{{field.getName()}}</label>:
-    <select class="select">
+    <select
+      [attr.data-name]="field.getName()"
+      class="select"
+      (change)="onSelectLiteral($event)"
+    >
       @for(literal of field.getType()!.getLiteralType()?.getLiteralsList();
       track $index) {
-      <option [value]="getLiteralValue(literal)">
-        {{getLiteralValue(literal)}}
-      </option>
+      <option [value]="$index">{{getLiteralValue(literal)}}</option>
       }
     </select>
     } @case(FieldTypeCase.STRUCT_TYPE) {

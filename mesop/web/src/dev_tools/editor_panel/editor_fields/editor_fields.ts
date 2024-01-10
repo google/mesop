@@ -60,6 +60,25 @@ export class EditorFields {
     this.dispatchEdit(segment, getCodeFromType(type));
   }
 
+  onSelectLiteral(event: Event) {
+    const target = event.target as HTMLSelectElement;
+    const segment = new ArgPathSegment();
+    const name = target.getAttribute('data-name');
+    if (!name) {
+      throw new Error('Expected to get data-name attribute from event.');
+    }
+    segment.setKeywordArgument(name);
+
+    const literalIndex = Number(target.value);
+    const literal = this.fields
+      .find((f) => f.getName() === name)!
+      .getType()!
+      .getLiteralType()!
+      .getLiteralsList()[literalIndex];
+
+    this.dispatchEdit(segment, getLiteralCodeValue(literal));
+  }
+
   onBlur(event: FocusEvent) {
     const target = event.target as HTMLInputElement;
     const segment = new ArgPathSegment();
@@ -196,16 +215,7 @@ function getCodeFromType(type: FieldType): CodeValue {
       return newCode;
     case FieldType.TypeCase.LITERAL_TYPE: {
       const defaultLiteral = type.getLiteralType()!.getLiteralsList()[0];
-      switch (defaultLiteral.getLiteralCase()) {
-        case LiteralElement.LiteralCase.INT_LITERAL:
-          newCode.setIntValue(defaultLiteral.getIntLiteral());
-          return newCode;
-        case LiteralElement.LiteralCase.STRING_LITERAL:
-          newCode.setStringValue(defaultLiteral.getStringLiteral());
-          return newCode;
-        case LiteralElement.LiteralCase.LITERAL_NOT_SET:
-          throw new Error('Unexpected unset literal case');
-      }
+      return getLiteralCodeValue(defaultLiteral);
     }
     case FieldType.TypeCase.LIST_TYPE:
       newCode.setStructName(
@@ -214,5 +224,18 @@ function getCodeFromType(type: FieldType): CodeValue {
       return newCode;
     case FieldType.TypeCase.TYPE_NOT_SET:
       throw new Error('Unexpected type not set');
+  }
+}
+function getLiteralCodeValue(defaultLiteral: LiteralElement): CodeValue {
+  const newCode = new CodeValue();
+  switch (defaultLiteral.getLiteralCase()) {
+    case LiteralElement.LiteralCase.INT_LITERAL:
+      newCode.setIntValue(defaultLiteral.getIntLiteral());
+      return newCode;
+    case LiteralElement.LiteralCase.STRING_LITERAL:
+      newCode.setStringValue(defaultLiteral.getStringLiteral());
+      return newCode;
+    case LiteralElement.LiteralCase.LITERAL_NOT_SET:
+      throw new Error('Unexpected unset literal case');
   }
 }
