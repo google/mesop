@@ -35,7 +35,15 @@
       [fields]="getFieldsForListField(field)"
     ></mesop-editor-fields>
 
-    } @case(FieldTypeCase.STRING_TYPE) {
+    } @case(FieldTypeCase.STRING_TYPE) { @if(field.getName() === "text") {
+    <label class="input-label">{{field.getName()}}</label>:
+    <textarea
+      class="input"
+      (blur)="onBlur($event)"
+      [attr.data-name]="field.getName()"
+      [value]="getValueFor(field.getName())"
+    ></textarea>
+    } @else {
     <label class="input-label">{{field.getName()}}</label>:
     <input
       class="input"
@@ -43,7 +51,7 @@
       [attr.data-name]="field.getName()"
       [value]="getValueFor(field.getName())"
     />
-    } @case(FieldTypeCase.LITERAL_TYPE) {
+    } } @case(FieldTypeCase.LITERAL_TYPE) {
     <label class="input-label">{{field.getName()}}</label>:
     <select
       [attr.data-name]="field.getName()"

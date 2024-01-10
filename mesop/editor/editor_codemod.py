@@ -109,6 +109,9 @@ class ReplaceKeywordArg(VisitorBasedCodemodCommand):
 
 def get_value(code: pb.CodeValue):
   if code.HasField("string_value"):
+    # Create multi-line string if needed.
+    if "\n" in code.string_value:
+      return cst.SimpleString(f'"""{code.string_value or "<insert>"}"""')
     return cst.SimpleString(f'"{code.string_value or "<insert>"}"')
   if code.HasField("double_value"):
     return cst.Float(str(code.double_value or 1.0))

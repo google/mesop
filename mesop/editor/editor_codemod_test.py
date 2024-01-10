@@ -150,6 +150,26 @@ class TestReplaceKeywordArg(CodemodTest):
       ),
     )
 
+  def test_multiline_string(self) -> None:
+    self.assertEditorUpdate(
+      "multiline_string",
+      pb.EditorUpdateCallsite(
+        component_name="markdown",
+        arg_path=pb.ArgPath(
+          segments=[
+            pb.ArgPathSegment(keyword_argument="text"),
+          ]
+        ),
+        new_code=pb.CodeValue(
+          string_value="""Welcome
+
+    1 more line.
+    Add 1 more line."""
+        ),
+        source_code_location=pb.SourceCodeLocation(line=5),
+      ),
+    )
+
   def assertEditorUpdate(
     self, test_case_name: str, input: pb.EditorUpdateCallsite
   ):
