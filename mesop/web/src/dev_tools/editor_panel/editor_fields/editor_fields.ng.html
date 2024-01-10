@@ -40,12 +40,14 @@
     <mat-icon class="delete-field" (click)="deleteField(field.getName()!)"
       >delete</mat-icon
     >
-    } @case(FieldTypeCase.LIST_TYPE) {
-    <div>List</div>
+    } @case(FieldTypeCase.LIST_TYPE) { @for(prefixes of
+    getPrefixesListForListField(field.getName()!); track $index) {
     <mesop-editor-fields
       [fields]="getFieldsForListField(field)"
+      [prefixes]="prefixes"
     ></mesop-editor-fields>
-
+    }
+    <!-- preserve for fmt -->
     } @case(FieldTypeCase.STRING_TYPE) { @if(field.getName() === "text") {
     <label class="input-label">{{field.getName()}}</label>:
     <textarea

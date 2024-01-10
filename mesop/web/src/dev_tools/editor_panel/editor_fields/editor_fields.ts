@@ -187,6 +187,17 @@ export class EditorFields {
     );
   }
 
+  getPrefixesListForListField(fieldName: string): string[][] {
+    const val = this.getValueFor(fieldName) as any[];
+    if (!val) {
+      return [];
+    }
+    return val.map((_, index) => [
+      ...this.getPrefixFor(fieldName),
+      index.toString(),
+    ]);
+  }
+
   getRegularFields(): EditorField[] {
     return (
       this.fields.filter(
