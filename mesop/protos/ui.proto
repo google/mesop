@@ -77,6 +77,7 @@ message ArgPath {
 message ArgPathSegment {
     oneof type {
         string keyword_argument = 1;
+        int32 list_index = 2;
     }
 }
 

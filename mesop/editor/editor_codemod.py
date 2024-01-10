@@ -85,6 +85,8 @@ class ReplaceKeywordArg(VisitorBasedCodemodCommand):
         new_args.append(arg)
     new_value = get_value(self.input.replacement)
     if not found_arg and new_value:
+      if not segment.keyword_argument:
+        raise Exception("Did not receive keyword_argument", segments, call)
       new_args.append(
         cst.Arg(
           keyword=cst.Name(segment.keyword_argument),
@@ -114,11 +116,41 @@ class ReplaceKeywordArg(VisitorBasedCodemodCommand):
         return None
       return input_arg.with_changes(value=self._update_call(call, segments))
     else:
-      call = input_arg.value
-      if not isinstance(call, cst.Call):
-        raise Exception("unexpected input_arg", input_arg)
+      value = input_arg.value
+      if isinstance(value, cst.Call):
+        return input_arg.with_changes(
+          value=self._update_call(value, segments[1:])
+        )
+      if isinstance(value, cst.List):
+        list_value = value
+        # In the example of Radio's options:
+        # segments[0] = "options"
+        # segments[1] = list_index
+        if not segments[1].HasField("list_index"):
+          raise Exception(
+            "Expected to have a list index at segments[1] of ",
+            segments,
+            input_arg,
+          )
+        new_elements: list[cst.BaseElement] = []
+        for i, element in enumerate(list_value.elements):
+          if i == segments[1].list_index:
+            element = list_value.elements[segments[1].list_index]
+            assert isinstance(element.value, cst.Call)
+            new_elements.append(
+              element.with_changes(
+                value=self._update_call(element.value, segments[2:])
+              )
+            )
 
-      return input_arg.with_changes(value=self._update_call(call, segments[1:]))
+          else:
+            new_elements.append(element)
+
+        return input_arg.with_changes(
+          value=value.with_changes(elements=new_elements)
+        )
+
+      raise Exception("unexpected input_arg", input_arg)
 
 
 def get_value(replacement: pb.CodeReplacement):
