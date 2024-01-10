@@ -52,56 +52,34 @@ export class EditorFields {
 
   onNewProperty(event: Event) {
     const target = event.target as HTMLSelectElement;
-    const editorEvent = new EditorEvent();
-    const editorUpdate = new EditorUpdateCallsite();
-    editorEvent.setUpdateCallsite(editorUpdate);
-    editorUpdate.setSourceCodeLocation(
-      this.editorService.getFocusedComponent()!.getSourceCodeLocation(),
-    );
-    editorUpdate.setComponentName(
-      this.editorService.getFocusedComponent()!.getType()!.getName(),
-    );
-    const argPath = new ArgPath();
-    for (const prefix of this.prefixes) {
-      const segment = new ArgPathSegment();
-      segment.setKeywordArgument(prefix);
-      argPath.addSegments(segment);
-    }
     const segment = new ArgPathSegment();
     segment.setKeywordArgument(target.value);
-    argPath.addSegments(segment);
-    editorUpdate.setArgPath(argPath);
-
     const type = this.fields
       .find((f) => f.getName() === target.value)!
-      .getType();
-    const newCode = new CodeValue();
-    switch (type?.getTypeCase()) {
-      case FieldType.TypeCase.STRUCT_TYPE:
-        newCode.setStructName(type.getStructType()!.getStructName());
-        break;
-      case FieldType.TypeCase.STRING_TYPE:
-        newCode.setStringValue('<new>');
-        break;
-      default:
-        throw new Error(`Unhandled case: ${type?.getTypeCase()}`);
-    }
-    editorUpdate.setNewCode(newCode);
-    this.channel.dispatchEditorEvent(editorEvent);
+      .getType()!;
+    this.dispatchEdit(segment, getCodeFromType(type));
   }
 
   onBlur(event: FocusEvent) {
     const target = event.target as HTMLInputElement;
+    const segment = new ArgPathSegment();
+    const name = target.getAttribute('data-name');
+    if (!name) {
+      throw new Error('Expected to get data-name attribute from event.');
+    }
+    segment.setKeywordArgument(name);
+    const codeValue = new CodeValue();
+    codeValue.setStringValue(target.value);
+    this.dispatchEdit(segment, codeValue);
+  }
+
+  private dispatchEdit(argPathSegment: ArgPathSegment, newCode: CodeValue) {
     const editorEvent = new EditorEvent();
     const editorUpdate = new EditorUpdateCallsite();
     editorEvent.setUpdateCallsite(editorUpdate);
     editorUpdate.setSourceCodeLocation(
       this.editorService.getFocusedComponent()!.getSourceCodeLocation(),
     );
-    const name = target.getAttribute('data-name');
-    if (!name) {
-      throw new Error('Expected to get data-name attribute from event.');
-    }
     editorUpdate.setComponentName(
       this.editorService.getFocusedComponent()!.getType()!.getName(),
     );
@@ -111,13 +89,9 @@ export class EditorFields {
       segment.setKeywordArgument(prefix);
       argPath.addSegments(segment);
     }
-    const segment = new ArgPathSegment();
-    segment.setKeywordArgument(name);
-    argPath.addSegments(segment);
+    argPath.addSegments(argPathSegment);
     editorUpdate.setArgPath(argPath);
-    const codeValue = new CodeValue();
-    codeValue.setStringValue(target.value);
-    editorUpdate.setNewCode(codeValue);
+    editorUpdate.setNewCode(newCode);
     this.channel.dispatchEditorEvent(editorEvent);
   }
 
@@ -200,5 +174,18 @@ export class EditorFields {
       case LiteralElement.LiteralCase.LITERAL_NOT_SET:
         throw new Error(`Unhandled literal element case ${literal.toObject()}`);
     }
+  }
+}
+function getCodeFromType(type: FieldType): CodeValue {
+  const newCode = new CodeValue();
+  switch (type!.getTypeCase()) {
+    case FieldType.TypeCase.STRUCT_TYPE:
+      newCode.setStructName(type.getStructType()!.getStructName());
+      return newCode;
+    case FieldType.TypeCase.STRING_TYPE:
+      newCode.setStringValue('<new>');
+      return newCode;
+    default:
+      throw new Error(`Unhandled case: ${type?.getTypeCase()}`);
   }
 }
