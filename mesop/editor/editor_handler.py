@@ -23,7 +23,7 @@ def handle_update_callsite(update: pb.EditorUpdateCallsite):
   with open(code_path) as f:
     contents = f.read()
 
+  new_contents = execute_codemod(contents, update)
+
   with open(code_path, "w") as f:
-    new_contents = execute_codemod(contents, update)
     f.write(new_contents)
-    print("new_contents", new_contents)
