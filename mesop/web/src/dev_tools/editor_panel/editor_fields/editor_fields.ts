@@ -183,9 +183,36 @@ function getCodeFromType(type: FieldType): CodeValue {
       newCode.setStructName(type.getStructType()!.getStructName());
       return newCode;
     case FieldType.TypeCase.STRING_TYPE:
-      newCode.setStringValue('<new>');
+      newCode.setStringValue(type.getStringType()!.getDefaultValue());
       return newCode;
-    default:
-      throw new Error(`Unhandled case: ${type?.getTypeCase()}`);
+    case FieldType.TypeCase.BOOL_TYPE:
+      newCode.setBoolValue(type.getBoolType()!.getDefaultValue());
+      return newCode;
+    case FieldType.TypeCase.INT_TYPE:
+      newCode.setIntValue(type.getIntType()!.getDefaultValue());
+      return newCode;
+    case FieldType.TypeCase.FLOAT_TYPE:
+      newCode.setDoubleValue(type.getFloatType()!.getDefaultValue());
+      return newCode;
+    case FieldType.TypeCase.LITERAL_TYPE: {
+      const defaultLiteral = type.getLiteralType()!.getLiteralsList()[0];
+      switch (defaultLiteral.getLiteralCase()) {
+        case LiteralElement.LiteralCase.INT_LITERAL:
+          newCode.setIntValue(defaultLiteral.getIntLiteral());
+          return newCode;
+        case LiteralElement.LiteralCase.STRING_LITERAL:
+          newCode.setStringValue(defaultLiteral.getStringLiteral());
+          return newCode;
+        case LiteralElement.LiteralCase.LITERAL_NOT_SET:
+          throw new Error('Unexpected unset literal case');
+      }
+    }
+    case FieldType.TypeCase.LIST_TYPE:
+      newCode.setStructName(
+        type.getListType()!.getType()!.getStructType()!.getStructName(),
+      );
+      return newCode;
+    case FieldType.TypeCase.TYPE_NOT_SET:
+      throw new Error('Unexpected type not set');
   }
 }

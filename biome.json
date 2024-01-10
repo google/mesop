@@ -33,7 +33,8 @@
         "noNonNullAssertion": "off"
       },
       "suspicious": {
-        "noExplicitAny": "off"
+        "noExplicitAny": "off",
+        "noFallthroughSwitchClause": "off"
       }
     }
   },
