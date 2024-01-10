@@ -5,18 +5,7 @@
     [fields]="getFields()"
     [prefixes]="[]"
   ></mesop-editor-fields>
-  <mat-divider></mat-divider>
-  <div class="debug-section">
-    <div>Props:</div>
-    <mesop-object-tree
-      [object]="getFocusedComponent().properties"
-    ></mesop-object-tree>
-
-    Fields: @if(getComponentConfig()) {
-    <mesop-object-tree
-      [object]="getComponentConfig()!.toObject()"
-    ></mesop-object-tree>
-    }
-  </div>
 </div>
+} @else {
+<div class="empty-state-message">Select a component</div>
 }
