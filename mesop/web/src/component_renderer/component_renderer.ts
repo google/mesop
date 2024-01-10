@@ -18,7 +18,7 @@ import {ComponentLoader} from './component_loader';
 import {BoxType} from 'mesop/mesop/components/box/box_jspb_proto_pb/mesop/components/box/box_pb';
 import {BaseComponent, typeToComponent} from './type_to_component';
 import {Channel} from '../services/channel';
-import {EditorService} from '../services/editor_service';
+import {EditorService, SelectionMode} from '../services/editor_service';
 import {OverlayModule} from '@angular/cdk/overlay';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
@@ -62,19 +62,33 @@ export class ComponentRenderer {
   }
 
   ngAfterViewInit() {
-    (this.elementRef.nativeElement as HTMLElement).addEventListener(
-      'click',
-      this.onContainerClick,
-      {capture: true},
-    );
+    if (this.isEditorMode) {
+      (this.elementRef.nativeElement as HTMLElement).addEventListener(
+        'mouseover',
+        this.onEditorHover,
+        {capture: true},
+      );
+      (this.elementRef.nativeElement as HTMLElement).addEventListener(
+        'click',
+        this.onEditorClick,
+        {capture: true},
+      );
+    }
   }
 
   ngOnDestroy() {
-    (this.elementRef.nativeElement as HTMLElement).removeEventListener(
-      'click',
-      this.onContainerClick,
-      {capture: true},
-    );
+    if (this.isEditorMode) {
+      (this.elementRef.nativeElement as HTMLElement).removeEventListener(
+        'mouseover',
+        this.onEditorHover,
+        {capture: true},
+      );
+      (this.elementRef.nativeElement as HTMLElement).removeEventListener(
+        'click',
+        this.onEditorClick,
+        {capture: true},
+      );
+    }
   }
 
   trackByFn(index: any, item: ComponentProto) {
@@ -200,24 +214,38 @@ export class ComponentRenderer {
   //////////////
 
   getFocusedStyle(): string {
-    return `
+    if (this.editorService.getSelectionMode() === SelectionMode.SELECTING) {
+      return `
     background: rgb(119 166 245);
     opacity: 0.7;
     border-radius: 2px;
     `;
+    }
+    return `border: 1px solid #1c6ef3;
+      border-radius: 4px;`;
   }
 
-  onContainerClick = () => {
-    if (!this.isEditorMode) {
-      return;
+  onEditorHover = () => {
+    if (this.editorService.getSelectionMode() === SelectionMode.SELECTING) {
+      this.editorService.setFocusedComponent(this.component);
     }
+  };
 
-    this.editorService.setFocusedComponent(this.component);
+  onEditorClick = () => {
+    if (this.editorService.getSelectionMode() === SelectionMode.SELECTING) {
+      this.editorService.setSelectionMode(SelectionMode.SELECTED);
+    }
   };
 
   isEditorFocusedComponent() {
     return this.editorService.getFocusedComponent() === this.component;
   }
+
+  getSelectionMode(): SelectionMode {
+    return this.editorService.getSelectionMode();
+  }
+
+  SelectionMode = SelectionMode;
 }
 
 function isRegularComponent(component: ComponentProto) {

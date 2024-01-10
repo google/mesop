@@ -47,11 +47,13 @@
     } @case(FieldTypeCase.STRUCT_TYPE) {
     <div class="struct-section">
       <div class="struct-name">{{field.getName()}}</div>
-      <mesop-editor-fields
-        [fields]="field.getType()!.getStructType()!.getFieldsList()"
-        [prefixes]="getPrefixFor(field.getName())"
-      >
-      </mesop-editor-fields>
+      <div class="struct-body">
+        <mesop-editor-fields
+          [fields]="field.getType()!.getStructType()!.getFieldsList()"
+          [prefixes]="getPrefixFor(field.getName())"
+        >
+        </mesop-editor-fields>
+      </div>
     </div>
     } @default {
     <div class="field-name">
@@ -68,7 +70,6 @@
     >{{field.getName()}}</mat-checkbox
   >
   } @if(getNonTypedFields().length) {
-  <mat-divider class="other-fields-divider"></mat-divider>
   <div class="other-fields-title">Other fields</div>
   @for(field of getNonTypedFields(); track $index) {
   <div class="non-typed-field-name">{{field.getName()}}</div>

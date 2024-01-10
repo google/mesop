@@ -1,4 +1,11 @@
 <div class="panel-header">
+  <mat-icon
+    [matTooltip]="getInspectTooltip()"
+    class="inspect-button"
+    [ngClass]="{'selected-inspect-button': isSelectingMode()}"
+    (click)="toggleSelectingMode()"
+    >frame_inspect</mat-icon
+  >
   <div
     class="panel-button"
     [ngClass]="{'selected-panel-button': selectedPanel === Panel.Components}"

@@ -31,8 +31,9 @@ import {
 } from '../services/hot_reload_watcher';
 import {GlobalErrorHandlerService} from '../services/global_error_handler';
 import {Shell} from '../shell/shell';
-import {EditorService} from '../services/editor_service';
+import {EditorService, SelectionMode} from '../services/editor_service';
 import {Channel} from '../services/channel';
+import {isMac} from '../utils/platform';
 // Keep the following comment to ensure there's a hook for adding TS imports in the downstream sync.
 // ADD_TS_IMPORT_HERE
 
@@ -131,6 +132,17 @@ class Editor {
   handleKeyDown(event: KeyboardEvent) {
     if (event.key === 'Escape') {
       this.editorService.clearFocusedComponent();
+      return;
+    }
+    // Bind these combinations:
+    // cmd + shift + e (MacOs)
+    // ctrl + shift + e (Other platforms)
+    if (
+      event.key === 'e' &&
+      (isMac() ? event.metaKey : event.ctrlKey) &&
+      event.shiftKey
+    ) {
+      this.editorService.toggleSelectionMode();
     }
   }
 }
@@ -139,6 +151,7 @@ const routes: Routes = [{path: '**', component: Editor}];
 
 @Injectable()
 class EditorServiceImpl implements EditorService {
+  selectionMode: SelectionMode = SelectionMode.DISABLED;
   constructor(
     private channel: Channel,
     private devToolsSettings: DevToolsSettings,
@@ -147,6 +160,26 @@ class EditorServiceImpl implements EditorService {
   indexPath: number[] | undefined;
   isEditorMode(): boolean {
     return true;
+  }
+
+  getSelectionMode(): SelectionMode {
+    return this.selectionMode;
+  }
+
+  setSelectionMode(mode: SelectionMode): void {
+    this.selectionMode = mode;
+  }
+
+  toggleSelectionMode(): void {
+    switch (this.selectionMode) {
+      case SelectionMode.DISABLED:
+      case SelectionMode.SELECTED:
+        this.selectionMode = SelectionMode.SELECTING;
+        break;
+      case SelectionMode.SELECTING:
+        this.selectionMode = SelectionMode.DISABLED;
+        break;
+    }
   }
 
   setFocusedComponent(component: ComponentProto): void {

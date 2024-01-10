@@ -15,6 +15,15 @@
   font-weight: 500;
 }
 
+.inspect-button {
+  cursor: pointer;
+  margin: 4px;
+}
+
+.selected-inspect-button {
+  color: #1c6ef3;
+}
+
 .panel-button {
   padding: 4px;
   width: 100px;

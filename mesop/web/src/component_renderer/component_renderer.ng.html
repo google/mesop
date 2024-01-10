@@ -30,6 +30,7 @@ to have certain styling properties -->
   [cdkConnectedOverlayOpen]="isEditorFocusedComponent()"
 >
   <div class="editor-overlay">
+    <!-- [ngClass]="{'editor-overlay': getSelectionMode() === SelectionMode.SELECTING}"? -->
     {{type() ? type()!.getName() : "[root]"}}
     <span class="divider"></span>
     <button mat-icon-button>

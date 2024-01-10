@@ -14,8 +14,12 @@
 
 .struct-section {
   margin: 8px 0;
-  border: 1px solid #dcdcdc;
-  border-radius: 8px;
+}
+
+.struct-body {
+  border-left: 1px solid #dcdcdc;
+  margin-left: 10px;
+  margin-top: 2px;
 }
 
 .struct-name {
@@ -46,10 +50,6 @@
 .field-block {
   margin: 6px 8px;
   font-family: monospace;
-}
-
-.other-fields-divider {
-  margin: 12px 0;
 }
 
 .other-fields-title {

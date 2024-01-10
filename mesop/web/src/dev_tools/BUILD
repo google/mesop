@@ -1,4 +1,4 @@
-load("//build_defs:defaults.bzl", "ANGULAR_CORE_DEPS", "ng_module", "ng_test_library", "ng_web_test_suite", "sass_binary")
+load("//build_defs:defaults.bzl", "ANGULAR_CORE_DEPS", "ANGULAR_MATERIAL_TS_DEPS", "ng_module", "ng_test_library", "ng_web_test_suite", "sass_binary")
 
 package(
     default_visibility = ["//build_defs:mesop_internal"],
@@ -20,7 +20,8 @@ ng_module(
         "//mesop/web/src/dev_tools/editor_panel",
         "//mesop/web/src/dev_tools/logs_panel",
         "//mesop/web/src/dev_tools/services",
-    ] + ANGULAR_CORE_DEPS,
+        "//mesop/web/src/utils",
+    ] + ANGULAR_CORE_DEPS + ANGULAR_MATERIAL_TS_DEPS,
 )
 
 ng_test_library(
