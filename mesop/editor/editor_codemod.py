@@ -111,14 +111,14 @@ def get_value(code: pb.CodeValue):
   if code.HasField("string_value"):
     # Create multi-line string if needed.
     if "\n" in code.string_value:
-      return cst.SimpleString(f'"""{code.string_value or "<insert>"}"""')
-    return cst.SimpleString(f'"{code.string_value or "<insert>"}"')
+      return cst.SimpleString(f'"""{code.string_value}"""')
+    return cst.SimpleString(f'"{code.string_value}"')
   if code.HasField("double_value"):
-    return cst.Float(str(code.double_value or 1.0))
+    return cst.Float(str(code.double_value))
   if code.HasField("int_value"):
-    return cst.Integer(str(code.int_value or 1))
+    return cst.Integer(str(code.int_value))
   if code.HasField("bool_value"):
-    return cst.Name(str(code.bool_value or True))
+    return cst.Name(str(code.bool_value))
   if code.HasField("struct_name"):
     return cst.Call(
       func=cst.Attribute(value=cst.Name("me"), attr=cst.Name(code.struct_name))

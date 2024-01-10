@@ -151,7 +151,7 @@ export class EditorFields {
         (field) =>
           field.getType()?.getTypeCase() !== this.FieldTypeCase.BOOL_TYPE &&
           field.getType() &&
-          this.getValueFor(field.getName()!),
+          this.getValueFor(field.getName()!) != null,
       ) ?? []
     );
   }
@@ -188,13 +188,14 @@ export class EditorFields {
 
   getValueFor(fieldName: string) {
     let valueObj = this.getFocusedComponent().properties['value' as any];
+    console.log('valueObj', valueObj);
     for (const prefix of this.prefixes) {
       valueObj = valueObj[prefix as any];
       if (!valueObj) {
-        return '';
+        return undefined;
       }
     }
-    const value = valueObj[fieldName as any] ?? '';
+    const value = valueObj[fieldName as any] ?? undefined;
     return value;
   }
 

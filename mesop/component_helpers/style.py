@@ -6,8 +6,8 @@ import mesop.protos.ui_pb2 as pb
 
 @dataclass(kw_only=True)
 class BorderSide:
-  width: int | str = 0
-  color: str = ""
+  width: int | str | None = None
+  color: str | None = None
   style: Literal["none", "solid"] | None = None
 
 
@@ -21,10 +21,10 @@ class Border:
 
 @dataclass(kw_only=True)
 class EdgeInsets:
-  top: int | str = 0
-  right: int | str = 0
-  bottom: int | str = 0
-  left: int | str = 0
+  top: int | str | None = None
+  right: int | str | None = None
+  bottom: int | str | None = None
+  left: int | str | None = None
 
 
 @dataclass(kw_only=True)
@@ -39,9 +39,9 @@ class Padding(EdgeInsets):
 
 @dataclass(kw_only=True)
 class Style:
-  background: str = ""
-  color: str = ""
-  font_size: int | str = ""
+  background: str | None = None
+  color: str | None = None
+  font_size: int | str | None = None
   font_weight: Literal[
     "normal",
     "bold",
@@ -58,8 +58,8 @@ class Style:
   margin: Margin | None = None
   padding: Padding | None = None
   border: Border | None = None
-  height: int | str = ""
-  width: int | str = ""
+  height: int | str | None = None
+  width: int | str | None = None
   display: Literal[
     # precomposed values
     "block",
@@ -79,7 +79,7 @@ class Style:
     "column",
     "column-reverse",
   ] | None = None
-  flex_grow: int = 0
+  flex_grow: int | None = None
   align_items: Literal[
     "normal",
     "stretch",
@@ -111,12 +111,12 @@ def to_style_proto(s: Style) -> pb.Style:
     width=_px_str(s.width),
     margin=_map_edge_insets(s.margin),
     padding=_map_edge_insets(s.padding),
-    display=_str_or_none(s.display),
-    flex_direction=_str_or_none(s.flex_direction),
+    display=s.display,
+    flex_direction=s.flex_direction,
     flex_grow=s.flex_grow,
-    align_items=_str_or_none(s.align_items),
-    position=_str_or_none(s.position),
-    text_align=_str_or_none(s.text_align),
+    align_items=s.align_items,
+    position=s.position,
+    text_align=s.text_align,
     border=_map_border(s.border),
     font_weight=_map_font_weight(s.font_weight),
     font_size=_px_str(s.font_size),
@@ -127,12 +127,6 @@ def _map_font_weight(fw: int | str | None) -> str:
   if fw is None:
     return ""
   return str(fw)
-
-
-def _str_or_none(input: str | None) -> str:
-  if input is None:
-    return ""
-  return input
 
 
 def _map_edge_insets(e: EdgeInsets | None) -> pb.EdgeInsets | None:
@@ -160,12 +154,10 @@ def _map_border(b: Border | None) -> pb.Border | None:
 def _map_border_side(bs: BorderSide | None) -> pb.BorderSide | None:
   if bs is None:
     return None
-  return pb.BorderSide(
-    width=_px_str(bs.width), color=bs.color, style=_str_or_none(bs.style)
-  )
+  return pb.BorderSide(width=_px_str(bs.width), color=bs.color, style=bs.style)
 
 
-def _px_str(int_or_str: int | str) -> str:
+def _px_str(int_or_str: int | str | None) -> str | None:
   if isinstance(int_or_str, int):
     return str(int_or_str) + "px"
   return int_or_str
