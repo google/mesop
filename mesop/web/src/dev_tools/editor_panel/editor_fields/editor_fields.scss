@@ -69,4 +69,13 @@
 
 .delete-field {
   cursor: pointer;
+  color: #555;
+  height: 18px;
+  width: 18px;
+  font-size: 18px;
+  visibility: hidden;
+}
+
+.field-block-active .delete-field {
+  visibility: visible;
 }

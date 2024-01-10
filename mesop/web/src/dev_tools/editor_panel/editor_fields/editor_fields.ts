@@ -48,11 +48,25 @@ export class EditorFields {
   prefixes: string[] = [];
 
   FieldTypeCase = FieldType.TypeCase;
+  hoveredFieldName: string | undefined;
+  clearHoveredFieldNameTimeoutId: number | undefined;
 
   constructor(
     private editorService: EditorService,
     private channel: Channel,
   ) {}
+
+  onMouseenter(fieldName: string): void {
+    this.hoveredFieldName = fieldName;
+    clearTimeout(this.clearHoveredFieldNameTimeoutId);
+    this.clearHoveredFieldNameTimeoutId = setTimeout(() => {
+      this.hoveredFieldName = undefined;
+    }, 3000);
+  }
+
+  clearHoveredFieldName(): void {
+    this.hoveredFieldName = undefined;
+  }
 
   onNewProperty(event: Event) {
     const target = event.target as HTMLSelectElement;

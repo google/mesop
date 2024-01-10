@@ -10,7 +10,12 @@
     </select>
   </div>
   } @for(field of getRegularFields(); track $index) {
-  <div class="field-block">
+  <div
+    class="field-block"
+    [ngClass]="{'field-block-active': this.hoveredFieldName === field.getName()}"
+    (mouseenter)="onMouseenter(field.getName()!)"
+    (mouseleave)="clearHoveredFieldName()"
+  >
     @switch(field.getType()?.getTypeCase()) {@case(FieldTypeCase.INT_TYPE) {
     <label class="input-label">{{field.getName()}}</label>:
     <input
@@ -92,7 +97,7 @@
           >delete</mat-icon
         >
       </div>
-      <div class="struct-body">
+      <div class="struct-body" (mouseenter)="clearHoveredFieldName()">
         <mesop-editor-fields
           [fields]="field.getType()!.getStructType()!.getFieldsList()"
           [prefixes]="getPrefixFor(field.getName()!)"
