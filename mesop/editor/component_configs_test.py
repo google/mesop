@@ -33,6 +33,7 @@ def test_generate_component_config_box():
   proto = generate_component_config(box)
   assert proto.component_name == "box"
   assert proto.fields[0].name == "style"
+  assert proto.fields[0].type.struct_type.struct_name == "Style"
   assert len(proto.fields[0].type.struct_type.fields) == 15
 
 
@@ -45,6 +46,7 @@ def test_generate_component_config_radio():
       list_type=pb.ListType(
         type=pb.FieldType(
           struct_type=pb.StructType(
+            struct_name="RadioOption",
             fields=[
               pb.EditorField(
                 name="label", type=pb.FieldType(string_type=pb.StringType())
@@ -52,7 +54,7 @@ def test_generate_component_config_radio():
               pb.EditorField(
                 name="value", type=pb.FieldType(string_type=pb.StringType())
               ),
-            ]
+            ],
           )
         )
       )

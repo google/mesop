@@ -2,7 +2,7 @@
   @if(getHiddenFields().length) {
   <div class="add-property">
     <label class="input-label">+</label>:
-    <select class="select">
+    <select class="select" (change)="onNewProperty($event)">
       <option value=""></option>
       @for(fieldName of getHiddenFields(); track $index) {
       <option [value]="fieldName">{{fieldName}}</option>

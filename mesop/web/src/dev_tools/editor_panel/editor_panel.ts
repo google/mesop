@@ -26,8 +26,12 @@ export class EditorPanel {
 
   constructor(private editorService: EditorService) {}
 
+  hasFocusedComponent(): boolean {
+    return Boolean(this.editorService.getFocusedComponent());
+  }
+
   getFocusedComponent() {
-    const obj = mapComponentToObject(this.editorService.getFocusedComponent());
+    const obj = mapComponentToObject(this.editorService.getFocusedComponent()!);
     const display = mapComponentObjectToDisplay(obj);
     return display;
   }
@@ -36,7 +40,7 @@ export class EditorPanel {
     return this.componentConfigs.find(
       (config) =>
         config.getComponentName() ===
-        this.editorService.getFocusedComponent().getType()?.getName(),
+        this.editorService.getFocusedComponent()!.getType()?.getName(),
     );
   }
 

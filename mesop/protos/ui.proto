@@ -236,7 +236,9 @@ message BoolType {
 }
 
 message StructType {
-    repeated EditorField fields =1;
+    // Name of the Python class (usually a dataclass)
+    string struct_name = 2;
+    repeated EditorField fields = 1;
 }
 
 message IntType {

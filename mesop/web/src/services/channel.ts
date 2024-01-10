@@ -38,6 +38,7 @@ export class Channel {
   private eventSource!: EventSource;
   private initParams!: InitParams;
   private states!: States;
+  private rootComponent?: ComponentProto;
   private status!: ChannelStatus;
   private queuedEvents: (() => void)[] = [];
 
@@ -45,6 +46,10 @@ export class Channel {
 
   getStatus(): ChannelStatus {
     return this.status;
+  }
+
+  getRootComponent(): ComponentProto | undefined {
+    return this.rootComponent;
   }
 
   init(initParams: InitParams, request?: UiRequest) {
@@ -86,7 +91,7 @@ export class Channel {
                 onNavigate(navigate.getUrl());
               }
             }
-
+            this.rootComponent = rootComponent;
             onRender(
               rootComponent,
               uiResponse.getRender()!.getComponentConfigsList(),

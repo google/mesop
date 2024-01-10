@@ -31,6 +31,7 @@ import {
 import {GlobalErrorHandlerService} from '../services/global_error_handler';
 import {Shell} from '../shell/shell';
 import {EditorService} from '../services/editor_service';
+import {Channel} from '../services/channel';
 // Keep the following comment to ensure there's a hook for adding TS imports in the downstream sync.
 // ADD_TS_IMPORT_HERE
 
@@ -120,7 +121,6 @@ class Editor {
     this.devToolsSettings.toggleShowDevTools();
     // If we're collapsing devtools, then clear focused component.
     if (!this.devToolsSettings.showDevTools()) {
-      console.log('CLEAR');
       this.editorService.clearFocusedComponent();
     }
   }
@@ -135,9 +135,12 @@ const routes: Routes = [{path: '**', component: Editor}];
 
 @Injectable()
 class EditorServiceImpl implements EditorService {
-  constructor(private devToolsSettings: DevToolsSettings) {}
+  constructor(
+    private channel: Channel,
+    private devToolsSettings: DevToolsSettings,
+  ) {}
 
-  component = new ComponentProto();
+  indexPath: number[] | undefined;
   isEditorMode(): boolean {
     return true;
   }
@@ -147,16 +150,53 @@ class EditorServiceImpl implements EditorService {
       // Do not focus component if devtools isn't open.
       return;
     }
-    this.component = component;
+    const root = this.channel.getRootComponent();
+    if (!root) {
+      throw new Error('No root component');
+    }
+    const indexPath: number[] = [];
+    if (!findPath(root, component, indexPath)) {
+      console.error('Did not find component path for', component);
+    }
+    this.indexPath = indexPath;
   }
 
-  getFocusedComponent(): ComponentProto {
-    return this.component;
+  getFocusedComponent(): ComponentProto | undefined {
+    if (!this.indexPath) {
+      return;
+    }
+    let node = this.channel.getRootComponent();
+    if (!node) {
+      throw new Error('No root component');
+    }
+    for (const index of this.indexPath) {
+      node = node.getChildrenList()[index];
+      if (!node) {
+        return;
+      }
+    }
+    return node;
   }
 
   clearFocusedComponent() {
-    this.component = new ComponentProto();
+    this.indexPath = undefined;
   }
+}
+
+function findPath(
+  root: ComponentProto,
+  target: ComponentProto,
+  indexPath: number[],
+): boolean {
+  if (root === target) return true;
+  for (let i = 0; i < root.getChildrenList().length; i++) {
+    indexPath.push(i);
+    if (findPath(root.getChildrenList()[i], target, indexPath)) {
+      return true;
+    }
+    indexPath.pop();
+  }
+  return false;
 }
 
 @Component({

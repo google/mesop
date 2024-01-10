@@ -87,19 +87,26 @@ def get_fields(
         literal_type=pb.LiteralType(literals=map_literals(param_type.__args__))
       )
     elif getattr(param_type, "__origin__", None) is list:
-      el_fields = get_fields(
-        inspect.signature(param_type.__args__[0]).parameters.items()
-      )
+      cls = param_type.__args__[0]
+      el_fields = get_fields(inspect.signature(cls).parameters.items())
       field_type = pb.FieldType(
         list_type=pb.ListType(
-          type=pb.FieldType(struct_type=pb.StructType(fields=el_fields))
+          type=pb.FieldType(
+            struct_type=pb.StructType(
+              struct_name=cls.__name__, fields=el_fields
+            )
+          )
         )
       )
     elif is_dataclass(param_type):
       param_items = inspect.signature(param_type).parameters.items()
       el_fields = get_fields(param_items)
 
-      field_type = pb.FieldType(struct_type=pb.StructType(fields=el_fields))
+      field_type = pb.FieldType(
+        struct_type=pb.StructType(
+          struct_name=param_type.__name__, fields=el_fields
+        )
+      )
     elif isinstance(param_type, collections.abc.Callable):
       field_type = None
     else:

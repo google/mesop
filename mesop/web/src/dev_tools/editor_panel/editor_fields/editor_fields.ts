@@ -50,20 +50,60 @@ export class EditorFields {
     private channel: Channel,
   ) {}
 
+  onNewProperty(event: Event) {
+    const target = event.target as HTMLSelectElement;
+    const editorEvent = new EditorEvent();
+    const editorUpdate = new EditorUpdateCallsite();
+    editorEvent.setUpdateCallsite(editorUpdate);
+    editorUpdate.setSourceCodeLocation(
+      this.editorService.getFocusedComponent()!.getSourceCodeLocation(),
+    );
+    editorUpdate.setComponentName(
+      this.editorService.getFocusedComponent()!.getType()!.getName(),
+    );
+    const argPath = new ArgPath();
+    for (const prefix of this.prefixes) {
+      const segment = new ArgPathSegment();
+      segment.setKeywordArgument(prefix);
+      argPath.addSegments(segment);
+    }
+    const segment = new ArgPathSegment();
+    segment.setKeywordArgument(target.value);
+    argPath.addSegments(segment);
+    editorUpdate.setArgPath(argPath);
+
+    const type = this.fields
+      .find((f) => f.getName() === target.value)!
+      .getType();
+    const newCode = new CodeValue();
+    switch (type?.getTypeCase()) {
+      case FieldType.TypeCase.STRUCT_TYPE:
+        newCode.setStructName(type.getStructType()!.getStructName());
+        break;
+      case FieldType.TypeCase.STRING_TYPE:
+        newCode.setStringValue('<new>');
+        break;
+      default:
+        throw new Error(`Unhandled case: ${type?.getTypeCase()}`);
+    }
+    editorUpdate.setNewCode(newCode);
+    this.channel.dispatchEditorEvent(editorEvent);
+  }
+
   onBlur(event: FocusEvent) {
     const target = event.target as HTMLInputElement;
     const editorEvent = new EditorEvent();
     const editorUpdate = new EditorUpdateCallsite();
     editorEvent.setUpdateCallsite(editorUpdate);
     editorUpdate.setSourceCodeLocation(
-      this.editorService.getFocusedComponent().getSourceCodeLocation(),
+      this.editorService.getFocusedComponent()!.getSourceCodeLocation(),
     );
     const name = target.getAttribute('data-name');
     if (!name) {
       throw new Error('Expected to get data-name attribute from event.');
     }
     editorUpdate.setComponentName(
-      this.editorService.getFocusedComponent().getType()!.getName(),
+      this.editorService.getFocusedComponent()!.getType()!.getName(),
     );
     const argPath = new ArgPath();
     for (const prefix of this.prefixes) {
@@ -82,7 +122,7 @@ export class EditorFields {
   }
 
   getFocusedComponent() {
-    const obj = mapComponentToObject(this.editorService.getFocusedComponent());
+    const obj = mapComponentToObject(this.editorService.getFocusedComponent()!);
     const display = mapComponentObjectToDisplay(obj);
     return display;
   }
@@ -141,7 +181,6 @@ export class EditorFields {
 
   getValueFor(fieldName: string) {
     let valueObj = this.getFocusedComponent().properties['value' as any];
-    console.log('init valueObj', valueObj);
     for (const prefix of this.prefixes) {
       valueObj = valueObj[prefix as any];
       if (!valueObj) {
