@@ -10,6 +10,8 @@ import {
 import {InputType} from 'mesop/mesop/components/input/input_jspb_proto_pb/mesop/components/input/input_pb';
 import {Channel} from '../../web/src/services/channel';
 import {formatStyle} from '../../web/src/utils/styles';
+import {Subject} from 'rxjs';
+import {debounceTime} from 'rxjs/operators';
 
 @Component({
   templateUrl: 'input.ng.html',
@@ -21,8 +23,19 @@ export class InputComponent {
   @Input() key!: Key;
   @Input() style!: Style;
   private _config!: InputType;
+  private inputSubject = new Subject<Event>();
 
-  constructor(private readonly channel: Channel) {}
+  constructor(private readonly channel: Channel) {
+    this.inputSubject
+      .pipe(
+        debounceTime(300), // Adjust the debounce time as needed
+      )
+      .subscribe((event) => this.onInputDebounced(event));
+  }
+
+  ngOnDestroy(): void {
+    this.inputSubject.unsubscribe();
+  }
 
   ngOnChanges() {
     this._config = InputType.deserializeBinary(
@@ -55,6 +68,10 @@ export class InputComponent {
   }
 
   onInput(event: Event): void {
+    this.inputSubject.next(event);
+  }
+
+  onInputDebounced(event: Event): void {
     const userEvent = new UserEvent();
     userEvent.setHandlerId(this.config().getOnInputHandlerId());
     userEvent.setStringValue((event.target as HTMLInputElement).value);
