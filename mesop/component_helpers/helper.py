@@ -107,7 +107,7 @@ def create_component(
       )
 
   return pb.Component(
-    key=pb.Key(key=key) if key else None,
+    key=pb.Key(key=key),
     type=type,
     style=style,
     style_debug_json=style_debug_json,

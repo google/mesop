@@ -215,6 +215,9 @@ export class EditorFields {
   }
 
   getValueFor(fieldName: string) {
+    if (fieldName === 'key') {
+      return this.getFocusedComponent().properties['key' as any];
+    }
     let valueObj = this.getFocusedComponent().properties['value' as any];
     for (const prefix of this.prefixes) {
       valueObj = valueObj[prefix as any];

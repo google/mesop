@@ -185,6 +185,23 @@ class TestReplaceKeywordArg(CodemodTest):
       ),
     )
 
+  def test_delete_key(self) -> None:
+    self.assertEditorUpdate(
+      "delete_key",
+      pb.EditorUpdateCallsite(
+        component_name="input",
+        arg_path=pb.ArgPath(
+          segments=[
+            pb.ArgPathSegment(keyword_argument="key"),
+          ]
+        ),
+        replacement=pb.CodeReplacement(
+          delete_code=pb.DeleteCode(),
+        ),
+        source_code_location=pb.SourceCodeLocation(line=5),
+      ),
+    )
+
   def test_delete_struct(self) -> None:
     self.assertEditorUpdate(
       "delete_struct",
