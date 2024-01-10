@@ -22,8 +22,12 @@
   margin-top: 2px;
 }
 
+.struct-header {
+  display: flex;
+}
+
 .struct-name {
-  padding: 8px 0 0 8px;
+  padding: 8px 8px 0 8px;
   font-weight: 700;
 }
 
@@ -48,8 +52,10 @@
 }
 
 .field-block {
-  margin: 6px 8px;
+  margin: 0 6px 0 8px;
   font-family: monospace;
+  display: flex;
+  align-items: center;
 }
 
 .other-fields-title {

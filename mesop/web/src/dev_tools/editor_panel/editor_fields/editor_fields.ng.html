@@ -59,6 +59,7 @@
       (blur)="onBlur($event)"
       [attr.data-name]="field.getName()"
       [value]="getValueFor(field.getName()!)"
+      [size]="getValueFor(field.getName()!).length || 10"
     />
     <mat-icon class="delete-field" (click)="deleteField(field.getName()!)"
       >delete</mat-icon
@@ -86,7 +87,7 @@
     } @case(FieldTypeCase.STRUCT_TYPE) {
     <div class="struct-section">
       <div class="struct-header">
-        <div class="struct-name">{{field.getName()}}</div>
+        <span class="struct-name">{{field.getName()}}</span>
         <mat-icon class="delete-field" (click)="deleteField(field.getName()!)"
           >delete</mat-icon
         >
