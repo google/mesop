@@ -25,7 +25,7 @@ export class DevTools {
   constructor(public devToolsSettings: DevToolsSettings) {}
 
   selectEditorPanel() {
-    this.devToolsSettings.setCurrentDevToolsPanel(Panel.Editor);
+    this.devToolsSettings.setCurrentDevToolsPanel(Panel.Components);
   }
 
   selectLogsPanel() {

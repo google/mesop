@@ -1,10 +1,10 @@
 <div class="panel-header">
   <div
     class="panel-button"
-    [ngClass]="{'selected-panel-button': selectedPanel === Panel.Editor}"
+    [ngClass]="{'selected-panel-button': selectedPanel === Panel.Components}"
     (click)="selectEditorPanel()"
   >
-    Editor
+    Components
   </div>
   <div
     class="panel-button"
@@ -17,7 +17,7 @@
 <div class="panel-body">
   <mesop-editor-panel
     [componentConfigs]="componentConfigs"
-    [ngClass]="{'hide-panel': selectedPanel !== Panel.Editor}"
+    [ngClass]="{'hide-panel': selectedPanel !== Panel.Components}"
   ></mesop-editor-panel>
 
   <mesop-logs-panel
