@@ -11,7 +11,7 @@ message RadioType {
   optional bool disabled = 5;
   optional bool required = 6;
   optional string on_radio_change_event_handler_id = 20;
-   repeated RadioOption radio_options = 7;
+  repeated RadioOption options = 7;
 }
 
 message RadioOption {

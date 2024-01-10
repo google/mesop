@@ -6,13 +6,12 @@
   [required]="config().getRequired()"
   (change)="onRadioChangeEvent($event)"
 >
-  @for(option of config().getRadioOptionsList(); track index; let index =
-  $index) {
+  @for(option of config().getOptionsList(); track index; let index = $index) {
   <mat-radio-button
-    [aria-label]="config().getRadioOptionsList()[index].getLabel()!"
-    [value]="config().getRadioOptionsList()[index].getValue()"
+    [aria-label]="config().getOptionsList()[index].getLabel()!"
+    [value]="config().getOptionsList()[index].getValue()"
   >
-    {{config().getRadioOptionsList()[index].getLabel()}}
+    {{config().getOptionsList()[index].getLabel()}}
   </mat-radio-button>
   }
 </mat-radio-group>

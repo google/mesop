@@ -79,7 +79,7 @@ def radio(
       )
       if on_change
       else "",
-      radio_options=[
+      options=[
         radio_pb.RadioOption(
           label=option.label,
           value=option.value,
