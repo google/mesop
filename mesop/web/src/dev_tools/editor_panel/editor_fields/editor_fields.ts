@@ -24,6 +24,10 @@ import {CommonModule} from '@angular/common';
 import {Channel} from '../../../services/channel';
 import {MatIconModule} from '@angular/material/icon';
 
+// string is field name; number is list index
+type Prefix = string | number;
+type Prefixes = Prefix[];
+
 @Component({
   selector: 'mesop-editor-fields',
   templateUrl: 'editor_fields.ng.html',
@@ -45,7 +49,7 @@ export class EditorFields {
   fields!: EditorField[];
 
   @Input()
-  prefixes: string[] = [];
+  prefixes: Prefixes = [];
 
   FieldTypeCase = FieldType.TypeCase;
   hoveredFieldName: string | undefined;
@@ -161,7 +165,11 @@ export class EditorFields {
     const argPath = new ArgPath();
     for (const prefix of this.prefixes) {
       const segment = new ArgPathSegment();
-      segment.setKeywordArgument(prefix);
+      if (typeof prefix === 'string') {
+        segment.setKeywordArgument(prefix);
+      } else {
+        segment.setListIndex(prefix);
+      }
       argPath.addSegments(segment);
     }
     argPath.addSegments(argPathSegment);
@@ -187,15 +195,12 @@ export class EditorFields {
     );
   }
 
-  getPrefixesListForListField(fieldName: string): string[][] {
+  getPrefixesListForListField(fieldName: string): Prefixes[] {
     const val = this.getValueFor(fieldName) as any[];
     if (!val) {
       return [];
     }
-    return val.map((_, index) => [
-      ...this.getPrefixFor(fieldName),
-      index.toString(),
-    ]);
+    return val.map((_, index) => [...this.getPrefixFor(fieldName), index]);
   }
 
   getRegularFields(): EditorField[] {
