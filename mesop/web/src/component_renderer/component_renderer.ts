@@ -204,7 +204,7 @@ export class ComponentRenderer {
       return;
     }
     const userEvent = new UserEvent();
-    userEvent.setHandlerId(this._boxType.getOnClickHandlerId());
+    userEvent.setHandlerId(this._boxType.getOnClickHandlerId()!);
     userEvent.setKey(this.component.getKey());
     this.channel.dispatch(userEvent);
   }

@@ -1,9 +1,9 @@
-syntax = "proto3";
+syntax = "proto2";
 
 package mesop.components.text;
 
 message TextType {
-    string text = 1;
+    optional string text = 1;
     enum TypographyLevel {
         TYPOGRAPHY_LEVEL_UNSET = 0;
         H1 = 1;
@@ -18,5 +18,5 @@ message TextType {
         BODY2 = 10;
         CAPTION = 11;
     }
-    TypographyLevel typography_level = 2;
+    optional TypographyLevel typography_level = 2;
 }

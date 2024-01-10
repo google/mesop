@@ -1,19 +1,19 @@
 
-syntax = "proto3";
+syntax = "proto2";
 
 package mesop.components.checkbox;
 
 message CheckboxType {
-  bool required = 5;
-  string label_position = 6;
-  string name = 7;
-  string value = 8;
-  bool disable_ripple = 9;
-  double tab_index = 10;
-  string color = 11;
-  bool checked = 12;
-  bool disabled = 13;
-  bool indeterminate = 14;
-  string on_checkbox_change_event_handler_id = 15;
-  string on_checkbox_indeterminate_change_event_handler_id = 16;
+  optional bool required = 5;
+  optional string label_position = 6;
+  optional string name = 7;
+  optional string value = 8;
+  optional bool disable_ripple = 9;
+  optional double tab_index = 10;
+  optional string color = 11;
+  optional bool checked = 12;
+  optional bool disabled = 13;
+  optional bool indeterminate = 14;
+  optional string on_checkbox_change_event_handler_id = 15;
+  optional string on_checkbox_indeterminate_change_event_handler_id = 16;
 }

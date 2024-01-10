@@ -1,7 +1,7 @@
-syntax = "proto3";
+syntax = "proto2";
 
 package mesop.components.box;
 
 message BoxType {
-    string on_click_handler_id = 2;
+    optional string on_click_handler_id = 2;
 }

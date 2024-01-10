@@ -1,15 +1,15 @@
 
-syntax = "proto3";
+syntax = "proto2";
 
 package mesop.components.badge;
 
 message BadgeType {
-  string color = 1;
-  bool overlap = 2;
-  bool disabled = 3;
-  string position = 4;
-  string content = 5;
-  string description = 6;
-  string size = 7;
-  bool hidden = 8;
+  optional string color = 1;
+  optional bool overlap = 2;
+  optional bool disabled = 3;
+  optional string position = 4;
+  optional string content = 5;
+  optional string description = 6;
+  optional string size = 7;
+  optional bool hidden = 8;
 }

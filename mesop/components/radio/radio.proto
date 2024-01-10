@@ -1,20 +1,20 @@
 
-syntax = "proto3";
+syntax = "proto2";
 
 package mesop.components.radio;
 
 message RadioType {
-  string color = 1;
-  string name = 2;
-  string label_position = 3;
-  string value = 4;
-  bool disabled = 5;
-  bool required = 6;
-  string on_radio_change_event_handler_id = 20;
-  repeated RadioOption radio_options = 7;
+  optional string color = 1;
+  optional string name = 2;
+  optional string label_position = 3;
+  optional string value = 4;
+  optional bool disabled = 5;
+  optional bool required = 6;
+  optional string on_radio_change_event_handler_id = 20;
+   repeated RadioOption radio_options = 7;
 }
 
 message RadioOption {
-  string label = 1;
-  string value = 2;
+  optional string label = 1;
+  optional string value = 2;
 }

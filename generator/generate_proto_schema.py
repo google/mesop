@@ -34,7 +34,7 @@ def generate_proto_schema(spec: pb.ComponentSpec) -> str:
   )
 
   return f"""
-syntax = "proto3";
+syntax = "proto2";
 
 package mesop.components.{spec.input.name};
 

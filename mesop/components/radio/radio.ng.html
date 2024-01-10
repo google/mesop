@@ -9,7 +9,7 @@
   @for(option of config().getRadioOptionsList(); track index; let index =
   $index) {
   <mat-radio-button
-    [aria-label]="config().getRadioOptionsList()[index].getLabel()"
+    [aria-label]="config().getRadioOptionsList()[index].getLabel()!"
     [value]="config().getRadioOptionsList()[index].getValue()"
   >
     {{config().getRadioOptionsList()[index].getLabel()}}

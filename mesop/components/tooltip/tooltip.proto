@@ -1,14 +1,14 @@
 
-syntax = "proto3";
+syntax = "proto2";
 
 package mesop.components.tooltip;
 
 message TooltipType {
-  string position = 1;
-  bool position_at_origin = 2;
-  bool disabled = 3;
-  double show_delay_ms = 4;
-  double hide_delay_ms = 5;
-  string touch_gestures = 6;
-  string message = 7;
+  optional string position = 1;
+  optional bool position_at_origin = 2;
+  optional bool disabled = 3;
+  optional double show_delay_ms = 4;
+  optional double hide_delay_ms = 5;
+  optional string touch_gestures = 6;
+  optional string message = 7;
 }

@@ -34,7 +34,7 @@ export class SelectComponent {
     const userEvent = new UserEvent();
     userEvent.setBoolValue(event);
     userEvent.setHandlerId(
-      this.config().getOnSelectOpenedChangeEventHandlerId(),
+      this.config().getOnSelectOpenedChangeEventHandlerId()!,
     );
     userEvent.setKey(this.key);
     this.channel.dispatch(userEvent);
@@ -44,7 +44,7 @@ export class SelectComponent {
     const userEvent = new UserEvent();
 
     userEvent.setHandlerId(
-      this.config().getOnSelectSelectionChangeEventHandlerId(),
+      this.config().getOnSelectSelectionChangeEventHandlerId()!,
     );
     userEvent.setStringValue(event.value);
     userEvent.setKey(this.key);

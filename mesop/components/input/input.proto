@@ -1,25 +1,25 @@
 
-syntax = "proto3";
+syntax = "proto2";
 
 package mesop.components.input;
 
 message InputType {
-  bool disabled = 1;
-  string id = 2;
-  string placeholder = 3;
-  string name = 4;
-  bool required = 5;
-  string type = 6;
-  string user_aria_described_by = 7;
-  string value = 8;
-  bool readonly = 9;
-  bool hide_required_marker = 10;
-  string color = 11;
-  string float_label = 12;
-  string appearance = 13;
-  string subscript_sizing = 14;
-  string hint_label = 15;
-  string label = 16;
-  string on_input_handler_id = 17;
-  int32 textarea_rows = 18;
+  optional bool disabled = 1;
+  optional string id = 2;
+  optional string placeholder = 3;
+  optional string name = 4;
+  optional bool required = 5;
+  optional string type = 6;
+  optional string user_aria_described_by = 7;
+  optional string value = 8;
+  optional bool readonly = 9;
+  optional bool hide_required_marker = 10;
+  optional string color = 11;
+  optional string float_label = 12;
+  optional string appearance = 13;
+  optional string subscript_sizing = 14;
+  optional string hint_label = 15;
+  optional string label = 16;
+  optional string on_input_handler_id = 17;
+  optional int32 textarea_rows = 18;
 }

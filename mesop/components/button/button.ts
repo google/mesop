@@ -32,7 +32,7 @@ export class ButtonComponent {
 
   onClick(event: Event): void {
     const userEvent = new UserEvent();
-    userEvent.setHandlerId(this.config().getOnClickHandlerId());
+    userEvent.setHandlerId(this.config().getOnClickHandlerId()!);
     userEvent.setKey(this.key);
     this.channel.dispatch(userEvent);
   }

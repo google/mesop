@@ -41,7 +41,7 @@ export class SlideToggleComponent {
     const userEvent = new UserEvent();
 
     userEvent.setHandlerId(
-      this.config().getOnSlideToggleChangeEventHandlerId(),
+      this.config().getOnSlideToggleChangeEventHandlerId()!,
     );
     userEvent.setKey(this.key);
     this.channel.dispatch(userEvent);

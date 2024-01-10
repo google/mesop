@@ -1,25 +1,25 @@
 
-syntax = "proto3";
+syntax = "proto2";
 
 package mesop.components.select;
 
 message SelectType {
-  bool disabled = 2;
-  bool disable_ripple = 3;
-  double tab_index = 4;
-  bool hide_single_selection_indicator = 5;
-  string placeholder = 6;
-  bool required = 7;
-  bool multiple = 8;
-  string value = 9;
-  string on_select_opened_change_event_handler_id = 14;
-  string on_select_selection_change_event_handler_id = 15;
+  optional bool disabled = 2;
+  optional bool disable_ripple = 3;
+  optional double tab_index = 4;
+  optional bool hide_single_selection_indicator = 5;
+  optional string placeholder = 6;
+  optional bool required = 7;
+  optional bool multiple = 8;
+  optional string value = 9;
+  optional string on_select_opened_change_event_handler_id = 14;
+  optional string on_select_selection_change_event_handler_id = 15;
 
-  repeated SelectOption options = 16;
-  string label = 17;
+ repeated SelectOption options = 16;
+  optional string label = 17;
 }
 
 message SelectOption {
-  string label = 1;
-  string value = 2;
+  optional string label = 1;
+  optional string value = 2;
 }

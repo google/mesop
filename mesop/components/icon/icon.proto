@@ -1,8 +1,8 @@
 
-syntax = "proto3";
+syntax = "proto2";
 
 package mesop.components.icon;
 
 message IconType {
-  string font_icon = 1;
+  optional string font_icon = 1;
 }

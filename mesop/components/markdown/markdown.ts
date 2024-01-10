@@ -25,7 +25,7 @@ export class MarkdownComponent {
     this._config = MarkdownType.deserializeBinary(
       this.type.getValue() as unknown as Uint8Array,
     );
-    this.markdownHTML = await marked.parse(this._config.getText());
+    this.markdownHTML = await marked.parse(this._config.getText()!);
     this.changeDetectorRef.detectChanges();
   }
 

@@ -1,10 +1,10 @@
 
-syntax = "proto3";
+syntax = "proto2";
 
 package mesop.components.progress_spinner;
 
 message ProgressSpinnerType {
-  string color = 1;
-  double diameter = 4;
-  double stroke_width = 5;
+  optional string color = 1;
+  optional double diameter = 4;
+  optional double stroke_width = 5;
 }

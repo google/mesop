@@ -4,19 +4,19 @@
   [floatLabel]="getFloatLabel()"
   [appearance]="getAppearance()"
   [subscriptSizing]="getSubscriptSizing()"
-  [hintLabel]="config().getHintLabel()"
+  [hintLabel]="config().getHintLabel()!"
   [style]="getStyle()"
   ><mat-label>{{config().getLabel()}}</mat-label>
   @if(config().getType() === "textarea") {
   <textarea
     matInput
     [disabled]="config().getDisabled()"
-    [id]="config().getId()"
-    [placeholder]="config().getPlaceholder()"
-    [name]="config().getName()"
+    [id]="config().getId()!"
+    [placeholder]="config().getPlaceholder()!"
+    [name]="config().getName()!"
     [required]="config().getRequired()"
-    [type]="config().getType()"
-    [aria-describedby]="config().getUserAriaDescribedBy()"
+    [type]="config().getType()!"
+    [aria-describedby]="config().getUserAriaDescribedBy()!"
     [value]="config().getValue()"
     [readonly]="config().getReadonly()"
     (input)="onInput($event)"
@@ -26,12 +26,12 @@
   <input
     matInput
     [disabled]="config().getDisabled()"
-    [id]="config().getId()"
-    [placeholder]="config().getPlaceholder()"
-    [name]="config().getName()"
+    [id]="config().getId()!"
+    [placeholder]="config().getPlaceholder()!"
+    [name]="config().getName()!"
     [required]="config().getRequired()"
-    [type]="config().getType()"
-    [aria-describedby]="config().getUserAriaDescribedBy()"
+    [type]="config().getType()!"
+    [aria-describedby]="config().getUserAriaDescribedBy()!"
     [value]="config().getValue()"
     [readonly]="config().getReadonly()"
     (input)="onInput($event)"

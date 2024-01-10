@@ -1,12 +1,12 @@
 
-syntax = "proto3";
+syntax = "proto2";
 
 package mesop.components.progress_bar;
 
 message ProgressBarType {
-  string color = 1;
-  double value = 2;
-  double buffer_value = 3;
-  string mode = 4;
-  string on_progress_bar_animation_end_event_handler_id = 5;
+  optional string color = 1;
+  optional double value = 2;
+  optional double buffer_value = 3;
+  optional string mode = 4;
+  optional string on_progress_bar_animation_end_event_handler_id = 5;
 }
