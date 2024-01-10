@@ -181,7 +181,7 @@ export class ComponentRenderer {
   getStyle(): string {
     if (!this._boxType) {
       if (this.isEditorFocusedComponent()) {
-        return `display: block; ${this.getFocusedStyle()}`;
+        return `display: inline-block; ${this.getFocusedStyle()}`;
       }
       return '';
     }
