@@ -37,8 +37,8 @@ class RadioOption:
     value: The value of this radio button.
   """
 
-  label: str
-  value: str
+  label: str | None = None
+  value: str | None = None
 
 
 @validate
