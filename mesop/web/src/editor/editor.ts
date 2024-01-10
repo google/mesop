@@ -2,6 +2,7 @@ import {
   Component,
   ElementRef,
   ErrorHandler,
+  HostListener,
   Injectable,
   NgZone,
   Renderer2,
@@ -128,6 +129,13 @@ class Editor {
   componentConfigs(): ComponentConfig[] {
     if (!this.shell) return [];
     return this.shell.componentConfigs;
+  }
+
+  @HostListener('window:keydown', ['$event'])
+  handleKeyDown(event: KeyboardEvent) {
+    if (event.key === 'Escape') {
+      this.editorService.clearFocusedComponent();
+    }
   }
 }
 
