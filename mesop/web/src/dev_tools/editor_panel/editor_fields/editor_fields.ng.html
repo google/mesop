@@ -20,6 +20,9 @@
       [attr.data-name]="field.getName()"
       [value]="getValueFor(field.getName()!)"
     />
+    <mat-icon class="delete-field" (click)="deleteField(field.getName()!)"
+      >delete</mat-icon
+    >
     } @case(FieldTypeCase.FLOAT_TYPE) {
     <label class="input-label">{{field.getName()}}</label>:
     <input
@@ -29,6 +32,9 @@
       [attr.data-name]="field.getName()"
       [value]="getValueFor(field.getName()!)"
     />
+    <mat-icon class="delete-field" (click)="deleteField(field.getName()!)"
+      >delete</mat-icon
+    >
     } @case(FieldTypeCase.LIST_TYPE) {
     <div>List</div>
     <mesop-editor-fields
@@ -43,6 +49,9 @@
       [attr.data-name]="field.getName()"
       [value]="getValueFor(field.getName()!)"
     ></textarea>
+    <mat-icon class="delete-field" (click)="deleteField(field.getName()!)"
+      >delete</mat-icon
+    >
     } @else {
     <label class="input-label">{{field.getName()}}</label>:
     <input
@@ -51,6 +60,9 @@
       [attr.data-name]="field.getName()"
       [value]="getValueFor(field.getName()!)"
     />
+    <mat-icon class="delete-field" (click)="deleteField(field.getName()!)"
+      >delete</mat-icon
+    >
     } } @case(FieldTypeCase.LITERAL_TYPE) {
     <label class="input-label">{{field.getName()}}</label>:
     <select
@@ -68,9 +80,17 @@
       </option>
       }
     </select>
+    <mat-icon class="delete-field" (click)="deleteField(field.getName()!)"
+      >delete</mat-icon
+    >
     } @case(FieldTypeCase.STRUCT_TYPE) {
     <div class="struct-section">
-      <div class="struct-name">{{field.getName()}}</div>
+      <div class="struct-header">
+        <div class="struct-name">{{field.getName()}}</div>
+        <mat-icon class="delete-field" (click)="deleteField(field.getName()!)"
+          >delete</mat-icon
+        >
+      </div>
       <div class="struct-body">
         <mesop-editor-fields
           [fields]="field.getType()!.getStructType()!.getFieldsList()"

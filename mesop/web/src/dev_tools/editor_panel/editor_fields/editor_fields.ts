@@ -13,6 +13,7 @@ import {
   CodeValue,
   LiteralElement,
   CodeReplacement,
+  DeleteCode,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
@@ -21,6 +22,7 @@ import {MatCheckboxChange, MatCheckboxModule} from '@angular/material/checkbox';
 import {MatSelectModule} from '@angular/material/select';
 import {CommonModule} from '@angular/common';
 import {Channel} from '../../../services/channel';
+import {MatIconModule} from '@angular/material/icon';
 
 @Component({
   selector: 'mesop-editor-fields',
@@ -30,6 +32,7 @@ import {Channel} from '../../../services/channel';
   imports: [
     ObjectTree,
     MatFormFieldModule,
+    MatIconModule,
     MatInputModule,
     MatDividerModule,
     MatCheckboxModule,
@@ -58,7 +61,7 @@ export class EditorFields {
     const type = this.fields
       .find((f) => f.getName() === target.value)!
       .getType()!;
-    this.dispatchEdit(segment, getCodeFromType(type));
+    this.editWithNewCode(segment, getCodeFromType(type));
   }
 
   onSelectLiteral(event: Event) {
@@ -77,7 +80,7 @@ export class EditorFields {
       .getLiteralType()!
       .getLiteralsList()[literalIndex];
 
-    this.dispatchEdit(segment, getLiteralCodeValue(literal));
+    this.editWithNewCode(segment, getLiteralCodeValue(literal));
   }
 
   onCheckboxChange(event: MatCheckboxChange) {
@@ -91,7 +94,7 @@ export class EditorFields {
 
     const codeValue = new CodeValue();
     codeValue.setBoolValue(event.checked);
-    this.dispatchEdit(segment, codeValue);
+    this.editWithNewCode(segment, codeValue);
   }
 
   onBlur(event: FocusEvent) {
@@ -104,10 +107,30 @@ export class EditorFields {
     segment.setKeywordArgument(name);
     const codeValue = new CodeValue();
     codeValue.setStringValue(target.value);
-    this.dispatchEdit(segment, codeValue);
+    this.editWithNewCode(segment, codeValue);
   }
 
-  private dispatchEdit(argPathSegment: ArgPathSegment, newCode: CodeValue) {
+  deleteField(fieldName: string) {
+    const segment = new ArgPathSegment();
+    segment.setKeywordArgument(fieldName);
+    const replacement = new CodeReplacement();
+    replacement.setDeleteCode(new DeleteCode());
+    this.dispatchEdit(segment, replacement);
+  }
+
+  private editWithNewCode(
+    argPathSegment: ArgPathSegment,
+    codeValue: CodeValue,
+  ) {
+    const replacement = new CodeReplacement();
+    replacement.setNewCode(codeValue);
+    this.dispatchEdit(argPathSegment, replacement);
+  }
+
+  private dispatchEdit(
+    argPathSegment: ArgPathSegment,
+    replacement: CodeReplacement,
+  ) {
     const editorEvent = new EditorEvent();
     const editorUpdate = new EditorUpdateCallsite();
     editorEvent.setUpdateCallsite(editorUpdate);
@@ -125,8 +148,6 @@ export class EditorFields {
     }
     argPath.addSegments(argPathSegment);
     editorUpdate.setArgPath(argPath);
-    const replacement = new CodeReplacement();
-    replacement.setNewCode(newCode);
     editorUpdate.setReplacement(replacement);
     this.channel.dispatchEditorEvent(editorEvent);
   }
@@ -191,7 +212,6 @@ export class EditorFields {
 
   getValueFor(fieldName: string) {
     let valueObj = this.getFocusedComponent().properties['value' as any];
-    console.log('valueObj', valueObj);
     for (const prefix of this.prefixes) {
       valueObj = valueObj[prefix as any];
       if (!valueObj) {
