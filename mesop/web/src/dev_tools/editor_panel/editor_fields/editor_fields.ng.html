@@ -41,7 +41,12 @@
     >
       @for(literal of field.getType()!.getLiteralType()?.getLiteralsList();
       track $index) {
-      <option [value]="$index">{{getLiteralValue(literal)}}</option>
+      <option
+        [value]="$index"
+        [selected]="isLiteralSelected(field.getName(), literal)"
+      >
+        {{getLiteralValue(literal)}}
+      </option>
       }
     </select>
     } @case(FieldTypeCase.STRUCT_TYPE) {

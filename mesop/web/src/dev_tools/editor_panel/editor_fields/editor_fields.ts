@@ -198,6 +198,13 @@ export class EditorFields {
     return value;
   }
 
+  isLiteralSelected(fieldName: string, literal: LiteralElement): boolean {
+    // Doing a toString because getLiteralValue also does a toString() for display purposes.
+    return (
+      this.getValueFor(fieldName).toString() === this.getLiteralValue(literal)
+    );
+  }
+
   getLiteralValue(literal: LiteralElement): string {
     switch (literal.getLiteralCase()) {
       case LiteralElement.LiteralCase.INT_LITERAL:
