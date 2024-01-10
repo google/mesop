@@ -16,7 +16,7 @@ import {
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatDividerModule} from '@angular/material/divider';
-import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatCheckboxChange, MatCheckboxModule} from '@angular/material/checkbox';
 import {MatSelectModule} from '@angular/material/select';
 import {CommonModule} from '@angular/common';
 import {Channel} from '../../../services/channel';
@@ -77,6 +77,20 @@ export class EditorFields {
       .getLiteralsList()[literalIndex];
 
     this.dispatchEdit(segment, getLiteralCodeValue(literal));
+  }
+
+  onCheckboxChange(event: MatCheckboxChange) {
+    const target = event.source;
+    const segment = new ArgPathSegment();
+    const name = target.value;
+    if (!name) {
+      throw new Error('Expected to get name.');
+    }
+    segment.setKeywordArgument(name);
+
+    const codeValue = new CodeValue();
+    codeValue.setBoolValue(event.checked);
+    this.dispatchEdit(segment, codeValue);
   }
 
   onBlur(event: FocusEvent) {

@@ -61,7 +61,12 @@
   </div>
 
   } @for(field of getBoolFields(); track $index) {
-  <mat-checkbox>{{field.getName()}}</mat-checkbox>
+  <mat-checkbox
+    [checked]="!!getValueFor(field.getName())"
+    [value]="field.getName()"
+    (change)="onCheckboxChange($event)"
+    >{{field.getName()}}</mat-checkbox
+  >
   } @if(getNonTypedFields().length) {
   <mat-divider class="other-fields-divider"></mat-divider>
   <div class="other-fields-title">Other fields</div>
