@@ -137,11 +137,15 @@ class ReplaceKeywordArg(VisitorBasedCodemodCommand):
           if i == segments[1].list_index:
             element = list_value.elements[segments[1].list_index]
             assert isinstance(element.value, cst.Call)
-            new_elements.append(
-              element.with_changes(
-                value=self._update_call(element.value, segments[2:])
+            if segments[2:]:
+              new_elements.append(
+                element.with_changes(
+                  value=self._update_call(element.value, segments[2:])
+                )
               )
-            )
+            else:
+              # Make sure we want to delete the code; then skip this element.
+              assert self.input.replacement.HasField("delete_code")
 
           else:
             new_elements.append(element)
