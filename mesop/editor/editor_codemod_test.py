@@ -27,7 +27,9 @@ class TestReplaceKeywordArg(CodemodTest):
         arg_path=pb.ArgPath(
           segments=[pb.ArgPathSegment(keyword_argument="label")]
         ),
-        new_code=pb.CodeValue(string_value="defa"),
+        replacement=pb.CodeReplacement(
+          new_code=pb.CodeValue(string_value="defa"),
+        ),
         source_code_location=pb.SourceCodeLocation(line=5),
       ),
     )
@@ -40,7 +42,9 @@ class TestReplaceKeywordArg(CodemodTest):
         arg_path=pb.ArgPath(
           segments=[pb.ArgPathSegment(keyword_argument="label")]
         ),
-        new_code=pb.CodeValue(string_value="defa"),
+        replacement=pb.CodeReplacement(
+          new_code=pb.CodeValue(string_value="defa"),
+        ),
         source_code_location=pb.SourceCodeLocation(line=6),
       ),
     )
@@ -53,7 +57,9 @@ class TestReplaceKeywordArg(CodemodTest):
         arg_path=pb.ArgPath(
           segments=[pb.ArgPathSegment(keyword_argument="text")]
         ),
-        new_code=pb.CodeValue(string_value="after"),
+        replacement=pb.CodeReplacement(
+          new_code=pb.CodeValue(string_value="after"),
+        ),
         source_code_location=pb.SourceCodeLocation(line=5),
       ),
     )
@@ -66,7 +72,9 @@ class TestReplaceKeywordArg(CodemodTest):
         arg_path=pb.ArgPath(
           segments=[pb.ArgPathSegment(keyword_argument="text")]
         ),
-        new_code=pb.CodeValue(string_value="after"),
+        replacement=pb.CodeReplacement(
+          new_code=pb.CodeValue(string_value="after"),
+        ),
         source_code_location=pb.SourceCodeLocation(line=5),
       ),
     )
@@ -82,7 +90,9 @@ class TestReplaceKeywordArg(CodemodTest):
             pb.ArgPathSegment(keyword_argument="background"),
           ]
         ),
-        new_code=pb.CodeValue(string_value="pink"),
+        replacement=pb.CodeReplacement(
+          new_code=pb.CodeValue(string_value="pink"),
+        ),
         source_code_location=pb.SourceCodeLocation(line=5),
       ),
     )
@@ -99,7 +109,9 @@ class TestReplaceKeywordArg(CodemodTest):
             pb.ArgPathSegment(keyword_argument="top"),
           ]
         ),
-        new_code=pb.CodeValue(int_value=8),
+        replacement=pb.CodeReplacement(
+          new_code=pb.CodeValue(int_value=8),
+        ),
         source_code_location=pb.SourceCodeLocation(line=5),
       ),
     )
@@ -114,7 +126,9 @@ class TestReplaceKeywordArg(CodemodTest):
             pb.ArgPathSegment(keyword_argument="checked"),
           ]
         ),
-        new_code=pb.CodeValue(bool_value=False),
+        replacement=pb.CodeReplacement(
+          new_code=pb.CodeValue(bool_value=False),
+        ),
         source_code_location=pb.SourceCodeLocation(line=5),
       ),
     )
@@ -129,7 +143,9 @@ class TestReplaceKeywordArg(CodemodTest):
             pb.ArgPathSegment(keyword_argument="label"),
           ]
         ),
-        new_code=pb.CodeValue(string_value="foo"),
+        replacement=pb.CodeReplacement(
+          new_code=pb.CodeValue(string_value="foo"),
+        ),
         source_code_location=pb.SourceCodeLocation(line=5),
       ),
     )
@@ -145,7 +161,43 @@ class TestReplaceKeywordArg(CodemodTest):
             pb.ArgPathSegment(keyword_argument="padding"),
           ]
         ),
-        new_code=pb.CodeValue(struct_name="Padding"),
+        replacement=pb.CodeReplacement(
+          new_code=pb.CodeValue(struct_name="Padding"),
+        ),
+        source_code_location=pb.SourceCodeLocation(line=5),
+      ),
+    )
+
+  def test_delete_keyword_arg(self) -> None:
+    self.assertEditorUpdate(
+      "delete_keyword_arg",
+      pb.EditorUpdateCallsite(
+        component_name="input",
+        arg_path=pb.ArgPath(
+          segments=[
+            pb.ArgPathSegment(keyword_argument="label"),
+          ]
+        ),
+        replacement=pb.CodeReplacement(
+          delete_code=pb.DeleteCode(),
+        ),
+        source_code_location=pb.SourceCodeLocation(line=5),
+      ),
+    )
+
+  def test_delete_struct(self) -> None:
+    self.assertEditorUpdate(
+      "delete_struct",
+      pb.EditorUpdateCallsite(
+        component_name="input",
+        arg_path=pb.ArgPath(
+          segments=[
+            pb.ArgPathSegment(keyword_argument="style"),
+          ]
+        ),
+        replacement=pb.CodeReplacement(
+          delete_code=pb.DeleteCode(),
+        ),
         source_code_location=pb.SourceCodeLocation(line=5),
       ),
     )
@@ -160,11 +212,13 @@ class TestReplaceKeywordArg(CodemodTest):
             pb.ArgPathSegment(keyword_argument="text"),
           ]
         ),
-        new_code=pb.CodeValue(
-          string_value="""Welcome
+        replacement=pb.CodeReplacement(
+          new_code=pb.CodeValue(
+            string_value="""Welcome
 
     1 more line.
     Add 1 more line."""
+          )
         ),
         source_code_location=pb.SourceCodeLocation(line=5),
       ),

@@ -41,11 +41,24 @@ message EditorEvent {
 }
 
 message EditorUpdateCallsite {
+    // |source_code_location|, |component_name|, |arg_path| specify
+    // which part of the code should be edited.
     optional SourceCodeLocation source_code_location = 1;
-    optional ArgPath arg_path = 2;
-    optional CodeValue new_code = 3;
-    optional string component_name = 4;
+    optional string component_name = 2;
+    optional ArgPath arg_path = 3;
+
+    // Specifies what the targeted code should be replaced with.
+    optional CodeReplacement replacement = 4;
 }
+
+message CodeReplacement {
+    oneof command {
+        CodeValue new_code = 1;
+        DeleteCode delete_code = 2;
+    }
+}
+
+message DeleteCode {}
 
 message CodeValue {
     oneof value {

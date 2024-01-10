@@ -35,9 +35,9 @@ class ReplaceKeywordArg(VisitorBasedCodemodCommand):
     super().__init__(context)
     self.input = input
 
-  def leave_Call(
+  def leave_Call(  # type: ignore (erroneously forbids return type with `None`)
     self, original_node: cst.Call, updated_node: cst.Call
-  ) -> cst.BaseExpression:
+  ) -> cst.BaseExpression | None:
     position = self.get_metadata(PositionProvider, original_node)
     assert isinstance(position, CodeRange)
 
@@ -65,6 +65,7 @@ class ReplaceKeywordArg(VisitorBasedCodemodCommand):
   ) -> cst.Call:
     segment = segments[0]
     keyword_argument = segment.keyword_argument
+
     new_args: list[cst.Arg] = []
     found_arg = False
     for arg in call.args:
@@ -77,27 +78,40 @@ class ReplaceKeywordArg(VisitorBasedCodemodCommand):
         and arg == call.args[0]
       ):
         found_arg = True
-        new_args.append(self.modify_arg(arg, segments))
+        new_arg = self.modify_arg(arg, segments)
+        if new_arg:
+          new_args.append(new_arg)
       else:
         new_args.append(arg)
-    if not found_arg:
+    new_value = get_value(self.input.replacement)
+    if not found_arg and new_value:
       new_args.append(
         cst.Arg(
           keyword=cst.Name(segment.keyword_argument),
-          value=get_value(self.input.new_code),
+          value=new_value,
         )
       )
     return call.with_changes(args=new_args)
 
   def modify_arg(
     self, input_arg: cst.Arg, segments: Sequence[pb.ArgPathSegment]
-  ) -> cst.Arg:
+  ) -> cst.Arg | None:
     if len(segments) == 1:
       maybe_call = input_arg.value
       if not isinstance(maybe_call, cst.Call):
-        mod = input_arg.with_changes(value=get_value(self.input.new_code))
+        new_value = get_value(self.input.replacement)
+        if new_value is None:
+          return None
+        mod = input_arg.with_changes(value=new_value)
         return mod
       call = maybe_call
+
+      if (
+        input_arg.keyword
+        and input_arg.keyword.value == segments[0].keyword_argument
+        and self.input.replacement.HasField("delete_code")
+      ):
+        return None
       return input_arg.with_changes(value=self._update_call(call, segments))
     else:
       call = input_arg.value
@@ -107,7 +121,15 @@ class ReplaceKeywordArg(VisitorBasedCodemodCommand):
       return input_arg.with_changes(value=self._update_call(call, segments[1:]))
 
 
-def get_value(code: pb.CodeValue):
+def get_value(replacement: pb.CodeReplacement):
+  if replacement.HasField("new_code"):
+    return get_code_value(replacement.new_code)
+  if replacement.HasField("delete_code"):
+    return None
+  raise Exception("Unhandled replacement", replacement)
+
+
+def get_code_value(code: pb.CodeValue):
   if code.HasField("string_value"):
     # Create multi-line string if needed.
     if "\n" in code.string_value:

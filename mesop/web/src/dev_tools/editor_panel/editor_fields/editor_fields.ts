@@ -12,6 +12,7 @@ import {
   ArgPathSegment,
   CodeValue,
   LiteralElement,
+  CodeReplacement,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
@@ -124,7 +125,9 @@ export class EditorFields {
     }
     argPath.addSegments(argPathSegment);
     editorUpdate.setArgPath(argPath);
-    editorUpdate.setNewCode(newCode);
+    const replacement = new CodeReplacement();
+    replacement.setNewCode(newCode);
+    editorUpdate.setReplacement(replacement);
     this.channel.dispatchEditorEvent(editorEvent);
   }
 
