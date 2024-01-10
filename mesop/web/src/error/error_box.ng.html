@@ -22,7 +22,7 @@
             >
               <ng-container *ngIf="line.getIsCaller() || frame.getIsAppCode()">
                 {{frame.getIsAppCode() ? line.getCode() :
-                line.getCode().trimStart()}}
+                line.getCode()!.trimStart()}}
               </ng-container>
             </div>
           </div>

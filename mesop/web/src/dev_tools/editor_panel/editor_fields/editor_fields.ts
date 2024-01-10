@@ -114,7 +114,7 @@ export class EditorFields {
       this.editorService.getFocusedComponent()!.getSourceCodeLocation(),
     );
     editorUpdate.setComponentName(
-      this.editorService.getFocusedComponent()!.getType()!.getName(),
+      this.editorService.getFocusedComponent()!.getType()!.getName()!,
     );
     const argPath = new ArgPath();
     for (const prefix of this.prefixes) {
@@ -151,7 +151,7 @@ export class EditorFields {
         (field) =>
           field.getType()?.getTypeCase() !== this.FieldTypeCase.BOOL_TYPE &&
           field.getType() &&
-          this.getValueFor(field.getName()),
+          this.getValueFor(field.getName()!),
       ) ?? []
     );
   }
@@ -163,7 +163,7 @@ export class EditorFields {
           (field) =>
             field.getType()?.getTypeCase() !== this.FieldTypeCase.BOOL_TYPE &&
             field.getType() &&
-            !this.getValueFor(field.getName()),
+            !this.getValueFor(field.getName()!),
         )
         .map((field) => field.getName()) ?? []
     );
@@ -208,9 +208,9 @@ export class EditorFields {
   getLiteralValue(literal: LiteralElement): string {
     switch (literal.getLiteralCase()) {
       case LiteralElement.LiteralCase.INT_LITERAL:
-        return literal.getIntLiteral().toString();
+        return literal.getIntLiteral()!.toString();
       case LiteralElement.LiteralCase.STRING_LITERAL:
-        return literal.getStringLiteral();
+        return literal.getStringLiteral()!;
       case LiteralElement.LiteralCase.LITERAL_NOT_SET:
         throw new Error(`Unhandled literal element case ${literal.toObject()}`);
     }
@@ -220,19 +220,19 @@ function getCodeFromType(type: FieldType): CodeValue {
   const newCode = new CodeValue();
   switch (type!.getTypeCase()) {
     case FieldType.TypeCase.STRUCT_TYPE:
-      newCode.setStructName(type.getStructType()!.getStructName());
+      newCode.setStructName(type.getStructType()!.getStructName()!);
       return newCode;
     case FieldType.TypeCase.STRING_TYPE:
-      newCode.setStringValue(type.getStringType()!.getDefaultValue());
+      newCode.setStringValue(type.getStringType()!.getDefaultValue()!);
       return newCode;
     case FieldType.TypeCase.BOOL_TYPE:
-      newCode.setBoolValue(type.getBoolType()!.getDefaultValue());
+      newCode.setBoolValue(type.getBoolType()!.getDefaultValue()!);
       return newCode;
     case FieldType.TypeCase.INT_TYPE:
-      newCode.setIntValue(type.getIntType()!.getDefaultValue());
+      newCode.setIntValue(type.getIntType()!.getDefaultValue()!);
       return newCode;
     case FieldType.TypeCase.FLOAT_TYPE:
-      newCode.setDoubleValue(type.getFloatType()!.getDefaultValue());
+      newCode.setDoubleValue(type.getFloatType()!.getDefaultValue()!);
       return newCode;
     case FieldType.TypeCase.LITERAL_TYPE: {
       const defaultLiteral = type.getLiteralType()!.getLiteralsList()[0];
@@ -240,7 +240,7 @@ function getCodeFromType(type: FieldType): CodeValue {
     }
     case FieldType.TypeCase.LIST_TYPE:
       newCode.setStructName(
-        type.getListType()!.getType()!.getStructType()!.getStructName(),
+        type.getListType()!.getType()!.getStructType()!.getStructName()!,
       );
       return newCode;
     case FieldType.TypeCase.TYPE_NOT_SET:
@@ -251,10 +251,10 @@ function getLiteralCodeValue(defaultLiteral: LiteralElement): CodeValue {
   const newCode = new CodeValue();
   switch (defaultLiteral.getLiteralCase()) {
     case LiteralElement.LiteralCase.INT_LITERAL:
-      newCode.setIntValue(defaultLiteral.getIntLiteral());
+      newCode.setIntValue(defaultLiteral.getIntLiteral()!);
       return newCode;
     case LiteralElement.LiteralCase.STRING_LITERAL:
-      newCode.setStringValue(defaultLiteral.getStringLiteral());
+      newCode.setStringValue(defaultLiteral.getStringLiteral()!);
       return newCode;
     case LiteralElement.LiteralCase.LITERAL_NOT_SET:
       throw new Error('Unexpected unset literal case');

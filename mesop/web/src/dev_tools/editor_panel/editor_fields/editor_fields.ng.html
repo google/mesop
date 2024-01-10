@@ -18,7 +18,7 @@
       type="number"
       (blur)="onBlur($event)"
       [attr.data-name]="field.getName()"
-      [value]="getValueFor(field.getName())"
+      [value]="getValueFor(field.getName()!)"
     />
     } @case(FieldTypeCase.FLOAT_TYPE) {
     <label class="input-label">{{field.getName()}}</label>:
@@ -27,7 +27,7 @@
       type="number"
       (blur)="onBlur($event)"
       [attr.data-name]="field.getName()"
-      [value]="getValueFor(field.getName())"
+      [value]="getValueFor(field.getName()!)"
     />
     } @case(FieldTypeCase.LIST_TYPE) {
     <div>List</div>
@@ -41,7 +41,7 @@
       class="input"
       (blur)="onBlur($event)"
       [attr.data-name]="field.getName()"
-      [value]="getValueFor(field.getName())"
+      [value]="getValueFor(field.getName()!)"
     ></textarea>
     } @else {
     <label class="input-label">{{field.getName()}}</label>:
@@ -49,7 +49,7 @@
       class="input"
       (blur)="onBlur($event)"
       [attr.data-name]="field.getName()"
-      [value]="getValueFor(field.getName())"
+      [value]="getValueFor(field.getName()!)"
     />
     } } @case(FieldTypeCase.LITERAL_TYPE) {
     <label class="input-label">{{field.getName()}}</label>:
@@ -62,7 +62,7 @@
       track $index) {
       <option
         [value]="$index"
-        [selected]="isLiteralSelected(field.getName(), literal)"
+        [selected]="isLiteralSelected(field.getName()!, literal)"
       >
         {{getLiteralValue(literal)}}
       </option>
@@ -74,7 +74,7 @@
       <div class="struct-body">
         <mesop-editor-fields
           [fields]="field.getType()!.getStructType()!.getFieldsList()"
-          [prefixes]="getPrefixFor(field.getName())"
+          [prefixes]="getPrefixFor(field.getName()!)"
         >
         </mesop-editor-fields>
       </div>
@@ -88,8 +88,8 @@
 
   } @for(field of getBoolFields(); track $index) {
   <mat-checkbox
-    [checked]="!!getValueFor(field.getName())"
-    [value]="field.getName()"
+    [checked]="!!getValueFor(field.getName()!)"
+    [value]="field.getName()!"
     (change)="onCheckboxChange($event)"
     >{{field.getName()}}</mat-checkbox
   >

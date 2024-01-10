@@ -41,7 +41,7 @@ export class ErrorBox {
 
   async ngOnChanges() {
     this.markdownHTML = (
-      await marked.parse(this.error.getException().trim())
+      await marked.parse(this.error.getException()!.trim())
     ).trim();
     const traceback = this.error.getTraceback();
     if (!traceback) {

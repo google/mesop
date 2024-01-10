@@ -66,7 +66,7 @@ export class Logger {
           duration,
           states: input.states
             .getStatesList()
-            .map((s) => jsonParse(s.getData())) as object[],
+            .map((s) => jsonParse(s.getData()!)) as object[],
           rootComponent: mapComponentToObject(input.rootComponent),
         };
     }
@@ -80,12 +80,12 @@ export function mapComponentToObject(
   let type;
   if (debugJson) {
     type = {
-      'name': component.getType()!.getName(),
+      'name': component.getType()!.getName()!,
       'value': jsonParse(debugJson) as object,
     };
   }
   if (component.getStyleDebugJson()) {
-    (type as any)['value']['style'] = jsonParse(component.getStyleDebugJson());
+    (type as any)['value']['style'] = jsonParse(component.getStyleDebugJson()!);
   }
   return {
     type,

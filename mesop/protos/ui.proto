@@ -1,11 +1,11 @@
-syntax = "proto3";
+syntax = "proto2";
 
 package mesop;
 
 // Sent from web client to Python server.
 message UiRequest {
     // Current path of UI client (browser).
-    string path = 3;
+    optional string path = 3;
     oneof type {
         InitRequest init = 1;
         UserEvent user_event = 2;
@@ -18,12 +18,12 @@ message InitRequest {
 }
 
 message UserEvent {
-    States states = 1;
+    optional States states = 1;
 
     // Used to determine which action handler to call.
-    string handler_id = 2;
+    optional string handler_id = 2;
 
-    Key key = 3;
+    optional Key key = 3;
 
     oneof type {
         bool bool_value = 4;
@@ -41,10 +41,10 @@ message EditorEvent {
 }
 
 message EditorUpdateCallsite {
-    SourceCodeLocation source_code_location = 1;
-    ArgPath arg_path = 2;
-    CodeValue new_code = 3;
-    string component_name = 4;
+    optional SourceCodeLocation source_code_location = 1;
+    optional ArgPath arg_path = 2;
+    optional CodeValue new_code = 3;
+    optional string component_name = 4;
 }
 
 message CodeValue {
@@ -80,8 +80,8 @@ message UiResponse {
 }
 
 message ServerError {
-    string exception = 1;
-    Traceback traceback = 2;
+    optional string exception = 1;
+    optional Traceback traceback = 2;
 }
 
 message Traceback {
@@ -90,24 +90,24 @@ message Traceback {
 
 message StackFrame {
     // e.g. "mesop/mesop/cli/execute_module.py"
-    string filename = 1;
-    string code_name = 2;
-    int32 line_number = 3;
+    optional string filename = 1;
+    optional string code_name = 2;
+    optional int32 line_number = 3;
 
     repeated ContextLine lines = 4;
 
     // If this originates from application code, the developer wrote, we should highlight it.
-    bool is_app_code = 5;
+    optional bool is_app_code = 5;
 }
 
 message ContextLine {
-    string code = 1;
-    bool is_caller = 2;
+    optional string code = 1;
+    optional bool is_caller = 2;
 }
 
 message RenderEvent {
-    Component root_component = 1;
-    States states = 2;
+    optional Component root_component = 1;
+    optional States states = 2;
     repeated Command commands = 3;
 
     // Only sent in editor mode:
@@ -122,7 +122,7 @@ message Command {
 
 message NavigateCommand {
     // absolute route path, e.g. "/foo/bar"
-    string url = 1;
+    optional string url = 1;
 }
 
 message States {
@@ -132,91 +132,91 @@ message States {
 // Serialized state of application. Sent from Python server to web client.
 // Web client doesn't parse this data, it just sends it back to the server.
 message State {
-    string data = 1;
+    optional string data = 1;
 }
 
 // Represents an instance of a component.
 message Component {
-    Key key = 3;
-    Style style = 5;
+    optional Key key = 3;
+    optional Style style = 5;
     // Sent down only in debug mode; used for editor mode.
-    string style_debug_json = 6;
+    optional string style_debug_json = 6;
 
     // Type-specific component properties.
-    Type type = 1;
+    optional Type type = 1;
     repeated Component children = 2;
 
     // Only sent in editor mode.
-    SourceCodeLocation source_code_location = 4;
+    optional SourceCodeLocation source_code_location = 4;
 }
 
 message SourceCodeLocation {
-    string  module = 1;
-    int32 line = 2;
-    int32 col = 3;
+    optional string  module = 1;
+    optional int32 line = 2;
+    optional int32 col = 3;
 }
 
 message Key {
-    string key = 1;
+    optional string key = 1;
 }
 
 message Type {
-    string name = 4;
-    bytes value = 5;
-    string debug_json = 6;
+    optional string name = 4;
+    optional bytes value = 5;
+    optional string debug_json = 6;
     // Needed outside of |value| because ComponentRenderer (TS) needs to know
     // the type index in order to do content projection correctly.
-    int32 type_index = 7;
+    optional int32 type_index = 7;
 }
 
 message Style {
-    string background = 1;
-    string color = 2;
-    string height = 5;
-    string width = 12;
-    EdgeInsets margin = 3;
-    EdgeInsets padding = 4;
-    string display = 6;
-    string flex_direction = 7;
-    int32 flex_grow = 13;
-    string align_items = 8;
-    string position = 9;
-    string text_align = 10;
-    Border border = 11;
-    string font_weight = 14;
-    string font_size = 15;
+    optional string background = 1;
+    optional string color = 2;
+    optional string height = 5;
+    optional string width = 12;
+    optional EdgeInsets margin = 3;
+    optional EdgeInsets padding = 4;
+    optional string display = 6;
+    optional string flex_direction = 7;
+    optional int32 flex_grow = 13;
+    optional string align_items = 8;
+    optional string position = 9;
+    optional string text_align = 10;
+    optional Border border = 11;
+    optional string font_weight = 14;
+    optional string font_size = 15;
 }
 
 message EdgeInsets {
-    string top = 1;
-    string bottom = 2;
-    string left = 3;
-    string right = 4;
+    optional string top = 1;
+    optional string bottom = 2;
+    optional string left = 3;
+    optional string right = 4;
 }
 
 message Border {
-    BorderSide top = 1;
-    BorderSide bottom = 2;
-    BorderSide left = 3;
-    BorderSide right = 4;
+    optional BorderSide top = 1;
+    optional BorderSide bottom = 2;
+    optional BorderSide left = 3;
+    optional BorderSide right = 4;
 }
 
 message BorderSide {
-    string width = 1;
-    string color = 2;
-    string style = 3;
+    optional string width = 1;
+    optional string color = 2;
+    optional string style = 3;
 }
 
 message ComponentConfig {
-    string component_name = 1;
-    string category = 2;
+    optional string component_name = 1;
+    optional string category = 2;
     repeated EditorField fields = 3;
 }
 
 
 message EditorField {
-    string name = 1;
-    FieldType type = 2;
+    optional string name = 1;
+    optional FieldType type = 2;
 }
 
 message FieldType {
@@ -232,25 +232,25 @@ message FieldType {
 }
 
 message BoolType {
-    bool default_value = 1;
+    optional bool default_value = 1;
 }
 
 message StructType {
     // Name of the Python class (usually a dataclass)
-    string struct_name = 2;
+    optional string struct_name = 2;
     repeated EditorField fields = 1;
 }
 
 message IntType {
-    int32 default_value = 1;
+    optional int32 default_value = 1;
 }
 
 message FloatType {
-    double default_value = 1;
+    optional double default_value = 1;
 }
 
 message StringType {
-    string default_value = 1;
+    optional string default_value = 1;
 }
 
 message LiteralType {
@@ -265,5 +265,5 @@ message LiteralElement {
 }
 
 message ListType {
-    FieldType type = 1;
+    optional FieldType type = 1;
 }

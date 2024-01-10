@@ -88,7 +88,7 @@ export class Channel {
             for (const command of uiResponse.getRender()!.getCommandsList()) {
               const navigate = command.getNavigate();
               if (navigate) {
-                onNavigate(navigate.getUrl());
+                onNavigate(navigate.getUrl()!);
               }
             }
             this.rootComponent = rootComponent;
