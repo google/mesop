@@ -9,10 +9,11 @@
   border-left: 1px solid #dcdcdc;
   display: flex;
   font-size: 0.9rem;
-  position: sticky;
+  position: fixed;
   line-height: 1.5;
   align-items: center;
   font-weight: 500;
+  background: #fff;
 }
 
 .inspect-button {
