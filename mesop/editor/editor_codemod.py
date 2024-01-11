@@ -26,11 +26,11 @@ class NewComponentCodemod(VisitorBasedCodemodCommand):
 
   def leave_With(self, original_node: cst.With, updated_node: cst.With):
     if self.input.mode != pb.EditorNewComponent.Mode.MODE_CHILD:
-      return original_node
+      return updated_node
     position = self.get_metadata(PositionProvider, original_node)
     assert isinstance(position, CodeRange)
     if position.start.line != self.input.source_code_location.line:
-      return original_node
+      return updated_node
 
     updated_statement_lines: list[
       cst.BaseStatement | cst.BaseSmallStatement
