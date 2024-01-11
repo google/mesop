@@ -1,4 +1,4 @@
-<div class="top-panel">
+<div class="top-panel" #topPanel>
   @if(component()) {
 
   <div class="component-tree-title">Component Tree</div>
@@ -10,9 +10,9 @@
   } @else { No component rendered. }
 </div>
 
-<mat-divider></mat-divider>
-
-<div class="bottom-panel">
+<div class="bottom-panel" #bottomPanel>
+  <mat-divider></mat-divider>
+  <div #dragHandle class="resize-handle"></div>
   @if(hasFocusedComponent()) {
   <div class="component-header">
     <span class="component-name">

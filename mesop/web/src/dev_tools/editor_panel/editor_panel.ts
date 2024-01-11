@@ -1,4 +1,10 @@
-import {Component, Input} from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Input,
+  Renderer2,
+  ViewChild,
+} from '@angular/core';
 import {EditorService} from '../../services/editor_service';
 import {ComponentObject, Logger, RenderLogModel} from '../services/logger';
 import {ComponentTree, FlatNode} from '../component_tree/component_tree';
@@ -36,11 +42,35 @@ export class EditorPanel {
   FieldTypeCase = FieldType.TypeCase;
   selectedNode!: FlatNode;
 
+  @ViewChild('dragHandle', {read: ElementRef}) dragHandle!: ElementRef;
+  private isDragging = false;
+  @ViewChild('topPanel', {read: ElementRef}) topPanel!: ElementRef;
+  @ViewChild('bottomPanel', {read: ElementRef}) bottomPanel!: ElementRef;
+
   constructor(
     private logger: Logger,
     private editorService: EditorService,
     private channel: Channel,
+    private renderer: Renderer2,
   ) {}
+
+  ngAfterViewInit() {
+    this.dragHandle.nativeElement.addEventListener('mousedown', () => {
+      this.isDragging = true;
+    });
+
+    this.renderer.listen(document, 'mousemove', (event) => {
+      if (!this.isDragging) return;
+
+      const newHeight = window.innerHeight - event.clientY;
+      this.topPanel.nativeElement.style.marginBottom = `${newHeight}px`;
+      this.bottomPanel.nativeElement.style.height = `${newHeight}px`;
+    });
+
+    this.renderer.listen(document, 'mouseup', (event) => {
+      this.isDragging = false;
+    });
+  }
 
   deleteComponent(location: SourceCodeLocation): void {
     const editorEvent = new EditorEvent();

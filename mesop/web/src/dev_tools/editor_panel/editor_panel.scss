@@ -3,6 +3,8 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+
+  --default-bottom-panel-height: 400px;
 }
 
 .container {
@@ -29,17 +31,28 @@
 .top-panel {
   margin-top: 8px;
   margin-bottom: 16px;
-  max-height: 400px;
   overflow: auto;
+  margin-bottom: var(--default-bottom-panel-height);
 }
 
 .bottom-panel {
-  flex-grow: 1;
+  height: var(--default-bottom-panel-height);
   overflow: auto;
+  background: white;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 }
 
 .component-tree-title {
   font-weight: 500;
   padding-left: 8px;
   padding-bottom: 4px;
+}
+
+.resize-handle {
+  height: 8px;
+  cursor: ns-resize;
+  z-index: 9999999;
+  background: transparent;
 }
