@@ -43,7 +43,15 @@ message EditorEvent {
 }
 
 message EditorNewComponent {
-    // Append new component as a sibling of this component callsite.
+    enum Mode {
+        // Do not use.
+        MODE_UNSPECIFIED = 0;
+        // Appends a sibling after the source code location.
+        MODE_APPEND_SIBLING = 1;
+        // Only works for components that allow children.
+        MODE_CHILD = 2;
+    }
+    optional Mode mode = 3;
     optional SourceCodeLocation source_code_location = 1;
     optional string component_name = 2;
 }

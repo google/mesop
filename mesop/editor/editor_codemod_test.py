@@ -58,6 +58,37 @@ class TestNewComponentCodemod(CodemodTest):
       pb.EditorNewComponent(
         component_name="divider",
         source_code_location=pb.SourceCodeLocation(line=5),
+        mode=pb.EditorNewComponent.Mode.MODE_APPEND_SIBLING,
+      ),
+    )
+
+  def test_new_component_child(self) -> None:
+    self.assertEditorUpdate(
+      "new_component_child",
+      pb.EditorNewComponent(
+        component_name="text",
+        source_code_location=pb.SourceCodeLocation(line=5),
+        mode=pb.EditorNewComponent.Mode.MODE_CHILD,
+      ),
+    )
+
+  def test_new_component_child_existing_with(self) -> None:
+    self.assertEditorUpdate(
+      "new_component_child_existing_with",
+      pb.EditorNewComponent(
+        component_name="text",
+        source_code_location=pb.SourceCodeLocation(line=5),
+        mode=pb.EditorNewComponent.Mode.MODE_CHILD,
+      ),
+    )
+
+  def test_new_component_child_existing_with_pass(self) -> None:
+    self.assertEditorUpdate(
+      "new_component_child_existing_with_pass",
+      pb.EditorNewComponent(
+        component_name="text",
+        source_code_location=pb.SourceCodeLocation(line=5),
+        mode=pb.EditorNewComponent.Mode.MODE_CHILD,
       ),
     )
 

@@ -24,6 +24,34 @@ class NewComponentCodemod(VisitorBasedCodemodCommand):
     super().__init__(context)
     self.input = input
 
+  def leave_With(self, original_node: cst.With, updated_node: cst.With):
+    if self.input.mode != pb.EditorNewComponent.Mode.MODE_CHILD:
+      return original_node
+    position = self.get_metadata(PositionProvider, original_node)
+    assert isinstance(position, CodeRange)
+    if position.start.line != self.input.source_code_location.line:
+      return original_node
+
+    updated_statement_lines: list[
+      cst.BaseStatement | cst.BaseSmallStatement
+    ] = []
+    for statement in updated_node.body.body:
+      # Copy everything except `pass`
+      if not (
+        isinstance(statement, cst.SimpleStatementLine)
+        and len(statement.body) == 1
+        and isinstance(statement.body[0], cst.Pass)
+      ):
+        updated_statement_lines.append(statement)
+
+    updated_statement_lines.append(
+      cst.parse_statement(f"me.{self.input.component_name}()")
+    )
+
+    return updated_node.with_changes(
+      body=updated_node.body.with_changes(body=updated_statement_lines)
+    )
+
   def leave_SimpleStatementLine(
     self,
     original_node: cst.SimpleStatementLine,
@@ -33,8 +61,20 @@ class NewComponentCodemod(VisitorBasedCodemodCommand):
     assert isinstance(position, CodeRange)
     if position.start.line != self.input.source_code_location.line:
       return original_node
-    new_callsite = cst.parse_statement(f"me.{self.input.component_name}()")
-    return cst.FlattenSentinel([updated_node, new_callsite])
+    if self.input.mode == pb.EditorNewComponent.Mode.MODE_APPEND_SIBLING:
+      new_callsite = cst.parse_statement(f"me.{self.input.component_name}()")
+      return cst.FlattenSentinel([updated_node, new_callsite])
+    if self.input.mode == pb.EditorNewComponent.Mode.MODE_CHILD:
+      assert len(original_node.body) == 1
+      expr = original_node.body[0]
+      assert isinstance(expr, cst.Expr)
+      return cst.With(
+        items=[cst.WithItem(item=expr.value)],
+        body=cst.IndentedBlock(
+          body=[cst.parse_statement(f"me.{self.input.component_name}()")]
+        ),
+      )
+    raise Exception("Unsupported EditorNewComponent.Mode", self.input.mode)
 
 
 class DeleteComponentCodemod(VisitorBasedCodemodCommand):
