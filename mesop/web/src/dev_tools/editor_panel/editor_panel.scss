@@ -1,5 +1,8 @@
 :host {
   font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .container {
@@ -23,9 +26,16 @@
   padding: 16px;
 }
 
-.tree-container {
+.top-panel {
   margin-top: 8px;
   margin-bottom: 16px;
+  max-height: 400px;
+  overflow: auto;
+}
+
+.bottom-panel {
+  flex-grow: 1;
+  overflow: auto;
 }
 
 .component-tree-title {
