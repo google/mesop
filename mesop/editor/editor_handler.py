@@ -8,6 +8,7 @@ from libcst.codemod import (
 
 import mesop.protos.ui_pb2 as pb
 from mesop.editor.editor_codemod import (
+  DeleteComponentCodemod,
   NewComponentCodemod,
   UpdateCallsiteCodemod,
 )
@@ -27,6 +28,12 @@ def handle_editor_event(event: pb.EditorEvent):
     run_codemod(
       event.new_component.source_code_location,
       NewComponentCodemod(CodemodContext(), event.new_component),
+    )
+    return
+  if event.HasField("delete_component"):
+    run_codemod(
+      event.delete_component.source_code_location,
+      DeleteComponentCodemod(CodemodContext(), event.delete_component),
     )
     return
   raise MesopInternalException("Not yet event implemented event", event)

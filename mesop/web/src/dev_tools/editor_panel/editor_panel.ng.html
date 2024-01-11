@@ -1,6 +1,13 @@
 @if(hasFocusedComponent()) {
-<div class="component-name">
-  {{getFocusedComponent()?.getType()?.getName() ?? "[root]"}}
+<div class="component-header">
+  <span class="component-name">
+    {{getFocusedComponent()?.getType()?.getName() ?? "[root]"}}
+  </span>
+  <mat-icon
+    class="delete-component"
+    (click)="deleteComponent(getFocusedComponent()!.getSourceCodeLocation()!)"
+    >delete</mat-icon
+  >
 </div>
 <mesop-editor-fields
   [fields]="getFields()"

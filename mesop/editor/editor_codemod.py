@@ -42,7 +42,7 @@ class DeleteComponentCodemod(VisitorBasedCodemodCommand):
   METADATA_DEPENDENCIES = (PositionProvider,)
 
   def __init__(
-    self, context: CodemodContext, input: pb.EditorNewComponent
+    self, context: CodemodContext, input: pb.EditorDeleteComponent
   ) -> None:
     super().__init__(context)
     self.input = input

@@ -6,10 +6,16 @@
   height: 100%;
 }
 
+.component-header {
+  padding: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .component-name {
   font-weight: 500;
   font-size: 16px;
-  padding: 8px;
   text-transform: capitalize;
 }
 
