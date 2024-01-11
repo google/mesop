@@ -42,7 +42,7 @@ def header():
   ):
     me.text(
       "Hello world",
-      type=me.Typography.H5,
+      type="headline-5",
       style=me.Style(margin=me.Margin(top=0, right=0, bottom=0, left=0)),
     )
 

@@ -1,32 +1,29 @@
-from enum import Enum
-from typing import cast
+from typing import Literal
 
 import mesop.components.text.text_pb2 as text_pb2
 from mesop.component_helpers import Style, insert_component, to_style_proto
 from mesop.utils.validate import validate
 
 
-# Must be kept in sync with enum in text.proto
-class Typography(Enum):
-  TYPOGRAPHY_UNSET = 0
-  H1 = 1
-  H2 = 2
-  H3 = 3
-  H4 = 4
-  H5 = 5
-  H6 = 6
-  SUBTITLE1 = 7
-  SUBTITLE2 = 8
-  BODY1 = 9
-  BODY2 = 10
-  CAPTION = 11
-
-
 @validate
 def text(
   text: str,
   *,
-  type: Typography = Typography.TYPOGRAPHY_UNSET,
+  type: Literal[
+    "headline-1",
+    "headline-2",
+    "headline-3",
+    "headline-4",
+    "headline-5",
+    "headline-6",
+    "subtitle-1",
+    "subtitle-2",
+    "body-1",
+    "body-2",
+    "caption",
+    "button",
+  ]
+  | None = None,
   style: Style | None = None,
   key: str | None = None,
 ):
@@ -41,15 +38,16 @@ def text(
 
   """
   # The Python and Proto enum values should be exactly 1:1
-  typography_level = cast(
-    text_pb2.TextType.TypographyLevel.ValueType, type.value
-  )
+  # typography_level = cast(
+  #   text_pb2.TextType.TypographyLevel.ValueType, type.value
+  # )
   insert_component(
     key=key,
     type_name="text",
     proto=text_pb2.TextType(
       text=text,
-      typography_level=typography_level,
+      type=type,
+      # typography_level=typography_level,
     ),
     style=to_style_proto(style) if style else None,
   )

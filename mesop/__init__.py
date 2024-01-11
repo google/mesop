@@ -77,7 +77,6 @@ from mesop.components.slider.slider import (
 from mesop.components.slider.slider import (
   slider as slider,
 )
-from mesop.components.text.text import Typography as Typography
 from mesop.components.text.text import text as text
 from mesop.components.tooltip.tooltip import tooltip as tooltip
 from mesop.dataclass_utils import dataclass_with_defaults

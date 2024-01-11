@@ -2,4 +2,4 @@ import mesop as me
 
 
 def app():
-  me.text("after", type=me.Typography.BODY1)
+  me.text("after", type="body-1")
