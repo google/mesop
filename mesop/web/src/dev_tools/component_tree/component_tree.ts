@@ -1,5 +1,11 @@
 import {FlatTreeControl} from '@angular/cdk/tree';
-import {Component, Input} from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Input,
+  QueryList,
+  ViewChildren,
+} from '@angular/core';
 import {
   MatTreeFlatDataSource,
   MatTreeFlattener,
@@ -44,6 +50,7 @@ export interface FlatNode {
 export class ComponentTree {
   @Input({required: true}) component!: ComponentObject;
   @Input() selectedComponent!: ComponentProto | undefined;
+  @ViewChildren('treeNode') treeNodeRefs!: QueryList<ElementRef>;
 
   highlightedNodes = new Set<FlatNode>();
 
@@ -93,6 +100,22 @@ export class ComponentTree {
         this.treeControl.expand(node);
       }
     });
+
+    const focusedComponent = this.editorService.getFocusedComponent();
+    if (focusedComponent) {
+      // This is quite hacky, but I need to query the DOM after an event loop
+      // otherwise the "selected-node" class attribute hasn't been set yet.
+      // If it doesn't work, we don't scroll to the selected node which isn't
+      // too bad.
+      setTimeout(() => {
+        this.treeNodeRefs.forEach((ref) => {
+          const element = ref.nativeElement as HTMLElement;
+          if (element.querySelector('.selected-node')) {
+            element.scrollIntoView();
+          }
+        });
+      }, 0);
+    }
   }
 
   hasChild = (_: number, node: FlatNode) => node.expandable;

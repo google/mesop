@@ -6,6 +6,7 @@
       cdkTreeNodePaddingIndent="10"
       *matTreeNodeDef="let node"
       class="node leaf-node"
+      #treeNode
     >
       <div
         class="node-container"
@@ -44,6 +45,7 @@
       cdkTreeNodePaddingIndent="10"
       *matTreeNodeDef="let node;when: hasChild"
       class="node"
+      #treeNode
     >
       <div
         class="node-container"
