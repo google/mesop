@@ -10,6 +10,11 @@ import {Channel} from '../../services/channel';
 
 export interface DialogData {
   sections: Section[];
+  config: CommandDialogConfig;
+}
+
+export interface CommandDialogConfig {
+  newComponentMode: 'addChild' | 'appendSibling';
 }
 
 interface Section {
@@ -57,6 +62,12 @@ export class CommandDialog {
     const newComponent = new EditorNewComponent();
     newComponent.setComponentName(componentName);
     newComponent.setSourceCodeLocation(location);
+    if (this.data.config.newComponentMode === 'addChild') {
+      newComponent.setMode(EditorNewComponent.Mode.MODE_CHILD);
+    }
+    if (this.data.config.newComponentMode === 'appendSibling') {
+      newComponent.setMode(EditorNewComponent.Mode.MODE_APPEND_SIBLING);
+    }
     editorEvent.setNewComponent(newComponent);
     this.channel.dispatchEditorEvent(editorEvent);
     this.dialogRef.close();

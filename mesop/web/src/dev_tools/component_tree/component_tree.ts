@@ -13,6 +13,8 @@ import {ComponentObject} from '../services/logger';
 import {EditorService} from '../../services/editor_service';
 import {CommonModule} from '@angular/common';
 import {CommandDialogService} from '../command_dialog/command_dialog_service';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {Channel} from '../../services/channel';
 
 /** Flat node with expandable and level information */
 export interface FlatNode {
@@ -34,6 +36,7 @@ export interface FlatNode {
     CdkTreeModule,
     MatTreeModule,
     MatButtonModule,
+    MatTooltipModule,
     MatIconModule,
     CommonModule,
   ],
@@ -42,9 +45,12 @@ export class ComponentTree {
   @Input({required: true}) component!: ComponentObject;
   @Input() selectedComponent!: ComponentProto | undefined;
 
+  highlightedNodes = new Set<FlatNode>();
+
   constructor(
     private editorService: EditorService,
     private commandDialogService: CommandDialogService,
+    private channel: Channel,
   ) {}
 
   keys() {
@@ -99,8 +105,33 @@ export class ComponentTree {
     return this.editorService.getFocusedComponent() === node.proto;
   }
 
-  addComponent(node: FlatNode): void {
-    this.commandDialogService.openDialog(node.proto.getSourceCodeLocation()!);
+  canAddChildComponent(node: FlatNode): boolean {
+    return Boolean(
+      this.channel
+        .getComponentConfigs()
+        .find((c) => c.getComponentName() === node.componentName)
+        ?.getAcceptsChild(),
+    );
+  }
+
+  addChildComponent(node: FlatNode): void {
+    this.commandDialogService.openDialog(node.proto, {
+      newComponentMode: 'addChild',
+    });
+  }
+
+  addSiblingComponent(node: FlatNode): void {
+    this.commandDialogService.openDialog(node.proto, {
+      newComponentMode: 'appendSibling',
+    });
+  }
+
+  onMouseenter(node: FlatNode): void {
+    this.highlightedNodes.add(node);
+  }
+
+  onMouseleave(node: FlatNode): void {
+    this.highlightedNodes.delete(node);
   }
 }
 

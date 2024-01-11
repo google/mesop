@@ -1,8 +1,8 @@
 import {Dialog} from '@angular/cdk/dialog';
-import {CommandDialog, DialogData} from './command_dialog';
+import {CommandDialog, CommandDialogConfig, DialogData} from './command_dialog';
 import {Injectable} from '@angular/core';
 import {Channel} from '../../services/channel';
-import {SourceCodeLocation} from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
+import {Component as ComponentProto} from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 
 @Injectable({
   providedIn: 'root',
@@ -13,16 +13,17 @@ export class CommandDialogService {
     private channel: Channel,
   ) {}
 
-  openDialog(location: SourceCodeLocation) {
+  openDialog(component: ComponentProto, config: CommandDialogConfig) {
     this.dialog.open(CommandDialog, {
       minWidth: '300px',
       data: {
+        config,
         sections: [
           {
             title: 'Components',
             commands: this.channel.getComponentConfigs().map((c) => ({
               componentName: c.getComponentName(),
-              location: location,
+              location: component.getSourceCodeLocation(),
             })),
           },
         ],

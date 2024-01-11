@@ -8,16 +8,35 @@
       class="node leaf-node"
     >
       <div
-        (click)="selectNode(node)"
         class="node-container"
-        [ngClass]="{'selected-node': isNodeSelected(node)}"
+        [ngClass]="{'highlighted-node': highlightedNodes.has(node)}"
+        (mouseenter)="onMouseenter(node)"
+        (mouseleave)="onMouseleave(node)"
       >
-        <span class="name" [title]="node.text">{{node.text}}</span>
-        <span class="label">{{node.label}}</span>
+        <div
+          (click)="selectNode(node)"
+          class="node-body"
+          [ngClass]="{'selected-node': isNodeSelected(node)}"
+        >
+          <span class="name" [title]="node.text">{{node.text}}</span>
+          <span class="label">{{node.label}}</span>
+        </div>
+        <mat-icon
+          matTooltip="Add sibling component"
+          matTooltipShowDelay="700"
+          class="add-component"
+          (click)="addSiblingComponent(node)"
+          >add</mat-icon
+        >
+        <mat-icon
+          *ngIf="canAddChildComponent(node)"
+          matTooltip="Add child component"
+          matTooltipShowDelay="700"
+          class="add-component"
+          (click)="addChildComponent(node)"
+          >new_window</mat-icon
+        >
       </div>
-      <mat-icon class="add-component" (click)="addComponent(node)"
-        >add</mat-icon
-      >
     </cdk-tree-node>
     <!-- This is the tree node template for expandable nodes -->
     <cdk-tree-node
@@ -27,21 +46,45 @@
       class="node"
     >
       <div
-        (click)="selectNode(node)"
         class="node-container"
-        [ngClass]="{'selected-node': isNodeSelected(node)}"
+        [ngClass]="{'highlighted-node': highlightedNodes.has(node)}"
+        (mouseenter)="onMouseenter(node)"
+        (mouseleave)="onMouseleave(node)"
       >
-        <button
-          class="button"
-          [attr.aria-label]="'Toggle ' + node.text"
-          matTreeNodeToggle
+        <div
+          class="node-body"
+          (click)="selectNode(node)"
+          [ngClass]="{'selected-node': isNodeSelected(node)}"
         >
-          <mat-icon class="mat-icon-rtl-mirror">
-            {{treeControl.isExpanded(node) ? 'arrow_drop_down' : 'arrow_right'}}
-          </mat-icon>
-        </button>
-        <span class="name" [title]="node.text">{{node.text}}</span>
-        <span class="label">{{node.label}}</span>
+          <button
+            class="button"
+            [attr.aria-label]="'Toggle ' + node.text"
+            matTreeNodeToggle
+          >
+            <mat-icon class="mat-icon-rtl-mirror">
+              {{treeControl.isExpanded(node) ? 'arrow_drop_down' :
+              'arrow_right'}}
+            </mat-icon>
+          </button>
+          <span class="name" [title]="node.text">{{node.text}}</span>
+          <span class="label">{{node.label}}</span>
+        </div>
+
+        <mat-icon
+          matTooltip="Add sibling component"
+          matTooltipShowDelay="700"
+          class="add-component"
+          (click)="addSiblingComponent(node)"
+          >add</mat-icon
+        >
+        <mat-icon
+          *ngIf="canAddChildComponent(node)"
+          matTooltip="Add child component"
+          matTooltipShowDelay="700"
+          class="add-component"
+          (click)="addChildComponent(node)"
+          >new_window</mat-icon
+        >
       </div>
     </cdk-tree-node>
   </cdk-tree>
