@@ -151,6 +151,20 @@ export class EditorFields {
     this.dispatchEdit([segment1, segment2], replacement);
   }
 
+  appendListElement(fieldName: string) {
+    const segment1 = new ArgPathSegment();
+    segment1.setKeywordArgument(fieldName);
+
+    const segment2 = new ArgPathSegment();
+    const index = this.getPrefixesListForListField(fieldName).length - 1;
+    segment2.setListIndex(index);
+
+    const type = this.fields.find((f) => f.getName() === fieldName)!.getType()!;
+    const replacement = new CodeReplacement();
+    replacement.setAppendElement(getCodeFromType(type));
+    this.dispatchEdit([segment1, segment2], replacement);
+  }
+
   private editWithNewCode(
     argPathSegment: ArgPathSegment,
     codeValue: CodeValue,

@@ -12,6 +12,11 @@
   width: 24px;
 }
 
+.list-section {
+  display: flex;
+  flex-direction: column;
+}
+
 .struct-section {
   margin: 8px 0;
 }
