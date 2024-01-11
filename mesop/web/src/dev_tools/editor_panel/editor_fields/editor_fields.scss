@@ -60,6 +60,16 @@
   outline: none;
 }
 
+.textarea {
+  width: 100%;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+}
+
+.textarea:focus {
+  outline: none;
+}
+
 .field-block {
   margin: 0 6px 4px 8px;
   display: flex;

@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, ViewChild} from '@angular/core';
 import {EditorService} from '../../../services/editor_service';
 import {mapComponentToObject} from '../../services/logger';
 import {mapComponentObjectToDisplay} from '../../component_tree/component_tree';
@@ -23,6 +23,7 @@ import {MatSelectModule} from '@angular/material/select';
 import {CommonModule} from '@angular/common';
 import {Channel} from '../../../services/channel';
 import {MatIconModule} from '@angular/material/icon';
+import {CdkTextareaAutosize, TextFieldModule} from '@angular/cdk/text-field';
 
 // string is field name; number is list index
 type Prefix = string | number;
@@ -41,6 +42,7 @@ type Prefixes = Prefix[];
     MatDividerModule,
     MatCheckboxModule,
     MatSelectModule,
+    TextFieldModule,
     CommonModule,
   ],
 })
@@ -55,10 +57,21 @@ export class EditorFields {
   hoveredFieldName: string | undefined;
   clearHoveredFieldNameTimeoutId: number | undefined;
 
+  @ViewChild('autosize') autosize: CdkTextareaAutosize | undefined;
+
   constructor(
     private editorService: EditorService,
     private channel: Channel,
   ) {}
+
+  ngOnChanges() {
+    // Hack to force textarea to resize.
+    setTimeout(() => {
+      if (this.autosize) {
+        this.autosize.resizeToFitContent(true);
+      }
+    }, 0);
+  }
 
   onMouseenter(fieldName: string): void {
     this.hoveredFieldName = fieldName;
