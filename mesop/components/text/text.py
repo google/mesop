@@ -7,7 +7,7 @@ from mesop.utils.validate import validate
 
 @validate
 def text(
-  text: str,
+  text: str | None = None,
   *,
   type: Literal[
     "headline-1",
@@ -31,7 +31,7 @@ def text(
   Create a text component.
 
   Args:
-      text: **Required.** The text to display.
+      text: The text to display.
       type: The typography level for the text.
       style: Style to apply to component. Follows [HTML Element inline style API](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/style).
       key: An optional key to uniquely identify the component. Defaults to None.

@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Any, Callable
+from typing import Any, Callable, Iterable
 
 import mesop.components.select.select_pb2 as select_pb
 from mesop.component_helpers import (
@@ -68,8 +68,8 @@ class SelectOption:
 
 @validate
 def select(
-  options: list[SelectOption],
   *,
+  options: Iterable[SelectOption] = (),
   on_selection_change: Callable[[SelectSelectionChangeEvent], Any]
   | None = None,
   on_opened_change: Callable[[SelectOpenedChangeEvent], Any] | None = None,

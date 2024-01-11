@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Any, Callable, Literal
+from typing import Any, Callable, Iterable, Literal
 
 import mesop.components.radio.radio_pb2 as radio_pb
 from mesop.component_helpers import (
@@ -43,8 +43,8 @@ class RadioOption:
 
 @validate
 def radio(
-  options: list[RadioOption],
   *,
+  options: Iterable[RadioOption] = (),
   on_change: Callable[[RadioChangeEvent], Any] | None = None,
   color: Literal["primary", "accent", "warn"] = "primary",
   label_position: Literal["before", "after"] = "before",

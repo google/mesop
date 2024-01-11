@@ -5,7 +5,7 @@ from mesop.utils.validate import validate
 
 @validate
 def markdown(
-  text: str,
+  text: str | None = None,
   *,
   key: str | None = None,
 ):
