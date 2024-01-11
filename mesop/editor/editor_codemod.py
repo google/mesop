@@ -14,15 +14,27 @@ from libcst.metadata import CodeRange, PositionProvider
 import mesop.protos.ui_pb2 as pb
 
 
-def execute_codemod(source_code: str, input: pb.EditorUpdateCallsite) -> str:
-  context = CodemodContext()
-  tree = cst.parse_module(source_code)
+class NewComponentCodemod(VisitorBasedCodemodCommand):
+  DESCRIPTION: str = "Inserts new component callsite."
+  METADATA_DEPENDENCIES = (PositionProvider,)
 
-  codemod = UpdateCallsiteCodemod(context, input)
+  def __init__(
+    self, context: CodemodContext, input: pb.EditorNewComponent
+  ) -> None:
+    super().__init__(context)
+    self.input = input
 
-  modified_tree = codemod.transform_module(tree)
-
-  return modified_tree.code
+  def leave_SimpleStatementLine(
+    self,
+    original_node: cst.SimpleStatementLine,
+    updated_node: cst.SimpleStatementLine,
+  ):
+    position = self.get_metadata(PositionProvider, original_node)
+    assert isinstance(position, CodeRange)
+    if position.start.line != self.input.source_code_location.line:
+      return original_node
+    new_callsite = cst.parse_statement(f"me.{self.input.component_name}()")
+    return cst.FlattenSentinel([updated_node, new_callsite])
 
 
 class UpdateCallsiteCodemod(VisitorBasedCodemodCommand):

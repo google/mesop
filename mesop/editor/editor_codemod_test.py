@@ -5,7 +5,10 @@ from libcst.codemod import (
 )
 
 import mesop.protos.ui_pb2 as pb
-from mesop.editor.editor_codemod import UpdateCallsiteCodemod
+from mesop.editor.editor_codemod import (
+  NewComponentCodemod,
+  UpdateCallsiteCodemod,
+)
 from mesop.utils.runfiles import get_runfile_location
 
 
@@ -14,6 +17,28 @@ def load_testdata(dir: str, filename: str) -> str:
     get_runfile_location(f"mesop/mesop/editor/testdata/{dir}/{filename}")
   ) as f:
     return f.read()
+
+
+class TestNewComponentCodemod(CodemodTest):
+  TRANSFORM = NewComponentCodemod
+
+  def test_new_component(self) -> None:
+    self.assertEditorUpdate(
+      "new_component",
+      pb.EditorNewComponent(
+        component_name="divider",
+        source_code_location=pb.SourceCodeLocation(line=5),
+      ),
+    )
+
+  def assertEditorUpdate(
+    self, test_case_name: str, input: pb.EditorNewComponent
+  ):
+    self.assertCodemod(
+      load_testdata(dir=test_case_name, filename="before.py"),
+      load_testdata(dir=test_case_name, filename="after.py"),
+      input=input,
+    )
 
 
 class TestUpdateCallsiteCodemod(CodemodTest):

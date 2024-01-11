@@ -36,8 +36,15 @@ message UserEvent {
 
 message EditorEvent {
     oneof type {
+        EditorNewComponent new_component = 2;
         EditorUpdateCallsite update_callsite = 1;
     }
+}
+
+message EditorNewComponent {
+    // Append new component as a sibling of this component callsite.
+    optional SourceCodeLocation source_code_location = 1;
+    optional string component_name = 2;
 }
 
 message EditorUpdateCallsite {
