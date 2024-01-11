@@ -8,6 +8,9 @@ export function formatStyle(styleObj: Style): string {
   if (styleObj.getBackground()) {
     style += `background: ${styleObj.getBackground()};`;
   }
+  if (styleObj.getColumns()) {
+    style += `columns: ${styleObj.getColumns()};`;
+  }
   if (styleObj.getColor()) {
     style += `color: ${styleObj.getColor()};`;
   }

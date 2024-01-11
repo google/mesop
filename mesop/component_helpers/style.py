@@ -41,6 +41,7 @@ class Padding(EdgeInsets):
 class Style:
   background: str | None = None
   color: str | None = None
+  columns: int | None = None
   font_size: int | str | None = None
   font_weight: Literal[
     "normal",
@@ -107,6 +108,7 @@ def to_style_proto(s: Style) -> pb.Style:
   return pb.Style(
     background=s.background,
     color=s.color,
+    columns=s.columns,
     height=_px_str(s.height),
     width=_px_str(s.width),
     margin=_map_edge_insets(s.margin),

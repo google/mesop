@@ -196,6 +196,7 @@ message Type {
 message Style {
     optional string background = 1;
     optional string color = 2;
+    optional int32 columns = 16;
     optional string height = 5;
     optional string width = 12;
     optional EdgeInsets margin = 3;
