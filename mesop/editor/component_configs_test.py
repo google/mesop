@@ -32,6 +32,7 @@ def test_generate_component_config_button():
 def test_generate_component_config_box():
   proto = generate_component_config(box)
   assert proto.component_name == "box"
+  assert proto.accepts_child
   assert proto.fields[0].name == "style"
   assert proto.fields[0].type.struct_type.struct_name == "Style"
   # Don't make this a change-detector test; it will slowly accumulate
@@ -42,6 +43,7 @@ def test_generate_component_config_box():
 def test_generate_component_config_radio():
   proto = generate_component_config(radio)
   assert proto.component_name == "radio"
+  assert proto.accepts_child is False
   assert proto.fields[0] == pb.EditorField(
     name="options",
     type=pb.FieldType(

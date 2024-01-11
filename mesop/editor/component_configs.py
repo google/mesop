@@ -51,6 +51,7 @@ def generate_component_config(fn: Callable[..., Any]) -> pb.ComponentConfig:
     component_name=fn.__name__,
     category="Default",
     fields=get_fields(sig.parameters.items()),
+    accepts_child=sig.return_annotation is not inspect.Signature.empty,
   )
   return component_config
 

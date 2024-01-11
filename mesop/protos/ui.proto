@@ -249,6 +249,7 @@ message ComponentConfig {
     optional string component_name = 1;
     optional string category = 2;
     repeated EditorField fields = 3;
+    optional bool accepts_child = 4;
 }
 
 
