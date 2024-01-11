@@ -5,7 +5,7 @@ from libcst.codemod import (
 )
 
 import mesop.protos.ui_pb2 as pb
-from mesop.editor.editor_codemod import ReplaceKeywordArg
+from mesop.editor.editor_codemod import UpdateCallsiteCodemod
 from mesop.utils.runfiles import get_runfile_location
 
 
@@ -16,8 +16,8 @@ def load_testdata(dir: str, filename: str) -> str:
     return f.read()
 
 
-class TestReplaceKeywordArg(CodemodTest):
-  TRANSFORM = ReplaceKeywordArg
+class TestUpdateCallsiteCodemod(CodemodTest):
+  TRANSFORM = UpdateCallsiteCodemod
 
   def test_simple_callsite(self) -> None:
     self.assertEditorUpdate(

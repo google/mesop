@@ -18,14 +18,14 @@ def execute_codemod(source_code: str, input: pb.EditorUpdateCallsite) -> str:
   context = CodemodContext()
   tree = cst.parse_module(source_code)
 
-  codemod = ReplaceKeywordArg(context, input)
+  codemod = UpdateCallsiteCodemod(context, input)
 
   modified_tree = codemod.transform_module(tree)
 
   return modified_tree.code
 
 
-class ReplaceKeywordArg(VisitorBasedCodemodCommand):
+class UpdateCallsiteCodemod(VisitorBasedCodemodCommand):
   DESCRIPTION: str = "Converts keyword arg."
   METADATA_DEPENDENCIES = (PositionProvider,)
 
