@@ -181,7 +181,14 @@ export class ComponentRenderer {
   getStyle(): string {
     if (!this._boxType) {
       if (this.isEditorFocusedComponent()) {
-        return `display: inline-block; ${this.getFocusedStyle()}`;
+        let display = 'inline-block';
+        // Preserve existing display semantics.
+        if (
+          ['text', 'markdown'].includes(this.component.getType()?.getName()!)
+        ) {
+          display = 'block';
+        }
+        return `display: ${display}; ${this.getFocusedStyle()}`;
       }
       return '';
     }
