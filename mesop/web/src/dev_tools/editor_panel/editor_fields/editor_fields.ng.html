@@ -42,9 +42,10 @@
     >
     } @case(FieldTypeCase.LIST_TYPE) {
     <div class="list-section">
-      <button (click)="appendListElement(field.getName()!)">
-        append element
-      </button>
+      <div class="list-header">
+        <label class="input-label">{{field.getName()}}</label>:
+      </div>
+
       @for(prefixes of getPrefixesListForListField(field.getName()!); track
       $index) {
       <div class="struct-header">
@@ -55,12 +56,17 @@
           >delete</mat-icon
         >
       </div>
-      <mesop-editor-fields
-        [fields]="getFieldsForListField(field)"
-        [prefixes]="prefixes"
-      ></mesop-editor-fields>
-
+      <div class="struct-body" (mouseenter)="clearHoveredFieldName()">
+        <mesop-editor-fields
+          [fields]="getFieldsForListField(field)"
+          [prefixes]="prefixes"
+        ></mesop-editor-fields>
+      </div>
       }
+      <div class="add-element" (click)="appendListElement(field.getName()!)">
+        <mat-icon>add</mat-icon>
+        Add Element
+      </div>
     </div>
     <!-- preserve for fmt -->
     } @case(FieldTypeCase.STRING_TYPE) { @if(field.getName() === "text") {

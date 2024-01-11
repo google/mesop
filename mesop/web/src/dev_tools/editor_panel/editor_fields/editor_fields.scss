@@ -81,6 +81,14 @@
   visibility: hidden;
 }
 
+.add-element {
+  cursor: pointer;
+  color: #555;
+  display: flex;
+  align-items: center;
+  margin: 4px;
+}
+
 .field-block-active .delete-field {
   visibility: visible;
 }
