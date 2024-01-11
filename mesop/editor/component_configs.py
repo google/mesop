@@ -92,7 +92,7 @@ def get_fields(
       field_type = pb.FieldType(
         literal_type=pb.LiteralType(literals=map_literals(param_type.__args__))
       )
-    elif getattr(param_type, "__origin__", None) is list:
+    elif getattr(param_type, "__origin__", None) is collections.abc.Iterable:
       cls = param_type.__args__[0]
       el_fields = get_fields(inspect.signature(cls).parameters.items())
       field_type = pb.FieldType(

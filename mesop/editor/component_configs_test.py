@@ -34,7 +34,9 @@ def test_generate_component_config_box():
   assert proto.component_name == "box"
   assert proto.fields[0].name == "style"
   assert proto.fields[0].type.struct_type.struct_name == "Style"
-  assert len(proto.fields[0].type.struct_type.fields) == 15
+  # Don't make this a change-detector test; it will slowly accumulate
+  # more fields.
+  assert len(proto.fields[0].type.struct_type.fields) > 15
 
 
 def test_generate_component_config_radio():
@@ -63,7 +65,9 @@ def test_generate_component_config_radio():
 
 
 def test_get_component_configs():
-  assert len(get_component_configs()) == 16
+  # Don't make this a change-detector test; it will slowly accumulate
+  # more component configs.
+  assert len(get_component_configs()) > 15
 
 
 if __name__ == "__main__":
