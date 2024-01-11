@@ -69,6 +69,7 @@ class Editor {
   @ViewChild(Shell, {static: false}) shell?: Shell;
 
   constructor(
+    private hostElement: ElementRef,
     private zone: NgZone,
     private renderer: Renderer2,
     // Injecting to ensure it's loaded in the app
@@ -86,6 +87,11 @@ class Editor {
       errorProto.setException(`JS Error: ${error.toString()}`);
       this.errors.push(errorProto);
     });
+    this.renderer.setAttribute(
+      this.hostElement.nativeElement,
+      'tabindex',
+      '-1',
+    );
   }
 
   get errors(): ServerError[] {
@@ -94,6 +100,8 @@ class Editor {
   }
 
   ngAfterViewInit() {
+    this.hostElement.nativeElement.focus();
+
     this.dragHandle.nativeElement.addEventListener('mousedown', () => {
       this.isDragging = true;
     });
