@@ -256,10 +256,11 @@ def get_value(replacement: pb.CodeReplacement):
 
 def get_code_value(code: pb.CodeValue):
   if code.HasField("string_value"):
+    string_value = code.string_value or "<new>"
     # Create multi-line string if needed.
     if "\n" in code.string_value:
-      return cst.SimpleString(f'"""{code.string_value}"""')
-    return cst.SimpleString(f'"{code.string_value}"')
+      return cst.SimpleString(f'"""{string_value}"""')
+    return cst.SimpleString(f'"{string_value}"')
   if code.HasField("double_value"):
     return cst.Float(str(code.double_value))
   if code.HasField("int_value"):
