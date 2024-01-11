@@ -40,5 +40,10 @@
   },
   "formatter": {
     "enabled": false
+  },
+  "javascript": {
+    "parser": {
+      "unsafeParameterDecoratorsEnabled": true
+    }
   }
 }

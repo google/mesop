@@ -40,6 +40,7 @@ export class Channel {
   private states!: States;
   private rootComponent?: ComponentProto;
   private status!: ChannelStatus;
+  private componentConfigs: ComponentConfig[] = [];
   private queuedEvents: (() => void)[] = [];
 
   constructor(private logger: Logger) {}
@@ -50,6 +51,10 @@ export class Channel {
 
   getRootComponent(): ComponentProto | undefined {
     return this.rootComponent;
+  }
+
+  getComponentConfigs(): ComponentConfig[] {
+    return this.componentConfigs;
   }
 
   init(initParams: InitParams, request?: UiRequest) {
@@ -92,10 +97,10 @@ export class Channel {
               }
             }
             this.rootComponent = rootComponent;
-            onRender(
-              rootComponent,
-              uiResponse.getRender()!.getComponentConfigsList(),
-            );
+            this.componentConfigs = uiResponse
+              .getRender()!
+              .getComponentConfigsList();
+            onRender(rootComponent, this.componentConfigs);
             this.logger.log({
               type: 'RenderLog',
               states: this.states,

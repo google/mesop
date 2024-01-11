@@ -3,6 +3,7 @@ _CDK_ENTRY_POINTS = [
     "tree",
     "keycodes",
     "collections",
+    "dialog",
     "overlay",
     "table",
     "text-field",

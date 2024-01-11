@@ -5,24 +5,22 @@ package(
 )
 
 ng_module(
-    name = "component_tree",
+    name = "command_dialog",
     srcs = glob([
         "*.ts",
     ]),
     assets = glob([
         "*.ng.html",
-    ]) + [":component_tree.css"],
+    ]) + [":command_dialog.css"],
     deps = [
         "//mesop/protos:ui_jspb_proto",
-        "//mesop/web/src/component_renderer",
-        "//mesop/web/src/dev_tools/command_dialog",
         "//mesop/web/src/dev_tools/services",
         "//mesop/web/src/services",
-    ] + ANGULAR_CORE_DEPS + ANGULAR_MATERIAL_TS_DEPS + ANGULAR_CDK_TS_DEPS,
+    ] + ANGULAR_CORE_DEPS + ANGULAR_CDK_TS_DEPS + ANGULAR_MATERIAL_TS_DEPS,
 )
 
 sass_binary(
     name = "styles",
-    src = "component_tree.scss",
+    src = "command_dialog.scss",
     sourcemap = False,
 )

@@ -12,6 +12,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {ComponentObject} from '../services/logger';
 import {EditorService} from '../../services/editor_service';
 import {CommonModule} from '@angular/common';
+import {CommandDialogService} from '../command_dialog/command_dialog_service';
 
 /** Flat node with expandable and level information */
 export interface FlatNode {
@@ -41,7 +42,10 @@ export class ComponentTree {
   @Input({required: true}) component!: ComponentObject;
   @Input() selectedComponent!: ComponentProto | undefined;
 
-  constructor(private editorService: EditorService) {}
+  constructor(
+    private editorService: EditorService,
+    private commandDialogService: CommandDialogService,
+  ) {}
 
   keys() {
     return Object.keys(this.component);
@@ -93,6 +97,10 @@ export class ComponentTree {
 
   isNodeSelected(node: FlatNode): boolean {
     return this.editorService.getFocusedComponent() === node.proto;
+  }
+
+  addComponent(node: FlatNode): void {
+    this.commandDialogService.openDialog(node.proto.getSourceCodeLocation()!);
   }
 }
 

@@ -15,6 +15,9 @@
         <span class="name" [title]="node.text">{{node.text}}</span>
         <span class="label">{{node.label}}</span>
       </div>
+      <mat-icon class="add-component" (click)="addComponent(node)"
+        >add</mat-icon
+      >
     </cdk-tree-node>
     <!-- This is the tree node template for expandable nodes -->
     <cdk-tree-node
