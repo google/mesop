@@ -1,4 +1,4 @@
-import {DIALOG_DATA} from '@angular/cdk/dialog';
+import {DIALOG_DATA, DialogRef} from '@angular/cdk/dialog';
 import {Component, Inject} from '@angular/core';
 import {MatDividerModule} from '@angular/material/divider';
 import {
@@ -30,10 +30,27 @@ interface Command {
   imports: [MatDividerModule],
 })
 export class CommandDialog {
+  filter = '';
   constructor(
-    @Inject(DIALOG_DATA) public data: DialogData,
+    private dialogRef: DialogRef,
+    @Inject(DIALOG_DATA) private data: DialogData,
     private channel: Channel,
   ) {}
+
+  getData() {
+    return {
+      sections: this.data.sections.map((s) => ({
+        title: s.title,
+        commands: s.commands.filter((c) =>
+          c.componentName.includes(this.filter),
+        ),
+      })),
+    };
+  }
+
+  onInputChange(event: Event) {
+    this.filter = (event.target as HTMLInputElement).value;
+  }
 
   createComponent(location: SourceCodeLocation, componentName: string) {
     const editorEvent = new EditorEvent();
@@ -42,5 +59,6 @@ export class CommandDialog {
     newComponent.setSourceCodeLocation(location);
     editorEvent.setNewComponent(newComponent);
     this.channel.dispatchEditorEvent(editorEvent);
+    this.dialogRef.close();
   }
 }

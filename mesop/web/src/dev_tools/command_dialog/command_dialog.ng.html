@@ -1,10 +1,14 @@
 <div class="command-window">
   <div class="input">
-    <input class="input" placeholder="Search for components and commands" />
+    <input
+      (input)="onInputChange($event)"
+      class="input"
+      placeholder="Search for components and commands"
+    />
   </div>
   <mat-divider></mat-divider>
   <div class="body">
-    @for(section of data.sections; track $index) {
+    @for(section of getData().sections; track $index) {
     <div class="section">
       <div class="section-title">{{section.title}}</div>
       <!-- Commands -->
