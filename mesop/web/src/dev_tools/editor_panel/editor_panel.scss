@@ -18,10 +18,20 @@
   align-items: center;
 }
 
+.component-header-start {
+  display: flex;
+  align-items: center;
+}
+
+a {
+  color: #1c6ef3;
+}
+
 .component-name {
   font-weight: 500;
   font-size: 16px;
   text-transform: capitalize;
+  margin-right: 8px;
 }
 
 .empty-state-message {

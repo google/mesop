@@ -15,8 +15,17 @@
   <div #dragHandle class="resize-handle"></div>
   @if(hasFocusedComponent()) {
   <div class="component-header">
-    <span class="component-name">
-      {{getFocusedComponent()?.getType()?.getName() ?? "[root]"}}
+    <span class="component-header-start">
+      <span class="component-name">
+        {{getFocusedComponent()?.getType()?.getName() ?? "[root]"}}
+      </span>
+      <a
+        *ngIf="showDocLink()"
+        [href]="getDocLink()"
+        target="_blank"
+        rel="noopener"
+        ><mat-icon>ungroup</mat-icon></a
+      >
     </span>
     <mat-icon
       class="delete-component"

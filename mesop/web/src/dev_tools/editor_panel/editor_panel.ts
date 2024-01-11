@@ -21,6 +21,7 @@ import {MatDividerModule} from '@angular/material/divider';
 import {EditorFields} from './editor_fields/editor_fields';
 import {MatIconModule} from '@angular/material/icon';
 import {Channel} from '../../services/channel';
+import {CommonModule} from '@angular/common';
 
 @Component({
   selector: 'mesop-editor-panel',
@@ -28,6 +29,7 @@ import {Channel} from '../../services/channel';
   styleUrl: 'editor_panel.css',
   standalone: true,
   imports: [
+    CommonModule,
     ObjectTree,
     EditorFields,
     MatDividerModule,
@@ -107,5 +109,18 @@ export class EditorPanel {
       .reverse()
       .find((log) => log.type === 'Render') as RenderLogModel;
     return renderLog?.rootComponent as ComponentObject;
+  }
+
+  showDocLink(): boolean {
+    return Boolean(this.getFocusedComponent()?.getType()?.getName());
+  }
+
+  getComponentName(): string | undefined {
+    return this.getFocusedComponent()?.getType()?.getName();
+  }
+
+  getDocLink(): string {
+    const componentName = this.getComponentName() ?? '';
+    return `https://google.github.io/mesop/components/${componentName}/`;
   }
 }
