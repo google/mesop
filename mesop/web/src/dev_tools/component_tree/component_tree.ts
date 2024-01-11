@@ -111,7 +111,7 @@ export class ComponentTree {
         this.treeNodeRefs.forEach((ref) => {
           const element = ref.nativeElement as HTMLElement;
           if (element.querySelector('.selected-node')) {
-            element.scrollIntoView();
+            element.scrollIntoView({behavior: 'smooth'});
           }
         });
       }, 0);
