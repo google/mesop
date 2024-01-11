@@ -1,3 +1,7 @@
+:host {
+  font-family: monospace;
+}
+
 .field-name {
   font-weight: 500;
   margin-bottom: 12px;
@@ -58,7 +62,6 @@
 
 .field-block {
   margin: 0 6px 0 8px;
-  font-family: monospace;
   display: flex;
   align-items: center;
 }
@@ -91,4 +94,8 @@
 
 .field-block-active .delete-field {
   visibility: visible;
+}
+
+.non-editable-section {
+  padding: 8px;
 }

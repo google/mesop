@@ -142,9 +142,9 @@
     (change)="onCheckboxChange($event)"
     >{{field.getName()}}</mat-checkbox
   >
-  } @if(getNonTypedFields().length) {
-  <div class="other-fields-title">Other fields</div>
-  @for(field of getNonTypedFields(); track $index) {
-  <div class="non-typed-field-name">{{field.getName()}}</div>
-  } }
+  }
+  <div class="non-editable-section">
+    @for(field of getNonTypedFields(); track $index) {
+    <label class="input-label">{{field.getName()}}</label> (non-editable) }
+  </div>
 </div>
