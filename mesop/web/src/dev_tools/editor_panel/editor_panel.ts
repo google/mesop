@@ -17,11 +17,13 @@ import {
   EditorDeleteComponent,
   SourceCodeLocation,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
+import {MatDialogModule, MatDialog} from '@angular/material/dialog';
 import {MatDividerModule} from '@angular/material/divider';
 import {EditorFields} from './editor_fields/editor_fields';
 import {MatIconModule} from '@angular/material/icon';
 import {Channel} from '../../services/channel';
 import {CommonModule} from '@angular/common';
+import {MatButtonModule} from '@angular/material/button';
 
 @Component({
   selector: 'mesop-editor-panel',
@@ -35,6 +37,7 @@ import {CommonModule} from '@angular/common';
     MatDividerModule,
     ComponentTree,
     MatIconModule,
+    MatDialogModule,
   ],
 })
 export class EditorPanel {
@@ -54,6 +57,7 @@ export class EditorPanel {
     private editorService: EditorService,
     private channel: Channel,
     private renderer: Renderer2,
+    private dialog: MatDialog,
   ) {}
 
   ngAfterViewInit() {
@@ -75,11 +79,18 @@ export class EditorPanel {
   }
 
   deleteComponent(location: SourceCodeLocation): void {
-    const editorEvent = new EditorEvent();
-    const deleteComponent = new EditorDeleteComponent();
-    deleteComponent.setSourceCodeLocation(location);
-    editorEvent.setDeleteComponent(deleteComponent);
-    this.channel.dispatchEditorEvent(editorEvent);
+    // Show confirmation dialog
+    const dialogRef = this.dialog.open(DeleteConfirmationDialog);
+    dialogRef.afterClosed().subscribe((value) => {
+      // Abort if user cancelled;
+      if (!value) return;
+
+      const editorEvent = new EditorEvent();
+      const deleteComponent = new EditorDeleteComponent();
+      deleteComponent.setSourceCodeLocation(location);
+      editorEvent.setDeleteComponent(deleteComponent);
+      this.channel.dispatchEditorEvent(editorEvent);
+    });
   }
 
   hasFocusedComponent(): boolean {
@@ -124,3 +135,14 @@ export class EditorPanel {
     return `https://google.github.io/mesop/components/${componentName}/`;
   }
 }
+
+@Component({
+  template: `<h1 mat-dialog-title>Confirm deleting component</h1>
+    <div mat-dialog-actions>
+      <button mat-button [mat-dialog-close]="false">Cancel</button>
+      <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Ok</button>
+    </div>`,
+  imports: [MatButtonModule, MatDialogModule],
+  standalone: true,
+})
+class DeleteConfirmationDialog {}
