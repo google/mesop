@@ -33,10 +33,12 @@
       >delete</mat-icon
     >
   </div>
-  <mesop-editor-fields
-    [fields]="getFields()"
-    [prefixes]="[]"
-  ></mesop-editor-fields>
+  <div class="component-body">
+    <mesop-editor-fields
+      [fields]="getFields()"
+      [prefixes]="[]"
+    ></mesop-editor-fields>
+  </div>
   } @else {
   <div class="empty-state-message">Select a component</div>
   }
