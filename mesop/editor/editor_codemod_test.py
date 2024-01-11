@@ -6,6 +6,7 @@ from libcst.codemod import (
 
 import mesop.protos.ui_pb2 as pb
 from mesop.editor.editor_codemod import (
+  DeleteComponentCodemod,
   NewComponentCodemod,
   UpdateCallsiteCodemod,
 )
@@ -17,6 +18,35 @@ def load_testdata(dir: str, filename: str) -> str:
     get_runfile_location(f"mesop/mesop/editor/testdata/{dir}/{filename}")
   ) as f:
     return f.read()
+
+
+class TestDeleteComponentCodemod(CodemodTest):
+  TRANSFORM = DeleteComponentCodemod
+
+  def test_delete_component(self) -> None:
+    self.assertEditorUpdate(
+      "delete_component",
+      pb.EditorDeleteComponent(
+        source_code_location=pb.SourceCodeLocation(line=6),
+      ),
+    )
+
+  def test_delete_only_component(self) -> None:
+    self.assertEditorUpdate(
+      "delete_only_component",
+      pb.EditorDeleteComponent(
+        source_code_location=pb.SourceCodeLocation(line=5),
+      ),
+    )
+
+  def assertEditorUpdate(
+    self, test_case_name: str, input: pb.EditorDeleteComponent
+  ):
+    self.assertCodemod(
+      load_testdata(dir=test_case_name, filename="before.py"),
+      load_testdata(dir=test_case_name, filename="after.py"),
+      input=input,
+    )
 
 
 class TestNewComponentCodemod(CodemodTest):

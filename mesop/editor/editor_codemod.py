@@ -37,6 +37,29 @@ class NewComponentCodemod(VisitorBasedCodemodCommand):
     return cst.FlattenSentinel([updated_node, new_callsite])
 
 
+class DeleteComponentCodemod(VisitorBasedCodemodCommand):
+  DESCRIPTION: str = "Removes component callsite."
+  METADATA_DEPENDENCIES = (PositionProvider,)
+
+  def __init__(
+    self, context: CodemodContext, input: pb.EditorNewComponent
+  ) -> None:
+    super().__init__(context)
+    self.input = input
+
+  def leave_SimpleStatementLine(
+    self,
+    original_node: cst.SimpleStatementLine,
+    updated_node: cst.SimpleStatementLine,
+  ):
+    position = self.get_metadata(PositionProvider, original_node)
+    assert isinstance(position, CodeRange)
+    if position.start.line == self.input.source_code_location.line:
+      # Delete the component callsite by replacing it with an empty statement
+      return cst.SimpleStatementLine(body=[])
+    return original_node
+
+
 class UpdateCallsiteCodemod(VisitorBasedCodemodCommand):
   DESCRIPTION: str = "Converts keyword arg."
   METADATA_DEPENDENCIES = (PositionProvider,)

@@ -38,6 +38,7 @@ message EditorEvent {
     oneof type {
         EditorNewComponent new_component = 2;
         EditorUpdateCallsite update_callsite = 1;
+        EditorDeleteComponent delete_component = 3;
     }
 }
 
@@ -56,6 +57,10 @@ message EditorUpdateCallsite {
 
     // Specifies what the targeted code should be replaced with.
     optional CodeReplacement replacement = 4;
+}
+
+message EditorDeleteComponent {
+    optional SourceCodeLocation source_code_location = 1;
 }
 
 message CodeReplacement {
