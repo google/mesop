@@ -168,6 +168,24 @@ class TestReplaceKeywordArg(CodemodTest):
       ),
     )
 
+  def test_list_append_element(self) -> None:
+    self.assertEditorUpdate(
+      "list_append_element",
+      pb.EditorUpdateCallsite(
+        component_name="radio",
+        arg_path=pb.ArgPath(
+          segments=[
+            pb.ArgPathSegment(keyword_argument="options"),
+            pb.ArgPathSegment(list_index=1),
+          ]
+        ),
+        replacement=pb.CodeReplacement(
+          append_element=pb.CodeValue(struct_name="RadioOption")
+        ),
+        source_code_location=pb.SourceCodeLocation(line=5),
+      ),
+    )
+
   def test_list_delete_element(self) -> None:
     self.assertEditorUpdate(
       "list_delete_element",

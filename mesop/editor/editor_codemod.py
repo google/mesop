@@ -143,9 +143,21 @@ class ReplaceKeywordArg(VisitorBasedCodemodCommand):
                   value=self._update_call(element.value, segments[2:])
                 )
               )
-            else:
+            elif self.input.replacement.HasField("delete_code"):
               # Make sure we want to delete the code; then skip this element.
-              assert self.input.replacement.HasField("delete_code")
+              pass
+            elif self.input.replacement.HasField("append_element"):
+              # First, append the current element, and then add the new element.
+              new_elements.append(element)
+              new_elements.append(
+                cst.Element(
+                  value=get_code_value(self.input.replacement.append_element)
+                )
+              )
+            else:
+              raise Exception(
+                "Unhandled replacement case", self.input.replacement
+              )
 
           else:
             new_elements.append(element)
@@ -162,6 +174,8 @@ def get_value(replacement: pb.CodeReplacement):
     return get_code_value(replacement.new_code)
   if replacement.HasField("delete_code"):
     return None
+  if replacement.HasField("append_element"):
+    return get_code_value(replacement.append_element)
   raise Exception("Unhandled replacement", replacement)
 
 

@@ -6,6 +6,7 @@ extend-exclude = [
     "mesop/example_index.py",
     "mesop/examples/error*",
     "generator/fixtures/*",
+    "mesop/editor/testdata/**", # formatting messes up diff.
 ]
 select = [
     # pycodestyle

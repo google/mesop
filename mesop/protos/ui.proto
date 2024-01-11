@@ -55,6 +55,9 @@ message CodeReplacement {
     oneof command {
         CodeValue new_code = 1;
         DeleteCode delete_code = 2;
+        // Append element to a list.
+        // The last segment of the corresponding arg path should be a list index.
+        CodeValue append_element = 3;
     }
 }
 
