@@ -45,4 +45,9 @@
   font-size: 0.8rem;
   margin-left: 6px;
   font-style: italic;
+  // Truncate label if needed.
+  max-width: 150px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
