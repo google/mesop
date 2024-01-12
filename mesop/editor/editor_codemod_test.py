@@ -70,6 +70,18 @@ class TestNewComponentCodemod(CodemodTest):
       ),
     )
 
+  def test_new_custom_component(self) -> None:
+    self.assertEditorUpdate(
+      "new_custom_component",
+      pb.EditorNewComponent(
+        component_name=pb.ComponentName(
+          fn_name="columns", module_path="mesop.labs.layout"
+        ),
+        source_code_location=pb.SourceCodeLocation(line=5),
+        mode=pb.EditorNewComponent.Mode.MODE_APPEND_SIBLING,
+      ),
+    )
+
   def test_new_component_nested_sibling(self) -> None:
     self.assertEditorUpdate(
       "new_component_nested_sibling",

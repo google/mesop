@@ -9,6 +9,7 @@ from libcst.codemod import (
   CodemodContext,
   VisitorBasedCodemodCommand,
 )
+from libcst.codemod.visitors import AddImportsVisitor
 from libcst.metadata import CodeRange, PositionProvider
 
 import mesop.protos.ui_pb2 as pb
@@ -23,6 +24,11 @@ class NewComponentCodemod(VisitorBasedCodemodCommand):
   ) -> None:
     super().__init__(context)
     self.input = input
+    component_name = self.input.component_name
+    if component_name.HasField("module_path"):
+      AddImportsVisitor.add_needed_import(
+        self.context, component_name.module_path, component_name.fn_name
+      )
 
   def leave_With(self, original_node: cst.With, updated_node: cst.With):
     if self.input.mode != pb.EditorNewComponent.Mode.MODE_CHILD:
@@ -299,10 +305,9 @@ class UpdateCallsiteCodemod(VisitorBasedCodemodCommand):
 
 
 def create_component_callsite(component_name: pb.ComponentName):
-  module = component_name.module_path
-  if component_name.HasField("core_module"):
-    module = "me"
-  return cst.parse_statement(f"{module}.{component_name.fn_name}()")
+  # module = component_name.module_path
+  module_prefix = "me." if component_name.HasField("core_module") else ""
+  return cst.parse_statement(f"{module_prefix}{component_name.fn_name}()")
 
 
 def get_module_name(component_name: pb.ComponentName) -> str:
