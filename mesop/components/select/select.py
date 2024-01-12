@@ -62,8 +62,8 @@ class SelectOption:
       value: The value associated with the select option.
   """
 
-  label: str
-  value: str
+  label: str | None = None
+  value: str | None = None
 
 
 @register_component
@@ -77,11 +77,8 @@ def select(
   label: str = "",
   disabled: bool = False,
   disable_ripple: bool = False,
-  tab_index: float = 0,
-  hide_single_selection_indicator: bool = False,
+  tab_index: int = 0,
   placeholder: str = "",
-  required: bool = False,
-  multiple: bool = False,
   value: str = "",
 ):
   """Creates a Select component.
@@ -93,10 +90,7 @@ def select(
     disabled: Whether the select is disabled.
     disable_ripple: Whether ripples in the select are disabled.
     tab_index: Tab index of the select.
-    hide_single_selection_indicator: Whether checkmark indicator for single-selection options is hidden.
     placeholder: Placeholder to be shown if no value has been selected.
-    required: Whether the component is required.
-    multiple: Whether the user should be allowed to select multiple options.
     value: Value of the select control.
     key: Unique identifier for this component instance.
   """
@@ -112,10 +106,7 @@ def select(
       disabled=disabled,
       disable_ripple=disable_ripple,
       tab_index=tab_index,
-      hide_single_selection_indicator=hide_single_selection_indicator,
       placeholder=placeholder,
-      required=required,
-      multiple=multiple,
       value=value,
       on_select_opened_change_event_handler_id=register_event_handler(
         on_opened_change, event=SelectOpenedChangeEvent
