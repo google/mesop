@@ -9,7 +9,7 @@ from mesop.component_helpers import (
 
 @register_component
 def icon(
-  icon: str,
+  icon: str | None = None,
   *,
   key: str | None = None,
   style: Style | None = None,
@@ -25,7 +25,7 @@ def icon(
     key=key,
     type_name="icon",
     proto=icon_pb.IconType(
-      font_icon=icon,
+      icon=icon,
     ),
     style=to_style_proto(style) if style else None,
   )

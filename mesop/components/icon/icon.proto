@@ -4,5 +4,5 @@ syntax = "proto2";
 package mesop.components.icon;
 
 message IconType {
-  optional string font_icon = 1;
+  optional string icon = 1;
 }
