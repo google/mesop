@@ -28,7 +28,7 @@ class _ComponentWithChildren:
     self.component = self.prev_current_node.children.add()
     self.component.MergeFrom(
       create_component(
-        type_name=type_name,
+        component_name=pb.ComponentName(core_module=True, fn_name=type_name),
         proto=proto,
         key=key,
         style=style,
@@ -97,7 +97,9 @@ def component(fn: C) -> C:
       source_code_location = get_caller_source_code_location(levels=4)
     component.MergeFrom(
       create_component(
-        type_name=fn.__name__,  # consider explicitly getting component name
+        component_name=pb.ComponentName(
+          fn_name=fn.__name__, module_path=fn.__module__
+        ),
         proto=pb.UserDefinedType(),
         source_code_location=source_code_location,
       )
@@ -114,7 +116,7 @@ def component(fn: C) -> C:
 
 
 def create_component(
-  type_name: str,
+  component_name: pb.ComponentName,
   proto: Message,
   key: str | None = None,
   style: pb.Style | None = None,
@@ -126,7 +128,7 @@ def create_component(
   if hasattr(proto, "type_index"):
     type_index = proto.type_index  # type: ignore
   type = pb.Type(
-    name=pb.ComponentName(core_module=True, fn_name=type_name),
+    name=component_name,
     value=proto.SerializeToString(),
     type_index=type_index,  # type: ignore
   )
@@ -181,7 +183,7 @@ def insert_component(
     source_code_location = get_caller_source_code_location(levels=4)
   runtime().context().current_node().children.append(
     create_component(
-      type_name=type_name,
+      component_name=pb.ComponentName(core_module=True, fn_name=type_name),
       proto=proto,
       key=key,
       style=style,
