@@ -251,6 +251,10 @@ class UpdateCallsiteCodemod(VisitorBasedCodemodCommand):
   def is_fn_component(
     self, fn: cst.BaseExpression, component_name: pb.ComponentName
   ):
+    if component_name.HasField("module_path"):
+      if not isinstance(fn, cst.Name):
+        return False
+      return fn.value == component_name.fn_name
     if not isinstance(fn, cst.Attribute):
       return False
     if component_name.HasField("core_module"):

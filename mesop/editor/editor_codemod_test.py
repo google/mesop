@@ -390,6 +390,23 @@ class TestUpdateCallsiteCodemod(CodemodTest):
       ),
     )
 
+  def test_update_columns(self) -> None:
+    self.assertEditorUpdate(
+      "update_columns",
+      pb.EditorUpdateCallsite(
+        component_name=pb.ComponentName(
+          fn_name="columns", module_path="mesop.labs.layout"
+        ),
+        arg_path=pb.ArgPath(
+          segments=[pb.ArgPathSegment(keyword_argument="columns")]
+        ),
+        replacement=pb.CodeReplacement(
+          new_code=pb.CodeValue(int_value=1),
+        ),
+        source_code_location=pb.SourceCodeLocation(line=6),
+      ),
+    )
+
   def assertEditorUpdate(
     self, test_case_name: str, input: pb.EditorUpdateCallsite
   ):
