@@ -6,18 +6,15 @@ from mesop.component_helpers import (
 
 
 @register_component
-def divider(
-  *, key: str | None = None, vertical: bool = False, inset: bool = False
-):
+def divider(*, key: str | None = None, inset: bool = False):
   """Creates a Divider component.
 
   Args:
     key: Unique identifier for this component instance.
-    vertical: Whether the divider is vertically aligned.
     inset: Whether the divider is an inset divider.
   """
   insert_component(
     key=key,
     type_name="divider",
-    proto=divider_pb.DividerType(vertical=vertical, inset=inset),
+    proto=divider_pb.DividerType(inset=inset),
   )

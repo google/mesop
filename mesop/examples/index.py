@@ -22,12 +22,11 @@ def body():
 ## Components
 
 - [buttons](/buttons)
+- [badge](/components/badge/e2e/badge_app)
+- [box](/components/box/e2e/box_app)
+- [checkbox](/components/checkbox/e2e/checkbox_app)
+- [divider](/components/divider/e2e/divider_app)
 
-/columns
-/components/badge/e2e/badge_app
-/components/box/e2e/box_app
-/components/checkbox/e2e/checkbox_app
-/components/divider/e2e/divider_app
 /components/icon/e2e/icon_app
 /components/input/e2e/input_app
 /components/markdown/e2e/markdown_app
@@ -38,5 +37,8 @@ def body():
 /components/slide_toggle/e2e/slide_toggle_app
 /components/slider/e2e/slider_app
 /components/text/e2e/text_app
+
+/columns
+
 /components/tooltip/e2e/tooltip_app"""
     )

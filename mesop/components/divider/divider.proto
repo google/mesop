@@ -4,6 +4,5 @@ syntax = "proto2";
 package mesop.components.divider;
 
 message DividerType {
-  optional bool vertical = 1;
   optional bool inset = 2;
 }
