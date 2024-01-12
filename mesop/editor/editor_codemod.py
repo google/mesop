@@ -130,15 +130,20 @@ class UpdateCallsiteCodemod(VisitorBasedCodemodCommand):
       return updated_node
 
     component_name = self.input.component_name
+    first_positional_arg = None
+    if component_name.HasField("core_module") and component_name.fn_name in [
+      "text",
+      "markdown",
+    ]:
+      first_positional_arg = "text"
+    if component_name.HasField("core_module") and component_name.fn_name in [
+      "icon"
+    ]:
+      first_positional_arg = "icon"
     return self._update_call(
       updated_node,
       self.input.arg_path.segments,
-      first_positional_arg=(
-        "text"
-        if component_name.HasField("core_module")
-        and component_name.fn_name in ["text", "markdown"]
-        else None
-      ),
+      first_positional_arg=first_positional_arg,
     )
 
   def _update_call(
