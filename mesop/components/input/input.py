@@ -50,7 +50,6 @@ def input(
   style: Style | None = None,
   disabled: bool = False,
   placeholder: str = "",
-  name: str = "",
   required: bool = False,
   value: str = "",
   readonly: bool = False,
@@ -71,7 +70,6 @@ def input(
     style: Style for input.
     disabled: Whether it's disabled.
     placeholder: Placeholder value
-    name: Name of the input.
     required: Whether it's required
     value: Initial value.
     readonly: Whether the element is readonly.
@@ -97,7 +95,6 @@ def input(
       textarea_rows=textarea.rows if textarea else 0,
       disabled=disabled,
       placeholder=placeholder,
-      name=name,
       required=required,
       type=type_string,
       value=value,

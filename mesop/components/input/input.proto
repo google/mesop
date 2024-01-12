@@ -7,10 +7,8 @@ message InputType {
   optional bool disabled = 1;
   optional string id = 2;
   optional string placeholder = 3;
-  optional string name = 4;
   optional bool required = 5;
   optional string type = 6;
-  optional string user_aria_described_by = 7;
   optional string value = 8;
   optional bool readonly = 9;
   optional bool hide_required_marker = 10;
