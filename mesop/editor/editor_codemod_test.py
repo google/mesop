@@ -39,6 +39,14 @@ class TestDeleteComponentCodemod(CodemodTest):
       ),
     )
 
+  def test_delete_custom_component(self) -> None:
+    self.assertEditorUpdate(
+      "delete_custom_component",
+      pb.EditorDeleteComponent(
+        source_code_location=pb.SourceCodeLocation(line=6),
+      ),
+    )
+
   def assertEditorUpdate(
     self, test_case_name: str, input: pb.EditorDeleteComponent
   ):
