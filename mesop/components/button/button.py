@@ -41,6 +41,7 @@ def button(
       if on_click
       else "",
       type_index=_get_type_index(type),
+      type=type,
     ),
   )
 

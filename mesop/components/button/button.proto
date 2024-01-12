@@ -8,5 +8,10 @@ message ButtonType {
   optional bool disable_ripple = 2;
   optional bool disabled = 3;
   optional string on_click_handler_id = 4;
+
+  // Type has two properties:
+  // |type_index| is used for rendering
+  // |type| is used for editor value
   optional int32 type_index = 5;
+  optional string type = 6;
 }
