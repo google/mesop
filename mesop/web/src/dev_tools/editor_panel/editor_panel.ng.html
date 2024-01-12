@@ -16,9 +16,7 @@
   @if(hasFocusedComponent()) {
   <div class="component-header">
     <span class="component-header-start">
-      <span class="component-name">
-        {{getFocusedComponent()?.getType()?.getName() ?? "[root]"}}
-      </span>
+      <span class="component-name"> {{getFocusedComponentName()}} </span>
       <a
         *ngIf="showDocLink()"
         [href]="getDocLink()"

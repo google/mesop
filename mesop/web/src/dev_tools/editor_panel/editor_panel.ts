@@ -25,6 +25,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {Channel} from '../../services/channel';
 import {CommonModule} from '@angular/common';
 import {MatButtonModule} from '@angular/material/button';
+import {isComponentNameEquals} from '../../utils/proto';
 
 @Component({
   selector: 'mesop-editor-panel',
@@ -102,11 +103,20 @@ export class EditorPanel {
     return this.editorService.getFocusedComponent();
   }
 
+  getFocusedComponentName(): string {
+    const type = this.getFocusedComponent()?.getType();
+    if (!type) {
+      return '<root>';
+    }
+    return type.getName()?.getFnName() ?? '<unknown>';
+  }
+
   getComponentConfig() {
-    return this.componentConfigs.find(
-      (config) =>
-        config.getComponentName() ===
-        this.editorService.getFocusedComponent()!.getType()?.getName(),
+    return this.componentConfigs.find((config) =>
+      isComponentNameEquals(
+        config.getComponentName()!,
+        this.editorService.getFocusedComponent()!.getType()?.getName()!,
+      ),
     );
   }
 
