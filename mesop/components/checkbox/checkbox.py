@@ -4,11 +4,11 @@ from typing import Any, Callable, Literal
 import mesop.components.checkbox.checkbox_pb2 as checkbox_pb
 from mesop.component_helpers import (
   insert_composite_component,
+  register_component,
   register_event_handler,
   register_event_mapper,
 )
 from mesop.events import MesopEvent
-from mesop.utils.validate import validate
 
 
 @dataclass
@@ -53,7 +53,7 @@ register_event_mapper(
 )
 
 
-@validate
+@register_component
 def checkbox(
   *,
   on_change: Callable[[CheckboxChangeEvent], Any] | None = None,

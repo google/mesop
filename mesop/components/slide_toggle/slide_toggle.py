@@ -4,11 +4,11 @@ from typing import Any, Callable, Literal
 import mesop.components.slide_toggle.slide_toggle_pb2 as slide_toggle_pb
 from mesop.component_helpers import (
   insert_component,
+  register_component,
   register_event_handler,
   register_event_mapper,
 )
 from mesop.events import MesopEvent
-from mesop.utils.validate import validate
 
 
 @dataclass
@@ -30,7 +30,7 @@ register_event_mapper(
 )
 
 
-@validate
+@register_component
 def slide_toggle(
   *,
   key: str | None = None,

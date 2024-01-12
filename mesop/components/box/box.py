@@ -4,16 +4,16 @@ import mesop.components.box.box_pb2 as box_pb
 from mesop.component_helpers import (
   Style,
   insert_composite_component,
+  register_component,
   register_event_handler,
   to_style_proto,
 )
 from mesop.events import ClickEvent
-from mesop.utils.validate import validate
 
 STYLE = Style()
 
 
-@validate
+@register_component
 def box(
   *,
   style: Style = STYLE,

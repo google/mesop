@@ -5,43 +5,14 @@ from types import NoneType
 from typing import Any, Callable, ItemsView, Literal, Sequence
 
 import mesop.protos.ui_pb2 as pb
-from mesop.components.badge.badge import badge
-from mesop.components.box.box import box
-from mesop.components.button.button import button
-from mesop.components.checkbox.checkbox import checkbox
-from mesop.components.divider.divider import divider
-from mesop.components.icon.icon import icon
-from mesop.components.input.input import input
-from mesop.components.markdown.markdown import markdown
-from mesop.components.progress_bar.progress_bar import progress_bar
-from mesop.components.progress_spinner.progress_spinner import progress_spinner
-from mesop.components.radio.radio import radio
-from mesop.components.select.select import select
-from mesop.components.slide_toggle.slide_toggle import slide_toggle
-from mesop.components.slider.slider import slider
-from mesop.components.text.text import text
-from mesop.components.tooltip.tooltip import tooltip
 from mesop.exceptions import MesopInternalException
+from mesop.runtime import runtime
 
 
 def get_component_configs() -> list[pb.ComponentConfig]:
   return [
-    generate_component_config(badge),
-    generate_component_config(box),
-    generate_component_config(button),
-    generate_component_config(checkbox),
-    generate_component_config(divider),
-    generate_component_config(icon),
-    generate_component_config(input),
-    generate_component_config(markdown),
-    generate_component_config(progress_bar),
-    generate_component_config(progress_spinner),
-    generate_component_config(radio),
-    generate_component_config(select),
-    generate_component_config(slider),
-    generate_component_config(slide_toggle),
-    generate_component_config(text),
-    generate_component_config(tooltip),
+    generate_component_config(component)
+    for component in runtime().get_component_fns()
   ]
 
 

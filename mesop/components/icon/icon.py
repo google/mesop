@@ -1,9 +1,13 @@
 import mesop.components.icon.icon_pb2 as icon_pb
-from mesop.component_helpers import Style, insert_component, to_style_proto
-from mesop.utils.validate import validate
+from mesop.component_helpers import (
+  Style,
+  insert_component,
+  register_component,
+  to_style_proto,
+)
 
 
-@validate
+@register_component
 def icon(
   icon: str,
   *,

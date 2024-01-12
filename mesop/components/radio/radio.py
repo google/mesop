@@ -4,11 +4,11 @@ from typing import Any, Callable, Iterable, Literal
 import mesop.components.radio.radio_pb2 as radio_pb
 from mesop.component_helpers import (
   insert_component,
+  register_component,
   register_event_handler,
   register_event_mapper,
 )
 from mesop.events import MesopEvent
-from mesop.utils.validate import validate
 
 
 @dataclass
@@ -41,7 +41,7 @@ class RadioOption:
   value: str | None = None
 
 
-@validate
+@register_component
 def radio(
   *,
   options: Iterable[RadioOption] = (),

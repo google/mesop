@@ -4,11 +4,11 @@ from typing import Any, Callable, Literal
 import mesop.components.progress_bar.progress_bar_pb2 as progress_bar_pb
 from mesop.component_helpers import (
   insert_component,
+  register_component,
   register_event_handler,
   register_event_mapper,
 )
 from mesop.events import MesopEvent
-from mesop.utils.validate import validate
 
 
 @dataclass
@@ -33,7 +33,7 @@ register_event_mapper(
 )
 
 
-@validate
+@register_component
 def progress_bar(
   *,
   key: str | None = None,

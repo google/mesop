@@ -29,11 +29,13 @@ class Runtime:
   _handlers: dict[str, Handler]
   _state_classes: list[type[Any]]
   _loading_errors: list[pb.ServerError]
+  _component_fns: set[Callable[..., Any]]
   _event_mappers: dict[Any, Callable[[pb.UserEvent, Key], Any]]
   debug_mode: bool = False
   is_hot_reload_in_progress: bool = False
 
   def __init__(self):
+    self._component_fns = set()
     self._path_fns = {}
     self._handlers = {}
     self.event_mappers: dict[Type[Any], Callable[[pb.UserEvent, Key], Any]] = {}
@@ -106,6 +108,12 @@ Try one of the following paths:
 
   def get_loading_errors(self) -> list[pb.ServerError]:
     return self._loading_errors
+
+  def register_component_fn(self, component_fn: Callable[..., Any]):
+    self._component_fns.add(component_fn)
+
+  def get_component_fns(self) -> set[Callable[..., Any]]:
+    return self._component_fns
 
   def register_event_mapper(
     self, event: Type[E], map_fn: Callable[[pb.UserEvent, Key], E]

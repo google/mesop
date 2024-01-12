@@ -5,11 +5,11 @@ import mesop.components.input.input_pb2 as input_pb
 from mesop.component_helpers import (
   Style,
   insert_component,
+  register_component,
   register_event_handler,
   to_style_proto,
 )
 from mesop.events import InputEvent
-from mesop.utils.validate import validate
 
 
 @dataclass
@@ -24,7 +24,7 @@ class Textarea:
   rows: int = 5
 
 
-@validate
+@register_component
 def input(
   *,
   label: str = "",

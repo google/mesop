@@ -3,11 +3,11 @@ from typing import Literal
 import mesop.components.badge.badge_pb2 as badge_pb
 from mesop.component_helpers import (
   insert_composite_component,
+  register_component,
 )
-from mesop.utils.validate import validate
 
 
-@validate
+@register_component
 def badge(
   *,
   color: Literal["primary", "accent", "warn"] = "primary",

@@ -1,11 +1,15 @@
 from typing import Literal
 
 import mesop.components.text.text_pb2 as text_pb2
-from mesop.component_helpers import Style, insert_component, to_style_proto
-from mesop.utils.validate import validate
+from mesop.component_helpers import (
+  Style,
+  insert_component,
+  register_component,
+  to_style_proto,
+)
 
 
-@validate
+@register_component
 def text(
   text: str | None = None,
   *,

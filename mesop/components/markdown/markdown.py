@@ -1,9 +1,8 @@
 import mesop.components.markdown.markdown_pb2 as markdown_pb
-from mesop.component_helpers import insert_component
-from mesop.utils.validate import validate
+from mesop.component_helpers import insert_component, register_component
 
 
-@validate
+@register_component
 def markdown(
   text: str | None = None,
   *,

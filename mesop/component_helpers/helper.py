@@ -11,6 +11,7 @@ from mesop.exceptions import MesopDeveloperException
 from mesop.key import Key, key_from_proto
 from mesop.runtime import runtime
 from mesop.utils.caller import get_caller_source_code_location
+from mesop.utils.validate import validate
 
 
 class _ComponentWithChildren:
@@ -200,6 +201,19 @@ def compute_fn_id(fn: Callable[..., Any]) -> str:
 
 def get_qualified_fn_name(fn: Callable[..., Any]) -> str:
   return f"{fn.__module__}.{fn.__name__}"
+
+
+C = TypeVar("C", bound=Callable[..., Any])
+
+
+def register_component(fn: C) -> C:
+  """Registers the component with runtime to provide editor support
+  (e.g. suggestion for new component).
+
+  Returns a component function which validates arguments.
+  """
+  runtime().register_component_fn(fn)
+  return validate(fn)
 
 
 def register_event_mapper(

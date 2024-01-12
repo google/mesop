@@ -4,11 +4,11 @@ from typing import Any, Callable, Literal
 import mesop.components.slider.slider_pb2 as slider_pb
 from mesop.component_helpers import (
   insert_component,
+  register_component,
   register_event_handler,
   register_event_mapper,
 )
 from mesop.events.events import MesopEvent
-from mesop.utils.validate import validate
 
 
 @dataclass
@@ -33,7 +33,7 @@ register_event_mapper(
 )
 
 
-@validate
+@register_component
 def slider(
   *,
   on_value_change: Callable[[SliderValueChangeEvent], Any] | None = None,

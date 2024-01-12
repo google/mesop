@@ -3,11 +3,11 @@ from typing import Literal
 import mesop.components.tooltip.tooltip_pb2 as tooltip_pb
 from mesop.component_helpers import (
   insert_composite_component,
+  register_component,
 )
-from mesop.utils.validate import validate
 
 
-@validate
+@register_component
 def tooltip(
   *,
   key: str | None = None,

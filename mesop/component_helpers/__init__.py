@@ -8,6 +8,9 @@ from .helper import (
   insert_composite_component as insert_composite_component,
 )
 from .helper import (
+  register_component as register_component,
+)
+from .helper import (
   register_event_handler as register_event_handler,
 )
 from .helper import (

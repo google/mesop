@@ -1,11 +1,11 @@
 import mesop.components.divider.divider_pb2 as divider_pb
 from mesop.component_helpers import (
   insert_component,
+  register_component,
 )
-from mesop.utils.validate import validate
 
 
-@validate
+@register_component
 def divider(
   *, key: str | None = None, vertical: bool = False, inset: bool = False
 ):

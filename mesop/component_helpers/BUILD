@@ -10,5 +10,6 @@ py_library(
     deps = [
         "//mesop/protos:ui_py_pb2",
         "//mesop/runtime",
+        "//mesop/utils",
     ],
 )
