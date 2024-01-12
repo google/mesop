@@ -134,7 +134,9 @@ export class EditorPanel {
   }
 
   showDocLink(): boolean {
-    return Boolean(this.getFocusedComponent()?.getType()?.getName());
+    return Boolean(
+      this.getFocusedComponent()?.getType()?.getName()?.getCoreModule(),
+    );
   }
 
   getComponentName(): ComponentName | undefined {
@@ -142,7 +144,7 @@ export class EditorPanel {
   }
 
   getDocLink(): string {
-    const componentName = this.getComponentName() ?? '';
+    const componentName = this.getComponentName()?.getFnName() ?? '';
     return `https://google.github.io/mesop/components/${componentName}/`;
   }
 }
