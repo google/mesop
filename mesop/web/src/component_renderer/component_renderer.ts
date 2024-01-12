@@ -271,6 +271,10 @@ export class ComponentRenderer {
   }
 
   SelectionMode = SelectionMode;
+
+  getComponentName(): string {
+    return this.type()?.getName()?.getFnName() ?? '[root]';
+  }
 }
 
 function isRegularComponent(component: ComponentProto) {

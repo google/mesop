@@ -29,5 +29,5 @@ to have certain styling properties -->
   [cdkConnectedOverlayOrigin]="trigger"
   [cdkConnectedOverlayOpen]="isEditorFocusedComponent() && getSelectionMode() === SelectionMode.SELECTING"
 >
-  <div class="editor-overlay">{{type() ? type()!.getName() : "[root]"}}</div>
+  <div class="editor-overlay">{{getComponentName()}}</div>
 </ng-template>
