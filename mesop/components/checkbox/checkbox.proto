@@ -4,10 +4,7 @@ syntax = "proto2";
 package mesop.components.checkbox;
 
 message CheckboxType {
-  optional bool required = 5;
   optional string label_position = 6;
-  optional string name = 7;
-  optional string value = 8;
   optional bool disable_ripple = 9;
   optional double tab_index = 10;
   optional string color = 11;

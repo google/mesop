@@ -59,13 +59,10 @@ def checkbox(
   on_change: Callable[[CheckboxChangeEvent], Any] | None = None,
   on_indeterminate_change: Callable[[CheckboxIndeterminateChangeEvent], Any]
   | None = None,
-  required: bool = False,
   label_position: Literal["before", "after"] = "after",
-  name: str = "",
-  value: str = "",
   disable_ripple: bool = False,
-  tab_index: float = 0,
-  color: str = "",
+  tab_index: int = 0,
+  color: Literal["primary", "accent", "warn"] | None = None,
   checked: bool = False,
   disabled: bool = False,
   indeterminate: bool = False,
@@ -77,10 +74,7 @@ def checkbox(
   Args:
     on_change: Event emitted when the checkbox's `checked` value changes.
     on_indeterminate_change: Event emitted when the checkbox's `indeterminate` value changes.
-    required: Whether the checkbox is required.
     label_position: Whether the label should appear after or before the checkbox. Defaults to 'after'
-    name: Name value will be applied to the input element if present
-    value: The value attribute of the native input element
     disable_ripple: Whether the checkbox has a ripple.
     tab_index: Tabindex for the checkbox.
     color: Palette color of the checkbox.
@@ -93,10 +87,7 @@ def checkbox(
     key=key,
     type_name="checkbox",
     proto=checkbox_pb.CheckboxType(
-      required=required,
       label_position=label_position,
-      name=name,
-      value=value,
       disable_ripple=disable_ripple,
       tab_index=tab_index,
       color=color,
