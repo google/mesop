@@ -21,7 +21,7 @@
     <input
       class="input"
       type="number"
-      (blur)="onBlur($event)"
+      (blur)="onBlurInt($event)"
       [attr.data-name]="field.getName()"
       [value]="getValueFor(field.getName()!)"
     />
@@ -33,7 +33,7 @@
     <input
       class="input"
       type="number"
-      (blur)="onBlur($event)"
+      (blur)="onBlurFloat($event)"
       [attr.data-name]="field.getName()"
       [value]="getValueFor(field.getName()!)"
     />

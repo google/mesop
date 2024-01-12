@@ -145,6 +145,32 @@ export class EditorFields {
     this.editWithNewCode(segment, codeValue);
   }
 
+  onBlurInt(event: FocusEvent) {
+    const target = event.target as HTMLInputElement;
+    const segment = new ArgPathSegment();
+    const name = target.getAttribute('data-name');
+    if (!name) {
+      throw new Error('Expected to get data-name attribute from event.');
+    }
+    segment.setKeywordArgument(name);
+    const codeValue = new CodeValue();
+    codeValue.setIntValue(Number(target.value));
+    this.editWithNewCode(segment, codeValue);
+  }
+
+  onBlurFloat(event: FocusEvent) {
+    const target = event.target as HTMLInputElement;
+    const segment = new ArgPathSegment();
+    const name = target.getAttribute('data-name');
+    if (!name) {
+      throw new Error('Expected to get data-name attribute from event.');
+    }
+    segment.setKeywordArgument(name);
+    const codeValue = new CodeValue();
+    codeValue.setDoubleValue(Number(target.value));
+    this.editWithNewCode(segment, codeValue);
+  }
+
   deleteField(fieldName: string) {
     const segment = new ArgPathSegment();
     segment.setKeywordArgument(fieldName);
