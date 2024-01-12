@@ -14,7 +14,7 @@ def button(
   *,
   on_click: Callable[[ClickEvent], Any] | None = None,
   type: Literal["raised", "flat", "stroked", "icon"] | None = None,
-  color: str = "",
+  color: Literal["primary", "accent", "warn"] | None = None,
   disable_ripple: bool = False,
   disabled: bool = False,
   key: str | None = None,

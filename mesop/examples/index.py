@@ -18,6 +18,25 @@ def body():
     me.markdown(
       """
 # Welcome
-This is an example multi-page Mesop application which features common use cases.
-"""
+
+## Components
+
+- [buttons](/buttons)
+
+/columns
+/components/badge/e2e/badge_app
+/components/box/e2e/box_app
+/components/checkbox/e2e/checkbox_app
+/components/divider/e2e/divider_app
+/components/icon/e2e/icon_app
+/components/input/e2e/input_app
+/components/markdown/e2e/markdown_app
+/components/progress_bar/e2e/progress_bar_app
+/components/progress_spinner/e2e/progress_spinner_app
+/components/radio/e2e/radio_app
+/components/select/e2e/select_app
+/components/slide_toggle/e2e/slide_toggle_app
+/components/slider/e2e/slider_app
+/components/text/e2e/text_app
+/components/tooltip/e2e/tooltip_app"""
     )
