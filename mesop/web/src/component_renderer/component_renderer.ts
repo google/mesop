@@ -194,7 +194,11 @@ export class ComponentRenderer {
     if (!this._boxType) {
       if (this.isEditorFocusedComponent()) {
         let display = 'inline-block';
-        const name = this.component.getType()?.getName()!;
+        const name = this.component.getType()?.getName();
+        // Might be root component which doesn't have a name.
+        if (!name) {
+          return '';
+        }
         // Preserve existing display semantics.
         if (
           name.getCoreModule() &&
