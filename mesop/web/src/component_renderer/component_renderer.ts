@@ -12,6 +12,8 @@ import {
 import {CommonModule} from '@angular/common';
 import {
   Component as ComponentProto,
+  Key,
+  Type,
   UserEvent,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 import {ComponentLoader} from './component_loader';
@@ -158,7 +160,7 @@ export class ComponentRenderer {
     // Need to insert at insertionRef and *not* viewContainerRef, otherwise
     // the component (e.g. <mesop-text> will not be properly nested inside <component-renderer>).
     this._componentRef = this.insertionRef.createComponent(
-      typeToComponent[typeName],
+      typeToComponent[typeName] || UserDefinedComponent, // If it's an unrecognized type, we assume it's a user-defined component
       options,
     );
     this.updateComponentRef();
@@ -257,4 +259,16 @@ export class ComponentRenderer {
 
 function isRegularComponent(component: ComponentProto) {
   return component.getType() && component.getType()!.getName() !== 'box';
+}
+
+@Component({
+  template: '<ng-content></ng-content>',
+  standalone: true,
+})
+class UserDefinedComponent implements BaseComponent {
+  @Input() key!: Key;
+  @Input() type!: Type;
+  ngOnChanges() {
+    // Placeholder function since the
+  }
 }

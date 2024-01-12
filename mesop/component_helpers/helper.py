@@ -1,5 +1,6 @@
 import hashlib
 import inspect
+from functools import wraps
 from typing import Any, Callable, Generator, Type, TypeVar, cast
 
 from google.protobuf import json_format
@@ -74,10 +75,42 @@ class _UserCompositeComponent:
 
 
 def composite(fn: Callable[..., Any]):
+  @wraps(fn)
   def wrapper(*args: Any, **kwargs: Any):
     return _UserCompositeComponent(lambda: fn(*args, **kwargs))
 
   return wrapper
+
+
+C = TypeVar("C", bound=Callable[..., Any])
+
+
+def component(fn: C) -> C:
+  """Wraps a Python function to make it a user-defined component."""
+
+  @wraps(fn)
+  def wrapper(*args: Any, **kw_args: Any):
+    prev_current_node = runtime().context().current_node()
+    component = prev_current_node.children.add()
+    source_code_location = None
+    if runtime().debug_mode:
+      source_code_location = get_caller_source_code_location(levels=4)
+    component.MergeFrom(
+      create_component(
+        type_name=fn.__name__,  # consider explicitly getting component name
+        proto=pb.UserDefinedType(),
+        source_code_location=source_code_location,
+      )
+    )
+    runtime().context().set_current_node(component)
+    # _ComponentWithChildren()
+    # Creates a composite component
+    ret = fn(*args, **kw_args)
+    runtime().context().set_current_node(prev_current_node)
+    return ret
+
+  runtime().register_component_fn(fn)
+  return validate(cast(C, wrapper))
 
 
 def create_component(
@@ -201,9 +234,6 @@ def compute_fn_id(fn: Callable[..., Any]) -> str:
 
 def get_qualified_fn_name(fn: Callable[..., Any]) -> str:
   return f"{fn.__module__}.{fn.__name__}"
-
-
-C = TypeVar("C", bound=Callable[..., Any])
 
 
 def register_component(fn: C) -> C:
