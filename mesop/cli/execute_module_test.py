@@ -9,22 +9,24 @@ def test_get_module_name():
 
 def test_get_app_modules():
   assert get_app_modules(
-    "mesop.testing.index",
+    "mesop.example_index",
     loaded_module_names=set(
       [
         "mesop",
-        "mesop.testing",
-        "mesop.testing.sibling_module",
-        "mesop.testing.sub_module.sub_module2",
-        "mesop.testingwithpostfix",
-        "mesop.separate_package",
+        "mesop.runtime",
+        "mesop.example_index",
+        "mesop.examples",
+        "mesop.examples.index",
+        "mesop.components.radio.radio",
+        "mesop.components.radio.e2e.radio_app",
       ]
     ),
   ) == set(
     [
-      "mesop.testing",
-      "mesop.testing.sibling_module",
-      "mesop.testing.sub_module.sub_module2",
+      "mesop.example_index",
+      "mesop.examples",
+      "mesop.examples.index",
+      "mesop.components.radio.e2e.radio_app",
     ]
   )
 

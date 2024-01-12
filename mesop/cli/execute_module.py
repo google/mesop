@@ -58,11 +58,15 @@ def get_app_modules(
   submodules: set[str] = set()
   for module in loaded_module_names:
     # Special case for mesop/example_index.py, which would normally consider
-    # mesop.runtime a sub-package/sub-module, however reloading runtime
-    # is problematic because it's a stateful singleton and it causes
-    # strange bugs. Thus, we avoid reloading mesop.runtime modules
-    # in all cases.
-    if module.split(".")[:2] == ["mesop", "runtime"]:
+    # everything in `mesop` a sub-package/sub-module, however reloading modules
+    # like runtime causes weird bugs. Thus, we only reload "app" modules and
+    # not any core framework modules.
+    module_segments = module.split(".")
+    if module_segments[0] == "mesop" and not (
+      module_segments[:2] == ["mesop", "example_index"]
+      or module_segments[:2] == ["mesop", "examples"]
+      or "e2e" in module_segments
+    ):
       continue
     if (
       module.split(".")[: len(main_module_prefix_segments)]

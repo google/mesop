@@ -4,7 +4,7 @@
 # which is needed for hot reloading to work properly.
 
 # Use import alias so Ruff doesn't complain about unused imports
-from mesop import examples as examples
+import mesop.examples as examples
 
 import mesop.components.text.e2e as text_e2e
 import mesop.components.box.e2e as box_e2e
