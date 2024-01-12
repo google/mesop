@@ -30,7 +30,6 @@ class Runtime:
   _state_classes: list[type[Any]]
   _loading_errors: list[pb.ServerError]
   component_fns: set[Callable[..., Any]]
-  _event_mappers: dict[Any, Callable[[pb.UserEvent, Key], Any]]
   debug_mode: bool = False
   is_hot_reload_in_progress: bool = False
 
