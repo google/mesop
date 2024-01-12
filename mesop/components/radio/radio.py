@@ -46,11 +46,10 @@ def radio(
   *,
   options: Iterable[RadioOption] = (),
   on_change: Callable[[RadioChangeEvent], Any] | None = None,
-  color: Literal["primary", "accent", "warn"] = "primary",
+  color: Literal["primary", "accent", "warn"] | None = None,
   label_position: Literal["before", "after"] = "before",
   value: str = "",
   disabled: bool = False,
-  required: bool = False,
   key: str | None = None,
 ):
   """Creates a Radio component.
@@ -62,7 +61,6 @@ def radio(
     label_position: Whether the labels should appear after or before the radio-buttons. Defaults to 'after'
     value: Value for the radio-group. Should equal the value of the selected radio button if there is a corresponding radio button with a matching value.
     disabled: Whether the radio group is disabled
-    required: Whether the radio group is required
     key: Unique identifier for this component instance.
   """
   insert_component(
@@ -73,7 +71,6 @@ def radio(
       label_position=label_position,
       value=value,
       disabled=disabled,
-      required=required,
       on_radio_change_event_handler_id=register_event_handler(
         on_change, event=RadioChangeEvent
       )

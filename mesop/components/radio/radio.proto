@@ -9,7 +9,6 @@ message RadioType {
   optional string label_position = 3;
   optional string value = 4;
   optional bool disabled = 5;
-  optional bool required = 6;
   optional string on_radio_change_event_handler_id = 20;
   repeated RadioOption options = 7;
 }

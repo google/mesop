@@ -3,7 +3,6 @@
   [labelPosition]="getLabelPosition()"
   [value]="config().getValue()"
   [disabled]="config().getDisabled()"
-  [required]="config().getRequired()"
   (change)="onRadioChangeEvent($event)"
 >
   @for(option of config().getOptionsList(); track index; let index = $index) {
