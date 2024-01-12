@@ -2,7 +2,6 @@
 
 Progress Spinner is used to indicate something is in progress and is based on the [Angular Material progress spinner component](https://material.angular.io/components/progress-spinner/overview).
 
-> NOTE: `spinner` is an alias for `progress_spinner`
 
 ## Examples
 

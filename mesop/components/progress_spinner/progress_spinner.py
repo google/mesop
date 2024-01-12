@@ -1,3 +1,5 @@
+from typing import Literal
+
 import mesop.components.progress_spinner.progress_spinner_pb2 as progress_spinner_pb
 from mesop.component_helpers import (
   insert_component,
@@ -9,9 +11,9 @@ from mesop.component_helpers import (
 def progress_spinner(
   *,
   key: str | None = None,
-  color: str = "",
-  diameter: float = 100,
-  stroke_width: float = 10,
+  color: Literal["primary", "accent", "warn"] | None = None,
+  diameter: float = 48,
+  stroke_width: float = 4,
 ):
   """Creates a Progress spinner component.
 

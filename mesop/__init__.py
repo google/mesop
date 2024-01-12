@@ -94,9 +94,6 @@ from mesop.features import page as page
 from mesop.key import Key as Key
 from mesop.runtime import runtime
 
-# Similar to angular_material, we alias spinner to progress spinner.
-spinner = progress_spinner
-
 _T = TypeVar("_T")
 
 
