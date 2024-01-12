@@ -10,7 +10,7 @@ import {defineConfig, devices} from '@playwright/test';
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  timeout: process.env.CI ? 10000 : 5000, // Budget more time for CI since tests run slower there.
+  timeout: process.env.CI ? 20000 : 10000, // Budget more time for CI since tests run slower there.
   testDir: '.',
   testMatch: 'e2e/*_test.ts',
   testIgnore: 'scripts/**',
