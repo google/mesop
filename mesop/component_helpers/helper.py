@@ -102,7 +102,14 @@ def component(fn: C) -> C:
         component_name=pb.ComponentName(
           fn_name=fn.__name__, module_path=fn.__module__
         ),
-        proto=pb.UserDefinedType(),
+        proto=pb.UserDefinedType(
+          args=[
+            pb.UserDefinedType.Arg(
+              arg_name=kw_arg, code_value=map_code_value(value)
+            )
+            for kw_arg, value in kw_args.items()
+          ]
+        ),
         source_code_location=source_code_location,
       )
     )
@@ -113,6 +120,18 @@ def component(fn: C) -> C:
 
   runtime().register_component_fn(fn)
   return cast(C, wrapper)
+
+
+def map_code_value(value: Any) -> pb.CodeValue:
+  if isinstance(value, str):
+    return pb.CodeValue(string_value=value)
+  if isinstance(value, int):
+    return pb.CodeValue(int_value=value)
+  if isinstance(value, float):
+    return pb.CodeValue(double_value=value)
+  if isinstance(value, bool):
+    return pb.CodeValue(bool_value=value)
+  raise Exception("Unhandled value", value)
 
 
 def create_component(

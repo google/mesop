@@ -209,7 +209,11 @@ message Type {
 // Represents user-defined components.
 // This is useful for editor/devtools support.
 message UserDefinedType {
-    repeated string args = 1;
+    message Arg {
+        optional string arg_name = 1;
+        optional CodeValue code_value = 2;
+    }
+    repeated Arg args = 1;
 }
 
 message Style {

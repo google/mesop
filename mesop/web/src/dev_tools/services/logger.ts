@@ -5,6 +5,8 @@ import {
   Component as ComponentProto,
   EditorEvent,
   ComponentName,
+  UserDefinedType,
+  CodeValue,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 import {Observable, Subject} from 'rxjs';
 import {jsonParse} from '../../utils/strict_types';
@@ -85,6 +87,35 @@ export function mapComponentToObject(
       'value': jsonParse(debugJson) as object,
     };
   }
+
+  if (component.getType()?.getName()?.getCoreModule() === false) {
+    const value: Record<string, any> = {};
+    // Deserialize type
+    const userDefinedType = UserDefinedType.deserializeBinary(
+      component.getType()?.getValue() as unknown as Uint8Array,
+    );
+    for (const arg of userDefinedType.getArgsList()) {
+      let codeValue;
+      switch (arg.getCodeValue()!.getValueCase()) {
+        case CodeValue.ValueCase.BOOL_VALUE:
+          codeValue = arg.getCodeValue()!.getBoolValue();
+          break;
+        case CodeValue.ValueCase.STRING_VALUE:
+          codeValue = arg.getCodeValue()!.getStringValue();
+          break;
+        default:
+          throw new Error(
+            `Unhandled code value: ${arg.getCodeValue()?.toObject()}`,
+          );
+      }
+      value[arg.getArgName()!] = codeValue;
+    }
+    type = {
+      'name': component.getType()!.getName()!,
+      'value': value,
+    };
+  }
+
   if (component.getStyleDebugJson()) {
     (type as any)['value']['style'] = jsonParse(component.getStyleDebugJson()!);
   }
