@@ -177,12 +177,12 @@ export function mapComponentObjectToDisplay(
   };
   if (object.type) {
     const label = (object.type.value as any)['text'];
-    const name = object.type.name;
+    const name = object.type.name.getFnName();
     node.text = `${name}`;
     node.label = label;
     node.properties = object.type as any;
     (node.properties as any).key = object.key;
-    node.componentName = name;
+    node.componentName = object.type.name;
   } else {
     node.text = '<root>';
   }
