@@ -18,8 +18,19 @@ def get_component_configs() -> list[pb.ComponentConfig]:
 
 def generate_component_config(fn: Callable[..., Any]) -> pb.ComponentConfig:
   sig = inspect.signature(fn)
+  if "mesop.components." in fn.__module__:
+    component_name = pb.ComponentName(
+      core_module=True,
+      fn_name=fn.__name__,
+    )
+  else:
+    component_name = pb.ComponentName(
+      module_path=fn.__module__,
+      fn_name=fn.__name__,
+    )
+
   component_config = pb.ComponentConfig(
-    component_name=fn.__name__,
+    component_name=component_name,
     category="Default",
     fields=get_fields(sig.parameters.items()),
     accepts_child=sig.return_annotation is not inspect.Signature.empty,

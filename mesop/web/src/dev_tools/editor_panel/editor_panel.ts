@@ -16,6 +16,7 @@ import {
   EditorEvent,
   EditorDeleteComponent,
   SourceCodeLocation,
+  ComponentName,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 import {MatDialogModule, MatDialog} from '@angular/material/dialog';
 import {MatDividerModule} from '@angular/material/divider';
@@ -126,7 +127,7 @@ export class EditorPanel {
     return Boolean(this.getFocusedComponent()?.getType()?.getName());
   }
 
-  getComponentName(): string | undefined {
+  getComponentName(): ComponentName | undefined {
     return this.getFocusedComponent()?.getType()?.getName();
   }
 

@@ -26,6 +26,7 @@ py_test(
         "//mesop/components/box:py",
         "//mesop/components/button:py",
         "//mesop/components/radio:py",
+        "//mesop/labs",
     ] + THIRD_PARTY_PY_PYTEST,
 )
 
@@ -35,6 +36,7 @@ py_test(
     data = [":testdata_files"],
     deps = [
         ":editor",
+        "//mesop/utils",
     ] + THIRD_PARTY_PY_LIBCST,
 )
 

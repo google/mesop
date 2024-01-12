@@ -56,7 +56,7 @@ class TestNewComponentCodemod(CodemodTest):
     self.assertEditorUpdate(
       "new_component",
       pb.EditorNewComponent(
-        component_name="divider",
+        component_name=me_name("divider"),
         source_code_location=pb.SourceCodeLocation(line=5),
         mode=pb.EditorNewComponent.Mode.MODE_APPEND_SIBLING,
       ),
@@ -66,7 +66,7 @@ class TestNewComponentCodemod(CodemodTest):
     self.assertEditorUpdate(
       "new_component_nested_sibling",
       pb.EditorNewComponent(
-        component_name="divider",
+        component_name=me_name("divider"),
         source_code_location=pb.SourceCodeLocation(line=6),
         mode=pb.EditorNewComponent.Mode.MODE_APPEND_SIBLING,
       ),
@@ -76,7 +76,7 @@ class TestNewComponentCodemod(CodemodTest):
     self.assertEditorUpdate(
       "new_component_child",
       pb.EditorNewComponent(
-        component_name="text",
+        component_name=me_name("text"),
         source_code_location=pb.SourceCodeLocation(line=5),
         mode=pb.EditorNewComponent.Mode.MODE_CHILD,
       ),
@@ -86,7 +86,7 @@ class TestNewComponentCodemod(CodemodTest):
     self.assertEditorUpdate(
       "new_component_child_existing_with",
       pb.EditorNewComponent(
-        component_name="text",
+        component_name=me_name("text"),
         source_code_location=pb.SourceCodeLocation(line=5),
         mode=pb.EditorNewComponent.Mode.MODE_CHILD,
       ),
@@ -96,7 +96,7 @@ class TestNewComponentCodemod(CodemodTest):
     self.assertEditorUpdate(
       "new_component_child_existing_with_pass",
       pb.EditorNewComponent(
-        component_name="text",
+        component_name=me_name("text"),
         source_code_location=pb.SourceCodeLocation(line=5),
         mode=pb.EditorNewComponent.Mode.MODE_CHILD,
       ),
@@ -119,7 +119,7 @@ class TestUpdateCallsiteCodemod(CodemodTest):
     self.assertEditorUpdate(
       "simple_callsite",
       pb.EditorUpdateCallsite(
-        component_name="input",
+        component_name=me_name("input"),
         arg_path=pb.ArgPath(
           segments=[pb.ArgPathSegment(keyword_argument="label")]
         ),
@@ -134,7 +134,7 @@ class TestUpdateCallsiteCodemod(CodemodTest):
     self.assertEditorUpdate(
       "multi_callsite",
       pb.EditorUpdateCallsite(
-        component_name="input",
+        component_name=me_name("input"),
         arg_path=pb.ArgPath(
           segments=[pb.ArgPathSegment(keyword_argument="label")]
         ),
@@ -149,7 +149,7 @@ class TestUpdateCallsiteCodemod(CodemodTest):
     self.assertEditorUpdate(
       "text",
       pb.EditorUpdateCallsite(
-        component_name="text",
+        component_name=me_name("text"),
         arg_path=pb.ArgPath(
           segments=[pb.ArgPathSegment(keyword_argument="text")]
         ),
@@ -164,7 +164,7 @@ class TestUpdateCallsiteCodemod(CodemodTest):
     self.assertEditorUpdate(
       "markdown",
       pb.EditorUpdateCallsite(
-        component_name="markdown",
+        component_name=me_name("markdown"),
         arg_path=pb.ArgPath(
           segments=[pb.ArgPathSegment(keyword_argument="text")]
         ),
@@ -179,7 +179,7 @@ class TestUpdateCallsiteCodemod(CodemodTest):
     self.assertEditorUpdate(
       "style_struct",
       pb.EditorUpdateCallsite(
-        component_name="box",
+        component_name=me_name("box"),
         arg_path=pb.ArgPath(
           segments=[
             pb.ArgPathSegment(keyword_argument="style"),
@@ -197,7 +197,7 @@ class TestUpdateCallsiteCodemod(CodemodTest):
     self.assertEditorUpdate(
       "style_nested_struct",
       pb.EditorUpdateCallsite(
-        component_name="box",
+        component_name=me_name("box"),
         arg_path=pb.ArgPath(
           segments=[
             pb.ArgPathSegment(keyword_argument="style"),
@@ -216,7 +216,7 @@ class TestUpdateCallsiteCodemod(CodemodTest):
     self.assertEditorUpdate(
       "bool",
       pb.EditorUpdateCallsite(
-        component_name="checkbox",
+        component_name=me_name("checkbox"),
         arg_path=pb.ArgPath(
           segments=[
             pb.ArgPathSegment(keyword_argument="checked"),
@@ -233,7 +233,7 @@ class TestUpdateCallsiteCodemod(CodemodTest):
     self.assertEditorUpdate(
       "input_add_property",
       pb.EditorUpdateCallsite(
-        component_name="input",
+        component_name=me_name("input"),
         arg_path=pb.ArgPath(
           segments=[
             pb.ArgPathSegment(keyword_argument="label"),
@@ -250,7 +250,7 @@ class TestUpdateCallsiteCodemod(CodemodTest):
     self.assertEditorUpdate(
       "input_add_complex_property",
       pb.EditorUpdateCallsite(
-        component_name="input",
+        component_name=me_name("input"),
         arg_path=pb.ArgPath(
           segments=[
             pb.ArgPathSegment(keyword_argument="style"),
@@ -268,7 +268,7 @@ class TestUpdateCallsiteCodemod(CodemodTest):
     self.assertEditorUpdate(
       "list_append_element",
       pb.EditorUpdateCallsite(
-        component_name="radio",
+        component_name=me_name("radio"),
         arg_path=pb.ArgPath(
           segments=[
             pb.ArgPathSegment(keyword_argument="options"),
@@ -286,7 +286,7 @@ class TestUpdateCallsiteCodemod(CodemodTest):
     self.assertEditorUpdate(
       "list_delete_element",
       pb.EditorUpdateCallsite(
-        component_name="radio",
+        component_name=me_name("radio"),
         arg_path=pb.ArgPath(
           segments=[
             pb.ArgPathSegment(keyword_argument="options"),
@@ -302,7 +302,7 @@ class TestUpdateCallsiteCodemod(CodemodTest):
     self.assertEditorUpdate(
       "list_edit_element",
       pb.EditorUpdateCallsite(
-        component_name="radio",
+        component_name=me_name("radio"),
         arg_path=pb.ArgPath(
           segments=[
             pb.ArgPathSegment(keyword_argument="options"),
@@ -321,7 +321,7 @@ class TestUpdateCallsiteCodemod(CodemodTest):
     self.assertEditorUpdate(
       "delete_keyword_arg",
       pb.EditorUpdateCallsite(
-        component_name="input",
+        component_name=me_name("input"),
         arg_path=pb.ArgPath(
           segments=[
             pb.ArgPathSegment(keyword_argument="label"),
@@ -338,7 +338,7 @@ class TestUpdateCallsiteCodemod(CodemodTest):
     self.assertEditorUpdate(
       "delete_key",
       pb.EditorUpdateCallsite(
-        component_name="input",
+        component_name=me_name("input"),
         arg_path=pb.ArgPath(
           segments=[
             pb.ArgPathSegment(keyword_argument="key"),
@@ -355,7 +355,7 @@ class TestUpdateCallsiteCodemod(CodemodTest):
     self.assertEditorUpdate(
       "delete_struct",
       pb.EditorUpdateCallsite(
-        component_name="input",
+        component_name=me_name("input"),
         arg_path=pb.ArgPath(
           segments=[
             pb.ArgPathSegment(keyword_argument="style"),
@@ -372,7 +372,7 @@ class TestUpdateCallsiteCodemod(CodemodTest):
     self.assertEditorUpdate(
       "multiline_string",
       pb.EditorUpdateCallsite(
-        component_name="markdown",
+        component_name=me_name("markdown"),
         arg_path=pb.ArgPath(
           segments=[
             pb.ArgPathSegment(keyword_argument="text"),
@@ -398,6 +398,10 @@ class TestUpdateCallsiteCodemod(CodemodTest):
       load_testdata(dir=test_case_name, filename="after.py"),
       input=input,
     )
+
+
+def me_name(fn_name: str):
+  return pb.ComponentName(core_module=True, fn_name=fn_name)
 
 
 if __name__ == "__main__":

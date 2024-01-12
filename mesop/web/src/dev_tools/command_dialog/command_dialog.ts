@@ -2,6 +2,7 @@ import {DIALOG_DATA, DialogRef} from '@angular/cdk/dialog';
 import {Component, Inject} from '@angular/core';
 import {MatDividerModule} from '@angular/material/divider';
 import {
+  ComponentName,
   EditorEvent,
   EditorNewComponent,
   SourceCodeLocation,
@@ -23,7 +24,7 @@ interface Section {
 }
 
 interface Command {
-  componentName: string;
+  componentName: ComponentName;
   location: SourceCodeLocation;
 }
 
@@ -47,7 +48,7 @@ export class CommandDialog {
       sections: this.data.sections.map((s) => ({
         title: s.title,
         commands: s.commands.filter((c) =>
-          c.componentName.includes(this.filter),
+          c.componentName.getFnName()!.includes(this.filter),
         ),
       })),
     };
@@ -57,7 +58,7 @@ export class CommandDialog {
     this.filter = (event.target as HTMLInputElement).value;
   }
 
-  createComponent(location: SourceCodeLocation, componentName: string) {
+  createComponent(location: SourceCodeLocation, componentName: ComponentName) {
     const editorEvent = new EditorEvent();
     const newComponent = new EditorNewComponent();
     newComponent.setComponentName(componentName);

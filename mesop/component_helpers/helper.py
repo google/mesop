@@ -126,7 +126,7 @@ def create_component(
   if hasattr(proto, "type_index"):
     type_index = proto.type_index  # type: ignore
   type = pb.Type(
-    name=type_name,
+    name=pb.ComponentName(core_module=True, fn_name=type_name),
     value=proto.SerializeToString(),
     type_index=type_index,  # type: ignore
   )

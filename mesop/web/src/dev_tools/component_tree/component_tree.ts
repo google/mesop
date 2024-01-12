@@ -11,7 +11,10 @@ import {
   MatTreeFlattener,
   MatTreeModule,
 } from '@angular/material/tree';
-import {Component as ComponentProto} from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
+import {
+  ComponentName,
+  Component as ComponentProto,
+} from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 import {CdkTreeModule} from '@angular/cdk/tree';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
@@ -21,13 +24,14 @@ import {CommonModule} from '@angular/common';
 import {CommandDialogService} from '../command_dialog/command_dialog_service';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {Channel} from '../../services/channel';
+import {isComponentNameEquals} from '../../utils/proto';
 
 /** Flat node with expandable and level information */
 export interface FlatNode {
   expandable: boolean;
   text: string;
   label: string;
-  componentName: string;
+  componentName: ComponentName;
   properties: [string: any];
   level: number;
   proto: ComponentProto;
@@ -132,7 +136,9 @@ export class ComponentTree {
     return Boolean(
       this.channel
         .getComponentConfigs()
-        .find((c) => c.getComponentName() === node.componentName)
+        .find((c) =>
+          isComponentNameEquals(c.getComponentName()!, node.componentName),
+        )
         ?.getAcceptsChild(),
     );
   }
@@ -162,7 +168,7 @@ export function mapComponentObjectToDisplay(
   object: ComponentObject,
 ): DisplayNode {
   const node: DisplayNode = {
-    componentName: '<undefined>',
+    componentName: new ComponentName(),
     text: '',
     label: '',
     properties: {} as any,
@@ -202,7 +208,7 @@ export interface InputNode {
 export interface DisplayNode {
   text: string;
   label: string;
-  componentName: string;
+  componentName: ComponentName;
   properties: [string: any];
   children: DisplayNode[];
   proto: ComponentProto;

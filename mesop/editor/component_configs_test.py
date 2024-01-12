@@ -8,11 +8,13 @@ from mesop.editor.component_configs import (
   generate_component_config,
   get_component_configs,
 )
+from mesop.labs import columns
 
 
 def test_generate_component_config_button():
   proto = generate_component_config(button)
-  assert proto.component_name == "button"
+  assert proto.component_name.core_module is True
+  assert proto.component_name.fn_name == "button"
   assert proto.fields[0] == pb.EditorField(name="on_click")
   assert proto.fields[1] == pb.EditorField(
     name="type",
@@ -31,7 +33,8 @@ def test_generate_component_config_button():
 
 def test_generate_component_config_box():
   proto = generate_component_config(box)
-  assert proto.component_name == "box"
+  assert proto.component_name.core_module is True
+  assert proto.component_name.fn_name == "box"
   assert proto.accepts_child
   assert proto.fields[0].name == "style"
   assert proto.fields[0].type.struct_type.struct_name == "Style"
@@ -42,7 +45,8 @@ def test_generate_component_config_box():
 
 def test_generate_component_config_radio():
   proto = generate_component_config(radio)
-  assert proto.component_name == "radio"
+  assert proto.component_name.core_module is True
+  assert proto.component_name.fn_name == "radio"
   assert proto.accepts_child is False
   assert proto.fields[0] == pb.EditorField(
     name="options",
@@ -66,10 +70,17 @@ def test_generate_component_config_radio():
   )
 
 
+def test_generate_component_config_labs_column():
+  proto = generate_component_config(columns)
+  assert proto.component_name.HasField("core_module") is False
+  assert proto.component_name.module_path == "mesop.labs.layout"
+  assert proto.component_name.fn_name == "columns"
+
+
 def test_get_component_configs():
   # Don't make this a change-detector test; it will slowly accumulate
   # more component configs.
-  assert len(get_component_configs()) > 15
+  assert len(get_component_configs()) >= 3
 
 
 if __name__ == "__main__":

@@ -27,6 +27,8 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatDividerModule} from '@angular/material/divider';
 import {formatStyle} from '../utils/styles';
 
+const CORE_NAMESPACE = 'me';
+
 @Component({
   selector: 'component-renderer',
   templateUrl: 'component_renderer.ng.html',
@@ -105,6 +107,11 @@ export class ComponentRenderer {
     return `${index}___${item.getType()?.getName()}`;
   }
 
+  isBoxType() {
+    const typeName = this.component.getType()?.getName();
+    return typeName?.getCoreModule() && typeName.getFnName() === 'box';
+  }
+
   type() {
     return this.component.getType();
   }
@@ -120,7 +127,7 @@ export class ComponentRenderer {
       this.updateComponentRef();
       return;
     }
-    if (this.component.getType()?.getName() === 'box') {
+    if (this.isBoxType()) {
       this._boxType = BoxType.deserializeBinary(
         this.component.getType()!.getValue() as unknown as Uint8Array,
       );
@@ -157,10 +164,13 @@ export class ComponentRenderer {
         projectableNodes,
       };
     }
+    const componentClass = typeName.getCoreModule()
+      ? typeToComponent[typeName.getFnName()!]
+      : UserDefinedComponent;
     // Need to insert at insertionRef and *not* viewContainerRef, otherwise
     // the component (e.g. <mesop-text> will not be properly nested inside <component-renderer>).
     this._componentRef = this.insertionRef.createComponent(
-      typeToComponent[typeName] || UserDefinedComponent, // If it's an unrecognized type, we assume it's a user-defined component
+      componentClass, // If it's an unrecognized type, we assume it's a user-defined component
       options,
     );
     this.updateComponentRef();
@@ -184,9 +194,11 @@ export class ComponentRenderer {
     if (!this._boxType) {
       if (this.isEditorFocusedComponent()) {
         let display = 'inline-block';
+        const name = this.component.getType()?.getName()!;
         // Preserve existing display semantics.
         if (
-          ['text', 'markdown'].includes(this.component.getType()?.getName()!)
+          name.getCoreModule() &&
+          ['text', 'markdown'].includes(name.getFnName()!)
         ) {
           display = 'block';
         }
@@ -258,7 +270,11 @@ export class ComponentRenderer {
 }
 
 function isRegularComponent(component: ComponentProto) {
-  return component.getType() && component.getType()!.getName() !== 'box';
+  const typeName = component.getType()?.getName()!;
+  return (
+    component.getType() &&
+    !(typeName.getCoreModule() && typeName.getFnName() === 'box')
+  );
 }
 
 @Component({

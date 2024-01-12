@@ -53,14 +53,14 @@ message EditorNewComponent {
     }
     optional Mode mode = 3;
     optional SourceCodeLocation source_code_location = 1;
-    optional string component_name = 2;
+    optional ComponentName component_name = 2;
 }
 
 message EditorUpdateCallsite {
     // |source_code_location|, |component_name|, |arg_path| specify
     // which part of the code should be edited.
     optional SourceCodeLocation source_code_location = 1;
-    optional string component_name = 2;
+    optional ComponentName component_name = 2;
     optional ArgPath arg_path = 3;
 
     // Specifies what the targeted code should be replaced with.
@@ -198,7 +198,7 @@ message Key {
 }
 
 message Type {
-    optional string name = 4;
+    optional ComponentName name = 4;
     optional bytes value = 5;
     optional string debug_json = 6;
     // Needed outside of |value| because ComponentRenderer (TS) needs to know
@@ -252,12 +252,23 @@ message BorderSide {
 }
 
 message ComponentConfig {
-    optional string component_name = 1;
+    optional ComponentName component_name = 1;
     optional string category = 2;
     repeated EditorField fields = 3;
     optional bool accepts_child = 4;
 }
 
+message ComponentName {
+    oneof module_id {
+        // Python module path, e.g. "mesop.labs.layout"
+        string module_path = 1;
+        // If the component belongs to Mesop
+        // (e.g. used with `import mesop as me`), then set to true.
+        bool core_module = 2;
+    }
+    // The Python function name (e.g. `text`).
+    optional string fn_name = 3;
+}
 
 message EditorField {
     optional string name = 1;

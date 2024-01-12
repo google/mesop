@@ -45,7 +45,7 @@ class NewComponentCodemod(VisitorBasedCodemodCommand):
         updated_statement_lines.append(statement)
 
     updated_statement_lines.append(
-      cst.parse_statement(f"me.{self.input.component_name}()")
+      create_component_callsite(self.input.component_name)
     )
 
     return updated_node.with_changes(
@@ -62,7 +62,7 @@ class NewComponentCodemod(VisitorBasedCodemodCommand):
     if position.start.line != self.input.source_code_location.line:
       return original_node
     if self.input.mode == pb.EditorNewComponent.Mode.MODE_APPEND_SIBLING:
-      new_callsite = cst.parse_statement(f"me.{self.input.component_name}()")
+      new_callsite = create_component_callsite(self.input.component_name)
       return cst.FlattenSentinel([updated_node, new_callsite])
     if self.input.mode == pb.EditorNewComponent.Mode.MODE_CHILD:
       assert len(original_node.body) == 1
@@ -71,7 +71,7 @@ class NewComponentCodemod(VisitorBasedCodemodCommand):
       return cst.With(
         items=[cst.WithItem(item=expr.value)],
         body=cst.IndentedBlock(
-          body=[cst.parse_statement(f"me.{self.input.component_name}()")]
+          body=[create_component_callsite(self.input.component_name)]
         ),
       )
     raise Exception("Unsupported EditorNewComponent.Mode", self.input.mode)
@@ -118,17 +118,20 @@ class UpdateCallsiteCodemod(VisitorBasedCodemodCommand):
 
     # Return original node if the function name doesn't match.
     if not (
-      isinstance(updated_node.func, cst.Attribute)
-      and updated_node.func.attr.value == self.input.component_name
+      self.is_fn_component(updated_node.func, self.input.component_name)
       and position.start.line == self.input.source_code_location.line
     ):
-      return original_node
+      return updated_node
 
+    component_name = self.input.component_name
     return self._update_call(
       updated_node,
       self.input.arg_path.segments,
       first_positional_arg=(
-        "text" if self.input.component_name in ["text", "markdown"] else None
+        "text"
+        if component_name.HasField("core_module")
+        and component_name.fn_name in ["text", "markdown"]
+        else None
       ),
     )
 
@@ -158,7 +161,7 @@ class UpdateCallsiteCodemod(VisitorBasedCodemodCommand):
           new_args.append(new_arg)
       else:
         new_args.append(arg)
-    new_value = get_value(self.input.replacement)
+    new_value = self.get_value(self.input.replacement)
     if not found_arg and new_value:
       if not segment.keyword_argument:
         raise Exception("Did not receive keyword_argument", segments, call)
@@ -176,7 +179,7 @@ class UpdateCallsiteCodemod(VisitorBasedCodemodCommand):
     if len(segments) == 1:
       maybe_call = input_arg.value
       if not isinstance(maybe_call, cst.Call):
-        new_value = get_value(self.input.replacement)
+        new_value = self.get_value(self.input.replacement)
         if new_value is None:
           return None
         mod = input_arg.with_changes(value=new_value)
@@ -226,7 +229,9 @@ class UpdateCallsiteCodemod(VisitorBasedCodemodCommand):
               new_elements.append(element)
               new_elements.append(
                 cst.Element(
-                  value=get_code_value(self.input.replacement.append_element)
+                  value=self.get_code_value(
+                    self.input.replacement.append_element
+                  )
                 )
               )
             else:
@@ -243,32 +248,60 @@ class UpdateCallsiteCodemod(VisitorBasedCodemodCommand):
 
       raise Exception("unexpected input_arg", input_arg)
 
+  def is_fn_component(
+    self, fn: cst.BaseExpression, component_name: pb.ComponentName
+  ):
+    if not isinstance(fn, cst.Attribute):
+      return False
+    if component_name.HasField("core_module"):
+      if not isinstance(fn.value, cst.Name):
+        return False
+      if fn.value.value != get_module_name(self.input.component_name):
+        return False
+    if fn.attr.value != component_name.fn_name:
+      return False
+    return True
 
-def get_value(replacement: pb.CodeReplacement):
-  if replacement.HasField("new_code"):
-    return get_code_value(replacement.new_code)
-  if replacement.HasField("delete_code"):
-    return None
-  if replacement.HasField("append_element"):
-    return get_code_value(replacement.append_element)
-  raise Exception("Unhandled replacement", replacement)
+  def get_value(self, replacement: pb.CodeReplacement):
+    if replacement.HasField("new_code"):
+      return self.get_code_value(replacement.new_code)
+    if replacement.HasField("delete_code"):
+      return None
+    if replacement.HasField("append_element"):
+      return self.get_code_value(replacement.append_element)
+    raise Exception("Unhandled replacement", replacement)
+
+  def get_code_value(self, code: pb.CodeValue):
+    if code.HasField("string_value"):
+      string_value = code.string_value or "<new>"
+      # Create multi-line string if needed.
+      if "\n" in code.string_value:
+        return cst.SimpleString(f'"""{string_value}"""')
+      return cst.SimpleString(f'"{string_value}"')
+    if code.HasField("double_value"):
+      return cst.Float(str(code.double_value))
+    if code.HasField("int_value"):
+      return cst.Integer(str(code.int_value))
+    if code.HasField("bool_value"):
+      return cst.Name(str(code.bool_value))
+    if code.HasField("struct_name"):
+      return cst.Call(
+        func=cst.Attribute(
+          value=cst.Name(get_module_name(self.input.component_name)),
+          attr=cst.Name(code.struct_name),
+        )
+      )
+    raise Exception("Code value", code)
 
 
-def get_code_value(code: pb.CodeValue):
-  if code.HasField("string_value"):
-    string_value = code.string_value or "<new>"
-    # Create multi-line string if needed.
-    if "\n" in code.string_value:
-      return cst.SimpleString(f'"""{string_value}"""')
-    return cst.SimpleString(f'"{string_value}"')
-  if code.HasField("double_value"):
-    return cst.Float(str(code.double_value))
-  if code.HasField("int_value"):
-    return cst.Integer(str(code.int_value))
-  if code.HasField("bool_value"):
-    return cst.Name(str(code.bool_value))
-  if code.HasField("struct_name"):
-    return cst.Call(
-      func=cst.Attribute(value=cst.Name("me"), attr=cst.Name(code.struct_name))
-    )
-  raise Exception("Code value", code)
+def create_component_callsite(component_name: pb.ComponentName):
+  module = component_name.module_path
+  if component_name.HasField("core_module"):
+    module = "me"
+  return cst.parse_statement(f"{module}.{component_name.fn_name}()")
+
+
+def get_module_name(component_name: pb.ComponentName) -> str:
+  if component_name.HasField("core_module"):
+    return "me"
+  return component_name.module_path

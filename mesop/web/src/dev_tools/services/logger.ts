@@ -4,6 +4,7 @@ import {
   UserEvent,
   Component as ComponentProto,
   EditorEvent,
+  ComponentName,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 import {Observable, Subject} from 'rxjs';
 import {jsonParse} from '../../utils/strict_types';
@@ -100,7 +101,7 @@ export function mapComponentToObject(
 
 export interface ComponentObject {
   type?: {
-    name: string;
+    name: ComponentName;
     value: object;
   };
   key?: string;

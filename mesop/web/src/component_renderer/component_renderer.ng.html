@@ -6,7 +6,7 @@ to have certain styling properties -->
 <span #insertion></span>
 
 <span #container cdkOverlayOrigin #trigger="cdkOverlayOrigin">
-  <ng-container *ngIf="type()?.getName() === 'box' || type() == null">
+  <ng-container *ngIf="isBoxType() || type() == null">
     <ng-container
       *ngFor="let child of component.getChildrenList(); trackBy: trackByFn"
     >

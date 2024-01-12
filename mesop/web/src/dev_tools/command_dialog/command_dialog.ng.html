@@ -17,7 +17,8 @@
         class="command-row"
         (click)="createComponent(command.location, command.componentName)"
       >
-        {{command.componentName}}
+        {{command.componentName.getFnName()}}
+        ({{command.componentName.getModulePath()}})
       </div>
       }
     </div>
