@@ -202,7 +202,9 @@ export class ComponentRenderer {
         // Preserve existing display semantics.
         if (
           name.getCoreModule() &&
-          ['divider', 'text', 'markdown'].includes(name.getFnName()!)
+          ['divider', 'text', 'markdown', 'progress_bar'].includes(
+            name.getFnName()!,
+          )
         ) {
           display = 'block';
         }
