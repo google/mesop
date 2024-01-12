@@ -3,7 +3,7 @@ from typing import Any, Callable, Literal
 
 import mesop.components.slide_toggle.slide_toggle_pb2 as slide_toggle_pb
 from mesop.component_helpers import (
-  insert_component,
+  insert_composite_component,
   register_component,
   register_event_handler,
   register_event_mapper,
@@ -36,10 +36,10 @@ def slide_toggle(
   key: str | None = None,
   label_position: Literal["before", "after"] = "after",
   required: bool = False,
-  color: str = "",
+  color: Literal["primary", "accent", "warn"] | None = None,
   disabled: bool = False,
   disable_ripple: bool = False,
-  tab_index: float = 0,
+  tab_index: int = 0,
   checked: bool = False,
   hide_icon: bool = False,
   on_change: Callable[[SlideToggleChangeEvent], Any] | None = None,
@@ -58,7 +58,7 @@ def slide_toggle(
     hide_icon: Whether to hide the icon inside of the slide toggle.
     key: Unique identifier for this component instance.
   """
-  insert_component(
+  return insert_composite_component(
     key=key,
     type_name="slide_toggle",
     proto=slide_toggle_pb.SlideToggleType(
