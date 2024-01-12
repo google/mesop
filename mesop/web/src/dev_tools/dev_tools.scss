@@ -39,6 +39,7 @@
 }
 
 .panel-body {
+  margin-top: 40px; // Size of panel header.
   overflow: auto;
   height: 100%;
   padding-bottom: 24px; // Approximately the panel header (button) height.
