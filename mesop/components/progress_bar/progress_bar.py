@@ -37,7 +37,7 @@ register_event_mapper(
 def progress_bar(
   *,
   key: str | None = None,
-  color: str = "",
+  color: Literal["primary", "accent", "warn"] | None = None,
   value: float = 0,
   buffer_value: float = 0,
   mode: Literal[
