@@ -88,13 +88,15 @@ C = TypeVar("C", bound=Callable[..., Any])
 def component(fn: C) -> C:
   """Wraps a Python function to make it a user-defined component."""
 
+  validated_fn = validate(fn)
+
   @wraps(fn)
   def wrapper(*args: Any, **kw_args: Any):
     prev_current_node = runtime().context().current_node()
     component = prev_current_node.children.add()
     source_code_location = None
     if runtime().debug_mode:
-      source_code_location = get_caller_source_code_location(levels=4)
+      source_code_location = get_caller_source_code_location(levels=2)
     component.MergeFrom(
       create_component(
         component_name=pb.ComponentName(
@@ -105,14 +107,12 @@ def component(fn: C) -> C:
       )
     )
     runtime().context().set_current_node(component)
-    # _ComponentWithChildren()
-    # Creates a composite component
-    ret = fn(*args, **kw_args)
+    ret = validated_fn(*args, **kw_args)
     runtime().context().set_current_node(prev_current_node)
     return ret
 
   runtime().register_component_fn(fn)
-  return validate(cast(C, wrapper))
+  return cast(C, wrapper)
 
 
 def create_component(
