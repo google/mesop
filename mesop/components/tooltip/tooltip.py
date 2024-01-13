@@ -28,8 +28,8 @@ def tooltip(
     position: Allows the user to define the position of the tooltip relative to the parent element
     position_at_origin: Whether tooltip should be relative to the click or touch origin instead of outside the element bounding box.
     disabled: Disables the display of the tooltip.
-    show_delay: The default delay in ms before showing the tooltip after show is called
-    hide_delay: The default delay in ms before hiding the tooltip after hide is called
+    show_delay_ms: The default delay in ms before showing the tooltip after show is called
+    hide_delay_ms: The default delay in ms before hiding the tooltip after hide is called
     message: The message to be displayed in the tooltip
   """
   return insert_composite_component(
