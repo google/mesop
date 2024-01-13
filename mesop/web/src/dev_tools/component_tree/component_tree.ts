@@ -26,6 +26,8 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {Channel} from '../../services/channel';
 import {isComponentNameEquals} from '../../utils/proto';
 
+const ROOT_NODE_TEXT = '<root>';
+
 /** Flat node with expandable and level information */
 export interface FlatNode {
   expandable: boolean;
@@ -162,6 +164,10 @@ export class ComponentTree {
   onMouseleave(node: FlatNode): void {
     this.highlightedNodes.delete(node);
   }
+
+  isRootNode(node: FlatNode): boolean {
+    return node.text === ROOT_NODE_TEXT;
+  }
 }
 
 export function mapComponentObjectToDisplay(
@@ -184,7 +190,7 @@ export function mapComponentObjectToDisplay(
     (node.properties as any).key = object.key;
     node.componentName = object.type.name;
   } else {
-    node.text = '<root>';
+    node.text = ROOT_NODE_TEXT;
   }
   if (object.children) {
     node.children = object.children.map((child) =>
