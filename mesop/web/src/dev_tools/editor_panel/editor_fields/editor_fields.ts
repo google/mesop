@@ -25,6 +25,8 @@ import {Channel} from '../../../services/channel';
 import {MatIconModule} from '@angular/material/icon';
 import {CdkTextareaAutosize, TextFieldModule} from '@angular/cdk/text-field';
 
+const EMPTY_ARRAY: [] = []; // Useful for avoiding excessive change detection.
+
 // string is field name; number is list index
 type Prefix = string | number;
 type Prefixes = Prefix[];
@@ -56,6 +58,9 @@ export class EditorFields {
   FieldTypeCase = FieldType.TypeCase;
   hoveredFieldName: string | undefined;
   clearHoveredFieldNameTimeoutId: number | undefined;
+
+  cachedPrefixesForFieldName = new Map<string, Prefixes>();
+  cachedPrefixesListForFieldName = new Map<string, Prefixes[]>();
 
   @ViewChild('autosize') autosize: CdkTextareaAutosize | undefined;
 
@@ -264,9 +269,18 @@ export class EditorFields {
   getPrefixesListForListField(fieldName: string): Prefixes[] {
     const val = this.getValueFor(fieldName) as any[];
     if (!val) {
-      return [];
+      return EMPTY_ARRAY;
     }
-    return val.map((_, index) => [...this.getPrefixFor(fieldName), index]);
+    const cacheKey = `fieldName=${fieldName}|length=${val.length}`;
+    if (this.cachedPrefixesListForFieldName.has(cacheKey)) {
+      return this.cachedPrefixesListForFieldName.get(cacheKey)!;
+    }
+    const prefixes = val.map((_, index) => [
+      ...this.getPrefixFor(fieldName),
+      index,
+    ]);
+    this.cachedPrefixesListForFieldName.set(cacheKey, prefixes);
+    return prefixes;
   }
 
   getRegularFields(): EditorField[] {
@@ -306,8 +320,14 @@ export class EditorFields {
     return this.fields.filter((field) => !field.getType()) ?? [];
   }
 
-  getPrefixFor(fieldName: string) {
-    return [...this.prefixes, fieldName];
+  getPrefixFor(fieldName: string): Prefixes {
+    if (this.cachedPrefixesForFieldName.has(fieldName)) {
+      return this.cachedPrefixesForFieldName.get(fieldName)!;
+    }
+
+    const prefixes = [...this.prefixes, fieldName];
+    this.cachedPrefixesForFieldName.set(fieldName, prefixes);
+    return prefixes;
   }
 
   getValueFor(fieldName: string) {
