@@ -39,28 +39,17 @@ class Padding(EdgeInsets):
 
 @dataclass(kw_only=True)
 class Style:
+  align_items: Literal[
+    "normal",
+    "stretch",
+    "center",
+    "start",
+    "end",
+  ] | None = None
   background: str | None = None
+  border: Border | None = None
   color: str | None = None
   columns: int | None = None
-  font_size: int | str | None = None
-  font_weight: Literal[
-    "normal",
-    "bold",
-    100,
-    200,
-    300,
-    400,
-    500,
-    600,
-    700,
-    800,
-    900,
-  ] | None = None
-  margin: Margin | None = None
-  padding: Padding | None = None
-  border: Border | None = None
-  height: int | str | None = None
-  width: int | str | None = None
   display: Literal[
     # precomposed values
     "block",
@@ -81,13 +70,23 @@ class Style:
     "column-reverse",
   ] | None = None
   flex_grow: int | None = None
-  align_items: Literal[
+  font_size: int | str | None = None
+  font_weight: Literal[
     "normal",
-    "stretch",
-    "center",
-    "start",
-    "end",
+    "bold",
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900,
   ] | None = None
+  height: int | str | None = None
+  margin: Margin | None = None
+  padding: Padding | None = None
   position: Literal[
     "static",
     "relative",
@@ -102,6 +101,7 @@ class Style:
     "right",
     "center",
   ] | None = None
+  width: int | str | None = None
 
 
 def to_style_proto(s: Style) -> pb.Style:
