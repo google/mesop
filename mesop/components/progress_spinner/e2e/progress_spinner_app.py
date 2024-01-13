@@ -5,3 +5,4 @@ import mesop as me
 def app():
   me.progress_spinner()  # default spinner
   me.progress_spinner(diameter=40, stroke_width=4)
+  me.text("Two usages of spinners")
