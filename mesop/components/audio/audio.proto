@@ -1,0 +1,7 @@
+syntax = "proto2";
+
+package mesop.components.audio;
+
+message AudioType {
+    optional string src = 1;
+}

@@ -26,6 +26,7 @@ from mesop.component_helpers.helper import (
 from mesop.component_helpers.helper import (
   slot as slot,
 )
+from mesop.components.audio.audio import audio as audio
 from mesop.components.badge.badge import badge as badge
 
 # REF(//scripts/scaffold_component.py):insert_component_import_export
