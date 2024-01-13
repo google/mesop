@@ -1,9 +1,8 @@
 import mesop.components.component_name.component_name_pb2 as component_name_pb
-from mesop.component_helpers import insert_component
-from mesop.utils.validate import validate
+from mesop.component_helpers import insert_component, register_native_component
 
 
-@validate
+@register_native_component
 def component_name(
   *,
   label: str,

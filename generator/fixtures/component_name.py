@@ -1,11 +1,10 @@
 from dataclasses import dataclass
 from typing import Any, Callable, Literal
 
-from mesop.utils.validate import validate
-
 import mesop.components.component_name.component_name_pb2 as component_name_pb
 from mesop.component_helpers import (
   register_event_handler,
+  register_native_component,
   insert_component,
   insert_composite_component,
   register_event_mapper,
@@ -15,7 +14,7 @@ from mesop.events import MesopEvent, ClickEvent, InputEvent
 # INSERT_EVENTS
 
 
-@validate
+@register_native_component
 def component_name(
   *,
   # INSERT_COMPONENT_PARAMS
