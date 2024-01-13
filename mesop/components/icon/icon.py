@@ -3,7 +3,6 @@ from mesop.component_helpers import (
   Style,
   insert_component,
   register_native_component,
-  to_style_proto,
 )
 
 
@@ -27,5 +26,5 @@ def icon(
     proto=icon_pb.IconType(
       icon=icon,
     ),
-    style=to_style_proto(style) if style else None,
+    style=style,
   )

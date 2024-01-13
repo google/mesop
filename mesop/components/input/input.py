@@ -6,7 +6,6 @@ from mesop.component_helpers import (
   insert_component,
   register_event_handler,
   register_native_component,
-  to_style_proto,
 )
 from mesop.events import InputEvent
 
@@ -73,7 +72,7 @@ def textarea(
       if on_input
       else "",
     ),
-    style=to_style_proto(style) if style else None,
+    style=style,
   )
 
 
@@ -155,5 +154,5 @@ def input(
       if on_input
       else "",
     ),
-    style=to_style_proto(style) if style else None,
+    style=style,
   )

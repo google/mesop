@@ -7,6 +7,7 @@ from google.protobuf import json_format
 from google.protobuf.message import Message
 
 import mesop.protos.ui_pb2 as pb
+from mesop.component_helpers.style import Style, to_style_proto
 from mesop.events import ClickEvent, InputEvent, MesopEvent
 from mesop.exceptions import MesopDeveloperException
 from mesop.key import Key, key_from_proto
@@ -174,7 +175,7 @@ def insert_composite_component(
   type_name: str,
   proto: Message,
   key: str | None = None,
-  style: pb.Style | None = None,
+  style: Style | None = None,
 ) -> _ComponentWithChildren:
   source_code_location = None
   if runtime().debug_mode:
@@ -183,7 +184,7 @@ def insert_composite_component(
     type_name=type_name,
     proto=proto,
     key=key,
-    style=style,
+    style=to_style_proto(style) if style else None,
     source_code_location=source_code_location,
   )
 
@@ -192,7 +193,7 @@ def insert_component(
   type_name: str,
   proto: Message,
   key: str | None = None,
-  style: pb.Style | None = None,
+  style: Style | None = None,
 ) -> None:
   """
   Inserts a component into the current context's current node.
@@ -205,7 +206,7 @@ def insert_component(
       component_name=pb.ComponentName(core_module=True, fn_name=type_name),
       proto=proto,
       key=key,
-      style=style,
+      style=to_style_proto(style) if style else None,
       source_code_location=source_code_location,
     )
   )

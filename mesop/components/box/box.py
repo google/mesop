@@ -6,17 +6,14 @@ from mesop.component_helpers import (
   insert_composite_component,
   register_event_handler,
   register_native_component,
-  to_style_proto,
 )
 from mesop.events import ClickEvent
-
-STYLE = Style()
 
 
 @register_native_component
 def box(
   *,
-  style: Style = STYLE,
+  style: Style | None = None,
   on_click: Callable[[ClickEvent], Any] | None = None,
   key: str | None = None,
 ) -> Any:
@@ -39,5 +36,5 @@ def box(
       if on_click
       else "",
     ),
-    style=to_style_proto(style),
+    style=style,
   )
