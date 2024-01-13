@@ -217,22 +217,22 @@ message UserDefinedType {
 }
 
 message Style {
+    optional string align_items = 8;
     optional string background = 1;
+    optional Border border = 11;
     optional string color = 2;
     optional int32 columns = 16;
-    optional string height = 5;
-    optional string width = 12;
-    optional EdgeInsets margin = 3;
-    optional EdgeInsets padding = 4;
     optional string display = 6;
     optional string flex_direction = 7;
     optional int32 flex_grow = 13;
-    optional string align_items = 8;
+    optional string font_size = 15;
+    optional string font_weight = 14;
+    optional string height = 5;
+    optional EdgeInsets margin = 3;
+    optional EdgeInsets padding = 4;
     optional string position = 9;
     optional string text_align = 10;
-    optional Border border = 11;
-    optional string font_weight = 14;
-    optional string font_size = 15;
+    optional string width = 12;
 }
 
 message EdgeInsets {
