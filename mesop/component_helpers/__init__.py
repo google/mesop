@@ -11,13 +11,13 @@ from .helper import (
   insert_composite_component as insert_composite_component,
 )
 from .helper import (
-  register_component as register_component,
-)
-from .helper import (
   register_event_handler as register_event_handler,
 )
 from .helper import (
   register_event_mapper as register_event_mapper,
+)
+from .helper import (
+  register_native_component as register_native_component,
 )
 from .style import Border as Border
 from .style import BorderSide as BorderSide

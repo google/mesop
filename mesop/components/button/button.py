@@ -3,13 +3,13 @@ from typing import Any, Callable, Literal
 import mesop.components.button.button_pb2 as button_pb
 from mesop.component_helpers import (
   insert_composite_component,
-  register_component,
   register_event_handler,
+  register_native_component,
 )
 from mesop.events import ClickEvent
 
 
-@register_component
+@register_native_component
 def button(
   *,
   on_click: Callable[[ClickEvent], Any] | None = None,

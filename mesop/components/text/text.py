@@ -4,12 +4,12 @@ import mesop.components.text.text_pb2 as text_pb2
 from mesop.component_helpers import (
   Style,
   insert_component,
-  register_component,
+  register_native_component,
   to_style_proto,
 )
 
 
-@register_component
+@register_native_component
 def text(
   text: str | None = None,
   *,

@@ -4,14 +4,14 @@ import mesop.components.input.input_pb2 as input_pb
 from mesop.component_helpers import (
   Style,
   insert_component,
-  register_component,
   register_event_handler,
+  register_native_component,
   to_style_proto,
 )
 from mesop.events import InputEvent
 
 
-@register_component
+@register_native_component
 def textarea(
   *,
   label: str = "",
@@ -77,7 +77,7 @@ def textarea(
   )
 
 
-@register_component
+@register_native_component
 def input(
   *,
   label: str = "",

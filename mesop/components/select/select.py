@@ -4,9 +4,9 @@ from typing import Any, Callable, Iterable
 import mesop.components.select.select_pb2 as select_pb
 from mesop.component_helpers import (
   insert_component,
-  register_component,
   register_event_handler,
   register_event_mapper,
+  register_native_component,
 )
 from mesop.events import MesopEvent
 
@@ -66,7 +66,7 @@ class SelectOption:
   value: str | None = None
 
 
-@register_component
+@register_native_component
 def select(
   *,
   options: Iterable[SelectOption] = (),

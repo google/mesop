@@ -2,12 +2,12 @@ import mesop.components.image.image_pb2 as image_pb
 from mesop.component_helpers import (
   Style,
   insert_component,
-  register_component,
+  register_native_component,
   to_style_proto,
 )
 
 
-@register_component
+@register_native_component
 def image(
   *,
   src: str | None = None,

@@ -108,7 +108,7 @@ Try one of the following paths:
   def get_loading_errors(self) -> list[pb.ServerError]:
     return self._loading_errors
 
-  def register_component_fn(self, component_fn: Callable[..., Any]):
+  def register_native_component_fn(self, component_fn: Callable[..., Any]):
     self.component_fns.add(component_fn)
 
   def get_component_fns(self) -> set[Callable[..., Any]]:

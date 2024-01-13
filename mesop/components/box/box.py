@@ -4,8 +4,8 @@ import mesop.components.box.box_pb2 as box_pb
 from mesop.component_helpers import (
   Style,
   insert_composite_component,
-  register_component,
   register_event_handler,
+  register_native_component,
   to_style_proto,
 )
 from mesop.events import ClickEvent
@@ -13,7 +13,7 @@ from mesop.events import ClickEvent
 STYLE = Style()
 
 
-@register_component
+@register_native_component
 def box(
   *,
   style: Style = STYLE,

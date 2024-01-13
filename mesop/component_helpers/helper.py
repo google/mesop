@@ -118,7 +118,7 @@ def component(fn: C) -> C:
     runtime().context().set_current_node(prev_current_node)
     return ret
 
-  runtime().register_component_fn(fn)
+  runtime().register_native_component_fn(fn)
   return cast(C, wrapper)
 
 
@@ -257,13 +257,13 @@ def get_qualified_fn_name(fn: Callable[..., Any]) -> str:
   return f"{fn.__module__}.{fn.__name__}"
 
 
-def register_component(fn: C) -> C:
+def register_native_component(fn: C) -> C:
   """Registers the component with runtime to provide editor support
   (e.g. suggestion for new component).
 
   Returns a component function which validates arguments.
   """
-  runtime().register_component_fn(fn)
+  runtime().register_native_component_fn(fn)
   return validate(fn)
 
 
