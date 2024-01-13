@@ -1,3 +1,4 @@
+import {VideoComponent} from '../../../components/video/video';
 import {AudioComponent} from '../../../components/audio/audio';
 import {ImageComponent} from '../../../components/image/image';
 import {SliderComponent} from '../../../components/slider/slider';
@@ -35,6 +36,7 @@ export interface TypeToComponent {
 }
 
 export const typeToComponent = {
+  'video': VideoComponent,
   'audio': AudioComponent,
   'image': ImageComponent,
   'slider': SliderComponent,

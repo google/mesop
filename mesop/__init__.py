@@ -85,6 +85,7 @@ from mesop.components.slider.slider import (
 )
 from mesop.components.text.text import text as text
 from mesop.components.tooltip.tooltip import tooltip as tooltip
+from mesop.components.video.video import video as video
 from mesop.dataclass_utils import dataclass_with_defaults
 from mesop.events import (
   ClickEvent as ClickEvent,

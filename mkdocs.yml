@@ -19,6 +19,7 @@ nav:
       - Media:
           - Image: components/image.md
           - Audio: components/audio.md
+          - Video: components/video.md
       - Form controls:
           - Button: components/button.md
           - Checkbox: components/checkbox.md
