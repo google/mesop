@@ -217,22 +217,33 @@ message UserDefinedType {
 }
 
 message Style {
-    optional string align_items = 8;
-    optional string background = 1;
-    optional Border border = 11;
-    optional string color = 2;
-    optional int32 columns = 16;
+    optional string align_items = 1;
+    optional string background = 2;
+    optional Border border = 3;
+    optional string color = 4;
+    optional int32 columns = 5;
     optional string display = 6;
-    optional string flex_direction = 7;
-    optional int32 flex_grow = 13;
-    optional string font_size = 15;
+    optional string flex_basis = 7;
+    optional string flex_direction = 8;
+    optional int32 flex_grow = 9;
+    optional int32 flex_shrink = 10;
+    optional string flex_wrap = 11;
+    optional string font_size = 12;
+    optional string font_style = 13;
     optional string font_weight = 14;
-    optional string height = 5;
-    optional EdgeInsets margin = 3;
-    optional EdgeInsets padding = 4;
-    optional string position = 9;
-    optional string text_align = 10;
-    optional string width = 12;
+    optional string height = 15;
+    optional string justify_content = 16;
+    optional string letter_spacing = 17;
+    optional EdgeInsets margin = 18;
+    optional string overflow_x = 19;
+    optional string overflow_y = 20;
+    optional EdgeInsets padding = 21;
+    optional string position = 22;
+    optional string text_align = 23;
+    optional string text_decoration = 24;
+    optional string text_overflow = 25;
+    optional string white_space = 26;
+    optional string width = 27;
 }
 
 message EdgeInsets {
