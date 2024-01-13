@@ -7,7 +7,7 @@
   [hintLabel]="config().getHintLabel()!"
   [style]="getStyle()"
   ><mat-label>{{config().getLabel()}}</mat-label>
-  @if(config().getType() === "textarea") {
+  @if(config().getIsTextarea()) {
   <textarea
     matInput
     [disabled]="config().getDisabled()"
@@ -18,7 +18,7 @@
     [value]="config().getValue()"
     [readonly]="config().getReadonly()"
     (input)="onInput($event)"
-    [rows]="config().getTextareaRows()"
+    [rows]="config().getRows()"
   ></textarea>
   } @else {
   <input

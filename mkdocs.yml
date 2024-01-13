@@ -20,6 +20,7 @@ nav:
           - Button: components/button.md
           - Checkbox: components/checkbox.md
           - Input: components/input.md
+          - Textarea: components/textarea.md
           - Radio: components/radio.md
           - Select: components/select.md
           - Slide toggle: components/slide_toggle.md

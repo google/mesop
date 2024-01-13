@@ -2,6 +2,8 @@
 
 Input allows the user to type in a value and is based on the [Angular Material input component](https://material.angular.io/components/input/overview).
 
+For longer text inputs, also see [Textarea](./textarea.md)
+
 ## Examples
 
 ```python
@@ -11,4 +13,3 @@ Input allows the user to type in a value and is based on the [Angular Material i
 ## API
 
 ::: mesop.components.input.input.input
-::: mesop.components.input.input.Textarea

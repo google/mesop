@@ -19,5 +19,8 @@ message InputType {
   optional string hint_label = 15;
   optional string label = 16;
   optional string on_input_handler_id = 17;
-  optional int32 textarea_rows = 18;
+  // Used for textarea only.
+  optional int32 rows = 18;
+  // Not exposed as public API.
+  optional bool is_textarea = 19;
 }

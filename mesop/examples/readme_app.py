@@ -21,7 +21,7 @@ def on_submit(event: me.ClickEvent):
 @me.page(path="/readme_app")
 def app():
   me.text("Hello, world!")
-  me.input(type=me.Textarea(rows=10), label="Prompt", on_input=on_prompt_input)
+  me.textarea(rows=10, label="Prompt", on_input=on_prompt_input)
 
   with me.button(on_click=on_submit):
     me.text("Submit")

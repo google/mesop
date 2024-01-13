@@ -44,6 +44,9 @@ export const typeToComponent = {
   'badge': BadgeComponent,
   'tooltip': TooltipComponent,
   'input': InputComponent,
+  // Textarea is a special case where it's exposed as a separate
+  // component / API, but the implementation is almost identical as Input.
+  'textarea': InputComponent,
   'button': ButtonComponent,
   'checkbox': CheckboxComponent,
   'text': TextComponent,

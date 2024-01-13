@@ -89,9 +89,9 @@ def left_panel():
     with me.box(style=me.Style(padding=me.Padding(bottom=16))):
       me.text("Input", style=me.Style(font_weight=500))
     with me.box(style=me.Style(width="100%")):
-      me.input(
+      me.textarea(
         label="Input",
-        type=me.Textarea(rows=10),
+        rows=10,
         style=me.Style(width="100%"),
         on_input=on_input,
       )
