@@ -1,6 +1,7 @@
 site_name: Mesop
 repo_url: https://github.com/google/mesop
 repo_name: google/mesop
+strict: true
 nav:
   - Overview: index.md
   - Getting Started: getting_started.md
