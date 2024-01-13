@@ -3,6 +3,8 @@ from typing import Literal
 
 import mesop.protos.ui_pb2 as pb
 
+OverflowValues = Literal["visible", "hidden", "clip", "scroll", "auto"]
+
 
 @dataclass(kw_only=True)
 class BorderSide:
@@ -39,6 +41,10 @@ class Padding(EdgeInsets):
 
 @dataclass(kw_only=True)
 class Style:
+  """For literal properties, make the most commonly used option the first literal
+  element, as it will be used as the default value by the editor when creating that property.
+  """
+
   align_items: Literal[
     "normal",
     "stretch",
@@ -63,6 +69,7 @@ class Style:
     "none",
     "contents",
   ] | None = None
+  flex_basis: str | None = None
   flex_direction: Literal[
     "row",
     "row-reverse",
@@ -70,10 +77,13 @@ class Style:
     "column-reverse",
   ] | None = None
   flex_grow: int | None = None
+  flex_shrink: int | None = None
+  flex_wrap: Literal["nowrap", "wrap", "wrap-reverse"] | None = None
   font_size: int | str | None = None
+  font_style: Literal["italic", "normal"] | None = None
   font_weight: Literal[
-    "normal",
     "bold",
+    "normal",
     100,
     200,
     300,
@@ -85,7 +95,19 @@ class Style:
     900,
   ] | None = None
   height: int | str | None = None
+  justify_content: Literal[
+    "center",
+    "start",
+    "end",
+    "flex",
+    "flex",
+    "left",
+    "right",
+  ] | None = None
+  letter_spacing: int | str | None = None
   margin: Margin | None = None
+  overflow_x: OverflowValues | None = None
+  overflow_y: OverflowValues | None = None
   padding: Padding | None = None
   position: Literal[
     "static",
@@ -100,6 +122,16 @@ class Style:
     "left",
     "right",
     "center",
+  ] | None = None
+  text_decoration: Literal["underline", "none"] | None = None
+  text_overflow: Literal["ellipsis", "clip"] | None = None
+  white_space: Literal[
+    "normal",
+    "nowrap",
+    "pre",
+    "pre-wrap",
+    "pre-line",
+    "break-spaces",
   ] | None = None
   width: int | str | None = None
 
