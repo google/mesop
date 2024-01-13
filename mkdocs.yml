@@ -16,6 +16,8 @@ nav:
       - Text:
           - Text: components/text.md
           - Markdown: components/markdown.md
+      - Media:
+          - Image: components/image.md
       - Form controls:
           - Button: components/button.md
           - Checkbox: components/checkbox.md

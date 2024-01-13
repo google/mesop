@@ -14,6 +14,7 @@ py_library(
     srcs = glob(["*.py"]),
     deps = [
         # REF(//scripts/scaffold_component.py):insert_component_e2e_import
+        "//mesop/components/image/e2e",
         "//mesop",
         "//mesop/labs",
         "//mesop/components/slider/e2e",

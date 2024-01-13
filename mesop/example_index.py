@@ -21,4 +21,5 @@ import mesop.components.slide_toggle.e2e as slide_toggle_e2e
 import mesop.components.radio.e2e as radio_e2e
 import mesop.components.select.e2e as select_e2e
 import mesop.components.slider.e2e as slider_e2e
+import mesop.components.image.e2e as image_e2e
 # REF(//scripts/scaffold_component.py):insert_component_e2e_import_export

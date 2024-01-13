@@ -1,0 +1,8 @@
+syntax = "proto2";
+
+package mesop.components.image;
+
+message ImageType {
+    optional string src = 1;
+    optional string alt = 2;
+}
