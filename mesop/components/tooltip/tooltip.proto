@@ -9,6 +9,5 @@ message TooltipType {
   optional bool disabled = 3;
   optional double show_delay_ms = 4;
   optional double hide_delay_ms = 5;
-  optional string touch_gestures = 6;
   optional string message = 7;
 }

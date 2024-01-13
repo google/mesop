@@ -38,8 +38,4 @@ export class TooltipComponent {
       | 'before'
       | 'after';
   }
-
-  getTouchGestures(): 'auto' | 'on' | 'off' {
-    return this.config().getTouchGestures() as 'auto' | 'on' | 'off';
-  }
 }
