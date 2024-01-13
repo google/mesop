@@ -41,17 +41,12 @@ def text(
       key: An optional key to uniquely identify the component. Defaults to None.
 
   """
-  # The Python and Proto enum values should be exactly 1:1
-  # typography_level = cast(
-  #   text_pb2.TextType.TypographyLevel.ValueType, type.value
-  # )
   insert_component(
     key=key,
     type_name="text",
     proto=text_pb2.TextType(
       text=text,
       type=type,
-      # typography_level=typography_level,
     ),
     style=to_style_proto(style) if style else None,
   )
