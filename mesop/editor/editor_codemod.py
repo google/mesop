@@ -31,12 +31,14 @@ class NewComponentCodemod(VisitorBasedCodemodCommand):
       )
 
   def leave_With(self, original_node: cst.With, updated_node: cst.With):
-    if self.input.mode != pb.EditorNewComponent.Mode.MODE_CHILD:
-      return updated_node
     position = self.get_metadata(PositionProvider, original_node)
     assert isinstance(position, CodeRange)
     if position.start.line != self.input.source_code_location.line:
       return updated_node
+    if self.input.mode == pb.EditorNewComponent.Mode.MODE_APPEND_SIBLING:
+      return cst.FlattenSentinel(
+        [updated_node, create_component_callsite(self.input.component_name)]
+      )
 
     updated_statement_lines: list[
       cst.BaseStatement | cst.BaseSmallStatement
@@ -50,9 +52,12 @@ class NewComponentCodemod(VisitorBasedCodemodCommand):
       ):
         updated_statement_lines.append(statement)
 
-    updated_statement_lines.append(
-      create_component_callsite(self.input.component_name)
-    )
+    if self.input.mode == pb.EditorNewComponent.Mode.MODE_CHILD:
+      updated_statement_lines.append(
+        create_component_callsite(self.input.component_name)
+      )
+    else:
+      raise Exception("unsupported mode", self.input.mode)
 
     return updated_node.with_changes(
       body=updated_node.body.with_changes(body=updated_statement_lines)

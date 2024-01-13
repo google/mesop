@@ -92,6 +92,16 @@ class TestNewComponentCodemod(CodemodTest):
       ),
     )
 
+  def test_new_component_with_block_nested_sibling(self) -> None:
+    self.assertEditorUpdate(
+      "new_component_with_block_nested_sibling",
+      pb.EditorNewComponent(
+        component_name=me_name("divider"),
+        source_code_location=pb.SourceCodeLocation(line=5),
+        mode=pb.EditorNewComponent.Mode.MODE_APPEND_SIBLING,
+      ),
+    )
+
   def test_new_component_child(self) -> None:
     self.assertEditorUpdate(
       "new_component_child",
