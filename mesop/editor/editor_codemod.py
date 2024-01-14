@@ -7,6 +7,7 @@ from typing import Sequence
 import libcst as cst
 from libcst.codemod import (
   CodemodContext,
+  SkipFile,
   VisitorBasedCodemodCommand,
 )
 from libcst.codemod.visitors import AddImportsVisitor
@@ -193,14 +194,19 @@ class UpdateCallsiteCodemod(VisitorBasedCodemodCommand):
     self, input_arg: cst.Arg, segments: Sequence[pb.ArgPathSegment]
   ) -> cst.Arg | None:
     if len(segments) == 1:
-      maybe_call = input_arg.value
-      if not isinstance(maybe_call, cst.Call):
+      arg_value = input_arg.value
+      if not isinstance(arg_value, cst.Call):
+        if not isinstance(arg_value, (cst.Integer, cst.SimpleString)) and not (
+          isinstance(arg_value, cst.Name)
+          and arg_value.value in ("True", "False", "None")  # handle None
+        ):
+          raise SkipFile("Skipping updating callsite because non-literal arg.")
         new_value = self.get_value(self.input.replacement)
         if new_value is None:
           return None
         mod = input_arg.with_changes(value=new_value)
         return mod
-      call = maybe_call
+      call = arg_value
 
       if (
         input_arg.keyword

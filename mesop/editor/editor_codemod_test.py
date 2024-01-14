@@ -259,6 +259,24 @@ class TestUpdateCallsiteCodemod(CodemodTest):
       ),
     )
 
+  def test_add_property_non_literal_skip(self) -> None:
+    self.assertEditorUpdate(
+      "add_property_non_literal_skip",
+      pb.EditorUpdateCallsite(
+        component_name=me_name("input"),
+        arg_path=pb.ArgPath(
+          segments=[
+            pb.ArgPathSegment(keyword_argument="label"),
+          ]
+        ),
+        replacement=pb.CodeReplacement(
+          new_code=pb.CodeValue(string_value="should_not_update"),
+        ),
+        source_code_location=pb.SourceCodeLocation(line=6),
+      ),
+      expected_skip=True,
+    )
+
   def test_input_add_property(self) -> None:
     self.assertEditorUpdate(
       "input_add_property",
@@ -438,12 +456,16 @@ class TestUpdateCallsiteCodemod(CodemodTest):
     )
 
   def assertEditorUpdate(
-    self, test_case_name: str, input: pb.EditorUpdateCallsite
+    self,
+    test_case_name: str,
+    input: pb.EditorUpdateCallsite,
+    expected_skip: bool = False,
   ):
     self.assertCodemod(
       load_testdata(dir=test_case_name, filename="before.py"),
       load_testdata(dir=test_case_name, filename="after.py"),
       input=input,
+      expected_skip=expected_skip,
     )
 
 
