@@ -21,7 +21,6 @@ import {MatButtonModule} from '@angular/material/button';
 import {ComponentObject} from '../services/logger';
 import {EditorService} from '../../services/editor_service';
 import {CommonModule} from '@angular/common';
-import {CommandDialogService} from '../command_dialog/command_dialog_service';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {Channel} from '../../services/channel';
 import {isComponentNameEquals} from '../../utils/proto';
@@ -62,7 +61,6 @@ export class ComponentTree {
 
   constructor(
     private editorService: EditorService,
-    private commandDialogService: CommandDialogService,
     private channel: Channel,
   ) {}
 
@@ -146,15 +144,11 @@ export class ComponentTree {
   }
 
   addChildComponent(node: FlatNode): void {
-    this.commandDialogService.openDialog(node.proto, {
-      newComponentMode: 'addChild',
-    });
+    this.editorService.addComponentChild(node.proto);
   }
 
   addSiblingComponent(node: FlatNode): void {
-    this.commandDialogService.openDialog(node.proto, {
-      newComponentMode: 'appendSibling',
-    });
+    this.editorService.addComponentSibling(node.proto);
   }
 
   onMouseenter(node: FlatNode): void {

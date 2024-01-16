@@ -17,6 +17,7 @@ ng_module(
         "//mesop/protos:ui_jspb_proto",
         "//mesop/web/src/component_renderer",
         "//mesop/web/src/dev_tools",
+        "//mesop/web/src/dev_tools/command_dialog",
         "//mesop/web/src/dev_tools/services",
         "//mesop/web/src/error",
         "//mesop/web/src/services",
