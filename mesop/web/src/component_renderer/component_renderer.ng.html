@@ -27,7 +27,7 @@ to have certain styling properties -->
 <ng-template
   cdkConnectedOverlay
   [cdkConnectedOverlayOrigin]="trigger"
-  [cdkConnectedOverlayOpen]="isEditorFocusedComponent()"
+  [cdkConnectedOverlayOpen]="shouldShowOverlay()"
 >
   <div class="editor-overlay">
     {{getComponentName()}}

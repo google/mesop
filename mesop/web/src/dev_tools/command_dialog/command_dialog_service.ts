@@ -13,8 +13,11 @@ export class CommandDialogService {
     private channel: Channel,
   ) {}
 
-  openDialog(component: ComponentProto, config: CommandDialogConfig) {
-    this.dialog.open(CommandDialog, {
+  async openDialog(
+    component: ComponentProto,
+    config: CommandDialogConfig,
+  ): Promise<void> {
+    const dialogRef = this.dialog.open(CommandDialog, {
       minWidth: '300px',
       data: {
         config,
@@ -29,5 +32,6 @@ export class CommandDialogService {
         ],
       } as DialogData,
     });
+    await dialogRef.closed.toPromise();
   }
 }

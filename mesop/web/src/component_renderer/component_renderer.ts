@@ -302,6 +302,13 @@ export class ComponentRenderer {
   getComponentName(): string {
     return this.type()?.getName()?.getFnName() ?? '[root]';
   }
+
+  shouldShowOverlay(): boolean {
+    return (
+      this.isEditorFocusedComponent() &&
+      this.getSelectionMode() === SelectionMode.SELECTING
+    );
+  }
 }
 
 function isRegularComponent(component: ComponentProto) {

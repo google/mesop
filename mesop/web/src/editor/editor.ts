@@ -172,23 +172,25 @@ class EditorServiceImpl implements EditorService {
     return true;
   }
 
-  addComponentSibling(component: ComponentProto) {
-    this.commandDialogService.openDialog(component, {
+  async addComponentSibling(component: ComponentProto) {
+    await this.commandDialogService.openDialog(component, {
       newComponentMode: 'appendSibling',
     });
     this.setFocusedComponent(component);
     if (!this.indexPath) return;
     this.indexPath[this.indexPath.length - 1] =
       this.indexPath[this.indexPath.length - 1] + 1;
+    this.setSelectionMode(SelectionMode.SELECTED);
   }
 
-  addComponentChild(component: ComponentProto) {
-    this.commandDialogService.openDialog(component, {
+  async addComponentChild(component: ComponentProto) {
+    await this.commandDialogService.openDialog(component, {
       newComponentMode: 'addChild',
     });
     this.setFocusedComponent(component);
     if (!this.indexPath) return;
     this.indexPath.push(component.getChildrenList().length);
+    this.setSelectionMode(SelectionMode.SELECTED);
   }
 
   getSelectionMode(): SelectionMode {
