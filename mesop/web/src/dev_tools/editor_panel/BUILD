@@ -20,6 +20,7 @@ ng_module(
         "//mesop/web/src/dev_tools/object_tree",
         "//mesop/web/src/dev_tools/services",
         "//mesop/web/src/services",
+        "//mesop/web/src/utils",
     ] + ANGULAR_CORE_DEPS + ANGULAR_CDK_TS_DEPS + ANGULAR_MATERIAL_TS_DEPS + THIRD_PARTY_JS_RXJS,
 )
 
