@@ -2,6 +2,7 @@ from mesop.examples import buttons as buttons
 from mesop.examples import columns as columns
 from mesop.examples import composite as composite
 from mesop.examples import docs as docs
+from mesop.examples import dynamic_values as dynamic_values
 from mesop.examples import error as error
 from mesop.examples import (
   error_no_stateclass_decorator as error_no_stateclass_decorator,
