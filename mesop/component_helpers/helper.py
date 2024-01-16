@@ -179,7 +179,7 @@ def insert_composite_component(
 ) -> _ComponentWithChildren:
   source_code_location = None
   if runtime().debug_mode:
-    source_code_location = get_caller_source_code_location(levels=4)
+    source_code_location = get_caller_source_code_location(levels=7)
   return _ComponentWithChildren(
     type_name=type_name,
     proto=proto,
@@ -200,7 +200,7 @@ def insert_component(
   """
   source_code_location = None
   if runtime().debug_mode:
-    source_code_location = get_caller_source_code_location(levels=4)
+    source_code_location = get_caller_source_code_location(levels=7)
   runtime().context().current_node().children.append(
     create_component(
       component_name=pb.ComponentName(core_module=True, fn_name=type_name),
