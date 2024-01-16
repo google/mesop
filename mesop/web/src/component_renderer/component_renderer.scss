@@ -4,7 +4,7 @@
   background: #111;
   color: #ddd;
   border-radius: 12px;
-  padding: 12px;
+  padding: 6px 4px 6px 12px;
   font-size: 16px;
   font-weight: 500;
 }
@@ -14,4 +14,9 @@
   background: #eee;
   height: 24px;
   margin-left: 12px;
+}
+
+.add-component {
+  cursor: pointer;
+  margin: 0 6px;
 }

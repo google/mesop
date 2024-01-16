@@ -26,6 +26,8 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {MatDividerModule} from '@angular/material/divider';
 import {formatStyle} from '../utils/styles';
+import {isComponentNameEquals} from '../utils/proto';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 const CORE_NAMESPACE = 'me';
 
@@ -41,6 +43,7 @@ const CORE_NAMESPACE = 'me';
     MatButtonModule,
     MatIconModule,
     MatDividerModule,
+    MatTooltipModule,
   ],
 })
 export class ComponentRenderer {
@@ -270,6 +273,28 @@ export class ComponentRenderer {
 
   getSelectionMode(): SelectionMode {
     return this.editorService.getSelectionMode();
+  }
+
+  canAddChildComponent(): boolean {
+    return Boolean(
+      this.channel
+        .getComponentConfigs()
+        .find((c) =>
+          isComponentNameEquals(
+            c.getComponentName()!,
+            this.component.getType()?.getName(),
+          ),
+        )
+        ?.getAcceptsChild(),
+    );
+  }
+
+  addChildComponent(): void {
+    this.editorService.addComponentChild(this.component);
+  }
+
+  addSiblingComponent(): void {
+    this.editorService.addComponentSibling(this.component);
   }
 
   SelectionMode = SelectionMode;
