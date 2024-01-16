@@ -103,6 +103,12 @@ export function mapComponentToObject(
         case CodeValue.ValueCase.STRING_VALUE:
           codeValue = arg.getCodeValue()!.getStringValue();
           break;
+        case CodeValue.ValueCase.INT_VALUE:
+          codeValue = arg.getCodeValue()!.getIntValue();
+          break;
+        case CodeValue.ValueCase.DOUBLE_VALUE:
+          codeValue = arg.getCodeValue()!.getDoubleValue();
+          break;
         default:
           throw new Error(
             `Unhandled code value: ${arg.getCodeValue()?.toObject()}`,
