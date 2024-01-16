@@ -17,6 +17,7 @@ ng_module(
         "//mesop/web/src/component_renderer",
         "//mesop/web/src/dev_tools/services",
         "//mesop/web/src/services",
+        "//mesop/web/src/utils",
     ] + ANGULAR_CORE_DEPS + ANGULAR_MATERIAL_TS_DEPS + ANGULAR_CDK_TS_DEPS,
 )
 
