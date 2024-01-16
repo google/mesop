@@ -8,7 +8,7 @@ from mesop.editor.component_configs import (
   generate_component_config,
   get_component_configs,
 )
-from mesop.labs import columns
+from mesop.labs.layout import columns
 
 
 def test_generate_component_config_button():

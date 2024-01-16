@@ -1,9 +1,9 @@
 import mesop as me
-import mesop.labs as mel
+from mesop.labs.layout import columns
 
 
 @me.page(path="/columns")
 def main():
-  with mel.columns():
+  with columns(columns=2):
     me.text("first_column")
     me.text("second_column")
