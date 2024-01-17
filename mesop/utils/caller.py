@@ -20,7 +20,7 @@ def get_caller_source_code_location(levels: int = 1) -> pb.SourceCodeLocation:
   caller_info = inspect.getframeinfo(current_frame)
 
   # Get module from filepath
-  segments = caller_info.filename.split(".runfiles/")[1].split("/")
+  segments = caller_info.filename.split("runfiles/")[1].split("/")
   segments[len(segments) - 1] = segments[len(segments) - 1][: len(".py") * -1]
   module = ".".join(segments)
 
