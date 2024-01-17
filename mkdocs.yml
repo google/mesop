@@ -11,7 +11,7 @@ nav:
       - Pages: guides/pages.md
       - Deployment: guides/deployment.md
       - Troubleshooting: guides/troubleshooting.md
-  - Components:
+  - Components API:
       - Layout:
           - Box: components/box.md
       - Text:
@@ -37,6 +37,8 @@ nav:
           - Progress bar: components/progress_bar.md
           - Progress spinner: components/progress_spinner.md
           - Tooltip: components/tooltip.md
+      - Styling:
+          - Style: components/style.md
   - Blog:
       - blog/index.md
   - Internal:

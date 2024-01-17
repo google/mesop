@@ -8,6 +8,17 @@ OverflowValues = Literal["visible", "hidden", "clip", "scroll", "auto"]
 
 @dataclass(kw_only=True)
 class BorderSide:
+  """
+  Represents the style of a single side of a border in a UI component.
+
+  Attributes:
+      width: The width of the border. Can be specified as an integer value representing pixels,
+                                a string with a unit (e.g., '2em'), or None for no width.
+      color: The color of the border, represented as a string. This can be any valid CSS color value,
+                          or None for no color.
+      style: The style of the border, which can be 'none' for no border, 'solid' for a solid line.
+  """
+
   width: int | str | None = None
   color: str | None = None
   style: Literal["none", "solid"] | None = None
@@ -15,6 +26,16 @@ class BorderSide:
 
 @dataclass(kw_only=True)
 class Border:
+  """
+  Defines the border styles for each side of a UI component.
+
+  Attributes:
+      top: Style for the top border.
+      right: Style for the right border.
+      bottom: Style for the bottom border.
+      left: Style for the left border.
+  """
+
   top: BorderSide | None = None
   right: BorderSide | None = None
   bottom: BorderSide | None = None
@@ -22,7 +43,7 @@ class Border:
 
 
 @dataclass(kw_only=True)
-class EdgeInsets:
+class _EdgeInsets:
   top: int | str | None = None
   right: int | str | None = None
   bottom: int | str | None = None
@@ -30,20 +51,78 @@ class EdgeInsets:
 
 
 @dataclass(kw_only=True)
-class Margin(EdgeInsets):
-  pass
+class Margin(_EdgeInsets):
+  """
+  Defines the margin space around a UI component.
+
+  Attributes:
+      top: Top margin (note: `2` is the same as `2px`)
+      right: Right margin
+      bottom: Bottom margin
+      left: Left margin
+  """
+
+  top: int | str | None = None
+  right: int | str | None = None
+  bottom: int | str | None = None
+  left: int | str | None = None
 
 
 @dataclass(kw_only=True)
-class Padding(EdgeInsets):
-  pass
+class Padding(_EdgeInsets):
+  """
+  Defines the padding space around a UI component.
+
+  Attributes:
+      top: Top padding (note: `2` is the same as `2px`)
+      right: Right padding
+      bottom: Bottom padding
+      left: Left padding
+  """
+
+  top: int | str | None = None
+  right: int | str | None = None
+  bottom: int | str | None = None
+  left: int | str | None = None
 
 
 @dataclass(kw_only=True)
 class Style:
-  """For literal properties, make the most commonly used option the first literal
-  element, as it will be used as the default value by the editor when creating that property.
   """
+  Represents the style configuration for a UI component.
+
+  Attributes:
+      align_items: Specifies the default alignment for items inside a flexible container. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/align-items).
+      background: Sets the background color or image of the component. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/background).
+      border: Defines the border properties for each side of the component. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/border).
+      color: Sets the color of the text inside the component. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/color).
+      columns: Specifies the number of columns in a multi-column element. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/columns).
+      display: Defines the display type of the component. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/display).
+      flex_basis: Specifies the initial length of a flexible item. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/flex-basis).
+      flex_direction: Establishes the main-axis, thus defining the direction flex items are placed in the flex container. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/flex-direction).
+      flex_grow: Defines the ability for a flex item to grow if necessary. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/flex-grow).
+      flex_shrink: Defines the ability for a flex item to shrink if necessary. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/flex-shrink).
+      flex_wrap: Allows flex items to wrap onto multiple lines. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/flex-wrap).
+      font_size: Sets the size of the font. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/font-size).
+      font_style: Specifies the font style for text. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/font-style).
+      font_weight: Sets the weight (or boldness) of the font. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/font-weight).
+      height: Sets the height of the component. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/height).
+      justify_content: Aligns the flexible container's items when the items do not use all available space on the main-axis. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/justify-content).
+      letter_spacing: Increases or decreases the space between characters in text. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/letter-spacing).
+      margin: Sets the margin space required on each side of an element. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/margin).
+      overflow_x: Specifies the handling of overflow in the horizontal direction. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/overflow-x).
+      overflow_y: Specifies the handling of overflow in the vertical direction. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/overflow-y).
+      padding: Sets the padding space required on each side of an element. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/padding).
+      position: Specifies the type of positioning method used for an element (static, relative, absolute, fixed, or sticky). See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/position).
+      text_align: Specifies the horizontal alignment of text in an element. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/text-align).
+      text_decoration: Specifies the decoration added to text. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration).
+      text_overflow: Specifies how overflowed content that is not displayed should be signaled to the user. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/text-overflow).
+      white_space: Specifies how white space inside an element is handled. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/white-space).
+      width: Sets the width of the component. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/width).
+  """
+
+  # For literal properties, make the most commonly used option the first literal
+  # element, as it will be used as the default value by the editor when creating that property.
 
   align_items: Literal[
     "normal",
@@ -163,7 +242,7 @@ def _map_font_weight(fw: int | str | None) -> str:
   return str(fw)
 
 
-def _map_edge_insets(e: EdgeInsets | None) -> pb.EdgeInsets | None:
+def _map_edge_insets(e: _EdgeInsets | None) -> pb.EdgeInsets | None:
   if e is None:
     return None
   return pb.EdgeInsets(
