@@ -21,13 +21,19 @@ import {BoxType} from 'mesop/mesop/components/box/box_jspb_proto_pb/mesop/compon
 import {BaseComponent, typeToComponent} from './type_to_component';
 import {Channel} from '../services/channel';
 import {EditorService, SelectionMode} from '../services/editor_service';
-import {OverlayModule} from '@angular/cdk/overlay';
+import {
+  Overlay,
+  OverlayConfig,
+  OverlayModule,
+  OverlayRef,
+} from '@angular/cdk/overlay';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {MatDividerModule} from '@angular/material/divider';
 import {formatStyle} from '../utils/styles';
 import {isComponentNameEquals} from '../utils/proto';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import {TemplatePortal} from '@angular/cdk/portal';
 
 const CORE_NAMESPACE = 'me';
 
@@ -53,17 +59,22 @@ export class ComponentRenderer {
   @ViewChild('insertion', {read: ViewContainerRef, static: true})
   insertionRef!: ViewContainerRef;
 
+  @ViewChild('editorOverlay') editorOverlay!: TemplateRef<any>;
+
   @Input() component!: ComponentProto;
   private _boxType: BoxType | undefined;
   private _componentRef!: ComponentRef<BaseComponent>;
   isEditorMode: boolean;
   isEditorOverlayOpen = false;
+  overlayRef?: OverlayRef;
 
   constructor(
     private channel: Channel,
     private applicationRef: ApplicationRef,
     private editorService: EditorService,
     private elementRef: ElementRef,
+    private overlay: Overlay,
+    private viewContainerRef: ViewContainerRef,
   ) {
     this.isEditorMode = this.editorService.isEditorMode();
   }
@@ -144,6 +155,38 @@ export class ComponentRenderer {
     // show focused component highlight.
     if (this.isEditorMode) {
       this.computeStyles();
+      this.renderOverlay();
+    }
+  }
+
+  renderOverlay() {
+    if (this.isEditorFocusedComponent()) {
+      if (this.overlayRef) return;
+      const overlayConfig = new OverlayConfig({
+        positionStrategy: this.overlay
+          .position()
+          .flexibleConnectedTo(this.viewContainerRef.element)
+          .withPositions([
+            {
+              originX: 'start',
+              originY: 'bottom',
+              overlayX: 'start',
+              overlayY: 'top',
+            },
+          ]),
+      });
+
+      this.overlayRef = this.overlay.create(overlayConfig);
+      const portal = new TemplatePortal(
+        this.editorOverlay,
+        this.viewContainerRef,
+      );
+      this.overlayRef.attach(portal);
+    } else {
+      if (this.overlayRef) {
+        this.overlayRef.detach();
+        this.overlayRef = undefined;
+      }
     }
   }
 
