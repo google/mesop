@@ -14,6 +14,7 @@ from mesop.examples import playground as playground
 from mesop.examples import playground_critic as playground_critic
 from mesop.examples import readme_app as readme_app
 from mesop.examples import simple as simple
+from mesop.examples import sxs as sxs
 from mesop.examples import testing as testing
 
 # Do not import error_state_missing_init_prop because it cause all examples to fail.
