@@ -75,7 +75,9 @@ export function formatStyle(styleObj: Style): string {
   }
   if (styleObj.getMargin()) {
     const margin = styleObj.getMargin()!;
-    style += `margin: ${margin.getTop()} ${margin.getRight()} ${margin.getBottom()} ${margin.getLeft()};`;
+    style += `margin: ${margin.getTop() ?? 0} ${margin.getRight() ?? 0} ${
+      margin.getBottom() ?? 0
+    } ${margin.getLeft() ?? 0};`;
   }
   if (styleObj.getOverflowX()) {
     style += `overflow-x: ${styleObj.getOverflowX()};`;
@@ -85,7 +87,9 @@ export function formatStyle(styleObj: Style): string {
   }
   if (styleObj.getPadding()) {
     const padding = styleObj.getPadding()!;
-    style += `padding: ${padding.getTop()} ${padding.getRight()} ${padding.getBottom()} ${padding.getLeft()};`;
+    style += `padding: ${padding.getTop() ?? 0} ${padding.getRight() ?? 0} ${
+      padding.getBottom() ?? 0
+    } ${padding.getLeft() ?? 0};`;
   }
   if (styleObj.getPosition()) {
     style += `position: ${styleObj.getPosition()};`;
