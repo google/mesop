@@ -31,6 +31,9 @@ export function formatStyle(styleObj: Style): string {
       style += `border-right: ${right.getWidth()} ${right.getStyle()} ${right.getColor()};`;
     }
   }
+  if (styleObj.getBorderRadius()) {
+    style += `border-radius: ${styleObj.getBorderRadius()};`;
+  }
   if (styleObj.getColor()) {
     style += `color: ${styleObj.getColor()};`;
   }

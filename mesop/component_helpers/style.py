@@ -95,6 +95,7 @@ class Style:
       align_items: Specifies the default alignment for items inside a flexible container. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/align-items).
       background: Sets the background color or image of the component. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/background).
       border: Defines the border properties for each side of the component. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/border).
+      border_radius: Defines the border radius. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/border-radius).
       color: Sets the color of the text inside the component. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/color).
       columns: Specifies the number of columns in a multi-column element. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/columns).
       display: Defines the display type of the component. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/display).
@@ -133,6 +134,7 @@ class Style:
   ] | None = None
   background: str | None = None
   border: Border | None = None
+  border_radius: int | str | None = None
   color: str | None = None
   columns: int | None = None
   display: Literal[
@@ -220,6 +222,7 @@ def to_style_proto(s: Style) -> pb.Style:
     align_items=s.align_items,
     background=s.background,
     border=_map_border(s.border),
+    border_radius=_px_str(s.border_radius),
     color=s.color,
     columns=s.columns,
     display=s.display,
