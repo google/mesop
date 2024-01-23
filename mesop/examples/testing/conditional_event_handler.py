@@ -19,11 +19,9 @@ def app():
     state.second = event.checked
 
   me.text("Make sure tracing discovers event handlers that are conditional")
-  with me.checkbox(on_change=outer_on_change):
-    me.text("first checkbox")
+  me.checkbox("first checkbox", on_change=outer_on_change)
   state = me.state(State)
   if state.first:
-    with me.checkbox(on_change=inner_on_change):
-      me.text("second checkbox")
+    me.checkbox("second checkbox", on_change=inner_on_change)
   if state.second:
     me.text("second checkbox has been checked")

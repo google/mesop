@@ -15,11 +15,13 @@ def on_update(event: me.CheckboxChangeEvent):
 @me.page(path="/components/checkbox/e2e/checkbox_app")
 def app():
   state = me.state(State)
-  with me.checkbox(
+  me.checkbox(
+    "label",
     on_change=on_update,
     checked=state.checked,
-  ):
-    me.text(text="label")
+    disable_ripple=False,
+    indeterminate=False,
+  )
 
   if state.checked:
     me.text(text="is checked")

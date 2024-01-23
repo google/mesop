@@ -46,6 +46,9 @@ from mesop.components.checkbox.checkbox import (
 from mesop.components.checkbox.checkbox import (
   checkbox as checkbox,
 )
+from mesop.components.checkbox.checkbox import (
+  content_checkbox as content_checkbox,
+)
 from mesop.components.divider.divider import divider as divider
 from mesop.components.icon.icon import icon as icon
 from mesop.components.image.image import image as image

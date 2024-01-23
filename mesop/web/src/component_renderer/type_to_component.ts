@@ -68,7 +68,8 @@ export const typeToComponent = {
   'textarea': InputComponent,
   'button': UserDefinedComponent,
   'content_button': ButtonComponent,
-  'checkbox': CheckboxComponent,
+  'checkbox': UserDefinedComponent,
+  'content_checkbox': CheckboxComponent,
   'text': TextComponent,
   'markdown': MarkdownComponent,
 } as TypeToComponent;

@@ -11,5 +11,6 @@ Checkbox is a multi-selection form control and is based on the [Angular Material
 ## API
 
 ::: mesop.components.checkbox.checkbox.checkbox
+::: mesop.components.checkbox.checkbox.content_checkbox
 ::: mesop.components.checkbox.checkbox.CheckboxChangeEvent
 ::: mesop.components.checkbox.checkbox.CheckboxIndeterminateChangeEvent

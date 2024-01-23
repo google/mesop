@@ -3,11 +3,13 @@ from typing import Any, Callable, Literal
 
 import mesop.components.checkbox.checkbox_pb2 as checkbox_pb
 from mesop.component_helpers import (
+  component,
   insert_composite_component,
   register_event_handler,
   register_event_mapper,
   register_native_component,
 )
+from mesop.components.text.text import text
 from mesop.events import MesopEvent
 
 
@@ -53,8 +55,9 @@ register_event_mapper(
 )
 
 
-@register_native_component
+@component
 def checkbox(
+  label: str | None = None,
   *,
   on_change: Callable[[CheckboxChangeEvent], Any] | None = None,
   on_indeterminate_change: Callable[[CheckboxIndeterminateChangeEvent], Any]
@@ -68,8 +71,54 @@ def checkbox(
   indeterminate: bool = False,
   key: str | None = None,
 ):
-  """Creates a Checkbox component.
-  Checkbox is a composite component.
+  """Creates a simple Checkbox component with a text label.
+
+  Args:
+    label: Text label for checkbox
+    on_change: Event emitted when the checkbox's `checked` value changes.
+    on_indeterminate_change: Event emitted when the checkbox's `indeterminate` value changes.
+    label_position: Whether the label should appear after or before the checkbox. Defaults to 'after'
+    disable_ripple: Whether the checkbox has a ripple.
+    tab_index: Tabindex for the checkbox.
+    color: Palette color of the checkbox.
+    checked: Whether the checkbox is checked.
+    disabled: Whether the checkbox is disabled.
+    indeterminate: Whether the checkbox is indeterminate. This is also known as "mixed" mode and can be used to represent a checkbox with three states, e.g. a checkbox that represents a nested list of checkable items. Note that whenever checkbox is manually clicked, indeterminate is immediately set to false.
+    key: Unique identifier for this component instance.
+  """
+  with content_checkbox(
+    on_change=on_change,
+    on_indeterminate_change=on_indeterminate_change,
+    label_position=label_position,
+    disable_ripple=disable_ripple,
+    tab_index=tab_index,
+    color=color,
+    checked=checked,
+    disabled=disabled,
+    indeterminate=indeterminate,
+    key=key,
+  ):
+    text(label)
+
+
+@register_native_component
+def content_checkbox(
+  *,
+  on_change: Callable[[CheckboxChangeEvent], Any] | None = None,
+  on_indeterminate_change: Callable[[CheckboxIndeterminateChangeEvent], Any]
+  | None = None,
+  label_position: Literal["before", "after"] = "after",
+  disable_ripple: bool = False,
+  tab_index: int = 0,
+  color: Literal["primary", "accent", "warn"] | None = None,
+  checked: bool = False,
+  disabled: bool = False,
+  indeterminate: bool = False,
+  key: str | None = None,
+):
+  """Creates a Checkbox component which is a composite component. Typically, you would use a text or icon component as a child.
+
+  Intended for advanced use cases.
 
   Args:
     on_change: Event emitted when the checkbox's `checked` value changes.
@@ -85,7 +134,7 @@ def checkbox(
   """
   return insert_composite_component(
     key=key,
-    type_name="checkbox",
+    type_name="content_checkbox",
     proto=checkbox_pb.CheckboxType(
       label_position=label_position,
       disable_ripple=disable_ripple,

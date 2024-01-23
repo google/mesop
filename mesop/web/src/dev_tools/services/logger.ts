@@ -90,7 +90,10 @@ export function mapComponentToObject(
 
   if (
     component.getType()?.getName()?.getCoreModule() === false ||
-    component.getType()?.getName()?.getFnName() === 'button'
+    // These are core module components which are implemented as user defined components.
+    ['button', 'checkbox'].includes(
+      component.getType()?.getName()?.getFnName()!,
+    )
   ) {
     const value: Record<string, any> = {};
     // Deserialize type
