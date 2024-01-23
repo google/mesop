@@ -66,9 +66,7 @@ export const typeToComponent = {
   // Textarea is a special case where it's exposed as a separate
   // component / API, but the implementation is almost identical as Input.
   'textarea': InputComponent,
-  'button': UserDefinedComponent,
   'content_button': ButtonComponent,
-  'checkbox': UserDefinedComponent,
   'content_checkbox': CheckboxComponent,
   'text': TextComponent,
   'markdown': MarkdownComponent,

@@ -213,7 +213,7 @@ export class ComponentRenderer {
       };
     }
     const componentClass = typeName.getCoreModule()
-      ? typeToComponent[typeName.getFnName()!]
+      ? typeToComponent[typeName.getFnName()!] || UserDefinedComponent // Some core modules rely on UserDefinedComponent
       : UserDefinedComponent;
     // Need to insert at insertionRef and *not* viewContainerRef, otherwise
     // the component (e.g. <mesop-text> will not be properly nested inside <component-renderer>).
