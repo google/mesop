@@ -15,7 +15,8 @@ class Figure(Protocol):
     pass
 
 
-@component
+# Skip pydantic validation because Figure is a Protocol which can't type-check properly
+@component(skip_validation=True)
 def plot(figure: Figure, *, style: Style | None = None):
   """
   Creates a plot component from a Matplotlib figure.

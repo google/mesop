@@ -11,7 +11,7 @@ from mesop.components.text.text import text
 from mesop.events import ClickEvent
 
 
-@component
+@component()
 def button(
   label: str | None = None,
   *,

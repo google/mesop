@@ -86,40 +86,43 @@ def composite(fn: Callable[..., Any]):
 C = TypeVar("C", bound=Callable[..., Any])
 
 
-def component(fn: C) -> C:
-  """Wraps a Python function to make it a user-defined component."""
+def component(skip_validation: bool = False):
+  def component_wrapper(fn: C) -> C:
+    """Wraps a Python function to make it a user-defined component."""
 
-  validated_fn = validate(fn)
+    validated_fn = fn if skip_validation else validate(fn)
 
-  @wraps(fn)
-  def wrapper(*args: Any, **kw_args: Any):
-    prev_current_node = runtime().context().current_node()
-    component = prev_current_node.children.add()
-    source_code_location = None
-    if runtime().debug_mode:
-      source_code_location = get_caller_source_code_location(levels=2)
-    component.MergeFrom(
-      create_component(
-        component_name=get_component_name(fn),
-        proto=pb.UserDefinedType(
-          args=[
-            pb.UserDefinedType.Arg(
-              arg_name=kw_arg, code_value=map_code_value(value)
-            )
-            for kw_arg, value in kw_args.items()
-            if map_code_value(value) is not None
-          ]
-        ),
-        source_code_location=source_code_location,
+    @wraps(fn)
+    def wrapper(*args: Any, **kw_args: Any):
+      prev_current_node = runtime().context().current_node()
+      component = prev_current_node.children.add()
+      source_code_location = None
+      if runtime().debug_mode:
+        source_code_location = get_caller_source_code_location(levels=2)
+      component.MergeFrom(
+        create_component(
+          component_name=get_component_name(fn),
+          proto=pb.UserDefinedType(
+            args=[
+              pb.UserDefinedType.Arg(
+                arg_name=kw_arg, code_value=map_code_value(value)
+              )
+              for kw_arg, value in kw_args.items()
+              if map_code_value(value) is not None
+            ]
+          ),
+          source_code_location=source_code_location,
+        )
       )
-    )
-    runtime().context().set_current_node(component)
-    ret = validated_fn(*args, **kw_args)
-    runtime().context().set_current_node(prev_current_node)
-    return ret
+      runtime().context().set_current_node(component)
+      ret = validated_fn(*args, **kw_args)
+      runtime().context().set_current_node(prev_current_node)
+      return ret
 
-  runtime().register_native_component_fn(fn)
-  return cast(C, wrapper)
+    runtime().register_native_component_fn(fn)
+    return cast(C, wrapper)
+
+  return component_wrapper
 
 
 def get_component_name(fn: Callable[..., Any]) -> pb.ComponentName:
