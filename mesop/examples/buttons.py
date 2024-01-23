@@ -14,18 +14,19 @@ def button_click(event: me.ClickEvent):
 @me.page(path="/buttons")
 def main():
   state = me.state(State)
-  with me.button(
-    on_click=button_click, type="flat", color="primary", disabled=False
-  ):
-    me.text(text="primary color button")
 
-  with me.button(on_click=button_click, type="flat"):
-    me.text(text="flat button")
+  me.button(
+    "primary color button",
+    on_click=button_click,
+    type="flat",
+    color="primary",
+    disabled=False,
+  )
 
-  with me.button(on_click=button_click, type="raised"):
-    me.text(text="raised button")
+  me.button("flat button", on_click=button_click, type="flat")
 
-  with me.button(on_click=button_click, type="stroked"):
-    me.text(text="stroked button")
+  me.button("raised button", on_click=button_click, type="raised")
+
+  me.button("stroked button", on_click=button_click, type="stroked")
 
   me.text(text=f"{state.count_clicks} clicks")

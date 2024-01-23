@@ -88,7 +88,10 @@ export function mapComponentToObject(
     };
   }
 
-  if (component.getType()?.getName()?.getCoreModule() === false) {
+  if (
+    component.getType()?.getName()?.getCoreModule() === false ||
+    component.getType()?.getName()?.getFnName() === 'button'
+  ) {
     const value: Record<string, any> = {};
     // Deserialize type
     const userDefinedType = UserDefinedType.deserializeBinary(

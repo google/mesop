@@ -160,6 +160,21 @@ class TestUpdateCallsiteCodemod(CodemodTest):
       ),
     )
 
+  def test_button_callsite(self) -> None:
+    self.assertEditorUpdate(
+      "button_callsite",
+      pb.EditorUpdateCallsite(
+        component_name=me_name("button"),
+        arg_path=pb.ArgPath(
+          segments=[pb.ArgPathSegment(keyword_argument="type")]
+        ),
+        replacement=pb.CodeReplacement(
+          new_code=pb.CodeValue(string_value="flat"),
+        ),
+        source_code_location=pb.SourceCodeLocation(line=5),
+      ),
+    )
+
   def test_multi_callsite(self) -> None:
     self.assertEditorUpdate(
       "multi_callsite",

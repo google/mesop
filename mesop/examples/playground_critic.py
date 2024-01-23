@@ -96,8 +96,7 @@ def left_panel():
         on_input=on_input,
       )
 
-    with me.button(type="stroked", on_click=on_submit):
-      me.text("Submit")
+    me.button("Submit", type="stroked", on_click=on_submit)
 
     with me.box(style=me.Style(margin=me.Margin(top=16, bottom=16))):
       me.divider()

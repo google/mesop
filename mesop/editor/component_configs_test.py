@@ -15,8 +15,11 @@ def test_generate_component_config_button():
   proto = generate_component_config(button)
   assert proto.component_name.core_module is True
   assert proto.component_name.fn_name == "button"
-  assert proto.fields[0] == pb.EditorField(name="on_click")
-  assert proto.fields[1] == pb.EditorField(
+  assert proto.fields[0] == pb.EditorField(
+    name="label", type=pb.FieldType(string_type=pb.StringType())
+  )
+  assert proto.fields[1] == pb.EditorField(name="on_click")
+  assert proto.fields[2] == pb.EditorField(
     name="type",
     type=pb.FieldType(
       literal_type=pb.LiteralType(
@@ -24,7 +27,6 @@ def test_generate_component_config_button():
           pb.LiteralElement(string_literal="raised"),
           pb.LiteralElement(string_literal="flat"),
           pb.LiteralElement(string_literal="stroked"),
-          pb.LiteralElement(string_literal="icon"),
         ],
       )
     ),

@@ -30,5 +30,4 @@ def main():
   if state.is_loading:
     me.progress_spinner()
   me.text(state.data)
-  with me.button(on_click=button_click):
-    me.text("Call API")
+  me.button("Call API", on_click=button_click)

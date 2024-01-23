@@ -24,6 +24,5 @@ def button_click(action: me.ClickEvent):
 @me.page(path="/streaming")
 def main():
   state = me.state(State)
-  with me.button(on_click=button_click):
-    me.text(text="click")
+  me.button("click", on_click=button_click)
   me.text(text=f"{state.string}")

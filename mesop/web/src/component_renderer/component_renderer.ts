@@ -12,13 +12,15 @@ import {
 import {CommonModule} from '@angular/common';
 import {
   Component as ComponentProto,
-  Key,
-  Type,
   UserEvent,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 import {ComponentLoader} from './component_loader';
 import {BoxType} from 'mesop/mesop/components/box/box_jspb_proto_pb/mesop/components/box/box_pb';
-import {BaseComponent, typeToComponent} from './type_to_component';
+import {
+  BaseComponent,
+  UserDefinedComponent,
+  typeToComponent,
+} from './type_to_component';
 import {Channel} from '../services/channel';
 import {EditorService, SelectionMode} from '../services/editor_service';
 import {
@@ -360,16 +362,4 @@ function isRegularComponent(component: ComponentProto) {
     component.getType() &&
     !(typeName.getCoreModule() && typeName.getFnName() === 'box')
   );
-}
-
-@Component({
-  template: '<ng-content></ng-content>',
-  standalone: true,
-})
-class UserDefinedComponent implements BaseComponent {
-  @Input() key!: Key;
-  @Input() type!: Type;
-  ngOnChanges() {
-    // Placeholder function since the
-  }
 }

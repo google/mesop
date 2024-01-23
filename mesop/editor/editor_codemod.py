@@ -146,6 +146,8 @@ class UpdateCallsiteCodemod(VisitorBasedCodemodCommand):
       "icon"
     ]:
       first_positional_arg = "icon"
+    if component_name.fn_name in ["button"]:
+      first_positional_arg = "label"
     return self._update_call(
       updated_node,
       self.input.arg_path.segments,

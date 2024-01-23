@@ -19,7 +19,6 @@ def app():
     me.text(text="hi1")
     with me.box(style=me.Style(background="blue")):
       me.text(text="hi2")
-      with me.button(on_click=click, key="incredibly_long_key"):
-        me.text(text="a button")
+      me.button("a button", on_click=click, key="incredibly_long_key")
       with me.box(style=me.Style(background="orange")):
         me.text(text=f"{state.val} clicks")

@@ -23,8 +23,7 @@ def app():
   me.text("Hello, world!")
   me.textarea(rows=10, label="Prompt", on_input=on_prompt_input)
 
-  with me.button(on_click=on_submit):
-    me.text("Submit")
+  me.button("submit", on_click=on_submit)
 
   state = me.state(State)
   me.text(f"Output: {state.output}")

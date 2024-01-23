@@ -6,4 +6,5 @@ package(
 
 mesop_component(
     name = "button",
+    py_deps = ["//mesop/components/text:py"],
 )

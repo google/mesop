@@ -15,5 +15,4 @@ def button_click(event: me.ClickEvent):
 def main():
   state = me.state(State)
   me.text(f"Clicks: {state.clicks}")
-  with me.button(on_click=button_click):
-    me.text("Increment")
+  me.button("Increment", on_click=button_click)

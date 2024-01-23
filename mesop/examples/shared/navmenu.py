@@ -45,7 +45,7 @@ def menu_item(label: str, icon: str, url: str, current_url: str):
     )
   ):
     with me.box(style=me.Style(margin=me.Margin(bottom=8))):
-      with me.button(type="icon", on_click=on_click, key=url):
+      with me.content_button(type="icon", on_click=on_click, key=url):
         with me.box(
           style=me.Style(
             display="flex", flex_direction="column", align_items="center"

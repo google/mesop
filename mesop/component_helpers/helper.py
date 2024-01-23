@@ -100,15 +100,14 @@ def component(fn: C) -> C:
       source_code_location = get_caller_source_code_location(levels=2)
     component.MergeFrom(
       create_component(
-        component_name=pb.ComponentName(
-          fn_name=fn.__name__, module_path=fn.__module__
-        ),
+        component_name=get_component_name(fn),
         proto=pb.UserDefinedType(
           args=[
             pb.UserDefinedType.Arg(
               arg_name=kw_arg, code_value=map_code_value(value)
             )
             for kw_arg, value in kw_args.items()
+            if map_code_value(value) is not None
           ]
         ),
         source_code_location=source_code_location,
@@ -123,7 +122,13 @@ def component(fn: C) -> C:
   return cast(C, wrapper)
 
 
-def map_code_value(value: Any) -> pb.CodeValue:
+def get_component_name(fn: Callable[..., Any]) -> pb.ComponentName:
+  if "mesop.components" in fn.__module__:
+    return pb.ComponentName(core_module=True, fn_name=fn.__name__)
+  return pb.ComponentName(fn_name=fn.__name__, module_path=fn.__module__)
+
+
+def map_code_value(value: Any) -> pb.CodeValue | None:
   if isinstance(value, str):
     return pb.CodeValue(string_value=value)
   if isinstance(value, int):
@@ -132,7 +137,7 @@ def map_code_value(value: Any) -> pb.CodeValue:
     return pb.CodeValue(double_value=value)
   if isinstance(value, bool):
     return pb.CodeValue(bool_value=value)
-  raise Exception("Unhandled value", value)
+  return None
 
 
 def create_component(

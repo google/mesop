@@ -2,15 +2,50 @@ from typing import Any, Callable, Literal
 
 import mesop.components.button.button_pb2 as button_pb
 from mesop.component_helpers import (
+  component,
   insert_composite_component,
   register_event_handler,
   register_native_component,
 )
+from mesop.components.text.text import text
 from mesop.events import ClickEvent
 
 
-@register_native_component
+@component
 def button(
+  label: str | None = None,
+  *,
+  on_click: Callable[[ClickEvent], Any] | None = None,
+  type: Literal["raised", "flat", "stroked"] | None = None,
+  color: Literal["primary", "accent", "warn"] | None = None,
+  disable_ripple: bool = False,
+  disabled: bool = False,
+  key: str | None = None,
+):
+  """Creates a simple text Button component.
+
+  Args:
+    label: Text label for button
+    on_click: [click](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/click_event) is a native browser event.
+    type: Type of button style to use
+    color: Theme color palette of the button
+    disable_ripple: Whether the ripple effect is disabled or not.
+    disabled: Whether the button is disabled.
+    key: Unique identifier for this component instance.
+  """
+  with content_button(
+    on_click=on_click,
+    type=type,
+    color=color,
+    disable_ripple=disable_ripple,
+    disabled=disabled,
+    key=key,
+  ):
+    text(label)
+
+
+@register_native_component
+def content_button(
   *,
   on_click: Callable[[ClickEvent], Any] | None = None,
   type: Literal["raised", "flat", "stroked", "icon"] | None = None,
@@ -19,8 +54,9 @@ def button(
   disabled: bool = False,
   key: str | None = None,
 ):
-  """Creates a Button component.
-  Button is a composite component.
+  """Creates a button component, which is a composite component. Typically, you would use a text or icon component as a child.
+
+  Intended for advanced use cases.
 
   Args:
     on_click: [click](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/click_event) is a native browser event.
@@ -32,7 +68,7 @@ def button(
   """
   return insert_composite_component(
     key=key,
-    type_name="button",
+    type_name="content_button",
     proto=button_pb.ButtonType(
       color=color,
       disable_ripple=disable_ripple,

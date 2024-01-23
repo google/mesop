@@ -86,8 +86,7 @@ def left_panel():
         on_input=on_input,
       )
 
-    with me.button(type="stroked", on_click=on_submit):
-      me.text("Submit")
+    me.button("Submit", type="stroked", on_click=on_submit)
 
 
 def right_panel():

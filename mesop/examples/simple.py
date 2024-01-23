@@ -32,8 +32,7 @@ def button_click(action: me.ClickEvent):
 @me.page(path="/many_checkboxes")
 def main():
   state = me.state(State)
-  with me.button(on_click=button_click):
-    me.text(text="click me")
+  me.button("click me", on_click=button_click)
   me.text(text=f"{state.count} clicks")
   me.text(text=f"Selected keys: {state.keys}")
   for i in range(1000):

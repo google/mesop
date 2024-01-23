@@ -31,7 +31,12 @@ from mesop.components.badge.badge import badge as badge
 
 # REF(//scripts/scaffold_component.py):insert_component_import_export
 from mesop.components.box.box import box as box
-from mesop.components.button.button import button as button
+from mesop.components.button.button import (
+  button as button,
+)
+from mesop.components.button.button import (
+  content_button as content_button,
+)
 from mesop.components.checkbox.checkbox import (
   CheckboxChangeEvent as CheckboxChangeEvent,
 )
