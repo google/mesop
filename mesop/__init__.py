@@ -55,6 +55,9 @@ from mesop.components.image.image import image as image
 from mesop.components.input.input import input as input
 from mesop.components.input.input import textarea as textarea
 from mesop.components.markdown.markdown import markdown as markdown
+from mesop.components.plot.plot import (
+  plot as plot,
+)
 from mesop.components.progress_bar.progress_bar import (
   progress_bar as progress_bar,
 )

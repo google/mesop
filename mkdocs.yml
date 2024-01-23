@@ -39,6 +39,8 @@ nav:
           - Tooltip: components/tooltip.md
       - Styling:
           - Style: components/style.md
+      - Integrations:
+          - Plot: components/plot.md
   - Blog:
       - blog/index.md
   - Internal:

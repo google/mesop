@@ -35,6 +35,7 @@ py_library(
         "//mesop/components/checkbox/e2e",
         "//mesop/components/text/e2e",
         "//mesop/examples/docs",
+        "//mesop/examples/integrations",
         "//mesop/examples/shared",
         "//mesop/examples/testing",
     ],

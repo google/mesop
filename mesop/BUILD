@@ -22,6 +22,7 @@ py_library(
         "//mesop/components/audio:py",
         "//mesop/components/image:py",
         "//mesop/components/slider:py",
+        "//mesop/components/plot:py",
         "//mesop/components/select:py",
         "//mesop/components/radio:py",
         "//mesop/components/slide_toggle:py",

@@ -81,6 +81,10 @@ THIRD_PARTY_PY_LIBCST = [
     requirement("libcst"),
 ]
 
+THIRD_PARTY_PY_MATPLOTLIB = [
+    requirement("matplotlib"),
+]
+
 THIRD_PARTY_PY_PYDANTIC = [
     requirement("pydantic"),
 ]

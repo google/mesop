@@ -9,6 +9,7 @@ from mesop.examples import (
 )
 from mesop.examples import generator as generator
 from mesop.examples import index as index
+from mesop.examples import integrations as integrations
 from mesop.examples import nested as nested
 from mesop.examples import playground as playground
 from mesop.examples import playground_critic as playground_critic
