@@ -3,7 +3,9 @@ import inspect
 import mesop.protos.ui_pb2 as pb
 
 
-def get_caller_source_code_location(levels: int = 1) -> pb.SourceCodeLocation:
+def get_caller_source_code_location(
+  levels: int = 1,
+) -> pb.SourceCodeLocation | None:
   current_frame = inspect.currentframe()
 
   # Walk backwards
@@ -20,7 +22,11 @@ def get_caller_source_code_location(levels: int = 1) -> pb.SourceCodeLocation:
   caller_info = inspect.getframeinfo(current_frame)
 
   # Get module from filepath
-  segments = caller_info.filename.split("runfiles/")[1].split("/")
+  splitted_file = caller_info.filename.split("runfiles/")
+  # Can't always look up from runfiles (e.g. colab).
+  if len(splitted_file) < 2:
+    return None
+  segments = splitted_file[1].split("/")
   segments[len(segments) - 1] = segments[len(segments) - 1][: len(".py") * -1]
   module = ".".join(segments)
 

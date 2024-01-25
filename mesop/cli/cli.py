@@ -14,7 +14,9 @@ from mesop.runtime import (
   reset_runtime,
   runtime,
 )
+from mesop.server.constants import EDITOR_PACKAGE_PATH, PROD_PACKAGE_PATH
 from mesop.server.flags import port
+from mesop.server.logging import log_startup
 from mesop.server.server import configure_flask_app
 from mesop.server.static_file_serving import configure_static_file_serving
 
@@ -71,23 +73,16 @@ def main(argv):
 
   configure_static_file_serving(
     flask_app,
-    static_file_runfiles_base="mesop/mesop/web/src/app/prod/web_package"
+    static_file_runfiles_base=PROD_PACKAGE_PATH
     if FLAGS.prod
-    else "mesop/mesop/web/src/app/editor/web_package",
+    else EDITOR_PACKAGE_PATH,
     livereload_script_url=os.environ.get("IBAZEL_LIVERELOAD_URL"),
   )
 
   if FLAGS.verbose:
     logging.getLogger("werkzeug").setLevel(logging.INFO)
   else:
-    # Log basic information about where the server is running since
-    # we don't get it printed by werkzeurg:
-    # https://github.com/pallets/werkzeug/blob/eafbed0ce2a6bdf60e62de82bf4a8365188ac334/src/werkzeug/serving.py#L820C9-L820C17
-    FgGreen = "\x1b[32m"
-    Reset = "\x1b[0m"
-    print(
-      f"\n{FgGreen}Running server on: http://localhost:{port()}{Reset}",
-    )
+    log_startup()
     logging.getLogger("werkzeug").setLevel(logging.WARN)
 
   flask_app.run(host="0.0.0.0", port=port(), use_reloader=False)
