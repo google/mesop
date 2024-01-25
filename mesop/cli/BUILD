@@ -38,6 +38,8 @@ py_binary(
         # This tag instructs ibazel to pipe into stdin a event describing actions.
         "ibazel_notify_changes",
     ],
+    # Need to expose for Colab usage
+    visibility = ["//build_defs:mesop_users"],
     deps = [":cli_lib"],
 )
 
