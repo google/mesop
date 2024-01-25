@@ -81,6 +81,7 @@ class Editor {
     private router: Router,
     errorHandler: ErrorHandler,
     private editorService: EditorService,
+    private channel: Channel,
   ) {
     iconRegistry.setDefaultFontSetClass('material-symbols-rounded');
     (errorHandler as GlobalErrorHandlerService).setOnError((error) => {
@@ -143,7 +144,9 @@ class Editor {
       this.editorService.clearFocusedComponent();
       return;
     }
-    // Bind these combinations:
+    // Hotkey for toggle selection mode
+    //
+    // Binds:
     // cmd + shift + e (MacOs)
     // ctrl + shift + e (Other platforms)
     if (
@@ -152,6 +155,22 @@ class Editor {
       event.shiftKey
     ) {
       this.editorService.toggleSelectionMode();
+      event.preventDefault();
+      return;
+    }
+    // Hotkey for hot reload
+    //
+    // Binds:
+    // cmd + shift + r (MacOs)
+    // ctrl + shift + r (Other platforms)
+    if (
+      event.key === 'r' &&
+      (isMac() ? event.metaKey : event.ctrlKey) &&
+      event.shiftKey
+    ) {
+      this.channel.hotReload();
+      event.preventDefault();
+      return;
     }
   }
 }
