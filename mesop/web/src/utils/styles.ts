@@ -34,6 +34,9 @@ export function formatStyle(styleObj: Style): string {
   if (styleObj.getBorderRadius()) {
     style += `border-radius: ${styleObj.getBorderRadius()};`;
   }
+  if (styleObj.getBoxShadow()) {
+    style += `box-shadow: ${styleObj.getBoxShadow()};`;
+  }
   if (styleObj.getColor()) {
     style += `color: ${styleObj.getColor()};`;
   }

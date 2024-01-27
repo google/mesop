@@ -216,12 +216,13 @@ message UserDefinedType {
     repeated Arg args = 1;
 }
 
-// Next id: 29
+// Next id: 30
 message Style {
     optional string align_items = 1;
     optional string background = 2;
     optional Border border = 3;
     optional string border_radius = 28;
+    optional string box_shadow = 29;
     optional string color = 4;
     optional int32 columns = 5;
     optional string display = 6;

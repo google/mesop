@@ -96,6 +96,7 @@ class Style:
       background: Sets the background color or image of the component. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/background).
       border: Defines the border properties for each side of the component. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/border).
       border_radius: Defines the border radius. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/border-radius).
+      box_shadow: Defines the box shadow. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/box-shadow).
       color: Sets the color of the text inside the component. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/color).
       columns: Specifies the number of columns in a multi-column element. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/columns).
       display: Defines the display type of the component. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/display).
@@ -108,7 +109,7 @@ class Style:
       font_style: Specifies the font style for text. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/font-style).
       font_weight: Sets the weight (or boldness) of the font. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/font-weight).
       height: Sets the height of the component. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/height).
-      justify_content: Aligns the flexible container's items when the items do not use all available space on the main-axis. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/justify-content).
+      justify_content: Aligns the flexible container's items on the main-axis. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/justify-content).
       letter_spacing: Increases or decreases the space between characters in text. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/letter-spacing).
       margin: Sets the margin space required on each side of an element. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/margin).
       overflow_x: Specifies the handling of overflow in the horizontal direction. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/overflow-x).
@@ -135,6 +136,7 @@ class Style:
   background: str | None = None
   border: Border | None = None
   border_radius: int | str | None = None
+  box_shadow: str | None = None
   color: str | None = None
   columns: int | None = None
   display: Literal[
@@ -184,6 +186,10 @@ class Style:
     "flex",
     "left",
     "right",
+    "space-between",
+    "space-around",
+    "space-evenly",
+    "stretch",
   ] | None = None
   letter_spacing: int | str | None = None
   margin: Margin | None = None
@@ -223,6 +229,7 @@ def to_style_proto(s: Style) -> pb.Style:
     background=s.background,
     border=_map_border(s.border),
     border_radius=_px_str(s.border_radius),
+    box_shadow=s.box_shadow,
     color=s.color,
     columns=s.columns,
     display=s.display,
