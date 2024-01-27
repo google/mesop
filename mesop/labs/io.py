@@ -13,6 +13,8 @@ class State:
 
 def text_io(
   transform: Callable[[str], Generator[str, None, None] | str],
+  *,
+  title: str | None = None,
 ):
   """Creates a simple UI which takes in a text input and returns a text output.
 
@@ -21,6 +23,7 @@ def text_io(
 
   Args:
     transform: Function that takes in a string input and either returns or yields a string output.
+    title: Headline text to display at the top of the UI
   """
 
   def on_input(e: me.InputEvent):
@@ -50,14 +53,18 @@ def text_io(
       background="#f0f4f8",
       padding=me.Padding(top=24, left=24, right=24, bottom=24),
       height="100%",
+      display="flex",
+      flex_direction="column",
     )
   ):
+    if title:
+      me.text(title, type="headline-5")
     with me.box(
       style=me.Style(
         margin=me.Margin(left="auto", right="auto"),
         width="min(1024px, 100%)",
         gap="24px",
-        height="100%",
+        flex_grow=1,
         display="flex",
         flex_wrap="wrap",
       )
