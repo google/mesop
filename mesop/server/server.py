@@ -111,7 +111,7 @@ def configure_flask_app(
 
   @flask_app.route("/ui")
   def ui_stream() -> Response:
-    param = request.args.get("request", default=None)
+    param = request.args.post("request", default=None)
     if param is None:
       raise Exception("Missing request parameter")
     ui_request = pb.UiRequest()
