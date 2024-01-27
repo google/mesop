@@ -4,7 +4,7 @@ import mesop as me
 import mesop.labs as mel
 
 
-@me.page(path="/text_io")
+@me.page(path="/text_io", title="Text I/O Example")
 def app():
   mel.text_io(upper_case_stream)
 

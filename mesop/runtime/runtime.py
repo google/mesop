@@ -26,6 +26,7 @@ T = TypeVar("T")
 
 class Runtime:
   _path_fns: dict[str, Callable[[], None]]
+  _path_title: dict[str, str]
   _handlers: dict[str, Handler]
   _state_classes: list[type[Any]]
   _loading_errors: list[pb.ServerError]
@@ -36,6 +37,7 @@ class Runtime:
   def __init__(self):
     self.component_fns = set()
     self._path_fns = {}
+    self._path_title = {}
     self._handlers = {}
     self.event_mappers: dict[Type[Any], Callable[[pb.UserEvent, Key], Any]] = {}
     self._state_classes = []
@@ -88,6 +90,12 @@ Try one of the following paths:
 
   def register_path_fn(self, path: str, fn: Callable[[], None]) -> None:
     self._path_fns[path] = fn
+
+  def register_path_title(self, path: str, title: str) -> None:
+    self._path_title[path] = title
+
+  def get_path_title(self, path: str) -> str:
+    return self._path_title[path]
 
   def register_handler(self, handler_id: str, handler: Handler) -> None:
     self._handlers[handler_id] = handler

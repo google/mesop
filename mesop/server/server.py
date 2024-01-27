@@ -27,6 +27,7 @@ def configure_flask_app(
   ) -> Generator[str, None, None]:
     try:
       runtime().run_path(path=path, trace_mode=trace_mode)
+      title = runtime().get_path_title(path=path)
       root_component = runtime().context().current_node()
 
       data = pb.UiResponse(
@@ -35,6 +36,7 @@ def configure_flask_app(
           states=runtime().context().serialize_state(),
           commands=runtime().context().commands(),
           component_configs=get_component_configs(),
+          title=title,
         )
       )
       yield serialize(data)

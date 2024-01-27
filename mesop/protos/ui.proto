@@ -144,6 +144,7 @@ message ContextLine {
 
 message RenderEvent {
     optional Component root_component = 1;
+    optional string title = 5;
     optional States states = 2;
     repeated Command commands = 3;
 

@@ -12,6 +12,7 @@ import {
   EditorEvent,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 import {Logger} from '../dev_tools/services/logger';
+import {Title} from '@angular/platform-browser';
 
 const anyWindow = window as any;
 const DEV_SERVER_HOST = anyWindow['MESOP_SERVER_HOST'] || '';
@@ -43,7 +44,10 @@ export class Channel {
   private componentConfigs: ComponentConfig[] = [];
   private queuedEvents: (() => void)[] = [];
 
-  constructor(private logger: Logger) {}
+  constructor(
+    private logger: Logger,
+    private title: Title,
+  ) {}
 
   getStatus(): ChannelStatus {
     return this.status;
@@ -95,6 +99,10 @@ export class Channel {
               if (navigate) {
                 onNavigate(navigate.getUrl()!);
               }
+            }
+            const title = uiResponse.getRender()!.getTitle();
+            if (title) {
+              this.title.setTitle(title);
             }
             this.rootComponent = rootComponent;
             this.componentConfigs = uiResponse
