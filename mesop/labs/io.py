@@ -55,13 +55,15 @@ def text_io(
     with me.box(
       style=me.Style(
         margin=me.Margin(left="auto", right="auto"),
-        width="min(960px, 100%)",
+        width="min(1024px, 100%)",
+        gap="24px",
         height="100%",
         display="flex",
+        flex_wrap="wrap",
       )
     ):
       box_style = me.Style(
-        flex_basis="50%",
+        flex_basis="max(480px, calc(50% - 48px))",
         background="#fff",
         border_radius=12,
         box_shadow="0 3px 1px -2px #0003, 0 2px 2px #00000024, 0 1px 5px #0000001f",
@@ -93,7 +95,6 @@ def text_io(
             type="raised",
             on_click=on_click_generate,
           )
-      me.box(style=me.Style(width=24))
       with me.box(style=box_style):
         me.text("Output", style=me.Style(font_weight=500))
         me.markdown(me.state(State).output)
