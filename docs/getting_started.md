@@ -11,6 +11,16 @@ This guide will walk you step by step through building a simple interactive Meso
 
 Currently, Mesop isn't installable by `pip` so you'll need to clone the [GitHub repo](https://github.com/google/mesop) and follow our [internal development guide](internal/development.md). In the future, we plan to provide a pip package and a CLI to make it easier to get started with Mesop.
 
+## Quickstart app
+
+The simplest way to get started with Mesop is to use the [`text_io` component](./components/text_io.md)
+
+```python
+--8<-- "mesop/examples/text_io.py"
+```
+
+The rest of this guide will show you step-by-step how something like text_io is implemented.
+
 ## Hello World app
 
 Let's start by creating a simple Hello World app in Mesop:
@@ -87,14 +97,8 @@ The `on_click` argument is how you wire the event handler defined above to a spe
 
 In summary, you've learned how to define a state class, an event handler and wire them together using interactive components.
 
-## Prompt app
-
-At this point, you've learned all the basics of building a Mesop app and now you should be able to understand how the example app on the home page works:
-
-```python
---8<-- "mesop/examples/readme_app.py"
-```
-
 ## What's next
+
+At this point, you've learned all the basics of building a Mesop app and now you should be able to understand how [Text I/O is implemented](https://github.com/google/mesop/blob/main/mesop/labs/io.py) under the hood.
 
 To learn more about Mesop, I recommend reading the [Guides](./guides/components.md) and then spend time looking at the [examples on GitHub](https://github.com/google/mesop/tree/main/mesop/examples). As you build your own applications, you'll want to reference the [Components API reference](./components/button.md) docs.

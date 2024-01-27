@@ -20,5 +20,5 @@ Learn more in [Getting Started](./getting_started.md)
 ## Example app
 
 ```python
---8<-- "mesop/examples/readme_app.py"
+--8<-- "mesop/examples/text_io.py"
 ```

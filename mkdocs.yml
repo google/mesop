@@ -11,7 +11,10 @@ nav:
       - Pages: guides/pages.md
       - Deployment: guides/deployment.md
       - Troubleshooting: guides/troubleshooting.md
+      - Labs: guides/labs.md
   - Components API:
+      - I/O:
+          - Text I/O: components/text_io.md
       - Layout:
           - Box: components/box.md
       - Text:
