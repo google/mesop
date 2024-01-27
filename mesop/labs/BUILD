@@ -6,7 +6,19 @@ package(
 
 py_library(
     name = "labs",
-    srcs = glob(["*.py"]),
+    srcs = ["__init__.py"],
+    visibility = ["//build_defs:mesop_users"],
+    deps = [
+        ":labs_impl",
+    ],
+)
+
+py_library(
+    name = "labs_impl",
+    srcs = glob(
+        ["*.py"],
+        exclude = ["__init__.py"],
+    ),
     deps = [
         "//mesop",
     ],

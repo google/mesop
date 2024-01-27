@@ -1,1 +1,1 @@
-from mesop.labs.io import io as io
+from mesop.labs.io import text_io as text_io

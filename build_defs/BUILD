@@ -4,10 +4,22 @@ load("@rules_python//python:pip.bzl", "compile_pip_requirements")
 package_group(
     name = "mesop_internal",
     packages = [
+        "-//mesop/examples/...",
         "//...",
     ],
 )
 
+# Mesop Example code:
+# This is a placeholder where there's an actual allowlist in
+# the downstream sync.
+package_group(
+    name = "mesop_examples",
+    packages = [
+        "//...",
+    ],
+)
+
+# Public API:
 # This is a placeholder where there's an actual allowlist in
 # the downstream sync.
 package_group(
