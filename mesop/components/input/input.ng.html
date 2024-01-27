@@ -19,6 +19,9 @@
     [readonly]="config().getReadonly()"
     (input)="onInput($event)"
     [rows]="config().getRows()"
+    [cdkTextareaAutosize]="config().getAutosize()"
+    [cdkAutosizeMinRows]="config().getMinRows()"
+    [cdkAutosizeMaxRows]="config().getMaxRows()"
   ></textarea>
   } @else {
   <input

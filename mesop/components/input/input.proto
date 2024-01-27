@@ -21,6 +21,9 @@ message InputType {
   optional string on_input_handler_id = 17;
   // Used for textarea only.
   optional int32 rows = 18;
+  optional bool autosize = 20;
+  optional int32 min_rows = 21;
+  optional int32 max_rows = 22;
   // Not exposed as public API.
   optional bool is_textarea = 19;
 }
