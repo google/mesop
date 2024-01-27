@@ -1,9 +1,5 @@
 from typing import Any, TypeVar, cast
 
-# Do not export symbols from labs directly into Mesop's primary namespace
-# so that API consumers realize these are experimental APIs which may change
-# more than the core APIs.
-from mesop import labs as labs
 from mesop.commands.navigate import navigate as navigate
 from mesop.component_helpers import (
   Border as Border,

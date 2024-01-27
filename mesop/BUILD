@@ -42,7 +42,6 @@ py_library(
         "//mesop/events",
         "//mesop/commands",
         "//mesop/features",
-        "//mesop/labs",
         "//mesop/server",
     ],
 )
