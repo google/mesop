@@ -17,6 +17,9 @@ from mesop.component_helpers import (
   Style as Style,
 )
 from mesop.component_helpers.helper import (
+  component as component,
+)
+from mesop.component_helpers.helper import (
   composite as composite,
 )
 from mesop.component_helpers.helper import (
