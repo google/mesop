@@ -1,7 +1,6 @@
-from mesop.component_helpers import Style, component
-from mesop.components.box.box import box
+import mesop as me
 
 
-@component()
+@me.component()
 def columns(columns: int = 2):
-  return box(style=Style(columns=columns))
+  return me.box(style=me.Style(columns=columns))

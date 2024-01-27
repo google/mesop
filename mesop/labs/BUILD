@@ -8,6 +8,6 @@ py_library(
     name = "labs",
     srcs = glob(["*.py"]),
     deps = [
-        "//mesop/components/box:py",
+        "//mesop",
     ],
 )
