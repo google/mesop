@@ -70,6 +70,9 @@ export function formatStyle(styleObj: Style): string {
   if (styleObj.getFontWeight()) {
     style += `font-weight: ${styleObj.getFontWeight()};`;
   }
+  if (styleObj.getGap()) {
+    style += `gap: ${styleObj.getGap()};`;
+  }
   if (styleObj.getHeight()) {
     style += `height: ${styleObj.getHeight()};`;
   }

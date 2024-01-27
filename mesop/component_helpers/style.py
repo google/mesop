@@ -108,6 +108,7 @@ class Style:
       font_size: Sets the size of the font. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/font-size).
       font_style: Specifies the font style for text. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/font-style).
       font_weight: Sets the weight (or boldness) of the font. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/font-weight).
+      gap: Sets the gap. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/gap).
       height: Sets the height of the component. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/height).
       justify_content: Aligns the flexible container's items on the main-axis. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/justify-content).
       letter_spacing: Increases or decreases the space between characters in text. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/letter-spacing).
@@ -177,6 +178,7 @@ class Style:
     800,
     900,
   ] | None = None
+  gap: int | str | None = None
   height: int | str | None = None
   justify_content: Literal[
     "center",
@@ -241,6 +243,7 @@ def to_style_proto(s: Style) -> pb.Style:
     font_size=_px_str(s.font_size),
     font_style=s.font_style,
     font_weight=_map_font_weight(s.font_weight),
+    gap=_px_str(s.gap),
     height=_px_str(s.height),
     justify_content=s.justify_content,
     letter_spacing=_px_str(s.letter_spacing),
