@@ -62,10 +62,15 @@ def get_app_modules(
     # like runtime causes weird bugs. Thus, we only reload "app" modules and
     # not any core framework modules.
     module_segments = module.split(".")
-    if module_segments[0] == "mesop" and not (
-      module_segments[:2] == ["mesop", "example_index"]
-      or module_segments[:2] == ["mesop", "examples"]
-      or "e2e" in module_segments
+    if (
+      module_segments[0] == "mesop"
+      and not (
+        module_segments[:2] == ["mesop", "example_index"]
+        or module_segments[:2] == ["mesop", "examples"]
+        # Reset labs (b/c io.py needs to re-register stateclass)
+        or module_segments[:2] == ["mesop", "labs"]
+        or "e2e" in module_segments
+      )
     ):
       continue
     if (
