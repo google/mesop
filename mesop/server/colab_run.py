@@ -6,13 +6,18 @@ from mesop.server.flags import port
 from mesop.server.logging import log_startup
 from mesop.server.server import configure_flask_app
 from mesop.server.static_file_serving import configure_static_file_serving
+from mesop.utils.colab_utils import is_running_in_colab
 
 
 def colab_run():
   """
-  Typically only used for Colab/Jupyter notebooks, otherwise you'll use the CLI
-  to execute a Mesop application.
+  When running in Colab environment, this will launch the web server.
+
+  Otherwise, this is a no-op.
   """
+  if not is_running_in_colab():
+    print("Not running Colab: `colab_run` is a no-op")
+    return
   flask_app = configure_flask_app()
   enable_debug_mode()
   configure_static_file_serving(
