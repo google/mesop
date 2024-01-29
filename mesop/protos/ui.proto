@@ -217,7 +217,7 @@ message UserDefinedType {
     repeated Arg args = 1;
 }
 
-// Next id: 31
+// Next id: 32
 message Style {
     optional string align_items = 1;
     optional string background = 2;
@@ -239,6 +239,7 @@ message Style {
     optional string height = 15;
     optional string justify_content = 16;
     optional string letter_spacing = 17;
+    optional string line_height = 31;
     optional EdgeInsets margin = 18;
     optional string overflow_x = 19;
     optional string overflow_y = 20;

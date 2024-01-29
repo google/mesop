@@ -82,6 +82,9 @@ export function formatStyle(styleObj: Style): string {
   if (styleObj.getLetterSpacing()) {
     style += `letter-spacing: ${styleObj.getLetterSpacing()};`;
   }
+  if (styleObj.getLineHeight()) {
+    style += `line-height: ${styleObj.getLineHeight()};`;
+  }
   if (styleObj.getMargin()) {
     const margin = styleObj.getMargin()!;
     style += `margin: ${margin.getTop() || 0} ${margin.getRight() || 0} ${

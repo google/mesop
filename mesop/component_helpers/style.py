@@ -112,6 +112,7 @@ class Style:
       height: Sets the height of the component. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/height).
       justify_content: Aligns the flexible container's items on the main-axis. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/justify-content).
       letter_spacing: Increases or decreases the space between characters in text. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/letter-spacing).
+      line height: Set the line height (relative to the font size). See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/line-height).
       margin: Sets the margin space required on each side of an element. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/margin).
       overflow_x: Specifies the handling of overflow in the horizontal direction. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/overflow-x).
       overflow_y: Specifies the handling of overflow in the vertical direction. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/overflow-y).
@@ -194,6 +195,7 @@ class Style:
     "stretch",
   ] | None = None
   letter_spacing: int | str | None = None
+  line_height: float | str | None = None
   margin: Margin | None = None
   overflow_x: OverflowValues | None = None
   overflow_y: OverflowValues | None = None
@@ -247,6 +249,7 @@ def to_style_proto(s: Style) -> pb.Style:
     height=_px_str(s.height),
     justify_content=s.justify_content,
     letter_spacing=_px_str(s.letter_spacing),
+    line_height=str(s.line_height),
     margin=_map_edge_insets(s.margin),
     overflow_x=s.overflow_x,
     overflow_y=s.overflow_y,
