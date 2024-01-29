@@ -3,6 +3,26 @@ from typing import Literal
 
 import mesop.protos.ui_pb2 as pb
 
+ContentAlignmentValues = Literal[
+  "center",
+  "start",
+  "end",
+  "flex",
+  "flex",
+  "left",
+  "right",
+  "space-between",
+  "space-around",
+  "space-evenly",
+  "stretch",
+]
+ItemAlignmentValues = Literal[
+  "normal",
+  "stretch",
+  "center",
+  "start",
+  "end",
+]
 OverflowValues = Literal["visible", "hidden", "clip", "scroll", "auto"]
 
 
@@ -92,12 +112,14 @@ class Style:
   Represents the style configuration for a UI component.
 
   Attributes:
+      align_content: Aligns the flexible container's items on the cross-axis. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/align-content).
       align_items: Specifies the default alignment for items inside a flexible container. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/align-items).
       background: Sets the background color or image of the component. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/background).
       border: Defines the border properties for each side of the component. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/border).
       border_radius: Defines the border radius. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/border-radius).
       box_shadow: Defines the box shadow. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/box-shadow).
       color: Sets the color of the text inside the component. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/color).
+      column_gap: Sets the gap between columns. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/column-gap).
       columns: Specifies the number of columns in a multi-column element. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/columns).
       display: Defines the display type of the component. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/display).
       flex_basis: Specifies the initial length of a flexible item. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/flex-basis).
@@ -109,6 +131,14 @@ class Style:
       font_style: Specifies the font style for text. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/font-style).
       font_weight: Sets the weight (or boldness) of the font. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/font-weight).
       gap: Sets the gap. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/gap).
+      grid_area: Sets the grid area. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/grid-area).
+      grid_column_start: Sets the grid column start. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/grid-column-start).
+      grid_column_end: Sets the grid column end. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/grid-column-end).
+      grid_row_start: Sets the grid row start. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/grid-row-start).
+      grid_row_end: Sets the grid row end. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/grid-row-end).
+      grid_template_areas: Sets the grid template areas; each element is a row. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template-areas).
+      grid_template_columns: Sets the grid template columns. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template-columns).
+      grid_template_rows: Sets the grid template rows. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template-rows).
       height: Sets the height of the component. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/height).
       justify_content: Aligns the flexible container's items on the main-axis. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/justify-content).
       letter_spacing: Increases or decreases the space between characters in text. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/letter-spacing).
@@ -118,6 +148,7 @@ class Style:
       overflow_y: Specifies the handling of overflow in the vertical direction. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/overflow-y).
       padding: Sets the padding space required on each side of an element. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/padding).
       position: Specifies the type of positioning method used for an element (static, relative, absolute, fixed, or sticky). See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/position).
+      row_gap: Sets the gap between rows. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/row-gap).
       text_align: Specifies the horizontal alignment of text in an element. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/text-align).
       text_decoration: Specifies the decoration added to text. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration).
       text_overflow: Specifies how overflowed content that is not displayed should be signaled to the user. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/text-overflow).
@@ -128,18 +159,14 @@ class Style:
   # For literal properties, make the most commonly used option the first literal
   # element, as it will be used as the default value by the editor when creating that property.
 
-  align_items: Literal[
-    "normal",
-    "stretch",
-    "center",
-    "start",
-    "end",
-  ] | None = None
+  align_content: ContentAlignmentValues | None = None
+  align_items: ItemAlignmentValues | None = None
   background: str | None = None
   border: Border | None = None
   border_radius: int | str | None = None
   box_shadow: str | None = None
   color: str | None = None
+  column_gap: int | str | None = None
   columns: int | None = None
   display: Literal[
     # precomposed values
@@ -180,20 +207,17 @@ class Style:
     900,
   ] | None = None
   gap: int | str | None = None
+  grid_area: str | None = None
+  grid_column_start: int | None = None
+  grid_column_end: int | None = None
+  grid_row_start: int | None = None
+  grid_row_end: int | None = None
+  grid_template_areas: list[str] | None = None
+  grid_template_columns: str | None = None
+  grid_template_rows: str | None = None
   height: int | str | None = None
-  justify_content: Literal[
-    "center",
-    "start",
-    "end",
-    "flex",
-    "flex",
-    "left",
-    "right",
-    "space-between",
-    "space-around",
-    "space-evenly",
-    "stretch",
-  ] | None = None
+  justify_content: ContentAlignmentValues | None = None
+  justify_items: ItemAlignmentValues | None = None
   letter_spacing: int | str | None = None
   line_height: float | str | None = None
   margin: Margin | None = None
@@ -207,6 +231,7 @@ class Style:
     "fixed",
     "sticky",
   ] | None = None
+  row_gap: int | str | None = None
   text_align: Literal[
     "start",
     "end",
@@ -229,12 +254,14 @@ class Style:
 
 def to_style_proto(s: Style) -> pb.Style:
   return pb.Style(
+    align_content=s.align_content,
     align_items=s.align_items,
     background=s.background,
     border=_map_border(s.border),
     border_radius=_px_str(s.border_radius),
     box_shadow=s.box_shadow,
     color=s.color,
+    column_gap=_px_str(s.column_gap),
     columns=s.columns,
     display=s.display,
     flex_basis=s.flex_basis,
@@ -246,8 +273,17 @@ def to_style_proto(s: Style) -> pb.Style:
     font_style=s.font_style,
     font_weight=_map_font_weight(s.font_weight),
     gap=_px_str(s.gap),
+    grid_area=s.grid_area,
+    grid_column_start=s.grid_column_start,
+    grid_column_end=s.grid_column_end,
+    grid_row_start=s.grid_row_start,
+    grid_row_end=s.grid_row_end,
+    grid_template_areas=s.grid_template_areas,
+    grid_template_columns=s.grid_template_columns,
+    grid_template_rows=s.grid_template_rows,
     height=_px_str(s.height),
     justify_content=s.justify_content,
+    justify_items=s.justify_items,
     letter_spacing=_px_str(s.letter_spacing),
     line_height=str(s.line_height),
     margin=_map_edge_insets(s.margin),
@@ -255,6 +291,7 @@ def to_style_proto(s: Style) -> pb.Style:
     overflow_y=s.overflow_y,
     padding=_map_edge_insets(s.padding),
     position=s.position,
+    row_gap=_px_str(s.row_gap),
     text_align=s.text_align,
     text_decoration=s.text_decoration,
     text_overflow=s.text_overflow,

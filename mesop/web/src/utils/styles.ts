@@ -5,6 +5,9 @@ export function formatStyle(styleObj: Style): string {
   if (!styleObj) {
     return style;
   }
+  if (styleObj.getAlignContent()) {
+    style += `align-content: ${styleObj.getAlignContent()};`;
+  }
   if (styleObj.getAlignItems()) {
     style += `align-items: ${styleObj.getAlignItems()};`;
   }
@@ -40,6 +43,9 @@ export function formatStyle(styleObj: Style): string {
   if (styleObj.getColor()) {
     style += `color: ${styleObj.getColor()};`;
   }
+  if (styleObj.getColumnGap()) {
+    style += `column-gap: ${styleObj.getColumnGap()};`;
+  }
   if (styleObj.getColumns()) {
     style += `columns: ${styleObj.getColumns()};`;
   }
@@ -73,11 +79,41 @@ export function formatStyle(styleObj: Style): string {
   if (styleObj.getGap()) {
     style += `gap: ${styleObj.getGap()};`;
   }
+  if (styleObj.getGridArea()) {
+    style += `grid-area: ${styleObj.getGridArea()};`;
+  }
+  if (styleObj.getGridColumnStart()) {
+    style += `grid-column-start: ${styleObj.getGridColumnStart()};`;
+  }
+  if (styleObj.getGridColumnEnd()) {
+    style += `grid-column-end: ${styleObj.getGridColumnEnd()};`;
+  }
+  if (styleObj.getGridRowStart()) {
+    style += `grid-row-start: ${styleObj.getGridRowStart()};`;
+  }
+  if (styleObj.getGridRowEnd()) {
+    style += `grid-row-end: ${styleObj.getGridRowEnd()};`;
+  }
+  if (styleObj.getGridTemplateAreasList()) {
+    style += `grid-template-areas: ${styleObj
+      .getGridTemplateAreasList()
+      .map((a) => `"${a}"`)
+      .join(' ')};`;
+  }
+  if (styleObj.getGridTemplateColumns()) {
+    style += `grid-template-columns: ${styleObj.getGridTemplateColumns()};`;
+  }
+  if (styleObj.getGridTemplateRows()) {
+    style += `grid-template-rows: ${styleObj.getGridTemplateRows()};`;
+  }
   if (styleObj.getHeight()) {
     style += `height: ${styleObj.getHeight()};`;
   }
   if (styleObj.getJustifyContent()) {
     style += `justify-content: ${styleObj.getJustifyContent()};`;
+  }
+  if (styleObj.getJustifyItems()) {
+    style += `justify-items: ${styleObj.getJustifyItems()};`;
   }
   if (styleObj.getLetterSpacing()) {
     style += `letter-spacing: ${styleObj.getLetterSpacing()};`;
@@ -105,6 +141,9 @@ export function formatStyle(styleObj: Style): string {
   }
   if (styleObj.getPosition()) {
     style += `position: ${styleObj.getPosition()};`;
+  }
+  if (styleObj.getRowGap()) {
+    style += `row-gap: ${styleObj.getRowGap()};`;
   }
   if (styleObj.getTextAlign()) {
     style += `text-align: ${styleObj.getTextAlign()};`;

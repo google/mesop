@@ -217,14 +217,16 @@ message UserDefinedType {
     repeated Arg args = 1;
 }
 
-// Next id: 32
+// Next id: 44
 message Style {
+    optional string align_content = 32;
     optional string align_items = 1;
     optional string background = 2;
     optional Border border = 3;
     optional string border_radius = 28;
     optional string box_shadow = 29;
     optional string color = 4;
+    optional string column_gap = 33;
     optional int32 columns = 5;
     optional string display = 6;
     optional string flex_basis = 7;
@@ -236,8 +238,17 @@ message Style {
     optional string font_style = 13;
     optional string font_weight = 14;
     optional string gap = 30;
+    optional string grid_area = 34;
+    optional int32 grid_column_start = 35;
+    optional int32 grid_column_end = 36;
+    optional int32 grid_row_start = 37;
+    optional int32 grid_row_end = 38;
+    repeated string grid_template_areas = 39;
+    optional string grid_template_columns = 40;
+    optional string grid_template_rows = 41;
     optional string height = 15;
     optional string justify_content = 16;
+    optional string justify_items = 42;
     optional string letter_spacing = 17;
     optional string line_height = 31;
     optional EdgeInsets margin = 18;
@@ -245,6 +256,7 @@ message Style {
     optional string overflow_y = 20;
     optional EdgeInsets padding = 21;
     optional string position = 22;
+    optional string row_gap = 43;
     optional string text_align = 23;
     optional string text_decoration = 24;
     optional string text_overflow = 25;
