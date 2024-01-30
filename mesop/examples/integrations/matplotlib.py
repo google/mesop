@@ -15,4 +15,3 @@ def app():
 
   me.text("Resize plot:")
   me.plot(fig, style=me.Style(width=200, height=200))
-  me.plot(fig)

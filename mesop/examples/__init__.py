@@ -8,6 +8,7 @@ from mesop.examples import (
   error_no_stateclass_decorator as error_no_stateclass_decorator,
 )
 from mesop.examples import generator as generator
+from mesop.examples import grid as grid
 from mesop.examples import index as index
 from mesop.examples import integrations as integrations
 from mesop.examples import nested as nested
