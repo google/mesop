@@ -219,7 +219,7 @@ class Style:
   justify_content: ContentAlignmentValues | None = None
   justify_items: ItemAlignmentValues | None = None
   letter_spacing: int | str | None = None
-  line_height: float | str | None = None
+  line_height: str | None = None
   margin: Margin | None = None
   overflow_x: OverflowValues | None = None
   overflow_y: OverflowValues | None = None
