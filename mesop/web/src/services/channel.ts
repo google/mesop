@@ -13,6 +13,7 @@ import {
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 import {Logger} from '../dev_tools/services/logger';
 import {Title} from '@angular/platform-browser';
+import {SSE} from '../utils/sse';
 
 const anyWindow = window as any;
 const DEV_SERVER_HOST = anyWindow['MESOP_SERVER_HOST'] || '';
@@ -36,7 +37,7 @@ export enum ChannelStatus {
   providedIn: 'root',
 })
 export class Channel {
-  private eventSource!: EventSource;
+  private eventSource!: SSE;
   private initParams!: InitParams;
   private states!: States;
   private rootComponent?: ComponentProto;
@@ -66,17 +67,18 @@ export class Channel {
       request = new UiRequest();
       request.setInit(new InitRequest());
     }
-    this.eventSource = new EventSource(generateRequestUrl(request));
+    this.eventSource = new SSE(generateRequestUrl(request));
     this.status = ChannelStatus.OPEN;
     this.logger.log({type: 'StreamStart'});
 
     const {zone, onRender, onError, onNavigate} = initParams;
     this.initParams = initParams;
 
-    this.eventSource.onmessage = (e) => {
+    this.eventSource.addEventListener('message', (e) => {
       // Looks like Angular has a bug where it's not intercepting EventSource onmessage.
       zone.run(() => {
-        if (e.data === '<stream_end>') {
+        const data = (e as any).data;
+        if (data === '<stream_end>') {
           this.eventSource.close();
           this.status = ChannelStatus.CLOSED;
           this.logger.log({type: 'StreamEnd'});
@@ -87,7 +89,7 @@ export class Channel {
           return;
         }
 
-        const array = toUint8Array(atob(e.data));
+        const array = toUint8Array(atob(data));
         const uiResponse = UiResponse.deserializeBinary(array);
         console.debug('Server event: ', uiResponse.toObject());
         switch (uiResponse.getTypeCase()) {
@@ -124,7 +126,7 @@ export class Channel {
             throw new Error(`Unhandled case for server event: ${uiResponse}`);
         }
       });
-    };
+    });
   }
 
   dispatch(userEvent: UserEvent) {

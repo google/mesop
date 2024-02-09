@@ -75,7 +75,7 @@ def configure_flask_app(
 
       if ui_request.HasField("init"):
         yield from render_loop(path=ui_request.path)
-      if ui_request.HasField("user_event"):
+      elif ui_request.HasField("user_event"):
         runtime().context().update_state(ui_request.user_event.states)
         for _ in render_loop(
           path=ui_request.path, keep_alive=True, trace_mode=True

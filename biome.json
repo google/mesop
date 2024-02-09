@@ -34,7 +34,8 @@
       },
       "suspicious": {
         "noExplicitAny": "off",
-        "noFallthroughSwitchClause": "off"
+        "noFallthroughSwitchClause": "off",
+        "noPrototypeBuiltins": "off"
       }
     }
   },
