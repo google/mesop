@@ -207,11 +207,11 @@
    limitations under the License.
  */
 
-interface SSEHeaders {
+export interface SSEHeaders {
   [key: string]: string;
 }
 
-interface SSEOptions {
+export interface SSEOptions {
   headers?: SSEHeaders;
   payload?: string;
   method?: string;
@@ -222,7 +222,7 @@ interface SSEOptions {
 
 type EventListener = (event: CustomEvent) => void;
 
-class SSE {
+export class SSE {
   private static readonly INITIALIZING = -1;
   private static readonly CONNECTING = 0;
   private static readonly OPEN = 1;
@@ -462,5 +462,3 @@ class SSE {
     this._setReadyState(SSE.CLOSED);
   }
 }
-
-export {SSE, SSEOptions, SSEHeaders};
