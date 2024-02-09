@@ -182,7 +182,16 @@ function generatePayloadString(request: UiRequest): string {
 }
 
 function fromUint8Array(array: Uint8Array): string {
-  return String.fromCodePoint(...(array as unknown as number[]));
+  // Chunk this to avoid RangeError: Maximum call stack size exceeded
+  let result = '';
+  const chunkSize = 16384; // This size can be adjusted
+
+  for (let i = 0; i < array.length; i += chunkSize) {
+    const chunk = array.subarray(i, i + chunkSize);
+    result += String.fromCodePoint(...(chunk as unknown as number[]));
+  }
+
+  return result;
 }
 
 function toUint8Array(byteString: string): Uint8Array {
