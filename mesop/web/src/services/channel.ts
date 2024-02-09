@@ -67,7 +67,9 @@ export class Channel {
       request = new UiRequest();
       request.setInit(new InitRequest());
     }
-    this.eventSource = new SSE(generateRequestUrl(request));
+    this.eventSource = new SSE(`${DEV_SERVER_HOST}/ui`, {
+      payload: generatePayloadString(request),
+    });
     this.status = ChannelStatus.OPEN;
     this.logger.log({type: 'StreamStart'});
 
@@ -169,14 +171,14 @@ export class Channel {
   }
 }
 
-function generateRequestUrl(request: UiRequest): string {
+function generatePayloadString(request: UiRequest): string {
   request.setPath(window.location.pathname);
   const array = request.serializeBinary();
   const byteString = btoa(fromUint8Array(array))
     // Make this URL-safe:
     .replace(/\+/g, '-')
     .replace(/\//g, '_');
-  return `${DEV_SERVER_HOST}/ui?request=${byteString}`;
+  return byteString;
 }
 
 function fromUint8Array(array: Uint8Array): string {

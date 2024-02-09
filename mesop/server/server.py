@@ -109,13 +109,13 @@ def configure_flask_app(
         error=pb.ServerError(exception=str(e), traceback=format_traceback())
       )
 
-  @flask_app.route("/ui")
+  @flask_app.route("/ui", methods=["POST"])
   def ui_stream() -> Response:
-    param = request.args.get("request", default=None)
-    if param is None:
-      raise Exception("Missing request parameter")
+    data = request.data
+    if not data:
+      raise Exception("Missing request payload")
     ui_request = pb.UiRequest()
-    ui_request.ParseFromString(base64.urlsafe_b64decode(param))
+    ui_request.ParseFromString(base64.urlsafe_b64decode(data))
 
     return Response(
       stream_with_context(generate_data(ui_request)),
