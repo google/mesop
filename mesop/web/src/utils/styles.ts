@@ -127,6 +127,9 @@ export function formatStyle(styleObj: Style): string {
       margin.getBottom() || 0
     } ${margin.getLeft() || 0};`;
   }
+  if (styleObj.getOutline()) {
+    style += `outline: ${styleObj.getOutline()};`;
+  }
   if (styleObj.getOverflowX()) {
     style += `overflow-x: ${styleObj.getOverflowX()};`;
   }

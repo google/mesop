@@ -144,6 +144,7 @@ class Style:
       letter_spacing: Increases or decreases the space between characters in text. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/letter-spacing).
       line height: Set the line height (relative to the font size). See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/line-height).
       margin: Sets the margin space required on each side of an element. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/margin).
+      outline: Sets the outline property. Note: `input` component has default browser stylings. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/outline).
       overflow_x: Specifies the handling of overflow in the horizontal direction. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/overflow-x).
       overflow_y: Specifies the handling of overflow in the vertical direction. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/overflow-y).
       padding: Sets the padding space required on each side of an element. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/padding).
@@ -221,6 +222,7 @@ class Style:
   letter_spacing: int | str | None = None
   line_height: str | None = None
   margin: Margin | None = None
+  outline: str | None = None
   overflow_x: OverflowValues | None = None
   overflow_y: OverflowValues | None = None
   padding: Padding | None = None
@@ -287,6 +289,7 @@ def to_style_proto(s: Style) -> pb.Style:
     letter_spacing=_px_str(s.letter_spacing),
     line_height=str(s.line_height),
     margin=_map_edge_insets(s.margin),
+    outline=s.outline,
     overflow_x=s.overflow_x,
     overflow_y=s.overflow_y,
     padding=_map_edge_insets(s.padding),
