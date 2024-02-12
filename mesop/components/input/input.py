@@ -63,6 +63,7 @@ def textarea(
       min_rows=min_rows,
       max_rows=max_rows,
       is_textarea=True,
+      is_native_input=False,
       disabled=disabled,
       placeholder=placeholder,
       required=required,
@@ -144,6 +145,7 @@ def input(
     type_name="input",
     proto=input_pb.InputType(
       is_textarea=False,
+      is_native_input=False,
       disabled=disabled,
       placeholder=placeholder,
       required=required,
@@ -157,6 +159,64 @@ def input(
       subscript_sizing=subscript_sizing,
       hint_label=hint_label,
       label=label,
+      on_input_handler_id=register_event_handler(on_input, event=InputEvent)
+      if on_input
+      else "",
+    ),
+    style=style,
+  )
+
+
+def native_input(
+  *,
+  on_input: Callable[[InputEvent], Any] | None = None,
+  type: Literal[
+    "color",
+    "date",
+    "datetime-local",
+    "email",
+    "month",
+    "number",
+    "password",
+    "search",
+    "tel",
+    "text",
+    "time",
+    "url",
+    "week",
+  ]
+  | None = None,
+  style: Style | None = None,
+  disabled: bool = False,
+  placeholder: str = "",
+  value: str = "",
+  readonly: bool = False,
+  key: str | None = None,
+):
+  """Creates a browser native Input component. Intended for advanced use cases with maximum UI control.
+
+  Args:
+    on_input: [input](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/input_event) is a native browser event.
+    type: Input type of the element. For textarea, use `me.Textarea(...)`
+    style: Style for input.
+    disabled: Whether it's disabled.
+    placeholder: Placeholder value
+    value: Initial value.
+    readonly: Whether the element is readonly.
+    key: Unique identifier for this component instance.
+  """
+
+  insert_component(
+    key=key,
+    type_name="input",
+    proto=input_pb.InputType(
+      is_textarea=False,
+      is_native_input=True,
+      disabled=disabled,
+      placeholder=placeholder,
+      type=type,
+      value=value,
+      readonly=readonly,
       on_input_handler_id=register_event_handler(on_input, event=InputEvent)
       if on_input
       else "",

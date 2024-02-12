@@ -13,3 +13,4 @@ For longer text inputs, also see [Textarea](./textarea.md)
 ## API
 
 ::: mesop.components.input.input.input
+::: mesop.components.input.input.native_input

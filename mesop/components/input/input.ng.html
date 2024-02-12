@@ -1,3 +1,14 @@
+@if(config().getIsNativeInput()) {
+<input
+  [disabled]="config().getDisabled()"
+  [placeholder]="config().getPlaceholder()!"
+  [type]="config().getType()!"
+  [value]="config().getValue()"
+  [readonly]="config().getReadonly()"
+  [style]="getStyle()"
+  (input)="onInput($event)"
+/>
+} @else {
 <mat-form-field
   [hideRequiredMarker]="config().getHideRequiredMarker()"
   [color]="getColor()"
@@ -37,3 +48,4 @@
   />
   }
 </mat-form-field>
+}

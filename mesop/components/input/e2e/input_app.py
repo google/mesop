@@ -23,3 +23,31 @@ def app():
   me.input(
     label="Number input", type="number", on_input=on_input, color="accent"
   )
+  me.markdown("# Native input")
+  border_side = me.BorderSide(width=0)
+  with me.box(
+    style=me.Style(
+      background="lightblue",
+      padding=me.Padding(
+        top=16,
+        left=16,
+        right=16,
+        bottom=16,
+      ),
+    )
+  ):
+    me.native_input(
+      readonly=False,
+      style=me.Style(
+        height=32,
+        padding=me.Padding(top=16, right=16, bottom=16, left=16),
+        border_radius=16,
+        border=me.Border(
+          top=border_side,
+          right=border_side,
+          bottom=border_side,
+          left=border_side,
+        ),
+        outline="none",
+      ),
+    )

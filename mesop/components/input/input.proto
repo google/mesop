@@ -3,6 +3,7 @@ syntax = "proto2";
 
 package mesop.components.input;
 
+// Next id: 24
 message InputType {
   optional bool disabled = 1;
   optional string id = 2;
@@ -26,4 +27,5 @@ message InputType {
   optional int32 max_rows = 22;
   // Not exposed as public API.
   optional bool is_textarea = 19;
+  optional bool is_native_input = 23;
 }
