@@ -127,6 +127,7 @@ class Style:
       flex_grow: Defines the ability for a flex item to grow if necessary. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/flex-grow).
       flex_shrink: Defines the ability for a flex item to shrink if necessary. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/flex-shrink).
       flex_wrap: Allows flex items to wrap onto multiple lines. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/flex-wrap).
+      font_family: Specifies the font family. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/font-family).
       font_size: Sets the size of the font. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/font-size).
       font_style: Specifies the font style for text. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/font-style).
       font_weight: Sets the weight (or boldness) of the font. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/font-weight).
@@ -192,6 +193,7 @@ class Style:
   flex_grow: int | None = None
   flex_shrink: int | None = None
   flex_wrap: Literal["nowrap", "wrap", "wrap-reverse"] | None = None
+  font_family: str | None = None
   font_size: int | str | None = None
   font_style: Literal["italic", "normal"] | None = None
   font_weight: Literal[
@@ -271,6 +273,7 @@ def to_style_proto(s: Style) -> pb.Style:
     flex_grow=s.flex_grow,
     flex_shrink=s.flex_shrink,
     flex_wrap=s.flex_wrap,
+    font_family=s.font_family,
     font_size=_px_str(s.font_size),
     font_style=s.font_style,
     font_weight=_map_font_weight(s.font_weight),

@@ -217,7 +217,7 @@ message UserDefinedType {
     repeated Arg args = 1;
 }
 
-// Next id: 45
+// Next id: 46
 message Style {
     optional string align_content = 32;
     optional string align_items = 1;
@@ -234,6 +234,7 @@ message Style {
     optional int32 flex_grow = 9;
     optional int32 flex_shrink = 10;
     optional string flex_wrap = 11;
+    optional string font_family = 45;
     optional string font_size = 12;
     optional string font_style = 13;
     optional string font_weight = 14;

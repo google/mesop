@@ -67,6 +67,9 @@ export function formatStyle(styleObj: Style): string {
   if (styleObj.getFlexWrap()) {
     style += `flex-wrap: ${styleObj.getFlexWrap()};`;
   }
+  if (styleObj.getFontFamily()) {
+    style += `font-family: ${styleObj.getFontFamily()};`;
+  }
   if (styleObj.getFontSize()) {
     style += `font-size: ${styleObj.getFontSize()};`;
   }
