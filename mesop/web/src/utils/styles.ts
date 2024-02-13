@@ -49,6 +49,9 @@ export function formatStyle(styleObj: Style): string {
   if (styleObj.getColumns()) {
     style += `columns: ${styleObj.getColumns()};`;
   }
+  if (styleObj.getCursor()) {
+    style += `cursor: ${styleObj.getCursor()};`;
+  }
   if (styleObj.getDisplay()) {
     style += `display: ${styleObj.getDisplay()};`;
   }

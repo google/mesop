@@ -121,6 +121,7 @@ class Style:
       color: Sets the color of the text inside the component. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/color).
       column_gap: Sets the gap between columns. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/column-gap).
       columns: Specifies the number of columns in a multi-column element. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/columns).
+      cursor: Sets the mouse cursor. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor).
       display: Defines the display type of the component. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/display).
       flex_basis: Specifies the initial length of a flexible item. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/flex-basis).
       flex_direction: Establishes the main-axis, thus defining the direction flex items are placed in the flex container. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/flex-direction).
@@ -170,6 +171,7 @@ class Style:
   color: str | None = None
   column_gap: int | str | None = None
   columns: int | None = None
+  cursor: str | None = None
   display: Literal[
     # precomposed values
     "block",
@@ -267,6 +269,7 @@ def to_style_proto(s: Style) -> pb.Style:
     color=s.color,
     column_gap=_px_str(s.column_gap),
     columns=s.columns,
+    cursor=s.cursor,
     display=s.display,
     flex_basis=s.flex_basis,
     flex_direction=s.flex_direction,
