@@ -20,6 +20,7 @@ body {
   height: 100%;
   // Use system font.
   font-family: var(--default-font-family);
+  -webkit-font-smoothing: antialiased;
 }
 
 * {
