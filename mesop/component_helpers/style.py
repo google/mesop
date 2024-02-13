@@ -118,6 +118,7 @@ class Style:
       border: Defines the border properties for each side of the component. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/border).
       border_radius: Defines the border radius. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/border-radius).
       box_shadow: Defines the box shadow. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/box-shadow).
+      box_sizing: Defines the box sizing. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/box-sizing).
       color: Sets the color of the text inside the component. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/color).
       column_gap: Sets the gap between columns. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/column-gap).
       columns: Specifies the number of columns in a multi-column element. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/columns).
@@ -157,6 +158,7 @@ class Style:
       text_overflow: Specifies how overflowed content that is not displayed should be signaled to the user. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/text-overflow).
       white_space: Specifies how white space inside an element is handled. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/white-space).
       width: Sets the width of the component. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/width).
+      z-index: Sets the z-index of the component. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/z-index).
   """
 
   # For literal properties, make the most commonly used option the first literal
@@ -168,6 +170,7 @@ class Style:
   border: Border | None = None
   border_radius: int | str | None = None
   box_shadow: str | None = None
+  box_sizing: str | None = None
   color: str | None = None
   column_gap: int | str | None = None
   columns: int | None = None
@@ -256,6 +259,7 @@ class Style:
     "break-spaces",
   ] | None = None
   width: int | str | None = None
+  z_index: int | None = None
 
 
 def to_style_proto(s: Style) -> pb.Style:
@@ -266,6 +270,7 @@ def to_style_proto(s: Style) -> pb.Style:
     border=_map_border(s.border),
     border_radius=_px_str(s.border_radius),
     box_shadow=s.box_shadow,
+    box_sizing=s.box_sizing,
     color=s.color,
     column_gap=_px_str(s.column_gap),
     columns=s.columns,
@@ -306,6 +311,7 @@ def to_style_proto(s: Style) -> pb.Style:
     text_overflow=s.text_overflow,
     white_space=s.white_space,
     width=_px_str(s.width),
+    z_index=s.z_index,
   )
 
 

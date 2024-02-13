@@ -217,7 +217,7 @@ message UserDefinedType {
     repeated Arg args = 1;
 }
 
-// Next id: 47
+// Next id: 49
 message Style {
     optional string align_content = 32;
     optional string align_items = 1;
@@ -225,6 +225,7 @@ message Style {
     optional Border border = 3;
     optional string border_radius = 28;
     optional string box_shadow = 29;
+    optional string box_sizing = 47;
     optional string color = 4;
     optional string column_gap = 33;
     optional int32 columns = 5;
@@ -265,6 +266,7 @@ message Style {
     optional string text_overflow = 25;
     optional string white_space = 26;
     optional string width = 27;
+    optional int32 z_index = 48;
 }
 
 message EdgeInsets {

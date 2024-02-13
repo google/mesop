@@ -40,6 +40,9 @@ export function formatStyle(styleObj: Style): string {
   if (styleObj.getBoxShadow()) {
     style += `box-shadow: ${styleObj.getBoxShadow()};`;
   }
+  if (styleObj.getBoxSizing()) {
+    style += `box-sizing: ${styleObj.getBoxSizing()};`;
+  }
   if (styleObj.getColor()) {
     style += `color: ${styleObj.getColor()};`;
   }
@@ -168,6 +171,9 @@ export function formatStyle(styleObj: Style): string {
   }
   if (styleObj.getWidth()) {
     style += `width: ${styleObj.getWidth()};`;
+  }
+  if (styleObj.getZIndex()) {
+    style += `z-index: ${styleObj.getZIndex()};`;
   }
   return style;
 }
