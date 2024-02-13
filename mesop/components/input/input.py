@@ -37,6 +37,9 @@ def textarea(
 
   Args:
     label: Label for input.
+    autosize: If True, the textarea will automatically adjust its height to fit the content, up to the max_rows limit.
+    min_rows: The minimum number of rows the textarea will display.
+    max_rows: The maximum number of rows the textarea will display.
     on_input: [input](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/input_event) is a native browser event.
     rows: The number of lines to show in the text area.
     appearance: The form field appearance style.
@@ -63,7 +66,7 @@ def textarea(
       min_rows=min_rows,
       max_rows=max_rows,
       is_textarea=True,
-      is_native_input=False,
+      is_native_textarea=False,
       disabled=disabled,
       placeholder=placeholder,
       required=required,
@@ -145,7 +148,7 @@ def input(
     type_name="input",
     proto=input_pb.InputType(
       is_textarea=False,
-      is_native_input=False,
+      is_native_textarea=False,
       disabled=disabled,
       placeholder=placeholder,
       required=required,
@@ -167,25 +170,12 @@ def input(
   )
 
 
-def native_input(
+def native_textarea(
   *,
   on_input: Callable[[InputEvent], Any] | None = None,
-  type: Literal[
-    "color",
-    "date",
-    "datetime-local",
-    "email",
-    "month",
-    "number",
-    "password",
-    "search",
-    "tel",
-    "text",
-    "time",
-    "url",
-    "week",
-  ]
-  | None = None,
+  autosize: bool = False,
+  min_rows: int | None = None,
+  max_rows: int | None = None,
   style: Style | None = None,
   disabled: bool = False,
   placeholder: str = "",
@@ -193,11 +183,13 @@ def native_input(
   readonly: bool = False,
   key: str | None = None,
 ):
-  """Creates a browser native Input component. Intended for advanced use cases with maximum UI control.
+  """Creates a browser native Textarea component. Intended for advanced use cases with maximum UI control.
 
   Args:
     on_input: [input](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/input_event) is a native browser event.
-    type: Input type of the element. For textarea, use `me.Textarea(...)`
+    autosize: If True, the textarea will automatically adjust its height to fit the content, up to the max_rows limit.
+    min_rows: The minimum number of rows the textarea will display.
+    max_rows: The maximum number of rows the textarea will display.
     style: Style for input.
     disabled: Whether it's disabled.
     placeholder: Placeholder value
@@ -211,10 +203,12 @@ def native_input(
     type_name="input",
     proto=input_pb.InputType(
       is_textarea=False,
-      is_native_input=True,
+      is_native_textarea=True,
+      autosize=autosize,
+      min_rows=min_rows,
+      max_rows=max_rows,
       disabled=disabled,
       placeholder=placeholder,
-      type=type,
       value=value,
       readonly=readonly,
       on_input_handler_id=register_event_handler(on_input, event=InputEvent)

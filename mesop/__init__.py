@@ -52,7 +52,7 @@ from mesop.components.divider.divider import divider as divider
 from mesop.components.icon.icon import icon as icon
 from mesop.components.image.image import image as image
 from mesop.components.input.input import input as input
-from mesop.components.input.input import native_input as native_input
+from mesop.components.input.input import native_textarea as native_textarea
 from mesop.components.input.input import textarea as textarea
 from mesop.components.markdown.markdown import markdown as markdown
 from mesop.components.plot.plot import (

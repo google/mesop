@@ -27,5 +27,5 @@ message InputType {
   optional int32 max_rows = 22;
   // Not exposed as public API.
   optional bool is_textarea = 19;
-  optional bool is_native_input = 23;
+  optional bool is_native_textarea = 23;
 }

@@ -1,13 +1,16 @@
-@if(config().getIsNativeInput()) {
-<input
+@if(config().getIsNativeTextarea()) {
+<textarea
   [disabled]="config().getDisabled()"
   [placeholder]="config().getPlaceholder()!"
-  [type]="config().getType()!"
   [value]="config().getValue()"
   [readonly]="config().getReadonly()"
   [style]="getStyle()"
   (input)="onInput($event)"
-/>
+  [cdkTextareaAutosize]="config().getAutosize()"
+  [cdkAutosizeMinRows]="config().getMinRows()"
+  [cdkAutosizeMaxRows]="config().getMaxRows()"
+  #autosize="cdkTextareaAutosize"
+></textarea>
 } @else {
 <mat-form-field
   [hideRequiredMarker]="config().getHideRequiredMarker()"

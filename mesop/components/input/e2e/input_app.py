@@ -36,7 +36,7 @@ def app():
       ),
     )
   ):
-    me.native_input(
+    me.native_textarea(
       readonly=False,
       style=me.Style(
         height=32,
