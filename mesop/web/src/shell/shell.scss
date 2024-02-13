@@ -6,4 +6,10 @@
 .status {
   position: fixed;
   width: 100%;
+
+  // Set it higher than default so that it will show up
+  // over regular app content.
+  //
+  // Note: this can still be overriden with app content set to a higher z-index.
+  z-index: 2;
 }
