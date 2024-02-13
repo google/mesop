@@ -56,3 +56,42 @@ $light-theme: mat.define-light-theme(
 .mat-drawer-side {
   border: 0 !important;
 }
+
+@media (pointer: fine) {
+  @supports not (selector(::-webkit-scrollbar)) {
+    * {
+      scrollbar-color: #dadce0 transparent;
+      scrollbar-gutter: auto;
+      scrollbar-width: thin;
+    }
+  }
+
+  ::-webkit-scrollbar,
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+    height: 12px;
+    width: 12px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: content-box currentColor;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    color: #dadce0;
+    min-height: 48px;
+    min-width: 48px;
+  }
+
+  :hover::-webkit-scrollbar-thumb {
+    color: #80868b;
+  }
+
+  ::-webkit-scrollbar-thumb:active {
+    color: #5f6368;
+  }
+
+  ::-webkit-scrollbar-button {
+    height: 0;
+    width: 0;
+  }
+}
