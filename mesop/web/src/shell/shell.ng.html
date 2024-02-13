@@ -5,6 +5,8 @@
     mode="query"
   ></mat-progress-bar>
 </div>
-<ng-container *ngIf="rootComponent != null">
-  <component-renderer [component]="rootComponent"></component-renderer>
-</ng-container>
+<mat-sidenav-container style="height: 100%">
+  <ng-container *ngIf="rootComponent != null">
+    <component-renderer [component]="rootComponent"></component-renderer>
+  </ng-container>
+</mat-sidenav-container>

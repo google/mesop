@@ -18,6 +18,7 @@ py_library(
     visibility = ["//build_defs:mesop_users"],
     deps = [
         # REF(//scripts/scaffold_component.py):insert_component_import
+        "//mesop/components/sidenav:py",
         "//mesop/components/video:py",
         "//mesop/components/audio:py",
         "//mesop/components/image:py",

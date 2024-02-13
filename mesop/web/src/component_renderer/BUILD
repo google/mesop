@@ -14,6 +14,7 @@ ng_module(
     ]) + ["component_renderer.css"],
     deps = [
         # REF(//scripts/scaffold_component.py):insert_component_import
+        "//mesop/components/sidenav:ng",
         "//mesop/components/video:ng",
         "//mesop/components/audio:ng",
         "//mesop/components/image:ng",

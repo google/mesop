@@ -17,6 +17,7 @@ nav:
           - Text I/O: components/text_io.md
       - Layout:
           - Box: components/box.md
+          - Sidenav: components/sidenav.md
       - Text:
           - Text: components/text.md
           - Markdown: components/markdown.md

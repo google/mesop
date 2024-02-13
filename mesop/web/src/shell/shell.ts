@@ -15,6 +15,7 @@ import {provideAnimations} from '@angular/platform-browser/animations';
 import {bootstrapApplication} from '@angular/platform-browser';
 import {MatIconModule, MatIconRegistry} from '@angular/material/icon';
 import {EditorService} from '../services/editor_service';
+import {MatSidenavModule} from '@angular/material/sidenav';
 
 @Component({
   selector: 'mesop-shell',
@@ -25,6 +26,7 @@ import {EditorService} from '../services/editor_service';
     ComponentRenderer,
     MatProgressBarModule,
     MatIconModule,
+    MatSidenavModule,
   ],
   styleUrl: 'shell.css',
 })
