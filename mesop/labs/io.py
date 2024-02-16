@@ -104,7 +104,7 @@ def text_io(
             me.button(
               "Generate",
               color="primary",
-              type="raised",
+              type="flat",
               on_click=on_click_generate,
             )
         with me.box(style=box_style):
