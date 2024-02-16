@@ -48,7 +48,7 @@ def extract_data(version: str):
 
 extract_data("gemini")
 extract_data("gemini_advanced")
-print("output_dict", output_dict)
+
 for key in output_dict:
   random.shuffle(output_dict[key])
 
