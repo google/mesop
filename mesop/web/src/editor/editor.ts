@@ -1,7 +1,6 @@
 import {
   Component,
   ElementRef,
-  ErrorHandler,
   HostListener,
   Injectable,
   NgZone,
@@ -11,7 +10,6 @@ import {
 import {Router, RouterOutlet, Routes, provideRouter} from '@angular/router';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {
-  ServerError,
   Component as ComponentProto,
   ComponentConfig,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
@@ -29,7 +27,6 @@ import {
   HotReloadWatcher,
   IbazelHotReloadWatcher,
 } from '../services/hot_reload_watcher';
-import {GlobalErrorHandlerService} from '../services/global_error_handler';
 import {Shell} from '../shell/shell';
 import {EditorService, SelectionMode} from '../services/editor_service';
 import {Channel} from '../services/channel';
@@ -53,10 +50,7 @@ import {CommandDialogService} from '../dev_tools/command_dialog/command_dialog_s
     MatSidenavModule,
     Shell,
   ],
-  providers: [
-    {provide: ErrorHandler, useClass: GlobalErrorHandlerService},
-    {provide: HotReloadWatcher, useClass: IbazelHotReloadWatcher},
-  ],
+  providers: [{provide: HotReloadWatcher, useClass: IbazelHotReloadWatcher}],
   styleUrl: 'editor.css',
 })
 class Editor {
@@ -79,26 +73,15 @@ class Editor {
     private devToolsSettings: DevToolsSettings,
     iconRegistry: MatIconRegistry,
     private router: Router,
-    errorHandler: ErrorHandler,
     private editorService: EditorService,
     private channel: Channel,
   ) {
     iconRegistry.setDefaultFontSetClass('material-symbols-rounded');
-    (errorHandler as GlobalErrorHandlerService).setOnError((error) => {
-      const errorProto = new ServerError();
-      errorProto.setException(`JS Error: ${error.toString()}`);
-      this.errors.push(errorProto);
-    });
     this.renderer.setAttribute(
       this.hostElement.nativeElement,
       'tabindex',
       '-1',
     );
-  }
-
-  get errors(): ServerError[] {
-    if (!this.shell) return [];
-    return this.shell.errors;
   }
 
   ngAfterViewInit() {

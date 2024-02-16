@@ -1,4 +1,10 @@
-import {Component, HostListener, NgZone, Renderer2} from '@angular/core';
+import {
+  Component,
+  ErrorHandler,
+  HostListener,
+  NgZone,
+  Renderer2,
+} from '@angular/core';
 import {Router, RouterOutlet, Routes, provideRouter} from '@angular/router';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {
@@ -16,6 +22,8 @@ import {bootstrapApplication} from '@angular/platform-browser';
 import {MatIconModule, MatIconRegistry} from '@angular/material/icon';
 import {EditorService} from '../services/editor_service';
 import {MatSidenavModule} from '@angular/material/sidenav';
+import {ErrorBox} from '../error/error_box';
+import {GlobalErrorHandlerService} from '../services/global_error_handler';
 
 @Component({
   selector: 'mesop-shell',
@@ -27,7 +35,9 @@ import {MatSidenavModule} from '@angular/material/sidenav';
     MatProgressBarModule,
     MatIconModule,
     MatSidenavModule,
+    ErrorBox,
   ],
+  providers: [{provide: ErrorHandler, useClass: GlobalErrorHandlerService}],
   styleUrl: 'shell.css',
 })
 export class Shell {
@@ -41,8 +51,14 @@ export class Shell {
     private channel: Channel,
     iconRegistry: MatIconRegistry,
     private router: Router,
+    errorHandler: ErrorHandler,
   ) {
     iconRegistry.setDefaultFontSetClass('material-symbols-rounded');
+    (errorHandler as GlobalErrorHandlerService).setOnError((error) => {
+      const errorProto = new ServerError();
+      errorProto.setException(`JS Error: ${error.toString()}`);
+      this.errors.push(errorProto);
+    });
   }
 
   ngOnInit() {
