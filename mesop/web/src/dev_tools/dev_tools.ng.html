@@ -1,10 +1,16 @@
 <div class="panel-header">
   <mat-icon
     [matTooltip]="getInspectTooltip()"
-    class="inspect-button"
+    class="icon-button"
     [ngClass]="{'selected-inspect-button': isSelectingMode()}"
     (click)="toggleSelectingMode()"
     >frame_inspect</mat-icon
+  >
+  <mat-icon
+    [matTooltip]="getHotReloadTooltip()"
+    class="icon-button"
+    (click)="hotReload()"
+    >refresh</mat-icon
   >
   <div
     class="panel-button"

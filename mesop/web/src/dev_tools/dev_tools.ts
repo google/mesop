@@ -8,6 +8,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {EditorService, SelectionMode} from '../services/editor_service';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {isMac} from '../utils/platform';
+import {Channel} from '../services/channel';
 
 @Component({
   selector: 'mesop-dev-tools',
@@ -35,6 +36,7 @@ export class DevTools {
   constructor(
     public devToolsSettings: DevToolsSettings,
     private editorService: EditorService,
+    private channel: Channel,
   ) {}
 
   selectEditorPanel() {
@@ -66,5 +68,16 @@ export class DevTools {
       return 'Select component - ⌘ ⇧ E';
     }
     return 'Select component - Ctrl ⇧ E';
+  }
+
+  getHotReloadTooltip(): string {
+    if (isMac()) {
+      return 'Hot reload - ⌘ ⇧ R';
+    }
+    return 'Hot reload - Ctrl ⇧ R';
+  }
+
+  hotReload() {
+    this.channel.hotReload();
   }
 }
