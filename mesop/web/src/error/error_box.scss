@@ -3,7 +3,9 @@
   padding: 28px;
   color: #9e4242;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-  position: relative;
+  position: absolute;
+  z-index: 9999;
+  width: 100%;
 }
 
 .close-button {
