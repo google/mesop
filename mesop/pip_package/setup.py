@@ -35,7 +35,7 @@ CONSOLE_SCRIPTS = [
 
 setup(
   name="mesop",
-  version="0.3.2",
+  version="0.3.3",
   description="Build UIs in Python",
   long_description=get_readme(),
   url="https://github.com/google/mesop",
