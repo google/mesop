@@ -58,6 +58,7 @@ nav:
       - Type checking: internal/type_checking.md
       - CI: internal/ci.md
       - Build / Toolchain: internal/toolchain.md
+      - Publishing: internal/publishing.md
 theme:
   name: material
   logo: assets/logo.png
