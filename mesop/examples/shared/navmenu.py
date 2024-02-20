@@ -58,7 +58,7 @@ def menu_item(label: str, icon: str, url: str, current_url: str):
           )
 
 
-@me.composite
+@me.content_component
 def scaffold(url: str):
   with me.box(style=me.Style(background="white", height="100%")):
     navmenu(url=url)

@@ -20,7 +20,7 @@ from mesop.component_helpers.helper import (
   component as component,
 )
 from mesop.component_helpers.helper import (
-  composite as composite,
+  content_component as content_component,
 )
 from mesop.component_helpers.helper import (
   slot as slot,

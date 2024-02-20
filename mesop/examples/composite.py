@@ -7,7 +7,7 @@ def app():
     me.text("hi")
 
 
-@me.composite
+@me.content_component
 def composite():
   with me.box(
     style=me.Style(
