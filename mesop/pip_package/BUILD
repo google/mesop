@@ -9,25 +9,6 @@ package(
 
 licenses(["notice"])
 
-genrule(
-    name = "pip_package",
-    # Pip packages are provided in a tarball because we can't statically
-    # know the file names: they must contain the version,
-    # which is only defined in a Python module. Dependents of this
-    # target can extract the tarball and glob its contents.
-    outs = ["pip_packages.tar.gz"],
-    cmd = "$(execpath :build_pip_package) $@",
-    tools = [
-        ":build_pip_package",
-    ],
-)
-
-sh_binary(
-    name = "extract_pip_package",
-    srcs = ["extract_pip_package.sh"],
-    data = [":pip_package"],
-)
-
 sh_binary(
     name = "build_pip_package",
     srcs = ["build_pip_package.sh"],
