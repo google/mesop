@@ -11,4 +11,5 @@ Slide Toggle allows the user to toggle on and off and is based on the [Angular M
 ## API
 
 ::: mesop.components.slide_toggle.slide_toggle.slide_toggle
+::: mesop.components.slide_toggle.slide_toggle.content_slide_toggle
 ::: mesop.components.slide_toggle.slide_toggle.SlideToggleChangeEvent

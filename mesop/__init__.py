@@ -87,6 +87,9 @@ from mesop.components.slide_toggle.slide_toggle import (
   SlideToggleChangeEvent as SlideToggleChangeEvent,
 )
 from mesop.components.slide_toggle.slide_toggle import (
+  content_slide_toggle as content_slide_toggle,
+)
+from mesop.components.slide_toggle.slide_toggle import (
   slide_toggle as slide_toggle,
 )
 from mesop.components.slider.slider import (

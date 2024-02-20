@@ -57,7 +57,7 @@ export const typeToComponent = {
   'slider': SliderComponent,
   'select': SelectComponent,
   'radio': RadioComponent,
-  'slide_toggle': SlideToggleComponent,
+  'content_slide_toggle': SlideToggleComponent,
   'progress_spinner': ProgressSpinnerComponent,
   'progress_bar': ProgressBarComponent,
   'icon': IconComponent,
