@@ -66,7 +66,7 @@ def main():
   fd = os.open(archive, os.O_WRONLY | os.O_CREAT, 0o644)
   with os.fdopen(fd, "wb") as out_file, gzip.GzipFile(
     "wb", fileobj=out_file, mtime=0
-  ) as gzip_file, tarfile.open(fileobj=gzip_file, mode="w:") as tar_file:
+  ) as gzip_file, tarfile.open(fileobj=gzip_file, mode="w:") as tar_file:  # type: ignore
     for f in files:
       arcname = os.path.basename(f)
       tar_file.add(f, filter=cleanse, recursive=False, arcname=arcname)
