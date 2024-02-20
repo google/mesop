@@ -1,15 +1,14 @@
 import threading
 
 from mesop.runtime import enable_debug_mode
-from mesop.server.constants import EDITOR_PACKAGE_PATH
-from mesop.server.flags import port
+from mesop.server.constants import EDITOR_PACKAGE_PATH, PROD_PACKAGE_PATH
 from mesop.server.logging import log_startup
 from mesop.server.server import configure_flask_app
 from mesop.server.static_file_serving import configure_static_file_serving
 from mesop.utils.colab_utils import is_running_in_colab
 
 
-def colab_run():
+def colab_run(*, port: int = 32123, prod_mode: bool = False):
   """
   When running in Colab environment, this will launch the web server.
 
@@ -19,15 +18,20 @@ def colab_run():
     print("Not running Colab: `colab_run` is a no-op")
     return
   flask_app = configure_flask_app()
-  enable_debug_mode()
+  if prod_mode:
+    enable_debug_mode()
+
   configure_static_file_serving(
-    flask_app, static_file_runfiles_base=EDITOR_PACKAGE_PATH
+    flask_app,
+    static_file_runfiles_base=PROD_PACKAGE_PATH
+    if prod_mode
+    else EDITOR_PACKAGE_PATH,
   )
 
-  log_startup()
+  log_startup(port=port)
 
   def run_flask_app():
-    flask_app.run(host="0.0.0.0", port=port(), use_reloader=False)
+    flask_app.run(host="0.0.0.0", port=port, use_reloader=False)
 
   # Launch Flask in background thread so we don't hog up the main thread
   # for regular Colab usage.

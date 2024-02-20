@@ -82,7 +82,7 @@ def main(argv):
   if FLAGS.verbose:
     logging.getLogger("werkzeug").setLevel(logging.INFO)
   else:
-    log_startup()
+    log_startup(port=port())
     logging.getLogger("werkzeug").setLevel(logging.WARN)
 
   flask_app.run(host="0.0.0.0", port=port(), use_reloader=False)
