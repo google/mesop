@@ -112,7 +112,7 @@ from mesop.features import page as page
 from mesop.key import Key as Key
 from mesop.runtime import runtime
 from mesop.server.colab_run import colab_run as colab_run
-from mesop.server.run import run as run
+from mesop.server.create_app import create_app as create_app
 
 _T = TypeVar("_T")
 
