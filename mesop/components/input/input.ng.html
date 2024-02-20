@@ -20,7 +20,7 @@
   [subscriptSizing]="getSubscriptSizing()"
   [hintLabel]="config().getHintLabel()!"
   [style]="getStyle()"
-  ><mat-label>{{config().getLabel()}}</mat-label>
+  ><mat-label *ngIf="config().getLabel()">{{config().getLabel()}}</mat-label>
   @if(config().getIsTextarea()) {
   <textarea
     matInput

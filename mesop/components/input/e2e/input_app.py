@@ -20,6 +20,10 @@ def app():
   me.textarea(
     label="Textarea", on_input=on_input, value="hello world", color="warn"
   )
+  me.textarea(
+    on_input=on_input,
+    placeholder="Placeholder should display automatically when there is no label",
+  )
   me.input(
     label="Number input", type="number", on_input=on_input, color="accent"
   )

@@ -12,11 +12,12 @@ import {Channel} from '../../web/src/services/channel';
 import {formatStyle} from '../../web/src/utils/styles';
 import {Subject} from 'rxjs';
 import {debounceTime} from 'rxjs/operators';
+import {CommonModule} from '@angular/common';
 
 @Component({
   templateUrl: 'input.ng.html',
   standalone: true,
-  imports: [MatInputModule, MatFormFieldModule],
+  imports: [MatInputModule, MatFormFieldModule, CommonModule],
 })
 export class InputComponent {
   @Input({required: true}) type!: Type;
