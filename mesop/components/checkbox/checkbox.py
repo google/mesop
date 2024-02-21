@@ -55,7 +55,7 @@ register_event_mapper(
 )
 
 
-@component()
+@component
 def checkbox(
   label: str | None = None,
   *,

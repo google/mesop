@@ -1,7 +1,7 @@
 import hashlib
 import inspect
 from functools import wraps
-from typing import Any, Callable, Generator, Type, TypeVar, cast
+from typing import Any, Callable, Generator, Type, TypeVar, cast, overload
 
 from google.protobuf import json_format
 from google.protobuf.message import Message
@@ -86,7 +86,34 @@ def content_component(fn: Callable[..., Any]):
 C = TypeVar("C", bound=Callable[..., Any])
 
 
-def component(skip_validation: bool = False):
+# Overload when the decorator is called without parens, e.g.
+# @component
+# def fn():
+@overload
+def component(
+  decorated_fn: C | None = None,
+  /,
+) -> C:
+  pass
+
+
+# Overload when the decorator is called with parens, e.g.
+# @component(skip_validation=True)
+# def fn():
+@overload
+def component(
+  *,
+  skip_validation: bool = False,
+) -> Callable[[C], C]:
+  pass
+
+
+def component(
+  decorated_fn: Callable[..., Any] | None = None,
+  /,
+  *,
+  skip_validation: bool = False,
+):
   def component_wrapper(fn: C) -> C:
     """Wraps a Python function to make it a user-defined component."""
 
@@ -122,7 +149,10 @@ def component(skip_validation: bool = False):
     runtime().register_native_component_fn(fn)
     return cast(C, wrapper)
 
-  return component_wrapper
+  if decorated_fn is None:
+    return component_wrapper
+  else:
+    return component_wrapper(decorated_fn)
 
 
 def get_component_name(fn: Callable[..., Any]) -> pb.ComponentName:
