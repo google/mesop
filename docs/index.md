@@ -19,6 +19,12 @@ Learn more in [Getting Started](./getting_started.md)
 
 ## Example app
 
-```python
---8<-- "mesop/examples/text_io.py"
-```
+=== "Code"
+
+    ```python
+    --8<-- "mesop/examples/text_io.py"
+    ```
+
+=== "Demo"
+
+    <iframe class="demo" src="https://mesop-y677hytkra-uc.a.run.app/text_io"></iframe>

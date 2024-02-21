@@ -98,8 +98,8 @@ extra_css:
 markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true
-      auto_title: true
-
+  - pymdownx.tabbed:
+      alternate_style: true
   - pymdownx.superfences
   - pymdownx.snippets
 
