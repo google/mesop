@@ -9,7 +9,9 @@ This guide will walk you step by step through building a simple interactive Meso
 
 ## Installing Mesop
 
-Currently, Mesop isn't installable by `pip` so you'll need to clone the [GitHub repo](https://github.com/google/mesop) and follow our [internal development guide](internal/development.md). In the future, we plan to provide a pip package and a CLI to make it easier to get started with Mesop.
+```shell
+$ pip install mesop
+```
 
 ## Quickstart app
 
