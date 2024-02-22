@@ -4,7 +4,7 @@
 load("//tools/angular:index.bzl", "LINKER_PROCESSED_FW_PACKAGES")
 load("//tools:defaults.bzl", "esbuild")
 
-def ng_js_binary(name, deps = [], entry_points = []):
+def ng_js_binary(name, deps = [], entry_points = [], **kwargs):
     esbuild(
         name = name,
         config = "//mesop/web/src/app:esbuild_config",
@@ -15,4 +15,5 @@ def ng_js_binary(name, deps = [], entry_points = []):
         # ZoneJS needs to be able to intercept these as otherwise change detection would not work properly.
         target = "es2016",
         deps = LINKER_PROCESSED_FW_PACKAGES + deps,
+        **kwargs
     )
