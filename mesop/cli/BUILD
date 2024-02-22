@@ -20,6 +20,7 @@ exports_files(["cli.py"])
 py_library(
     name = "cli_lib",
     srcs = ["cli.py"],
+    visibility = ["//build_defs:mesop_users"],
     deps = COMMON_DEPS,
 )
 

@@ -17,6 +17,7 @@ ng_module(
 ng_js_binary(
     name = "editor_bundle",
     entry_points = [":bundle.ts"],
+    visibility = ["//build_defs:mesop_users"],
     deps = [
         ":main",
     ],
@@ -37,6 +38,7 @@ filegroup(
         ":index.html",
         ":styles",
     ] + JS_STATIC_FILES,
+    visibility = ["//build_defs:mesop_users"],
 )
 
 # Target that builds a static web package of the dev-app. The web package can be
