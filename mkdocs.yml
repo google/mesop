@@ -3,7 +3,7 @@ repo_url: https://github.com/google/mesop
 repo_name: google/mesop
 strict: true
 nav:
-  - Overview: index.md
+  - index.md
   - Getting Started: getting_started.md
   - Guides:
       - Components: guides/components.md
@@ -63,8 +63,7 @@ theme:
   name: material
   logo: assets/logo.png
   favicon: assets/favicon.ico
-  font:
-    text: Poppins
+  font: false
 
   palette:
     # Palette toggle for light mode

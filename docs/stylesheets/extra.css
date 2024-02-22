@@ -1,3 +1,7 @@
+p {
+  letter-spacing: 0.07px;
+}
+
 /*
  * Forked from: https://github.com/mesop-sh/ruff/blob/39728a1198f1ed6081a0fd159715737848a50aa2/docs/stylesheets/extra.css#L32
  */
@@ -27,6 +31,7 @@
 }
 
 [data-md-color-scheme='mesop-light'] {
+  /* --md-default-bg-color: #fafafc; */
   --md-default-bg-color--dark: var(--black);
   --md-primary-fg-color: var(--white);
   --md-primary-bg-color: #333;
@@ -160,11 +165,102 @@
   filter: invert(1);
 }
 
+.mascot-image-container {
+  display: flex;
+  margin: -16px -16px 12px;
+  padding: 0 16px;
+  background: #d1cab8;
+  position: absolute;
+  left: 0;
+  width: calc(100% + 16px);
+}
+
+.mascot-image {
+  width: 360px;
+  margin-left: 80px;
+}
+
+.mascot-text-container {
+  position: relative;
+  text-align: center;
+  flex-grow: 1;
+}
+
+.mascot-text {
+  letter-spacing: 0.17px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 3rem;
+  letter-spacing: 0.25px;
+  font-weight: bold;
+  width: 100%;
+  text-shadow: 0 0 0.075rem #211d2dcc;
+}
+
+.mascot-subtext {
+  text-shadow: 0 0 0.02rem #211d2dcc;
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.mascot-image-spacer {
+  height: 360px;
+}
+
+.box-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin: 0 auto 24px;
+  width: min(100%, 1024px);
+}
+
+.reason-box {
+  background: var(--md-code-hl-color--light);
+  width: min(100%, 280px);
+  padding: 16px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  margin-right: 24px;
+}
+
+.reason-title {
+  font-weight: 500;
+}
+
+.code-demo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  height: 480px;
+  align-items: center;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  margin-top: -16px;
+}
+
+.code-demo .highlight {
+  height: 100%;
+  overflow-y: auto;
+}
+
+.code-demo .highlight pre {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
 .demo {
   width: 100%;
-  height: 400px;
+  height: 100%;
+  overflow-y: auto;
   border: 0;
-  margin-top: -16px;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  border-radius: 4px;
+}
+
+.video-container {
+  display: flex;
+  justify-content: center;
 }
