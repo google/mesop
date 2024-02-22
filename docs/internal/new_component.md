@@ -10,7 +10,7 @@ $ python scripts/scaffold_component.py $component_name
 
 - Make all arguments keyword only by putting `*` as the initial argument. Keyword argument is more readable, particularly for UI components which will have increasingly more optional arguments over time.
 - **Model after existing APIs.** For example, if we are wrapping an existing @angular/material component, we will try to mirror their API (within reason). If we are wrapping a native HTML element, we should try to expose a similar API. In some cases, we will look at other UI frameworks like Flutter for inspiration, even though we are not directly wrapping them.
-- **Prefer small components**. We should try to provide small native components that can be composed by composite components in Python. This enables a wider range of use cases.
+- **Prefer small components**. We should try to provide small native components that can be composed by content components in Python. This enables a wider range of use cases.
 
 ## New events
 

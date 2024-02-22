@@ -14,9 +14,9 @@ If you have a use case that's not supported by the existing native components, p
 
 User-defined components are essentially Python functions which call other components, which can be native components or other user-defined components. It's very easy to write your own components, and it's encouraged to split your app into modular components for better maintainability and reusability.
 
-## Composite components
+## Content components
 
-Composite components allow you to compose components more flexibly than regular components. A commonly used composite component is the [button](../components/button.md) component, which accepts a child component which oftentimes the [text](../components/text.md) component.
+Content components allow you to compose components more flexibly than regular components by accepting child(ren) components. A commonly used content component is the [button](../components/button.md) component, which accepts a child component which oftentimes the [text](../components/text.md) component.
 
 Example:
 
@@ -25,7 +25,7 @@ with me.button():
   me.text("Child")
 ```
 
-You can also have multiple composite components nested:
+You can also have multiple content components nested:
 
 ```python
 with me.box():
@@ -33,10 +33,10 @@ with me.box():
     me.text("Grand-child")
 ```
 
-Sometimes, you may want to define your own composite component for better reusability. For example, let's say I want to define a scaffold component which includes a menu positioned on the left and a main content area, I could do the following:
+Sometimes, you may want to define your own content component for better reusability. For example, let's say I want to define a scaffold component which includes a menu positioned on the left and a main content area, I could do the following:
 
 ```python
-@me.composite
+@me.content_component
 def scaffold(url: str):
   with me.box(style="background: white"):
     menu(url=url)
