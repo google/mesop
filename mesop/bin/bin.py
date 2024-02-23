@@ -16,8 +16,6 @@ from mesop.runtime import (
   reset_runtime,
   runtime,
 )
-from mesop.server.flags import port
-from mesop.server.logging import log_startup
 from mesop.server.server import is_processing_request
 from mesop.server.wsgi_app import create_app
 
@@ -71,7 +69,6 @@ $\u001b[35m mesop {argv[1]}\u001b[0m"""
     stdin_thread.daemon = True
     stdin_thread.start()
 
-  log_startup(port=port())
   logging.getLogger("werkzeug").setLevel(logging.WARN)
   app.run()
 
