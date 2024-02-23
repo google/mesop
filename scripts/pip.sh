@@ -32,4 +32,4 @@ cp -r ./scripts/smoketest_app /tmp/mesoprelease-test && \
 cd /tmp/mesoprelease-test/ && \
 tar -xzf mesop.tar.gz && \
 pip install --upgrade /tmp/mesoprelease-test/mesop*.whl && \
-cd smoketest_app && mesop --path main.py
+cd smoketest_app && mesop main.py

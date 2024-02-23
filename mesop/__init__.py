@@ -1,4 +1,6 @@
-from typing import Any, TypeVar, cast
+import sys
+import types
+from typing import Any, Callable, TypeVar, cast
 
 from mesop.commands.navigate import navigate as navigate
 from mesop.component_helpers import (
@@ -112,7 +114,17 @@ from mesop.features import page as page
 from mesop.key import Key as Key
 from mesop.runtime import runtime
 from mesop.server.colab_run import colab_run as colab_run
-from mesop.server.create_app import create_app as create_app
+from mesop.server.wsgi_app import wsgi_app
+
+
+class _WsgiAppModule(types.ModuleType):
+  def __call__(
+    self, environ: dict[Any, Any], start_response: Callable[..., Any]
+  ):
+    return wsgi_app(environ, start_response)
+
+
+sys.modules[__name__].__class__ = _WsgiAppModule
 
 _T = TypeVar("_T")
 
