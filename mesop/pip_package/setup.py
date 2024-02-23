@@ -30,7 +30,7 @@ def get_readme():
 REQUIRED_PACKAGES = get_required_packages()
 
 CONSOLE_SCRIPTS = [
-  #   "tensorboard = tensorboard.main:run_main",
+  "mesop = mesop.bin.bin:run_main",
 ]
 
 setup(
@@ -43,10 +43,7 @@ setup(
   # Contained modules and scripts.
   packages=find_packages(),
   entry_points={
-    # "console_scripts": CONSOLE_SCRIPTS,
-    # "tensorboard_plugins": [
-    #   "projector = tensorboard.plugins.projector.projector_plugin:ProjectorPlugin",
-    # ],
+    "console_scripts": CONSOLE_SCRIPTS,
   },
   package_data={
     "mesop": [

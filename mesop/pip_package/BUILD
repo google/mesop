@@ -21,7 +21,7 @@ sh_binary(
         "setup.py",
         ":deterministic_tar_gz",
         "//mesop",  # Main Mesop target
-        "//mesop/cli",  # CLI (which includes data dep on web app)
+        "//mesop/bin",  # CLI binary
         "//mesop/labs",  # Mesop labs target
     ],
 )

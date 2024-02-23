@@ -1,19 +1,25 @@
+from typing import Sequence
+
 from absl import app, flags
 
 import mesop.protos.ui_pb2 as pb
-from mesop.cli.execute_module import execute_module
+from mesop.cli.execute_module import (
+  execute_module,
+  get_module_name_from_runfile_path,
+)
 from mesop.exceptions import format_traceback
 from mesop.runtime import enable_debug_mode, runtime
 from mesop.server import dev_server
 from mesop.server.flags import port
 from mesop.server.server import configure_flask_app
+from mesop.utils.runfiles import get_runfile_location
 
 FLAGS = flags.FLAGS
 
 flags.DEFINE_string("path", "", "path to main python module of Mesop app.")
 
 
-def main(argv):
+def main(argv: Sequence[str]):
   flask_app = configure_flask_app()
   if len(FLAGS.path) < 1:
     raise Exception("Required flag 'path'. Received: " + FLAGS.path)
@@ -21,7 +27,10 @@ def main(argv):
   enable_debug_mode()
 
   try:
-    execute_module(runfile_path=FLAGS.path)
+    execute_module(
+      module_path=get_runfile_location(FLAGS.path),
+      module_name=get_module_name_from_runfile_path(FLAGS.path),
+    )
   except Exception as e:
     runtime().add_loading_error(
       pb.ServerError(exception=str(e), traceback=format_traceback())

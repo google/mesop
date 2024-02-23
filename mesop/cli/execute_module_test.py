@@ -1,11 +1,14 @@
-from mesop.cli.execute_module import get_app_modules, get_module_name
+from mesop.cli.execute_module import (
+  get_app_modules,
+  get_module_name_from_runfile_path,
+)
 
 
-def test_get_module_name():
+def test_get_module_name_from_runfile_path():
   assert (
     # Intentionally use a fake workspace name so this test
     # behaves the same way both upstream and downstream.
-    get_module_name("workspace_name/mesop/example_index.py")
+    get_module_name_from_runfile_path("workspace_name/mesop/example_index.py")
     == "mesop.example_index"
   )
 

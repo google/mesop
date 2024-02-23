@@ -3,13 +3,8 @@ import os
 import sys
 from types import ModuleType
 
-from mesop.utils.runfiles import get_runfile_location
 
-
-def execute_module(*, runfile_path: str) -> ModuleType:
-  module_path = get_runfile_location(runfile_path)
-  module_name = get_module_name(runfile_path)
-
+def execute_module(*, module_path: str, module_name: str) -> ModuleType:
   # Delete all app modules so we reload them.
   for submodule in get_app_modules(module_name, set(sys.modules.keys())):
     del sys.modules[submodule]
@@ -23,7 +18,7 @@ def execute_module(*, runfile_path: str) -> ModuleType:
   return module
 
 
-def get_module_name(runfile_path: str) -> str:
+def get_module_name_from_runfile_path(runfile_path: str) -> str:
   """
   Creates a synthetic Python module name based on the runfile path.
 
@@ -35,6 +30,22 @@ def get_module_name(runfile_path: str) -> str:
   # Intentionally skip the first segment which will be the workspace root (e.g. "mesop").
   # Note: this workspace root name is different downstream.
   segments = runfile_path.split(os.path.sep)[1:]
+
+  # Trim the filename extension (".py") from the last path segment.
+  segments[len(segments) - 1] = segments[len(segments) - 1].split(".")[0]
+  return ".".join(segments)
+
+
+def get_module_name_from_path(path: str) -> str:
+  """
+  Creates a synthetic Python module name based on a file path.
+
+  Example:
+  Input: "foo/bar.py"
+  Output: "foo.bar"
+  """
+
+  segments = path.split(os.path.sep)
 
   # Trim the filename extension (".py") from the last path segment.
   segments[len(segments) - 1] = segments[len(segments) - 1].split(".")[0]

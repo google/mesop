@@ -2,11 +2,15 @@ import logging
 import os
 import sys
 import threading
+from typing import Sequence
 
 from absl import app, flags
 
 import mesop.protos.ui_pb2 as pb
-from mesop.cli.execute_module import execute_module
+from mesop.cli.execute_module import (
+  execute_module,
+  get_module_name_from_runfile_path,
+)
 from mesop.exceptions import format_traceback
 from mesop.runtime import (
   enable_debug_mode,
@@ -19,6 +23,7 @@ from mesop.server.flags import port
 from mesop.server.logging import log_startup
 from mesop.server.server import configure_flask_app
 from mesop.server.static_file_serving import configure_static_file_serving
+from mesop.utils.runfiles import get_runfile_location
 
 FLAGS = flags.FLAGS
 
@@ -29,6 +34,13 @@ flags.DEFINE_bool(
 flags.DEFINE_bool("verbose", False, "set to true for verbose logging.")
 
 
+def execute_main_module():
+  execute_module(
+    module_path=get_runfile_location(FLAGS.path),
+    module_name=get_module_name_from_runfile_path(FLAGS.path),
+  )
+
+
 def monitor_stdin():
   while True:
     line = sys.stdin.readline().strip()
@@ -36,7 +48,7 @@ def monitor_stdin():
       logging.log(logging.INFO, "ibazel build complete; starting hot reload")
       try:
         reset_runtime()
-        execute_module(runfile_path=FLAGS.path)
+        execute_main_module()
         hot_reload_finished()
       except Exception as e:
         logging.log(
@@ -44,7 +56,7 @@ def monitor_stdin():
         )
 
 
-def main(argv):
+def main(argv: Sequence[str]):
   flask_app = configure_flask_app()
   if len(FLAGS.path) < 1:
     raise Exception("Required flag 'path'. Received: " + FLAGS.path)
@@ -53,7 +65,7 @@ def main(argv):
     enable_debug_mode()
 
   try:
-    execute_module(runfile_path=FLAGS.path)
+    execute_main_module()
   except Exception as e:
     # Only record error to runtime if in CI mode.
     if not FLAGS.prod:
