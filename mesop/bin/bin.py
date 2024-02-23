@@ -16,6 +16,9 @@ from mesop.runtime import (
   reset_runtime,
   runtime,
 )
+from mesop.server.flags import port
+from mesop.server.logging import log_startup
+from mesop.server.server import is_processing_request
 from mesop.server.wsgi_app import create_app
 
 FLAGS = flags.FLAGS
@@ -68,6 +71,8 @@ $\u001b[35m mesop {argv[1]}\u001b[0m"""
     stdin_thread.daemon = True
     stdin_thread.start()
 
+  log_startup(port=port())
+  logging.getLogger("werkzeug").setLevel(logging.WARN)
   app.run()
 
 
@@ -83,7 +88,7 @@ def fs_watcher(absolute_path: str):
     current_modified = os.path.getmtime(absolute_path)
 
     # Compare the current modification time with the last modification time
-    if current_modified != last_modified:
+    if current_modified != last_modified and not is_processing_request():
       # Update the last modification time
       last_modified = current_modified
       try:
@@ -97,7 +102,7 @@ def fs_watcher(absolute_path: str):
           logging.ERROR, "Could not hot reload due to error:", exc_info=e
         )
 
-    time.sleep(0.2)
+    time.sleep(0.1)
 
 
 def execute_main_module(absolute_path: str):

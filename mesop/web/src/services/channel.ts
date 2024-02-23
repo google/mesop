@@ -37,6 +37,7 @@ export enum ChannelStatus {
   providedIn: 'root',
 })
 export class Channel {
+  private _isHotReloading = false;
   private eventSource!: SSE;
   private initParams!: InitParams;
   private states!: States;
@@ -52,6 +53,10 @@ export class Channel {
 
   getStatus(): ChannelStatus {
     return this.status;
+  }
+
+  isHotReloading(): boolean {
+    return this._isHotReloading;
   }
 
   getRootComponent(): ComponentProto | undefined {
@@ -83,6 +88,7 @@ export class Channel {
         if (data === '<stream_end>') {
           this.eventSource.close();
           this.status = ChannelStatus.CLOSED;
+          this._isHotReloading = false;
           this.logger.log({type: 'StreamEnd'});
           if (this.queuedEvents.length) {
             const queuedEvent = this.queuedEvents.shift()!;
@@ -162,6 +168,14 @@ export class Channel {
   }
 
   hotReload() {
+    // Only hot reload if there's no request in-flight.
+    // Most likely the in-flight request will receive the updated UI.
+    // In the unlikely chance it doesn't, we will wait for the next
+    // hot reload trigger which is not ideal but acceptable.
+    if (this.getStatus() === ChannelStatus.OPEN) {
+      return;
+    }
+    this._isHotReloading = true;
     const request = new UiRequest();
     const userEvent = new UserEvent();
     userEvent.setStates(this.states);

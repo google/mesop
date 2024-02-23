@@ -18,6 +18,11 @@ export class IbazelHotReloadWatcher extends HotReloadWatcher {
     super(channel);
     if (anyWindow['LiveReload']) {
       this.monkeyPatchLiveReload();
+    } else {
+      console.log('LiveReload not detected; polling hot reload instead.');
+      setInterval(() => {
+        channel.hotReload();
+      }, 500);
     }
   }
 

@@ -17,6 +17,13 @@ LOCALHOSTS = (
 )
 
 
+def is_processing_request():
+  return _requests_in_flight > 0
+
+
+_requests_in_flight = 0
+
+
 def configure_flask_app(
   *, exceptions_to_propagate: Sequence[type] = ()
 ) -> Flask:
@@ -119,9 +126,20 @@ def configure_flask_app(
     ui_request = pb.UiRequest()
     ui_request.ParseFromString(base64.urlsafe_b64decode(data))
 
-    return Response(
+    response = Response(
       stream_with_context(generate_data(ui_request)),
       content_type="text/event-stream",
     )
+    return response
+
+  @flask_app.before_request
+  def before_request():
+    global _requests_in_flight
+    _requests_in_flight += 1
+
+  @flask_app.teardown_request
+  def teardown(error=None):
+    global _requests_in_flight
+    _requests_in_flight -= 1
 
   return flask_app

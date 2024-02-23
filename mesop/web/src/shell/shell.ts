@@ -85,8 +85,12 @@ export class Shell {
     this.channel.dispatch(userEvent);
   }
 
-  isConnectionOpen() {
-    return this.channel.getStatus() === ChannelStatus.OPEN;
+  showChannelProgressIndicator() {
+    // Do not show it if channel is hot reloading to reduce visual noise.
+    return (
+      this.channel.getStatus() === ChannelStatus.OPEN &&
+      !this.channel.isHotReloading()
+    );
   }
 }
 

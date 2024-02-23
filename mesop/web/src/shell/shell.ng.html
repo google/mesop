@@ -4,7 +4,7 @@
 <div class="status">
   <mat-progress-bar
     data-testid="connection-progress-bar"
-    *ngIf="isConnectionOpen()"
+    *ngIf="showChannelProgressIndicator()"
     mode="query"
   ></mat-progress-bar>
 </div>
