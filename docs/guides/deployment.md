@@ -1,83 +1,61 @@
 # Deployment
 
-If you want to deploy your Mesop application, we recommend using a container (e.g. Docker) for simplicity.
+To deploy your Mesop application, we recommend using [Google Cloud Run](https://cloud.google.com/run) because it's easy to get started and there's a [free tier](https://cloud.google.com/run#pricing). However, it's possible to deploy your Mesop to other Cloud platforms.
 
-## Build Container image
+## Example application
 
-After cloning this repository and navigating to the repo root directory, run the following command.
+### Python
 
-### Remote (GCP)
+`main.py` which is your Mesop application code:
 
-These are instructions for using Google Cloud Build and Artifact Registry.
+``` py title="main.py"
+import mesop as me
 
-**Pre-requisite: Create Docker repo**:
-
-Google Cloud Artifact Registry provides a private Docker repo.
-
-You only need to run this once and then you can re-use the same repo for multiple builds.
-
-- Follow Cloud Build's [Docker quickstart guide](https://cloud.google.com/build/docs/build-push-docker-image) for any pre-requisites.
-
-```sh
-gcloud artifacts repositories create {REPO_NAME} --repository-format=docker \
-    --location=us-west2 --description="Mesop app: Docker repository"
+@me.page(title="Home")
+def home():
+  me.text("Hello, world")
 ```
 
-> NOTE: Keep in mind the location as you will be using it for the next step. Also, some locations do not support gcloud builds.
+> Note: if you choose to use a different filename than main.py, you will need to modify the `Procfile` below.
 
-**Running Google Cloud Build**:
+### Procfile
 
-Google Cloud Build can create a container image based on a Dockerfile.
+`Procfile` which configures `gunicorn` to run Mesop.
 
-```sh
-$ gcloud builds submit --region=us-west2 --tag us-west2-docker.pkg.dev/mesop-testing-404806/mesop/mesop:latest
+```title="Procfile"
+web: gunicorn --bind :8080 main:me
 ```
 
-> TIP: If you want to inspect/debug the container image, you can [pull the container image](https://cloud.google.com/artifact-registry/docs/docker/store-docker-container-images#get-image) and run it locally
+The `--bind: 8080` will run Mesop on port 8080.
 
-### Local (Docker)
+The `main:me` syntax is `$(MODULE_NAME):$(VARIABLE_NAME)`: (see [Gunicorn docs](https://docs.gunicorn.org/en/stable/run.html) for more details):
 
-**Build local image**:
+ - Because the Mesop python file is `main.py`, the module name is `main`.
+ - By convention, we do `import mesop as me` so the `me` refers to the main Mesop library module which is also a callable (e.g. a function) that conforms to WSGI.
 
-```sh
-$ docker build -t {TAG_NAME} .
+### requirements.txt
+
+`requirements.txt` specifies the Python dependencies needed. You may need to add additional dependencies depending on your use case.
+
+```title="requirements.txt"
+mesop
+Flask==3.0.0
+gunicorn==20.1.0
+Werkzeug==3.0.1
 ```
 
-> NOTE: This isn't recommended because it takes a long time and frequently hangs unless you have a very well-provisioned machine / container.
+## Pre-requisites
 
-**Deploy image to repo**:
+You will need to create a [Google Cloud](https://cloud.google.com/) account and install the [`gcloud` CLI](https://cloud.google.com/sdk/docs/install).
 
-```sh
-$ docker push ${REPO_NAME}
-```
+## Deploy to Google Cloud Run
 
-> NOTE: you will need to create the docker repo before-hand.
+In your terminal, go to the application directory, which has the files listed above.
 
-## Deploying Container
-
-There's many cloud providers and services that allow you to run a container.
-
-To help you get started, I will show one example using Google Cloud Run.
-
-### Google Cloud Run
-
-- Follow Cloud Run's [container deployment guide](https://cloud.google.com/run/docs/deploying) for general Cloud Run instructions.
-
-**Tips:**
-
-- Set the "Container image URL" to the container that you created in the previous step.
-- Set "Container command" to `./bazel-bin/mesop/cli`
-- Set "Container arguments" to `--path=/mesop/mesop/examples/simple.py` (note: you should configure this to your application)
-- Under Resources, set Memory to at least "1 GiB".
-
-Once you deploy on Cloud Run, you should have a public URL for your application that will look something like: https://{APP_PREFIX}.run.app
-
-## Debugging
-
-### Run container locally
-
-If you've finished building the container image, but you're having difficulty running it in a cloud environment, you can try running the container image locally:
+Run the following command:
 
 ```sh
-$ docker run -p 32123:32123 --platform linux/amd64 -it mesop  /bin/bash
+$ gcloud run deploy
 ```
+
+Follow the instructions and then you should be able to access your deployed app.
