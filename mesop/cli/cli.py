@@ -51,11 +51,6 @@ def main(argv):
 
   if not FLAGS.prod:
     enable_debug_mode()
-    stdin_thread = threading.Thread(
-      target=monitor_stdin, name="mesop_build_watcher_thread"
-    )
-    stdin_thread.daemon = True
-    stdin_thread.start()
 
   try:
     execute_module(runfile_path=FLAGS.path)
@@ -69,7 +64,17 @@ def main(argv):
     else:
       raise e
 
-  print("Running with hot reload:")
+  # WARNING: this needs to run *after* the initial `execute_module`
+  # has completed, otherwise there's a potential race condition where the
+  # background thread and main thread are running `execute_module` which
+  # leads to obscure hot reloading bugs.
+  if not FLAGS.prod:
+    print("Running with hot reload:")
+    stdin_thread = threading.Thread(
+      target=monitor_stdin, name="mesop_build_watcher_thread"
+    )
+    stdin_thread.daemon = True
+    stdin_thread.start()
 
   configure_static_file_serving(
     flask_app,
