@@ -8,40 +8,35 @@ Update `mesop/pip_package/setup.py` version field to the next version.
 
 ## Install locally
 
+From the workspace root, run the following command:
+
 ```sh
-rm -rf /tmp/mesoprelease-test && \
-bazel clean --expunge && \
-virtualenv --python python3 /tmp/mesoprelease-test/venv-test && \
-source /tmp/mesoprelease-test/venv-test/bin/activate && \
-pip install --upgrade pip && \
-pip install -r mesop/pip_package/requirements.txt --no-binary pydantic && \
-pip uninstall -y mesop && \
-bazel run //mesop/pip_package:build_pip_package -- /tmp/mesoprelease-test/mesop.tar.gz && \
-cd /tmp/mesoprelease-test/ && \
-tar -xzf mesop.tar.gz && \
-pip install --upgrade /tmp/mesoprelease-test/mesop*.whl
+$ ./scripts/pip.sh
 ```
+
+This will build the Mesop pip package and install it locally so you can test it.
 
 ## Testing locally
 
-Create a simple hello world Mesop app to make sure it works:
+### Dev CLI
 
-```py
-import mesop as me
+The above shell script will run the following command:
 
-
-@me.page()
-def app():
-    me.text("Hello world")
-
-
-if __name__ == "__main__":
-    me.run()
+```sh
+$ mesop main.py
 ```
 
-> Note: you want to make sure that
+This will start the Mesop dev server and you can test that hot reload works.
+
+### Gunicorn integration
+
+```sh
+$ pip install gunicorn && gunicorn main:me
+```
 
 ## Upload to PyPI
+
+If the testing above looks good, then continue with uploading to PyPI.
 
 ```sh
 rm -rf /tmp/mesoprelease-test/venv-twine \
