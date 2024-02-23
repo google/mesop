@@ -9,8 +9,24 @@ This guide will walk you step by step through building a simple interactive Meso
 
 ## Installing Mesop
 
+Run the following command in your terminal:
+
 ```shell
 $ pip install mesop
+```
+
+## Running Mesop
+
+Copy the following hello world code into a file `hello_world.py`:
+
+```python title="hello_world.py"
+--8<-- "mesop/examples/docs/hello_world.py"
+```
+
+Then run the following command in your terminal:
+
+```shell
+$ mesop hello_world.py
 ```
 
 ## Quickstart app

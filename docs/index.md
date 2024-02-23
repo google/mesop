@@ -89,7 +89,7 @@ __Step 2:__ Copy the example above into `main.py`
 __Step 3:__ Run the app
 
 ```sh
-$ python main.py
+$ mesop main.py
 ```
 
 Learn more in [Getting Started](./getting_started.md).
