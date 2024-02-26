@@ -1,3 +1,6 @@
 .yarn
 # Prettier destroys some of the special markdown directives
 docs/**/*.md
+
+# Test outputs (need exact formatting for assertions to pass)
+mesop/tests/e2e/**/*.html
