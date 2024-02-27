@@ -44,7 +44,7 @@ import {isComponentNameEquals} from '../../utils/proto';
 })
 export class EditorPanel {
   @Input()
-  componentConfigs!: ComponentConfig[];
+  componentConfigs!: readonly ComponentConfig[];
 
   FieldTypeCase = FieldType.TypeCase;
   selectedNode!: FlatNode;

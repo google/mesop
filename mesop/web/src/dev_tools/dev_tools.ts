@@ -25,7 +25,7 @@ import {Channel} from '../services/channel';
 })
 export class DevTools {
   @Input()
-  componentConfigs!: ComponentConfig[];
+  componentConfigs!: readonly ComponentConfig[];
 
   Panel = Panel; // Make it accessible by template.
 

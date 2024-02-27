@@ -22,7 +22,7 @@ interface InitParams {
   zone: NgZone;
   onRender: (
     rootComponent: ComponentProto,
-    componentConfigs: ComponentConfig[],
+    componentConfigs: readonly ComponentConfig[],
   ) => void;
   onError: (error: ServerError) => void;
   onNavigate: (route: string) => void;
@@ -43,7 +43,7 @@ export class Channel {
   private states!: States;
   private rootComponent?: ComponentProto;
   private status!: ChannelStatus;
-  private componentConfigs: ComponentConfig[] = [];
+  private componentConfigs: readonly ComponentConfig[] = [];
   private queuedEvents: (() => void)[] = [];
 
   constructor(
@@ -63,7 +63,7 @@ export class Channel {
     return this.rootComponent;
   }
 
-  getComponentConfigs(): ComponentConfig[] {
+  getComponentConfigs(): readonly ComponentConfig[] {
     return this.componentConfigs;
   }
 

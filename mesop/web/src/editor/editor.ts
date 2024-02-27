@@ -116,7 +116,7 @@ class Editor {
     }
   }
 
-  componentConfigs(): ComponentConfig[] {
+  componentConfigs(): readonly ComponentConfig[] {
     if (!this.shell) return [];
     return this.shell.componentConfigs;
   }

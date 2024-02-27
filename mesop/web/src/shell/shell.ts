@@ -43,7 +43,7 @@ import {GlobalErrorHandlerService} from '../services/global_error_handler';
 export class Shell {
   rootComponent!: ComponentProto;
   errors: ServerError[] = [];
-  componentConfigs: ComponentConfig[] = [];
+  componentConfigs: readonly ComponentConfig[] = [];
 
   constructor(
     private zone: NgZone,
