@@ -7,6 +7,10 @@ package(
 esbuild_config(
     name = "esbuild_config",
     config_file = "esbuild.config.mjs",
+    deps = [
+        "@npm//@angular/build-tooling/shared-scripts/angular-optimization:js_lib",
+        "@npm//@angular/compiler-cli",
+    ],
 )
 
 sass_library(
