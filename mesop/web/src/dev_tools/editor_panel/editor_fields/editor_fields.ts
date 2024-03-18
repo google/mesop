@@ -50,7 +50,7 @@ type Prefixes = Prefix[];
 })
 export class EditorFields {
   @Input()
-  fields!: EditorField[];
+  fields!: readonly EditorField[];
 
   @Input()
   prefixes: Prefixes = [];
@@ -255,7 +255,7 @@ export class EditorFields {
     return display;
   }
 
-  getFieldsForListField(field: EditorField): EditorField[] {
+  getFieldsForListField(field: EditorField): readonly EditorField[] {
     return (
       field
         .getType()!

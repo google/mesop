@@ -120,7 +120,7 @@ export class EditorPanel {
     );
   }
 
-  getFields(): EditorField[] {
+  getFields(): readonly EditorField[] {
     return this.getComponentConfig()?.getFieldsList() ?? [];
   }
 
