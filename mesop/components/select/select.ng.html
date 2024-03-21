@@ -1,4 +1,4 @@
-<mat-form-field>
+<mat-form-field [style]="getStyle()">
   <mat-label>{{config().getLabel()}}</mat-label>
   <mat-select
     [disabled]="config().getDisabled()"

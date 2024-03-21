@@ -22,6 +22,7 @@ def app():
       me.SelectOption(label="label 3", value="value3"),
     ],
     on_selection_change=on_selection_change,
+    style=me.Style(width=500),
   )
   s = me.state(State)
   me.text(text="Selected value: " + s.selected_value)

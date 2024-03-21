@@ -3,6 +3,7 @@ from typing import Any, Callable, Iterable
 
 import mesop.components.select.select_pb2 as select_pb
 from mesop.component_helpers import (
+  Style,
   insert_component,
   register_event_handler,
   register_event_mapper,
@@ -80,6 +81,7 @@ def select(
   tab_index: int = 0,
   placeholder: str = "",
   value: str = "",
+  style: Style | None = None,
 ):
   """Creates a Select component.
 
@@ -92,11 +94,13 @@ def select(
     tab_index: Tab index of the select.
     placeholder: Placeholder to be shown if no value has been selected.
     value: Value of the select control.
+    style: Style.
     key: Unique identifier for this component instance.
   """
   insert_component(
     key=key,
     type_name="select",
+    style=style,
     proto=select_pb.SelectType(
       options=[
         select_pb.SelectOption(label=option.label, value=option.value)

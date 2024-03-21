@@ -4,9 +4,11 @@ import {
   UserEvent,
   Key,
   Type,
+  Style,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 import {SelectType} from 'mesop/mesop/components/select/select_jspb_proto_pb/mesop/components/select/select_pb';
 import {Channel} from '../../web/src/services/channel';
+import {formatStyle} from '../../web/src/utils/styles';
 
 @Component({
   templateUrl: 'select.ng.html',
@@ -16,6 +18,7 @@ import {Channel} from '../../web/src/services/channel';
 export class SelectComponent {
   @Input({required: true}) type!: Type;
   @Input() key!: Key;
+  @Input() style!: Style;
   private _config!: SelectType;
 
   constructor(private readonly channel: Channel) {}
@@ -49,5 +52,9 @@ export class SelectComponent {
     userEvent.setStringValue(event.value);
     userEvent.setKey(this.key);
     this.channel.dispatch(userEvent);
+  }
+
+  getStyle(): string {
+    return formatStyle(this.style);
   }
 }
