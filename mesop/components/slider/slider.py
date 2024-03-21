@@ -11,7 +11,7 @@ from mesop.component_helpers import (
 from mesop.events.events import MesopEvent
 
 
-@dataclass
+@dataclass(kw_only=True)
 class SliderValueChangeEvent(MesopEvent):
   """
   Event triggered when the slider value changes.

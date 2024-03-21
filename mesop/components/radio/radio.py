@@ -11,7 +11,7 @@ from mesop.component_helpers import (
 from mesop.events import MesopEvent
 
 
-@dataclass
+@dataclass(kw_only=True)
 class RadioChangeEvent(MesopEvent):
   """Event representing a change in the radio component's value.
 
@@ -29,7 +29,7 @@ register_event_mapper(
 )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class RadioOption:
   """
   Attributes:

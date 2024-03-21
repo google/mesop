@@ -1,12 +1,12 @@
 from dataclasses import dataclass
 
 
-@dataclass
+@dataclass(kw_only=True)
 class MesopEvent:
   key: str
 
 
-@dataclass
+@dataclass(kw_only=True)
 class ClickEvent(MesopEvent):
   """Represents a user click event.
 
@@ -17,7 +17,7 @@ class ClickEvent(MesopEvent):
   pass
 
 
-@dataclass
+@dataclass(kw_only=True)
 class InputEvent(MesopEvent):
   """Represents a user input event.
 

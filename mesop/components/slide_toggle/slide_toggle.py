@@ -13,7 +13,7 @@ from mesop.components.text.text import text
 from mesop.events import MesopEvent
 
 
-@dataclass
+@dataclass(kw_only=True)
 class SlideToggleChangeEvent(MesopEvent):
   """Event triggered when the slide toggle state changes.
 
