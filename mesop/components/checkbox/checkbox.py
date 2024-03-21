@@ -13,7 +13,7 @@ from mesop.components.text.text import text
 from mesop.events import MesopEvent
 
 
-@dataclass
+@dataclass(kw_only=True)
 class CheckboxChangeEvent(MesopEvent):
   """Represents a checkbox state change event.
 
@@ -34,7 +34,7 @@ register_event_mapper(
 )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class CheckboxIndeterminateChangeEvent(MesopEvent):
   """Represents a checkbox indeterminate state change event.
 

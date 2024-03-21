@@ -11,7 +11,7 @@ from mesop.component_helpers import (
 from mesop.events import MesopEvent
 
 
-@dataclass
+@dataclass(kw_only=True)
 class ProgressBarAnimationEndEvent(MesopEvent):
   """
   Event emitted when the animation of the progress bar ends.

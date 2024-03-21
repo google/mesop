@@ -11,7 +11,7 @@ from mesop.component_helpers import (
 from mesop.events import MesopEvent
 
 
-@dataclass
+@dataclass(kw_only=True)
 class SelectOpenedChangeEvent(MesopEvent):
   """Event representing the opened state change of the select component.
 
@@ -32,7 +32,7 @@ register_event_mapper(
 )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class SelectSelectionChangeEvent(MesopEvent):
   """Event representing a change in the select component's value.
 
@@ -53,7 +53,7 @@ register_event_mapper(
 )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class SelectOption:
   """Represents an option within a select component.
 

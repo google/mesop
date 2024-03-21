@@ -3,7 +3,7 @@ from dataclasses import dataclass
 import mesop.protos.ui_pb2 as pb
 
 
-@dataclass
+@dataclass(kw_only=True)
 class Key:
   key: str
 
