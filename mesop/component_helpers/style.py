@@ -279,7 +279,7 @@ def to_style_proto(s: Style) -> pb.Style:
     flex_basis=s.flex_basis,
     flex_direction=s.flex_direction,
     flex_grow=s.flex_grow,
-    flex_shrink=s.flex_shrink,
+    flex_shrink=str(s.flex_shrink),
     flex_wrap=s.flex_wrap,
     font_family=s.font_family,
     font_size=_px_str(s.font_size),

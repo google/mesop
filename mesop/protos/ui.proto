@@ -234,7 +234,7 @@ message Style {
     optional string flex_basis = 7;
     optional string flex_direction = 8;
     optional int32 flex_grow = 9;
-    optional int32 flex_shrink = 10;
+    optional string flex_shrink = 10;
     optional string flex_wrap = 11;
     optional string font_family = 45;
     optional string font_size = 12;
