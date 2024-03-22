@@ -14,9 +14,9 @@ hide:
   <img class="mascot-image" src="./assets/robot_mascot.jpeg"/>
   <div class="mascot-text-container">
     <div class="mascot-text">
-      Mesop
+      Build delightful web apps quickly in Python
       <div class="mascot-subtext">
-        Build delightful demos quickly in Python
+        Used at Google for rapid internal app development
       </div>
     </div>
   </div>
@@ -24,8 +24,7 @@ hide:
 
 <div class="mascot-image-spacer"></div>
 
-Mesop is a Python-based UI framework that allows you to rapidly build web demos:
-
+Mesop is a Python-based UI framework that allows you to rapidly build web apps like demos and internal apps:
 
 <div class="box-row">
   <div class="reason-box">
@@ -52,13 +51,19 @@ Mesop is a Python-based UI framework that allows you to rapidly build web demos:
   </div>
 </div>
 
- <div class="video-container">
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/tvbO-Lqq_TA?si=bf5pTMneieRLisMc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe><!-- <div>Visual Editor</div>
-</div>!-->
+<div class="video-card">
+<div style="text-align: center; font-size: 18px; font-weight: 500; margin-bottom: 12px;">
+Edit your UI directly in the browser using the Visual Editor
 </div>
 
-## Demo
+ <div class="video-container">
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/tvbO-Lqq_TA?si=bf5pTMneieRLisMc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+</div>
+
+</div>
+
+## Write your first Mesop app in less than 10 lines of code...
 
 === "Demo & Code"
 
