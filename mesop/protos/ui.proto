@@ -228,7 +228,7 @@ message Style {
     optional string box_sizing = 47;
     optional string color = 4;
     optional string column_gap = 33;
-    optional int32 columns = 5;
+    optional string columns = 5;
     optional string cursor = 46;
     optional string display = 6;
     optional string flex_basis = 7;
