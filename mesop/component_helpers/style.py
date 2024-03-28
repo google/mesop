@@ -173,7 +173,7 @@ class Style:
   box_sizing: str | None = None
   color: str | None = None
   column_gap: int | str | None = None
-  columns: int | None = None
+  columns: int | str | None = None
   cursor: str | None = None
   display: Literal[
     # precomposed values
@@ -273,7 +273,7 @@ def to_style_proto(s: Style) -> pb.Style:
     box_sizing=s.box_sizing,
     color=s.color,
     column_gap=_px_str(s.column_gap),
-    columns=s.columns,
+    columns=str(s.columns),
     cursor=s.cursor,
     display=s.display,
     flex_basis=s.flex_basis,
