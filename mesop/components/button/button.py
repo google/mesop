@@ -31,7 +31,7 @@ def button(
     color: Theme color palette of the button
     disable_ripple: Whether the ripple effect is disabled or not.
     disabled: Whether the button is disabled.
-    key: Unique identifier for this component instance.
+    key: The component [key](../guides/components.md#component-key).
   """
   with content_button(
     on_click=on_click,
@@ -64,7 +64,7 @@ def content_button(
     color: Theme color palette of the button
     disable_ripple: Whether the ripple effect is disabled or not.
     disabled: Whether the button is disabled.
-    key: Unique identifier for this component instance.
+    key: The component [key](../guides/components.md#component-key).
   """
   return insert_composite_component(
     key=key,

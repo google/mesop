@@ -53,3 +53,68 @@ def page1():
 ```
 
 This is similar to Angular's [Content Projection](https://angular.io/guide/content-projection).
+
+## Component Key
+
+Every native component in Mesop accepts a `key` argument which is a component identifier. This is used by Mesop to tell [Angular whether to reuse the DOM element](https://angular.io/api/core/TrackByFunction#description).
+
+### Resetting a component
+
+You can reset a component to the initial state (e.g. reset a [select](../components/select.md) component to the unselected state) by giving it a new key value across renders.
+
+For example, you can reset a component by "incrementing" the key:
+
+```py
+class State:
+  select_menu_key: int
+
+def reset(event):
+  state = me.state(State)
+  state.select_menu_key += 1
+
+def main():
+  state = me.state(State)
+  me.select(key=str(state.select_menu_key),
+            options=[me.SelectOption(label="o1", value="o1")])
+  me.button(label="Reset", on_click=reset)
+```
+
+### Event handlers
+
+Every Mesop event includes the key of the component which emitted the event. This makes it useful when you want to reuse an event handler for multiple instances of a component:
+
+```py
+def buttons():
+  for fruit in ["Apple", "Banana"]:
+    me.button(fruit, key=fruit, on_click=on_click)
+
+def on_click(event: me.ClickEvent):
+  fruit = me.key
+  print("fruit name", fruit)
+```
+
+Because a key is a `str` type, you may sometimes want to store more complex data like a dataclass or a proto object for retrieval in the event handler. To do this, you can serialize and deserialize:
+
+```py
+import json
+from dataclasses import dataclass
+
+@dataclass
+class Person:
+  name: str
+
+def buttons():
+  for person in [Person(name="Alice"), Person(name="Bob")]:
+    # serialize dataclass into str
+    key = json.dumps(person.asdict())
+    me.button(person.name, key=key, on_click=on_click)
+
+def on_click(event: me.ClickEvent):
+  person_dict = json.loads(me.key)
+  # modify this for more complex deserialization
+  person = Person(**person_dict)
+```
+
+!!! Tip "Use component key for reusable event handler"
+
+    This avoids a [subtle issue with using closure variables in event handlers](./troubleshooting.md#avoid-using-closure-variables-in-event-handler).

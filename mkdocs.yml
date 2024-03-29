@@ -105,6 +105,8 @@ markdown_extensions:
       alternate_style: true
   - pymdownx.superfences
   - pymdownx.snippets
+  - admonition
+  - pymdownx.details
 
 plugins:
   - blog

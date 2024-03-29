@@ -84,7 +84,7 @@ def checkbox(
     checked: Whether the checkbox is checked.
     disabled: Whether the checkbox is disabled.
     indeterminate: Whether the checkbox is indeterminate. This is also known as "mixed" mode and can be used to represent a checkbox with three states, e.g. a checkbox that represents a nested list of checkable items. Note that whenever checkbox is manually clicked, indeterminate is immediately set to false.
-    key: Unique identifier for this component instance.
+    key: The component [key](../guides/components.md#component-key).
   """
   with content_checkbox(
     on_change=on_change,
@@ -130,7 +130,7 @@ def content_checkbox(
     checked: Whether the checkbox is checked.
     disabled: Whether the checkbox is disabled.
     indeterminate: Whether the checkbox is indeterminate. This is also known as "mixed" mode and can be used to represent a checkbox with three states, e.g. a checkbox that represents a nested list of checkable items. Note that whenever checkbox is manually clicked, indeterminate is immediately set to false.
-    key: Unique identifier for this component instance.
+    key: The component [key](../guides/components.md#component-key).
   """
   return insert_composite_component(
     key=key,

@@ -46,3 +46,33 @@ def on_input(event: me.InputEvent):
   state = me.state(State)
   state.input_value = event.value
 ```
+
+## Avoid using closure variables in event handler
+
+One subtle mistake when building a reusable component is to have the event handler use a closure variable like the following example:
+
+```py title="Bad example of using closure variable"
+@me.component
+def link_component(url: str):
+   def on_click(event: me.ClickEvent):
+     me.navigate(url)
+  return me.button(url, on_click=on_click)
+
+def app():
+    link_component("/1")
+    link_component("/2")
+```
+
+The problem with this above example is that Mesop only stores the last event handler. This means that both instances of the link_component will refer to the last `on_click` instance which references the same `url` closure variable set to `"/2"`. This almost always produces the wrong behavior.
+
+Instead, you will want to use the pattern of relying on the key in the event handler as demonstrated in the following example:
+
+```py title="Good example of using key"
+@me.component
+def link_component(url: str):
+   def on_click(event: me.ClickEvent):
+     me.navigate(event.key)
+  return me.button(url, key=url, on_click=on_click)
+```
+
+For more info on using component keys, please refer to the [Component Key docs](./components.md#component-key).

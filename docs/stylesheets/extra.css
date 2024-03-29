@@ -144,6 +144,10 @@ p {
   font-size: 0.8rem;
 }
 
+.md-typeset .admonition {
+  font-size: 0.75rem;
+}
+
 .highlight code {
   font-size: 0.7rem;
 }

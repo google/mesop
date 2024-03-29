@@ -61,7 +61,7 @@ def radio(
     label_position: Whether the labels should appear after or before the radio-buttons. Defaults to 'after'
     value: Value for the radio-group. Should equal the value of the selected radio button if there is a corresponding radio button with a matching value.
     disabled: Whether the radio group is disabled
-    key: Unique identifier for this component instance.
+    key: The component [key](../guides/components.md#component-key).
   """
   insert_component(
     key=key,

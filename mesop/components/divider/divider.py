@@ -10,7 +10,7 @@ def divider(*, key: str | None = None, inset: bool = False):
   """Creates a Divider component.
 
   Args:
-    key: Unique identifier for this component instance.
+    key: The component [key](../guides/components.md#component-key).
     inset: Whether the divider is an inset divider.
   """
   insert_component(

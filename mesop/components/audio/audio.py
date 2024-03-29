@@ -13,7 +13,7 @@ def audio(
 
   Args:
       src: The URL of the audio to be played.
-      key: An optional key to uniquely identify the image component.
+      key: The component [key](../guides/components.md#component-key).
   """
   insert_component(
     key=key,
