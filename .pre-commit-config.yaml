@@ -6,7 +6,9 @@ repos:
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
-      - id: check-yaml
+      # Suppress check-yaml because of false error:
+      # "could not determine a constructor for the tag 'tag:yaml.org,2002:python/name:material.extensions.emoji.twemoji'"
+      # - id: check-yaml
       - id: check-added-large-files
       - id: check-case-conflict
   - repo: https://github.com/astral-sh/ruff-pre-commit
