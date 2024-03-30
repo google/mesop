@@ -48,7 +48,7 @@ def progress_bar(
   """Creates a Progress bar component.
 
   Args:
-    key: Unique identifier for this component instance.
+    key: The component [key](../guides/components.md#component-key).
     color: Theme palette color of the progress bar.
     value: Value of the progress bar. Defaults to zero. Mirrored to aria-valuenow.
     buffer_value: Buffer value of the progress bar. Defaults to zero.

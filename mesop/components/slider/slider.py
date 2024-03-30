@@ -59,7 +59,7 @@ def slider(
     show_tick_marks: Whether the slider displays tick marks along the slider track.
     color: Palette color of the slider.
     disable_ripple: Whether ripples are disabled in the slider.
-    key: Unique identifier for this component instance.
+    key: The component [key](../guides/components.md#component-key).
   """
   insert_component(
     key=key,

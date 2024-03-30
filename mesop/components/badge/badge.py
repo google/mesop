@@ -41,7 +41,7 @@ def badge(
     description: Message used to describe the decorated element via aria-describedby
     size: Size of the badge. Can be 'small', 'medium', or 'large'.
     hidden: Whether the badge is hidden.
-    key: Unique identifier for this component instance.
+    key: The component [key](../guides/components.md#component-key).
   """
   return insert_composite_component(
     key=key,
