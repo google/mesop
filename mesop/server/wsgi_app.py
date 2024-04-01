@@ -18,7 +18,7 @@ class App:
 
   def run(self):
     log_startup(port=port())
-    self._flask_app.run(host="0.0.0.0", port=port(), use_reloader=False)
+    self._flask_app.run(host="::", port=port(), use_reloader=False)
 
 
 def create_app(

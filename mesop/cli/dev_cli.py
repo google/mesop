@@ -40,7 +40,7 @@ def main(argv: Sequence[str]):
   print("Starting dev server...")
   dev_server.configure_dev_server(flask_app)
   flask_app.debug = True
-  flask_app.run(host="0.0.0.0", port=port(), use_reloader=False)
+  flask_app.run(host="::", port=port(), use_reloader=False)
 
 
 if __name__ == "__main__":
