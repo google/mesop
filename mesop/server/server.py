@@ -105,7 +105,9 @@ def configure_flask_app(
         # one's local computer
         if request.remote_addr not in LOCALHOSTS:
           abort(403)  # Throws a Forbidden Error
-
+        # Visual editor should only be enabled in debug mode.
+        if not runtime().debug_mode:
+          abort(403)  # Throws a Forbidden Error
         handle_editor_event(ui_request.editor_event)
         yield "data: <stream_end>\n\n"
       else:
