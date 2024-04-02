@@ -19,7 +19,13 @@ py_library(
 )
 
 py_test(
-    name = "server_test",
-    srcs = glob(["*_test.py"]),
+    name = "colab_run_test",
+    srcs = ["colab_run_test.py"],
+    deps = [":server"] + THIRD_PARTY_PY_PYTEST,
+)
+
+py_test(
+    name = "wsgi_app_test",
+    srcs = ["wsgi_app_test.py"],
     deps = [":server"] + THIRD_PARTY_PY_PYTEST,
 )
