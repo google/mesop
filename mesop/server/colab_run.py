@@ -5,7 +5,7 @@ from mesop.server.constants import EDITOR_PACKAGE_PATH, PROD_PACKAGE_PATH
 from mesop.server.logging import log_startup
 from mesop.server.server import configure_flask_app
 from mesop.server.static_file_serving import configure_static_file_serving
-from mesop.utils.colab_utils import is_running_in_colab
+from mesop.utils import colab_utils
 
 
 def colab_run(*, port: int = 32123, prod_mode: bool = False):
@@ -14,11 +14,11 @@ def colab_run(*, port: int = 32123, prod_mode: bool = False):
 
   Otherwise, this is a no-op.
   """
-  if not is_running_in_colab():
+  if not colab_utils.is_running_in_colab():
     print("Not running Colab: `colab_run` is a no-op")
     return
   flask_app = configure_flask_app()
-  if prod_mode:
+  if not prod_mode:
     enable_debug_mode()
 
   configure_static_file_serving(

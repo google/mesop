@@ -27,7 +27,7 @@ def create_app(
 ) -> App:
   flask_app = configure_flask_app()
 
-  if prod_mode:
+  if not prod_mode:
     enable_debug_mode()
 
   if run_block is not None:
