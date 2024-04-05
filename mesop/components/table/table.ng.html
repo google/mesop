@@ -1,0 +1,23 @@
+<table
+  mat-table
+  [dataSource]="config().getDataSourceList()"
+  class="mat-elevation-z8"
+>
+  @for(colummn of config().getDisplayedColumnsList(); track index; let index =
+  $index) {
+  <ng-container matColumnDef="{{ config().getDisplayedColumnsList()[index] }}">
+    <th mat-header-cell *matHeaderCellDef>
+      {{ config().getDisplayedColumnsList()[index] }}
+    </th>
+    <td mat-cell *matCellDef="let element">
+      {{ element.getRowMap().get(config().getDisplayedColumnsList()[index]) }}
+    </td>
+  </ng-container>
+  }
+
+  <tr mat-header-row *matHeaderRowDef="config().getDisplayedColumnsList()"></tr>
+  <tr
+    mat-row
+    *matRowDef="let row; columns: config().getDisplayedColumnsList();"
+  ></tr>
+</table>

@@ -1,0 +1,12 @@
+syntax = "proto2";
+
+package mesop.components.table;
+
+message TableRow {
+    map<string, string> row = 1;
+}
+
+message TableType {
+    repeated string displayed_columns = 1;
+    repeated TableRow data_source = 2;
+}

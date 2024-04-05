@@ -96,3 +96,7 @@ THIRD_PARTY_PY_PYTEST = [
 THIRD_PARTY_PY_MYPY_PROTOBUF = [
     requirement("mypy-protobuf"),
 ]
+
+THIRD_PARTY_PY_PANDAS = [
+    requirement("pandas"),
+]

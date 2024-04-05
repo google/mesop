@@ -45,6 +45,7 @@ _MATERIAL_ENTRY_POINTS = [
     "divider",
     "radio",
     "slider",
+    "table",
 ]
 
 # Forked from: https://github.com/angular/components/blob/ff67a416d19e9237607605bec0d7cc372025387f/packages.bzl
@@ -124,6 +125,7 @@ MDC_PACKAGES = [
     "@material/tab-indicator",
     "@material/tab-scroller",
     "@material/textfield",
+    "@material/table",
     "@material/theme",
     "@material/tooltip",
     "@material/top-app-bar",

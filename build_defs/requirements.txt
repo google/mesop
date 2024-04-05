@@ -9,3 +9,4 @@ pydantic==1.10 --no-binary pydantic
 libcst==1.1.0
 
 matplotlib # only used for example
+pandas  # only used for example
