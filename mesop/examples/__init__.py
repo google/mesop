@@ -19,5 +19,6 @@ from mesop.examples import simple as simple
 from mesop.examples import sxs as sxs
 from mesop.examples import testing as testing
 from mesop.examples import text_io as text_io
+from mesop.examples import text_to_image as text_to_image
 
 # Do not import error_state_missing_init_prop because it cause all examples to fail.
