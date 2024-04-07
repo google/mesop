@@ -118,6 +118,8 @@ export class Channel {
             this.componentConfigs = uiResponse
               .getRender()!
               .getComponentConfigsList();
+            // DO_NOT_SUBMIT
+            console.warn(uiResponse.getWarningsList());
             onRender(rootComponent, this.componentConfigs);
             this.logger.log({
               type: 'RenderLog',
@@ -127,6 +129,7 @@ export class Channel {
             break;
           }
           case UiResponse.TypeCase.ERROR:
+            // HANDLE
             onError(uiResponse.getError()!);
             console.log('error', uiResponse.getError());
             break;

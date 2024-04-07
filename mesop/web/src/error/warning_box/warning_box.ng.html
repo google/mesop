@@ -1,0 +1,39 @@
+<div *ngIf="error && !isHidden(error)" class="error">
+  <div class="exception">
+    <button mat-icon-button class="close-button" (click)="hideError(error)">
+      <mat-icon>close</mat-icon>
+    </button>
+    <div class="markdown" [innerHTML]="markdownHTML"></div>
+  </div>
+  <div *ngIf="error.hasTraceback()">
+    <div *ngIf="showFullTraceback()" class="traceback-heading">Traceback</div>
+    <div class="traceback">
+      <ng-container *ngFor="let frame of error.getTraceback()?.getFramesList()">
+        <div
+          *ngIf="isLastAppCode(frame) || showFullTraceback() "
+          class="traceback-segment"
+          [ngClass]="{'highlight': frame.getIsAppCode()}"
+        >
+          <div class="frame-title">{{formatFrame(frame)}}</div>
+          <div class="line-group">
+            <div
+              *ngFor="let line of frame.getLinesList()"
+              [ngClass]="{'caller': line.getIsCaller() && frame.getIsAppCode()}"
+            >
+              <ng-container *ngIf="line.getIsCaller() || frame.getIsAppCode()">
+                {{frame.getIsAppCode() ? line.getCode() :
+                line.getCode()!.trimStart()}}
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+    <a
+      *ngIf="!showFullTraceback()"
+      class="show-full-traceback"
+      (click)="turnOnFullTraceBack()"
+      >Show full traceback</a
+    >
+  </div>
+</div>

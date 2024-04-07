@@ -2,6 +2,7 @@ import mesop.components.markdown.markdown_pb2 as markdown_pb
 from mesop.component_helpers import (
   Style,
   insert_component,
+  log_component_warning,
   register_native_component,
 )
 
@@ -20,6 +21,7 @@ def markdown(
       text: **Required.** Markdown text
       style: Style to apply to component. Follows [HTML Element inline style API](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/style).
   """
+  log_component_warning("Do not use markdown")
   insert_component(
     key=key,
     type_name="markdown",

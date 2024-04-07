@@ -25,3 +25,4 @@ from .style import Margin as Margin
 from .style import Padding as Padding
 from .style import Style as Style
 from .style import to_style_proto as to_style_proto
+from .warning import log_component_warning as log_component_warning

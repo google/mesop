@@ -46,7 +46,7 @@ def configure_flask_app(
           title=title,
         )
       )
-      yield serialize(data)
+      yield format_response(data)
       if not keep_alive:
         yield "data: <stream_end>\n\n"
     except Exception as e:
@@ -62,10 +62,11 @@ def configure_flask_app(
       error.ClearField("traceback")
     ui_response = pb.UiResponse(error=error)
 
-    yield serialize(ui_response)
+    yield format_response(ui_response)
     yield "data: <stream_end>\n\n"
 
-  def serialize(response: pb.UiResponse) -> str:
+  def format_response(response: pb.UiResponse) -> str:
+    response.warnings.extend(runtime().get_warnings())
     encoded = base64.b64encode(response.SerializeToString()).decode("utf-8")
     return f"data: {encoded}\n\n"
 

@@ -114,6 +114,11 @@ message UiResponse {
         RenderEvent render = 1;
         ServerError error = 2;
     }
+    repeated Warning warnings = 3;
+}
+
+message Warning {
+    optional string message = 1;
 }
 
 message ServerError {

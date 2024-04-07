@@ -30,6 +30,7 @@ class Runtime:
   _handlers: dict[str, Handler]
   _state_classes: list[type[Any]]
   _loading_errors: list[pb.ServerError]
+  _warnings: list[pb.Warning]
   component_fns: set[Callable[..., Any]]
   debug_mode: bool = False
   is_hot_reload_in_progress: bool = False
@@ -42,6 +43,7 @@ class Runtime:
     self.event_mappers: dict[Type[Any], Callable[[pb.UserEvent, Key], Any]] = {}
     self._state_classes = []
     self._loading_errors = []
+    self._warnings = []
 
   def context(self) -> Context:
     if "context" not in g:
@@ -115,6 +117,12 @@ Try one of the following paths:
 
   def get_loading_errors(self) -> list[pb.ServerError]:
     return self._loading_errors
+
+  def add_warning(self, warning: pb.Warning) -> None:
+    self._warnings.append(warning)
+
+  def get_warnings(self) -> list[pb.Warning]:
+    return self._warnings
 
   def register_native_component_fn(self, component_fn: Callable[..., Any]):
     self.component_fns.add(component_fn)
