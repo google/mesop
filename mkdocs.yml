@@ -16,6 +16,7 @@ nav:
       - I/O:
           - Text I/O: components/text_io.md
           - Text To Image: components/text_to_image.md
+          - Chat: components/chat.md
       - Layout:
           - Box: components/box.md
           - Sidenav: components/sidenav.md
