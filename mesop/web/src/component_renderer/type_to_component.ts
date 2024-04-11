@@ -1,3 +1,4 @@
+import {TableComponent} from '../../../components/table/table';
 import {SidenavComponent} from '../../../components/sidenav/sidenav';
 import {VideoComponent} from '../../../components/video/video';
 import {AudioComponent} from '../../../components/audio/audio';
@@ -50,6 +51,7 @@ export class UserDefinedComponent implements BaseComponent {
 }
 
 export const typeToComponent = {
+  'table': TableComponent,
   'sidenav': SidenavComponent,
   'video': VideoComponent,
   'audio': AudioComponent,

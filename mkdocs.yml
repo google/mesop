@@ -42,6 +42,7 @@ nav:
           - Icon: components/icon.md
           - Progress bar: components/progress_bar.md
           - Progress spinner: components/progress_spinner.md
+          - Table: components/table.md
           - Tooltip: components/tooltip.md
       - Styling:
           - Style: components/style.md
