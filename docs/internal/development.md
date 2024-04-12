@@ -62,13 +62,13 @@ bazel run //tests/...:all
 To support IDE type-checking (Pylance) in VS Code, we use Aspect's [rules_py](https://docs.aspect.build/rulesets/aspect_rules_py/) which generates a venv target.
 
 ```sh
-$ bazel run //mesop/server:dev_server.venv
+$ bazel run //mesop/cli:cli.venv
 ```
 
 Then, you can activate the venv:
 
 ```sh
-$ source .dev_server.venv/bin/activate
+$ source .cli.venv/bin/activate
 ```
 
 You will need to setup a symlink to have Python IDE support for protos:
