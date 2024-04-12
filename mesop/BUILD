@@ -17,6 +17,7 @@ py_library(
     ],
     visibility = ["//build_defs:mesop_users"],
     deps = [
+        "//mesop/pip_package:version",
         # REF(//scripts/scaffold_component.py):insert_component_import
         "//mesop/components/table:py",
         "//mesop/components/sidenav:py",

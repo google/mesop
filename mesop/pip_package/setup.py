@@ -13,8 +13,13 @@
 # limitations under the License.
 # ==============================================================================
 
-
 from setuptools import find_packages, setup
+
+# Intentionally do not import "from mesop.pip_package.version"
+# because this will drag in other modules through mesop/__init__.py
+# incl. third-party packages like Flask which don't exist
+# in this script environment.
+from version import VERSION
 
 
 def get_required_packages():
@@ -35,7 +40,7 @@ CONSOLE_SCRIPTS = [
 
 setup(
   name="mesop",
-  version="0.4.1",
+  version=VERSION,
   description="Build UIs in Python",
   long_description=get_readme(),
   url="https://github.com/google/mesop",

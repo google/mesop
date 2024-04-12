@@ -4,7 +4,7 @@ Follow these instructions for releasing a new version of Mesop publicly via PyPI
 
 ## Bump the version
 
-Update `mesop/pip_package/setup.py` version field to the next version.
+Update `mesop/version.py` by incrementing the version number. We follow semver.
 
 ## Install locally
 
