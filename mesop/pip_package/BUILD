@@ -9,6 +9,12 @@ package(
 
 licenses(["notice"])
 
+py_library(
+    name = "version",
+    srcs = ["version.py"],
+    visibility = ["//build_defs:mesop_internal"],
+)
+
 sh_binary(
     name = "build_pip_package",
     srcs = ["build_pip_package.sh"],
@@ -19,6 +25,7 @@ sh_binary(
         "requirements.txt",
         "setup.cfg",
         "setup.py",
+        "version.py",
         ":deterministic_tar_gz",
         "//mesop",  # Main Mesop target
         "//mesop/bin",  # CLI binary

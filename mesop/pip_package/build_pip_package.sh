@@ -79,6 +79,7 @@ build() (
   mv -f "mesop/pip_package/requirements.txt" .
   mv -f "mesop/pip_package/setup.cfg" .
   mv -f "mesop/pip_package/setup.py" .
+  mv -f "mesop/pip_package/version.py" .
   rm -rf "mesop/pip_package"
 
   rm -f mesop/mesop  # bazel py_binary sh wrapper
