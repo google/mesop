@@ -35,5 +35,4 @@ sh_binary(
 py_binary(
     name = "deterministic_tar_gz",
     srcs = ["deterministic_tar_gz.py"],
-    srcs_version = "PY3",
 )
