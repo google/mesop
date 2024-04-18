@@ -37,6 +37,37 @@ def test_get_app_modules():
   )
 
 
+def test_get_external_app_modules():
+  assert get_app_modules(
+    "external_app.app",
+    loaded_module_names=set(
+      [
+        "random",
+        "numpy",
+        "pandas",
+        "external_app.styles",
+        "external_app.components",
+        "mesop",
+        "mesop.runtime",
+        "mesop.example_index",
+        "mesop.examples",
+        "mesop.examples.index",
+        "mesop.components.radio.radio",
+        "mesop.components.radio.e2e.radio_app",
+      ]
+    ),
+  ) == set(
+    [
+      "external_app.styles",
+      "external_app.components",
+      "mesop.example_index",
+      "mesop.examples",
+      "mesop.examples.index",
+      "mesop.components.radio.e2e.radio_app",
+    ]
+  )
+
+
 if __name__ == "__main__":
   import pytest
 

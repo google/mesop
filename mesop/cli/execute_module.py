@@ -68,23 +68,23 @@ def get_app_modules(
 
   submodules: set[str] = set()
   for module in loaded_module_names:
+    module_segments = module.split(".")
+
     # Special case for mesop/example_index.py, which would normally consider
     # everything in `mesop` a sub-package/sub-module, however reloading modules
     # like runtime causes weird bugs. Thus, we only reload "app" modules and
     # not any core framework modules.
-    module_segments = module.split(".")
-    if (
-      module_segments[0] == "mesop"
-      and not (
+    if module_segments[0] == "mesop":
+      if (
         module_segments[:2] == ["mesop", "example_index"]
         or module_segments[:2] == ["mesop", "examples"]
         # Reset labs (b/c io.py needs to re-register stateclass)
         or module_segments[:2] == ["mesop", "labs"]
         or "e2e" in module_segments
-      )
-    ):
-      continue
-    if (
+      ):
+        submodules.add(module)
+    # We also want to hot reload user "app" modules.
+    elif (
       module.split(".")[: len(main_module_prefix_segments)]
       == main_module_prefix_segments
     ):
