@@ -31,7 +31,7 @@ Mesop is a Python-based UI framework that allows you to rapidly build web apps l
     <div class="reason-title">Intuitive for UI novices</div>
     <ul>
       <li>Write UI in <a href="#demo">idiomatic Python code</a></li>
-      <li>Easy to understand reactive UI paradigm</li>
+      <li>Skip the pain of learning the FE ecosystem (e.g. npm, compiling) with a single `pip install mesop`</li>
       <li>Ready to use <a href="./components/text_io/">components</a></li>
     </ul>
   </div>
