@@ -1,7 +1,6 @@
 # Description:
 #  Tools for building the Mesop pip package.
-
-load("@rules_python//python:py_binary.bzl", "py_binary")
+load("//build_defs:defaults.bzl", "py_binary")
 
 package(
     default_visibility = ["//build_defs:mesop_internal"],
@@ -36,5 +35,4 @@ sh_binary(
 py_binary(
     name = "deterministic_tar_gz",
     srcs = ["deterministic_tar_gz.py"],
-    srcs_version = "PY3",
 )
