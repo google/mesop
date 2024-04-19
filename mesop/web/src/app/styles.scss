@@ -98,3 +98,8 @@ body {
     width: 0;
   }
 }
+
+// Make it so wide code examples do not overflow. Instead show a horizontal scrollbar.
+mesop-markdown pre {
+  overflow-x: scroll;
+}
