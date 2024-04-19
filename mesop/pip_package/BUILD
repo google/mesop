@@ -1,6 +1,6 @@
 # Description:
 #  Tools for building the Mesop pip package.
-load("//build_defs:defaults.bzl", "py_binary")
+load("//build_defs:defaults.bzl", "py_binary", "py_library")
 
 package(
     default_visibility = ["//build_defs:mesop_internal"],
