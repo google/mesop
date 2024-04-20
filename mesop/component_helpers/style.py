@@ -61,6 +61,37 @@ class Border:
   bottom: BorderSide | None = None
   left: BorderSide | None = None
 
+  @staticmethod
+  def all(value: BorderSide) -> "Border":
+    """
+    Creates a Border instance with all sides having the same style.
+
+    Args:
+        value: The style to apply to all sides of the border.
+
+    Returns:
+        Border: A new Border instance with the specified style applied to all sides.
+    """
+    return Border(top=value, right=value, bottom=value, left=value)
+
+  @staticmethod
+  def symmetric(
+    *, vertical: BorderSide | None = None, horizontal: BorderSide | None = None
+  ) -> "Border":
+    """
+    Creates a Border instance with symmetric styles for vertical and horizontal sides.
+
+    Args:
+        vertical: The style to apply to the top and bottom sides of the border.
+        horizontal: The style to apply to the right and left sides of the border.
+
+    Returns:
+        Border: A new Border instance with the specified styles applied symmetrically.
+    """
+    return Border(
+      top=vertical, right=horizontal, bottom=vertical, left=horizontal
+    )
+
 
 @dataclass(kw_only=True)
 class _EdgeInsets:
@@ -87,6 +118,37 @@ class Margin(_EdgeInsets):
   bottom: int | str | None = None
   left: int | str | None = None
 
+  @staticmethod
+  def all(value: int | str) -> "Margin":
+    """
+    Creates a Margin instance with the same value for all sides.
+
+    Args:
+        value: The value to apply to all sides of the margin. Can be an integer (pixel value) or a string.
+
+    Returns:
+        Margin: A new Margin instance with the specified value applied to all sides.
+    """
+    return Margin(top=value, right=value, bottom=value, left=value)
+
+  @staticmethod
+  def symmetric(
+    *, vertical: int | str | None = None, horizontal: int | str | None = None
+  ) -> "Margin":
+    """
+    Creates a Margin instance with symmetric values for vertical and horizontal sides.
+
+    Args:
+        vertical: The value to apply to the top and bottom sides of the margin. Can be an integer (pixel value) or a string.
+        horizontal: The value to apply to the right and left sides of the margin. Can be an integer (pixel value) or a string.
+
+    Returns:
+        Margin: A new Margin instance with the specified values applied to the vertical and horizontal sides.
+    """
+    return Margin(
+      top=vertical, right=horizontal, bottom=vertical, left=horizontal
+    )
+
 
 @dataclass(kw_only=True)
 class Padding(_EdgeInsets):
@@ -104,6 +166,37 @@ class Padding(_EdgeInsets):
   right: int | str | None = None
   bottom: int | str | None = None
   left: int | str | None = None
+
+  @staticmethod
+  def all(value: int | str) -> "Padding":
+    """
+    Creates a Padding instance with the same value for all sides.
+
+    Args:
+        value: The value to apply to all sides of the padding. Can be an integer (pixel value) or a string.
+
+    Returns:
+        Padding: A new Padding instance with the specified value applied to all sides.
+    """
+    return Padding(top=value, right=value, bottom=value, left=value)
+
+  @staticmethod
+  def symmetric(
+    *, vertical: int | str | None = None, horizontal: int | str | None = None
+  ) -> "Padding":
+    """
+    Creates a Padding instance with symmetric values for vertical and horizontal sides.
+
+    Args:
+        vertical: The value to apply to the top and bottom sides of the padding. Can be an integer (pixel value) or a string.
+        horizontal: The value to apply to the right and left sides of the padding. Can be an integer (pixel value) or a string.
+
+    Returns:
+        Padding: A new Padding instance with the specified values applied to the vertical and horizontal sides.
+    """
+    return Padding(
+      top=vertical, right=horizontal, bottom=vertical, left=horizontal
+    )
 
 
 @dataclass(kw_only=True)
@@ -175,45 +268,54 @@ class Style:
   column_gap: int | str | None = None
   columns: int | str | None = None
   cursor: str | None = None
-  display: Literal[
-    # precomposed values
-    "block",
-    "inline",
-    "inline-block",
-    "flex",
-    "inline-flex",
-    "grid",
-    "inline-grid",
-    # box generation
-    "none",
-    "contents",
-  ] | None = None
+  display: (
+    Literal[
+      # precomposed values
+      "block",
+      "inline",
+      "inline-block",
+      "flex",
+      "inline-flex",
+      "grid",
+      "inline-grid",
+      # box generation
+      "none",
+      "contents",
+    ]
+    | None
+  ) = None
   flex_basis: str | None = None
-  flex_direction: Literal[
-    "row",
-    "row-reverse",
-    "column",
-    "column-reverse",
-  ] | None = None
+  flex_direction: (
+    Literal[
+      "row",
+      "row-reverse",
+      "column",
+      "column-reverse",
+    ]
+    | None
+  ) = None
   flex_grow: int | None = None
   flex_shrink: int | None = None
   flex_wrap: Literal["nowrap", "wrap", "wrap-reverse"] | None = None
   font_family: str | None = None
   font_size: int | str | None = None
   font_style: Literal["italic", "normal"] | None = None
-  font_weight: Literal[
-    "bold",
-    "normal",
-    100,
-    200,
-    300,
-    400,
-    500,
-    600,
-    700,
-    800,
-    900,
-  ] | None = None
+  font_weight: (
+    Literal[
+      "bold",
+      "normal",
+      100,
+      200,
+      300,
+      400,
+      500,
+      600,
+      700,
+      800,
+      900,
+    ]
+    | None
+  ) = None
   gap: int | str | None = None
   grid_area: str | None = None
   grid_column_start: int | None = None
@@ -233,31 +335,40 @@ class Style:
   overflow_x: OverflowValues | None = None
   overflow_y: OverflowValues | None = None
   padding: Padding | None = None
-  position: Literal[
-    "static",
-    "relative",
-    "absolute",
-    "fixed",
-    "sticky",
-  ] | None = None
+  position: (
+    Literal[
+      "static",
+      "relative",
+      "absolute",
+      "fixed",
+      "sticky",
+    ]
+    | None
+  ) = None
   row_gap: int | str | None = None
-  text_align: Literal[
-    "start",
-    "end",
-    "left",
-    "right",
-    "center",
-  ] | None = None
+  text_align: (
+    Literal[
+      "start",
+      "end",
+      "left",
+      "right",
+      "center",
+    ]
+    | None
+  ) = None
   text_decoration: Literal["underline", "none"] | None = None
   text_overflow: Literal["ellipsis", "clip"] | None = None
-  white_space: Literal[
-    "normal",
-    "nowrap",
-    "pre",
-    "pre-wrap",
-    "pre-line",
-    "break-spaces",
-  ] | None = None
+  white_space: (
+    Literal[
+      "normal",
+      "nowrap",
+      "pre",
+      "pre-wrap",
+      "pre-line",
+      "break-spaces",
+    ]
+    | None
+  ) = None
   width: int | str | None = None
   z_index: int | None = None
 
