@@ -13,7 +13,7 @@ def body():
     style=me.Style(
       font_family="Google Sans Text",
       background="white",
-      padding=me.Padding(top=16, bottom=16, left=16, right=16),
+      padding=me.Padding.all(16),
     )
   ):
     me.markdown(
