@@ -1,8 +1,13 @@
 import {MatTableModule} from '@angular/material/table';
 import {Component, Input} from '@angular/core';
-import {TableType} from 'mesop/mesop/components/table/table_jspb_proto_pb/mesop/components/table/table_pb';
+import {
+  TableType,
+  TableRow,
+  TableClickEvent,
+} from 'mesop/mesop/components/table/table_jspb_proto_pb/mesop/components/table/table_pb';
 import {Channel} from '../../web/src/services/channel';
 import {
+  UserEvent,
   Key,
   Type,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
@@ -27,5 +32,20 @@ export class TableComponent {
 
   config(): TableType {
     return this._config;
+  }
+
+  onClickCell(row: TableRow, index: number): void {
+    // On cell click events, return the column and row indexes so we can refer back
+    // to the same cell on the server.
+    const userEvent = new UserEvent();
+    userEvent.setHandlerId(this.config().getOnTableClickEventHandlerId()!);
+    userEvent.setKey(this.key);
+    const clickEvent = new TableClickEvent();
+    clickEvent.setColIndex(index);
+    // Need to cast to number since the index field is optional, but it should never
+    // be null when this event is triggered.
+    clickEvent.setRowIndex(row.getIndex() as number);
+    userEvent.setBytesValue(clickEvent.serializeBinary());
+    this.channel.dispatch(userEvent);
   }
 }

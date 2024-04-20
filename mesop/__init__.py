@@ -100,6 +100,9 @@ from mesop.components.slider.slider import (
 from mesop.components.slider.slider import (
   slider as slider,
 )
+from mesop.components.table.table import (
+  TableClickEvent as TableClickEvent,
+)
 from mesop.components.table.table import table as table
 from mesop.components.text.text import text as text
 from mesop.components.tooltip.tooltip import tooltip as tooltip
