@@ -1,8 +1,11 @@
 import json
 from dataclasses import asdict, dataclass, field, is_dataclass
+from io import StringIO
 from typing import Any, Type, TypeVar, cast, get_origin, get_type_hints
 
 from mesop.exceptions import MesopException
+
+_PANDAS_OBJECT_KEY = "__pandas.DataFrame__"
 
 C = TypeVar("C")
 
@@ -36,14 +39,14 @@ def dataclass_with_defaults(cls: Type[C]) -> Type[C]:
 
 def serialize_dataclass(state: Any):
   if is_dataclass(state):
-    json_str = json.dumps(asdict(state))
+    json_str = json.dumps(asdict(state), cls=MesopJSONEncoder)
     return json_str
   else:
     raise MesopException("Tried to serialize state which was not a dataclass")
 
 
 def update_dataclass_from_json(instance: Any, json_string: str):
-  data = json.loads(json_string)
+  data = json.loads(json_string, object_hook=decode_mesop_json_state_hook)
   _recursive_update_dataclass_from_json_obj(instance, data)
 
 
@@ -77,3 +80,48 @@ def _recursive_update_dataclass_from_json_obj(instance: Any, json_dict: Any):
         # For other types, set the value directly.
         setattr(instance, key, value)
   return instance
+
+
+class MesopJSONEncoder(json.JSONEncoder):
+  """
+  Custom JSON Encoder to handle special serialization cases.
+
+  Since we support Pandas DataFrames in the Mesop table, users may need to store the
+  the DataFrames in Mesop State. This means we need a way to serialize the DataFrame to
+  JSON and back.
+
+  For simplicity we will convert the DataFrame to JSON within the JSON serialized state.
+  This makes it so we don't have to worry about serializing other data types used by
+  Pandas. The "table" serialization format is verbose, but will ensure the most accurate
+  deserialization back into a DataFrame.
+  """
+
+  def default(self, obj):
+    try:
+      import pandas as pd
+
+      if isinstance(obj, pd.DataFrame):
+        return {_PANDAS_OBJECT_KEY: pd.DataFrame.to_json(obj, orient="table")}
+    except ImportError:
+      pass
+    return super().default(obj)
+
+
+def decode_mesop_json_state_hook(dct):
+  """
+  Object hook to decode JSON for Mesop state.
+
+  Since we support Pandas DataFrames in the Mesop table, users may need to store the
+  the DataFrames in Mesop State. This means we need a way to serialize the DataFrame to
+  JSON and back.
+
+  One thing to note is that pandas.NA becomes numpy.nan during deserialization.
+  """
+  try:
+    import pandas as pd
+
+    if _PANDAS_OBJECT_KEY in dct:
+      return pd.read_json(StringIO(dct[_PANDAS_OBJECT_KEY]), orient="table")
+  except ImportError:
+    pass
+  return dct
