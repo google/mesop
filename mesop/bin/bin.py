@@ -51,7 +51,18 @@ $\u001b[35m mesop {argv[1]}\u001b[0m"""
   if not FLAGS.prod:
     enable_debug_mode()
 
-  absolute_path = absolute_path = make_path_absolute(argv[1])
+  absolute_path = make_path_absolute(argv[1])
+
+  # If you run `$ python /path/to/script.py`, Python will add
+  # "/path/to" to sys.path.
+  #
+  # Running `$ mesop /path/to/script.py` should mimic this behavior
+  # so that imports work as expected (e.g. https://github.com/google/mesop/issues/128)
+  #
+  # Ref:
+  # https://docs.python.org/3/library/sys_path_init.html
+  sys.path = [os.path.dirname(absolute_path)] + sys.path
+
   app = create_app(
     prod_mode=FLAGS.prod,
     run_block=lambda: execute_main_module(absolute_path=absolute_path),
