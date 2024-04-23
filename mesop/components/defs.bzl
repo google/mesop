@@ -28,6 +28,7 @@ def mesop_component(name, ng_deps = [], assets = [], py_deps = []):
             ":" + jspb_proto_target,
             "//mesop/protos:ui_jspb_proto",
             "//mesop/web/src/services",
+            "//mesop/web/src/utils",
         ] + ANGULAR_CORE_DEPS + ANGULAR_MATERIAL_TS_DEPS + ng_deps,
     )
 
