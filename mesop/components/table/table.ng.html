@@ -9,8 +9,12 @@
     <th mat-header-cell *matHeaderCellDef>
       {{ config().getDisplayedColumnsList()[index] }}
     </th>
-    <td mat-cell *matCellDef="let element">
-      {{ element.getRowMap().get(config().getDisplayedColumnsList()[index]) }}
+    <td
+      mat-cell
+      (click)="onClickCell(element, index)"
+      *matCellDef="let element"
+    >
+      {{ element.getCellValuesList()[index] }}
     </td>
   </ng-container>
   }

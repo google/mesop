@@ -2,11 +2,27 @@ syntax = "proto2";
 
 package mesop.components.table;
 
+message TableClickEvent {
+    optional int64 row_index = 1;
+    optional int64 col_index = 2;
+}
+
 message TableRow {
-    map<string, string> row = 1;
+    // Pandas Index.
+    optional int64 index = 1;
+    // Column values are stored as a list corresponding to the `displayed_columns`
+    // field.
+    //
+    // This is done because the Pandas may change the column name in certain situations
+    // such as:
+    //
+    // - Naming a column `Index` which conflicts with the special Pandas `Index` column.
+    // - Naming a column with spaces, such as "Date Time"
+    repeated string cell_values = 2;
 }
 
 message TableType {
     repeated string displayed_columns = 1;
     repeated TableRow data_source = 2;
+    optional string on_table_click_event_handler_id = 3;
 }
