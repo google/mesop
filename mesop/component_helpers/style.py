@@ -24,6 +24,7 @@ ItemAlignmentValues = Literal[
   "end",
 ]
 OverflowValues = Literal["visible", "hidden", "clip", "scroll", "auto"]
+OverflowWrapValues = Literal["normal", "break-word", "anywhere"]
 
 
 @dataclass(kw_only=True)
@@ -207,6 +208,7 @@ class Style:
   Attributes:
       align_content: Aligns the flexible container's items on the cross-axis. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/align-content).
       align_items: Specifies the default alignment for items inside a flexible container. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/align-items).
+      aspect_ratio: Specifies the desired width-to-height ratio of a component. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/aspect-ratio).
       background: Sets the background color or image of the component. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/background).
       border: Defines the border properties for each side of the component. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/border).
       border_radius: Defines the border radius. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/border-radius).
@@ -241,6 +243,7 @@ class Style:
       line height: Set the line height (relative to the font size). See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/line-height).
       margin: Sets the margin space required on each side of an element. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/margin).
       outline: Sets the outline property. Note: `input` component has default browser stylings. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/outline).
+      overflow_wrap: Specifies how long text can be broken up by new lines to prevent overflowing. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/overflow-wrap).
       overflow_x: Specifies the handling of overflow in the horizontal direction. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/overflow-x).
       overflow_y: Specifies the handling of overflow in the vertical direction. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/overflow-y).
       padding: Sets the padding space required on each side of an element. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/padding).
@@ -259,6 +262,7 @@ class Style:
 
   align_content: ContentAlignmentValues | None = None
   align_items: ItemAlignmentValues | None = None
+  aspect_ratio: str | None = None
   background: str | None = None
   border: Border | None = None
   border_radius: int | str | None = None
@@ -332,6 +336,7 @@ class Style:
   line_height: str | None = None
   margin: Margin | None = None
   outline: str | None = None
+  overflow_wrap: OverflowWrapValues | None = None
   overflow_x: OverflowValues | None = None
   overflow_y: OverflowValues | None = None
   padding: Padding | None = None
@@ -377,6 +382,7 @@ def to_style_proto(s: Style) -> pb.Style:
   return pb.Style(
     align_content=s.align_content,
     align_items=s.align_items,
+    aspect_ratio=s.aspect_ratio,
     background=s.background,
     border=_map_border(s.border),
     border_radius=_px_str(s.border_radius),
@@ -412,6 +418,7 @@ def to_style_proto(s: Style) -> pb.Style:
     line_height=str(s.line_height),
     margin=_map_edge_insets(s.margin),
     outline=s.outline,
+    overflow_wrap=s.overflow_wrap,
     overflow_x=s.overflow_x,
     overflow_y=s.overflow_y,
     padding=_map_edge_insets(s.padding),

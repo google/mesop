@@ -218,10 +218,11 @@ message UserDefinedType {
     repeated Arg args = 1;
 }
 
-// Next id: 49
+// Next id: 51
 message Style {
     optional string align_content = 32;
     optional string align_items = 1;
+    optional string aspect_ratio = 50;
     optional string background = 2;
     optional Border border = 3;
     optional string border_radius = 28;
@@ -257,6 +258,7 @@ message Style {
     optional string line_height = 31;
     optional EdgeInsets margin = 18;
     optional string outline = 44;
+    optional string overflow_wrap = 49;
     optional string overflow_x = 19;
     optional string overflow_y = 20;
     optional EdgeInsets padding = 21;
