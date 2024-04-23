@@ -2,6 +2,7 @@ from typing import Any, Callable, Literal
 
 import mesop.components.button.button_pb2 as button_pb
 from mesop.component_helpers import (
+  Style,
   component,
   insert_composite_component,
   register_event_handler,
@@ -20,6 +21,7 @@ def button(
   color: Literal["primary", "accent", "warn"] | None = None,
   disable_ripple: bool = False,
   disabled: bool = False,
+  style: Style | None = None,
   key: str | None = None,
 ):
   """Creates a simple text Button component.
@@ -31,6 +33,7 @@ def button(
     color: Theme color palette of the button
     disable_ripple: Whether the ripple effect is disabled or not.
     disabled: Whether the button is disabled.
+    style: Style for the component.
     key: The component [key](../guides/components.md#component-key).
   """
   with content_button(
@@ -39,6 +42,7 @@ def button(
     color=color,
     disable_ripple=disable_ripple,
     disabled=disabled,
+    style=style,
     key=key,
   ):
     text(label)
@@ -52,6 +56,7 @@ def content_button(
   color: Literal["primary", "accent", "warn"] | None = None,
   disable_ripple: bool = False,
   disabled: bool = False,
+  style: Style | None = None,
   key: str | None = None,
 ):
   """Creates a button component, which is a composite component. Typically, you would use a text or icon component as a child.
@@ -64,6 +69,7 @@ def content_button(
     color: Theme color palette of the button
     disable_ripple: Whether the ripple effect is disabled or not.
     disabled: Whether the button is disabled.
+    style: Style for the component.
     key: The component [key](../guides/components.md#component-key).
   """
   return insert_composite_component(
@@ -79,6 +85,7 @@ def content_button(
       type_index=_get_type_index(type),
       type=type,
     ),
+    style=style,
   )
 
 

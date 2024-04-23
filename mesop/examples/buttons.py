@@ -22,6 +22,12 @@ def main():
     color="primary",
     disabled=False,
   )
+  me.button(
+    "not rounded",
+    type="flat",
+    on_click=button_click,
+    style=me.Style(border_radius=0),
+  )
 
   me.button("flat button", on_click=button_click, type="flat")
 
