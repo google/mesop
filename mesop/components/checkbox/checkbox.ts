@@ -4,9 +4,11 @@ import {
   UserEvent,
   Key,
   Type,
+  Style,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 import {CheckboxType} from 'mesop/mesop/components/checkbox/checkbox_jspb_proto_pb/mesop/components/checkbox/checkbox_pb';
 import {Channel} from '../../web/src/services/channel';
+import {formatStyle} from '../../web/src/utils/styles';
 
 @Component({
   templateUrl: 'checkbox.ng.html',
@@ -16,6 +18,8 @@ import {Channel} from '../../web/src/services/channel';
 export class CheckboxComponent {
   @Input({required: true}) type!: Type;
   @Input() key!: Key;
+  @Input() style!: Style;
+
   private _config!: CheckboxType;
 
   constructor(private readonly channel: Channel) {}
@@ -50,5 +54,9 @@ export class CheckboxComponent {
     );
     userEvent.setKey(this.key);
     this.channel.dispatch(userEvent);
+  }
+
+  getStyle(): string {
+    return formatStyle(this.style);
   }
 }

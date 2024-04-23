@@ -3,6 +3,7 @@ from typing import Any, Callable, Literal
 
 import mesop.components.checkbox.checkbox_pb2 as checkbox_pb
 from mesop.component_helpers import (
+  Style,
   component,
   insert_composite_component,
   register_event_handler,
@@ -69,6 +70,7 @@ def checkbox(
   checked: bool = False,
   disabled: bool = False,
   indeterminate: bool = False,
+  style: Style | None = None,
   key: str | None = None,
 ):
   """Creates a simple Checkbox component with a text label.
@@ -84,6 +86,7 @@ def checkbox(
     checked: Whether the checkbox is checked.
     disabled: Whether the checkbox is disabled.
     indeterminate: Whether the checkbox is indeterminate. This is also known as "mixed" mode and can be used to represent a checkbox with three states, e.g. a checkbox that represents a nested list of checkable items. Note that whenever checkbox is manually clicked, indeterminate is immediately set to false.
+    style: Style for the component.
     key: The component [key](../guides/components.md#component-key).
   """
   with content_checkbox(
@@ -96,6 +99,7 @@ def checkbox(
     checked=checked,
     disabled=disabled,
     indeterminate=indeterminate,
+    style=style,
     key=key,
   ):
     text(label)
@@ -114,6 +118,7 @@ def content_checkbox(
   checked: bool = False,
   disabled: bool = False,
   indeterminate: bool = False,
+  style: Style | None = None,
   key: str | None = None,
 ):
   """Creates a Checkbox component which is a composite component. Typically, you would use a text or icon component as a child.
@@ -130,6 +135,7 @@ def content_checkbox(
     checked: Whether the checkbox is checked.
     disabled: Whether the checkbox is disabled.
     indeterminate: Whether the checkbox is indeterminate. This is also known as "mixed" mode and can be used to represent a checkbox with three states, e.g. a checkbox that represents a nested list of checkable items. Note that whenever checkbox is manually clicked, indeterminate is immediately set to false.
+    style: Style for the component.
     key: The component [key](../guides/components.md#component-key).
   """
   return insert_composite_component(
@@ -154,4 +160,5 @@ def content_checkbox(
       if on_indeterminate_change
       else "",
     ),
+    style=style,
   )

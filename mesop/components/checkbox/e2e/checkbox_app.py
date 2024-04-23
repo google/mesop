@@ -21,6 +21,15 @@ def app():
     checked=state.checked,
     disable_ripple=False,
     indeterminate=False,
+    style=me.Style(
+      border=me.Border.all(
+        me.BorderSide(
+          width=1,
+          color="green",
+          style="solid",
+        )
+      )
+    ),
   )
 
   if state.checked:

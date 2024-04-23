@@ -3,6 +3,7 @@ from typing import Any, Callable, Iterable, Literal
 
 import mesop.components.radio.radio_pb2 as radio_pb
 from mesop.component_helpers import (
+  Style,
   insert_component,
   register_event_handler,
   register_event_mapper,
@@ -50,6 +51,7 @@ def radio(
   label_position: Literal["before", "after"] = "before",
   value: str = "",
   disabled: bool = False,
+  style: Style | None = None,
   key: str | None = None,
 ):
   """Creates a Radio component.
@@ -60,7 +62,8 @@ def radio(
     color: Theme color for all of the radio buttons in the group.
     label_position: Whether the labels should appear after or before the radio-buttons. Defaults to 'after'
     value: Value for the radio-group. Should equal the value of the selected radio button if there is a corresponding radio button with a matching value.
-    disabled: Whether the radio group is disabled
+    disabled: Whether the radio group is disabled.
+    style: Style for the component.
     key: The component [key](../guides/components.md#component-key).
   """
   insert_component(
@@ -84,4 +87,5 @@ def radio(
         for option in options
       ],
     ),
+    style=style,
   )

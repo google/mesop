@@ -21,5 +21,14 @@ def app():
       me.RadioOption(label="Option 2", value="2"),
     ],
     value=s.radio_value,
+    style=me.Style(
+      border=me.Border.all(
+        me.BorderSide(
+          width=1,
+          color="green",
+          style="solid",
+        )
+      )
+    ),
   )
   me.text(text="Selected radio value: " + s.radio_value)
