@@ -49,11 +49,16 @@ def monitor_stdin():
       try:
         reset_runtime()
         execute_main_module()
-        hot_reload_finished()
+
       except Exception as e:
+        runtime().add_loading_error(
+          pb.ServerError(exception=str(e), traceback=format_traceback())
+        )
         logging.log(
           logging.ERROR, "Could not hot reload due to error:", exc_info=e
         )
+      finally:
+        hot_reload_finished()
 
 
 def main(argv: Sequence[str]):
