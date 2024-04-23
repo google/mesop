@@ -4,9 +4,11 @@ import {
   UserEvent,
   Key,
   Type,
+  Style,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 import {ButtonType} from 'mesop/mesop/components/button/button_jspb_proto_pb/mesop/components/button/button_pb';
 import {Channel} from '../../web/src/services/channel';
+import {formatStyle} from '../../web/src/utils/styles';
 
 @Component({
   templateUrl: 'button.ng.html',
@@ -16,6 +18,7 @@ import {Channel} from '../../web/src/services/channel';
 export class ButtonComponent {
   @Input({required: true}) type!: Type;
   @Input() key!: Key;
+  @Input() style!: Style;
   private _config!: ButtonType;
 
   constructor(private readonly channel: Channel) {}
@@ -35,5 +38,9 @@ export class ButtonComponent {
     userEvent.setHandlerId(this.config().getOnClickHandlerId()!);
     userEvent.setKey(this.key);
     this.channel.dispatch(userEvent);
+  }
+
+  getStyle(): string {
+    return formatStyle(this.style);
   }
 }
