@@ -4,13 +4,14 @@ Bazel macro for defining an Mesop component, which includes the Python, client-s
 
 load("//build_defs:defaults.bzl", "ANGULAR_CORE_DEPS", "ANGULAR_MATERIAL_TS_DEPS", "jspb_proto_library", "ng_module", "proto_library", "py_library", "py_proto_library")
 
-def mesop_component(name, ng_deps = [], py_deps = []):
+def mesop_component(name, ng_deps = [], assets = [], py_deps = []):
     """
     Defines a new Mesop component which includes Python, client-side (TypeScript) and proto targets.
 
     Args:
         name (str): The name of the component. Must be in snake_case.
         ng_deps (list, optional): List of Angular dependencies for the component. Defaults to an empty list.
+        assets (list, optional): List of assets for the component. Defaults to an empty list.
         py_deps (list, optional): List of Python dependencies for the component. Defaults to an empty list.
     """
     jspb_proto_target = name + "_jspb_proto"
@@ -22,7 +23,7 @@ def mesop_component(name, ng_deps = [], py_deps = []):
         ]),
         assets = native.glob([
             "*.ng.html",
-        ]),
+        ]) + assets,
         deps = [
             ":" + jspb_proto_target,
             "//mesop/protos:ui_jspb_proto",

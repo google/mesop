@@ -47,7 +47,7 @@ def radio(
   options: Iterable[RadioOption] = (),
   on_change: Callable[[RadioChangeEvent], Any] | None = None,
   color: Literal["primary", "accent", "warn"] | None = None,
-  label_position: Literal["before", "after"] = "before",
+  label_position: Literal["before", "after"] = "after",
   value: str = "",
   disabled: bool = False,
   key: str | None = None,

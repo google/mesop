@@ -10,6 +10,7 @@ import {Channel} from '../../web/src/services/channel';
 
 @Component({
   templateUrl: 'radio.ng.html',
+  styleUrl: 'radio.css',
   standalone: true,
   imports: [MatRadioModule],
 })
