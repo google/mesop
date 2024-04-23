@@ -1,3 +1,4 @@
+import {EmbedComponent} from '../../../components/embed/embed';
 import {TableComponent} from '../../../components/table/table';
 import {SidenavComponent} from '../../../components/sidenav/sidenav';
 import {VideoComponent} from '../../../components/video/video';
@@ -51,6 +52,7 @@ export class UserDefinedComponent implements BaseComponent {
 }
 
 export const typeToComponent = {
+  'embed': EmbedComponent,
   'table': TableComponent,
   'sidenav': SidenavComponent,
   'video': VideoComponent,

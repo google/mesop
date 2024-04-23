@@ -19,6 +19,7 @@ py_library(
     deps = [
         "//mesop/pip_package:version",
         # REF(//scripts/scaffold_component.py):insert_component_import
+        "//mesop/components/embed:py",
         "//mesop/components/table:py",
         "//mesop/components/sidenav:py",
         "//mesop/components/video:py",
