@@ -50,4 +50,12 @@ Inline `code`
 
 @me.page(path="/components/markdown/e2e/markdown_app")
 def app():
-  me.markdown(text=SAMPLE_MARKDOWN)
+  me.markdown(
+    text=SAMPLE_MARKDOWN,
+    style=me.Style(
+      margin=me.Margin.all(4),
+      border=me.Border.all(
+        me.BorderSide(width=2, color="pink", style="solid"),
+      ),
+    ),
+  )
