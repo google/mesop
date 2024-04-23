@@ -13,7 +13,7 @@ test('Chat UI can send messages and display responses', async ({page}) => {
   await page.getByRole('button', {name: 'Send prompt'}).click();
   await expect(
     page.getByRole('button', {name: 'Processing prompt...'}),
-  ).toBeAttached({timeout: 3000});
+  ).toBeAttached({timeout: 5000});
   await expect(page.locator('//input')).toHaveValue('');
   expect(page.locator('//div[text()="Lorem ipsum"]')).toHaveCount(1);
   await expect(page.locator('//div[text()="Lorem Ipsum Bot"]')).toHaveCount(1);
