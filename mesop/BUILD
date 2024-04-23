@@ -17,7 +17,7 @@ py_library(
     ],
     visibility = ["//build_defs:mesop_users"],
     deps = [
-        "//mesop/pip_package:version",
+        ":version",
         # REF(//scripts/scaffold_component.py):insert_component_import
         "//mesop/components/embed:py",
         "//mesop/components/table:py",
@@ -48,6 +48,12 @@ py_library(
         "//mesop/features",
         "//mesop/server",
     ],
+)
+
+py_library(
+    name = "version",
+    srcs = ["version.py"],
+    visibility = ["//build_defs:mesop_internal"],
 )
 
 py_library(
