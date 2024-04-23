@@ -6,5 +6,4 @@ package(
 
 mesop_component(
     name = "sidenav",
-    ng_deps = ["//mesop/web/src/utils"],
 )

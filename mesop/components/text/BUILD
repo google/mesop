@@ -6,5 +6,4 @@ package(
 
 mesop_component(
     name = "text",
-    ng_deps = ["//mesop/web/src/utils"],
 )
