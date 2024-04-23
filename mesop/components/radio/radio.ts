@@ -12,6 +12,7 @@ import {formatStyle} from '../../web/src/utils/styles';
 
 @Component({
   templateUrl: 'radio.ng.html',
+  styleUrl: 'radio.css',
   standalone: true,
   imports: [MatRadioModule],
 })
