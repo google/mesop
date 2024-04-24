@@ -301,10 +301,10 @@
     uuid "^9.0.0"
     yargs "^17.0.0"
 
-"@angular/cdk@^17.2.0":
-  version "17.2.0"
-  resolved "https://registry.yarnpkg.com/@angular/cdk/-/cdk-17.2.0.tgz#4642276d8077c43384057a124dac436212867641"
-  integrity sha512-++qEQHzfUvccDw4IFimG9Ig7b4i9d64POUZ8H5cSflTiR3mBVZOlIhnRE/3PifYukoSetrkyedR8BDS6nwGxJQ==
+"@angular/cdk@^17.3.5":
+  version "17.3.5"
+  resolved "https://registry.yarnpkg.com/@angular/cdk/-/cdk-17.3.5.tgz#a610ec34fe7adb4ebd30798664a421ce204c653d"
+  integrity sha512-6y8+yIPWG0wTdPwHIPxKrEFCX1JxxBh4aXcmQnrNTDIvtoEPGaea9SU9XKaU8ahiZMlcpUXqKLG0BVbEhA1Oow==
   dependencies:
     tslib "^2.3.0"
   optionalDependencies:
@@ -393,10 +393,10 @@
     fast-glob "3.3.2"
     yargs "^17.2.1"
 
-"@angular/material-experimental@^17.2.0":
-  version "17.2.0"
-  resolved "https://registry.yarnpkg.com/@angular/material-experimental/-/material-experimental-17.2.0.tgz#ae63d16bca01421fd9bc16494e0782bfd64466e1"
-  integrity sha512-/celW5owLnYemLDApj0rgEiJOviFx2sGFqhEq6W7/5N6iCAZAr3MF1SBmuH+yFXyO51VQKYAFTGD1vh4U1bXHQ==
+"@angular/material-experimental@^17.3.5":
+  version "17.3.5"
+  resolved "https://registry.yarnpkg.com/@angular/material-experimental/-/material-experimental-17.3.5.tgz#822d66e45efb99affafe282fe34233b617ff7268"
+  integrity sha512-gA7BTNcLP5WXAP4EcfjZiMhf2k53SOZd8Dg4+sydjlxwYI/sfHRg/cF0zGNjBpkRvBt0+1dNvJmEcEReXIqdCQ==
   dependencies:
     "@material/animation" "15.0.0-canary.7f224ddd4.0"
     "@material/auto-init" "15.0.0-canary.7f224ddd4.0"
@@ -447,10 +447,10 @@
     "@material/typography" "15.0.0-canary.7f224ddd4.0"
     tslib "^2.3.0"
 
-"@angular/material@^17.2.0":
-  version "17.2.0"
-  resolved "https://registry.yarnpkg.com/@angular/material/-/material-17.2.0.tgz#96acbc1bdfeff9e566145c6f8a9aad12a332ce2f"
-  integrity sha512-8jUaJmx5qptuK8QZudL7AJrk50IOGnLB3uyRnxXjY+5uDJ3jTyC1HqmbsyYDNAX69PD2xKfd+9p1OTz+YLxbQw==
+"@angular/material@^17.3.5":
+  version "17.3.5"
+  resolved "https://registry.yarnpkg.com/@angular/material/-/material-17.3.5.tgz#66e5479ba342277b0549cc301f0578ef51c40c3c"
+  integrity sha512-1+QqBQ8HVOwxOkx/v2n53JA9ALOee55yVDbnAv7TkseNN4JEDxOcE5TO5HGmdV2A4tcsXQ00MIdy04jiB4sCng==
   dependencies:
     "@material/animation" "15.0.0-canary.7f224ddd4.0"
     "@material/auto-init" "15.0.0-canary.7f224ddd4.0"
