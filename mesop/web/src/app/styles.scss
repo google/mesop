@@ -11,29 +11,18 @@
 @include mat.all-component-typographies();
 @include mat.core();
 
-$m3-dark-theme: matx.define-theme(
-  (
-    color: (
-      theme-type: dark,
-      primary: matx.$m3-azure-palette,
-    ),
-  )
-);
-
 $m3-light-theme: matx.define-theme(
   (
     color: (
       primary: matx.$m3-azure-palette,
+      tertiary: matx.$m3-chartreuse-palette,
     ),
   )
 );
 
 body {
   @include mat.all-component-themes($m3-light-theme);
-}
-
-.dark-theme {
-  @include mat.all-component-colors($m3-dark-theme);
+  @include matx.color-variants-back-compat($m3-light-theme);
 }
 
 html,

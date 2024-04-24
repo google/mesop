@@ -23,6 +23,20 @@ def main():
     disabled=False,
   )
   me.button(
+    "accent color button",
+    on_click=button_click,
+    type="flat",
+    color="accent",
+    disabled=False,
+  )
+  me.button(
+    "warn color button",
+    on_click=button_click,
+    type="flat",
+    color="warn",
+    disabled=False,
+  )
+  me.button(
     "not rounded",
     type="flat",
     on_click=button_click,
