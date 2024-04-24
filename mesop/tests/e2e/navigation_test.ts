@@ -1,7 +1,7 @@
 import {test, expect} from '@playwright/test';
 
 test('navigation', async ({page}) => {
-  await page.goto('/');
+  await page.goto('/index');
 
   // Check the text that we're on the home page.
   expect(

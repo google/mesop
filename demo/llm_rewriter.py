@@ -29,7 +29,7 @@ class State:
   modal_open: bool
 
 
-@me.page(path="/llm-rewriter", title="LLM Rewriter")
+@me.page(path="/llm_rewriter", title="LLM Rewriter")
 def page():
   state = me.state(State)
 
