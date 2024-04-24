@@ -11,6 +11,7 @@ export function setIframeSrc(iframe: HTMLIFrameElement, src: string) {
   setIframeSrcImpl(iframe, src);
 }
 
+// copybara:strip_begin(external-only)
 function setIframeSrcImpl(iframe: HTMLIFrameElement, src: string) {
   // This is a tightly controlled list of attributes that enables us to
   // secure sandbox iframes. Do not add additional attributes without
@@ -29,3 +30,4 @@ function setIframeSrcImpl(iframe: HTMLIFrameElement, src: string) {
 
   iframe.src = sanitizeJavaScriptUrl(src)!;
 }
+// copybara:strip_end
