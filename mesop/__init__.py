@@ -129,10 +129,10 @@ from mesop.exceptions import (
 )
 from mesop.features import page as page
 from mesop.key import Key as Key
-from mesop.pip_package.version import VERSION
 from mesop.runtime import runtime
 from mesop.server.colab_run import colab_run as colab_run
 from mesop.server.wsgi_app import wsgi_app
+from mesop.version import VERSION
 
 __version__ = VERSION
 

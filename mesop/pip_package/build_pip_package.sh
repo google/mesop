@@ -79,7 +79,11 @@ build() (
   mv -f "mesop/pip_package/requirements.txt" .
   mv -f "mesop/pip_package/setup.cfg" .
   mv -f "mesop/pip_package/setup.py" .
-  mv -f "mesop/pip_package/version.py" .
+  # version.py is copied because it's used in two ways:
+  # 1) used by ./setup.py (see note how it must be imported without
+  # depending on the rest of mesop package)
+  # 2) used by mesop/__init__.py as a constant in the public API
+  cp "mesop/version.py" .
   rm -rf "mesop/pip_package"
 
   rm -f mesop/mesop  # bazel py_binary sh wrapper
