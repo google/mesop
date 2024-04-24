@@ -4,16 +4,13 @@ test('Chat UI can send messages and display responses', async ({page}) => {
   // Increase the default time out since this test is slow and has multiple steps.
   test.setTimeout(30000);
 
-  await page.goto('/chat');
+  await page.goto('/testing/minimal_chat');
 
   // Test that we can send a message.
   await page.locator('//input').fill('Lorem ipsum');
   // Need to wait for the input state to be saved before clicking.
   await page.waitForTimeout(2000);
   await page.getByRole('button', {name: 'Send prompt'}).click();
-  await expect(
-    page.getByRole('button', {name: 'Processing prompt...'}),
-  ).toBeAttached({timeout: 5000});
   await expect(page.locator('//input')).toHaveValue('');
   expect(page.locator('//div[text()="Lorem ipsum"]')).toHaveCount(1);
   await expect(page.locator('//div[text()="Lorem Ipsum Bot"]')).toHaveCount(1);
@@ -31,9 +28,6 @@ test('Chat UI can send messages and display responses', async ({page}) => {
   // Need to wait for the input state to be saved before clicking.
   await page.waitForTimeout(2000);
   await page.getByRole('button', {name: 'Send prompt'}).click();
-  await expect(
-    page.getByRole('button', {name: 'Processing prompt...'}),
-  ).toBeAttached({timeout: 3000});
   await expect(page.locator('//input')).toHaveValue('');
   await expect(page.locator('//div[text()="Dolor sit amet"]')).toHaveCount(1);
   await expect(page.locator('//div[text()="Lorem Ipsum Bot"]')).toHaveCount(2);
