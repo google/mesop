@@ -46,7 +46,8 @@ nav:
           - Tooltip: components/tooltip.md
       - Styling:
           - Style: components/style.md
-      - Integrations:
+      - Advanced:
+          - Embed: components/embed.md
           - Plot: components/plot.md
   - Blog:
       - blog/index.md
