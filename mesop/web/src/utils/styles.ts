@@ -11,7 +11,9 @@ export function formatStyle(styleObj: Style): string {
   if (styleObj.getAlignItems()) {
     style += `align-items: ${styleObj.getAlignItems()};`;
   }
-
+  if (styleObj.getAspectRatio()) {
+    style += `aspect-ratio: ${styleObj.getAspectRatio()};`;
+  }
   if (styleObj.getBackground()) {
     style += `background: ${styleObj.getBackground()};`;
   }
@@ -138,6 +140,9 @@ export function formatStyle(styleObj: Style): string {
   }
   if (styleObj.getOutline()) {
     style += `outline: ${styleObj.getOutline()};`;
+  }
+  if (styleObj.getOverflowWrap()) {
+    style += `overflow-wrap: ${styleObj.getOverflowWrap()};`;
   }
   if (styleObj.getOverflowX()) {
     style += `overflow-x: ${styleObj.getOverflowX()};`;
