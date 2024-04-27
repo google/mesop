@@ -29,6 +29,8 @@ def dataclass_with_defaults(cls: Type[C]) -> Type[C]:
         setattr(cls, name, field(default=False))
       elif get_origin(type_hint) == list:
         setattr(cls, name, field(default_factory=list))
+      elif get_origin(type_hint) == dict:
+        setattr(cls, name, field(default_factory=dict))
       elif isinstance(type_hint, type):
         setattr(
           cls, name, field(default_factory=dataclass_with_defaults(type_hint))
