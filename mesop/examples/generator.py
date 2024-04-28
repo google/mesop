@@ -7,6 +7,8 @@ def generate_str():
   yield "foo"
   sleep(1)
   yield "bar"
+  sleep(10)
+  yield "waited10seconds"
 
 
 @me.stateclass

@@ -36,7 +36,7 @@ def header():
     )
   ):
     me.text(
-      "Playground",
+      "Playground Page",
       type="headline-5",
       style=me.Style(margin=me.Margin(top=0, right=0, bottom=0, left=0)),
     )
