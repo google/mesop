@@ -145,6 +145,7 @@ message ContextLine {
 
 message RenderEvent {
     optional Component root_component = 1;
+    optional ComponentDiff component_diff = 6;
     optional string title = 5;
     optional States states = 2;
     repeated Command commands = 3;
@@ -175,6 +176,15 @@ message State {
 }
 
 // Represents an instance of a component.
+//
+// When adding new fields to the Component proto, make sure to update
+// the ComponentDiff proto.
+//
+// The new field should be added with the same name to the ComponentDiff proto. In
+// addition you will need to update the following functions:
+//
+// - `diff_component` in mesop/component_helpers/helpers.py
+// - `applyComponentDiff` in mesop/web/src/utils/diff.ts
 message Component {
     optional Key key = 3;
     optional Style style = 5;
@@ -187,6 +197,52 @@ message Component {
 
     // Only sent in editor mode.
     optional SourceCodeLocation source_code_location = 4;
+}
+
+// Used for tracking differences between two components.
+//
+// Next ID: 15
+message ComponentDiff {
+    optional int32 index = 1;
+
+    optional Key key = 2;
+    optional SourceCodeLocation source_code_location = 3;
+    optional Style style = 4;
+    optional string style_debug_json = 5;
+    optional Type type = 6;
+
+    repeated ComponentDiff children = 7;
+
+    // Used for cases when a component subtree is determined to be completely new.
+    optional Component component = 8;
+
+    // If there is a diff on a component's field, determine the strategy to use for
+    // updating the target field.
+    enum UpdateStrategy {
+        UPDATE_STRATEGY_NOOP = 0;
+        // Replace field completely. In most cases this is the desired behavior.
+        UPDATE_STRATEGY_REPLACE = 1;
+        // Some components can contain a lot of text. Usually text is added to the
+        // existing text. So instead of a full replacement, we can append new text
+        // rather than replacing the entire field.
+        //
+        // This strategy has not implemented yet.
+        UPDATE_STRATEGY_APPEND = 2;
+    }
+    optional UpdateStrategy update_strategy_key = 9;
+    optional UpdateStrategy update_strategy_source_code_location = 10;
+    optional UpdateStrategy update_strategy_style = 11;
+    optional UpdateStrategy update_strategy_style_debug_json = 12;
+    optional UpdateStrategy update_strategy_type = 13;
+
+    // Determines the type of diff for the component.
+    enum DiffType {
+        DIFF_TYPE_NONE = 0;
+        DIFF_TYPE_ADD = 1;
+        DIFF_TYPE_DELETE = 2;
+        DIFF_TYPE_UPDATE = 3;
+    }
+    optional DiffType diff_type = 14;
 }
 
 message SourceCodeLocation {
