@@ -43,6 +43,7 @@ JSON_STR = """{"b": {"c": {"val": "<init>"}},
 @dataclass_with_defaults
 class DataclassNoDefaults:
   foo: int
+  dict: dict[str, str]
 
 
 class UnannotatedClass:
