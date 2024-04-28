@@ -6,6 +6,8 @@ import time
 from typing import Sequence
 
 from absl import app, flags
+from watchdog.events import FileSystemEvent, FileSystemEventHandler
+from watchdog.observers import Observer
 
 import mesop.protos.ui_pb2 as pb
 from mesop.cli.execute_module import execute_module, get_module_name_from_path
@@ -16,7 +18,6 @@ from mesop.runtime import (
   reset_runtime,
   runtime,
 )
-from mesop.server.server import is_processing_request
 from mesop.server.wsgi_app import create_app
 
 FLAGS = flags.FLAGS
@@ -84,25 +85,16 @@ $\u001b[35m mesop {argv[1]}\u001b[0m"""
   app.run()
 
 
-def fs_watcher(absolute_path: str):
-  """
-  Naive filesystem watcher for the main module of the Mesop application.
+class ReloadEventHandler(FileSystemEventHandler):
+  def __init__(self, absolute_path: str):
+    self.absolute_path = absolute_path
 
-  In the future, we can watch for the entire directory, but this captures the main 80% case.
-  """
-  last_modified = os.path.getmtime(absolute_path)
-  while True:
-    # Get the current modification time
-    current_modified = os.path.getmtime(absolute_path)
-
-    # Compare the current modification time with the last modification time
-    if current_modified != last_modified and not is_processing_request():
-      # Update the last modification time
-      last_modified = current_modified
+  def on_any_event(self, event: FileSystemEvent):
+    if not event.is_directory:
       try:
         print("Hot reload: starting...")
         reset_runtime()
-        execute_main_module(absolute_path=absolute_path)
+        execute_main_module(absolute_path=self.absolute_path)
         hot_reload_finished()
         print("Hot reload: finished!")
       except Exception as e:
@@ -110,7 +102,24 @@ def fs_watcher(absolute_path: str):
           logging.ERROR, "Could not hot reload due to error:", exc_info=e
         )
 
-    time.sleep(0.1)
+
+def fs_watcher(absolute_path: str):
+  """
+  Filesystem watcher using watchdog. Watches for any changes in the specified directory
+  and triggers hot reload on change.
+  """
+  event_handler = ReloadEventHandler(absolute_path=absolute_path)
+  observer = Observer()
+  observer.schedule(
+    event_handler, path=os.path.dirname(absolute_path), recursive=True
+  )  # type: ignore
+  observer.start()
+  try:
+    while True:
+      time.sleep(0.1)
+  except KeyboardInterrupt:
+    observer.stop()
+  observer.join()
 
 
 def execute_main_module(absolute_path: str):
