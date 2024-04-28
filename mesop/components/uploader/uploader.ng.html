@@ -1,0 +1,12 @@
+<input
+  type="file"
+  accept="{{ accept() }}"
+  (change)="onFileSelected($event)"
+  #fileUpload
+/>
+<div>
+  <button mat-flat-button (click)="fileUpload.click()">
+    {{ config().getLabel() }}
+  </button>
+  {{ filename() || "No file chosen" }}
+</div>

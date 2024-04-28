@@ -36,6 +36,7 @@ nav:
           - Select: components/select.md
           - Slide toggle: components/slide_toggle.md
           - Slider: components/slider.md
+          - Uploader: components/uploader.md
       - Visual:
           - Badge: components/badge.md
           - Divider: components/divider.md
