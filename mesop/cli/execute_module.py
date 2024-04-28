@@ -5,10 +5,6 @@ from types import ModuleType
 
 
 def execute_module(*, module_path: str, module_name: str) -> ModuleType:
-  # Delete all app modules so we reload them.
-  for submodule in get_app_modules(module_name, set(sys.modules.keys())):
-    del sys.modules[submodule]
-
   spec = importlib.util.spec_from_file_location(module_name, module_path)
   assert spec
   module = importlib.util.module_from_spec(spec)
@@ -16,6 +12,12 @@ def execute_module(*, module_path: str, module_name: str) -> ModuleType:
   spec.loader.exec_module(module)
 
   return module
+
+
+def clear_app_modules(module_name: str) -> None:
+  # Delete all app modules so we reload them.
+  for submodule in get_app_modules(module_name, set(sys.modules.keys())):
+    del sys.modules[submodule]
 
 
 def get_module_name_from_runfile_path(runfile_path: str) -> str:
