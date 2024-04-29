@@ -29,7 +29,10 @@ export class InputComponent {
   constructor(private readonly channel: Channel) {
     this.inputSubject
       .pipe(
-        debounceTime(300), // Adjust the debounce time as needed
+        // Setting this to a short duration to avoid having the user trigger another event
+        // during this debounce time period:
+        // https://github.com/google/mesop/issues/171
+        debounceTime(150),
       )
       .subscribe((event) => this.onInputDebounced(event));
   }
