@@ -13,6 +13,7 @@ def button_click(event: me.ClickEvent):
 
 @me.page(path="/buttons")
 def main():
+  me.text("Running mesop version: " + me.__version__)
   state = me.state(State)
 
   me.button(

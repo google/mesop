@@ -1,20 +1,19 @@
 #!/bin/bash
+#
+# Run this script from the workspace root:
+#
+# To run in clean mode (default):
+# $ source ./scripts/pip.sh
+#
+# To run in dirty mode:
+# $ MESOP_DIRTY=true source ./scripts/pip.sh
+#
+# Note: using source ensures the current directory & env are set
+# to the current shell which makes completing the smoke test
+# described in publishing.md more convenient.
 
-# Initialize the dirty flag as false
-dirty=false
-
-# Parse command-line options
-while getopts "d" opt; do
-  case $opt in
-    d) dirty=true ;;
-    \?) echo "Invalid option: -$OPTARG" >&2
-        exit 1
-        ;;
-  esac
-done
-
-# Now you can use the $dirty variable to conditionally run commands
-if [ "$dirty" = true ]; then
+# Check if MESOP_DIRTY environment variable is set to true
+if [ "$MESOP_DIRTY" = "true" ]; then
   echo "Running in dirty mode. (not running bazel clean)"
   rm -rf /tmp/mesoprelease-test
 else
