@@ -1,4 +1,4 @@
-load("//build_defs:defaults.bzl", "ANGULAR_CORE_DEPS", "JS_STATIC_FILES", "ng_js_binary", "ng_module", "pkg_web")
+load("//build_defs:defaults.bzl", "ANGULAR_CORE_DEPS", "JS_STATIC_FILES", "ng_js_binary_prod", "ng_module", "pkg_web")
 
 package(
     default_visibility = ["//build_defs:mesop_internal"],
@@ -14,9 +14,9 @@ ng_module(
     ] + ANGULAR_CORE_DEPS,
 )
 
-ng_js_binary(
+ng_js_binary_prod(
     name = "prod_bundle",
-    entry_points = [":bundle.ts"],
+    entry_point = "bundle.ts",
     visibility = ["//build_defs:mesop_users"],
     deps = [
         ":main",

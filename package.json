@@ -214,7 +214,7 @@
     "send": "^0.17.2",
     "shelljs": "^0.8.5",
     "stylelint": "^14.14.0",
-    "terser": "^5.10.0",
+    "terser": "5.28.1",
     "ts-node": "^10.9.1",
     "ts-protoc-gen": "0.15.0",
     "tsec": "0.2.2",

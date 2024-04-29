@@ -6,7 +6,7 @@ load("@build_bazel_rules_nodejs//:index.bzl", _nodejs_binary = "nodejs_binary", 
 load("@my_deps//:requirements.bzl", "requirement")
 load("@rules_proto//proto:defs.bzl", _proto_library = "proto_library")
 load("//build_defs:jspb_proto_library.bzl", _jspb_proto_library = "jspb_proto_library")
-load("//build_defs:ng_js_binary.bzl", _ng_js_binary = "ng_js_binary")
+load("//build_defs:ng_js_binary.bzl", _ng_js_binary = "ng_js_binary", _ng_js_binary_prod = "ng_js_binary_prod")
 load("//build_defs:py_proto_library.bzl", _py_proto_library = "py_proto_library")
 load("//build_defs:sass_external_binary.bzl", _sass_external_binary = "sass_external_binary")
 load("//tools:defaults.bzl", _devmode_esbuild = "devmode_esbuild", _esbuild = "esbuild", _esbuild_config = "esbuild_config", _http_server = "http_server", _karma_web_test_suite = "karma_web_test_suite", _ng_module = "ng_module", _ng_test_library = "ng_test_library", _ng_web_test_suite = "ng_web_test_suite", _sass_binary = "sass_binary", _sass_library = "sass_library", _ts_library = "ts_library")
@@ -20,6 +20,7 @@ karma_web_test_suite = _karma_web_test_suite
 http_server = _http_server
 jspb_proto_library = _jspb_proto_library
 ng_js_binary = _ng_js_binary
+ng_js_binary_prod = _ng_js_binary_prod
 ng_module = _ng_module
 ng_test_library = _ng_test_library
 ng_web_test_suite = _ng_web_test_suite
