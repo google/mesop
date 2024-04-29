@@ -14,7 +14,7 @@ hide:
   <img class="mascot-image" src="./assets/robot_mascot.jpeg"/>
   <div class="mascot-text-container">
     <div class="mascot-text">
-      Build delightful web apps quickly in Python
+      Quickly build web UIs in Python
       <div class="mascot-subtext">
         Used at Google for rapid internal app development
       </div>
@@ -28,7 +28,7 @@ Mesop is a Python-based UI framework that allows you to rapidly build web apps l
 
 <div class="box-row">
   <div class="reason-box">
-    <div class="reason-title">Intuitive for UI novices</div>
+    <div class="reason-title">Easy to get started</div>
     <ul>
       <li>Write UI in <a href="#demo">idiomatic Python code</a></li>
       <li>Skip the pain of learning the FE ecosystem (e.g. npm, compiling) with a single `pip install mesop`</li>
@@ -36,14 +36,14 @@ Mesop is a Python-based UI framework that allows you to rapidly build web apps l
     </ul>
   </div>
   <div class="reason-box">
-    <div class="reason-title">Frictionless developer workflows</div>
+    <div class="reason-title">Fast iteration</div>
     <ul>
       <li><b>Hot reload</b> so the browser automatically reloads and preserves state</li>
       <li>Edit your UI code directly in the browser using the visual editor <em>(see below)</em></li>
     </ul>
   </div>
   <div class="reason-box">
-    <div class="reason-title">Flexible for delightful demos</div>
+    <div class="reason-title">Flexible & composable</div>
     <ul>
       <li>Build custom UIs <em>without</em> writing Javascript/CSS/HTML</li>
       <li>Compose your UI into <a href="./guides/components/">components</a>, which are just Python functions</li>
