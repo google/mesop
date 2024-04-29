@@ -44,6 +44,7 @@ rm -rf /tmp/mesoprelease-test/venv-twine \
 && source /tmp/mesoprelease-test/venv-twine/bin/activate \
 && pip install --upgrade pip \
 && pip install twine \
+&& cd /tmp/mesoprelease-test \
 && twine upload mesop*.whl
 ```
 
