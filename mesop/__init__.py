@@ -107,6 +107,13 @@ from mesop.components.table.table import (
 from mesop.components.table.table import table as table
 from mesop.components.text.text import text as text
 from mesop.components.tooltip.tooltip import tooltip as tooltip
+from mesop.components.uploader.uploader import (
+  UploadedFile as UploadedFile,
+)
+from mesop.components.uploader.uploader import (
+  UploadEvent as UploadEvent,
+)
+from mesop.components.uploader.uploader import uploader as uploader
 from mesop.components.video.video import video as video
 from mesop.dataclass_utils import dataclass_with_defaults
 from mesop.events import (

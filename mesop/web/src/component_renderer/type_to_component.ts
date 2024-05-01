@@ -1,3 +1,4 @@
+import {UploaderComponent} from '../../../components/uploader/uploader';
 import {EmbedComponent} from '../../../components/embed/embed';
 import {TableComponent} from '../../../components/table/table';
 import {SidenavComponent} from '../../../components/sidenav/sidenav';
@@ -52,6 +53,7 @@ export class UserDefinedComponent implements BaseComponent {
 }
 
 export const typeToComponent = {
+  'uploader': UploaderComponent,
   'embed': EmbedComponent,
   'table': TableComponent,
   'sidenav': SidenavComponent,

@@ -1,0 +1,22 @@
+syntax = "proto2";
+
+package mesop.components.uploader;
+
+message UploadedFile {
+    optional string name = 1;
+    optional int32 size = 2;
+    optional string mime_type = 3;
+    optional bytes contents = 4;
+}
+
+
+message UploadEvent {
+    repeated UploadedFile file = 1;
+}
+
+
+message UploaderType {
+    optional string label = 1;
+    repeated string accepted_file_type = 2;
+    optional string on_upload_event_handler_id = 3;
+}
