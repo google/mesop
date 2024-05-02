@@ -3,13 +3,13 @@ syntax = "proto2";
 package mesop.components.table;
 
 message TableClickEvent {
-    optional int64 row_index = 1;
-    optional int64 col_index = 2;
+    optional int32 row_index = 1;
+    optional int32 col_index = 2;
 }
 
 message TableRow {
     // Pandas Index.
-    optional int64 index = 1;
+    optional int32 index = 1;
     // Column values are stored as a list corresponding to the `displayed_columns`
     // field.
     //
