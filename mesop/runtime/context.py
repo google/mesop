@@ -1,11 +1,22 @@
 from typing import Any, Callable, Generator, TypeVar, cast
 
+from absl import flags
+
 import mesop.protos.ui_pb2 as pb
 from mesop.dataclass_utils import (
   serialize_dataclass,
   update_dataclass_from_json,
 )
 from mesop.exceptions import MesopDeveloperException, MesopException
+
+FLAGS = flags.FLAGS
+
+flags.DEFINE_bool(
+  "enable_component_tree_diffs",
+  True,
+  "set to true to return component tree diffs on user event responses (rather than the full tree).",
+)
+
 
 T = TypeVar("T")
 
@@ -26,6 +37,7 @@ class Context:
   ) -> None:
     self._get_handler = get_handler
     self._current_node = pb.Component()
+    self._previous_node: pb.Component | None = None
     self._states = states
     self._trace_mode = False
     self._handlers = {}
@@ -49,6 +61,15 @@ class Context:
   def current_node(self) -> pb.Component:
     return self._current_node
 
+  def previous_node(self) -> pb.Component | None:
+    """Used to track the last/previous state of the component tree before the UI updated.
+
+    This is used for performing component tree diffs when the
+    `enable_component_tree_diffs` flag is enabled. When previous node is `None`, that
+    implies that no component tree diff is to be performed.
+    """
+    return self._previous_node
+
   def save_current_node_as_slot(self) -> None:
     self._node_slot = self._current_node
     self._node_slot_children_count = len(self._current_node.children)
@@ -62,8 +83,23 @@ class Context:
   def set_current_node(self, node: pb.Component) -> None:
     self._current_node = node
 
+  def set_previous_node_from_current_node(self) -> None:
+    # Gate this feature with a flag since this is a new feature and may have some
+    # unexpected issues. In addition, some users may have a case where sending the full
+    # component tree back on each response is more performant than sending back the
+    # diff.
+    if FLAGS.enable_component_tree_diffs:
+      self._previous_node = self._current_node
+
+  def reset_nodes(self) -> None:
+    self.set_previous_node_from_current_node()
+    self.reset_current_node()
+
   def reset_current_node(self) -> None:
     self._current_node = pb.Component()
+
+  def reset_previous_node(self) -> None:
+    self._previous_node = None
 
   def state(self, state: type[T]) -> T:
     if state not in self._states:

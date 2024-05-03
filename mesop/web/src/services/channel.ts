@@ -14,6 +14,7 @@ import {
 import {Logger} from '../dev_tools/services/logger';
 import {Title} from '@angular/platform-browser';
 import {SSE} from '../utils/sse';
+import {applyComponentDiff} from '../utils/diff';
 
 const anyWindow = window as any;
 const DEV_SERVER_HOST = anyWindow['MESOP_SERVER_HOST'] || '';
@@ -104,6 +105,8 @@ export class Channel {
           case UiResponse.TypeCase.RENDER: {
             this.states = uiResponse.getRender()!.getStates()!;
             const rootComponent = uiResponse.getRender()!.getRootComponent()!;
+            const componentDiff = uiResponse.getRender()!.getComponentDiff()!;
+
             for (const command of uiResponse.getRender()!.getCommandsList()) {
               const navigate = command.getNavigate();
               if (navigate) {
@@ -114,15 +117,31 @@ export class Channel {
             if (title) {
               this.title.setTitle(title);
             }
-            this.rootComponent = rootComponent;
+
+            if (
+              componentDiff !== undefined &&
+              this.rootComponent !== undefined
+            ) {
+              // Angular does not update the UI if we apply the diff on the root
+              // component instance which is why we create copy of the root component
+              // first.
+              const rootComponentToUpdate = ComponentProto.deserializeBinary(
+                this.rootComponent.serializeBinary(),
+              );
+              applyComponentDiff(rootComponentToUpdate, componentDiff);
+              this.rootComponent = rootComponentToUpdate;
+            } else {
+              this.rootComponent = rootComponent;
+            }
+
             this.componentConfigs = uiResponse
               .getRender()!
               .getComponentConfigsList();
-            onRender(rootComponent, this.componentConfigs);
+            onRender(this.rootComponent, this.componentConfigs);
             this.logger.log({
               type: 'RenderLog',
               states: this.states,
-              rootComponent: rootComponent,
+              rootComponent: this.rootComponent,
             });
             break;
           }

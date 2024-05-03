@@ -326,3 +326,82 @@ runtime().register_event_mapper(
     key=key.key,
   ),
 )
+
+
+_COMPONENT_DIFF_FIELDS = (
+  "key",
+  "source_code_location",
+  "style",
+  "style_debug_json",
+  "type",
+)
+
+
+def diff_component(
+  component1: pb.Component, component2: pb.Component
+) -> pb.ComponentDiff:
+  """Finds diffs between two component trees.
+
+  Args:
+    component1: Old version of the component tree.
+    component2: New version of the component tree that we want component1 to match.
+
+  Returns:
+    Changes needed to make component1 equal to component2.
+  """
+  diff = pb.ComponentDiff()
+
+  # Check each field for differences. For now if there are any differences, we will
+  # mark the entire field for replacement.
+  for field in _COMPONENT_DIFF_FIELDS:
+    if getattr(component1, field) != getattr(component2, field):
+      diff.diff_type = pb.ComponentDiff.DiffType.DIFF_TYPE_UPDATE
+      setattr(
+        diff,
+        f"update_strategy_{field}",
+        pb.ComponentDiff.UpdateStrategy.UPDATE_STRATEGY_REPLACE,
+      )
+      if isinstance(getattr(component2, field), Message):
+        getattr(diff, field).CopyFrom(getattr(component2, field))
+      else:
+        setattr(diff, field, getattr(component2, field))
+
+  # Handle differences with child components.
+  for index, child_component in enumerate(component1.children):
+    if index >= len(component2.children):
+      diff.diff_type = pb.ComponentDiff.DiffType.DIFF_TYPE_UPDATE
+      diff.children.append(
+        pb.ComponentDiff(
+          index=index, diff_type=pb.ComponentDiff.DiffType.DIFF_TYPE_DELETE
+        )
+      )
+    else:
+      child_diff = diff_component(child_component, component2.children[index])
+      if (
+        child_diff
+        and child_diff.diff_type != pb.ComponentDiff.DiffType.DIFF_TYPE_NONE
+      ):
+        diff.diff_type = pb.ComponentDiff.DiffType.DIFF_TYPE_UPDATE
+        child_diff.index = index
+        diff.children.append(child_diff)
+
+  # Find child components that do not exist in component 1. These will need to be added
+  # to component 1.
+  #
+  # It is also very important that the add component diffs occur after the
+  # delete diffs since that additions would mess up the deletions.
+  #
+  # Although in practice child components diffs can contain either add or delete
+  # operations, but not both.
+  for index, component2_child in enumerate(component2.children):
+    if index >= len(component1.children):
+      diff.diff_type = pb.ComponentDiff.DiffType.DIFF_TYPE_UPDATE
+      diff.children.append(
+        pb.ComponentDiff(
+          index=index,
+          diff_type=pb.ComponentDiff.DiffType.DIFF_TYPE_ADD,
+          component=component2_child,
+        )
+      )
+
+  return diff

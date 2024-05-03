@@ -6,6 +6,12 @@ import {defineConfig, devices} from '@playwright/test';
  */
 // require('dotenv').config();
 
+// We need to run all tests with component tree diffs enabled and disabled.
+// We use this flag to toggle between the two modes.
+const enableComponentTreeDiffs = process.env.ENABLE_COMPONENT_TREE_DIFFS
+  ? '--enable_component_tree_diffs'
+  : '--noenable_component_tree_diffs';
+
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
@@ -45,8 +51,7 @@ export default defineConfig({
 
   /* Run your local server before starting the tests */
   webServer: {
-    command:
-      'bazel run //mesop/cli -- --path=mesop/mesop/example_index.py --prod',
+    command: `bazel run //mesop/cli -- --path=mesop/mesop/example_index.py --prod ${enableComponentTreeDiffs}`,
     url: 'http://127.0.0.1:32123/',
     reuseExistingServer: !process.env.CI,
   },

@@ -2,6 +2,9 @@ from .helper import (
   component as component,
 )
 from .helper import (
+  diff_component as diff_component,
+)
+from .helper import (
   get_qualified_fn_name as get_qualified_fn_name,
 )
 from .helper import (

@@ -4,6 +4,7 @@ from typing import Generator, Sequence
 from flask import Flask, Response, abort, request, stream_with_context
 
 import mesop.protos.ui_pb2 as pb
+from mesop.component_helpers import diff_component
 from mesop.editor.component_configs import get_component_configs
 from mesop.editor.editor_handler import handle_editor_event
 from mesop.exceptions import format_traceback
@@ -34,12 +35,20 @@ def configure_flask_app(
   ) -> Generator[str, None, None]:
     try:
       runtime().run_path(path=path, trace_mode=trace_mode)
+
       title = runtime().get_path_title(path=path)
+
       root_component = runtime().context().current_node()
+      previous_root_component = runtime().context().previous_node()
+      component_diff = None
+      if not trace_mode and previous_root_component:
+        component_diff = diff_component(previous_root_component, root_component)
+        root_component = None
 
       data = pb.UiResponse(
         render=pb.RenderEvent(
           root_component=root_component,
+          component_diff=component_diff,
           states=runtime().context().serialize_state(),
           commands=runtime().context().commands(),
           component_configs=get_component_configs(),
@@ -75,7 +84,6 @@ def configure_flask_app(
       # request. This avoids a race condition where the client-side reloads before
       # the server has reloaded.
       runtime().wait_for_hot_reload()
-
       if runtime().has_loading_errors():
         # Only showing the first error since our error UI only
         # shows one error at a time, and in practice there's usually
@@ -89,7 +97,7 @@ def configure_flask_app(
         for _ in render_loop(
           path=ui_request.path, keep_alive=True, trace_mode=True
         ):
-          runtime().context().reset_current_node()
+          runtime().context().reset_nodes()
           pass
         result = runtime().context().run_event_handler(ui_request.user_event)
         for _ in result:
@@ -98,7 +106,7 @@ def configure_flask_app(
             if command.HasField("navigate"):
               path = command.navigate.url
           yield from render_loop(path=path, keep_alive=True)
-          runtime().context().reset_current_node()
+          runtime().context().reset_nodes()
         yield "data: <stream_end>\n\n"
       elif ui_request.HasField("editor_event"):
         # Prevent accidental usages of editor mode outside of
