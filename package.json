@@ -171,7 +171,7 @@
     "dgeni": "^0.4.14",
     "dgeni-packages": "^0.29.5",
     "esbuild": "^0.17.5",
-    "firebase-tools": "^9.2.1",
+    "firebase-tools": "^13.6.0",
     "fs-extra": "^9.0.1",
     "glob": "^7.2.0",
     "google-protobuf": "3.21.2",
