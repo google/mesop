@@ -3,9 +3,11 @@ import os
 import sys
 import threading
 import time
-from typing import Sequence
+from typing import Sequence, cast
 
 from absl import app, flags
+from watchdog.events import FileSystemEvent, FileSystemEventHandler
+from watchdog.observers import Observer
 
 import mesop.protos.ui_pb2 as pb
 from mesop.cli.execute_module import execute_module, get_module_name_from_path
@@ -16,7 +18,6 @@ from mesop.runtime import (
   reset_runtime,
   runtime,
 )
-from mesop.server.server import is_processing_request
 from mesop.server.wsgi_app import create_app
 
 FLAGS = flags.FLAGS
@@ -84,25 +85,54 @@ $\u001b[35m mesop {argv[1]}\u001b[0m"""
   app.run()
 
 
-def fs_watcher(absolute_path: str):
-  """
-  Naive filesystem watcher for the main module of the Mesop application.
+app_modules: set[str] = set()
 
-  In the future, we can watch for the entire directory, but this captures the main 80% case.
-  """
-  last_modified = os.path.getmtime(absolute_path)
-  while True:
-    # Get the current modification time
-    current_modified = os.path.getmtime(absolute_path)
 
-    # Compare the current modification time with the last modification time
-    if current_modified != last_modified and not is_processing_request():
-      # Update the last modification time
-      last_modified = current_modified
+def clear_app_modules() -> None:
+  for module in app_modules:
+    # Not every module has been loaded into sys.modules (e.g. the main module)
+    if module in sys.modules:
+      del sys.modules[module]
+
+
+def add_app_module(workspace_dir_path: str, app_module_path: str) -> None:
+  module_name = get_app_module_name(
+    workspace_dir_path=workspace_dir_path, app_module_path=app_module_path
+  )
+  app_modules.add(module_name)
+
+
+def remove_app_module(workspace_dir_path: str, app_module_path: str) -> None:
+  module_name = get_app_module_name(
+    workspace_dir_path=workspace_dir_path, app_module_path=app_module_path
+  )
+  app_modules.remove(module_name)
+
+
+def get_app_module_name(workspace_dir_path: str, app_module_path: str) -> str:
+  relative_path = os.path.relpath(app_module_path, workspace_dir_path)
+
+  return (
+    relative_path.replace(os.sep, ".")
+    # Special case __init__.py:
+    # e.g. foo.bar.__init__.py -> foo.bar
+    # Otherwise, remove the ".py" suffix
+    .removesuffix(".__init__.py")
+    .removesuffix(".py")
+  )
+
+
+class ReloadEventHandler(FileSystemEventHandler):
+  def __init__(self, absolute_path: str, workspace_dir_path: str):
+    self.absolute_path = absolute_path
+    self.workspace_dir_path = workspace_dir_path
+
+  def on_any_event(self, event: FileSystemEvent):
+    if not event.is_directory:
       try:
         print("Hot reload: starting...")
         reset_runtime()
-        execute_main_module(absolute_path=absolute_path)
+        execute_main_module(absolute_path=self.absolute_path)
         hot_reload_finished()
         print("Hot reload: finished!")
       except Exception as e:
@@ -110,11 +140,66 @@ def fs_watcher(absolute_path: str):
           logging.ERROR, "Could not hot reload due to error:", exc_info=e
         )
 
-    time.sleep(0.1)
+  def on_created(self, event: FileSystemEvent):
+    src_path = cast(str, event.src_path)
+    if src_path.endswith(".py"):
+      print(f"Watching new Python module: {event.src_path}")
+      add_app_module(
+        workspace_dir_path=self.workspace_dir_path,
+        app_module_path=event.src_path,
+      )
+
+  def on_deleted(self, event: FileSystemEvent):
+    src_path = cast(str, event.src_path)
+    if src_path.endswith(".py"):
+      print(f"Stopped watching deleted Python module: {event.src_path}")
+      remove_app_module(
+        workspace_dir_path=self.workspace_dir_path,
+        app_module_path=event.src_path,
+      )
+
+
+def fs_watcher(absolute_path: str):
+  """
+  Filesystem watcher using watchdog. Watches for any changes in the specified directory
+  and triggers hot reload on change.
+  """
+  workspace_dir_path = os.path.dirname(absolute_path)
+
+  # Initially track all the files on the file system and then rely on watchdog.
+  for root, dirnames, files in os.walk(workspace_dir_path):
+    # Filter out directories starting with "." because they
+    # can be special directories like .venv directories which
+    # can have lots of Python files that are definitely not application Python modules.
+    dirnames[:] = [d for d in dirnames if not d.startswith(".")]
+
+    for file in files:
+      if file.endswith(".py"):
+        full_path = os.path.join(root, file)
+        relative_path = os.path.relpath(full_path, workspace_dir_path)
+        add_app_module(
+          workspace_dir_path=workspace_dir_path, app_module_path=relative_path
+        )
+
+  event_handler = ReloadEventHandler(
+    absolute_path=absolute_path,
+    workspace_dir_path=workspace_dir_path,
+  )
+  observer = Observer()
+  observer.schedule(event_handler, path=workspace_dir_path, recursive=True)  # type: ignore
+  observer.start()
+  try:
+    while True:
+      time.sleep(0.1)
+  except KeyboardInterrupt:
+    observer.stop()
+  observer.join()
 
 
 def execute_main_module(absolute_path: str):
   try:
+    # Clear app modules
+    clear_app_modules()
     execute_module(
       module_path=absolute_path,
       module_name=get_module_name_from_path(absolute_path),

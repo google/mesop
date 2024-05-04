@@ -4,6 +4,7 @@ from absl import app, flags
 
 import mesop.protos.ui_pb2 as pb
 from mesop.cli.execute_module import (
+  clear_app_modules,
   execute_module,
   get_module_name_from_runfile_path,
 )
@@ -27,9 +28,11 @@ def main(argv: Sequence[str]):
   enable_debug_mode()
 
   try:
+    module_name = get_module_name_from_runfile_path(FLAGS.path)
+    clear_app_modules(module_name=module_name)
     execute_module(
       module_path=get_runfile_location(FLAGS.path),
-      module_name=get_module_name_from_runfile_path(FLAGS.path),
+      module_name=module_name,
     )
   except Exception as e:
     runtime().add_loading_error(
