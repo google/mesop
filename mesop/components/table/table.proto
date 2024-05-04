@@ -21,8 +21,19 @@ message TableRow {
     repeated string cell_values = 2;
 }
 
+message TableHeader {
+    optional bool sticky = 1;
+}
+
+message TableColumn {
+    optional bool sticky = 1;
+}
+
+// Next ID: 6
 message TableType {
     repeated string displayed_columns = 1;
     repeated TableRow data_source = 2;
     optional string on_table_click_event_handler_id = 3;
+    optional TableHeader header = 4;
+    map<string, TableColumn> columns = 5;
 }

@@ -38,11 +38,25 @@ def map_table_click_event(event, key):
 register_event_mapper(TableClickEvent, map_table_click_event)
 
 
+@dataclass(kw_only=True)
+class TableHeader:
+  sticky: bool = False
+
+
+@dataclass(kw_only=True)
+class TableColumn:
+  sticky: bool = False
+
+
 # Don't include type hint since Pydantic can't properly type check the Pandas data
 # frame. In addition, we don't want to include Pandas as a dependency into Mesop.
 @register_native_component
 def table(
-  data_frame: Any, *, on_click: Callable[[TableClickEvent], Any] | None = None
+  data_frame: Any,
+  *,
+  on_click: Callable[[TableClickEvent], Any] | None = None,
+  header: TableHeader | None = None,
+  columns: dict[str, TableColumn] | None = None,
 ):
   """
   This function creates a table from Pandas data frame
@@ -50,7 +64,13 @@ def table(
   Args:
       data_frame: Pandas data frame.
       on_click: Triggered when a table cell is clicked. The [click event](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/click_event) is a native browser event.
+      header: Configures table header to be sticky or not.
+      columns: Configures table columns to be sticky or not. The key is the name of the column.
   """
+  if not columns:
+    columns = {}
+  if not header:
+    header = TableHeader()
   insert_component(
     type_name="table",
     proto=table_pb.TableType(
@@ -61,6 +81,11 @@ def table(
       )
       if on_click
       else "",
+      header=table_pb.TableHeader(sticky=header.sticky),
+      columns={
+        column_name: table_pb.TableColumn(sticky=column.sticky)
+        for column_name, column in columns.items()
+      },
     ),
   )
 

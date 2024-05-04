@@ -5,7 +5,10 @@
 >
   @for(colummn of config().getDisplayedColumnsList(); track index; let index =
   $index) {
-  <ng-container matColumnDef="{{ config().getDisplayedColumnsList()[index] }}">
+  <ng-container
+    matColumnDef="{{ config().getDisplayedColumnsList()[index] }}"
+    [sticky]="isStickyColumn(index)"
+  >
     <th mat-header-cell *matHeaderCellDef>
       {{ config().getDisplayedColumnsList()[index] }}
     </th>
@@ -19,7 +22,10 @@
   </ng-container>
   }
 
-  <tr mat-header-row *matHeaderRowDef="config().getDisplayedColumnsList()"></tr>
+  <tr
+    mat-header-row
+    *matHeaderRowDef="config().getDisplayedColumnsList(); sticky: isStickyHeader()"
+  ></tr>
   <tr
     mat-row
     *matRowDef="let row; columns: config().getDisplayedColumnsList();"
