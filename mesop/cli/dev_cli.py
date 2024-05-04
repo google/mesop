@@ -21,7 +21,7 @@ flags.DEFINE_string("path", "", "path to main python module of Mesop app.")
 
 
 def main(argv: Sequence[str]):
-  flask_app = configure_flask_app()
+  flask_app = configure_flask_app(prod_mode=False)
   if len(FLAGS.path) < 1:
     raise Exception("Required flag 'path'. Received: " + FLAGS.path)
 

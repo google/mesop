@@ -17,7 +17,7 @@ def colab_run(*, port: int = 32123, prod_mode: bool = False):
   if not colab_utils.is_running_in_colab():
     print("Not running Colab: `colab_run` is a no-op")
     return
-  flask_app = configure_flask_app()
+  flask_app = configure_flask_app(prod_mode=prod_mode)
   if not prod_mode:
     enable_debug_mode()
 

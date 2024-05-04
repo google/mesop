@@ -25,7 +25,7 @@ def create_app(
   prod_mode: bool,
   run_block: Callable[..., None] | None = None,
 ) -> App:
-  flask_app = configure_flask_app()
+  flask_app = configure_flask_app(prod_mode=prod_mode)
 
   if not prod_mode:
     enable_debug_mode()
