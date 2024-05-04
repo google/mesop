@@ -11,18 +11,18 @@
 @include mat.all-component-typographies();
 @include mat.core();
 
-$m3-light-theme: matx.define-theme(
+$m3-light-theme: mat.define-theme(
   (
     color: (
-      primary: matx.$m3-azure-palette,
-      tertiary: matx.$m3-chartreuse-palette,
+      primary: mat.$azure-palette,
+      tertiary: mat.$chartreuse-palette,
     ),
   )
 );
 
 body {
   @include mat.all-component-themes($m3-light-theme);
-  @include matx.color-variants-back-compat($m3-light-theme);
+  @include mat.color-variants-backwards-compatibility($m3-light-theme);
 }
 
 html,

@@ -52,7 +52,7 @@ ANGULAR_CDK_TS_DEPS = [
 JS_STATIC_FILES = [
     "@npm//:node_modules/moment/min/moment-with-locales.min.js",
     "@npm//:node_modules/rxjs/bundles/rxjs.umd.min.js",
-    "@npm//:node_modules/zone.js/dist/zone.js",
+    "@npm//:node_modules/zone.js/bundles/zone.umd.js",
 ]
 
 LINKER_PROCESSED_FW_PACKAGES = _LINKER_PROCESSED_FW_PACKAGES
