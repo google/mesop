@@ -26,7 +26,7 @@ _requests_in_flight = 0
 
 
 def configure_flask_app(
-  *, exceptions_to_propagate: Sequence[type] = ()
+  *, prod_mode: bool = True, exceptions_to_propagate: Sequence[type] = ()
 ) -> Flask:
   flask_app = Flask(__name__)
 
@@ -51,7 +51,7 @@ def configure_flask_app(
           component_diff=component_diff,
           states=runtime().context().serialize_state(),
           commands=runtime().context().commands(),
-          component_configs=get_component_configs(),
+          component_configs=None if prod_mode else get_component_configs(),
           title=title,
         )
       )

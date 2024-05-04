@@ -65,7 +65,7 @@ def monitor_stdin():
 
 
 def main(argv: Sequence[str]):
-  flask_app = configure_flask_app()
+  flask_app = configure_flask_app(prod_mode=FLAGS.prod)
   if len(FLAGS.path) < 1:
     raise Exception("Required flag 'path'. Received: " + FLAGS.path)
 
