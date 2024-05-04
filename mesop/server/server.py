@@ -97,8 +97,19 @@ def configure_flask_app(
         for _ in render_loop(
           path=ui_request.path, keep_alive=True, trace_mode=True
         ):
-          runtime().context().reset_nodes()
           pass
+        if ui_request.user_event.handler_id:
+          runtime().context().set_previous_node_from_current_node()
+        else:
+          # Set previous node to None to skip component diffs on hot reload. This is
+          # because we lose the previous state before hot reloading, which results in
+          # no diff.
+          #
+          # This will also skip component diffs for back button events on the browser
+          # since no event handler ID is provided in that case.
+          runtime().context().reset_previous_node()
+        runtime().context().reset_current_node()
+
         result = runtime().context().run_event_handler(ui_request.user_event)
         for _ in result:
           path = ui_request.path
@@ -106,7 +117,8 @@ def configure_flask_app(
             if command.HasField("navigate"):
               path = command.navigate.url
           yield from render_loop(path=path, keep_alive=True)
-          runtime().context().reset_nodes()
+          runtime().context().set_previous_node_from_current_node()
+          runtime().context().reset_current_node()
         yield "data: <stream_end>\n\n"
       elif ui_request.HasField("editor_event"):
         # Prevent accidental usages of editor mode outside of

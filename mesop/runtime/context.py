@@ -91,10 +91,6 @@ class Context:
     if FLAGS.enable_component_tree_diffs:
       self._previous_node = self._current_node
 
-  def reset_nodes(self) -> None:
-    self.set_previous_node_from_current_node()
-    self.reset_current_node()
-
   def reset_current_node(self) -> None:
     self._current_node = pb.Component()
 
