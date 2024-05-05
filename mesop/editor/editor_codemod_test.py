@@ -39,14 +39,6 @@ class TestDeleteComponentCodemod(CodemodTest):
       ),
     )
 
-  def test_delete_custom_component(self) -> None:
-    self.assertEditorUpdate(
-      "delete_custom_component",
-      pb.EditorDeleteComponent(
-        source_code_location=pb.SourceCodeLocation(line=6),
-      ),
-    )
-
   def assertEditorUpdate(
     self, test_case_name: str, input: pb.EditorDeleteComponent
   ):
@@ -65,18 +57,6 @@ class TestNewComponentCodemod(CodemodTest):
       "new_component",
       pb.EditorNewComponent(
         component_name=me_name("divider"),
-        source_code_location=pb.SourceCodeLocation(line=5),
-        mode=pb.EditorNewComponent.Mode.MODE_APPEND_SIBLING,
-      ),
-    )
-
-  def test_new_custom_component(self) -> None:
-    self.assertEditorUpdate(
-      "new_custom_component",
-      pb.EditorNewComponent(
-        component_name=pb.ComponentName(
-          fn_name="columns", module_path="mesop.labs.layout"
-        ),
         source_code_location=pb.SourceCodeLocation(line=5),
         mode=pb.EditorNewComponent.Mode.MODE_APPEND_SIBLING,
       ),
@@ -450,23 +430,6 @@ class TestUpdateCallsiteCodemod(CodemodTest):
           )
         ),
         source_code_location=pb.SourceCodeLocation(line=5),
-      ),
-    )
-
-  def test_update_columns(self) -> None:
-    self.assertEditorUpdate(
-      "update_columns",
-      pb.EditorUpdateCallsite(
-        component_name=pb.ComponentName(
-          fn_name="columns", module_path="mesop.labs.layout"
-        ),
-        arg_path=pb.ArgPath(
-          segments=[pb.ArgPathSegment(keyword_argument="columns")]
-        ),
-        replacement=pb.CodeReplacement(
-          new_code=pb.CodeValue(int_value=1),
-        ),
-        source_code_location=pb.SourceCodeLocation(line=6),
       ),
     )
 

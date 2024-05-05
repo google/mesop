@@ -8,7 +8,7 @@ from mesop.editor.component_configs import (
   generate_component_config,
   get_component_configs,
 )
-from mesop.labs.layout import columns
+from mesop.labs import chat
 
 
 def test_generate_component_config_button():
@@ -72,11 +72,11 @@ def test_generate_component_config_radio():
   )
 
 
-def test_generate_component_config_labs_column():
-  proto = generate_component_config(columns)
+def test_generate_component_config_labs_chat():
+  proto = generate_component_config(chat)
   assert proto.component_name.HasField("core_module") is False
-  assert proto.component_name.module_path == "mesop.labs.layout"
-  assert proto.component_name.fn_name == "columns"
+  assert proto.component_name.module_path == "mesop.labs.chat"
+  assert proto.component_name.fn_name == "chat"
 
 
 def test_get_component_configs():
