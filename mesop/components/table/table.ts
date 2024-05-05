@@ -34,6 +34,16 @@ export class TableComponent {
     return this._config;
   }
 
+  isStickyHeader(): boolean {
+    return this._config.getHeader()!.getSticky() || false;
+  }
+
+  isStickyColumn(index: number): boolean {
+    const columnName = this._config.getDisplayedColumnsList()[index];
+    const column = this._config.getColumnsMap().get(columnName);
+    return column ? column.getSticky() : false;
+  }
+
   onClickCell(row: TableRow, index: number): void {
     // On cell click events, return the column and row indexes so we can refer back
     // to the same cell on the server.

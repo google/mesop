@@ -88,3 +88,18 @@ test('table cell click event triggered', async ({page}) => {
     page.getByText('Selected cell at col 3 and row 1 with value 90'),
   ).toBeAttached();
 });
+
+test('sticky headers and columns', async ({page}) => {
+  await page.goto('/components/table/e2e/table_app');
+  await page.setViewportSize({width: 200, height: 200});
+  await page.mouse.wheel(500, 500);
+
+  await expect(
+    page.locator(`//th[contains(@class, "mat-column-Index")]`),
+  ).toBeInViewport({ratio: 1.0});
+  await expect(
+    page.locator(
+      `//td[contains(@class, "mat-column-Index") and contains(text(), "1")]`,
+    ),
+  ).toBeInViewport({ratio: 1.0});
+});
