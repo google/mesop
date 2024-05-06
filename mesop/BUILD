@@ -44,6 +44,7 @@ py_library(
         "//mesop/components/button:py",
         "//mesop/components/checkbox:py",
         "//mesop/components/text:py",
+        "//mesop/colab",
         "//mesop/events",
         "//mesop/commands",
         "//mesop/features",

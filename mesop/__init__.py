@@ -2,6 +2,8 @@ import sys
 import types
 from typing import Any, Callable, TypeVar, cast
 
+from mesop.colab.colab_run import colab_run as colab_run
+from mesop.colab.colab_show import colab_show as colab_show
 from mesop.commands.navigate import navigate as navigate
 from mesop.component_helpers import (
   Border as Border,
@@ -143,7 +145,6 @@ from mesop.exceptions import (
 from mesop.features import page as page
 from mesop.key import Key as Key
 from mesop.runtime import runtime
-from mesop.server.colab_run import colab_run as colab_run
 from mesop.server.wsgi_app import wsgi_app
 from mesop.version import VERSION
 
