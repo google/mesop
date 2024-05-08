@@ -13,6 +13,7 @@ from mesop.examples import generator as generator
 from mesop.examples import grid as grid
 from mesop.examples import index as index
 from mesop.examples import integrations as integrations
+from mesop.examples import llm_rewriter as llm_rewriter
 from mesop.examples import many_checkboxes as many_checkboxes
 from mesop.examples import nested as nested
 from mesop.examples import playground as playground
