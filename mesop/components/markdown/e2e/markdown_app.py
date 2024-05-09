@@ -3,6 +3,32 @@ import mesop as me
 SAMPLE_MARKDOWN = """
 # Sample Markdown Document
 
+Regular code block:
+
+```
+hello
+```
+
+Python code block:
+
+Syntax 1:
+
+```python
+def foo():
+  print("Hello, World!")
+
+foo()
+```
+
+Syntax 2:
+
+``` python
+def foo():
+  print("Hello, World!")
+
+foo()
+```
+
 ## Table of Contents
 1. [Headers](#headers)
 2. [Emphasis](#emphasis)

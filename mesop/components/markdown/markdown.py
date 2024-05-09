@@ -1,3 +1,6 @@
+import markdown as markdown_lib
+from markdown.extensions.codehilite import CodeHiliteExtension
+
 import mesop.components.markdown.markdown_pb2 as markdown_pb
 from mesop.component_helpers import (
   Style,
@@ -20,11 +23,22 @@ def markdown(
       text: **Required.** Markdown text
       style: Style to apply to component. Follows [HTML Element inline style API](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/style).
   """
+
+  if text:
+    html = markdown_lib.markdown(
+      text,
+      extensions=[
+        CodeHiliteExtension(css_class="highlight"),
+        "fenced_code",
+      ],
+    )
+  else:
+    html = ""
   insert_component(
     key=key,
     type_name="markdown",
     style=style,
     proto=markdown_pb.MarkdownType(
-      text=text,
+      html=html,
     ),
   )

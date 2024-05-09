@@ -399,6 +399,7 @@ markdown==3.5.1 \
     --hash=sha256:5874b47d4ee3f0b14d764324d2c94c03ea66bee56f2d929da9f2508d65e722dc \
     --hash=sha256:b65d7beb248dc22f2e8a31fb706d93798093c308dc1aba295aedeb9d41a813bd
     # via
+    #   -r build_defs/requirements.txt
     #   mkdocs
     #   mkdocs-autorefs
     #   mkdocs-material
@@ -762,7 +763,9 @@ pydantic==1.10.13 \
 pygments==2.16.1 \
     --hash=sha256:13fc09fa63bc8d8671a6d247e1eb303c4b343eaee81d861f3404db2935653692 \
     --hash=sha256:1daff0494820c69bc8941e407aa20f577374ee88364ee10a98fdbe0aece96e29
-    # via mkdocs-material
+    # via
+    #   -r build_defs/requirements.txt
+    #   mkdocs-material
 pymdown-extensions==10.4 \
     --hash=sha256:bc46f11749ecd4d6b71cf62396104b4a200bad3498cb0f5dad1b8502fe461a35 \
     --hash=sha256:cfc28d6a09d19448bcbf8eee3ce098c7d17ff99f7bd3069db4819af181212037
