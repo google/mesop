@@ -269,20 +269,3 @@ p {
   overflow-y: auto;
   border: 0;
 }
-
-.video-card {
-  box-shadow:
-    0 10px 20px #0000000a,
-    0 2px 6px #0000000a,
-    0 0 1px #0000000a;
-  border: 1px solid rgb(243, 244, 246);
-  border-radius: 12px;
-  padding: 16px;
-  margin: 0 auto;
-  width: min(100%, 640px);
-}
-
-.video-container {
-  display: flex;
-  justify-content: center;
-}

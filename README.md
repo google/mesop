@@ -13,16 +13,12 @@ Mesop is a Python-based UI framework that allows you to rapidly build web apps l
 **Frictionless developer workflows 🏎️**
 
 - Hot reload so the browser automatically reloads and preserves state
-- Edit your UI code directly in the browser using the visual editor
+- Rich IDE support with strong type safety
 
 **Flexible for delightful demos 🤩**
 
 - Build custom UIs _without_ writing Javascript/CSS/HTML
 - Compose your UI into components, which are just Python functions
-
-**Edit your UI directly in the browser using the Visual Editor 🪄**
-
-[![Visual Editor](https://img.youtube.com/vi/tvbO-Lqq_TA/0.jpg)](https://www.youtube.com/watch?v=tvbO-Lqq_TA)
 
 ## Write your first Mesop app in less than 10 lines of code...
 
