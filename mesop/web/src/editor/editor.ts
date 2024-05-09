@@ -25,7 +25,7 @@ import {DevTools} from '../dev_tools/dev_tools';
 import {DevToolsSettings} from '../dev_tools/services/dev_tools_settings';
 import {
   HotReloadWatcher,
-  IbazelHotReloadWatcher,
+  DefaultHotReloadWatcher,
 } from '../services/hot_reload_watcher';
 import {Shell} from '../shell/shell';
 import {EditorService, SelectionMode} from '../services/editor_service';
@@ -50,7 +50,7 @@ import {CommandDialogService} from '../dev_tools/command_dialog/command_dialog_s
     MatSidenavModule,
     Shell,
   ],
-  providers: [{provide: HotReloadWatcher, useClass: IbazelHotReloadWatcher}],
+  providers: [{provide: HotReloadWatcher, useClass: DefaultHotReloadWatcher}],
   styleUrl: 'editor.css',
 })
 class Editor {

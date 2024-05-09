@@ -32,7 +32,12 @@ class Runtime:
   _loading_errors: list[pb.ServerError]
   component_fns: set[Callable[..., Any]]
   debug_mode: bool = False
+  # If True, then the server is still re-executing the modules
+  # needed for hot reloading.
   is_hot_reload_in_progress: bool = False
+  # If True, then the server has re-executed modules needed for hot reloading
+  # and is waiting for the client to request a hot reload.
+  hot_reload_ready_for_client: bool = False
 
   def __init__(self):
     self.component_fns = set()
@@ -156,3 +161,4 @@ def enable_debug_mode():
 
 def hot_reload_finished():
   _runtime.is_hot_reload_in_progress = False
+  _runtime.hot_reload_ready_for_client = True

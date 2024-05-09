@@ -1,5 +1,4 @@
 import logging
-import os
 import sys
 import threading
 from typing import Sequence
@@ -101,7 +100,6 @@ def main(argv: Sequence[str]):
     static_file_runfiles_base=PROD_PACKAGE_PATH
     if FLAGS.prod
     else EDITOR_PACKAGE_PATH,
-    livereload_script_url=os.environ.get("IBAZEL_LIVERELOAD_URL"),
   )
 
   if FLAGS.verbose:
