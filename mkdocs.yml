@@ -13,10 +13,10 @@ nav:
       - Troubleshooting: guides/troubleshooting.md
       - Labs: guides/labs.md
   - Components API:
-      - I/O:
-          - Text I/O: components/text_io.md
-          - Text To Image: components/text_to_image.md
+      - High-level:
           - Chat: components/chat.md
+          - Text to Text: components/text_to_text.md
+          - Text to Image: components/text_to_image.md
       - Layout:
           - Box: components/box.md
           - Sidenav: components/sidenav.md

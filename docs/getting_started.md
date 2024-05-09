@@ -31,13 +31,13 @@ $ mesop hello_world.py
 
 ## Quickstart app
 
-The simplest way to get started with Mesop is to use the [`text_io` component](./components/text_io.md)
+The simplest way to get started with Mesop is to use the [`text_to_text` component](./components/text_to_text.md)
 
 ```python
---8<-- "mesop/examples/text_io.py"
+--8<-- "mesop/examples/text_to_text.py"
 ```
 
-The rest of this guide will show you step-by-step how something like text_io is implemented.
+The rest of this guide will show you step-by-step how something like text_to_text is implemented.
 
 ## Hello World app
 

@@ -1,5 +1,5 @@
 import types
-from typing import Callable, Generator, cast
+from typing import Callable, Generator, Literal, cast
 
 import mesop as me
 
@@ -15,15 +15,44 @@ def text_io(
   transform: Callable[[str], Generator[str, None, None] | str],
   *,
   title: str | None = None,
+  transform_mode: Literal["append", "replace"] = "replace",
 ):
-  """Creates a simple UI which takes in a text input and returns a text output.
+  """Deprecated: Use `text_to_text` instead which provides the same functionality
+  with better default settings.
 
   This function creates event handlers for text input and output operations
-  using the provided function `fn` to process the input and generate the output.
+  using the provided transform function to process the input and generate the output.
 
   Args:
     transform: Function that takes in a string input and either returns or yields a string output.
     title: Headline text to display at the top of the UI
+    transform_mode: Specifies how the output should be updated when yielding an output using a generator.
+                  - "append": Concatenates each new piece of text to the existing output.
+                  - "replace": Replaces the existing output with each new piece of text.
+  """
+  print(
+    "\033[93m[warning]\033[0m text_io is deprecated, use text_to_text instead"
+  )
+  text_to_text(transform=transform, title=title, transform_mode=transform_mode)
+
+
+def text_to_text(
+  transform: Callable[[str], Generator[str, None, None] | str],
+  *,
+  title: str | None = None,
+  transform_mode: Literal["append", "replace"] = "append",
+):
+  """Creates a simple UI which takes in a text input and returns a text output.
+
+  This function creates event handlers for text input and output operations
+  using the provided transform function to process the input and generate the output.
+
+  Args:
+    transform: Function that takes in a string input and either returns or yields a string output.
+    title: Headline text to display at the top of the UI
+    transform_mode: Specifies how the output should be updated when yielding an output using a generator.
+                  - "append": Concatenates each new piece of text to the existing output.
+                  - "replace": Replaces the existing output with each new piece of text.
   """
 
   def on_input(e: me.InputEvent):
@@ -35,7 +64,12 @@ def text_io(
     output = transform(state.input)
     if isinstance(output, types.GeneratorType):
       for val in output:
-        state.output = val
+        if transform_mode == "append":
+          state.output += val
+        elif transform_mode == "replace":
+          state.output = val
+        else:
+          raise ValueError(f"Unsupported transform_mode: {transform_mode}")
         yield
     else:
       # `output` is a str, however type inference doesn't
