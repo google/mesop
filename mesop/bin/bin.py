@@ -89,6 +89,18 @@ app_modules: set[str] = set()
 
 
 def clear_app_modules() -> None:
+  # Remove labs modules because they function as application code
+  # and it needs to be re-executed so that their stateclass is
+  # re-registered b/c the runtime is reset.
+  labs_modules: set[str] = set()
+  for module in sys.modules:
+    if module.startswith("mesop.labs"):
+      # Do not delete the module directly, because this causes
+      # an error where the dictionary size is changed during iteration.
+      labs_modules.add(module)
+  for module in labs_modules:
+    del sys.modules[module]
+
   for module in app_modules:
     # Not every module has been loaded into sys.modules (e.g. the main module)
     if module in sys.modules:
