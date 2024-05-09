@@ -23,6 +23,7 @@ nav:
       - Text:
           - Text: components/text.md
           - Markdown: components/markdown.md
+          - Code: components/code.md
       - Media:
           - Image: components/image.md
           - Audio: components/audio.md
