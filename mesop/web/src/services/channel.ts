@@ -186,6 +186,34 @@ export class Channel {
     this.init(this.initParams, request);
   }
 
+  checkForHotReload() {
+    const pollHotReloadEndpoint = async () => {
+      try {
+        const response = await fetch('/hot-reload');
+        if (response.status === 200) {
+          this.hotReload();
+          pollHotReloadEndpoint();
+          this.hotReloadBackoffCounter = 0;
+        } else {
+          throw new Error(`Server responded with status: ${response.status}`);
+        }
+      } catch (error) {
+        console.error('Hot reload polling error:', error);
+        setTimeout(pollHotReloadEndpoint, this.calculateExponentialBackoff());
+      }
+    };
+
+    pollHotReloadEndpoint();
+  }
+
+  private hotReloadBackoffCounter = 0;
+
+  private calculateExponentialBackoff(): number {
+    const delay = 2 ** this.hotReloadBackoffCounter * 100;
+    this.hotReloadBackoffCounter++;
+    return delay;
+  }
+
   hotReload() {
     // Only hot reload if there's no request in-flight.
     // Most likely the in-flight request will receive the updated UI.

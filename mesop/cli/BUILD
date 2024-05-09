@@ -34,8 +34,6 @@ py_binary(
     ],
     main = "cli.py",
     tags = [
-        # This tag starts the live_reload server inside iBazel and instructs it to send reload events to webbrowsers.
-        "ibazel_live_reload",
         # This tag instructs ibazel to pipe into stdin a event describing actions.
         "ibazel_notify_changes",
     ],

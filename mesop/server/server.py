@@ -1,4 +1,5 @@
 import base64
+import time
 from typing import Generator, Sequence
 
 from flask import Flask, Response, abort, request, stream_with_context
@@ -163,5 +164,18 @@ def configure_flask_app(
   def teardown(error=None):
     global _requests_in_flight
     _requests_in_flight -= 1
+
+  if not prod_mode:
+
+    @flask_app.route("/hot-reload")
+    def hot_reload() -> Response:
+      while True:
+        # Sleep a short duration but not too short that we hog up excessive CPU.
+        time.sleep(0.1)
+        if runtime().hot_reload_ready_for_client:
+          break
+      response = Response("OK", status=200)
+      runtime().hot_reload_ready_for_client = False
+      return response
 
   return flask_app

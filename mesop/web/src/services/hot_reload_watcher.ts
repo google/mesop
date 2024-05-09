@@ -1,3 +1,8 @@
+/**
+ * This module primarily serves as an interface for the
+ * hot reloader mechanism used in downstream.
+ */
+
 import {Injectable} from '@angular/core';
 import {Channel} from './channel';
 
@@ -11,27 +16,11 @@ export abstract class HotReloadWatcher {
   }
 }
 
-/** Encapsulates all ibazel-specific implementation details of hot reload watcher. */
+/** Simple implementation of a hot reload watcher. */
 @Injectable()
-export class IbazelHotReloadWatcher extends HotReloadWatcher {
+export class DefaultHotReloadWatcher extends HotReloadWatcher {
   constructor(channel: Channel) {
     super(channel);
-    if (anyWindow['LiveReload']) {
-      this.monkeyPatchLiveReload();
-    } else {
-      console.log('LiveReload not detected; polling hot reload instead.');
-      setInterval(() => {
-        channel.hotReload();
-      }, 500);
-    }
-  }
-
-  monkeyPatchLiveReload(): void {
-    // Since I couldn't find an official livereload API to tap into
-    // I'm hacking this by monkeypatching reloadPage, which is effectively
-    // a wrapper around document.reload().
-    anyWindow['LiveReload']['reloader']['reloadPage'] = () => {
-      this.handleReload();
-    };
+    channel.checkForHotReload();
   }
 }
