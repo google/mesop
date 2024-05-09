@@ -42,7 +42,7 @@ import {GlobalErrorHandlerService} from '../services/global_error_handler';
 })
 export class Shell {
   rootComponent!: ComponentProto;
-  errors: ServerError[] = [];
+  error: ServerError | undefined;
   componentConfigs: readonly ComponentConfig[] = [];
 
   constructor(
@@ -57,7 +57,7 @@ export class Shell {
     (errorHandler as GlobalErrorHandlerService).setOnError((error) => {
       const errorProto = new ServerError();
       errorProto.setException(`JS Error: ${error.toString()}`);
-      this.errors.push(errorProto);
+      this.error = errorProto;
     });
   }
 
@@ -67,12 +67,13 @@ export class Shell {
       onRender: (rootComponent, componentConfigs) => {
         this.rootComponent = rootComponent;
         this.componentConfigs = componentConfigs;
+        this.error = undefined;
       },
       onNavigate: (route) => {
         this.router.navigateByUrl(route);
       },
       onError: (error) => {
-        this.errors.push(error);
+        this.error = error;
       },
     });
   }
