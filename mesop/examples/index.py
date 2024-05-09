@@ -39,7 +39,5 @@ def body():
 - [text](/components/text/e2e/text_app)
 - [tooltip](/components/tooltip/e2e/tooltip_app)
 
-/columns
-
 """
     )
