@@ -2,10 +2,12 @@ pytest
 flask
 mypy-protobuf
 absl-py
+markdown
 mkdocs-material
 mkdocstrings[python]
 protobuf
 pydantic==1.10.13 --no-binary pydantic
+pygments
 libcst==1.1.0
 
 matplotlib # only used for example

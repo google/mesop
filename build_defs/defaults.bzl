@@ -62,10 +62,6 @@ PYTHON_RUNFILES_DEP = [
     "@rules_python//python/runfiles",
 ]
 
-THIRD_PARTY_JS_MARKED = [
-    "@npm//marked",
-]
-
 THIRD_PARTY_JS_RXJS = [
     "@npm//rxjs",
 ]
@@ -86,8 +82,16 @@ THIRD_PARTY_PY_MATPLOTLIB = [
     requirement("matplotlib"),
 ]
 
+THIRD_PARTY_PY_MARKDOWN = [
+    requirement("markdown"),
+]
+
 THIRD_PARTY_PY_PYDANTIC = [
     requirement("pydantic"),
+]
+
+THIRD_PARTY_PY_PYGMENTS = [
+    requirement("pygments"),
 ]
 
 THIRD_PARTY_PY_PYTEST = [
