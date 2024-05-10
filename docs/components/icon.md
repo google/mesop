@@ -4,8 +4,10 @@ Icon displays a Material icon/symbol and is based on the [Angular Material icon 
 
 ## Examples
 
+<iframe class="component-demo" src="https://mesop-y677hytkra-uc.a.run.app/icon" style="height: 60px"></iframe>
+
 ```python
---8<-- "mesop/components/icon/e2e/icon_app.py"
+--8<-- "demo/icon.py"
 ```
 
 ## API

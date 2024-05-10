@@ -4,8 +4,10 @@ Badge decorates a UI component and is oftentimes used for unread message count a
 
 ## Examples
 
+<iframe class="component-demo" src="https://mesop-y677hytkra-uc.a.run.app/badge" style="height: 100px"></iframe>
+
 ```python
---8<-- "mesop/components/badge/e2e/badge_app.py"
+--8<-- "demo/badge.py"
 ```
 
 ## API

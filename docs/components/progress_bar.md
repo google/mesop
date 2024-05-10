@@ -4,8 +4,10 @@ Progress Bar is used to indicate something is in progress and is based on the [A
 
 ## Examples
 
+<iframe class="component-demo" src="https://mesop-y677hytkra-uc.a.run.app/progress_bar" style="height: 60px"></iframe>
+
 ```python
---8<-- "mesop/components/progress_bar/e2e/progress_bar_app.py"
+--8<-- "demo/progress_bar.py"
 ```
 
 ## API

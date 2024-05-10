@@ -4,8 +4,10 @@ Table allows the user to render an [Angular Material table component](https://ma
 
 ## Examples
 
+<iframe class="component-demo" src="https://mesop-y677hytkra-uc.a.run.app/table"></iframe>
+
 ```python
---8<-- "mesop/components/table/e2e/table_app.py"
+--8<-- "demo/table.py"
 ```
 
 ## API

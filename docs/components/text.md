@@ -4,8 +4,10 @@ Text displays text as-is. If you have markdown text, use the [Markdown](./markdo
 
 ## Examples
 
+<iframe class="component-demo" src="https://mesop-y677hytkra-uc.a.run.app/text"></iframe>
+
 ```python
---8<-- "mesop/components/text/e2e/text_app.py"
+--8<-- "demo/text.py"
 ```
 
 ## API

@@ -6,8 +6,10 @@ This is similar to [Input](./input.md), but Textarea is better suited for long t
 
 ## Examples
 
+<iframe class="component-demo" src="https://mesop-y677hytkra-uc.a.run.app/textarea" style="height: 200px"></iframe>
+
 ```python
---8<-- "mesop/components/input/e2e/input_app.py"
+--8<-- "demo/textarea.py"
 ```
 
 ## API

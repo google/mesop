@@ -263,9 +263,16 @@ p {
   margin-bottom: 0;
 }
 
-.demo {
+.immersive-demo {
   width: 100%;
-  height: 100%;
+  height: 600px;
   overflow-y: auto;
   border: 0;
+}
+
+.component-demo {
+  width: 100%;
+  height: 400px;
+  overflow-y: auto;
+  border: 1px solid #dcdcdc;
 }

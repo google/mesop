@@ -6,8 +6,10 @@ For longer text inputs, also see [Textarea](./textarea.md)
 
 ## Examples
 
+<iframe class="component-demo" src="https://mesop-y677hytkra-uc.a.run.app/input" style="height: 120px"></iframe>
+
 ```python
---8<-- "mesop/components/input/e2e/input_app.py"
+--8<-- "demo/input.py"
 ```
 
 ## API

@@ -4,8 +4,10 @@ Video is the equivalent of an [`<video>` HTML element](https://developer.mozilla
 
 ## Examples
 
+<iframe class="component-demo" src="https://mesop-y677hytkra-uc.a.run.app/video" style="height: 300px"></iframe>
+
 ```python
---8<-- "mesop/components/video/e2e/video_app.py"
+--8<-- "demo/video.py"
 ```
 
 ## API

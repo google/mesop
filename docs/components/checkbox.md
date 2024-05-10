@@ -4,8 +4,10 @@ Checkbox is a multi-selection form control and is based on the [Angular Material
 
 ## Examples
 
+<iframe class="component-demo" src="https://mesop-y677hytkra-uc.a.run.app/checkbox" style="height: 100px"></iframe>
+
 ```python
---8<-- "mesop/components/checkbox/e2e/checkbox_app.py"
+--8<-- "demo/checkbox.py"
 ```
 
 ## API

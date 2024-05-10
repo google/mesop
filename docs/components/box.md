@@ -4,8 +4,10 @@ Box is a [content component](../guides/components.md#content-components) which a
 
 ## Examples
 
+<iframe class="component-demo" src="https://mesop-y677hytkra-uc.a.run.app/box" style="height: 160px"></iframe>
+
 ```python
---8<-- "mesop/components/box/e2e/box_app.py"
+--8<-- "demo/box.py"
 ```
 
 ## API
