@@ -57,7 +57,21 @@ def wsgi_app(environ: dict[Any, Any], start_response: Callable[..., Any]):
   if not _app:
     # Parse the flags before creating the app otherwise you will
     # get UnparsedFlagAccessError.
-    flags.FLAGS(sys.argv)
+    #
+    # This currently parses a list without any flags because typically Mesop
+    # will be run with gunicorn as a WSGI app and there may be unexpected
+    # flags such as "--bind".
+    #
+    # Example:
+    # $ gunicorn --bind :8080 main:me
+    #
+    # We will ignore all CLI flags, but we could provide a way to override
+    # Mesop defined flags in the future (e.g. enable_component_tree_diffs)
+    # if necessary.
+    #
+    # Note: absl-py requires the first arg (program name), and will raise an error
+    # if we pass an empty list.
+    flags.FLAGS(sys.argv[:1])
     _app = create_app(prod_mode=True)
 
   return _app._flask_app.wsgi_app(environ, start_response)  # type: ignore
