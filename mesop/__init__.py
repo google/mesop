@@ -52,6 +52,7 @@ from mesop.components.checkbox.checkbox import (
 from mesop.components.checkbox.checkbox import (
   content_checkbox as content_checkbox,
 )
+from mesop.components.code.code import code as code
 from mesop.components.divider.divider import divider as divider
 from mesop.components.embed.embed import embed as embed
 from mesop.components.icon.icon import icon as icon
