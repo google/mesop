@@ -4,8 +4,10 @@ Tooltip is based on the [Angular Material tooltip component](https://material.an
 
 ## Examples
 
+<iframe class="component-demo" src="https://mesop-y677hytkra-uc.a.run.app/tooltip" style="height: 100px"></iframe>
+
 ```python
---8<-- "mesop/components/tooltip/e2e/tooltip_app.py"
+--8<-- "demo/tooltip.py"
 ```
 
 ## API

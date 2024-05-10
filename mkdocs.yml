@@ -12,7 +12,7 @@ nav:
       - Deployment: guides/deployment.md
       - Troubleshooting: guides/troubleshooting.md
       - Labs: guides/labs.md
-  - Components API:
+  - Components:
       - High-level:
           - Chat: components/chat.md
           - Text to Text: components/text_to_text.md
@@ -51,6 +51,7 @@ nav:
       - Advanced:
           - Embed: components/embed.md
           - Plot: components/plot.md
+  - Demo Gallery 🔗: https://mesop-y677hytkra-uc.a.run.app/
   - Blog:
       - blog/index.md
   - Internal:

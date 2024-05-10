@@ -4,8 +4,10 @@ Code is used to render code with syntax highlighting. `code` is a simple wrapper
 
 ## Examples
 
+<iframe class="component-demo" src="https://mesop-y677hytkra-uc.a.run.app/code"></iframe>
+
 ```python
---8<-- "mesop/examples/code.py"
+--8<-- "demo/code.py"
 ```
 
 ## API

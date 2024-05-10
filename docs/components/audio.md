@@ -4,8 +4,10 @@ Audio is the equivalent of an [`<audio>` HTML element](https://developer.mozilla
 
 ## Examples
 
+<iframe class="component-demo" src="https://mesop-y677hytkra-uc.a.run.app/audio" style="height: 80px"></iframe>
+
 ```python
---8<-- "mesop/components/audio/e2e/audio_app.py"
+--8<-- "demo/audio.py"
 ```
 
 ## API

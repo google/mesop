@@ -4,10 +4,11 @@ Text To Image component is a quick and simple way of getting started with Mesop.
 
 ## Examples
 
-```python
---8<-- "mesop/examples/text_to_image.py"
-```
+<iframe class="component-demo" src="https://mesop-y677hytkra-uc.a.run.app/text_to_image"></iframe>
 
+```python
+--8<-- "demo/text_to_image.py"
+```
 ## API
 
 ::: mesop.labs.text_to_image.text_to_image

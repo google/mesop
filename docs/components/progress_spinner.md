@@ -5,8 +5,10 @@ Progress Spinner is used to indicate something is in progress and is based on th
 
 ## Examples
 
+<iframe class="component-demo" src="https://mesop-y677hytkra-uc.a.run.app/progress_spinner" style="height: 70px"></iframe>
+
 ```python
---8<-- "mesop/components/progress_spinner/e2e/progress_spinner_app.py"
+--8<-- "demo/progress_spinner.py"
 ```
 
 ## API

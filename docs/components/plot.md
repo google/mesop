@@ -4,8 +4,10 @@ Plot provides a convenient way to render [Matplotlib](https://matplotlib.org/) f
 
 ## Examples
 
+<iframe class="component-demo" src="https://mesop-y677hytkra-uc.a.run.app/plot"></iframe>
+
 ```python
---8<-- "mesop/examples/integrations/matplotlib.py"
+--8<-- "demo/plot.py"
 ```
 
 ## API

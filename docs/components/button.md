@@ -4,8 +4,10 @@ Button is based on the [Angular Material button component](https://material.angu
 
 ## Examples
 
+<iframe class="component-demo" src="https://mesop-y677hytkra-uc.a.run.app/button" style="height: 200px"></iframe>
+
 ```python
---8<-- "mesop/examples/buttons.py"
+--8<-- "demo/button.py"
 ```
 
 ## API

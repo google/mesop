@@ -4,8 +4,10 @@ Radio is a single selection form control based on the [Angular Material radio co
 
 ## Examples
 
+<iframe class="component-demo" src="https://mesop-y677hytkra-uc.a.run.app/radio" style="height: 100px"></iframe>
+
 ```python
---8<-- "mesop/components/radio/e2e/radio_app.py"
+--8<-- "demo/radio.py"
 ```
 
 ## API

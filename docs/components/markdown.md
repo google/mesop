@@ -4,8 +4,10 @@ Markdown is used to render markdown text.
 
 ## Examples
 
+<iframe class="component-demo" src="https://mesop-y677hytkra-uc.a.run.app/markdown_demo"></iframe>
+
 ```python
---8<-- "mesop/components/markdown/e2e/markdown_app.py"
+--8<-- "demo/markdown_demo.py"
 ```
 
 ## API

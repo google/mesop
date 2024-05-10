@@ -4,8 +4,10 @@ Embed allows you to embed/[iframe](https://developer.mozilla.org/en-US/docs/Web/
 
 ## Examples
 
+<iframe class="component-demo" src="https://mesop-y677hytkra-uc.a.run.app/embed"></iframe>
+
 ```python
---8<-- "mesop/components/embed/e2e/embed_app.py"
+--8<-- "demo/embed.py"
 ```
 
 ## API

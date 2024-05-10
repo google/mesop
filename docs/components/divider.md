@@ -4,8 +4,10 @@ Divider is used to provide visual separation and is based on the [Angular Materi
 
 ## Examples
 
+<iframe class="component-demo" src="https://mesop-y677hytkra-uc.a.run.app/divider" style="height: 100px"></iframe>
+
 ```python
---8<-- "mesop/components/divider/e2e/divider_app.py"
+--8<-- "demo/divider.py"
 ```
 
 ## API
