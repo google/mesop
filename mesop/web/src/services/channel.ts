@@ -198,8 +198,9 @@ export class Channel {
           const text = await response.text();
           this.hotReloadCounter = Number(text);
           this.hotReload();
-          pollHotReloadEndpoint();
           this.hotReloadBackoffCounter = 0;
+          // Use void to explicitly not await to avoid downstream sync issue.
+          void pollHotReloadEndpoint();
         } else {
           throw new Error(`Server responded with status: ${response.status}`);
         }
