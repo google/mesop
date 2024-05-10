@@ -70,6 +70,14 @@ def configure_flask_app(
   def yield_errors(error: pb.ServerError) -> Generator[str, None, None]:
     if not runtime().debug_mode:
       error.ClearField("traceback")
+      # Redact developer errors
+      if "Mesop Internal Error:" in error.exception:
+        error.exception = "Sorry, there was an internal error with Mesop."
+      if "Mesop Developer Error:" in error.exception:
+        error.exception = (
+          "Sorry, there was an error. Please contact the developer."
+        )
+
     ui_response = pb.UiResponse(error=error)
 
     yield serialize(ui_response)
