@@ -169,13 +169,13 @@ def configure_flask_app(
 
     @flask_app.route("/hot-reload")
     def hot_reload() -> Response:
+      counter = int(request.args["counter"])
       while True:
+        if counter < runtime().hot_reload_counter:
+          break
         # Sleep a short duration but not too short that we hog up excessive CPU.
         time.sleep(0.1)
-        if runtime().hot_reload_ready_for_client:
-          break
-      response = Response("OK", status=200)
-      runtime().hot_reload_ready_for_client = False
+      response = Response(str(runtime().hot_reload_counter), status=200)
       return response
 
   return flask_app
