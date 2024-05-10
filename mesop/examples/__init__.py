@@ -12,6 +12,7 @@ from mesop.examples import (
 from mesop.examples import generator as generator
 from mesop.examples import grid as grid
 from mesop.examples import index as index
+from mesop.examples import input_race as input_race
 from mesop.examples import integrations as integrations
 from mesop.examples import many_checkboxes as many_checkboxes
 from mesop.examples import nested as nested

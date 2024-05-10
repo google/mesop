@@ -10,8 +10,6 @@ import {
 import {InputType} from 'mesop/mesop/components/input/input_jspb_proto_pb/mesop/components/input/input_pb';
 import {Channel} from '../../web/src/services/channel';
 import {formatStyle} from '../../web/src/utils/styles';
-import {Subject} from 'rxjs';
-import {debounceTime} from 'rxjs/operators';
 import {CommonModule} from '@angular/common';
 
 @Component({
@@ -24,22 +22,8 @@ export class InputComponent {
   @Input() key!: Key;
   @Input() style!: Style;
   private _config!: InputType;
-  private inputSubject = new Subject<Event>();
 
-  constructor(private readonly channel: Channel) {
-    this.inputSubject
-      .pipe(
-        // Setting this to a short duration to avoid having the user trigger another event
-        // during this debounce time period:
-        // https://github.com/google/mesop/issues/171
-        debounceTime(150),
-      )
-      .subscribe((event) => this.onInputDebounced(event));
-  }
-
-  ngOnDestroy(): void {
-    this.inputSubject.unsubscribe();
-  }
+  constructor(private readonly channel: Channel) {}
 
   ngOnChanges() {
     this._config = InputType.deserializeBinary(
@@ -72,14 +56,11 @@ export class InputComponent {
   }
 
   onInput(event: Event): void {
-    this.inputSubject.next(event);
-  }
-
-  onInputDebounced(event: Event): void {
     const userEvent = new UserEvent();
     userEvent.setHandlerId(this.config().getOnInputHandlerId()!);
     userEvent.setStringValue((event.target as HTMLInputElement).value);
     userEvent.setKey(this.key);
+    userEvent.setMergeable(true);
     this.channel.dispatch(userEvent);
   }
 }

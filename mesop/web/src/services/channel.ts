@@ -48,6 +48,8 @@ export class Channel {
   private queuedEvents: (() => void)[] = [];
   private hotReloadBackoffCounter = 0;
   private hotReloadCounter = 0;
+  private readonly queuedEventsByHandlerKey: Map<string, (() => void)[]> =
+    new Map();
 
   constructor(
     private logger: Logger,
@@ -159,25 +161,61 @@ export class Channel {
   }
 
   dispatch(userEvent: UserEvent) {
+    const handlerId = userEvent.getHandlerId();
+    const handlerKey = `handlerId=${handlerId}|key=${userEvent.getKey()}`;
     // Except for navigation user event, every user event should have
     // an event handler.
-    if (!userEvent.getHandlerId() && !userEvent.getNavigation()) {
+    if (!handlerId && !userEvent.getNavigation()) {
       // This is a no-op user event, so we don't send it.
       return;
     }
+
     const initUserEvent = () => {
       userEvent.setStates(this.states);
       const request = new UiRequest();
       request.setUserEvent(userEvent);
       this.init(this.initParams, request);
+
+      // Early return if this isn't a mergeable user event.
+      if (!handlerId || !userEvent.getMergeable()) {
+        return;
+      }
+
+      // Garbage collect from this.queuedEventsByHandlerKey
+      // to avoid memory leak.
+      const queuedEvents = this.queuedEventsByHandlerKey.get(handlerKey);
+      const foundEventIndex = queuedEvents!.findIndex(
+        (e) => e === initUserEvent,
+      );
+      if (foundEventIndex === -1) {
+        console.error('Could not clean up user event', initUserEvent);
+      }
+      queuedEvents!.splice(foundEventIndex, 1);
     };
+
+    // This merges existing queued events from the same source
+    // (handler id + component key) into the current user event
+    // by removing existing queued events from the same source.
+    if (handlerId && userEvent.getMergeable()) {
+      if (!this.queuedEventsByHandlerKey.get(handlerKey)) {
+        this.queuedEventsByHandlerKey.set(handlerKey, []);
+      }
+      const existingEvents = this.queuedEventsByHandlerKey.get(handlerKey);
+      const remainingEvents = existingEvents!.filter(
+        (event) => !this.queuedEvents.includes(event),
+      );
+      this.queuedEvents = this.queuedEvents.filter(
+        (event) => !existingEvents!.includes(event),
+      );
+      this.queuedEventsByHandlerKey.set(handlerKey, remainingEvents);
+      this.queuedEventsByHandlerKey.get(handlerKey)!.push(initUserEvent);
+    }
+
     this.logger.log({type: 'UserEventLog', userEvent: userEvent});
     if (this.status === ChannelStatus.CLOSED) {
       initUserEvent();
     } else {
-      this.queuedEvents.push(() => {
-        initUserEvent();
-      });
+      this.queuedEvents.push(initUserEvent);
     }
   }
 
@@ -198,8 +236,9 @@ export class Channel {
           const text = await response.text();
           this.hotReloadCounter = Number(text);
           this.hotReload();
-          pollHotReloadEndpoint();
           this.hotReloadBackoffCounter = 0;
+          // Use void to explicitly not await to avoid downstream sync issue.
+          void pollHotReloadEndpoint();
         } else {
           throw new Error(`Server responded with status: ${response.status}`);
         }

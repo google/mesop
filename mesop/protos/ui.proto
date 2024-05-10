@@ -25,6 +25,12 @@ message UserEvent {
 
     optional Key key = 3;
 
+    // If a UserEvent is mergeable, this means that multiple user events
+    // from the same source (i.e. handler id and key) fired in
+    // quick succession can be turned into a single user event to improve
+    // performance.
+    optional bool mergeable = 10;
+
     oneof type {
         bool bool_value = 4;
         string string_value = 5;
