@@ -100,6 +100,8 @@ def main(argv: Sequence[str]):
     static_file_runfiles_base=PROD_PACKAGE_PATH
     if FLAGS.prod
     else EDITOR_PACKAGE_PATH,
+    # Keep this palceholder arg; it will be replaced downstream sync.
+    livereload_script_url=None,
   )
 
   if FLAGS.verbose:
