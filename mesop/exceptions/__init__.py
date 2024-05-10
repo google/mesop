@@ -10,6 +10,13 @@ class MesopUserException(MesopException):
     return f"**User Error:** {super().__str__()}"
 
 
+##########################################################
+# Internal / system errors:
+# DO NOT CHANGE THE MESSAGE WITHOUT UPDATING server.py's
+# REDACTION LOGIC.
+##########################################################
+
+
 class MesopInternalException(MesopException):
   def __str__(self):
     return f"**Mesop Internal Error:** {super().__str__()}"
