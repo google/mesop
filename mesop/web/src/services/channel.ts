@@ -46,6 +46,8 @@ export class Channel {
   private status!: ChannelStatus;
   private componentConfigs: readonly ComponentConfig[] = [];
   private queuedEvents: (() => void)[] = [];
+  private hotReloadBackoffCounter = 0;
+  private hotReloadCounter = 0;
 
   constructor(
     private logger: Logger,
@@ -189,8 +191,12 @@ export class Channel {
   checkForHotReload() {
     const pollHotReloadEndpoint = async () => {
       try {
-        const response = await fetch('/hot-reload');
+        const response = await fetch(
+          `/hot-reload?counter=${this.hotReloadCounter}`,
+        );
         if (response.status === 200) {
+          const text = await response.text();
+          this.hotReloadCounter = Number(text);
           this.hotReload();
           pollHotReloadEndpoint();
           this.hotReloadBackoffCounter = 0;
@@ -205,8 +211,6 @@ export class Channel {
 
     pollHotReloadEndpoint();
   }
-
-  private hotReloadBackoffCounter = 0;
 
   private calculateExponentialBackoff(): number {
     const delay = 2 ** this.hotReloadBackoffCounter * 100;

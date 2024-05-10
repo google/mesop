@@ -35,9 +35,9 @@ class Runtime:
   # If True, then the server is still re-executing the modules
   # needed for hot reloading.
   is_hot_reload_in_progress: bool = False
-  # If True, then the server has re-executed modules needed for hot reloading
-  # and is waiting for the client to request a hot reload.
-  hot_reload_ready_for_client: bool = False
+  # Keeps track of the hot reload count so that the server can tell
+  # clients polling whether to request a hot reload.
+  hot_reload_counter = 0
 
   def __init__(self):
     self.component_fns = set()
@@ -150,6 +150,7 @@ def reset_runtime():
   old_runtime = _runtime
   _runtime = Runtime()
   _runtime.is_hot_reload_in_progress = True
+  _runtime.hot_reload_counter = old_runtime.hot_reload_counter
   _runtime.debug_mode = old_runtime.debug_mode
   _runtime.component_fns = old_runtime.component_fns
   _runtime.event_mappers = old_runtime.event_mappers
@@ -161,4 +162,4 @@ def enable_debug_mode():
 
 def hot_reload_finished():
   _runtime.is_hot_reload_in_progress = False
-  _runtime.hot_reload_ready_for_client = True
+  _runtime.hot_reload_counter += 1
