@@ -136,17 +136,23 @@ def get_app_module_name(workspace_dir_path: str, app_module_path: str) -> str:
 
 class ReloadEventHandler(FileSystemEventHandler):
   def __init__(self, absolute_path: str, workspace_dir_path: str):
+    self.count = 0
     self.absolute_path = absolute_path
     self.workspace_dir_path = workspace_dir_path
 
-  def on_any_event(self, event: FileSystemEvent):
-    if not event.is_directory:
+  def on_modified(self, event: FileSystemEvent):
+    src_path = cast(str, event.src_path)
+    # This could potentially over-trigger if .py files which are
+    # not application modules are modified (e.g. in venv directories)
+    # but this should be rare.
+    if src_path.endswith(".py"):
       try:
-        print("Hot reload: starting...")
+        self.count += 1
+        print(f"Hot reload #{self.count}: starting...", event)
         reset_runtime()
         execute_main_module(absolute_path=self.absolute_path)
         hot_reload_finished()
-        print("Hot reload: finished!")
+        print(f"Hot reload #{self.count}: finished!")
       except Exception as e:
         logging.log(
           logging.ERROR, "Could not hot reload due to error:", exc_info=e
@@ -177,13 +183,22 @@ def fs_watcher(absolute_path: str):
   and triggers hot reload on change.
   """
   workspace_dir_path = os.path.dirname(absolute_path)
-
   # Initially track all the files on the file system and then rely on watchdog.
   for root, dirnames, files in os.walk(workspace_dir_path):
-    # Filter out directories starting with "." because they
-    # can be special directories like .venv directories which
-    # can have lots of Python files that are definitely not application Python modules.
-    dirnames[:] = [d for d in dirnames if not d.startswith(".")]
+    # Filter out unusual directories, e.g. starting with "." because they
+    # can be special directories, because venv directories
+    # can have lots of Python files that are not application Python modules.
+    new_dirnames: list[str] = []
+    for d in dirnames:
+      if d.startswith("."):
+        continue
+      if d == "__pycache__":
+        continue
+      if d == "venv":
+        continue
+      new_dirnames.append(d)
+
+    dirnames[:] = new_dirnames
 
     for file in files:
       if file.endswith(".py"):
