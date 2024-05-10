@@ -2,7 +2,7 @@ import mesop as me
 from mesop.examples.shared.navmenu import scaffold
 
 
-@me.page(path="/")
+@me.page(path="/index")
 def index():
   with scaffold(url="/"):
     body()

@@ -13,6 +13,7 @@ py_library(
     name = "examples",
     srcs = glob(["*.py"]),
     deps = [
+        "//demo",
         # REF(//scripts/scaffold_component.py):insert_component_e2e_import
         "//mesop/components/uploader/e2e",
         "//mesop/components/embed/e2e",
