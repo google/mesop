@@ -1,5 +1,7 @@
+import sys
 from typing import Any, Callable
 
+from absl import flags
 from flask import Flask
 
 from mesop.runtime import enable_debug_mode
@@ -43,6 +45,19 @@ def create_app(
   return App(flask_app=flask_app)
 
 
+# Note: we are lazily instantiating this because this module may be
+# imported in contexts which will create the flask app elsewhere.
+_app = None
+
+
 def wsgi_app(environ: dict[Any, Any], start_response: Callable[..., Any]):
-  app = create_app(prod_mode=True)
-  return app._flask_app.wsgi_app(environ, start_response)  # type: ignore
+  # Lazily create and reuse a flask app singleton to avoid
+  # the overhead for each WSGI request.
+  global _app
+  if not _app:
+    # Parse the flags before creating the app otherwise you will
+    # get UnparsedFlagAccessError.
+    flags.FLAGS(sys.argv)
+    _app = create_app(prod_mode=True)
+
+  return _app._flask_app.wsgi_app(environ, start_response)  # type: ignore
