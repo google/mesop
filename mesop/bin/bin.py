@@ -148,7 +148,7 @@ class ReloadEventHandler(FileSystemEventHandler):
     if src_path.endswith(".py"):
       try:
         self.count += 1
-        print(f"Hot reload #{self.count}: starting...", event)
+        print(f"Hot reload #{self.count}: starting...")
         reset_runtime()
         execute_main_module(absolute_path=self.absolute_path)
         hot_reload_finished()
