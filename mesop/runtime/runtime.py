@@ -5,7 +5,7 @@ from flask import g
 
 import mesop.protos.ui_pb2 as pb
 from mesop.events import MesopEvent
-from mesop.exceptions import MesopUserException
+from mesop.exceptions import MesopDeveloperException, MesopUserException
 from mesop.key import Key
 from mesop.utils.backoff import exponential_backoff
 
@@ -80,8 +80,11 @@ class Runtime:
     if path not in self._path_fns:
       paths = list(self._path_fns.keys())
       if not paths:
-        raise MesopUserException(
-          "No page has been registered. Read the [page docs](https://google.github.io/mesop/guides/pages/) to configure a page."
+        raise MesopDeveloperException(
+          """No page has been registered. Read the [page docs](https://google.github.io/mesop/guides/pages/) to configure a page.
+
+If you configured a page, then there was an exception in your code before the page was registered. Check your logs for more details.
+          """
         )
       paths.sort()
       raise MesopUserException(
