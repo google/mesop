@@ -51,6 +51,7 @@ nav:
           - Tooltip: components/tooltip.md
       - Advanced:
           - Embed: components/embed.md
+          - HTML: components/html.md
           - Plot: components/plot.md
   - API:
       - Page: api/page.md
