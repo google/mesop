@@ -1,4 +1,7 @@
+import sys
 import threading
+
+from absl import flags
 
 from mesop.colab import colab_utils
 from mesop.runtime import enable_debug_mode
@@ -17,6 +20,19 @@ def colab_run(*, port: int = 32123, prod_mode: bool = False):
   if not colab_utils.is_running_in_colab():
     print("Not running Colab: `colab_run` is a no-op")
     return
+  # Parse the flags before creating the app otherwise you will
+  # get UnparsedFlagAccessError.
+  #
+  # This currently parses a list without any flags because typically Colab
+  # will have its own CLI flags which Mesop doesn't understand.
+  #
+  # We will ignore all CLI flags, but we could provide a way to override
+  # Mesop defined flags in the future (e.g. enable_component_tree_diffs)
+  # if necessary.
+  #
+  # Note: absl-py requires the first arg (program name), and will raise an error
+  # if we pass an empty list.
+  flags.FLAGS(sys.argv[:1])
   flask_app = configure_flask_app(prod_mode=prod_mode)
   if not prod_mode:
     enable_debug_mode()
