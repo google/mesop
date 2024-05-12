@@ -31,6 +31,7 @@ import embed as embed
 import icon as icon
 import image as image
 import input as input
+import llm_playground as llm_playground
 import llm_rewriter as llm_rewriter
 import markdown_demo as markdown_demo  # cannot call it markdown due to python library naming conflict
 import plot as plot
@@ -75,6 +76,7 @@ FIRST_SECTIONS = [
     name="Use cases",
     examples=[
       Example(name="llm_rewriter"),
+      Example(name="llm_playground"),
     ],
   ),
 ]
