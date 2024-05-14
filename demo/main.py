@@ -33,6 +33,7 @@ import image as image
 import input as input
 import llm_rewriter as llm_rewriter
 import markdown_demo as markdown_demo  # cannot call it markdown due to python library naming conflict
+import markdown_editor as markdown_editor
 import plot as plot
 import progress_bar as progress_bar
 import progress_spinner as progress_spinner
@@ -75,6 +76,7 @@ FIRST_SECTIONS = [
     name="Use cases",
     examples=[
       Example(name="llm_rewriter"),
+      Example(name="markdown_editor"),
     ],
   ),
 ]
