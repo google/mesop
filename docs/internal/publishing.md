@@ -50,6 +50,26 @@ rm -rf /tmp/mesoprelease-test/venv-twine \
 
 Visit [https://pypi.org/project/mesop/](https://pypi.org/project/mesop/) to see that the new version has been published.
 
+### Uploading to Test PyPI
+
+If you want to upload to test PyPI (e.g. test it with Colab), you can run the following command:
+
+```sh
+rm -rf /tmp/mesoprelease-test/venv-twine \
+&& virtualenv --python python3 /tmp/mesoprelease-test/venv-twine \
+&& source /tmp/mesoprelease-test/venv-twine/bin/activate \
+&& pip install --upgrade pip \
+&& pip install twine \
+&& cd /tmp/mesoprelease-test \
+&& twine upload --repository testpypi mesop*.whl
+```
+
+You can then install it by using:
+
+```sh
+pip install --index-url https://test.pypi.org/simple/ mesop
+```
+
 ## First-time upload setup
 
 Create a file `~/.pypirc`:
