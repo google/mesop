@@ -49,6 +49,12 @@ def upper_case_stream(s: str):
 
 ## Try it
 
+### Colab
+
+You can try [Mesop on Colab](https://colab.research.google.com/drive/19LrP4T0aP4vg1QyT6WSqeIwud1CIqipv?usp=sharing) for free. [![Open In Colab](assetes/colab.svg)](https://colab.research.google.com/github/google/mesop/blob/main/notebooks/mesop_colab_getting_started.ipynb)!
+
+### Locally
+
 **Step 1:** Install it
 
 ```sh
