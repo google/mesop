@@ -4,7 +4,7 @@ Text to text component allows you to take in user inputted text and return a tra
 
 ## Examples
 
-<iframe class="component-demo" src="https://mesop-y677hytkra-uc.a.run.app/text_to_text"></iframe>
+<iframe class="component-demo" src="/demo/?demo=text_to_text"></iframe>
 
 ```python
 --8<-- "demo/text_to_text.py"

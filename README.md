@@ -22,7 +22,7 @@ Mesop is a Python-based UI framework that allows you to rapidly build web apps l
 
 ## Write your first Mesop app in less than 10 lines of code...
 
-[Demo app](https://mesop-y677hytkra-uc.a.run.app/text_io)
+[Demo app](https://google.github.io/mesop/demo/text_io)
 
 ```python
 import time

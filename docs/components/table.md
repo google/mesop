@@ -4,7 +4,7 @@ Table allows the user to render an [Angular Material table component](https://ma
 
 ## Examples
 
-<iframe class="component-demo" src="https://mesop-y677hytkra-uc.a.run.app/table"></iframe>
+<iframe class="component-demo" src="/demo/?demo=table"></iframe>
 
 ```python
 --8<-- "demo/table.py"

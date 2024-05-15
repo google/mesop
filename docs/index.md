@@ -53,9 +53,9 @@ Mesop is a Python-based UI framework that allows you to rapidly build web apps l
 
 <h2 style="margin: 0.5rem"> See what you can build in less than 10 lines of code... </h2>
 
-<iframe class="immersive-demo" src="https://mesop-y677hytkra-uc.a.run.app/"></iframe>
+<iframe class="immersive-demo" src="/demo/"></iframe>
 
-Check out how the above [demo gallery](https://mesop-y677hytkra-uc.a.run.app/) was [built in pure Mesop](https://github.com/google/mesop/blob/main/demo/main.py)!
+Check out how the above [demo gallery](./demo.md) was [built in pure Mesop](https://github.com/google/mesop/blob/main/demo/main.py)!
 
 ## Try it
 
