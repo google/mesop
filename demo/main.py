@@ -241,10 +241,12 @@ def demo_code(code_arg: str):
     )
   ):
     box_header("Code")
+    # Use four backticks for code fence to avoid conflicts with backticks being used
+    # within the displayed code.
     me.markdown(
-      f"""```
+      f"""````
 {code_arg}
-```
+````
               """,
       style=me.Style(
         border=me.Border(
