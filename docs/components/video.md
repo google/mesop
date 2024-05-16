@@ -4,7 +4,7 @@ Video is the equivalent of an [`<video>` HTML element](https://developer.mozilla
 
 ## Examples
 
-<iframe class="component-demo" src="https://mesop-y677hytkra-uc.a.run.app/video" style="height: 300px"></iframe>
+<iframe class="component-demo" src="/demo/?demo=video" style="height: 300px"></iframe>
 
 ```python
 --8<-- "demo/video.py"

@@ -4,7 +4,7 @@ Audio is the equivalent of an [`<audio>` HTML element](https://developer.mozilla
 
 ## Examples
 
-<iframe class="component-demo" src="https://mesop-y677hytkra-uc.a.run.app/audio" style="height: 80px"></iframe>
+<iframe class="component-demo" src="/demo/?demo=audio" style="height: 80px"></iframe>
 
 ```python
 --8<-- "demo/audio.py"

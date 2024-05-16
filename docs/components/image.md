@@ -4,7 +4,7 @@ Image is the equivalent of an [`<img>` HTML element](https://developer.mozilla.o
 
 ## Examples
 
-<iframe class="component-demo" src="https://mesop-y677hytkra-uc.a.run.app/image" style="height: 200px"></iframe>
+<iframe class="component-demo" src="/demo/?demo=image" style="height: 200px"></iframe>
 
 ```python
 --8<-- "demo/image.py"

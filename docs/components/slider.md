@@ -4,7 +4,7 @@ Slider allows the user to select from a range of values and is based on the [Ang
 
 ## Examples
 
-<iframe class="component-demo" src="https://mesop-y677hytkra-uc.a.run.app/slider" style="height: 120px"></iframe>
+<iframe class="component-demo" src="/demo/?demo=slider" style="height: 120px"></iframe>
 
 ```python
 --8<-- "demo/slider.py"
