@@ -59,6 +59,12 @@ Check out how the above [demo gallery](https://mesop-y677hytkra-uc.a.run.app/) w
 
 ## Try it
 
+### Colab
+
+Try [Mesop on Colab](https://colab.research.google.com/drive/19LrP4T0aP4vg1QyT6WSqeIwud1CIqipv?usp=sharing) [![Open In Colab](assets/colab.svg)](https://colab.research.google.com/github/google/mesop/blob/main/notebooks/mesop_colab_getting_started.ipynb)
+
+### Locally
+
 __Step 1:__ Install it
 
 ```sh
