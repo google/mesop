@@ -18,7 +18,6 @@ if current_dir not in sys.path:
 
 
 import code as code
-import select as select
 
 import audio as audio
 import badge as badge
@@ -39,6 +38,7 @@ import plot as plot
 import progress_bar as progress_bar
 import progress_spinner as progress_spinner
 import radio as radio
+import select_demo as select_demo  # cannot call it select due to python library naming conflict
 import sidenav as sidenav
 import slide_toggle as slide_toggle
 import slider as slider
@@ -115,7 +115,7 @@ COMPONENTS_SECTIONS = [
       Example(name="input"),
       Example(name="textarea"),
       Example(name="radio"),
-      Example(name="select"),
+      Example(name="select_demo"),
       Example(name="slide_toggle"),
       Example(name="slider"),
       Example(name="uploader"),
