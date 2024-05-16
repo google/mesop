@@ -7,6 +7,7 @@
   [disableRipple]="config().getDisableRipple()"
   [max]="config().getMax()"
   [step]="config().getStep()"
+  [style]="getStyle()"
 >
   <input matSliderThumb (valueChange)="onValueChange($event)" />
 </mat-slider>

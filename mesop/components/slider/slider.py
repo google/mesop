@@ -3,6 +3,7 @@ from typing import Any, Callable, Literal
 
 import mesop.components.slider.slider_pb2 as slider_pb
 from mesop.component_helpers import (
+  Style,
   insert_component,
   register_event_handler,
   register_event_mapper,
@@ -45,6 +46,7 @@ def slider(
   discrete: bool = False,
   show_tick_marks: bool = False,
   disable_ripple: bool = False,
+  style: Style | None = None,
   key: str | None = None,
 ):
   """Creates a Slider component.
@@ -59,11 +61,13 @@ def slider(
     show_tick_marks: Whether the slider displays tick marks along the slider track.
     color: Palette color of the slider.
     disable_ripple: Whether ripples are disabled in the slider.
+    style: Style for the component.
     key: The component [key](../guides/components.md#component-key).
   """
   insert_component(
     key=key,
     type_name="slider",
+    style=style,
     proto=slider_pb.SliderType(
       disabled=disabled,
       discrete=discrete,

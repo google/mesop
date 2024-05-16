@@ -4,11 +4,13 @@ import {
   UserEvent,
   Key,
   Type,
+  Style,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 import {SliderType} from 'mesop/mesop/components/slider/slider_jspb_proto_pb/mesop/components/slider/slider_pb';
 import {Channel} from '../../web/src/services/channel';
 import {debounceTime} from 'rxjs/operators';
 import {Subject} from 'rxjs';
+import {formatStyle} from '../../web/src/utils/styles';
 
 @Component({
   templateUrl: 'slider.ng.html',
@@ -18,6 +20,7 @@ import {Subject} from 'rxjs';
 export class SliderComponent {
   @Input({required: true}) type!: Type;
   @Input() key!: Key;
+  @Input() style!: Style;
   private _config!: SliderType;
   private changeSubject = new Subject<number>();
 
@@ -52,5 +55,9 @@ export class SliderComponent {
     userEvent.setDoubleValue(value);
     userEvent.setKey(this.key);
     this.channel.dispatch(userEvent);
+  }
+
+  getStyle(): string {
+    return formatStyle(this.style);
   }
 }
