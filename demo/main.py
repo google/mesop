@@ -142,6 +142,8 @@ COMPONENTS_SECTIONS = [
   ),
 ]
 
+ALL_SECTIONS = FIRST_SECTIONS + COMPONENTS_SECTIONS
+
 BORDER_SIDE = me.BorderSide(
   style="solid",
   width=1,

@@ -32,15 +32,26 @@ flags.DEFINE_bool(
   "prod", False, "set to true for prod mode; otherwise editor mode."
 )
 flags.DEFINE_bool("verbose", False, "set to true for verbose logging.")
+flags.DEFINE_bool(
+  "reload_demo_modules", False, "set to true to reload demo modules."
+)
 
 
 def execute_main_module():
   module_name = get_module_name_from_runfile_path(FLAGS.path)
   clear_app_modules(module_name=module_name)
+  if FLAGS.reload_demo_modules:
+    clear_demo_modules()
   execute_module(
     module_path=get_runfile_location(FLAGS.path),
     module_name=module_name,
   )
+
+
+def clear_demo_modules():
+  for module in demo_modules:
+    if module in sys.modules:
+      del sys.modules[module]
 
 
 def monitor_stdin():
@@ -63,6 +74,9 @@ def monitor_stdin():
         hot_reload_finished()
 
 
+demo_modules = ["demo", "demo.main"]
+
+
 def main(argv: Sequence[str]):
   flask_app = configure_flask_app(prod_mode=FLAGS.prod)
   if len(FLAGS.path) < 1:
@@ -71,6 +85,18 @@ def main(argv: Sequence[str]):
   if not FLAGS.prod:
     enable_debug_mode()
 
+  if FLAGS.reload_demo_modules:
+    # If we need to reload demo modules, collect all the modules
+    # reference demo/main.py.
+    #
+    # Because the imports in demo/ do not follow the standard import
+    # convention used by the rest of the Bazel workspace, we use
+    # a list of the modules stored as a constant in main.py.
+    from demo import main
+
+    for section in main.ALL_SECTIONS:
+      for example in section.examples:
+        demo_modules.append(example.name)
   try:
     execute_main_module()
   except Exception as e:
