@@ -3,8 +3,8 @@ import inspect
 import mesop as me
 
 
-@me.page(path="/code")
-def code():
+@me.page(path="/code_demo")
+def code_demo():
   me.text("Defaults to Python")
   me.code("a = 123")
 

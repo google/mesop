@@ -17,7 +17,6 @@ if current_dir not in sys.path:
   sys.path.append(current_dir)
 
 
-import code as code
 import select as select
 
 import audio as audio
@@ -26,6 +25,7 @@ import box as box
 import button as button
 import chat as chat
 import checkbox as checkbox
+import code_demo as code_demo  # cannot call it code due to python library naming conflict
 import divider as divider
 import embed as embed
 import icon as icon
@@ -96,7 +96,7 @@ COMPONENTS_SECTIONS = [
     examples=[
       Example(name="text"),
       Example(name="markdown_demo"),
-      Example(name="code"),
+      Example(name="code_demo"),
     ],
   ),
   Section(
