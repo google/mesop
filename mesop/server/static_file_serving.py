@@ -1,6 +1,8 @@
+import gzip
 import io
 import os
-from typing import Callable
+from io import BytesIO
+from typing import Any, Callable
 
 from flask import Flask, send_file
 from werkzeug.security import safe_join
@@ -49,7 +51,7 @@ def configure_static_file_serving(
   def serve_file(path: str):
     preprocess_request()
     if is_file_path(path):
-      return send_file(get_path(path))
+      return send_file_compressed(get_path(path))
     else:
       return send_file(retrieve_index_html(), download_name="index.html")
 
@@ -57,3 +59,29 @@ def configure_static_file_serving(
 def is_file_path(path: str) -> bool:
   _, last_segment = os.path.split(path)
   return "." in last_segment
+
+
+# To avoid paying the cost of gzipping the same file multiple times
+# we have a singleton cache from file path to gzipped bytes.
+gzip_cache: dict[str, bytes] = {}
+
+
+def send_file_compressed(path: str) -> Any:
+  response = send_file(path)
+  response.headers["Content-Encoding"] = "gzip"
+  response.direct_passthrough = False
+  if path in gzip_cache:
+    gzip_data = gzip_cache[path]
+  else:
+    gzip_buffer = BytesIO()
+    with gzip.GzipFile(
+      mode="wb", fileobj=gzip_buffer, compresslevel=6
+    ) as gzip_file:
+      gzip_file.write(response.get_data())
+    gzip_buffer.seek(0)
+    gzip_data = gzip_buffer.getvalue()
+    gzip_cache[path] = gzip_data
+
+  response.set_data(gzip_data)
+  response.headers["Content-Length"] = str(len(response.get_data()))
+  return response
