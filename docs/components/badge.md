@@ -4,7 +4,7 @@ Badge decorates a UI component and is oftentimes used for unread message count a
 
 ## Examples
 
-<iframe class="component-demo" src="/demo/?demo=badge" style="height: 100px"></iframe>
+<iframe class="component-demo" src="/mesop/demo/?demo=badge" style="height: 100px"></iframe>
 
 ```python
 --8<-- "demo/badge.py"

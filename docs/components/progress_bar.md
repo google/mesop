@@ -4,7 +4,7 @@ Progress Bar is used to indicate something is in progress and is based on the [A
 
 ## Examples
 
-<iframe class="component-demo" src="/demo/?demo=progress_bar" style="height: 60px"></iframe>
+<iframe class="component-demo" src="/mesop/demo/?demo=progress_bar" style="height: 60px"></iframe>
 
 ```python
 --8<-- "demo/progress_bar.py"

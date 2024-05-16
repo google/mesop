@@ -51,7 +51,7 @@ nav:
       - Advanced:
           - Embed: components/embed.md
           - Plot: components/plot.md
-  - Demo Gallery 🔗: demo.md
+  - Demo Gallery 🔗: mesop/demo.md
   - Blog:
       - blog/index.md
   - Internal:

@@ -4,7 +4,7 @@ Radio is a single selection form control based on the [Angular Material radio co
 
 ## Examples
 
-<iframe class="component-demo" src="/demo/?demo=radio" style="height: 100px"></iframe>
+<iframe class="component-demo" src="/mesop/demo/?demo=radio" style="height: 100px"></iframe>
 
 ```python
 --8<-- "demo/radio.py"

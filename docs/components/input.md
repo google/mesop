@@ -6,7 +6,7 @@ For longer text inputs, also see [Textarea](./textarea.md)
 
 ## Examples
 
-<iframe class="component-demo" src="/demo/?demo=input" style="height: 120px"></iframe>
+<iframe class="component-demo" src="/mesop/demo/?demo=input" style="height: 120px"></iframe>
 
 ```python
 --8<-- "demo/input.py"

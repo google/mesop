@@ -4,7 +4,7 @@ Divider is used to provide visual separation and is based on the [Angular Materi
 
 ## Examples
 
-<iframe class="component-demo" src="/demo/?demo=divider" style="height: 100px"></iframe>
+<iframe class="component-demo" src="/mesop/demo/?demo=divider" style="height: 100px"></iframe>
 
 ```python
 --8<-- "demo/divider.py"
