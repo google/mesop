@@ -137,7 +137,11 @@ def page():
       with me.box(style=_STYLE_SLIDER_INPUT_BOX):
         with me.box(style=_STYLE_SLIDER_WRAP):
           me.slider(
-            min=0, max=2, step=0.1, on_value_change=on_slider_temperature
+            min=0,
+            max=2,
+            step=0.1,
+            style=_STYLE_SLIDER,
+            on_value_change=on_slider_temperature,
           )
         me.input(
           style=_STYLE_SLIDER_INPUT, value=str(state.temperature), readonly=True
@@ -146,7 +150,12 @@ def page():
       me.text("Output Token Limit", style=_STYLE_SLIDER_LABEL)
       with me.box(style=_STYLE_SLIDER_INPUT_BOX):
         with me.box(style=_STYLE_SLIDER_WRAP):
-          me.slider(min=1, max=8192, on_value_change=on_slider_token_limit)
+          me.slider(
+            min=1,
+            max=8192,
+            style=_STYLE_SLIDER,
+            on_value_change=on_slider_token_limit,
+          )
         me.input(
           style=_STYLE_SLIDER_INPUT, value=str(state.token_limit), readonly=True
         )
@@ -448,6 +457,7 @@ _STYLE_INPUT_WIDTH = me.Style(width="100%")
 _STYLE_SLIDER_INPUT_BOX = me.Style(display="flex", flex_wrap="wrap")
 _STYLE_SLIDER_WRAP = me.Style(flex_grow=1)
 _STYLE_SLIDER_LABEL = me.Style(padding=me.Padding(bottom=10))
+_STYLE_SLIDER = me.Style(width="90%")
 _STYLE_SLIDER_INPUT = me.Style(width=75)
 
 _STYLE_STOP_SEQUENCE_BOX = me.Style(display="flex")
