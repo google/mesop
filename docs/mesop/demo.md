@@ -4,5 +4,6 @@ hide:
   - navigation
   - toc
 ---
-<link rel="stylesheet" href="/stylesheets/demo.css">
-<script src="/javascript/demo.js"></script>
+<!-- This uses the production URLs to make the paths work locally and on GitHub -->
+<link rel="stylesheet" href="https://google.github.io/mesop/stylesheets/demo.css">
+<script src="https://google.github.io/mesop/javascript/demo.js"></script>
