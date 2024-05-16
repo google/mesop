@@ -4,7 +4,7 @@ Tooltip is based on the [Angular Material tooltip component](https://material.an
 
 ## Examples
 
-<iframe class="component-demo" src="/mesop/demo/?demo=tooltip" style="height: 100px"></iframe>
+<iframe class="component-demo" src="https://google.github.io/mesop/demo/?demo=tooltip" style="height: 100px"></iframe>
 
 ```python
 --8<-- "demo/tooltip.py"

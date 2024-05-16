@@ -4,7 +4,7 @@ Code is used to render code with syntax highlighting. `code` is a simple wrapper
 
 ## Examples
 
-<iframe class="component-demo" src="/mesop/demo/?demo=code"></iframe>
+<iframe class="component-demo" src="https://google.github.io/mesop/demo/?demo=code"></iframe>
 
 ```python
 --8<-- "demo/code.py"

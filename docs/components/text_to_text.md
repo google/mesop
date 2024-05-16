@@ -4,7 +4,7 @@ Text to text component allows you to take in user inputted text and return a tra
 
 ## Examples
 
-<iframe class="component-demo" src="/mesop/demo/?demo=text_to_text"></iframe>
+<iframe class="component-demo" src="https://google.github.io/mesop/demo/?demo=text_to_text"></iframe>
 
 ```python
 --8<-- "demo/text_to_text.py"

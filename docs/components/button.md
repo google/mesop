@@ -4,7 +4,7 @@ Button is based on the [Angular Material button component](https://material.angu
 
 ## Examples
 
-<iframe class="component-demo" src="/mesop/demo/?demo=button" style="height: 200px"></iframe>
+<iframe class="component-demo" src="https://google.github.io/mesop/demo/?demo=button" style="height: 200px"></iframe>
 
 ```python
 --8<-- "demo/button.py"

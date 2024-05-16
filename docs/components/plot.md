@@ -4,7 +4,7 @@ Plot provides a convenient way to render [Matplotlib](https://matplotlib.org/) f
 
 ## Examples
 
-<iframe class="component-demo" src="/mesop/demo/?demo=plot"></iframe>
+<iframe class="component-demo" src="https://google.github.io/mesop/demo/?demo=plot"></iframe>
 
 ```python
 --8<-- "demo/plot.py"

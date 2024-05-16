@@ -4,7 +4,7 @@ Slider allows the user to select from a range of values and is based on the [Ang
 
 ## Examples
 
-<iframe class="component-demo" src="/mesop/demo/?demo=slider" style="height: 120px"></iframe>
+<iframe class="component-demo" src="https://google.github.io/mesop/demo/?demo=slider" style="height: 120px"></iframe>
 
 ```python
 --8<-- "demo/slider.py"
