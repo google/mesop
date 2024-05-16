@@ -150,6 +150,7 @@ BORDER_SIDE = me.BorderSide(
 @me.stateclass
 class State:
   current_demo: str
+  preview_fullscreen: bool
 
 
 def create_main_fn(example: Example):
@@ -178,6 +179,7 @@ for section in FIRST_SECTIONS + COMPONENTS_SECTIONS:
 
 
 def body(current_demo: str):
+  state = me.state(State)
   with me.box(
     style=me.Style(
       flex_grow=1,
@@ -188,20 +190,44 @@ def body(current_demo: str):
     src = "/" + current_demo
     with me.box(
       style=me.Style(
-        width="calc(100% - 160px)",
+        width="calc(100% - 150px)",
         display="grid",
-        grid_template_columns="1fr 1fr",
+        grid_template_columns="1fr" if state.preview_fullscreen else "1fr 1fr",
       )
     ):
       demo_ui(src)
-      demo_code(inspect.getsource(get_module(current_demo)))
+      if not state.preview_fullscreen:
+        demo_code(inspect.getsource(get_module(current_demo)))
 
 
 def demo_ui(src: str):
+  state = me.state(State)
   with me.box(
     style=me.Style(flex_grow=1),
   ):
-    box_header("Preview")
+    with me.box(
+      style=me.Style(
+        display="flex",
+        justify_content="space-between",
+        align_items="center",
+        border=me.Border(bottom=BORDER_SIDE),
+      )
+    ):
+      me.text(
+        "Preview",
+        style=me.Style(
+          font_weight=500,
+          padding=me.Padding.all(8),
+        ),
+      )
+      with me.tooltip(
+        position="above",
+        message="Minimize" if state.preview_fullscreen else "Maximize",
+      ):
+        with me.content_button(type="icon", on_click=toggle_fullscreen):
+          me.icon(
+            "close_fullscreen" if state.preview_fullscreen else "fullscreen"
+          )
     me.embed(
       src=src,
       style=me.Style(
@@ -213,11 +239,17 @@ def demo_ui(src: str):
     )
 
 
+def toggle_fullscreen(e: me.ClickEvent):
+  state = me.state(State)
+  state.preview_fullscreen = not state.preview_fullscreen
+
+
 def box_header(header_text: str):
   me.text(
     header_text,
     style=me.Style(
       font_weight=500,
+      margin=me.Margin.symmetric(vertical=5),
       padding=me.Padding.all(8),
       border=me.Border(
         bottom=BORDER_SIDE,
