@@ -4,7 +4,7 @@ Chat component is a quick way to create a simple chat interface. Chat is part of
 
 ## Examples
 
-<iframe class="component-demo" src="/mesop/demo/?demo=chat"></iframe>
+<iframe class="component-demo" src="https://google.github.io/mesop/demo/?demo=chat"></iframe>
 
 ```python
 --8<-- "demo/chat.py"
