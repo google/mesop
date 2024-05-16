@@ -11,7 +11,7 @@ def on_selection_change(e: me.SelectSelectionChangeEvent):
   s.selected_value = e.value
 
 
-@me.page(path="/select")
+@me.page(path="/select_demo")
 def app():
   me.text(text="Select")
   me.select(
