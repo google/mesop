@@ -1,3 +1,4 @@
+<!-- This file path is specifically chosen to match the GitHub pages path. -->
 ---
 hide:
   - navigation
