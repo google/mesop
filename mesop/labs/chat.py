@@ -48,7 +48,7 @@ _STYLE_CHAT_INPUT = me.Style(width="100%")
 _STYLE_CHAT_INPUT_BOX = me.Style(padding=me.Padding(top=30))
 _STYLE_CHAT_BUBBLE_NAME = me.Style(
   font_weight="bold",
-  font_size="12px",
+  font_size="13px",
   padding=me.Padding(left=15, right=15, bottom=5),
 )
 _STYLE_CHAT_BUBBLE_PLAINTEXT = me.Style(margin=me.Margin(top=15, bottom=15))
@@ -100,7 +100,8 @@ def _make_chat_bubble_style(role: Role) -> me.Style:
   )
   return me.Style(
     width="80%",
-    font_size="13px",
+    font_size="16px",
+    line_height="1.5",
     background=background,
     border_radius="15px",
     padding=me.Padding(right=15, left=15, bottom=3),
