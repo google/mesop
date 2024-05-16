@@ -24,3 +24,9 @@ py_test(
     srcs = ["wsgi_app_test.py"],
     deps = [":server"] + THIRD_PARTY_PY_PYTEST,
 )
+
+py_test(
+    name = "static_file_serving_test",
+    srcs = ["static_file_serving_test.py"],
+    deps = [":server"] + THIRD_PARTY_PY_PYTEST,
+)
