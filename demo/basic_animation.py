@@ -6,7 +6,7 @@ import mesop as me
 @me.stateclass
 class State:
   ex1_rgba: list[int]
-  ex2_rgba: list[int]
+  ex2_rgba: list[int | float]
   ex3_width: int
   ex4_margin: int
 
