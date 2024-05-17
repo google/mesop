@@ -66,7 +66,11 @@ export class Shell {
       zone: this.zone,
       onRender: (rootComponent, componentConfigs) => {
         this.rootComponent = rootComponent;
-        this.componentConfigs = componentConfigs;
+        // Component configs are only sent for the first response.
+        // For subsequent reponses, use the component configs previously
+        if (componentConfigs.length) {
+          this.componentConfigs = componentConfigs;
+        }
         this.error = undefined;
       },
       onNavigate: (route) => {

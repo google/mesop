@@ -32,7 +32,10 @@ def configure_flask_app(
   flask_app = Flask(__name__)
 
   def render_loop(
-    path: str, keep_alive: bool = False, trace_mode: bool = False
+    path: str,
+    keep_alive: bool = False,
+    trace_mode: bool = False,
+    init_request: bool = False,
   ) -> Generator[str, None, None]:
     try:
       runtime().run_path(path=path, trace_mode=trace_mode)
@@ -52,7 +55,9 @@ def configure_flask_app(
           component_diff=component_diff,
           states=runtime().context().serialize_state(),
           commands=runtime().context().commands(),
-          component_configs=None if prod_mode else get_component_configs(),
+          component_configs=None
+          if prod_mode or not init_request
+          else get_component_configs(),
           title=title,
         )
       )
@@ -100,7 +105,7 @@ def configure_flask_app(
         yield from yield_errors(runtime().get_loading_errors()[0])
 
       if ui_request.HasField("init"):
-        yield from render_loop(path=ui_request.path)
+        yield from render_loop(path=ui_request.path, init_request=True)
       elif ui_request.HasField("user_event"):
         runtime().context().update_state(ui_request.user_event.states)
         for _ in render_loop(
