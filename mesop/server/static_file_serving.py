@@ -1,10 +1,12 @@
 import gzip
 import io
 import os
+import secrets
+from collections import OrderedDict
 from io import BytesIO
 from typing import Any, Callable
 
-from flask import Flask, send_file
+from flask import Flask, Response, g, send_file
 from werkzeug.security import safe_join
 
 from mesop.utils.runfiles import get_runfile_location
@@ -26,21 +28,24 @@ def configure_static_file_serving(
     return get_runfile_location(safe_path)
 
   def retrieve_index_html() -> io.BytesIO | str:
-    if livereload_script_url:
-      file_path = get_path("index.html")
-      with open(file_path) as file:
-        lines = file.readlines()
+    file_path = get_path("index.html")
+    with open(file_path) as file:
+      lines = file.readlines()
 
-      for i, line in enumerate(lines):
-        if line.strip() == "<!-- Inject script (if needed) -->":
-          lines[i] = f'<script src="{livereload_script_url}"></script>\n'
+    for i, line in enumerate(lines):
+      if "$$INSERT_CSP_NONCE$$" in line:
+        lines[i] = lines[i].replace("$$INSERT_CSP_NONCE$$", g.csp_nonce)
+      if (
+        livereload_script_url
+        and line.strip() == "<!-- Inject script (if needed) -->"
+      ):
+        lines[i] = f'<script src="{livereload_script_url}"></script>\n'
 
-      # Create a BytesIO object from the modified lines
-      modified_file_content = "".join(lines)
-      binary_file = io.BytesIO(modified_file_content.encode())
+    # Create a BytesIO object from the modified lines
+    modified_file_content = "".join(lines)
+    binary_file = io.BytesIO(modified_file_content.encode())
 
-      return binary_file
-    return get_path("index.html")
+    return binary_file
 
   @app.route("/")
   def serve_root():
@@ -54,6 +59,65 @@ def configure_static_file_serving(
       return send_file_compressed(get_path(path))
     else:
       return send_file(retrieve_index_html(), download_name="index.html")
+
+  @app.before_request
+  def generate_nonce():
+    g.csp_nonce = secrets.token_urlsafe(16)
+
+  @app.after_request
+  def add_security_headers(response: Response):
+    # Set X-Content-Type-Options header to prevent MIME type sniffing
+    response.headers["X-Content-Type-Options"] = "nosniff"
+
+    # Set Strict-Transport-Security header to enforce HTTPS
+    # All present and future subdomains will be HTTPS for a max-age of 1 year.
+    # This blocks access to pages or subdomains that can only be served over HTTP.
+    # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security#examples
+    response.headers[
+      "Strict-Transport-Security"
+    ] = "max-age=31536000; includeSubDomains"
+
+    # Technically order doesn't matter, but it's useful for testing
+    # https://stackoverflow.com/a/77850553
+    csp = OrderedDict(
+      {
+        "default-src": "'self'",
+        "font-src": "fonts.gstatic.com",
+        # TODO: make frame-ancestors stricter
+        # https://github.com/google/mesop/issues/271
+        "frame-ancestors": "'self' https:",
+        # Mesop app developers should be able to iframe other sites.
+        "frame-src": "'self' https:",
+        # Mesop app developers should be able to load images and media from various origins.
+        "img-src": "'self' data: https:",
+        "media-src": "'self' data: https:",
+        "style-src": f"'self' 'nonce-{g.csp_nonce}' fonts.googleapis.com",
+        # Need 'unsafe-inline' because we apply inline styles for our components.
+        # This is also used by Angular for animations:
+        # https://github.com/angular/angular/pull/55260
+        "style-src-attr": "'unsafe-inline'",
+        "script-src": f"'self' 'nonce-{g.csp_nonce}'",
+        "trusted-types": "angular",
+        "require-trusted-types-for": "'script'",
+      }
+    )
+    # Set Content-Security-Policy header to restrict resource loading
+    # Based on https://angular.io/guide/security#content-security-policy
+    response.headers["Content-Security-Policy"] = "; ".join(
+      [key + " " + value for key, value in csp.items()]
+    )
+
+    # Set Referrer-Policy header to control referrer information
+    # Recommended by https://web.dev/articles/referrer-best-practices
+    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+
+    # If we've set Cache-Control earlier, respect those.
+    if "Cache-Control" not in response.headers:
+      # no-store ensures that resources are never cached.
+      # https://web.dev/articles/http-cache#request-headers
+      response.headers["Cache-Control"] = "no-store"
+
+    return response
 
 
 def is_file_path(path: str) -> bool:
