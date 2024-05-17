@@ -64,7 +64,7 @@ def page():
             temperature=state.temperature,
           )
         )
-    me.button(label="Close", type="raised", on_click=on_click_modal_bg)
+    me.button(label="Close", type="raised", on_click=on_click_modal)
 
   # Main content
   with me.box(style=_STYLE_CONTAINER):
@@ -238,9 +238,7 @@ def tab_box(*, header: str, key: str):
 @me.content_component
 def modal(modal_open: bool):
   """Basic modal box."""
-  with me.box(
-    style=_make_modal_background_style(modal_open), on_click=on_click_modal_bg
-  ):
+  with me.box(style=_make_modal_background_style(modal_open)):
     with me.box(style=_STYLE_MODAL_CONTAINER):
       with me.box(style=_STYLE_MODAL_CONTENT):
         me.slot()
@@ -320,8 +318,8 @@ def on_click_show_code(e: me.ClickEvent):
   state.modal_open = True
 
 
-def on_click_modal_bg(e: me.ClickEvent):
-  """Allows modal to be closed by clicking on the background."""
+def on_click_modal(e: me.ClickEvent):
+  """Allows modal to be closed."""
   state = me.state(State)
   if state.modal_open:
     state.modal_open = False
