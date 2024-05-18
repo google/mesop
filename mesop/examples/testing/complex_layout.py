@@ -1,4 +1,5 @@
 """Page for smoke testing component diffing."""
+
 import mesop as me
 
 

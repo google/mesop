@@ -73,9 +73,9 @@ def configure_static_file_serving(
     # All present and future subdomains will be HTTPS for a max-age of 1 year.
     # This blocks access to pages or subdomains that can only be served over HTTP.
     # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security#examples
-    response.headers[
-      "Strict-Transport-Security"
-    ] = "max-age=31536000; includeSubDomains"
+    response.headers["Strict-Transport-Security"] = (
+      "max-age=31536000; includeSubDomains"
+    )
 
     # Technically order doesn't matter, but it's useful for testing
     # https://stackoverflow.com/a/77850553
