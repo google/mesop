@@ -1,3 +1,5 @@
+import os
+
 from rules_python.python.runfiles import runfiles  # type: ignore
 
 
@@ -8,5 +10,8 @@ def get_runfile_location(identifier: str) -> str:
   if runfiles.Create() is None:  # type: ignore
     # TODO: make this less brittle and don't hard code "../", instead walk up
     # to the "mesop" directory.
-    return "../" + identifier[len("mesop/mesop/") :]
+    current_file_dir = os.path.dirname(__file__)
+    return os.path.join(
+      current_file_dir, "../" + identifier[len("mesop/mesop/") :]
+    )
   return runfiles.Create().Rlocation(identifier)  # type: ignore
