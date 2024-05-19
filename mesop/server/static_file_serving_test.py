@@ -7,6 +7,21 @@ from flask import Flask
 from mesop.server.static_file_serving import gzip_cache, send_file_compressed
 
 
+# Putting this test first because it's making sure the cache is empty.
+# Note: the cache is a static variable.
+def test_send_file_compressed_do_not_cache():
+  app = Flask(__name__)
+  with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
+    file_content = b"abc"
+    tmp_file.write(file_content)
+    tmp_file_path = tmp_file.name
+
+  with app.test_request_context():
+    send_file_compressed(tmp_file_path, disable_gzip_cache=True)
+    # Check that cache is still empty
+    assert len(gzip_cache) == 0
+
+
 def test_send_file_compressed_uncached_request():
   app = Flask(__name__)
   with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
@@ -15,7 +30,7 @@ def test_send_file_compressed_uncached_request():
     tmp_file_path = tmp_file.name
 
   with app.test_request_context():
-    response = send_file_compressed(tmp_file_path)
+    response = send_file_compressed(tmp_file_path, disable_gzip_cache=False)
 
     assert response.headers["Content-Encoding"] == "gzip"
     assert response.direct_passthrough is False
@@ -46,7 +61,7 @@ def test_send_file_compressed_cached_request():
   gzip_buffer.seek(0)
   gzip_cache[tmp_file_path] = gzip_buffer.getvalue()
   with app.test_request_context():
-    response = send_file_compressed(tmp_file_path)
+    response = send_file_compressed(tmp_file_path, disable_gzip_cache=False)
 
     assert response.headers["Content-Encoding"] == "gzip"
     assert response.direct_passthrough is False

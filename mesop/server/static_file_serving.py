@@ -21,6 +21,7 @@ def configure_static_file_serving(
   static_file_runfiles_base: str,
   livereload_script_url: str | None = None,
   preprocess_request: Callable[[], None] = noop,
+  disable_gzip_cache: bool = False,
 ):
   def get_path(path: str):
     safe_path = safe_join(static_file_runfiles_base, path)
@@ -56,7 +57,10 @@ def configure_static_file_serving(
   def serve_file(path: str):
     preprocess_request()
     if is_file_path(path):
-      return send_file_compressed(get_path(path))
+      return send_file_compressed(
+        get_path(path),
+        disable_gzip_cache=disable_gzip_cache,
+      )
     else:
       return send_file(retrieve_index_html(), download_name="index.html")
 
@@ -130,7 +134,7 @@ def is_file_path(path: str) -> bool:
 gzip_cache: dict[str, bytes] = {}
 
 
-def send_file_compressed(path: str) -> Any:
+def send_file_compressed(path: str, disable_gzip_cache: bool) -> Any:
   response = send_file(path)
   response.headers["Content-Encoding"] = "gzip"
   response.direct_passthrough = False
@@ -144,7 +148,8 @@ def send_file_compressed(path: str) -> Any:
       gzip_file.write(response.get_data())
     gzip_buffer.seek(0)
     gzip_data = gzip_buffer.getvalue()
-    gzip_cache[path] = gzip_data
+    if not disable_gzip_cache:
+      gzip_cache[path] = gzip_data
 
   response.set_data(gzip_data)
   response.headers["Content-Length"] = str(len(response.get_data()))
