@@ -2,6 +2,11 @@ syntax = "proto2";
 
 package mesop.components.mic;
 
+message AudioChunk {
+    optional string transcript = 1;
+    optional bytes data = 2;
+}
+
 message MicType {
-    optional string label = 1;
+    optional string on_chunk_event_handler_id = 1;
 }

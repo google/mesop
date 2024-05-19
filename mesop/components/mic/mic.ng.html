@@ -1,3 +1,3 @@
-<div>{{config()}}</div>
-hi223
-<button>mic</button>
+<button mat-fab color="primary" (click)="onClick($event)">
+  <mat-icon>{{getIcon()}}</mat-icon>
+</button>
