@@ -4,6 +4,13 @@ package(
     default_visibility = ["//build_defs:mesop_internal"],
 )
 
+# Need this for downstream sync so these static files
+# can be depended on by other packages.
+exports_files([
+    "favicon.ico",
+    "index.html",
+])
+
 ng_module(
     name = "main",
     srcs = glob([

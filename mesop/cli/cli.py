@@ -28,6 +28,11 @@ from mesop.utils.runfiles import get_runfile_location
 FLAGS = flags.FLAGS
 
 flags.DEFINE_string("path", "", "path to main python module of Mesop app.")
+flags.DEFINE_string(
+  "static_file_runfiles_base",
+  "",
+  "path to dir with the static files (within runfiles).",
+)
 flags.DEFINE_bool(
   "prod", False, "set to true for prod mode; otherwise editor mode."
 )
@@ -121,11 +126,15 @@ def main(argv: Sequence[str]):
     stdin_thread.daemon = True
     stdin_thread.start()
 
+  if FLAGS.static_file_runfiles_base:
+    static_file_runfiles_base = FLAGS.static_file_runfiles_base
+  elif FLAGS.prod:
+    static_file_runfiles_base = PROD_PACKAGE_PATH
+  else:
+    static_file_runfiles_base = EDITOR_PACKAGE_PATH
   configure_static_file_serving(
     flask_app,
-    static_file_runfiles_base=PROD_PACKAGE_PATH
-    if FLAGS.prod
-    else EDITOR_PACKAGE_PATH,
+    static_file_runfiles_base=static_file_runfiles_base,
     # Keep this palceholder arg; it will be replaced downstream sync.
     livereload_script_url=None,
   )
