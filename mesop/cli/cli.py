@@ -128,6 +128,9 @@ def main(argv: Sequence[str]):
     else EDITOR_PACKAGE_PATH,
     # Keep this palceholder arg; it will be replaced downstream sync.
     livereload_script_url=None,
+    # Disabling the gzip cache in editor mode makes developing components
+    # much easier.
+    disable_gzip_cache=not FLAGS.prod,
   )
 
   if FLAGS.verbose:
