@@ -32,7 +32,6 @@ Some differences from `tar czf ARCHIVE [FILES]...`:
 See <https://reproducible-builds.org/docs/archives/>.
 """
 
-
 import argparse
 import gzip
 import os
@@ -59,7 +58,7 @@ def main():
   del args
 
   if len(frozenset(os.path.basename(f) for f in files)) != len(files):
-    sys.stderr.write("Input basenames must be distinct; got: %r\n" % files)
+    sys.stderr.write("Input basenames must be distinct; got: %r\n" % files)  # noqa: UP031
     sys.exit(1)
 
   # (`fd` will be closed by `fdopen` context manager below)

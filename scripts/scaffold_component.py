@@ -4,6 +4,7 @@ This file generates all the boilerplate, but it's not idempotent (e.g. running i
 Run from the root of the repo:
 python scripts/scaffold_component.py $component_name
 """
+
 import argparse
 import os
 import shutil
