@@ -7,5 +7,5 @@ media-src 'self' data: https:
 style-src 'self' 'nonce-{{NONCE}}' fonts.googleapis.com
 style-src-attr 'unsafe-inline'
 script-src 'self' 'nonce-{{NONCE}}'
-trusted-types angular
+trusted-types angular angular#unsafe-bypass
 require-trusted-types-for 'script'

@@ -101,7 +101,8 @@ def configure_static_file_serving(
         # https://github.com/angular/angular/pull/55260
         "style-src-attr": "'unsafe-inline'",
         "script-src": f"'self' 'nonce-{g.csp_nonce}'",
-        "trusted-types": "angular",
+        # https://angular.io/guide/security#enforcing-trusted-types
+        "trusted-types": "angular angular#unsafe-bypass",
         "require-trusted-types-for": "'script'",
       }
     )
