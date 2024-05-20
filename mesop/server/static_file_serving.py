@@ -1,6 +1,7 @@
 import gzip
 import io
 import os
+import re
 import secrets
 from collections import OrderedDict
 from io import BytesIO
@@ -40,7 +41,9 @@ def configure_static_file_serving(
         livereload_script_url
         and line.strip() == "<!-- Inject script (if needed) -->"
       ):
-        lines[i] = f'<script src="{livereload_script_url}"></script>\n'
+        lines[i] = (
+          f'<script src="{livereload_script_url}" nonce={g.csp_nonce}></script>\n'
+        )
 
     # Create a BytesIO object from the modified lines
     modified_file_content = "".join(lines)
@@ -106,6 +109,11 @@ def configure_static_file_serving(
         "require-trusted-types-for": "'script'",
       }
     )
+    if livereload_script_url:
+      livereload_origin = extract_origin(livereload_script_url)
+      if livereload_origin:
+        csp["connect-src"] = f"'self' {livereload_origin}"
+
     # Set Content-Security-Policy header to restrict resource loading
     # Based on https://angular.io/guide/security#content-security-policy
     response.headers["Content-Security-Policy"] = "; ".join(
@@ -155,3 +163,11 @@ def send_file_compressed(path: str, disable_gzip_cache: bool) -> Any:
   response.set_data(gzip_data)
   response.headers["Content-Length"] = str(len(response.get_data()))
   return response
+
+
+def extract_origin(livereload_script_url: str) -> str | None:
+  match = re.search(r"localhost:\d+", livereload_script_url)
+  if match:
+    return match.group()
+  # If we couldn't extract an origin, return None
+  return None
