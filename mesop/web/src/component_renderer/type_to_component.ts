@@ -79,3 +79,11 @@ export const typeToComponent = {
   'text': TextComponent,
   'markdown': MarkdownComponent,
 } as TypeToComponent;
+
+export function registerCustomComponent(
+  name: string,
+  component: new (...rest: any[]) => UserDefinedComponent,
+) {
+  // Prefix with <custom> to ensure there's never any overlap.
+  typeToComponent[`<custom>${name}`] = component;
+}

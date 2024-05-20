@@ -227,6 +227,21 @@ def insert_composite_component(
   )
 
 
+def insert_custom_component(
+  component_name: str,
+  proto: Message,
+  key: str | None = None,
+  style: Style | None = None,
+):
+  return insert_component(
+    # Prefix with <custom> to ensure there's never any overlap.
+    type_name="<custom>" + component_name,
+    proto=proto,
+    key=key,
+    style=style,
+  )
+
+
 def insert_component(
   type_name: str,
   proto: Message,
