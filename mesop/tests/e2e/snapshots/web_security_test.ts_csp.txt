@@ -2,7 +2,7 @@ default-src 'self'
 font-src fonts.gstatic.com
 frame-ancestors 'self' https:
 frame-src 'self' https:
-img-src 'self' data: https:
+img-src 'self' data: https: http:
 media-src 'self' data: https:
 style-src 'self' 'nonce-{{NONCE}}' fonts.googleapis.com
 style-src-attr 'unsafe-inline'
