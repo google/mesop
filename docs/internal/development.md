@@ -13,7 +13,17 @@ If [ibazel](https://github.com/bazelbuild/bazel-watcher) breaks, but bazel works
 1. Install [pre-commit](https://pre-commit.com/#installation)
 1. Install pre-commit hooks for this repo: `pre-commit install`
 
-## Local Development
+## Regular mode
+
+We recommend using this for most Mesop framework development.
+
+```sh
+$ ./scripts/cli.sh
+```
+
+> NOTE: this automatically serves the angular app.
+
+## Dev mode
 
 We recommend having two terminal tabs open because you will be running two processes for: 1. web and 2. python.
 
@@ -30,16 +40,6 @@ $ ./scripts/run_web_dev.sh
 ```sh
 $ ./scripts/run_py_dev.sh
 ```
-
-## Prod mode
-
-To run it in prod mode (which can be done locally or in an actual production environment), run the following:
-
-```sh
-$ bazel run //mesop/cli -- --path="mesop/examples/simple.py"
-```
-
-> NOTE: this automatically serves the angular app.
 
 ## Python
 
