@@ -47,6 +47,29 @@ body {
   margin: 0;
   padding: 0;
   list-style: none;
+  line-height: 1.5;
+}
+
+.markdown a {
+  color: #534343;
+  // text-decoration: underline;
+  // text-decoration-color: lightblue;
+  // text-decoration-thickness: 3px;
+  // border-radius: 8px;
+  cursor: pointer;
+}
+
+.markdown a {
+  padding-bottom: 2.5px;
+  background-image: linear-gradient(45deg, #69519d, #ffdde6, #eae3f8, #bea7f9);
+  background-size: 400% 3px;
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  transition: background-position 0.8s ease-in-out;
+}
+
+.markdown a:hover {
+  background-position: 100% 100%;
 }
 
 @media (pointer: fine) {

@@ -30,7 +30,7 @@ py_binary(
     srcs = ["cli.py"],
     data = COMMON_DATA + [
         "//mesop/web/src/app/editor:web_package",
-        "//mesop/web/src/app/prod:web_package",
+        # "//mesop/web/src/app/prod:web_package",
     ],
     main = "cli.py",
     tags = [

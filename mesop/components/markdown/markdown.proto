@@ -4,4 +4,5 @@ package mesop.components.markdown;
 
 message MarkdownType {
     optional string html = 1;
+    optional string on_select_event_handler_id = 2;
 }

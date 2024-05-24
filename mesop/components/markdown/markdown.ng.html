@@ -1,1 +1,14 @@
-<div [style]="getStyle()" [innerHTML]="config().getHtml()"></div>
+<div
+  (click)="onClick($event)"
+  [style]="getStyle()"
+  [innerHTML]="config().getHtml()"
+  class="markdown"
+></div>
+
+<ul id="menu" class="menu" #menu>
+  @for(item of items; track index; let index = $index) {
+  <li (click)="clickMenuItem($event)" [attr.data-item]="item">
+    <mat-icon>prompt_suggestion</mat-icon>{{item}}
+  </li>
+  }
+</ul>
