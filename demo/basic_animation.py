@@ -1,14 +1,15 @@
 import time
+from dataclasses import field
 
 import mesop as me
 
 
 @me.stateclass
 class State:
-  ex1_rgba: list[int]
-  ex2_rgba: list[int | float]
+  ex1_rgba: list[int] = field(default_factory=lambda: [255, 0, 0, 1])
+  ex2_opacity: float = 1.0
   ex3_width: int
-  ex4_margin: int
+  ex4_left: int
 
 
 DEFAULT_MARGIN = me.Style(margin=me.Margin.all(30))
@@ -18,11 +19,6 @@ BUTTON_MARGIN = me.Style(margin=me.Margin.symmetric(vertical=15))
 @me.page(path="/basic_animation")
 def app():
   state = me.state(State)
-
-  # Initialize default values
-  if not state.ex1_rgba:
-    state.ex1_rgba = [255, 0, 0, 1]
-    state.ex2_rgba = [255, 0, 0, 1]
 
   with me.box(style=DEFAULT_MARGIN):
     me.text("Transform color", type="headline-5")
@@ -56,7 +52,8 @@ def app():
     )
     with me.box(
       style=me.Style(
-        background=f"rgba({','.join(map(str, state.ex2_rgba))})",
+        background="red",
+        opacity=state.ex2_opacity,
         width=100,
         height=100,
         margin=me.Margin.all(10),
@@ -95,15 +92,17 @@ def app():
     me.button(
       "Transform", type="flat", on_click=transform_margin, style=BUTTON_MARGIN
     )
-    with me.box(
-      style=me.Style(
-        background="rgba(255, 0, 0, 1)",
-        margin=me.Margin(left=state.ex4_margin, top=20),
-        width=30,
-        height=30,
-      )
-    ):
-      me.text("")
+    with me.box():
+      with me.box(
+        style=me.Style(
+          position="relative",
+          background="rgba(255, 0, 0, 1)",
+          left=state.ex4_left,
+          width=30,
+          height=30,
+        )
+      ):
+        me.text("")
 
 
 def transform_red_yellow(e: me.ClickEvent):
@@ -127,25 +126,21 @@ def transform_red_yellow(e: me.ClickEvent):
 
 
 def transform_fade_in_out(e: me.ClickEvent):
-  """Update alpha of the rgba.
-
-  The better option would be to use opacity, but Mesop does not have that property
-  available yet.
-  """
+  """Update opacity"""
   state = me.state(State)
-  if state.ex2_rgba[3] == 0:
-    while state.ex2_rgba[3] < 1:
-      state.ex2_rgba[3] += 0.05
+  if state.ex2_opacity == 0:
+    while state.ex2_opacity < 1:
+      state.ex2_opacity += 0.05
       yield
       time.sleep(0.1)
-    state.ex2_rgba[3] = 1
+    state.ex2_opacity = 1.0
     yield
   else:
-    while state.ex2_rgba[3] > 0:
-      state.ex2_rgba[3] -= 0.05
+    while state.ex2_opacity > 0:
+      state.ex2_opacity -= 0.05
       yield
       time.sleep(0.1)
-    state.ex2_rgba[3] = 0
+    state.ex2_opacity = 0
     yield
 
 
@@ -169,23 +164,19 @@ def transform_width(e: me.ClickEvent):
 
 
 def transform_margin(e: me.ClickEvent):
-  """Update the margin to create sense of movement.
-
-  Mesop does not yet have the top/bottom/left/right properties available,
-  so just modifying the margin for this example.
-  """
+  """Update the position to create sense of movement."""
   state = me.state(State)
-  if state.ex4_margin == 0:
-    while state.ex4_margin < 200:
-      state.ex4_margin += 10
+  if state.ex4_left == 0:
+    while state.ex4_left < 200:
+      state.ex4_left += 10
       yield
       time.sleep(0.1)
-    state.ex4_margin = 200
+    state.ex4_left = 200
     yield
   else:
-    while state.ex4_margin > 0:
-      state.ex4_margin -= 10
+    while state.ex4_left > 0:
+      state.ex4_left -= 10
       yield
       time.sleep(0.1)
-    state.ex4_margin = 0
+    state.ex4_left = 0
     yield

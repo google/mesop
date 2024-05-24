@@ -274,7 +274,7 @@ message UserDefinedType {
     repeated Arg args = 1;
 }
 
-// Next id: 51
+// Next id: 62
 message Style {
     optional string align_content = 32;
     optional string align_items = 1;
@@ -282,6 +282,7 @@ message Style {
     optional string background = 2;
     optional Border border = 3;
     optional string border_radius = 28;
+    optional string bottom = 53;
     optional string box_shadow = 29;
     optional string box_sizing = 47;
     optional string color = 4;
@@ -300,29 +301,39 @@ message Style {
     optional string font_weight = 14;
     optional string gap = 30;
     optional string grid_area = 34;
-    optional int32 grid_column_start = 35;
-    optional int32 grid_column_end = 36;
-    optional int32 grid_row_start = 37;
-    optional int32 grid_row_end = 38;
+    optional string grid_auto_columns = 57;
+    optional string grid_auto_flow = 58;
+    optional string grid_auto_rows = 59;
+    optional string grid_column = 60;
+    optional string grid_column_start = 35;
+    optional string grid_column_end = 36;
+    optional string grid_row = 61;
+    optional string grid_row_start = 37;
+    optional string grid_row_end = 38;
     repeated string grid_template_areas = 39;
     optional string grid_template_columns = 40;
     optional string grid_template_rows = 41;
     optional string height = 15;
     optional string justify_content = 16;
     optional string justify_items = 42;
+    optional string left = 54;
     optional string letter_spacing = 17;
     optional string line_height = 31;
     optional EdgeInsets margin = 18;
+    optional string opacity = 52;
     optional string outline = 44;
     optional string overflow_wrap = 49;
     optional string overflow_x = 19;
     optional string overflow_y = 20;
     optional EdgeInsets padding = 21;
     optional string position = 22;
+    optional string right = 55;
     optional string row_gap = 43;
     optional string text_align = 23;
     optional string text_decoration = 24;
     optional string text_overflow = 25;
+    optional string top = 56;
+    optional string visibility = 51;
     optional string white_space = 26;
     optional string width = 27;
     optional int32 z_index = 48;

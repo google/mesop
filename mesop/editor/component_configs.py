@@ -62,13 +62,24 @@ def get_fields(
       field_type = pb.FieldType(int_type=pb.IntType(default_value=0))
     elif param_type is float:
       field_type = pb.FieldType(float_type=pb.FloatType(default_value=0))
-    elif param_type is str or (
-      # special case, for int|str|None (used for styles, e.g. pixel value), use str
-      args
-      and len(args) == 3
-      and args[0] is int
-      and args[1] is str
-      and args[2] is NoneType
+    elif (
+      param_type is str
+      or (
+        # special case, for int|str|None (used for styles, e.g. pixel value), use str
+        args
+        and len(args) == 3
+        and args[0] is int
+        and args[1] is str
+        and args[2] is NoneType
+      )
+      or (
+        # special case, for float|str|None (used for styles, e.g. opacity), use str
+        args
+        and len(args) == 3
+        and args[0] is float
+        and args[1] is str
+        and args[2] is NoneType
+      )
     ):
       field_type = pb.FieldType(string_type=pb.StringType())
     elif getattr(param_type, "__origin__", None) is Literal:
