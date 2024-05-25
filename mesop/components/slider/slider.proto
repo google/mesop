@@ -12,6 +12,7 @@ message SliderType {
   optional bool disable_ripple = 6;
   optional double max = 7;
   optional double step = 8;
+  optional float value = 10;
 
   optional string on_value_change_handler_id = 9;
 }
