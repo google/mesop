@@ -11,6 +11,9 @@ export function formatStyle(styleObj: Style): string {
   if (styleObj.getAlignItems()) {
     style += `align-items: ${styleObj.getAlignItems()};`;
   }
+  if (styleObj.getAlignSelf()) {
+    style += `align-self: ${styleObj.getAlignSelf()};`;
+  }
   if (styleObj.getAspectRatio()) {
     style += `aspect-ratio: ${styleObj.getAspectRatio()};`;
   }
@@ -144,6 +147,9 @@ export function formatStyle(styleObj: Style): string {
   if (styleObj.getJustifyItems()) {
     style += `justify-items: ${styleObj.getJustifyItems()};`;
   }
+  if (styleObj.getJustifySelf()) {
+    style += `justify-self: ${styleObj.getJustifySelf()};`;
+  }
   if (styleObj.getLeft()) {
     style += `left: ${styleObj.getLeft()};`;
   }
@@ -186,6 +192,9 @@ export function formatStyle(styleObj: Style): string {
   if (styleObj.getRight()) {
     style += `right: ${styleObj.getRight()};`;
   }
+  if (styleObj.getRotate()) {
+    style += `rotate: ${styleObj.getRotate()};`;
+  }
   if (styleObj.getRowGap()) {
     style += `row-gap: ${styleObj.getRowGap()};`;
   }
@@ -200,6 +209,9 @@ export function formatStyle(styleObj: Style): string {
   }
   if (styleObj.getTop()) {
     style += `top: ${styleObj.getTop()};`;
+  }
+  if (styleObj.getTransform()) {
+    style += `transform: ${styleObj.getTransform()};`;
   }
   if (styleObj.getVisibility()) {
     style += `visibility: ${styleObj.getVisibility()};`;

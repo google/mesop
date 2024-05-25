@@ -10,7 +10,19 @@ class State:
   ex2_opacity: float = 1.0
   ex3_width: int
   ex4_left: int
+  ex5_rotate_deg: int
+  ex6_transforms_index: int = 0
 
+
+TRANSFORM_OPERATIONS = [
+  "none",
+  "matrix(1, 2, 3, 4, 5, 6)",
+  "translate(120px, 50%)",
+  "scale(2, 0.5)",
+  "rotate(0.5turn)",
+  "skew(30deg, 20deg)",
+  "scale(0.5) translate(-100%, -100%)",
+]
 
 DEFAULT_MARGIN = me.Style(margin=me.Margin.all(30))
 BUTTON_MARGIN = me.Style(margin=me.Margin.symmetric(vertical=15))
@@ -39,7 +51,7 @@ def app():
         margin=me.Margin.all(10),
       )
     ):
-      me.text("")
+      me.text("Mesop")
 
   with me.box(style=DEFAULT_MARGIN):
     me.text("Fade in / Fade out", type="headline-5")
@@ -59,12 +71,12 @@ def app():
         margin=me.Margin.all(10),
       )
     ):
-      me.text("")
+      me.text("Mesop")
 
   with me.box(style=DEFAULT_MARGIN):
     me.text("Resize", type="headline-5")
     me.text(
-      "Can be used for things like progress bars or opening closing accordion/tabs."
+      "Could be used for things like progress bars or opening closing accordion/tabs."
     )
     me.button(
       "Transform", type="flat", on_click=transform_width, style=BUTTON_MARGIN
@@ -88,7 +100,7 @@ def app():
 
   with me.box(style=DEFAULT_MARGIN):
     me.text("Move", type="headline-5")
-    me.text("Can be used for opening and closing sidebars.")
+    me.text("Could be used for opening and closing sidebars.")
     me.button(
       "Transform", type="flat", on_click=transform_margin, style=BUTTON_MARGIN
     )
@@ -103,6 +115,43 @@ def app():
         )
       ):
         me.text("")
+
+  with me.box(style=DEFAULT_MARGIN):
+    me.text("Rotate", type="headline-5")
+    me.text("Uses the rotate CSS property to emulate a rotation animation.")
+    me.button(
+      "Transform", type="flat", on_click=transform_rotate, style=BUTTON_MARGIN
+    )
+    with me.box():
+      with me.box(
+        style=me.Style(
+          background="rgba(255, 0, 0, 1)",
+          rotate=f"{state.ex5_rotate_deg}deg",
+          width=100,
+          height=100,
+        )
+      ):
+        me.text("Mesop")
+
+  with me.box(style=DEFAULT_MARGIN):
+    me.text("Transform", type="headline-5")
+    me.text("Apply a sequence of transformations.")
+    me.button(
+      "Transform",
+      type="flat",
+      on_click=transform_transform,
+      style=BUTTON_MARGIN,
+    )
+    with me.box():
+      with me.box(
+        style=me.Style(
+          background="rgba(255, 0, 0, 1)",
+          transform=TRANSFORM_OPERATIONS[state.ex6_transforms_index],
+          width=100,
+          height=100,
+        )
+      ):
+        me.text("Mesop")
 
 
 def transform_red_yellow(e: me.ClickEvent):
@@ -168,15 +217,35 @@ def transform_margin(e: me.ClickEvent):
   state = me.state(State)
   if state.ex4_left == 0:
     while state.ex4_left < 200:
-      state.ex4_left += 10
+      state.ex4_left += 5
       yield
-      time.sleep(0.1)
     state.ex4_left = 200
     yield
   else:
     while state.ex4_left > 0:
-      state.ex4_left -= 10
+      state.ex4_left -= 5
       yield
-      time.sleep(0.1)
     state.ex4_left = 0
     yield
+
+
+def transform_rotate(e: me.ClickEvent):
+  """Update the degrees to rotate."""
+  state = me.state(State)
+  if state.ex5_rotate_deg == 0:
+    while state.ex5_rotate_deg < 365:
+      state.ex5_rotate_deg += 5
+      yield
+    state.ex5_rotate_deg = 0
+    yield
+
+
+def transform_transform(e: me.ClickEvent):
+  """Update the index to run different transform operations."""
+  state = me.state(State)
+  while state.ex6_transforms_index < len(TRANSFORM_OPERATIONS):
+    yield
+    time.sleep(0.2)
+    state.ex6_transforms_index += 1
+  state.ex6_transforms_index = 0
+  yield
