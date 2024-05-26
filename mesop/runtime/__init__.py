@@ -1,3 +1,6 @@
+from .runtime import (
+  PageConfig as PageConfig,
+)
 from .runtime import enable_debug_mode as enable_debug_mode
 from .runtime import (
   hot_reload_finished as hot_reload_finished,

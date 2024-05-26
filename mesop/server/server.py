@@ -39,8 +39,8 @@ def configure_flask_app(
   ) -> Generator[str, None, None]:
     try:
       runtime().run_path(path=path, trace_mode=trace_mode)
-
-      title = runtime().get_path_title(path=path)
+      page_config = runtime().get_page_config(path=path)
+      title = page_config.title if page_config else "Unknown path"
 
       root_component = runtime().context().current_node()
       previous_root_component = runtime().context().previous_node()

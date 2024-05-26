@@ -8,4 +8,4 @@ style-src-attr 'unsafe-inline'
 script-src 'self' 'nonce-{{NONCE}}'
 trusted-types angular angular#unsafe-bypass
 require-trusted-types-for 'script'
-frame-ancestors 'self'
+frame-ancestors 'self' google.com

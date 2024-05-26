@@ -7,6 +7,7 @@ import mesop.protos.ui_pb2 as pb
 from mesop.events import MesopEvent
 from mesop.exceptions import MesopDeveloperException, MesopUserException
 from mesop.key import Key
+from mesop.security.security_policy import SecurityPolicy
 from mesop.utils.backoff import exponential_backoff
 
 from .context import Context
@@ -20,13 +21,19 @@ class EmptyState:
   pass
 
 
+@dataclass(kw_only=True)
+class PageConfig:
+  page_fn: Callable[[], None]
+  title: str
+  security_policy: SecurityPolicy
+
+
 E = TypeVar("E", bound=MesopEvent)
 T = TypeVar("T")
 
 
 class Runtime:
-  _path_fns: dict[str, Callable[[], None]]
-  _path_title: dict[str, str]
+  _path_to_page_config: dict[str, PageConfig] = {}
   _handlers: dict[str, Handler]
   _state_classes: list[type[Any]]
   _loading_errors: list[pb.ServerError]
@@ -41,8 +48,6 @@ class Runtime:
 
   def __init__(self):
     self.component_fns = set()
-    self._path_fns = {}
-    self._path_title = {}
     self._handlers = {}
     self.event_mappers: dict[Type[Any], Callable[[pb.UserEvent, Key], Any]] = {}
     self._state_classes = []
@@ -77,8 +82,8 @@ class Runtime:
   def run_path(self, path: str, trace_mode: bool = False) -> None:
     self.context().set_trace_mode(trace_mode)
 
-    if path not in self._path_fns:
-      paths = list(self._path_fns.keys())
+    if path not in self._path_to_page_config:
+      paths = list(self._path_to_page_config.keys())
       if not paths:
         raise MesopDeveloperException(
           """No page has been registered. Read the [page docs](https://google.github.io/mesop/guides/pages/) to configure a page.
@@ -94,16 +99,13 @@ Try one of the following paths:
 {newline.join([f"[{p}]({p})" for p in paths])}
                                      """
       )
-    self._path_fns[path]()
+    self._path_to_page_config[path].page_fn()
 
-  def register_path_fn(self, path: str, fn: Callable[[], None]) -> None:
-    self._path_fns[path] = fn
+  def register_page(self, *, path: str, page_config: PageConfig) -> None:
+    self._path_to_page_config[path] = page_config
 
-  def register_path_title(self, path: str, title: str) -> None:
-    self._path_title[path] = title
-
-  def get_path_title(self, path: str) -> str:
-    return self._path_title[path]
+  def get_page_config(self, *, path: str) -> PageConfig | None:
+    return self._path_to_page_config.get(path)
 
   def register_handler(self, handler_id: str, handler: Handler) -> None:
     self._handlers[handler_id] = handler
