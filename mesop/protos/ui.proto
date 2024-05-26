@@ -274,10 +274,11 @@ message UserDefinedType {
     repeated Arg args = 1;
 }
 
-// Next id: 62
+// Next id: 67
 message Style {
     optional string align_content = 32;
     optional string align_items = 1;
+    optional string align_self = 63;
     optional string aspect_ratio = 50;
     optional string background = 2;
     optional Border border = 3;
@@ -316,6 +317,7 @@ message Style {
     optional string height = 15;
     optional string justify_content = 16;
     optional string justify_items = 42;
+    optional string justify_self = 64;
     optional string left = 54;
     optional string letter_spacing = 17;
     optional string line_height = 31;
@@ -328,11 +330,13 @@ message Style {
     optional EdgeInsets padding = 21;
     optional string position = 22;
     optional string right = 55;
+    optional string rotate = 66;
     optional string row_gap = 43;
     optional string text_align = 23;
     optional string text_decoration = 24;
     optional string text_overflow = 25;
     optional string top = 56;
+    optional string transform = 65;
     optional string visibility = 51;
     optional string white_space = 26;
     optional string width = 27;

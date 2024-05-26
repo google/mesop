@@ -22,6 +22,42 @@ ItemAlignmentValues = Literal[
   "center",
   "start",
   "end",
+  "flex-start",
+  "flex-end",
+  "self-start",
+  "self-end",
+  "baseline",
+  "first baseline",
+  "last baseline",
+  "safe center",
+  "unsafe center",
+  "inherit",
+  "initial",
+  "revert",
+  "revert-layer",
+  "unset",
+]
+ItemJustifyValues = Literal[
+  "normal",
+  "stretch",
+  "center",
+  "start",
+  "end",
+  "flex-start",
+  "flex-end",
+  "self-start",
+  "self-end",
+  "left",
+  "right",
+  "baseline",
+  "first baseline",
+  "last baseline",
+  "safe center",
+  "inherit",
+  "initial",
+  "revert",
+  "revert-layer",
+  "unset",
 ]
 OverflowValues = Literal["visible", "hidden", "clip", "scroll", "auto"]
 OverflowWrapValues = Literal["normal", "break-word", "anywhere"]
@@ -208,6 +244,7 @@ class Style:
   Attributes:
       align_content: Aligns the flexible container's items on the cross-axis. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/align-content).
       align_items: Specifies the default alignment for items inside a flexible container. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/align-items).
+      align_self: Overrides a grid or flex item's align-items value. In Grid, it aligns the item inside the grid area. In Flexbox, it aligns the item on the cross axis. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/align-self).
       aspect_ratio: Specifies the desired width-to-height ratio of a component. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/aspect-ratio).
       background: Sets the background color or image of the component. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/background).
       border: Defines the border properties for each side of the component. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/border).
@@ -245,6 +282,8 @@ class Style:
       grid_template_rows: Sets the grid template rows. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template-rows).
       height: Sets the height of the component. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/height).
       justify_content: Aligns the flexible container's items on the main-axis. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/justify-content).
+      justify_items: Defines the default justify-self for all items of the box, giving them all a default way of justifying each box along the appropriate axis. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/justify-items).
+      justify_self: Sets the way a box is justified inside its alignment container along the appropriate axis. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/justify-self).
       left: Helps set horizontal position of a positioned element. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/left).
       letter_spacing: Increases or decreases the space between characters in text. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/letter-spacing).
       line height: Set the line height (relative to the font size). See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/line-height).
@@ -257,11 +296,13 @@ class Style:
       padding: Sets the padding space required on each side of an element. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/padding).
       position: Specifies the type of positioning method used for an element (static, relative, absolute, fixed, or sticky). See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/position).
       right: Helps set horizontal position of a positioned element. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/right).
+      rotate: Allows you to specify rotation transforms individually and independently of the transform property. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/rotate).
       row_gap: Sets the gap between rows. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/row-gap).
       text_align: Specifies the horizontal alignment of text in an element. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/text-align).
       text_decoration: Specifies the decoration added to text. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration).
       text_overflow: Specifies how overflowed content that is not displayed should be signaled to the user. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/text-overflow).
       top: Helps set vertical position of a positioned element. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/top).
+      transform: Lets you rotate, scale, skew, or translate an element. It modifies the coordinate space of the CSS visual formatting model. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/transform).
       visibility: Sets the visibility property. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/visibility).
       white_space: Specifies how white space inside an element is handled. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/white-space).
       width: Sets the width of the component. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/width).
@@ -273,6 +314,7 @@ class Style:
 
   align_content: ContentAlignmentValues | None = None
   align_items: ItemAlignmentValues | None = None
+  align_self: ItemAlignmentValues | None = None
   aspect_ratio: str | None = None
   background: str | None = None
   border: Border | None = None
@@ -348,7 +390,8 @@ class Style:
   grid_template_rows: str | None = None
   height: int | str | None = None
   justify_content: ContentAlignmentValues | None = None
-  justify_items: ItemAlignmentValues | None = None
+  justify_items: ItemJustifyValues | None = None
+  justify_self: ItemJustifyValues | None = None
   left: int | str | None = None
   letter_spacing: int | str | None = None
   line_height: str | None = None
@@ -370,6 +413,7 @@ class Style:
     | None
   ) = None
   right: int | str | None = None
+  rotate: str | None = None
   row_gap: int | str | None = None
   text_align: (
     Literal[
@@ -384,6 +428,7 @@ class Style:
   text_decoration: Literal["underline", "none"] | None = None
   text_overflow: Literal["ellipsis", "clip"] | None = None
   top: int | str | None = None
+  transform: str | None = None
   visibility: (
     Literal[
       "visible",
@@ -416,6 +461,7 @@ def to_style_proto(s: Style) -> pb.Style:
   return pb.Style(
     align_content=s.align_content,
     align_items=s.align_items,
+    align_self=s.align_self,
     aspect_ratio=s.aspect_ratio,
     background=s.background,
     border=_map_border(s.border),
@@ -454,6 +500,7 @@ def to_style_proto(s: Style) -> pb.Style:
     height=_px_str(s.height),
     justify_content=s.justify_content,
     justify_items=s.justify_items,
+    justify_self=s.justify_self,
     left=_px_str(s.left),
     letter_spacing=_px_str(s.letter_spacing),
     line_height=str(s.line_height),
@@ -466,11 +513,13 @@ def to_style_proto(s: Style) -> pb.Style:
     padding=_map_edge_insets(s.padding),
     position=s.position,
     right=_px_str(s.right),
+    rotate=s.rotate,
     row_gap=_px_str(s.row_gap),
     text_align=s.text_align,
     text_decoration=s.text_decoration,
     text_overflow=s.text_overflow,
     top=_px_str(s.top),
+    transform=s.transform,
     visibility=s.visibility,
     white_space=s.white_space,
     width=_px_str(s.width),
