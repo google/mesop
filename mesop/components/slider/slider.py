@@ -38,6 +38,7 @@ register_event_mapper(
 def slider(
   *,
   on_value_change: Callable[[SliderValueChangeEvent], Any] | None = None,
+  value: float | None = None,
   min: float = 0,
   max: float = 100,
   step: float = 1,
@@ -53,6 +54,7 @@ def slider(
 
   Args:
     on_value_change: An event will be dispatched each time the slider changes its value.
+    value: Initial value. If updated, the slider will be updated with a new initial value.
     min: The minimum value that the slider can have.
     max: The maximum value that the slider can have.
     step: The values at which the thumb will snap.
@@ -72,6 +74,7 @@ def slider(
       disabled=disabled,
       discrete=discrete,
       show_tick_marks=show_tick_marks,
+      value=value if value is not None else min,
       min=min,
       color=color,
       disable_ripple=disable_ripple,

@@ -9,5 +9,9 @@
   [step]="config().getStep()"
   [style]="getStyle()"
 >
-  <input matSliderThumb (valueChange)="onValueChange($event)" />
+  <input
+    matSliderThumb
+    (valueChange)="onValueChange($event)"
+    [(ngModel)]="value"
+  />
 </mat-slider>
