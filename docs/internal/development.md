@@ -1,5 +1,7 @@
 # Development
 
+I recommend following (or at least reading) all the steps in this doc if you plan on actively developing Mesop.
+
 ## Setup
 
 ### Bazel/ibazel
@@ -53,12 +55,6 @@ If you update `//build_defs/requirements.txt`, run:
 $ bazel run //build_defs:pip_requirements.update
 ```
 
-### Run tests
-
-```sh
-bazel run //tests/...:all
-```
-
 ### venv
 
 To support IDE type-checking (Pylance) in VS Code, we use Aspect's [rules_py](https://docs.aspect.build/rulesets/aspect_rules_py/) which generates a venv target.
@@ -90,7 +86,7 @@ Copy the python interpreter path and paste it into VS Code.
 Finally, install third-party dependencies.
 
 ```sh
-$ pip install -r mesop/requirements_lock.txt
+$ pip install -r build_defs/requirements_lock.txt
 ```
 
 > NOTE: You may need to run the command with `sudo` if you get a permission denied error, particularly with "\_distutils_hack".
