@@ -10,6 +10,7 @@ nav:
       - Interactivity: guides/interactivity.md
       - Pages: guides/pages.md
       - Deployment: guides/deployment.md
+      - Web Security: guides/web_security.md
       - Troubleshooting: guides/troubleshooting.md
       - Labs: guides/labs.md
   - Components:

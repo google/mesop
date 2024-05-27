@@ -7,9 +7,10 @@ from collections import OrderedDict
 from io import BytesIO
 from typing import Any, Callable
 
-from flask import Flask, Response, g, send_file
+from flask import Flask, Response, g, request, send_file
 from werkzeug.security import safe_join
 
+from mesop.runtime import runtime
 from mesop.utils.runfiles import get_runfile_location
 
 
@@ -23,6 +24,7 @@ def configure_static_file_serving(
   livereload_script_url: str | None = None,
   preprocess_request: Callable[[], None] = noop,
   disable_gzip_cache: bool = False,
+  default_allowed_iframe_parents: str = "'self'",
 ):
   def get_path(path: str):
     safe_path = safe_join(static_file_runfiles_base, path)
@@ -73,6 +75,7 @@ def configure_static_file_serving(
 
   @app.after_request
   def add_security_headers(response: Response):
+    page_config = runtime().get_page_config(path=request.path)
     # Set X-Content-Type-Options header to prevent MIME type sniffing
     response.headers["X-Content-Type-Options"] = "nosniff"
 
@@ -90,9 +93,6 @@ def configure_static_file_serving(
       {
         "default-src": "'self'",
         "font-src": "fonts.gstatic.com",
-        # TODO: make frame-ancestors stricter
-        # https://github.com/google/mesop/issues/271
-        "frame-ancestors": "'self' https:",
         # Mesop app developers should be able to iframe other sites.
         "frame-src": "'self' https:",
         # Mesop app developers should be able to load images and media from various origins.
@@ -109,6 +109,18 @@ def configure_static_file_serving(
         "require-trusted-types-for": "'script'",
       }
     )
+    if runtime().debug_mode:
+      # Allow all origins in debug mode (aka editor mode) because
+      # when Mesop is running under Colab, it will be served from
+      # a randomly generated origin.
+      csp["frame-ancestors"] = "*"
+    elif page_config and page_config.security_policy.allowed_iframe_parents:
+      csp["frame-ancestors"] = "'self' " + " ".join(
+        list(page_config.security_policy.allowed_iframe_parents)
+      )
+    else:
+      csp["frame-ancestors"] = default_allowed_iframe_parents
+
     if livereload_script_url:
       livereload_origin = extract_origin(livereload_script_url)
       if livereload_origin:

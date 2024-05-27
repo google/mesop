@@ -1,4 +1,7 @@
 from demo import main as main
+from mesop.examples import (
+  allowed_iframe_parents as allowed_iframe_parents,
+)
 from mesop.examples import buttons as buttons
 from mesop.examples import checkbox_and_radio as checkbox_and_radio
 from mesop.examples import composite as composite
