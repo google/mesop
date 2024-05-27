@@ -8,7 +8,7 @@ We use [Bazel](https://bazel.build/) as our build system. Use [bazelisk](https:/
 
 If [ibazel](https://github.com/bazelbuild/bazel-watcher) breaks, but bazel works, try following [these steps](https://github.com/bazelbuild/bazel-watcher/issues/588#issuecomment-1421939371)
 
-> TIP: If your build suddenly stops working (and your on a clean commit), try using `bazel clean` and `bazel clean --expunge`.
+> TIP: If your build suddenly stops working (and you are on a clean commit), try using `bazel clean` and `bazel clean --expunge`.
 
 ### Commit hooks
 
