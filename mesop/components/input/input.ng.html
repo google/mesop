@@ -48,6 +48,7 @@
     [value]="config().getValue()"
     [readonly]="config().getReadonly()"
     (input)="onInput($event)"
+    (keyup)="onKeyUp($event)"
   />
   }
 </mat-form-field>

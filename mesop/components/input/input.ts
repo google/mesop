@@ -82,4 +82,13 @@ export class InputComponent {
     userEvent.setKey(this.key);
     this.channel.dispatch(userEvent);
   }
+
+  onKeyUp(event: Event): void {
+    if ((event as KeyboardEvent).key === 'Enter') {
+      const userEvent = new UserEvent();
+      userEvent.setHandlerId(this.config().getOnEnterHandlerId()!);
+      userEvent.setKey(this.key);
+      this.channel.dispatch(userEvent);
+    }
+  }
 }

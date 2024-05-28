@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from typing import Any, Callable, Literal
 
 import mesop.components.input.input_pb2 as input_pb
@@ -5,9 +6,25 @@ from mesop.component_helpers import (
   Style,
   insert_component,
   register_event_handler,
+  register_event_mapper,
   register_native_component,
 )
-from mesop.events import InputEvent
+from mesop.events import InputEvent, MesopEvent
+
+
+@dataclass(kw_only=True)
+class EnterEvent(MesopEvent):
+  """Represents an "Enter" keyboard event."""
+
+  pass
+
+
+register_event_mapper(
+  EnterEvent,
+  lambda event, key: EnterEvent(
+    key=key.key,
+  ),
+)
 
 
 @register_native_component
@@ -92,6 +109,7 @@ def input(
   *,
   label: str = "",
   on_input: Callable[[InputEvent], Any] | None = None,
+  on_enter: Callable[[EnterEvent], Any] | None = None,
   type: Literal[
     "color",
     "date",
@@ -127,6 +145,7 @@ def input(
   Args:
     label: Label for input.
     on_input: [input](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/input_event) is a native browser event.
+    on_enter: triggers when the browser detects an "Enter" key on a [keyup](https://developer.mozilla.org/en-US/docs/Web/API/Element/keyup_event) native browser event.
     type: Input type of the element. For textarea, use `me.Textarea(...)`
     appearance: The form field appearance style.
     style: Style for input.
@@ -164,6 +183,9 @@ def input(
       label=label,
       on_input_handler_id=register_event_handler(on_input, event=InputEvent)
       if on_input
+      else "",
+      on_enter_handler_id=register_event_handler(on_enter, event=EnterEvent)
+      if on_enter
       else "",
     ),
     style=style,
