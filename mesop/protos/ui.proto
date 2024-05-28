@@ -157,12 +157,18 @@ message RenderEvent {
 message Command {
     oneof command {
         NavigateCommand navigate = 1;
+        ScrollIntoViewCommand scroll_into_view = 2;
     }
 }
 
 message NavigateCommand {
     // absolute route path, e.g. "/foo/bar"
     optional string url = 1;
+}
+
+message ScrollIntoViewCommand {
+    // Key of the component to scroll into view
+    optional string key = 1;
 }
 
 message States {

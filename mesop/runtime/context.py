@@ -51,6 +51,11 @@ class Context:
   def navigate(self, url: str) -> None:
     self._commands.append(pb.Command(navigate=pb.NavigateCommand(url=url)))
 
+  def scroll_into_view(self, key: str) -> None:
+    self._commands.append(
+      pb.Command(scroll_into_view=pb.ScrollIntoViewCommand(key=key))
+    )
+
   def register_event_handler(self, fn_id: str, handler: Handler) -> None:
     if self._trace_mode:
       self._handlers[fn_id] = handler

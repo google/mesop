@@ -111,6 +111,10 @@ export class ComponentRenderer {
     }
   }
 
+  getKey() {
+    return this.component.getKey()?.getKey();
+  }
+
   trackByFn(index: any, item: ComponentProto) {
     const key = item.getKey()?.getKey();
     if (key) {
