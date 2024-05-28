@@ -1,6 +1,6 @@
 from typing import Callable
 
-from mesop.runtime import PageConfig, runtime
+from mesop.runtime import OnLoadHandler, PageConfig, runtime
 from mesop.security.security_policy import SecurityPolicy
 
 
@@ -9,7 +9,22 @@ def page(
   path: str = "/",
   title: str | None = None,
   security_policy: SecurityPolicy | None = None,
+  on_load: OnLoadHandler | None = None,
 ) -> Callable[[Callable[[], None]], Callable[[], None]]:
+  """Defines a page in a Mesop application.
+
+  This function is used as a decorator to register a function as a page in a Mesop app.
+
+  Args:
+    path: The URL path for the page. Defaults to "/".
+    title: The title of the page. If None, a default title is generated.
+    security_policy: The security policy for the page. If None, a default strict security policy is used.
+    on_load: An optional event handler to be called when the page is loaded.
+
+  Returns:
+    A decorator that registers the decorated function as a page.
+  """
+
   def decorator(func: Callable[[], None]) -> Callable[[], None]:
     def wrapper() -> None:
       return func()
@@ -22,6 +37,7 @@ def page(
         security_policy=security_policy
         if security_policy
         else SecurityPolicy(),
+        on_load=on_load,
       ),
     )
     return wrapper

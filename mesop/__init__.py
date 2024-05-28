@@ -133,6 +133,9 @@ from mesop.events import (
 from mesop.events import (
   InputEvent as InputEvent,
 )
+from mesop.events import (
+  LoadEvent as LoadEvent,
+)
 from mesop.exceptions import (
   MesopDeveloperException as MesopDeveloperException,
 )
