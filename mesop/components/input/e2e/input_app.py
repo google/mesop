@@ -11,10 +11,15 @@ def on_input(e: me.InputEvent):
   state.input = e.value
 
 
+def on_enter(e: me.EnterEvent):
+  state = me.state(State)
+  state.input = "boo"
+
+
 @me.page(path="/components/input/e2e/input_app")
 def app():
   s = me.state(State)
-  me.input(label="Basic input", on_input=on_input)
+  me.input(label="Basic input", on_input=on_input, on_enter=on_enter)
   me.text(text=s.input)
 
   me.textarea(
