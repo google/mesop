@@ -13,7 +13,7 @@ to have certain styling properties -->
 
 <!-- This DOM node is a hack to get a reference to the ViewContainerRef; need
 to *not* render it, otherwise it causes weird layout issues (e.g. flexbox) -->
-<span style="display: none" #insertion></span>
+<span style="display: none" [attr.data-key]="getKey()" #insertion></span>
 
 <ng-template #childrenTemplate>
   <ng-container

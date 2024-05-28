@@ -10,6 +10,7 @@ import {
   NavigationEvent,
   ComponentConfig,
   EditorEvent,
+  Command,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 import {Logger} from '../dev_tools/services/logger';
 import {Title} from '@angular/platform-browser';
@@ -26,7 +27,7 @@ interface InitParams {
     componentConfigs: readonly ComponentConfig[],
   ) => void;
   onError: (error: ServerError) => void;
-  onNavigate: (route: string) => void;
+  onCommand: (command: Command) => void;
 }
 
 export enum ChannelStatus {
@@ -81,7 +82,7 @@ export class Channel {
     this.status = ChannelStatus.OPEN;
     this.logger.log({type: 'StreamStart'});
 
-    const {zone, onRender, onError, onNavigate} = initParams;
+    const {zone, onRender, onError, onCommand} = initParams;
     this.initParams = initParams;
 
     this.eventSource.addEventListener('message', (e) => {
@@ -110,10 +111,7 @@ export class Channel {
             const componentDiff = uiResponse.getRender()!.getComponentDiff()!;
 
             for (const command of uiResponse.getRender()!.getCommandsList()) {
-              const navigate = command.getNavigate();
-              if (navigate) {
-                onNavigate(navigate.getUrl()!);
-              }
+              onCommand(command);
             }
             const title = uiResponse.getRender()!.getTitle();
             if (title) {

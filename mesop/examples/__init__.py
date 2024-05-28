@@ -20,6 +20,7 @@ from mesop.examples import nested as nested
 from mesop.examples import playground as playground
 from mesop.examples import playground_critic as playground_critic
 from mesop.examples import readme_app as readme_app
+from mesop.examples import scroll_into_view as scroll_into_view
 from mesop.examples import sxs as sxs
 from mesop.examples import testing as testing
 
