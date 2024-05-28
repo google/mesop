@@ -38,6 +38,7 @@ def colab_run(*, port: int = 32123, prod_mode: bool = False):
     static_file_runfiles_base=PROD_PACKAGE_PATH
     if prod_mode
     else EDITOR_PACKAGE_PATH,
+    prod_mode=prod_mide,
   )
 
   log_startup(port=port)
