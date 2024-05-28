@@ -1,5 +1,6 @@
 import base64
 import time
+import urllib.parse as urlparse
 from typing import Generator, Sequence
 
 from flask import Flask, Response, abort, request, stream_with_context
@@ -156,6 +157,10 @@ def configure_flask_app(
 
   @flask_app.route("/ui", methods=["POST"])
   def ui_stream() -> Response:
+    # Prevent CSRF by checking the request origin matches the origin
+    # of the URL root (where the Flask app is being served from)
+    if not is_same_origin(request.headers.get("Origin"), request.url_root):
+      abort(403, "Rejecting cross-site POST request to /ui")
     data = request.data
     if not data:
       raise Exception("Missing request payload")
@@ -192,3 +197,22 @@ def configure_flask_app(
       return response
 
   return flask_app
+
+
+def is_same_origin(url1: str | None, url2: str | None):
+  """
+  Determine if two URLs share the same origin.
+  """
+  # If either URL is false-y, they are not the same origin
+  # (because we need a real URL to have an actual origin)
+  if not url1:
+    return False
+  if not url2:
+    return False
+  try:
+    p1, p2 = urlparse.urlparse(url1), urlparse.urlparse(url2)
+    origin1 = p1.scheme, p1.hostname, p1.port
+    origin2 = p2.scheme, p2.hostname, p2.port
+    return origin1 == origin2
+  except ValueError:
+    return False
