@@ -59,15 +59,6 @@ py_binary(
     deps = [":cli_lib"],
 )
 
-# Dev CLI
-py_binary(
-    name = "dev_cli",
-    srcs = ["dev_cli.py"],
-    data = COMMON_DATA,
-    main = "dev_cli.py",
-    deps = COMMON_DEPS,
-)
-
 py_library(
     name = "execute_module",
     srcs = [
