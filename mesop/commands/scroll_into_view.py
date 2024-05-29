@@ -1,7 +1,7 @@
 from mesop.runtime import runtime
 
 
-def scroll_into_view(key: str) -> None:
+def scroll_into_view(*, key: str) -> None:
   """
   Scrolls so the component specified by the key is in the viewport.
 

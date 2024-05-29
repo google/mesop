@@ -49,13 +49,17 @@ def configure_flask_app(
       if not trace_mode and previous_root_component:
         component_diff = diff_component(previous_root_component, root_component)
         root_component = None
-
+      commands = runtime().context().commands()
+      # Need to clear commands so that we don't keep on re-sending commands
+      # (e.g. scroll into view) for the same context (e.g. multiple render loops
+      # when processing a generator handler function)
+      runtime().context().clear_commands()
       data = pb.UiResponse(
         render=pb.RenderEvent(
           root_component=root_component,
           component_diff=component_diff,
           states=runtime().context().serialize_state(),
-          commands=runtime().context().commands(),
+          commands=commands,
           component_configs=None
           if prod_mode or not init_request
           else get_component_configs(),
@@ -126,8 +130,8 @@ def configure_flask_app(
         runtime().context().reset_current_node()
 
         result = runtime().context().run_event_handler(ui_request.user_event)
+        path = ui_request.path
         for _ in result:
-          path = ui_request.path
           for command in runtime().context().commands():
             if command.HasField("navigate"):
               path = command.navigate.url

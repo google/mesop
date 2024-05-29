@@ -48,6 +48,9 @@ class Context:
   def commands(self) -> list[pb.Command]:
     return self._commands
 
+  def clear_commands(self) -> None:
+    self._commands = []
+
   def navigate(self, url: str) -> None:
     self._commands.append(pb.Command(navigate=pb.NavigateCommand(url=url)))
 
