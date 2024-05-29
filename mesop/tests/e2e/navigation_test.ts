@@ -16,3 +16,16 @@ test('navigation', async ({page}) => {
     'Playground Page',
   );
 });
+
+test('navigation inside generator handler function', async ({page}) => {
+  await page.goto('/navigate_advanced/page1');
+
+  // Check the text that we're on the first page.
+  expect(await page.getByText('page1').textContent()).toEqual('page1');
+
+  // Trigger a navigation.
+  await page.getByRole('button', {name: 'navigate', exact: true}).click();
+
+  // Check the text has changed which means navigation succeeded.
+  expect(await page.getByText('page2').textContent()).toEqual('page2');
+});

@@ -6,7 +6,9 @@ test('scroll_into_view', async ({page}) => {
 
   await expect(page.getByText('bottom_line')).not.toBeInViewport();
 
-  await page.getByRole('button', {name: 'Scroll to bottom line'}).click();
+  await page
+    .getByRole('button', {name: 'Scroll to bottom line', exact: true})
+    .click();
 
   await expect(page.getByText('bottom_line')).toBeInViewport();
 });
