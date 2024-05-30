@@ -11,7 +11,7 @@ Update `mesop/version.py` by incrementing the version number. We follow semver.
 From the workspace root, run the following command:
 
 ```sh
-$ ./scripts/pip.sh
+$ source ./scripts/pip.sh
 ```
 
 This will build the Mesop pip package and install it locally so you can test it.
