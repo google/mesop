@@ -163,7 +163,12 @@ def configure_flask_app(
   def ui_stream() -> Response:
     # Prevent CSRF by checking the request origin matches the origin
     # of the URL root (where the Flask app is being served from)
-    if not is_same_origin(request.headers.get("Origin"), request.url_root):
+    #
+    # Skip the check if it's running in debug mode because when
+    # running in Colab, the UI and HTTP requests are on different origins.
+    if not runtime().debug_mode and not is_same_origin(
+      request.headers.get("Origin"), request.url_root
+    ):
       abort(403, "Rejecting cross-site POST request to /ui")
     data = request.data
     if not data:
