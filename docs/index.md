@@ -61,7 +61,7 @@ Check out how the above [demo gallery](./demo.md) was [built in pure Mesop](http
 
 ### Colab
 
-Try [Mesop on Colab](https://colab.research.google.com/drive/19LrP4T0aP4vg1QyT6WSqeIwud1CIqipv?usp=sharing) [![Open In Colab](assets/colab.svg)](https://colab.research.google.com/github/google/mesop/blob/main/notebooks/mesop_colab_getting_started.ipynb)
+Try Mesop on Colab: [![Open In Colab](assets/colab.svg)](https://colab.research.google.com/github/google/mesop/blob/main/notebooks/mesop_colab_getting_started.ipynb)
 
 ### Locally
 
