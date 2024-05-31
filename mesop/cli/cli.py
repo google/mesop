@@ -148,7 +148,7 @@ def main(argv: Sequence[str]):
     log_startup(port=port())
     logging.getLogger("werkzeug").setLevel(logging.WARN)
 
-  flask_app.run(host="::", port=port(), use_reloader=not FLAGS.prod)
+  flask_app.run(host="::", port=port(), use_reloader=False)
 
 
 if __name__ == "__main__":
