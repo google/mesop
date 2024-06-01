@@ -169,6 +169,12 @@ def configure_flask_app(
     if not runtime().debug_mode and not is_same_origin(
       request.headers.get("Origin"), request.url_root
     ):
+      print(
+        "Cross-site request: url_root",
+        request.url_root,
+        "headers -origin",
+        request.headers.get("Origin"),
+      )
       abort(403, "Rejecting cross-site POST request to /ui")
     data = request.data
     if not data:

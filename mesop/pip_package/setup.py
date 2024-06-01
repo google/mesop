@@ -39,7 +39,7 @@ CONSOLE_SCRIPTS = [
 ]
 
 setup(
-  name="mesop",
+  name="mesop-rc",
   version=VERSION,
   description="Build UIs in Python",
   long_description=get_readme(),
