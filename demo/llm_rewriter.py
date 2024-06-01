@@ -88,20 +88,24 @@ def page():
                   me.icon(icon="edit_note")
 
       with me.box(style=_STYLE_CHAT_INPUT_BOX):
-        me.input(
-          label=_LABEL_INPUT,
-          # Workaround: update key to clear input.
-          key=f"input-{len(state.output)}",
-          on_input=on_chat_input,
-          style=_STYLE_CHAT_INPUT,
-        )
-        with me.box():
-          me.button(
-            _LABEL_BUTTON_IN_PROGRESS if state.in_progress else _LABEL_BUTTON,
-            color="primary",
-            type="flat",
-            disabled=state.in_progress,
-            on_click=on_click_submit_chat_msg,
+        with me.box(style=me.Style(flex_grow=1)):
+          me.input(
+            label=_LABEL_INPUT,
+            # Workaround: update key to clear input.
+            key=f"input-{len(state.output)}",
+            on_input=on_chat_input,
+            on_enter=on_click_submit_chat_msg,
+            style=_STYLE_CHAT_INPUT,
+          )
+        with me.content_button(
+          color="primary",
+          type="flat",
+          disabled=state.in_progress,
+          on_click=on_click_submit_chat_msg,
+          style=_STYLE_CHAT_BUTTON,
+        ):
+          me.icon(
+            _LABEL_BUTTON_IN_PROGRESS if state.in_progress else _LABEL_BUTTON
           )
 
 
@@ -161,7 +165,7 @@ def on_click_cancel_rewrite(e: me.ClickEvent):
   state.preview_rewrite = ""
 
 
-def on_click_submit_chat_msg(e: me.ClickEvent):
+def on_click_submit_chat_msg(e: me.ClickEvent | me.EnterEvent):
   """Handles submitting a chat message."""
   state = me.state(State)
   if state.in_progress or not state.input:
@@ -243,13 +247,13 @@ _COLOR_CHAT_BUBBLE_YOU = "#f2f2f2"
 _COLOR_CHAT_BUBBLE_BOT = "#ebf3ff"
 _COLOR_CHAT_BUUBBLE_EDITED = "#f2ebff"
 
-_DEFAULT_PADDING = me.Padding(top=20, left=20, right=20, bottom=20)
+_DEFAULT_PADDING = me.Padding.all(20)
 _DEFAULT_BORDER_SIDE = me.BorderSide(
   width="1px", style="solid", color="#ececec"
 )
 
-_LABEL_BUTTON = "Send prompt"
-_LABEL_BUTTON_IN_PROGRESS = "Processing prompt..."
+_LABEL_BUTTON = "send"
+_LABEL_BUTTON_IN_PROGRESS = "pending"
 _LABEL_INPUT = "Enter your prompt"
 
 _STYLE_INPUT_WIDTH = me.Style(width="100%")
@@ -275,13 +279,16 @@ _STYLE_CHAT_BOX = me.Style(
   ),
 )
 _STYLE_CHAT_INPUT = me.Style(width="100%")
-_STYLE_CHAT_INPUT_BOX = me.Style(padding=me.Padding(top=30))
+_STYLE_CHAT_INPUT_BOX = me.Style(
+  padding=me.Padding(top=30), display="flex", flex_direction="row"
+)
+_STYLE_CHAT_BUTTON = me.Style(margin=me.Margin(top=8, left=8))
 _STYLE_CHAT_BUBBLE_NAME = me.Style(
   font_weight="bold",
   font_size="12px",
   padding=me.Padding(left=15, right=15, bottom=5),
 )
-_STYLE_CHAT_BUBBLE_PLAINTEXT = me.Style(margin=me.Margin(top=15, bottom=15))
+_STYLE_CHAT_BUBBLE_PLAINTEXT = me.Style(margin=me.Margin.symmetric(vertical=15))
 
 _STYLE_MODAL_CONTAINER = me.Style(
   background="#fff",
@@ -317,14 +324,14 @@ def _make_style_chat_ui_container(has_title: bool) -> me.Style:
     display="grid",
     grid_template_columns="repeat(1, 1fr)",
     grid_template_rows="1fr 14fr 1fr" if has_title else "5fr 1fr",
-    margin=me.Margin(top=0, bottom=0, left="auto", right="auto"),
+    margin=me.Margin.symmetric(vertical=0, horizontal="auto"),
     width="min(1024px, 100%)",
     height="100vh",
     background="#fff",
     box_shadow=(
       "0 3px 1px -2px #0003, 0 2px 2px #00000024, 0 1px 5px #0000001f"
     ),
-    padding=_DEFAULT_PADDING,
+    padding=me.Padding(top=20, left=20, right=20),
   )
 
 
