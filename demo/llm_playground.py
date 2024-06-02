@@ -4,6 +4,11 @@ from typing import Callable
 
 import mesop as me
 
+_TEMPERATURE_MIN = 0.0
+_TEMPERATURE_MAX = 2.0
+_TOKEN_LIMIT_MIN = 1
+_TOKEN_LIMIT_MAX = 8192
+
 
 @me.stateclass
 class State:
@@ -17,8 +22,10 @@ class State:
   # Model configs
   selected_model: str = "gemini-1.5"
   selected_region: str = "us-east4"
-  temperature: float = 0
-  token_limit: int = 1
+  temperature: float = 1.0
+  temperature_for_input: float = 1.0
+  token_limit: int = _TOKEN_LIMIT_MAX
+  token_limit_for_input: int = _TOKEN_LIMIT_MAX
   stop_sequence: str = ""
   stop_sequences: list[str]
   # Modal
@@ -137,27 +144,33 @@ def page():
       with me.box(style=_STYLE_SLIDER_INPUT_BOX):
         with me.box(style=_STYLE_SLIDER_WRAP):
           me.slider(
-            min=0,
-            max=2,
+            min=_TEMPERATURE_MIN,
+            max=_TEMPERATURE_MAX,
             step=0.1,
             style=_STYLE_SLIDER,
             on_value_change=on_slider_temperature,
+            value=state.temperature,
           )
         me.input(
-          style=_STYLE_SLIDER_INPUT, value=str(state.temperature), readonly=True
+          style=_STYLE_SLIDER_INPUT,
+          value=str(state.temperature_for_input),
+          on_input=on_input_temperature,
         )
 
       me.text("Output Token Limit", style=_STYLE_SLIDER_LABEL)
       with me.box(style=_STYLE_SLIDER_INPUT_BOX):
         with me.box(style=_STYLE_SLIDER_WRAP):
           me.slider(
-            min=1,
-            max=8192,
+            min=_TOKEN_LIMIT_MIN,
+            max=_TOKEN_LIMIT_MAX,
             style=_STYLE_SLIDER,
             on_value_change=on_slider_token_limit,
+            value=state.token_limit,
           )
         me.input(
-          style=_STYLE_SLIDER_INPUT, value=str(state.token_limit), readonly=True
+          style=_STYLE_SLIDER_INPUT,
+          value=str(state.token_limit_for_input),
+          on_input=on_input_token_limit,
         )
 
       with me.box(style=_STYLE_STOP_SEQUENCE_BOX):
@@ -277,12 +290,36 @@ def on_slider_temperature(e: me.SliderValueChangeEvent):
   """Event to adjust temperature slider value."""
   state = me.state(State)
   state.temperature = float(e.value)
+  state.temperature_for_input = state.temperature
+
+
+def on_input_temperature(e: me.InputEvent):
+  """Event to adjust temperature slider value by input."""
+  state = me.state(State)
+  try:
+    temperature = float(e.value)
+    if _TEMPERATURE_MIN <= temperature <= _TEMPERATURE_MAX:
+      state.temperature = temperature
+  except ValueError:
+    pass
 
 
 def on_slider_token_limit(e: me.SliderValueChangeEvent):
   """Event to adjust token limit slider value."""
   state = me.state(State)
   state.token_limit = int(e.value)
+  state.token_limit_for_input = state.token_limit
+
+
+def on_input_token_limit(e: me.InputEvent):
+  """Event to adjust token limit slider value by input."""
+  state = me.state(State)
+  try:
+    token_limit = int(e.value)
+    if _TOKEN_LIMIT_MIN <= token_limit <= _TOKEN_LIMIT_MAX:
+      state.token_limit = token_limit
+  except ValueError:
+    pass
 
 
 def on_stop_sequence_input(e: me.InputEvent):

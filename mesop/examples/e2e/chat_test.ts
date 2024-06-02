@@ -10,7 +10,7 @@ test('Chat UI can send messages and display responses', async ({page}) => {
   await page.locator('//input').fill('Lorem ipsum');
   // Need to wait for the input state to be saved before clicking.
   await page.waitForTimeout(2000);
-  await page.getByRole('button', {name: 'Send prompt'}).click();
+  await page.getByRole('button').click();
   await expect(page.locator('//input')).toHaveValue('');
   expect(page.locator('//div[text()="Lorem ipsum"]')).toHaveCount(1);
   await expect(page.locator('//div[text()="Lorem Ipsum Bot"]')).toHaveCount(1);
@@ -19,15 +19,15 @@ test('Chat UI can send messages and display responses', async ({page}) => {
 
   // The chat example's transform function has a fake delay per line. The number of
   // lines are also randomly. So we need a longer delay.
-  await expect(page.getByRole('button', {name: 'Send prompt'})).toBeAttached({
+  await expect(page.getByRole('button')).toBeAttached({
     timeout: 10000,
   });
 
-  // Test that we can send more than one message.
+  // Test that we can send more than one message by pressing "Enter"
   await page.locator('//input').fill('Dolor sit amet');
-  // Need to wait for the input state to be saved before clicking.
+  // Need to wait for the input state to be saved before submitting.
   await page.waitForTimeout(2000);
-  await page.getByRole('button', {name: 'Send prompt'}).click();
+  await page.locator('//input').press('Enter');
   await expect(page.locator('//input')).toHaveValue('');
   await expect(page.locator('//div[text()="Dolor sit amet"]')).toHaveCount(1);
   await expect(page.locator('//div[text()="Lorem Ipsum Bot"]')).toHaveCount(2);
