@@ -161,12 +161,12 @@ def configure_flask_app(
 
   @flask_app.route("/ui", methods=["POST"])
   def ui_stream() -> Response:
-    # Prevent CSRF by checking the request origin matches the origin
+    # Prevent CSRF by checking the request site matches the site
     # of the URL root (where the Flask app is being served from)
     #
     # Skip the check if it's running in debug mode because when
-    # running in Colab, the UI and HTTP requests are on different origins.
-    if not runtime().debug_mode and not is_same_origin(
+    # running in Colab, the UI and HTTP requests are on different sites.
+    if not runtime().debug_mode and not is_same_site(
       request.headers.get("Origin"), request.url_root
     ):
       abort(403, "Rejecting cross-site POST request to /ui")
@@ -208,20 +208,18 @@ def configure_flask_app(
   return flask_app
 
 
-def is_same_origin(url1: str | None, url2: str | None):
+def is_same_site(url1: str | None, url2: str | None):
   """
-  Determine if two URLs share the same origin.
+  Determine if two URLs are the same site.
   """
-  # If either URL is false-y, they are not the same origin
-  # (because we need a real URL to have an actual origin)
+  # If either URL is false-y, they are not the same site
+  # (because we need a real URL to have an actual site)
   if not url1:
     return False
   if not url2:
     return False
   try:
     p1, p2 = urlparse.urlparse(url1), urlparse.urlparse(url2)
-    origin1 = p1.scheme, p1.hostname, p1.port
-    origin2 = p2.scheme, p2.hostname, p2.port
-    return origin1 == origin2
+    return p1.hostname == p2.hostname
   except ValueError:
     return False
