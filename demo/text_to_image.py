@@ -2,7 +2,13 @@ import mesop as me
 import mesop.labs as mel
 
 
-@me.page(path="/text_to_image", title="Text to Image Example")
+@me.page(
+  security_policy=me.SecurityPolicy(
+    allowed_iframe_parents=["https://google.github.io"]
+  ),
+  path="/text_to_image",
+  title="Text to Image Example",
+)
 def app():
   mel.text_to_image(
     generate_image,

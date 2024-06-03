@@ -1,7 +1,12 @@
 import mesop as me
 
 
-@me.page(path="/text")
+@me.page(
+  security_policy=me.SecurityPolicy(
+    allowed_iframe_parents=["https://google.github.io"]
+  ),
+  path="/text",
+)
 def text():
   me.text(text="headline-1: Hello, world!", type="headline-1")
   me.text(text="headline-2: Hello, world!", type="headline-2")

@@ -28,7 +28,12 @@ df = pd.DataFrame(
 )
 
 
-@me.page(path="/table")
+@me.page(
+  security_policy=me.SecurityPolicy(
+    allowed_iframe_parents=["https://google.github.io"]
+  ),
+  path="/table",
+)
 def app():
   state = me.state(State)
 

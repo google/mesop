@@ -11,7 +11,12 @@ def on_input(e: me.InputEvent):
   state.input = e.value
 
 
-@me.page(path="/textarea")
+@me.page(
+  security_policy=me.SecurityPolicy(
+    allowed_iframe_parents=["https://google.github.io"]
+  ),
+  path="/textarea",
+)
 def app():
   s = me.state(State)
   me.textarea(label="Basic input", on_input=on_input)

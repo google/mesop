@@ -11,7 +11,12 @@ def on_change(event: me.RadioChangeEvent):
   s.radio_value = event.value
 
 
-@me.page(path="/radio")
+@me.page(
+  security_policy=me.SecurityPolicy(
+    allowed_iframe_parents=["https://google.github.io"]
+  ),
+  path="/radio",
+)
 def app():
   s = me.state(State)
   me.text("Horizontal radio options")

@@ -3,7 +3,12 @@ import inspect
 import mesop as me
 
 
-@me.page(path="/code_demo")
+@me.page(
+  security_policy=me.SecurityPolicy(
+    allowed_iframe_parents=["https://google.github.io"]
+  ),
+  path="/code_demo",
+)
 def code_demo():
   me.text("Defaults to Python")
   me.code("a = 123")

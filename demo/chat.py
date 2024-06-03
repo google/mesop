@@ -5,7 +5,13 @@ import mesop as me
 import mesop.labs as mel
 
 
-@me.page(path="/chat", title="Mesop Demo Chat")
+@me.page(
+  security_policy=me.SecurityPolicy(
+    allowed_iframe_parents=["https://google.github.io"]
+  ),
+  path="/chat",
+  title="Mesop Demo Chat",
+)
 def page():
   mel.chat(transform, title="Mesop Demo Chat", bot_user="Mesop Bot")
 

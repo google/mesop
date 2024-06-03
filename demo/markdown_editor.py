@@ -18,7 +18,13 @@ class State:
   show_preview: bool = True
 
 
-@me.page(path="/markdown_editor", title="Markdown Editor")
+@me.page(
+  security_policy=me.SecurityPolicy(
+    allowed_iframe_parents=["https://google.github.io"]
+  ),
+  path="/markdown_editor",
+  title="Markdown Editor",
+)
 def page():
   state = me.state(State)
 

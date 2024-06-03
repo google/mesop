@@ -1,7 +1,12 @@
 import mesop as me
 
 
-@me.page(path="/badge")
+@me.page(
+  security_policy=me.SecurityPolicy(
+    allowed_iframe_parents=["https://google.github.io"]
+  ),
+  path="/badge",
+)
 def app():
   with me.box(
     style=me.Style(

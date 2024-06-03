@@ -11,7 +11,12 @@ def on_change(event: me.SlideToggleChangeEvent):
   s.toggled = not s.toggled
 
 
-@me.page(path="/slide_toggle")
+@me.page(
+  security_policy=me.SecurityPolicy(
+    allowed_iframe_parents=["https://google.github.io"]
+  ),
+  path="/slide_toggle",
+)
 def app():
   me.slide_toggle(label="Slide toggle", on_change=on_change)
   s = me.state(State)

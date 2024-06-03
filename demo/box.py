@@ -1,7 +1,12 @@
 import mesop as me
 
 
-@me.page(path="/box")
+@me.page(
+  security_policy=me.SecurityPolicy(
+    allowed_iframe_parents=["https://google.github.io"]
+  ),
+  path="/box",
+)
 def app():
   with me.box(style=me.Style(background="red", padding=me.Padding.all(16))):
     with me.box(
