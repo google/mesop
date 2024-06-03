@@ -166,6 +166,9 @@ def create_main_fn(example: Example):
   @me.page(
     title="Mesop Demos",
     path="/" if example.name == "chat" else "/embed/" + example.name,
+    security_policy=me.SecurityPolicy(
+      allowed_iframe_parents=["https://google.github.io"]
+    ),
   )
   def main():
     with me.box(
