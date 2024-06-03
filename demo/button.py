@@ -1,7 +1,12 @@
 import mesop as me
 
 
-@me.page(path="/button")
+@me.page(
+  security_policy=me.SecurityPolicy(
+    allowed_iframe_parents=["https://google.github.io"]
+  ),
+  path="/button",
+)
 def main():
   me.text("Button types:", style=me.Style(margin=me.Margin(bottom=12)))
   with me.box(style=me.Style(display="flex", flex_direction="row", gap=12)):

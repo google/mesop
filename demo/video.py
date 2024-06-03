@@ -1,7 +1,12 @@
 import mesop as me
 
 
-@me.page(path="/video")
+@me.page(
+  security_policy=me.SecurityPolicy(
+    allowed_iframe_parents=["https://google.github.io"]
+  ),
+  path="/video",
+)
 def app():
   me.video(
     src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm",

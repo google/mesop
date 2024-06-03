@@ -28,7 +28,12 @@ DEFAULT_MARGIN = me.Style(margin=me.Margin.all(30))
 BUTTON_MARGIN = me.Style(margin=me.Margin.symmetric(vertical=15))
 
 
-@me.page(path="/basic_animation")
+@me.page(
+  security_policy=me.SecurityPolicy(
+    allowed_iframe_parents=["https://google.github.io"]
+  ),
+  path="/basic_animation",
+)
 def app():
   state = me.state(State)
 

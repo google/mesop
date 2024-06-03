@@ -14,7 +14,12 @@ def on_click(e: me.ClickEvent):
 SIDENAV_WIDTH = 200
 
 
-@me.page(path="/sidenav")
+@me.page(
+  security_policy=me.SecurityPolicy(
+    allowed_iframe_parents=["https://google.github.io"]
+  ),
+  path="/sidenav",
+)
 def app():
   state = me.state(State)
   with me.sidenav(

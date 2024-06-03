@@ -35,7 +35,13 @@ class State:
   clear_sequence_count: int = 0
 
 
-@me.page(path="/llm_playground", title="LLM Playground")
+@me.page(
+  security_policy=me.SecurityPolicy(
+    allowed_iframe_parents=["https://google.github.io"]
+  ),
+  path="/llm_playground",
+  title="LLM Playground",
+)
 def page():
   state = me.state(State)
 

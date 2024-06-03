@@ -48,6 +48,11 @@ Inline `code`
 """
 
 
-@me.page(path="/markdown_demo")
+@me.page(
+  security_policy=me.SecurityPolicy(
+    allowed_iframe_parents=["https://google.github.io"]
+  ),
+  path="/markdown_demo",
+)
 def app():
   me.markdown(SAMPLE_MARKDOWN)

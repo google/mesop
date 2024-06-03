@@ -2,7 +2,13 @@ import mesop as me
 import mesop.labs as mel
 
 
-@me.page(path="/text_to_text", title="Text to Text Example")
+@me.page(
+  security_policy=me.SecurityPolicy(
+    allowed_iframe_parents=["https://google.github.io"]
+  ),
+  path="/text_to_text",
+  title="Text to Text Example",
+)
 def app():
   mel.text_io(
     upper_case_stream,

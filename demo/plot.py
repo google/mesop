@@ -3,7 +3,12 @@ from matplotlib.figure import Figure
 import mesop as me
 
 
-@me.page(path="/plot")
+@me.page(
+  security_policy=me.SecurityPolicy(
+    allowed_iframe_parents=["https://google.github.io"]
+  ),
+  path="/plot",
+)
 def app():
   # Create matplotlib figure without using pyplot:
   fig = Figure()

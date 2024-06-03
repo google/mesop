@@ -11,7 +11,12 @@ def on_selection_change(e: me.SelectSelectionChangeEvent):
   s.selected_value = e.value
 
 
-@me.page(path="/select_demo")
+@me.page(
+  security_policy=me.SecurityPolicy(
+    allowed_iframe_parents=["https://google.github.io"]
+  ),
+  path="/select_demo",
+)
 def app():
   me.text(text="Select")
   me.select(

@@ -29,7 +29,13 @@ class State:
   modal_open: bool
 
 
-@me.page(path="/llm_rewriter", title="LLM Rewriter")
+@me.page(
+  security_policy=me.SecurityPolicy(
+    allowed_iframe_parents=["https://google.github.io"]
+  ),
+  path="/llm_rewriter",
+  title="LLM Rewriter",
+)
 def page():
   state = me.state(State)
 

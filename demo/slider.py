@@ -8,7 +8,12 @@ class State:
   slider_value: float = 50.0
 
 
-@me.page(path="/slider")
+@me.page(
+  security_policy=me.SecurityPolicy(
+    allowed_iframe_parents=["https://google.github.io"]
+  ),
+  path="/slider",
+)
 def app():
   state = me.state(State)
   with me.box(style=me.Style(display="flex", flex_direction="column")):
