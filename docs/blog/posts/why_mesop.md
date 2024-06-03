@@ -50,7 +50,7 @@ This layered approach makes deep customization possible. This means that if you 
 
 To demonstrate the range of UIs possible with Mesop, we built a demo gallery to showcase the types of applications you can build and the components that are available:
 
-<iframe class="immersive-demo" src="https://mesop-y677hytkra-uc.a.run.app/"></iframe>
+<iframe class="immersive-demo" src="https://google.github.io/mesop/demo/"></iframe>
 
  The [demo gallery](https://mesop-y677hytkra-uc.a.run.app/) itself is a Mesop app and [implemented](https://github.com/google/mesop/blob/d0b3e286d0dd9de49eb1d5e3bbc1ab84e96a6d08/demo/main.py) in a few hundred lines of Python code. It demonstrates how Mesop can be used to create polished, custom UIs in a maintainable way.
 
