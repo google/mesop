@@ -10,7 +10,7 @@ import mesop.labs as mel
   title="Text to Text Example",
 )
 def app():
-  mel.text_io(
+  mel.text_to_text(
     upper_case_stream,
     title="Text to Text Example",
   )
