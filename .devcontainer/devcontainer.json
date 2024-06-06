@@ -1,0 +1,44 @@
+{
+  "name": "Mesop developer environment",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "mesop",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "files.autoSave": "onFocusChange",
+        "yaml.schemas": {
+          "https://squidfunk.github.io/mkdocs-material/schema.json": "mkdocs.yml"
+        },
+        "yaml.customTags": [
+          "!ENV scalar",
+          "!ENV sequence",
+          "tag:yaml.org,2002:python/name:material.extensions.emoji.to_svg",
+          "tag:yaml.org,2002:python/name:material.extensions.emoji.twemoji",
+          "tag:yaml.org,2002:python/name:pymdownx.superfences.fence_code_format"
+        ],
+        "[typescript]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[python]": {
+          "editor.defaultFormatter": "charliermarsh.ruff"
+        },
+        "editor.formatOnSave": true,
+        "search.exclude": {
+          "**/tmp/**": true,
+          "bazel-bin/**": true,
+          "bazel-out/**": true,
+          "bazel-mesop/**": true
+        },
+        "python.analysis.extraPaths": ["./bazel-bin"]
+      },
+      "extensions": [
+        "esbenp.prettier-vscode",
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "charliermarsh.ruff"
+      ]
+    }
+  },
+  "workspaceFolder": "/workspaces/mesop",
+  "postCreateCommand": "bash scripts/devcontainer_setup.sh"
+}

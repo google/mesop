@@ -1,0 +1,17 @@
+version: '3.9'
+services:
+  mesop:
+    build: .
+    volumes:
+      - .:/workspaces/mesop
+      - node_modules:/workspace/mesop/node_modules
+      - vscode_extensions:/home/mesop-dev/.vscode-server/extensions
+    ports:
+      - '32123:32123'
+    tty: true
+
+volumes:
+  # Store node modules on volume for better performance. Also prevents overwriting node
+  # node modules installed on host machine via bind mount.
+  node_modules:
+  vscode_extensions:
