@@ -7,9 +7,8 @@ nav:
   - Getting Started: getting_started.md
   - Guides:
       - Components: guides/components.md
-      - Commands: guides/commands.md
       - Interactivity: guides/interactivity.md
-      - Pages: guides/pages.md
+      - Multi-Pages: guides/multi_pages.md
       - Deployment: guides/deployment.md
       - Web Security: guides/web_security.md
       - Troubleshooting: guides/troubleshooting.md
@@ -48,11 +47,15 @@ nav:
           - Progress spinner: components/progress_spinner.md
           - Table: components/table.md
           - Tooltip: components/tooltip.md
-      - Styling:
-          - Style: components/style.md
       - Advanced:
           - Embed: components/embed.md
           - Plot: components/plot.md
+  - API:
+      - Page: api/page.md
+      - Style: api/style.md
+      - Commands:
+          - Navigate: api/commands/navigate.md
+          - Scroll into view: api/commands/scroll_into_view.md
   - Demo Gallery 🔗: demo.md
   - Blog:
       - blog/index.md
