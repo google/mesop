@@ -2,10 +2,12 @@
 # to ensure local imports.
 # ruff: noqa: E402
 
+import base64
 import inspect
 import os
 import sys
 from dataclasses import dataclass
+from typing import Literal
 
 import mesop as me
 
@@ -15,6 +17,8 @@ import mesop as me
 current_dir = os.path.dirname(os.path.abspath(__file__))
 if current_dir not in sys.path:
   sys.path.append(current_dir)
+
+import glob
 
 import audio as audio
 import badge as badge
@@ -159,13 +163,140 @@ BORDER_SIDE = me.BorderSide(
 @me.stateclass
 class State:
   current_demo: str
-  preview_fullscreen: bool
+  panel_fullscreen: Literal["preview", "editor", None] = None
+
+
+screenshots: dict[str, str] = {}
+
+
+def load_home_page(e: me.LoadEvent):
+  yield
+  screenshot_dir = os.path.join(current_dir, "screenshots")
+  screenshot_files = glob.glob(os.path.join(screenshot_dir, "*.webp"))
+
+  for screenshot_file in screenshot_files:
+    image_name = os.path.basename(screenshot_file).split(".")[0]
+    with open(screenshot_file, "rb") as image_file:
+      encoded_string = base64.b64encode(image_file.read()).decode()
+      screenshots[image_name] = "data:image/webp;base64," + encoded_string
+
+  yield
+
+
+@me.page(
+  title="Mesop Demos",
+  security_policy=me.SecurityPolicy(
+    allowed_iframe_parents=["https://google.github.io"]
+  ),
+  on_load=load_home_page,
+)
+def main_page():
+  header()
+  with me.box(
+    style=me.Style(
+      flex_grow=1,
+      display="flex",
+    )
+  ):
+    if is_desktop():
+      side_menu()
+    with me.box(
+      style=me.Style(
+        width="calc(100% - 150px)" if is_desktop() else "100%",
+        display="flex",
+        gap=24,
+        flex_direction="column",
+        padding=me.Padding.all(24),
+        overflow_y="auto",
+      )
+    ):
+      with me.box(
+        style=me.Style(
+          height="calc(100vh - 120px)",
+        )
+      ):
+        for section in ALL_SECTIONS:
+          with me.box(style=me.Style(margin=me.Margin(bottom=28))):
+            me.text(
+              section.name,
+              style=me.Style(
+                font_weight=500,
+                font_size=20,
+                margin=me.Margin(
+                  bottom=16,
+                ),
+              ),
+            )
+            with me.box(
+              style=me.Style(
+                display="flex",
+                flex_direction="row",
+                flex_wrap="wrap",
+                gap=28,
+              )
+            ):
+              for example in section.examples:
+                example_card(example.name)
+
+
+def navigate_example_card(e: me.ClickEvent):
+  me.navigate("/embed/" + e.key)
+
+
+def example_card(name: str):
+  with me.box(
+    key=name,
+    on_click=navigate_example_card,
+    style=me.Style(
+      border=me.Border.all(
+        me.BorderSide(
+          width=1,
+          color="rgb(220, 220, 220)",
+          style="solid",
+        )
+      ),
+      box_shadow="rgba(0, 0, 0, 0.2) 0px 3px 1px -2px, rgba(0, 0, 0, 0.14) 0px 2px 2px, rgba(0, 0, 0, 0.12) 0px 1px 5px",
+      cursor="pointer",
+      width="min(100%, 150px)",
+      border_radius=12,
+      background="#fff",
+    ),
+  ):
+    image_url = screenshots.get(name, "")
+    me.box(
+      style=me.Style(
+        background=f'url("{image_url}") center / cover',
+        height=112,
+        width=150,
+      )
+    )
+    me.text(
+      format_example_name(name),
+      style=me.Style(
+        font_weight=500,
+        font_size=18,
+        padding=me.Padding.all(12),
+        border=me.Border(
+          top=me.BorderSide(
+            width=1,
+            style="solid",
+            color="rgb(220, 220, 220)",
+          )
+        ),
+      ),
+    )
+
+
+def on_load_embed(e: me.LoadEvent):
+  if not is_desktop():
+    me.state(State).panel_fullscreen = "preview"
 
 
 def create_main_fn(example: Example):
   @me.page(
+    on_load=on_load_embed,
     title="Mesop Demos",
-    path="/" if example.name == "chat" else "/embed/" + example.name,
+    path="/embed/" + example.name,
     security_policy=me.SecurityPolicy(
       allowed_iframe_parents=["https://google.github.io"]
     ),
@@ -198,17 +329,21 @@ def body(current_demo: str):
       display="flex",
     )
   ):
-    side_menu()
+    if is_desktop():
+      side_menu()
     src = "/" + current_demo
     with me.box(
       style=me.Style(
-        width="calc(100% - 150px)",
+        width="calc(100% - 150px)" if is_desktop() else "100%",
         display="grid",
-        grid_template_columns="1fr" if state.preview_fullscreen else "1fr 1fr",
+        grid_template_columns="1fr 1fr"
+        if state.panel_fullscreen is None
+        else "1fr",
       )
     ):
-      demo_ui(src)
-      if not state.preview_fullscreen:
+      if state.panel_fullscreen != "editor":
+        demo_ui(src)
+      if state.panel_fullscreen != "preview":
         demo_code(inspect.getsource(get_module(current_demo)))
 
 
@@ -232,43 +367,58 @@ def demo_ui(src: str):
           padding=me.Padding.all(8),
         ),
       )
-      with me.tooltip(
-        position="above",
-        message="Minimize" if state.preview_fullscreen else "Maximize",
-      ):
-        with me.content_button(type="icon", on_click=toggle_fullscreen):
-          me.icon(
-            "close_fullscreen" if state.preview_fullscreen else "fullscreen"
-          )
+      if is_desktop():
+        with me.tooltip(
+          position="above",
+          message="Minimize"
+          if state.panel_fullscreen == "preview"
+          else "Maximize",
+        ):
+          with me.content_button(type="icon", on_click=toggle_fullscreen):
+            me.icon(
+              "close_fullscreen"
+              if state.panel_fullscreen == "preview"
+              else "fullscreen"
+            )
+      else:
+        swap_button()
     me.embed(
       src=src,
       style=me.Style(
         border=me.Border.all(me.BorderSide(width=0)),
         border_radius=2,
-        height="calc(100vh - 120px)",
+        height="calc(100vh - 155px)",
         width="100%",
       ),
     )
 
 
+def swap_button():
+  state = me.state(State)
+  with me.tooltip(
+    position="above",
+    message="Swap for code"
+    if state.panel_fullscreen == "preview"
+    else "Swap for preview",
+  ):
+    with me.content_button(type="icon", on_click=swap_fullscreen):
+      me.icon("swap_horiz")
+
+
+def swap_fullscreen(e: me.ClickEvent):
+  state = me.state(State)
+  if state.panel_fullscreen == "preview":
+    state.panel_fullscreen = "editor"
+  else:
+    state.panel_fullscreen = "preview"
+
+
 def toggle_fullscreen(e: me.ClickEvent):
   state = me.state(State)
-  state.preview_fullscreen = not state.preview_fullscreen
-
-
-def box_header(header_text: str):
-  me.text(
-    header_text,
-    style=me.Style(
-      font_weight=500,
-      margin=me.Margin.symmetric(vertical=5),
-      padding=me.Padding.all(8),
-      border=me.Border(
-        bottom=BORDER_SIDE,
-        right=BORDER_SIDE,
-      ),
-    ),
-  )
+  if state.panel_fullscreen == "preview":
+    state.panel_fullscreen = None
+  else:
+    state.panel_fullscreen = "preview"
 
 
 def demo_code(code_arg: str):
@@ -282,7 +432,23 @@ def demo_code(code_arg: str):
       ),
     )
   ):
-    box_header("Code")
+    with me.box(
+      style=me.Style(
+        display="flex",
+        justify_content="space-between",
+        align_items="center",
+        border=me.Border(bottom=BORDER_SIDE),
+      )
+    ):
+      me.text(
+        "Code",
+        style=me.Style(
+          font_weight=500,
+          padding=me.Padding.all(8),
+        ),
+      )
+      if not is_desktop():
+        swap_button()
     # Use four backticks for code fence to avoid conflicts with backticks being used
     # within the displayed code.
     me.markdown(
@@ -303,7 +469,7 @@ def demo_code(code_arg: str):
     )
 
 
-def header(demo_name: str):
+def header(demo_name: str | None = None):
   with me.box(
     style=me.Style(
       border=me.Border(
@@ -313,6 +479,7 @@ def header(demo_name: str):
           color="#dcdcdc",
         )
       ),
+      overflow_x="clip",
     )
   ):
     with me.box(
@@ -320,19 +487,54 @@ def header(demo_name: str):
         display="flex",
         align_items="end",
         justify_content="space-between",
-        margin=me.Margin.all(12),
+        margin=me.Margin(left=12, right=12, bottom=12),
         font_size=24,
       )
     ):
       with me.box(style=me.Style(display="flex")):
+        with me.box(
+          style=me.Style(display="flex", cursor="pointer"),
+          on_click=navigate_home,
+        ):
+          me.text(
+            "Mesop", style=me.Style(font_weight=700, margin=me.Margin(right=8))
+          )
+          me.text("Demos ")
+        if demo_name:
+          me.text(
+            "— " + format_example_name(demo_name),
+            style=me.Style(white_space="nowrap", text_overflow="ellipsis"),
+          )
+      with me.box(style=me.Style(display="flex", align_items="baseline")):
+        with me.box(
+          style=me.Style(
+            display="flex",
+            align_items="baseline",
+          ),
+        ):
+          me.markdown(
+            "<a href='https://github.com/google/mesop/'>google/mesop</a>",
+            style=me.Style(
+              font_size=18,
+              margin=me.Margin(left=8, right=4, bottom=-16, top=-16),
+            ),
+          )
+          me.image(
+            src="https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png",
+            style=me.Style(
+              height=36,
+              position="relative",
+              top=8,
+            ),
+          )
         me.text(
-          "Mesop", style=me.Style(font_weight=700, margin=me.Margin(right=8))
+          "v" + me.__version__,
+          style=me.Style(font_size=18, margin=me.Margin(left=16)),
         )
-        me.text("Demos — " + format_example_name(demo_name))
-      me.text(
-        "v" + me.__version__,
-        style=me.Style(font_size=18, margin=me.Margin(left=8)),
-      )
+
+
+def navigate_home(e: me.ClickEvent):
+  me.navigate("/")
 
 
 def side_menu():
@@ -375,7 +577,7 @@ def nav_section(section: Section):
     me.text(section.name, style=me.Style(font_weight=700))
     for example in section.examples:
       example_name = format_example_name(example.name)
-      path = f"/embed/{example.name}" if example.name != "chat" else "/"
+      path = f"/embed/{example.name}"
       with me.box(
         style=me.Style(color="#0B57D0", cursor="pointer"),
         on_click=set_demo,
@@ -401,3 +603,7 @@ def get_module(module_name: str):
   if module_name in globals():
     return globals()[module_name]
   raise me.MesopDeveloperException(f"Module {module_name} not supported")
+
+
+def is_desktop():
+  return me.viewport_size().width > 640
