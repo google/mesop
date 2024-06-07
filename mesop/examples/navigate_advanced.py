@@ -3,12 +3,14 @@ import mesop as me
 
 @me.page(path="/navigate_advanced/page1")
 def page1():
+  me.checkbox("checkbox")
   me.text("page1")
   me.button("navigate", on_click=navigate)
 
 
 @me.page(path="/navigate_advanced/page2")
 def page2():
+  me.checkbox("checkbox2")
   me.text("page2")
 
 
