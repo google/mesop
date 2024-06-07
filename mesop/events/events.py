@@ -27,3 +27,19 @@ class InputEvent(MesopEvent):
   """
 
   value: str
+
+
+# Note: LoadEvent intentionally does not inherit from MesopEvent
+# because it doesn't originate from a component, thus a key
+# does not apply.
+
+
+@dataclass(kw_only=True)
+class LoadEvent:
+  """Represents a page load event.
+
+  Attributes:
+      path: The path loaded
+  """
+
+  path: str

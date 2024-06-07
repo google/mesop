@@ -18,11 +18,12 @@ from mesop.examples import integrations as integrations
 from mesop.examples import many_checkboxes as many_checkboxes
 from mesop.examples import navigate_advanced as navigate_advanced
 from mesop.examples import nested as nested
+from mesop.examples import on_load as on_load
+from mesop.examples import on_load_generator as on_load_generator
 from mesop.examples import playground as playground
 from mesop.examples import playground_critic as playground_critic
 from mesop.examples import readme_app as readme_app
 from mesop.examples import scroll_into_view as scroll_into_view
 from mesop.examples import sxs as sxs
 from mesop.examples import testing as testing
-
 # Do not import error_state_missing_init_prop because it cause all examples to fail.
