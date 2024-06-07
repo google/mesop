@@ -27,7 +27,7 @@ def snake_case(str: str) -> str:
 def capitalize_first_letter(s: str) -> str:
   if not s:
     return s
-  return s[0].upper() + s[1:]
+  return s.capitalize()
 
 
 def get_path_from_workspace_root(*args: str) -> str:
