@@ -34,7 +34,6 @@ def configure_flask_app(
 
   def render_loop(
     path: str,
-    keep_alive: bool = False,
     trace_mode: bool = False,
     init_request: bool = False,
   ) -> Generator[str, None, None]:
@@ -58,7 +57,6 @@ def configure_flask_app(
         render=pb.RenderEvent(
           root_component=root_component,
           component_diff=component_diff,
-          states=runtime().context().serialize_state(),
           commands=commands,
           component_configs=None
           if prod_mode or not init_request
@@ -67,8 +65,6 @@ def configure_flask_app(
         )
       )
       yield serialize(data)
-      if not keep_alive:
-        yield "data: <stream_end>\n\n"
     except Exception as e:
       print(e)
       if e in exceptions_to_propagate:
@@ -76,6 +72,28 @@ def configure_flask_app(
       yield from yield_errors(
         error=pb.ServerError(exception=str(e), traceback=format_traceback())
       )
+
+  def create_update_state_event(diff: bool = False) -> str:
+    """Creates a state event to send to the client.
+
+    Args:
+      diff: If true, sends diffs instead of the full state objects
+
+    Returns:
+      serialized `pb.UiResponse`
+    """
+    return serialize(
+      pb.UiResponse(
+        update_state_event=pb.UpdateStateEvent(
+          states=runtime().context().diff_state()
+          if diff
+          else runtime().context().serialize_state(),
+          update_strategy=pb.UpdateStateEvent.UpdateStrategy.UPDATE_STRATEGY_DIFF
+          if diff
+          else pb.UpdateStateEvent.UpdateStrategy.UPDATE_STRATEGY_REPLACE,
+        )
+      )
+    )
 
   def yield_errors(error: pb.ServerError) -> Generator[str, None, None]:
     if not runtime().debug_mode:
@@ -111,11 +129,11 @@ def configure_flask_app(
 
       if ui_request.HasField("init"):
         yield from render_loop(path=ui_request.path, init_request=True)
+        yield create_update_state_event()
+        yield "data: <stream_end>\n\n"
       elif ui_request.HasField("user_event"):
         runtime().context().update_state(ui_request.user_event.states)
-        for _ in render_loop(
-          path=ui_request.path, keep_alive=True, trace_mode=True
-        ):
+        for _ in render_loop(path=ui_request.path, trace_mode=True):
           pass
         if ui_request.user_event.handler_id:
           runtime().context().set_previous_node_from_current_node()
@@ -135,9 +153,10 @@ def configure_flask_app(
           for command in runtime().context().commands():
             if command.HasField("navigate"):
               path = command.navigate.url
-          yield from render_loop(path=path, keep_alive=True)
+          yield from render_loop(path=path)
           runtime().context().set_previous_node_from_current_node()
           runtime().context().reset_current_node()
+        yield create_update_state_event(diff=True)
         yield "data: <stream_end>\n\n"
       elif ui_request.HasField("editor_event"):
         # Prevent accidental usages of editor mode outside of

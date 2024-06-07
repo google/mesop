@@ -9,6 +9,6 @@ protobuf
 pydantic==1.10.13 --no-binary pydantic
 pygments
 libcst==1.1.0
-
+deepdiff==6.7.1
 matplotlib # only used for example
 pandas  # only used for example

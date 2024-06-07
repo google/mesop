@@ -1,9 +1,11 @@
+import copy
 from typing import Any, Callable, Generator, TypeVar, cast
 
 from absl import flags
 
 import mesop.protos.ui_pb2 as pb
 from mesop.dataclass_utils import (
+  diff_state,
   serialize_dataclass,
   update_dataclass_from_json,
 )
@@ -25,6 +27,8 @@ Handler = Callable[[Any], Generator[None, None, None] | None]
 
 class Context:
   _states: dict[type[Any], object]
+  # Previous states is used for performing state diffs.
+  _previous_states: dict[type[Any], object]
   _handlers: dict[str, Handler]
   _commands: list[pb.Command]
   _node_slot: pb.Component | None
@@ -39,6 +43,7 @@ class Context:
     self._current_node = pb.Component()
     self._previous_node: pb.Component | None = None
     self._states = states
+    self._previous_states = copy.deepcopy(states)
     self._trace_mode = False
     self._handlers = {}
     self._commands = []
@@ -120,9 +125,36 @@ Did you forget to decorate your state class `{state.__name__}` with @stateclass?
       states.states.append(pb.State(data=serialize_dataclass(state)))
     return states
 
+  def diff_state(self) -> pb.States:
+    states = pb.States()
+    for (key, state), previous_state in zip(
+      self._states.items(), self._previous_states.values()
+    ):
+      states.states.append(pb.State(data=diff_state(previous_state, state)))
+      # If state has not changed no need to update the previous state since it should be
+      # the same.
+      #
+      # One thing to note is that there seems to be an issue multiple states with the
+      # same key can exist (i.e. usage in Mesop demo app). It's unclear if this causes
+      # problem here.
+      if state != self._previous_states[key]:
+        self._previous_states[key] = copy.deepcopy(state)
+    return states
+
   def update_state(self, states: pb.States) -> None:
-    for state, proto_state in zip(self._states.values(), states.states):
+    for state, previous_state, proto_state in zip(
+      self._states.values(), self._previous_states.values(), states.states
+    ):
       update_dataclass_from_json(state, proto_state.data)
+      # We should check if state and previous state are the same. There should be no
+      # need to update previous state if state has not changed.
+      #
+      # However, there seems to be an issue with multiple states containing same key in
+      # the dict. Not sure how that's even possible.
+      #
+      # If we add a check to only update if state has changed, then this increases the
+      # response payload for some reason.
+      update_dataclass_from_json(previous_state, proto_state.data)
 
   def run_event_handler(
     self, event: pb.UserEvent

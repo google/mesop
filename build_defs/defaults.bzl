@@ -104,3 +104,7 @@ THIRD_PARTY_PY_MYPY_PROTOBUF = [
 THIRD_PARTY_PY_PANDAS = [
     requirement("pandas"),
 ]
+
+THIRD_PARTY_PY_DEEPDIFF = [
+    requirement("deepdiff"),
+]

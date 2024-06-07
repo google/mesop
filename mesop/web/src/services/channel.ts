@@ -4,6 +4,7 @@ import {
   ServerError,
   States,
   UiRequest,
+  UpdateStateEvent,
   UserEvent,
   Component as ComponentProto,
   UiResponse,
@@ -15,7 +16,7 @@ import {
 import {Logger} from '../dev_tools/services/logger';
 import {Title} from '@angular/platform-browser';
 import {SSE} from '../utils/sse';
-import {applyComponentDiff} from '../utils/diff';
+import {applyComponentDiff, applyStateDiff} from '../utils/diff';
 
 const anyWindow = window as any;
 const DEV_SERVER_HOST = anyWindow['MESOP_SERVER_HOST'] || '';
@@ -105,8 +106,33 @@ export class Channel {
         const uiResponse = UiResponse.deserializeBinary(array);
         console.debug('Server event: ', uiResponse.toObject());
         switch (uiResponse.getTypeCase()) {
+          case UiResponse.TypeCase.UPDATE_STATE_EVENT: {
+            const states = uiResponse.getUpdateStateEvent()!.getStates()!;
+
+            if (states === undefined) {
+              console.error('Update state event is empty.');
+              return;
+            }
+
+            if (
+              uiResponse.getUpdateStateEvent()!.getUpdateStrategy() ===
+              UpdateStateEvent.UpdateStrategy.UPDATE_STRATEGY_DIFF
+            ) {
+              // `this.states` should be populated at this point since the first update
+              // from the server should be `UPDATE_STRATEGY_REPLACE`.
+              for (let i = 0; i < states.getStatesList().length; ++i) {
+                const state = applyStateDiff(
+                  this.states.getStatesList()[i].getData() as string,
+                  states.getStatesList()[i].getData() as string,
+                );
+                this.states.getStatesList()[i].setData(state);
+              }
+            } else {
+              this.states = states;
+            }
+            break;
+          }
           case UiResponse.TypeCase.RENDER: {
-            this.states = uiResponse.getRender()!.getStates()!;
             const rootComponent = uiResponse.getRender()!.getRootComponent()!;
             const componentDiff = uiResponse.getRender()!.getComponentDiff()!;
 
@@ -140,7 +166,7 @@ export class Channel {
             onRender(this.rootComponent, this.componentConfigs);
             this.logger.log({
               type: 'RenderLog',
-              states: this.states,
+              states: this.states || new States(), // States is undefined on init render.
               rootComponent: this.rootComponent,
             });
             break;
