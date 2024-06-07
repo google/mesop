@@ -17,9 +17,6 @@ import {Title} from '@angular/platform-browser';
 import {SSE} from '../utils/sse';
 import {applyComponentDiff} from '../utils/diff';
 
-const anyWindow = window as any;
-const DEV_SERVER_HOST = anyWindow['MESOP_SERVER_HOST'] || '';
-
 // Pick 500ms as the minimum duration before showing a progress/busy indicator
 // for the channel.
 // See: https://github.com/google/mesop/issues/365
@@ -90,7 +87,7 @@ export class Channel {
       request = new UiRequest();
       request.setInit(new InitRequest());
     }
-    this.eventSource = new SSE(`${DEV_SERVER_HOST}/ui`, {
+    this.eventSource = new SSE('/ui', {
       payload: generatePayloadString(request),
     });
     this.status = ChannelStatus.OPEN;
