@@ -2,7 +2,7 @@
 
 @use 'sass:map';
 @use 'external/npm/node_modules/@angular/material/index' as mat;
-@use 'external/npm/node_modules/@angular/material-experimental/index' as matx;
+@use 'theme' as theme;
 
 // Normalize as it's expected by Angular:
 // https://github.com/angular/components/issues/12133
@@ -11,18 +11,9 @@
 @include mat.all-component-typographies();
 @include mat.core();
 
-$m3-light-theme: mat.define-theme(
-  (
-    color: (
-      primary: mat.$azure-palette,
-      tertiary: mat.$chartreuse-palette,
-    ),
-  )
-);
-
 body {
-  @include mat.all-component-themes($m3-light-theme);
-  @include mat.color-variants-backwards-compatibility($m3-light-theme);
+  @include mat.all-component-themes(theme.$light-theme);
+  @include mat.color-variants-backwards-compatibility(theme.$light-theme);
 }
 
 html,

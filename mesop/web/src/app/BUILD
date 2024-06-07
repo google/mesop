@@ -20,6 +20,13 @@ sass_library(
     ],
 )
 
+sass_library(
+    name = "theme",
+    srcs = [
+        "_theme.scss",
+    ],
+)
+
 sass_external_binary(
     name = "styles",
     src = "styles.scss",
@@ -29,5 +36,6 @@ sass_external_binary(
     sourcemap = False,
     deps = [
         ":normalize",
+        ":theme",
     ],
 )
