@@ -209,7 +209,7 @@
     "rollup-plugin-sourcemaps": "^0.6.3",
     "sass": "^1.68.0",
     "selenium-webdriver": "^3.6.0",
-    "semver": "^7.5.2",
+    "semver": "^7.5.3",
     "send": "^0.17.2",
     "shelljs": "^0.8.5",
     "stylelint": "^14.14.0",
@@ -222,7 +222,7 @@
     "tsutils": "^3.21.0",
     "typescript": "5.4.2",
     "vrsource-tslint-rules": "6.0.0",
-    "yaml": "^2.2.2",
+    "yaml": "^2.4.3",
     "yargs": "^17.3.1",
     "zx": "^6.2.4"
   },
