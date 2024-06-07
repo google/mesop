@@ -8,6 +8,10 @@ import mesop.protos.ui_pb2 as pb
 def format_traceback(
   lines_before: int = 2, lines_after: int = 4
 ) -> pb.Traceback:
+  # Clear the linecache, otherwise we will potentially show
+  # stale code in the traceback which is confusing.
+  linecache.clearcache()
+
   # Initialize an empty string to accumulate traceback information
   res = pb.Traceback(frames=[])
 
