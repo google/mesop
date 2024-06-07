@@ -21,10 +21,10 @@ export function assert<T>(value: T | null | undefined): T {
 }
 
 /** Parser function for '--arg=value' format */
-export const parseArgs = (): { [key: string]: string | undefined } => {
+export const parseArgs = (): {[key: string]: string | undefined} => {
   // @ts-ignore
   const args: string[] = process.argv.slice(2);
-  const parsedArgs: { [key: string]: string | undefined } = {};
+  const parsedArgs: {[key: string]: string | undefined} = {};
 
   args.forEach((arg) => {
     // Split each argument into key and value
