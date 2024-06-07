@@ -16,7 +16,7 @@ import {
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 import {CommonModule} from '@angular/common';
 import {ComponentRenderer} from '../component_renderer/component_renderer';
-import {Channel, ChannelStatus} from '../services/channel';
+import {Channel} from '../services/channel';
 import {provideAnimations} from '@angular/platform-browser/animations';
 import {bootstrapApplication} from '@angular/platform-browser';
 import {MatIconModule, MatIconRegistry} from '@angular/material/icon';
@@ -114,12 +114,8 @@ export class Shell {
     this.channel.dispatch(userEvent);
   }
 
-  showChannelProgressIndicator() {
-    // Do not show it if channel is hot reloading to reduce visual noise.
-    return (
-      this.channel.getStatus() === ChannelStatus.OPEN &&
-      !this.channel.isHotReloading()
-    );
+  showChannelProgressIndicator(): boolean {
+    return this.channel.isBusy();
   }
 }
 
