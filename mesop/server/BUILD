@@ -13,6 +13,7 @@ py_library(
         "//mesop/events",
         "//mesop/protos:ui_py_pb2",
         "//mesop/utils",
+        "//mesop/warn",
     ] + THIRD_PARTY_PY_ABSL_PY + THIRD_PARTY_PY_FLASK,
     # Note: prod_server.py has a runtime dependency on
     # //mesop/web/src/app/prod:web_package, so you must include it

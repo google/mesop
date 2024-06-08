@@ -2,9 +2,15 @@
 
 Follow these instructions for releasing a new version of Mesop publicly via PyPI (e.g. `pip install mesop`).
 
-## Bump the version
+If you haven't done this before, follow the [first-time setup](#first-time-upload-setup).
 
-Update `mesop/version.py` by incrementing the version number. We follow semver.
+## Update version to RC
+
+Update [`mesop/version.py`](https://github.com/google/mesop/blob/main/mesop/version.py) by incrementing the version number. We follow semver.
+
+You want to first create an RC (release candidate) to ensure that it works.
+
+For example, if the current version is: `0.7.0`, then you should increment the version to `0.8.0rc0` which will create an RC, which is treated as a [pre-release by PyPI](https://packaging.python.org/en/latest/specifications/version-specifiers/#pre-releases).
 
 ## Install locally
 
@@ -50,25 +56,21 @@ rm -rf /tmp/mesoprelease-test/venv-twine \
 
 Visit [https://pypi.org/project/mesop/](https://pypi.org/project/mesop/) to see that the new version has been published.
 
-### Uploading to Test PyPI
+## Test on Colab
 
-If you want to upload to test PyPI (e.g. test it with Colab), you can run the following command:
+Because Colab installs from PyPI, you will need to test the RC on Colab after uploading to PyPI.
 
-```sh
-rm -rf /tmp/mesoprelease-test/venv-twine \
-&& virtualenv --python python3 /tmp/mesoprelease-test/venv-twine \
-&& source /tmp/mesoprelease-test/venv-twine/bin/activate \
-&& pip install --upgrade pip \
-&& pip install twine \
-&& cd /tmp/mesoprelease-test \
-&& twine upload --repository testpypi mesop*.whl
-```
+Open our [Mesop Colab notebook](https://colab.research.google.com/github/google/mesop/blob/main/notebooks/mesop_colab_getting_started.ipynb) and run all the cells and make sure it works. Usually if something breaks in Colab, it's pretty obvious because the output isn't displayed, etc.
 
-You can then install it by using:
+## Change the version from RC to regular release
 
-```sh
-pip install --index-url https://test.pypi.org/simple/ mesop
-```
+If you find an issue, then redo the above steps and create another RC candidate: `0.8.0rc0` -> `0.8.0rc1`.
+
+If all the testing looks good, then you can update [`mesop/version.py`](https://github.com/google/mesop/blob/main/mesop/version.py) and change the version from RC to a regular release, for example:
+
+`0.8.0rc0` -> `0.8.0`
+
+Re-do the steps above to build, test and upload it to PyPI.
 
 ## First-time upload setup
 

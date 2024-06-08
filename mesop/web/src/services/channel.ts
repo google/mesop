@@ -18,8 +18,10 @@ import {Title} from '@angular/platform-browser';
 import {SSE} from '../utils/sse';
 import {applyComponentDiff, applyStateDiff} from '../utils/diff';
 
-const anyWindow = window as any;
-const DEV_SERVER_HOST = anyWindow['MESOP_SERVER_HOST'] || '';
+// Pick 500ms as the minimum duration before showing a progress/busy indicator
+// for the channel.
+// See: https://github.com/google/mesop/issues/365
+const WAIT_TIMEOUT_MS = 500;
 
 interface InitParams {
   zone: NgZone;
@@ -41,6 +43,8 @@ export enum ChannelStatus {
 })
 export class Channel {
   private _isHotReloading = false;
+  private isWaiting = false;
+  private isWaitingTimeout: number | undefined;
   private eventSource!: SSE;
   private initParams!: InitParams;
   private states!: States;
@@ -64,6 +68,13 @@ export class Channel {
     return this._isHotReloading;
   }
 
+  /**
+   * Return true if the channel has been doing work
+   * triggered by a user that's been taking a while. */
+  isBusy(): boolean {
+    return this.isWaiting && !this.isHotReloading();
+  }
+
   getRootComponent(): ComponentProto | undefined {
     return this.rootComponent;
   }
@@ -77,10 +88,14 @@ export class Channel {
       request = new UiRequest();
       request.setInit(new InitRequest());
     }
-    this.eventSource = new SSE(`${DEV_SERVER_HOST}/ui`, {
+    this.eventSource = new SSE('/ui', {
       payload: generatePayloadString(request),
     });
     this.status = ChannelStatus.OPEN;
+    this.isWaitingTimeout = setTimeout(() => {
+      this.isWaiting = true;
+    }, WAIT_TIMEOUT_MS);
+
     this.logger.log({type: 'StreamStart'});
 
     const {zone, onRender, onError, onCommand} = initParams;
@@ -93,6 +108,8 @@ export class Channel {
         if (data === '<stream_end>') {
           this.eventSource.close();
           this.status = ChannelStatus.CLOSED;
+          clearTimeout(this.isWaitingTimeout);
+          this.isWaiting = false;
           this._isHotReloading = false;
           this.logger.log({type: 'StreamEnd'});
           if (this.queuedEvents.length) {

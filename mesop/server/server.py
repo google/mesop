@@ -9,8 +9,10 @@ import mesop.protos.ui_pb2 as pb
 from mesop.component_helpers import diff_component
 from mesop.editor.component_configs import get_component_configs
 from mesop.editor.editor_handler import handle_editor_event
+from mesop.events import LoadEvent
 from mesop.exceptions import format_traceback
 from mesop.runtime import runtime
+from mesop.warn import warn
 
 LOCALHOSTS = (
   # For IPv4 localhost
@@ -18,6 +20,8 @@ LOCALHOSTS = (
   # For IPv6 localhost
   "::1",
 )
+
+STREAM_END = "data: <stream_end>\n\n"
 
 
 def is_processing_request():
@@ -109,7 +113,7 @@ def configure_flask_app(
     ui_response = pb.UiResponse(error=error)
 
     yield serialize(ui_response)
-    yield "data: <stream_end>\n\n"
+    yield STREAM_END
 
   def serialize(response: pb.UiResponse) -> str:
     encoded = base64.b64encode(response.SerializeToString()).decode("utf-8")
@@ -128,9 +132,24 @@ def configure_flask_app(
         yield from yield_errors(runtime().get_loading_errors()[0])
 
       if ui_request.HasField("init"):
-        yield from render_loop(path=ui_request.path, init_request=True)
+        page_config = runtime().get_page_config(path=ui_request.path)
+        if page_config and page_config.on_load:
+          result = page_config.on_load(LoadEvent(path=ui_request.path))
+          # on_load is a generator function then we need to iterate through
+          # the generator object.
+          if result:
+            for _ in result:
+              yield from render_loop(
+                path=ui_request.path, init_request=True, keep_alive=True
+              )
+              runtime().context().set_previous_node_from_current_node()
+              runtime().context().reset_current_node()
+          else:
+            yield from render_loop(path=ui_request.path, init_request=True)
+        else:
+          yield from render_loop(path=ui_request.path, init_request=True)
         yield create_update_state_event()
-        yield "data: <stream_end>\n\n"
+        yield STREAM_END
       elif ui_request.HasField("user_event"):
         runtime().context().update_state(ui_request.user_event.states)
         for _ in render_loop(path=ui_request.path, trace_mode=True):
@@ -149,15 +168,43 @@ def configure_flask_app(
 
         result = runtime().context().run_event_handler(ui_request.user_event)
         path = ui_request.path
+        has_run_navigate_on_load = False
         for _ in result:
+          navigate_commands = [
+            command
+            for command in runtime().context().commands()
+            if command.HasField("navigate")
+          ]
+          if len(navigate_commands) > 1:
+            warn(
+              "Dedicated multiple navigate commands! Only the first one will be used."
+            )
           for command in runtime().context().commands():
             if command.HasField("navigate"):
               path = command.navigate.url
-          yield from render_loop(path=path)
+              page_config = runtime().get_page_config(path=path)
+              if (
+                page_config
+                and page_config.on_load
+                and not has_run_navigate_on_load
+              ):
+                has_run_navigate_on_load = True
+                result = page_config.on_load(LoadEvent(path=path))
+                # on_load is a generator function then we need to iterate through
+                # the generator object.
+                if result:
+                  for _ in result:
+                    yield from render_loop(
+                      path=path, init_request=True, keep_alive=True
+                    )
+                    runtime().context().set_previous_node_from_current_node()
+                    runtime().context().reset_current_node()
+
+          yield from render_loop(path=path, keep_alive=True)
           runtime().context().set_previous_node_from_current_node()
           runtime().context().reset_current_node()
-        yield create_update_state_event(diff=True)
-        yield "data: <stream_end>\n\n"
+        yield create_update_state_event(diff=True)          
+        yield STREAM_END
       elif ui_request.HasField("editor_event"):
         # Prevent accidental usages of editor mode outside of
         # one's local computer
@@ -167,7 +214,7 @@ def configure_flask_app(
         if not runtime().debug_mode:
           abort(403)  # Throws a Forbidden Error
         handle_editor_event(ui_request.editor_event)
-        yield "data: <stream_end>\n\n"
+        yield STREAM_END
       else:
         raise Exception(f"Unknown request type: {ui_request}")
 

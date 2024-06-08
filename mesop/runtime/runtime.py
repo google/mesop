@@ -4,7 +4,7 @@ from typing import Any, Callable, Generator, Type, TypeVar, cast
 from flask import g
 
 import mesop.protos.ui_pb2 as pb
-from mesop.events import MesopEvent
+from mesop.events import LoadEvent, MesopEvent
 from mesop.exceptions import MesopDeveloperException, MesopUserException
 from mesop.key import Key
 from mesop.security.security_policy import SecurityPolicy
@@ -21,11 +21,15 @@ class EmptyState:
   pass
 
 
+OnLoadHandler = Callable[[LoadEvent], None | Generator[None, None, None]]
+
+
 @dataclass(kw_only=True)
 class PageConfig:
   page_fn: Callable[[], None]
   title: str
   security_policy: SecurityPolicy
+  on_load: OnLoadHandler | None
 
 
 E = TypeVar("E", bound=MesopEvent)
