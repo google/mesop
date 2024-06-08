@@ -124,7 +124,7 @@ def test_diff_type_change():
 def test_diff_multiple_dict_changes():
   @dataclass
   class C:
-    val1: dict[str | str] = field(
+    val1: dict[str, str] = field(
       default_factory=lambda: {
         "k1": "v1",
         "k2": "v2",
@@ -225,7 +225,7 @@ def test_diff_nested_changes():
 def test_diff_weird_str_dict_keys():
   @dataclass
   class C:
-    val1: dict[str | str] = field(
+    val1: dict[str, str] = field(
       default_factory=lambda: {
         "k-1": "v1",
         "k.2": "v2",
@@ -251,7 +251,7 @@ def test_diff_weird_str_dict_keys():
 def test_diff_int_dict_keys():
   @dataclass
   class C:
-    val1: dict[str | str] = field(
+    val1: dict[int, str] = field(
       default_factory=lambda: {
         1: "v1",
       }
@@ -273,7 +273,7 @@ def test_diff_int_dict_keys():
 def test_diff_tuple_dict_keys():
   @dataclass
   class C:
-    val1: dict[str | str] = field(
+    val1: dict[tuple[int, int], str] = field(
       default_factory=lambda: {
         (1, 2): "v1",
       }
