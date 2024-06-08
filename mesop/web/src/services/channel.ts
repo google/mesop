@@ -1,6 +1,5 @@
 import {Injectable, NgZone} from '@angular/core';
 import {
-  InitRequest,
   ServerError,
   States,
   UiRequest,
@@ -16,6 +15,7 @@ import {Logger} from '../dev_tools/services/logger';
 import {Title} from '@angular/platform-browser';
 import {SSE} from '../utils/sse';
 import {applyComponentDiff} from '../utils/diff';
+import {getViewportSize} from '../utils/viewport_size';
 
 // Pick 500ms as the minimum duration before showing a progress/busy indicator
 // for the channel.
@@ -82,11 +82,7 @@ export class Channel {
     return this.componentConfigs;
   }
 
-  init(initParams: InitParams, request?: UiRequest) {
-    if (!request) {
-      request = new UiRequest();
-      request.setInit(new InitRequest());
-    }
+  init(initParams: InitParams, request: UiRequest) {
     this.eventSource = new SSE('/ui', {
       payload: generatePayloadString(request),
     });
@@ -174,9 +170,13 @@ export class Channel {
   }
 
   dispatch(userEvent: UserEvent) {
-    // Except for navigation user event, every user event should have
-    // an event handler.
-    if (!userEvent.getHandlerId() && !userEvent.getNavigation()) {
+    // Every user event should have an event handler,
+    // except for navigation and resize.
+    if (
+      !userEvent.getHandlerId() &&
+      !userEvent.getNavigation() &&
+      !userEvent.getResize()
+    ) {
       // This is a no-op user event, so we don't send it.
       return;
     }
@@ -246,7 +246,9 @@ export class Channel {
     const request = new UiRequest();
     const userEvent = new UserEvent();
     userEvent.setStates(this.states);
-    userEvent.setNavigation(new NavigationEvent());
+    const navigationEvent = new NavigationEvent();
+    navigationEvent.setViewportSize(getViewportSize());
+    userEvent.setNavigation(navigationEvent);
     request.setUserEvent(userEvent);
     this.init(this.initParams, request);
   }

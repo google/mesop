@@ -149,6 +149,8 @@ from mesop.exceptions import (
   MesopUserException as MesopUserException,
 )
 from mesop.features import page as page
+from mesop.features.viewport_size import Size as Size
+from mesop.features.viewport_size import viewport_size as viewport_size
 from mesop.key import Key as Key
 from mesop.runtime import runtime
 from mesop.security.security_policy import SecurityPolicy as SecurityPolicy

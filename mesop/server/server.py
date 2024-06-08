@@ -114,6 +114,7 @@ def configure_flask_app(
         yield from yield_errors(runtime().get_loading_errors()[0])
 
       if ui_request.HasField("init"):
+        runtime().context().set_viewport_size(ui_request.init.viewport_size)
         page_config = runtime().get_page_config(path=ui_request.path)
         if page_config and page_config.on_load:
           result = page_config.on_load(LoadEvent(path=ui_request.path))
@@ -132,7 +133,14 @@ def configure_flask_app(
         else:
           yield from render_loop(path=ui_request.path, init_request=True)
       elif ui_request.HasField("user_event"):
-        runtime().context().update_state(ui_request.user_event.states)
+        event = ui_request.user_event
+        if event.HasField("resize"):
+          runtime().context().set_viewport_size(event.resize.viewport_size)
+        elif event.HasField("navigation") and event.navigation.HasField(
+          "viewport_size"
+        ):
+          runtime().context().set_viewport_size(event.navigation.viewport_size)
+        runtime().context().update_state(event.states)
         for _ in render_loop(
           path=ui_request.path, keep_alive=True, trace_mode=True
         ):
