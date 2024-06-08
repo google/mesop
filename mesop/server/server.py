@@ -257,21 +257,22 @@ def configure_flask_app(
 
 
 def is_same_site(url1: Optional[str], url2: Optional[str]) -> bool:
-    """
-    Determine if two URLs belong to the same site by comparing their hostnames.
+  """
+  Determine if two URLs belong to the same site by comparing their hostnames.
 
-    Args:
+  Args:
     url1 (Optional[str]): The first URL to compare.
     url2 (Optional[str]): The second URL to compare.
 
-    Returns:
+  Returns:
     bool: True if both URLs are from the same hostname, False otherwise, including if any URL is None.
-    """
-    if not url1 or not url2:
-        return False
-    try:
-        p1, p2 = urlparse(url1), urlparse(url2)
-        return p1.hostname == p2.hostname
-    except Exception:
-        # Return False if there is an error in parsing URLs
-        return False
+  """
+  if not url1 or not url2:
+    return False
+  try:
+    p1, p2 = urlparse(url1), urlparse(url2)
+    return p1.hostname == p2.hostname
+  except Exception:
+    # Return False if there is an error in parsing URLs
+    return False
+
