@@ -52,7 +52,9 @@ nav:
           - Plot: components/plot.md
   - API:
       - Page: api/page.md
-      - Style: api/style.md
+      - UI Customization:
+          - Style: api/style.md
+          - Viewport Size: api/viewport_size.md
       - Commands:
           - Navigate: api/commands/navigate.md
           - Scroll into view: api/commands/scroll_into_view.md

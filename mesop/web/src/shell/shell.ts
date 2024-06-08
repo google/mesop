@@ -13,6 +13,9 @@ import {
   UserEvent,
   ComponentConfig,
   NavigationEvent,
+  ResizeEvent,
+  UiRequest,
+  InitRequest,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 import {CommonModule} from '@angular/common';
 import {ComponentRenderer} from '../component_renderer/component_renderer';
@@ -24,6 +27,7 @@ import {EditorService} from '../services/editor_service';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {ErrorBox} from '../error/error_box';
 import {GlobalErrorHandlerService} from '../services/global_error_handler';
+import {getViewportSize} from '../utils/viewport_size';
 
 @Component({
   selector: 'mesop-shell',
@@ -62,48 +66,57 @@ export class Shell {
   }
 
   ngOnInit() {
-    this.channel.init({
-      zone: this.zone,
-      onRender: (rootComponent, componentConfigs) => {
-        this.rootComponent = rootComponent;
-        // Component configs are only sent for the first response.
-        // For subsequent reponses, use the component configs previously
-        if (componentConfigs.length) {
-          this.componentConfigs = componentConfigs;
-        }
-        this.error = undefined;
-      },
-      onCommand: (command) => {
-        if (command.hasNavigate()) {
-          this.router.navigateByUrl(command.getNavigate()!.getUrl()!);
-        } else if (command.hasScrollIntoView()) {
-          // Scroll into view
-          const key = command.getScrollIntoView()!.getKey();
-          const targetElements = document.querySelectorAll(
-            `[data-key="${key}"]`,
-          );
-          if (!targetElements.length) {
-            console.error(
-              `Could not scroll to component with key ${key} because no component found`,
-            );
-            return;
+    const request = new UiRequest();
+    const initRequest = new InitRequest();
+    initRequest.setViewportSize(getViewportSize());
+    request.setInit(initRequest);
+    this.channel.init(
+      {
+        zone: this.zone,
+        onRender: (rootComponent, componentConfigs) => {
+          this.rootComponent = rootComponent;
+          // Component configs are only sent for the first response.
+          // For subsequent reponses, use the component configs previously
+          if (componentConfigs.length) {
+            this.componentConfigs = componentConfigs;
           }
-          if (targetElements.length > 1) {
-            console.warn(
-              'Found multiple components',
-              targetElements,
-              'to potentially scroll to for key',
-              key,
-              '. This is probably a bug and you should use a unique key identifier.',
+          this.error = undefined;
+        },
+        onCommand: (command) => {
+          if (command.hasNavigate()) {
+            this.router.navigateByUrl(command.getNavigate()!.getUrl()!);
+          } else if (command.hasScrollIntoView()) {
+            // Scroll into view
+            const key = command.getScrollIntoView()!.getKey();
+            const targetElements = document.querySelectorAll(
+              `[data-key="${key}"]`,
             );
+            if (!targetElements.length) {
+              console.error(
+                `Could not scroll to component with key ${key} because no component found`,
+              );
+              return;
+            }
+            if (targetElements.length > 1) {
+              console.warn(
+                'Found multiple components',
+                targetElements,
+                'to potentially scroll to for key',
+                key,
+                '. This is probably a bug and you should use a unique key identifier.',
+              );
+            }
+            targetElements[0].parentElement!.scrollIntoView({
+              behavior: 'smooth',
+            });
           }
-          targetElements[0].parentElement!.scrollIntoView({behavior: 'smooth'});
-        }
+        },
+        onError: (error) => {
+          this.error = error;
+        },
       },
-      onError: (error) => {
-        this.error = error;
-      },
-    });
+      request,
+    );
   }
 
   /** Listen to browser navigation events (go back/forward). */
@@ -116,6 +129,15 @@ export class Shell {
 
   showChannelProgressIndicator(): boolean {
     return this.channel.isBusy();
+  }
+
+  @HostListener('window:resize')
+  onResize() {
+    const userEvent = new UserEvent();
+    const resize = new ResizeEvent();
+    resize.setViewportSize(getViewportSize());
+    userEvent.setResize(resize);
+    this.channel.dispatch(userEvent);
   }
 }
 

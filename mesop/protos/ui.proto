@@ -14,7 +14,7 @@ message UiRequest {
 }
 
 message InitRequest {
-
+    optional ViewportSize viewport_size = 1;
 }
 
 message UserEvent {
@@ -31,6 +31,7 @@ message UserEvent {
         double double_value = 7;
         int32 int_value = 8;
         NavigationEvent navigation = 6;
+        ResizeEvent resize = 10;
         bytes bytes_value = 9;
     }
 }
@@ -106,7 +107,23 @@ message ArgPathSegment {
 }
 
 // This is a user-triggered navigation (e.g. go back/forwards) or a hot reload event.
-message NavigationEvent{}
+message NavigationEvent{
+    // Set the viewport size when it's a hot reload.
+    optional ViewportSize viewport_size = 1;
+}
+
+// Fired whenever a user resizes the viewport/browser.
+message ResizeEvent {
+    optional ViewportSize viewport_size = 1;
+}
+
+message ViewportSize {
+    // Viewport width, in pixels.
+    optional int32 width = 1;
+
+    // Viewport height, in pixels.
+    optional int32 height = 2;
+}
 
 // Sent from Python server to web client.
 // Multiple UiResponse messages may be sent in response to 1 UiRequest.
