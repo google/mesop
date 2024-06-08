@@ -139,9 +139,7 @@ def configure_flask_app(
           # the generator object.
           if result:
             for _ in result:
-              yield from render_loop(
-                path=ui_request.path, init_request=True, keep_alive=True
-              )
+              yield from render_loop(path=ui_request.path, init_request=True)
               runtime().context().set_previous_node_from_current_node()
               runtime().context().reset_current_node()
           else:
@@ -194,16 +192,14 @@ def configure_flask_app(
                 # the generator object.
                 if result:
                   for _ in result:
-                    yield from render_loop(
-                      path=path, init_request=True, keep_alive=True
-                    )
+                    yield from render_loop(path=path, init_request=True)
                     runtime().context().set_previous_node_from_current_node()
                     runtime().context().reset_current_node()
 
-          yield from render_loop(path=path, keep_alive=True)
+          yield from render_loop(path=path)
           runtime().context().set_previous_node_from_current_node()
           runtime().context().reset_current_node()
-        yield create_update_state_event(diff=True)          
+        yield create_update_state_event(diff=True)
         yield STREAM_END
       elif ui_request.HasField("editor_event"):
         # Prevent accidental usages of editor mode outside of

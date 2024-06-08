@@ -290,7 +290,7 @@ describe('applyStateDiff functionality', () => {
   it('applies data frame updates', () => {
     const state1 = JSON.stringify({
       data: {
-        '[pandas.DataFrame]':
+        '__pandas.DataFrame__':
           '{"schema":{"fields":[{"name":"index","type":"integer"},{"name":"Strings","type":"string"}],"primaryKey":["index"],"pandas_version":"1.4.0"},"data":[{"index":0,"Strings":"Hello"},{"index":1,"Strings":"World"}]}',
       },
     });
@@ -299,7 +299,7 @@ describe('applyStateDiff functionality', () => {
         'path': ['data'],
         'action': 'data_frame_changed',
         'value': {
-          '[pandas.DataFrame]':
+          '__pandas.DataFrame__':
             '{"schema":{"fields":[{"name":"index","type":"integer"},{"name":"Strings","type":"string"}],"primaryKey":["index"],"pandas_version":"1.4.0"},"data":[{"index":0,"Strings":"Hello"},{"index":1,"Strings":"Universe"}]}',
         },
       },
@@ -308,7 +308,7 @@ describe('applyStateDiff functionality', () => {
     expect(applyStateDiff(state1, diff)).toBe(
       JSON.stringify({
         data: {
-          '[pandas.DataFrame]':
+          '__pandas.DataFrame__':
             '{"schema":{"fields":[{"name":"index","type":"integer"},{"name":"Strings","type":"string"}],"primaryKey":["index"],"pandas_version":"1.4.0"},"data":[{"index":0,"Strings":"Hello"},{"index":1,"Strings":"Universe"}]}',
         },
       }),
