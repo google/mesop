@@ -1,7 +1,7 @@
 import base64
 import time
 import urllib.parse as urlparse
-from typing import Generator, Sequence
+from typing import Generator, Sequence, Optional
 
 from flask import Flask, Response, abort, request, stream_with_context
 
@@ -256,18 +256,22 @@ def configure_flask_app(
   return flask_app
 
 
-def is_same_site(url1: str | None, url2: str | None):
-  """
-  Determine if two URLs are the same site.
-  """
-  # If either URL is false-y, they are not the same site
-  # (because we need a real URL to have an actual site)
-  if not url1:
-    return False
-  if not url2:
-    return False
-  try:
-    p1, p2 = urlparse.urlparse(url1), urlparse.urlparse(url2)
-    return p1.hostname == p2.hostname
-  except ValueError:
-    return False
+def is_same_site(url1: Optional[str], url2: Optional[str]) -> bool:
+    """
+    Determine if two URLs belong to the same site by comparing their hostnames.
+
+    Args:
+    url1 (Optional[str]): The first URL to compare.
+    url2 (Optional[str]): The second URL to compare.
+
+    Returns:
+    bool: True if both URLs are from the same hostname, False otherwise, including if any URL is None.
+    """
+    if not url1 or not url2:
+        return False
+    try:
+        p1, p2 = urlparse(url1), urlparse(url2)
+        return p1.hostname == p2.hostname
+    except Exception:
+        # Return False if there is an error in parsing URLs
+        return False
