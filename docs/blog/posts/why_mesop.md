@@ -56,4 +56,4 @@ To demonstrate the range of UIs possible with Mesop, we built a demo gallery to 
 
 ## Try Mesop
 
-If this sounds intriguing, read the [Getting Started guide](../../getting_started.md) and try building your own Mesop app. [Share your feedback and contribute](https://github.com/google/mesop/issues) as we continue developing Mesop.
+If this sounds intriguing, read the [Getting Started guide](../../getting_started/installing.md) and try building your own Mesop app. [Share your feedback and contribute](https://github.com/google/mesop/issues) as we continue developing Mesop.

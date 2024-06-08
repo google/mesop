@@ -79,7 +79,9 @@ __Step 3:__ Run the app
 $ mesop main.py
 ```
 
-Learn more in [Getting Started](./getting_started.md).
+## Next Steps
+
+Learn more in [Getting Started](./getting_started/installing.md).
 
 ## Disclaimer
 

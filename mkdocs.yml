@@ -4,14 +4,16 @@ repo_name: google/mesop
 strict: true
 nav:
   - index.md
-  - Getting Started: getting_started.md
+  - Getting Started:
+      - Installing: getting_started/installing.md
+      - Quickstart: getting_started/quickstart.md
   - Guides:
       - Components: guides/components.md
+      - State Management: guides/state_management.md
       - Interactivity: guides/interactivity.md
       - Multi-Pages: guides/multi_pages.md
       - Deployment: guides/deployment.md
       - Web Security: guides/web_security.md
-      - Troubleshooting: guides/troubleshooting.md
       - Labs: guides/labs.md
   - Components:
       - High-level:
@@ -56,6 +58,7 @@ nav:
       - Commands:
           - Navigate: api/commands/navigate.md
           - Scroll into view: api/commands/scroll_into_view.md
+  - FAQ: faq.md
   - Demo Gallery 🔗: demo.md
   - Blog:
       - blog/index.md
@@ -107,6 +110,7 @@ extra_css:
   - stylesheets/extra.css
 markdown_extensions:
   - attr_list
+  - sane_lists
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
