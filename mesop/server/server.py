@@ -1,7 +1,7 @@
 import base64
 import time
 import urllib.parse as urlparse
-from typing import Generator, Sequence, Optional
+from typing import Generator, Optional, Sequence
 
 from flask import Flask, Response, abort, request, stream_with_context
 
