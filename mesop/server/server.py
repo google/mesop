@@ -273,5 +273,4 @@ def is_same_site(url1: Optional[str], url2: Optional[str]) -> bool:
     p1, p2 = urlparse.urlparse(url1), urlparse.urlparse(url2)
     return p1.hostname == p2.hostname
   except ValueError:
-    # Return False if there is an error in parsing URLs
     return False
