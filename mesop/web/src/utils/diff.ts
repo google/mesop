@@ -91,14 +91,14 @@ interface StateDiff {
 }
 
 // Applies state diffs to the state object.
-export function applyStateDiff(state_json: string, diff_json: string): string {
+export function applyStateDiff(stateJson: string, diffJson: string): string {
   // An empty array indicates no changes, so no need to apply diffs.
-  if (diff_json === '[]') {
-    return state_json;
+  if (diffJson === '[]') {
+    return stateJson;
   }
 
-  const root = JSON.parse(state_json) as object;
-  const diff = JSON.parse(diff_json) as StateDiff[];
+  const root = JSON.parse(stateJson) as object;
+  const diff = JSON.parse(diffJson) as StateDiff[];
 
   // Handle array deletions first. Deletions will appear in the diffs from lowest index
   // to highest index. To ensure indexes do not get moved, we perform deletions in
@@ -131,50 +131,50 @@ export function applyStateDiff(state_json: string, diff_json: string): string {
 
 // Updates value at path.
 function updateValue(root: object, path: (string | number)[], value: any) {
-  let object_segment = root;
+  let objectSegment = root;
   for (let i = 0; i < path.length; ++i) {
     if (i + 1 === path.length) {
       // @ts-ignore: Ignore type
-      object_segment[path[i]] = value;
+      objectSegment[path[i]] = value;
     } else {
       // @ts-ignore: Ignore type
-      object_segment = object_segment[path[i]];
+      objectSegment = objectSegment[path[i]];
     }
   }
 }
 
 // Adds item to the array at path.
 function addArrayValue(root: object, path: (string | number)[], value: any) {
-  let object_segment = root;
+  let objectSegment = root;
   for (let i = 0; i < path.length; ++i) {
     if (i + 1 === path.length) {
       // @ts-ignore: Ignore type
-      object_segment.splice(path[i], 0, value);
+      objectSegment.splice(path[i], 0, value);
     } else {
       // Edge case where the array does not exist yet, so we need to create an array
       // before we can append.
       //
       // @ts-ignore: Ignore type
-      if (object_segment[path[i]] === undefined && i + 2 === path.length) {
+      if (objectSegment[path[i]] === undefined && i + 2 === path.length) {
         // @ts-ignore: Ignore type
-        object_segment[path[i]] = [];
+        objectSegment[path[i]] = [];
       }
       // @ts-ignore: Ignore type
-      object_segment = object_segment[path[i]];
+      objectSegment = objectSegment[path[i]];
     }
   }
 }
 
 // Removes item from array at path.
 function removeArrayValue(root: object, path: (string | number)[]) {
-  let object_segment = root;
+  let objectSegment = root;
   for (let i = 0; i < path.length; ++i) {
     if (i + 1 === path.length) {
       // @ts-ignore: Ignore type
-      object_segment.splice(path[i], 1);
+      objectSegment.splice(path[i], 1);
     } else {
       // @ts-ignore: Ignore type
-      object_segment = object_segment[path[i]];
+      objectSegment = objectSegment[path[i]];
     }
   }
 }
@@ -185,28 +185,28 @@ function updateObjectValue(
   path: (string | number)[],
   value: any,
 ) {
-  let object_segment = root;
+  let objectSegment = root;
   for (let i = 0; i < path.length; ++i) {
     if (i + 1 === path.length) {
       // @ts-ignore: Ignore type
-      object_segment[path[i]] = value;
+      objectSegment[path[i]] = value;
     } else {
       // @ts-ignore: Ignore type
-      object_segment = object_segment[path[i]];
+      objectSegment = objectSegment[path[i]];
     }
   }
 }
 
 // Removes value from object at path.
 function removeObjectValue(root: object, path: (string | number)[]) {
-  let object_segment = root;
+  let objectSegment = root;
   for (let i = 0; i < path.length; ++i) {
     if (i + 1 === path.length) {
       // @ts-ignore: Ignore type
-      delete object_segment[path[i]];
+      delete objectSegment[path[i]];
     } else {
       // @ts-ignore: Ignore type
-      object_segment = object_segment[path[i]];
+      objectSegment = objectSegment[path[i]];
     }
   }
 }

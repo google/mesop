@@ -127,18 +127,10 @@ Did you forget to decorate your state class `{state.__name__}` with @stateclass?
 
   def diff_state(self) -> pb.States:
     states = pb.States()
-    for (key, state), previous_state in zip(
-      self._states.items(), self._previous_states.values()
+    for state, previous_state in zip(
+      self._states.values(), self._previous_states.values()
     ):
       states.states.append(pb.State(data=diff_state(previous_state, state)))
-      # If state has not changed no need to update the previous state since it should be
-      # the same.
-      #
-      # One thing to note is that there seems to be an issue multiple states with the
-      # same key can exist (i.e. usage in Mesop demo app). It's unclear if this causes
-      # problem here.
-      if state != self._previous_states[key]:
-        self._previous_states[key] = copy.deepcopy(state)
     return states
 
   def update_state(self, states: pb.States) -> None:
@@ -146,14 +138,6 @@ Did you forget to decorate your state class `{state.__name__}` with @stateclass?
       self._states.values(), self._previous_states.values(), states.states
     ):
       update_dataclass_from_json(state, proto_state.data)
-      # We should check if state and previous state are the same. There should be no
-      # need to update previous state if state has not changed.
-      #
-      # However, there seems to be an issue with multiple states containing same key in
-      # the dict. Not sure how that's even possible.
-      #
-      # If we add a check to only update if state has changed, then this increases the
-      # response payload for some reason.
       update_dataclass_from_json(previous_state, proto_state.data)
 
   def run_event_handler(

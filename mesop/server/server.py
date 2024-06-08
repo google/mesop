@@ -77,28 +77,6 @@ def configure_flask_app(
         error=pb.ServerError(exception=str(e), traceback=format_traceback())
       )
 
-  def create_update_state_event(diff: bool = False) -> str:
-    """Creates a state event to send to the client.
-
-    Args:
-      diff: If true, sends diffs instead of the full state objects
-
-    Returns:
-      serialized `pb.UiResponse`
-    """
-    return serialize(
-      pb.UiResponse(
-        update_state_event=pb.UpdateStateEvent(
-          states=runtime().context().diff_state()
-          if diff
-          else runtime().context().serialize_state(),
-          update_strategy=pb.UpdateStateEvent.UpdateStrategy.UPDATE_STRATEGY_DIFF
-          if diff
-          else pb.UpdateStateEvent.UpdateStrategy.UPDATE_STRATEGY_REPLACE,
-        )
-      )
-    )
-
   def yield_errors(error: pb.ServerError) -> Generator[str, None, None]:
     if not runtime().debug_mode:
       error.ClearField("traceback")
@@ -114,10 +92,6 @@ def configure_flask_app(
 
     yield serialize(ui_response)
     yield STREAM_END
-
-  def serialize(response: pb.UiResponse) -> str:
-    encoded = base64.b64encode(response.SerializeToString()).decode("utf-8")
-    return f"data: {encoded}\n\n"
 
   def generate_data(ui_request: pb.UiRequest) -> Generator[str, None, None]:
     try:
@@ -268,6 +242,34 @@ def configure_flask_app(
       return response
 
   return flask_app
+
+
+def serialize(response: pb.UiResponse) -> str:
+  encoded = base64.b64encode(response.SerializeToString()).decode("utf-8")
+  return f"data: {encoded}\n\n"
+
+
+def create_update_state_event(diff: bool = False) -> str:
+  """Creates a state event to send to the client.
+
+  Args:
+    diff: If true, sends diffs instead of the full state objects
+
+  Returns:
+    serialized `pb.UiResponse`
+  """
+  return serialize(
+    pb.UiResponse(
+      update_state_event=pb.UpdateStateEvent(
+        states=runtime().context().diff_state()
+        if diff
+        else runtime().context().serialize_state(),
+        update_strategy=pb.UpdateStateEvent.UpdateStrategy.UPDATE_STRATEGY_DIFF
+        if diff
+        else pb.UpdateStateEvent.UpdateStrategy.UPDATE_STRATEGY_REPLACE,
+      )
+    )
+  )
 
 
 def is_same_site(url1: str | None, url2: str | None):
