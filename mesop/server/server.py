@@ -270,9 +270,7 @@ def is_same_site(url1: str | None, url2: str | None):
   """
   # If either URL is false-y, they are not the same site
   # (because we need a real URL to have an actual site)
-  if not url1:
-    return False
-  if not url2:
+  if not url1 or not url2:
     return False
   try:
     p1, p2 = urlparse.urlparse(url1), urlparse.urlparse(url2)
