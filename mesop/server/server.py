@@ -275,4 +275,3 @@ def is_same_site(url1: Optional[str], url2: Optional[str]) -> bool:
   except Exception:
     # Return False if there is an error in parsing URLs
     return False
-
