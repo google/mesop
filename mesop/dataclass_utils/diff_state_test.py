@@ -355,7 +355,7 @@ def test_diff_pandas():
       "path": ["data"],
       "action": "data_frame_changed",
       "value": {
-        "[pandas.DataFrame]": '{"schema":{"fields":[{"name":"index","type":"integer"},{"name":"Strings","type":"string"}],"primaryKey":["index"],"pandas_version":"1.4.0"},"data":[{"index":0,"Strings":"Hello"},{"index":1,"Strings":"Universe"}]}'
+        "__pandas.DataFrame__": '{"schema":{"fields":[{"name":"index","type":"integer"},{"name":"Strings","type":"string"}],"primaryKey":["index"],"pandas_version":"1.4.0"},"data":[{"index":0,"Strings":"Hello"},{"index":1,"Strings":"Universe"}]}'
       },
     }
   ]
@@ -380,7 +380,7 @@ def test_diff_nested_pandas():
     {
       "path": ["data", "test", 1],
       "value": {
-        "[pandas.DataFrame]": '{"schema":{"fields":[{"name":"index","type":"integer"},{"name":"Strings","type":"string"}],"primaryKey":["index"],"pandas_version":"1.4.0"},"data":[{"index":0,"Strings":"Hola"},{"index":1,"Strings":"Universe"}]}'
+        "__pandas.DataFrame__": '{"schema":{"fields":[{"name":"index","type":"integer"},{"name":"Strings","type":"string"}],"primaryKey":["index"],"pandas_version":"1.4.0"},"data":[{"index":0,"Strings":"Hola"},{"index":1,"Strings":"Universe"}]}'
       },
       "action": "iterable_item_added",
     },
@@ -388,7 +388,7 @@ def test_diff_nested_pandas():
       "path": ["data", "test", 0],
       "action": "data_frame_changed",
       "value": {
-        "[pandas.DataFrame]": '{"schema":{"fields":[{"name":"index","type":"integer"},{"name":"Strings","type":"string"}],"primaryKey":["index"],"pandas_version":"1.4.0"},"data":[{"index":0,"Strings":"Hello"},{"index":1,"Strings":"Universe"}]}'
+        "__pandas.DataFrame__": '{"schema":{"fields":[{"name":"index","type":"integer"},{"name":"Strings","type":"string"}],"primaryKey":["index"],"pandas_version":"1.4.0"},"data":[{"index":0,"Strings":"Hello"},{"index":1,"Strings":"Universe"}]}'
       },
     },
   ]
