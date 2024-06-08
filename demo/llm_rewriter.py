@@ -93,6 +93,9 @@ def page():
                 with me.tooltip(message="Rewrite response"):
                   me.icon(icon="edit_note")
 
+        if state.in_progress:
+          with me.box(key="scroll-to", style=me.Style(height=300)):
+            pass
       with me.box(style=_STYLE_CHAT_INPUT_BOX):
         with me.box(style=me.Style(flex_grow=1)):
           me.input(
@@ -187,6 +190,10 @@ def on_click_submit_chat_msg(e: me.ClickEvent | me.EnterEvent):
   state.in_progress = True
   yield
 
+  me.scroll_into_view(key="scroll-to")
+  time.sleep(0.15)
+  yield
+
   start_time = time.time()
   output_message = respond_to_chat(input, state.output)
   assistant_message = ChatMessage(role=_ROLE_ASSISTANT)
@@ -198,6 +205,7 @@ def on_click_submit_chat_msg(e: me.ClickEvent | me.EnterEvent):
     if (time.time() - start_time) >= 0.25:
       start_time = time.time()
       yield
+
   state.in_progress = False
   yield
 
