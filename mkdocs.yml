@@ -59,7 +59,8 @@ nav:
   - Demo Gallery 🔗: demo.md
   - Blog:
       - blog/index.md
-  - Internal:
+  - Contributing:
+      - How-to Contribute: internal/contributing.md
       - Development: internal/development.md
       - Architecture: internal/architecture.md
       - Goals: goals.md
