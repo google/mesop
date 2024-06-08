@@ -184,33 +184,23 @@ def chat(
     state.in_progress = True
     yield
 
+    me.scroll_into_view(key="scroll-to")
+    time.sleep(0.15)
+    yield
+
     start_time = time.time()
     output_message = transform(input, state.output)
     assistant_message = ChatMessage(role=_ROLE_ASSISTANT)
     output.append(assistant_message)
     state.output = output
 
-    scroll_count = 0
     for content in output_message:
       assistant_message.content += content
       # TODO: 0.25 is an abitrary choice. In the future, consider making this adjustable.
       if (time.time() - start_time) >= 0.25:
         start_time = time.time()
-        if scroll_count < 2:
-          me.scroll_into_view(key="scroll-to")
-          scroll_count += 1
         yield
     state.in_progress = False
-
-    # If the content was generated too quickly, then the scroll action may not have run.
-    # This will scroll to the end of the message, so if it is a very long message, it will
-    # scroll too far. However, we'd assume that a long message would take longer to render
-    # if streamed.
-    if not scroll_count:
-      # Need to yield any remaining text first before we can scroll.
-      yield
-      time.sleep(0.25)
-      me.scroll_into_view(key="scroll-to")
     yield
 
   with me.box(style=_STYLE_APP_CONTAINER):
@@ -227,9 +217,10 @@ def chat(
                 me.text(msg.content, style=_STYLE_CHAT_BUBBLE_PLAINTEXT)
               else:
                 me.markdown(msg.content)
-        # Used for scrolling to new messages.
-        with me.box(key="scroll-to"):
-          pass
+
+        if state.in_progress:
+          with me.box(key="scroll-to", style=me.Style(height=300)):
+            pass
 
       with me.box(style=_STYLE_CHAT_INPUT_BOX):
         with me.box(style=me.Style(flex_grow=1)):
