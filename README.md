@@ -1,5 +1,9 @@
 # Mesop: Build delightful web apps quickly in Python 🚀
 
+- If you're interested in learning how to use Mesop, please [read our main docs](https://google.github.io/mesop/).
+
+- If you're interested in contributing to the core Mesop framework, please [read our contributing guide](https://google.github.io/mesop/contributing/).
+
 ### Used at Google for rapid internal app development
 
 Mesop is a Python-based UI framework that allows you to rapidly build web apps like demos and internal apps:

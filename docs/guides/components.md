@@ -1,6 +1,6 @@
 # Components
 
-Please read [Getting Started](../getting_started.md) before this as it explains the basics of components. This page provides an in-depth explanation of the different types of components in Mesop.
+Please read [Quickstart](../getting_started/quickstart.md) before this as it explains the basics of components. This page provides an in-depth explanation of the different types of components in Mesop.
 
 ## Kinds of components
 
@@ -117,4 +117,4 @@ def on_click(event: me.ClickEvent):
 
 !!! Tip "Use component key for reusable event handler"
 
-    This avoids a [subtle issue with using closure variables in event handlers](./troubleshooting.md#avoid-using-closure-variables-in-event-handler).
+    This avoids a [subtle issue with using closure variables in event handlers](./interactivity.md#avoid-using-closure-variables-in-event-handler).
