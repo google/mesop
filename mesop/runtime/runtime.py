@@ -154,11 +154,12 @@ def runtime():
   return _runtime
 
 
-def reset_runtime():
+def reset_runtime(without_hot_reload: bool = False):
   global _runtime
   old_runtime = _runtime
   _runtime = Runtime()
-  _runtime.is_hot_reload_in_progress = True
+  if not without_hot_reload:
+    _runtime.is_hot_reload_in_progress = True
   _runtime.hot_reload_counter = old_runtime.hot_reload_counter
   _runtime.debug_mode = old_runtime.debug_mode
   _runtime.component_fns = old_runtime.component_fns
