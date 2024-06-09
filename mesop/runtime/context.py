@@ -9,7 +9,10 @@ from mesop.dataclass_utils import (
   serialize_dataclass,
   update_dataclass_from_json,
 )
-from mesop.exceptions import MesopDeveloperException, MesopException
+from mesop.exceptions import (
+  MesopDeveloperException,
+  MesopException,
+)
 
 FLAGS = flags.FLAGS
 
@@ -33,6 +36,7 @@ class Context:
   _commands: list[pb.Command]
   _node_slot: pb.Component | None
   _node_slot_children_count: int | None
+  _viewport_size: pb.ViewportSize | None = None
 
   def __init__(
     self,
@@ -63,6 +67,16 @@ class Context:
     self._commands.append(
       pb.Command(scroll_into_view=pb.ScrollIntoViewCommand(key=key))
     )
+
+  def set_viewport_size(self, size: pb.ViewportSize):
+    self._viewport_size = size
+
+  def viewport_size(self) -> pb.ViewportSize:
+    if self._viewport_size is None:
+      raise MesopDeveloperException(
+        "Tried to retrieve viewport size before it was set."
+      )
+    return self._viewport_size
 
   def register_event_handler(self, fn_id: str, handler: Handler) -> None:
     if self._trace_mode:
@@ -143,9 +157,9 @@ Did you forget to decorate your state class `{state.__name__}` with @stateclass?
   def run_event_handler(
     self, event: pb.UserEvent
   ) -> Generator[None, None, None]:
-    if event.HasField("navigation"):
+    if event.HasField("navigation") or event.HasField("resize"):
       yield  # empty yield so there's one tick of the render loop
-      return  # return early b/c there's no event handler for hot reload
+      return  # return early b/c there's no event handler for these events.
 
     payload = cast(Any, event)
     handler = self._handlers.get(event.handler_id)

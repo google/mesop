@@ -1,37 +1,14 @@
----
-hide:
-  - navigation
----
+# Quickstart
 
-# Getting Started
+Let's build a simple interactive Mesop app.
 
-This guide will walk you step by step through building a simple interactive Mesop app.
+## Before you start
 
-## Installing Mesop
+Make sure you've installed Mesop, otherwise please follow the [Installing Guide](./installing.md).
 
-Run the following command in your terminal:
+## Text to text app
 
-```shell
-$ pip install mesop
-```
-
-## Running Mesop
-
-Copy the following hello world code into a file `hello_world.py`:
-
-```python title="hello_world.py"
---8<-- "mesop/examples/docs/hello_world.py"
-```
-
-Then run the following command in your terminal:
-
-```shell
-$ mesop hello_world.py
-```
-
-## Quickstart app
-
-The simplest way to get started with Mesop is to use the [`text_to_text` component](./components/text_to_text.md)
+The simplest way to get started with Mesop is to use the [`text_to_text` component](../components/text_to_text.md)
 
 ```python
 --8<-- "mesop/examples/text_to_text.py"
@@ -117,6 +94,6 @@ In summary, you've learned how to define a state class, an event handler and wir
 
 ## What's next
 
-At this point, you've learned all the basics of building a Mesop app and now you should be able to understand how [Text I/O is implemented](https://github.com/google/mesop/blob/main/mesop/labs/io.py) under the hood.
+At this point, you've learned all the basics of building a Mesop app and now you should be able to understand how [Text to Text is implemented](https://github.com/google/mesop/blob/main/mesop/labs/text_to_text.py) under the hood.
 
-To learn more about Mesop, I recommend reading the [Guides](./guides/components.md) and then spend time looking at the [examples on GitHub](https://github.com/google/mesop/tree/main/mesop/examples). As you build your own applications, you'll want to reference the [Components API reference](./components/button.md) docs.
+To learn more about Mesop, I recommend reading the [Guides](../guides/components.md) and then spend time looking at the [examples on GitHub](https://github.com/google/mesop/tree/main/mesop/examples). As you build your own applications, you'll want to reference the [Components API reference](../components/button.md) docs.

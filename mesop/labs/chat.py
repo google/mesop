@@ -184,11 +184,16 @@ def chat(
     state.in_progress = True
     yield
 
+    me.scroll_into_view(key="scroll-to")
+    time.sleep(0.15)
+    yield
+
     start_time = time.time()
     output_message = transform(input, state.output)
     assistant_message = ChatMessage(role=_ROLE_ASSISTANT)
     output.append(assistant_message)
     state.output = output
+
     for content in output_message:
       assistant_message.content += content
       # TODO: 0.25 is an abitrary choice. In the future, consider making this adjustable.
@@ -212,6 +217,10 @@ def chat(
                 me.text(msg.content, style=_STYLE_CHAT_BUBBLE_PLAINTEXT)
               else:
                 me.markdown(msg.content)
+
+        if state.in_progress:
+          with me.box(key="scroll-to", style=me.Style(height=300)):
+            pass
 
       with me.box(style=_STYLE_CHAT_INPUT_BOX):
         with me.box(style=me.Style(flex_grow=1)):
