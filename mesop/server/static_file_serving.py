@@ -32,6 +32,7 @@ def configure_static_file_serving(
     return get_runfile_location(safe_path)
 
   def retrieve_index_html() -> io.BytesIO | str:
+    page_config = runtime().get_page_config(path=request.path)
     file_path = get_path("index.html")
     with open(file_path) as file:
       lines = file.readlines()
@@ -45,6 +46,18 @@ def configure_static_file_serving(
       ):
         lines[i] = (
           f'<script src="{livereload_script_url}" nonce={g.csp_nonce}></script>\n'
+        )
+
+      if (
+        page_config
+        and page_config.stylesheets
+        and line.strip() == "<!-- Inject stylesheet (if needed) -->"
+      ):
+        lines[i] = "\n".join(
+          [
+            f'<link href="{stylesheet}" rel="stylesheet">'
+            for stylesheet in page_config.stylesheets
+          ]
         )
 
     # Create a BytesIO object from the modified lines

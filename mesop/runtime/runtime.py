@@ -28,6 +28,7 @@ OnLoadHandler = Callable[[LoadEvent], None | Generator[None, None, None]]
 class PageConfig:
   page_fn: Callable[[], None]
   title: str
+  stylesheets: list[str]
   security_policy: SecurityPolicy
   on_load: OnLoadHandler | None
 

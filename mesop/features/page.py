@@ -8,6 +8,7 @@ def page(
   *,
   path: str = "/",
   title: str | None = None,
+  stylesheets: list[str] | None = None,
   security_policy: SecurityPolicy | None = None,
   on_load: OnLoadHandler | None = None,
 ) -> Callable[[Callable[[], None]], Callable[[], None]]:
@@ -18,6 +19,7 @@ def page(
   Args:
     path: The URL path for the page. Defaults to "/".
     title: The title of the page. If None, a default title is generated.
+    stylesheets: List of stylesheet URLs to load.
     security_policy: The security policy for the page. If None, a default strict security policy is used.
     on_load: An optional event handler to be called when the page is loaded.
 
@@ -29,11 +31,15 @@ def page(
     def wrapper() -> None:
       return func()
 
+    # Note: this will be replaced downstream, so do not inline/rename.
+    default_stylesheets = []
+
     runtime().register_page(
       path=path,
       page_config=PageConfig(
         page_fn=wrapper,
         title=title or f"Mesop: {path}",
+        stylesheets=stylesheets or default_stylesheets,
         security_policy=security_policy
         if security_policy
         else SecurityPolicy(),
