@@ -90,7 +90,7 @@ load("@bazel_skylib//:workspace.bzl", "bazel_skylib_workspace")
 
 bazel_skylib_workspace()
 
-# Using an old verison of protobuf due to issue with protobuf javascript ERR:
+# Using an old version of protobuf due to issue with protobuf javascript ERR:
 # In file included from external/com_google_protobuf_javascript/generator/protoc-gen-js.cc:33:
 # external/com_google_protobuf_javascript/generator/js_generator.h:39:10: fatal error: 'google/protobuf/stubs/logging.h' file not found
 # #include <google/protobuf/stubs/logging.h>
