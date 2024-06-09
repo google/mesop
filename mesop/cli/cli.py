@@ -102,6 +102,10 @@ def main(argv: Sequence[str]):
     for section in main.ALL_SECTIONS:
       for example in section.examples:
         demo_modules.append(example.name)
+
+    # Need to reset runtime so that stateclasses registered by demo
+    # aren't double-registered when executing the main module.x
+    reset_runtime(without_hot_reload=True)
   try:
     execute_main_module()
   except Exception as e:
