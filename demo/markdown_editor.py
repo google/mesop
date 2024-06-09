@@ -18,7 +18,7 @@ class Note:
 
 @me.stateclass
 class State:
-  notes: list[Note] = field(default_factory=lambda: Note(content=_INTRO_TEXT))
+  notes: list[Note] = field(default_factory=lambda: [Note(content=_INTRO_TEXT)])
   selected_note_index: int = 0
   selected_note_content: str = _INTRO_TEXT
   show_preview: bool = True
