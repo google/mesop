@@ -258,15 +258,18 @@ def create_update_state_event(diff: bool = False) -> str:
   Returns:
     serialized `pb.UiResponse`
   """
+  if diff:
+    return serialize(
+      pb.UiResponse(
+        update_state_event=pb.UpdateStateEvent(
+          diff_states=runtime().context().diff_state()
+        )
+      )
+    )
   return serialize(
     pb.UiResponse(
       update_state_event=pb.UpdateStateEvent(
-        states=runtime().context().diff_state()
-        if diff
-        else runtime().context().serialize_state(),
-        update_strategy=pb.UpdateStateEvent.UpdateStrategy.UPDATE_STRATEGY_DIFF
-        if diff
-        else pb.UpdateStateEvent.UpdateStrategy.UPDATE_STRATEGY_REPLACE,
+        full_states=runtime().context().serialize_state()
       )
     )
   )

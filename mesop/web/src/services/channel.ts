@@ -124,28 +124,30 @@ export class Channel {
         console.debug('Server event: ', uiResponse.toObject());
         switch (uiResponse.getTypeCase()) {
           case UiResponse.TypeCase.UPDATE_STATE_EVENT: {
-            const states = uiResponse.getUpdateStateEvent()!.getStates()!;
-
-            if (states === undefined) {
-              console.error('Update state event is empty.');
-              return;
-            }
-
-            if (
-              uiResponse.getUpdateStateEvent()!.getUpdateStrategy() ===
-              UpdateStateEvent.UpdateStrategy.UPDATE_STRATEGY_DIFF
-            ) {
-              // `this.states` should be populated at this point since the first update
-              // from the server should be `UPDATE_STRATEGY_REPLACE`.
-              for (let i = 0; i < states.getStatesList().length; ++i) {
-                const state = applyStateDiff(
-                  this.states.getStatesList()[i].getData() as string,
-                  states.getStatesList()[i].getData() as string,
-                );
-                this.states.getStatesList()[i].setData(state);
+            switch (uiResponse.getUpdateStateEvent()!.getTypeCase()) {
+              case UpdateStateEvent.TypeCase.FULL_STATES: {
+                this.states = uiResponse
+                  .getUpdateStateEvent()!
+                  .getFullStates()!;
+                break;
               }
-            } else {
-              this.states = states;
+              case UpdateStateEvent.TypeCase.DIFF_STATES: {
+                const states = uiResponse
+                  .getUpdateStateEvent()!
+                  .getDiffStates()!;
+                // `this.states` should be populated at this point since the first update
+                // from the server should be the full state.
+                for (let i = 0; i < states.getStatesList().length; ++i) {
+                  const state = applyStateDiff(
+                    this.states.getStatesList()[i].getData() as string,
+                    states.getStatesList()[i].getData() as string,
+                  );
+                  this.states.getStatesList()[i].setData(state);
+                }
+                break;
+              }
+              case UpdateStateEvent.TypeCase.TYPE_NOT_SET:
+                throw new Error('No state event data set');
             }
             break;
           }

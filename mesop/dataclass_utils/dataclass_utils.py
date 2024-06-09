@@ -15,6 +15,19 @@ _DIFF_ACTION_DATA_FRAME_CHANGED = "data_frame_changed"
 C = TypeVar("C")
 
 
+def _check_has_pandas():
+  """Checks if pandas exists since it is an optional dependency for Mesop."""
+  try:
+    import pandas  # noqa: F401
+
+    return True
+  except ImportError:
+    return False
+
+
+_has_pandas = _check_has_pandas()
+
+
 def dataclass_with_defaults(cls: Type[C]) -> Type[C]:
   """
   Provides defaults for every attribute in a dataclass (recursively) so
@@ -131,13 +144,11 @@ def decode_mesop_json_state_hook(dct):
 
   One thing to note is that pandas.NA becomes numpy.nan during deserialization.
   """
-  try:
+  if _has_pandas:
     import pandas as pd
 
     if _PANDAS_OBJECT_KEY in dct:
       return pd.read_json(StringIO(dct[_PANDAS_OBJECT_KEY]), orient="table")
-  except ImportError:
-    pass
   return dct
 
 
@@ -184,9 +195,8 @@ def diff_state(state1: Any, state2: Any) -> str:
 
   custom_actions = []
 
-  # Only use the `DataFrameOperator` if the state class has DataFrames since we don't
-  # want to import Pandas unnecessarily.
-  if "DataFrame" in str(state1.__class__.__annotations__):
+  # Only use the `DataFrameOperator` if pandas exists.
+  if _has_pandas:
     differences = DeepDiff(
       state1, state2, custom_operators=[DataFrameOperator()]
     )

@@ -156,14 +156,10 @@ message RenderEvent {
 
 // UI response event for updating state.
 message UpdateStateEvent {
-    optional States states = 1;
-    enum UpdateStrategy {
-        // Data contains full JSON state.
-        UPDATE_STRATEGY_REPLACE = 0;
-        // Data contains diff of JSON state to merge.
-        UPDATE_STRATEGY_DIFF = 1;
+    oneof type {
+        States full_states = 1;
+        States diff_states = 2;
     }
-    optional UpdateStrategy update_strategy = 2;
 }
 
 message Command {
