@@ -132,9 +132,7 @@ def configure_flask_app(
         ):
           runtime().context().set_viewport_size(event.navigation.viewport_size)
         runtime().context().update_state(event.states)
-        for _ in render_loop(
-          path=ui_request.path, trace_mode=True
-        ):
+        for _ in render_loop(path=ui_request.path, trace_mode=True):
           pass
         if ui_request.user_event.handler_id:
           runtime().context().set_previous_node_from_current_node()
