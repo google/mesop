@@ -1,6 +1,12 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 import mesop as me
+
+_INTRO_TEXT = """
+# Mesop Markdown Editor Example
+
+This is example shows how to make a simple markdown editor.
+""".strip()
 
 
 @dataclass(kw_only=True)
@@ -12,9 +18,9 @@ class Note:
 
 @me.stateclass
 class State:
-  notes: list[Note]
-  selected_note_index: int
-  selected_note_content: str
+  notes: list[Note] = field(default_factory=lambda: [Note(content=_INTRO_TEXT)])
+  selected_note_index: int = 0
+  selected_note_content: str = _INTRO_TEXT
   show_preview: bool = True
 
 
@@ -27,12 +33,6 @@ class State:
 )
 def page():
   state = me.state(State)
-
-  # On load, add a starter note.
-  if not state.notes:
-    state.notes.append(Note(content=_INTRO_TEXT))
-    state.selected_note_content = state.notes[0].content
-    state.selected_note_index = 0
 
   with me.box(style=_style_container(state.show_preview)):
     # Note list column
@@ -81,13 +81,6 @@ def _render_note_excerpt(content: str) -> str:
   if len(content) <= _EXCERPT_CHAR_LIMIT:
     return content
   return content[:_EXCERPT_CHAR_LIMIT] + "..."
-
-
-_INTRO_TEXT = """
-# Mesop Markdown Editor Example
-
-This is example shows how to make a simple markdown editor.
-""".strip()
 
 
 # EVENT HANDLERS
