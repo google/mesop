@@ -1,8 +1,9 @@
-flask
 absl-py
-pydantic==1.10.13 # --no-binary pydantic
+deepdiff==6.7.1
+flask
 libcst==1.1.0
 markdown
 protobuf
+pydantic==1.10.13 # --no-binary pydantic
 pygments
 watchdog # used by mesop CLI for hot reloading

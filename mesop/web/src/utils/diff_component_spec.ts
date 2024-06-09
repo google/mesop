@@ -50,7 +50,7 @@ function createDefaultComponent() {
   return c;
 }
 
-describe('applyComponenDiff functionality', () => {
+describe('applyComponentDiff functionality', () => {
   it('applies no diffs when there are no diffs', () => {
     const c = createDefaultComponent();
     const diff = new ComponentDiff();

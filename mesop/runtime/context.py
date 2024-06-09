@@ -1,9 +1,11 @@
+import copy
 from typing import Any, Callable, Generator, TypeVar, cast
 
 from absl import flags
 
 import mesop.protos.ui_pb2 as pb
 from mesop.dataclass_utils import (
+  diff_state,
   serialize_dataclass,
   update_dataclass_from_json,
 )
@@ -28,6 +30,8 @@ Handler = Callable[[Any], Generator[None, None, None] | None]
 
 class Context:
   _states: dict[type[Any], object]
+  # Previous states is used for performing state diffs.
+  _previous_states: dict[type[Any], object]
   _handlers: dict[str, Handler]
   _commands: list[pb.Command]
   _node_slot: pb.Component | None
@@ -43,6 +47,7 @@ class Context:
     self._current_node = pb.Component()
     self._previous_node: pb.Component | None = None
     self._states = states
+    self._previous_states = copy.deepcopy(states)
     self._trace_mode = False
     self._handlers = {}
     self._commands = []
@@ -134,9 +139,20 @@ Did you forget to decorate your state class `{state.__name__}` with @stateclass?
       states.states.append(pb.State(data=serialize_dataclass(state)))
     return states
 
+  def diff_state(self) -> pb.States:
+    states = pb.States()
+    for state, previous_state in zip(
+      self._states.values(), self._previous_states.values()
+    ):
+      states.states.append(pb.State(data=diff_state(previous_state, state)))
+    return states
+
   def update_state(self, states: pb.States) -> None:
-    for state, proto_state in zip(self._states.values(), states.states):
+    for state, previous_state, proto_state in zip(
+      self._states.values(), self._previous_states.values(), states.states
+    ):
       update_dataclass_from_json(state, proto_state.data)
+      update_dataclass_from_json(previous_state, proto_state.data)
 
   def run_event_handler(
     self, event: pb.UserEvent

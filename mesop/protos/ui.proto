@@ -131,6 +131,7 @@ message UiResponse {
     oneof type {
         RenderEvent render = 1;
         ServerError error = 2;
+        UpdateStateEvent update_state_event = 3;
     }
 }
 
@@ -162,13 +163,20 @@ message ContextLine {
 
 message RenderEvent {
     optional Component root_component = 1;
-    optional ComponentDiff component_diff = 6;
-    optional string title = 5;
-    optional States states = 2;
-    repeated Command commands = 3;
+    optional ComponentDiff component_diff = 2;
+    optional string title = 3;
+    repeated Command commands = 4;
 
     // Only sent in editor mode:
-    repeated ComponentConfig component_configs = 4;
+    repeated ComponentConfig component_configs = 5;
+}
+
+// UI response event for updating state.
+message UpdateStateEvent {
+    oneof type {
+        States full_states = 1;
+        States diff_states = 2;
+    }
 }
 
 message Command {
@@ -195,6 +203,8 @@ message States {
 // Serialized state of application. Sent from Python server to web client.
 // Web client doesn't parse this data, it just sends it back to the server.
 message State {
+    // Can contain full JSON state or diffs. This depends on
+    // `UpdateStateEvent.UpdateStrategy`.
     optional string data = 1;
 }
 

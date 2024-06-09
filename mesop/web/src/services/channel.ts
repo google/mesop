@@ -3,6 +3,7 @@ import {
   ServerError,
   States,
   UiRequest,
+  UpdateStateEvent,
   UserEvent,
   Component as ComponentProto,
   UiResponse,
@@ -14,7 +15,7 @@ import {
 import {Logger} from '../dev_tools/services/logger';
 import {Title} from '@angular/platform-browser';
 import {SSE} from '../utils/sse';
-import {applyComponentDiff} from '../utils/diff';
+import {applyComponentDiff, applyStateDiff} from '../utils/diff';
 import {getViewportSize} from '../utils/viewport_size';
 
 // Pick 500ms as the minimum duration before showing a progress/busy indicator
@@ -46,7 +47,7 @@ export class Channel {
   private isWaitingTimeout: number | undefined;
   private eventSource!: SSE;
   private initParams!: InitParams;
-  private states!: States;
+  private states: States = new States();
   private rootComponent?: ComponentProto;
   private status!: ChannelStatus;
   private componentConfigs: readonly ComponentConfig[] = [];
@@ -118,8 +119,45 @@ export class Channel {
         const uiResponse = UiResponse.deserializeBinary(array);
         console.debug('Server event: ', uiResponse.toObject());
         switch (uiResponse.getTypeCase()) {
+          case UiResponse.TypeCase.UPDATE_STATE_EVENT: {
+            switch (uiResponse.getUpdateStateEvent()!.getTypeCase()) {
+              case UpdateStateEvent.TypeCase.FULL_STATES: {
+                this.states = uiResponse
+                  .getUpdateStateEvent()!
+                  .getFullStates()!;
+                break;
+              }
+              case UpdateStateEvent.TypeCase.DIFF_STATES: {
+                const states = uiResponse
+                  .getUpdateStateEvent()!
+                  .getDiffStates()!;
+
+                const numDiffStates = states.getStatesList().length;
+                const numStates = this.states.getStatesList().length;
+
+                if (numDiffStates !== numStates) {
+                  throw Error(
+                    `Number of diffs (${numDiffStates}) doesn't equal the number of states (${numStates}))`,
+                  );
+                }
+
+                // `this.states` should be populated at this point since the first update
+                // from the server should be the full state.
+                for (let i = 0; i < numDiffStates; ++i) {
+                  const state = applyStateDiff(
+                    this.states.getStatesList()[i].getData() as string,
+                    states.getStatesList()[i].getData() as string,
+                  );
+                  this.states.getStatesList()[i].setData(state);
+                }
+                break;
+              }
+              case UpdateStateEvent.TypeCase.TYPE_NOT_SET:
+                throw new Error('No state event data set');
+            }
+            break;
+          }
           case UiResponse.TypeCase.RENDER: {
-            this.states = uiResponse.getRender()!.getStates()!;
             const rootComponent = uiResponse.getRender()!.getRootComponent()!;
             const componentDiff = uiResponse.getRender()!.getComponentDiff()!;
 
