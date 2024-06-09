@@ -47,7 +47,7 @@ export class Channel {
   private isWaitingTimeout: number | undefined;
   private eventSource!: SSE;
   private initParams!: InitParams;
-  private states!: States;
+  private states: States = new States();
   private rootComponent?: ComponentProto;
   private status!: ChannelStatus;
   private componentConfigs: readonly ComponentConfig[] = [];
@@ -135,9 +135,19 @@ export class Channel {
                 const states = uiResponse
                   .getUpdateStateEvent()!
                   .getDiffStates()!;
+
+                const numDiffStates = states.getStatesList().length;
+                const numStates = this.states.getStatesList().length;
+
+                if (numDiffStates !== numStates) {
+                  throw Error(
+                    `Number of diffs (${numDiffStates}) doesn't equal the number of states (${numStates}))`,
+                  );
+                }
+
                 // `this.states` should be populated at this point since the first update
                 // from the server should be the full state.
-                for (let i = 0; i < states.getStatesList().length; ++i) {
+                for (let i = 0; i < numDiffStates; ++i) {
                   const state = applyStateDiff(
                     this.states.getStatesList()[i].getData() as string,
                     states.getStatesList()[i].getData() as string,
@@ -185,7 +195,7 @@ export class Channel {
             onRender(this.rootComponent, this.componentConfigs);
             this.logger.log({
               type: 'RenderLog',
-              states: this.states || new States(), // States is undefined on init render.
+              states: this.states,
               rootComponent: this.rootComponent,
             });
             break;
