@@ -12,12 +12,14 @@ def app():
   else:
     width = me.viewport_size().width
 
+  me.button("on_click should work", on_click=on_click)
+  me.text("Count: " + str(me.state(State).count))
   me.box(
     style=me.Style(
       width=width,
       height=40,
       background="blue",
-    )
+    ),
   )
 
   # Example of adaptive design:
@@ -30,3 +32,12 @@ def app():
       )
     ):
       me.text("Only shown on large screens")
+
+
+@me.stateclass
+class State:
+  count: int
+
+
+def on_click(e: me.ClickEvent):
+  me.state(State).count += 1

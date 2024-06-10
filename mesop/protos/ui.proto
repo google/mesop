@@ -25,6 +25,8 @@ message UserEvent {
 
     optional Key key = 3;
 
+    optional ViewportSize viewport_size = 11;
+
     oneof type {
         bool bool_value = 4;
         string string_value = 5;
@@ -108,13 +110,10 @@ message ArgPathSegment {
 
 // This is a user-triggered navigation (e.g. go back/forwards) or a hot reload event.
 message NavigationEvent{
-    // Set the viewport size when it's a hot reload.
-    optional ViewportSize viewport_size = 1;
 }
 
 // Fired whenever a user resizes the viewport/browser.
 message ResizeEvent {
-    optional ViewportSize viewport_size = 1;
 }
 
 message ViewportSize {
