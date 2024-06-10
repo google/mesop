@@ -23,3 +23,6 @@ pip install -r build_defs/requirements_lock.txt
 # Precommit support for Git (installs into venv)
 pip install pre-commit==3.7.1
 pre-commit install
+
+# Install playwright
+yarn playwright install
