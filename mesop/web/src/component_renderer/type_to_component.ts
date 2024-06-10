@@ -1,3 +1,4 @@
+import {HtmlComponent} from '../../../components/html/html';
 import {UploaderComponent} from '../../../components/uploader/uploader';
 import {EmbedComponent} from '../../../components/embed/embed';
 import {TableComponent} from '../../../components/table/table';
@@ -53,6 +54,7 @@ export class UserDefinedComponent implements BaseComponent {
 }
 
 export const typeToComponent = {
+  'html': HtmlComponent,
   'uploader': UploaderComponent,
   'embed': EmbedComponent,
   'table': TableComponent,

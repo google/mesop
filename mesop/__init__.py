@@ -56,6 +56,7 @@ from mesop.components.checkbox.checkbox import (
 from mesop.components.code.code import code as code
 from mesop.components.divider.divider import divider as divider
 from mesop.components.embed.embed import embed as embed
+from mesop.components.html.html import html as html
 from mesop.components.icon.icon import icon as icon
 from mesop.components.image.image import image as image
 from mesop.components.input.input import EnterEvent as EnterEvent
