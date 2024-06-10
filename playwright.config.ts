@@ -24,7 +24,7 @@ export default defineConfig({
   snapshotPathTemplate:
     '{testDir}/{testFileDir}/snapshots/{testFileName}_{arg}{ext}',
 
-  testMatch: 'e2e/*_test.ts',
+  testMatch: ['e2e/*_test.ts', 'demo/screenshot.ts'],
   testIgnore: 'scripts/**',
   /* Run tests in files in parallel */
   fullyParallel: true,

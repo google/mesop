@@ -7,8 +7,15 @@ package(
 py_library(
     name = "demo",
     srcs = glob(["*.py"]),
+    data = [":screenshots"],
     deps = [
         "//mesop",
         "//mesop/labs",
     ],
+)
+
+# Make source files available for distribution via pkg_npm
+filegroup(
+    name = "screenshots",
+    srcs = glob(["screenshots/*"]),
 )
