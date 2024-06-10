@@ -1,2 +1,6 @@
 <!-- always show controls, otherwise you can't interact with the audio. -->
-<audio controls [src]="config().getSrc()" [attr.autoplay]="config().getAutoplay()? 'autoplay' : null"></audio>
+<audio
+  controls
+  [src]="config().getSrc()"
+  [attr.autoplay]="config().getAutoplay()? 'autoplay' : null"
+></audio>

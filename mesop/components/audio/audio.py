@@ -4,10 +4,7 @@ from mesop.component_helpers import insert_component, register_native_component
 
 @register_native_component
 def audio(
-  *,
-  src: str | None = None,
-  key: str | None = None,
-  autoplay: bool = False
+  *, src: str | None = None, key: str | None = None, autoplay: bool = False
 ):
   """
   Creates an audio component.
@@ -20,8 +17,5 @@ def audio(
   insert_component(
     key=key,
     type_name="audio",
-    proto=audio_pb.AudioType(
-      src=src,
-      autoplay=autoplay
-    ),
+    proto=audio_pb.AudioType(src=src, autoplay=autoplay),
   )
