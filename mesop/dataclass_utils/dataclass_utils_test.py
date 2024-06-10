@@ -1,4 +1,5 @@
 from dataclasses import dataclass, field
+from datetime import datetime
 
 import numpy as np
 import pandas as pd
@@ -25,6 +26,8 @@ class B:
 class A:
   b: B = field(default_factory=B)
   list_b: list[B] = field(default_factory=list)
+  tuple_date: tuple[datetime, ...] = field(default_factory=tuple)
+  set_tuple: set[tuple[str, ...]] = field(default_factory=set)
   strs: list[str] = field(default_factory=list)
 
 
@@ -37,7 +40,29 @@ JSON_STR = """{"b": {"c": {"val": "<init>"}},
 "list_b": [
   {"c": {"val": "1"}},
   {"c": {"val": "2"}}
-], "strs": ["a", "b"]}"""
+],
+"tuple_date": {
+  "__tuple__": [
+     {"__datetime__": "1972-01-01T02:00:30"},
+     {"__datetime__": "1972-01-02T05:00:30"}
+  ]
+},
+"set_tuple": {
+  "__set__": [
+     {
+     "__tuple__":
+        [ "a", "b" ]
+    },
+    {
+     "__tuple__":
+        [ "c", "d" ]
+    }
+  ]
+},
+"date": {
+  "__datetime__": "1972-01-01T05:00:30"
+},
+"strs": ["a", "b"]}"""
 
 
 @dataclass_with_defaults
@@ -98,7 +123,10 @@ def test_dataclass_defaults_works_with_already_annotated_nested_class_fails_with
 
 def test_serialize_dataclass():
   val = serialize_dataclass(A())
-  assert val == """{"b": {"c": {"val": "<init>"}}, "list_b": [], "strs": []}"""
+  assert (
+    val
+    == """{"b": {"c": {"val": "<init>"}}, "list_b": [], "tuple_date": {"__tuple__": []}, "set_tuple": {"__set__": []}, "strs": []}"""
+  )
 
 
 def test_serialize_pandas_dataframe():
@@ -135,6 +163,11 @@ def test_update_dataclass_from_json_nested_dataclass():
 
   a = A()
   update_dataclass_from_json(a, JSON_STR)
+  assert a.set_tuple == {("a", "b"), ("c", "d")}
+  assert a.tuple_date == (
+    datetime(1972, 1, 1, 2, 0, 30),
+    datetime(1972, 1, 2, 5, 0, 30),
+  )
   assert a.b.c.val == "<init>"
 
 

@@ -1,5 +1,6 @@
 import json
 from dataclasses import asdict, dataclass, field, is_dataclass
+from datetime import datetime
 from io import StringIO
 from typing import Any, Type, TypeVar, cast, get_origin, get_type_hints
 
@@ -11,6 +12,9 @@ from mesop.exceptions import MesopException
 
 _PANDAS_OBJECT_KEY = "__pandas.DataFrame__"
 _DIFF_ACTION_DATA_FRAME_CHANGED = "data_frame_changed"
+_TUPLE_OBJECT_KEY = "__tuple__"
+_SET_OBJECT_KEY = "__set__"
+_DATETIME_OBJECT_KEY = "__datetime__"
 
 C = TypeVar("C")
 
@@ -116,6 +120,16 @@ class MesopJSONEncoder(json.JSONEncoder):
   deserialization back into a DataFrame.
   """
 
+  def encode_tuples(self, item):
+    if isinstance(item, tuple):
+      return {_TUPLE_OBJECT_KEY: item}
+    if isinstance(item, list):
+      return [self.encode_tuples(e) for e in item]
+    if isinstance(item, dict):
+      return {key: self.encode_tuples(value) for key, value in item.items()}
+    else:
+      return item
+
   def default(self, obj):
     try:
       import pandas as pd
@@ -126,12 +140,21 @@ class MesopJSONEncoder(json.JSONEncoder):
       pass
 
     if is_dataclass(obj):
-      return asdict(obj)
+      return self.encode_tuples(asdict(obj))
+
+    if isinstance(obj, datetime):
+      return {_DATETIME_OBJECT_KEY: obj.isoformat()}
+
+    if isinstance(obj, set):
+      return {_SET_OBJECT_KEY: self.encode_tuples(list(obj))}
 
     if isinstance(obj, type):
       return str(obj)
 
     return super().default(obj)
+
+  def encode(self, obj):
+    return super().encode(self.encode_tuples(obj))
 
 
 def decode_mesop_json_state_hook(dct):
@@ -149,6 +172,13 @@ def decode_mesop_json_state_hook(dct):
 
     if _PANDAS_OBJECT_KEY in dct:
       return pd.read_json(StringIO(dct[_PANDAS_OBJECT_KEY]), orient="table")
+  if _DATETIME_OBJECT_KEY in dct:
+    return datetime.fromisoformat(dct[_DATETIME_OBJECT_KEY])
+  if _SET_OBJECT_KEY in dct:
+    return set(dct[_SET_OBJECT_KEY])
+  if _TUPLE_OBJECT_KEY in dct:
+    return tuple(dct[_TUPLE_OBJECT_KEY])
+
   return dct
 
 

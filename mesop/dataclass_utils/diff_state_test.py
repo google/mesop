@@ -1,5 +1,6 @@
 import json
 from dataclasses import dataclass, field
+from datetime import datetime
 from typing import Optional
 
 import pandas as pd
@@ -433,6 +434,23 @@ def test_diff_bytes_fails():
 
   with pytest.raises(TypeError):
     diff_state(s1, s2)
+
+
+def test_diff_set_dates():
+  @dataclass
+  class C:
+    val1: set = field(default_factory=set)
+
+  s1 = C()
+  s2 = C(val1={datetime(1972, 2, 2)})
+
+  assert json.loads(diff_state(s1, s2)) == [
+    {
+      "path": ["val1"],
+      "value": {"__datetime__": "1972-02-02T00:00:00"},
+      "action": "set_item_added",
+    }
+  ]
 
 
 if __name__ == "__main__":
