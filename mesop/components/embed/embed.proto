@@ -3,5 +3,8 @@ syntax = "proto2";
 package mesop.components.embed;
 
 message EmbedType {
-    optional string src = 1;
+    oneof content {
+        string src = 1;
+        string html = 2;
+    }
 }

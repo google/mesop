@@ -1,4 +1,4 @@
-load("//build_defs:defaults.bzl", "ts_library")
+load("//build_defs:defaults.bzl", "ANGULAR_CORE_DEPS", "ts_library")
 
 package(
     default_visibility = ["//build_defs:mesop_internal"],
@@ -9,4 +9,5 @@ ts_library(
     srcs = glob([
         "*.ts",
     ]),
+    deps = ANGULAR_CORE_DEPS,
 )

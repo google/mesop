@@ -38,6 +38,8 @@ ts_library = _ts_library
 # Constants for deps
 ANGULAR_CORE_DEPS = [
     "@npm//@angular/compiler",
+    "@npm//@angular/core",
+    "@npm//@angular/platform-browser",
     "@npm//@angular/router",
 ]
 
