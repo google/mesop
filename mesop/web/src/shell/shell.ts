@@ -134,9 +134,7 @@ export class Shell {
   @HostListener('window:resize')
   onResize() {
     const userEvent = new UserEvent();
-    const resize = new ResizeEvent();
-    resize.setViewportSize(getViewportSize());
-    userEvent.setResize(resize);
+    userEvent.setResize(new ResizeEvent());
     this.channel.dispatch(userEvent);
   }
 }

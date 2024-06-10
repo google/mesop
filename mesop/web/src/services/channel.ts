@@ -208,6 +208,7 @@ export class Channel {
   }
 
   dispatch(userEvent: UserEvent) {
+    userEvent.setViewportSize(getViewportSize());
     // Every user event should have an event handler,
     // except for navigation and resize.
     if (
@@ -285,7 +286,7 @@ export class Channel {
     const userEvent = new UserEvent();
     userEvent.setStates(this.states);
     const navigationEvent = new NavigationEvent();
-    navigationEvent.setViewportSize(getViewportSize());
+    userEvent.setViewportSize(getViewportSize());
     userEvent.setNavigation(navigationEvent);
     request.setUserEvent(userEvent);
     this.init(this.initParams, request);

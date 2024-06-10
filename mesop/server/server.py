@@ -125,12 +125,7 @@ def configure_flask_app(
         yield STREAM_END
       elif ui_request.HasField("user_event"):
         event = ui_request.user_event
-        if event.HasField("resize"):
-          runtime().context().set_viewport_size(event.resize.viewport_size)
-        elif event.HasField("navigation") and event.navigation.HasField(
-          "viewport_size"
-        ):
-          runtime().context().set_viewport_size(event.navigation.viewport_size)
+        runtime().context().set_viewport_size(event.viewport_size)
         runtime().context().update_state(event.states)
         for _ in render_loop(path=ui_request.path, trace_mode=True):
           pass
