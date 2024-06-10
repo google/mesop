@@ -513,7 +513,7 @@ def header(demo_name: str | None = None):
           ),
         ):
           me.markdown(
-            "<a href='https://github.com/google/mesop/'>google/mesop</a>",
+            "<a href='https://github.com/google/mesop/' target='_blank'>google/mesop</a>",
             style=me.Style(
               font_size=18,
               margin=me.Margin(left=8, right=4, bottom=-16, top=-16),
