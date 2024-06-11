@@ -47,7 +47,7 @@ def configure_static_file_serving(
         # READ the file content
         lines[i] = "\n".join(
           [
-            f"<script nonce={g.csp_nonce}>{script}</script>"
+            f"<script type='module' nonce={g.csp_nonce}>{script}</script>"
             for script in runtime().js_scripts
           ]
         )
@@ -130,7 +130,7 @@ def configure_static_file_serving(
         "style-src-attr": "'unsafe-inline'",
         "script-src": f"'self' 'nonce-{g.csp_nonce}'",
         # https://angular.io/guide/security#enforcing-trusted-types
-        "trusted-types": "angular angular#unsafe-bypass mesop#custom-web-components",
+        "trusted-types": "angular angular#unsafe-bypass lit-html",
         "require-trusted-types-for": "'script'",
       }
     )

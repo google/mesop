@@ -247,11 +247,8 @@ export class ComponentRenderer {
       ? typeToComponent[typeName.getFnName()!] || UserDefinedComponent // Some core modules rely on UserDefinedComponent
       : UserDefinedComponent;
     if (typeName.getFnName()?.startsWith('<web>')) {
-      console.log('**TYPENAME', typeName);
       const customElementName = typeName.getFnName()!.slice('<web>'.length);
       const customElement = document.createElement(customElementName);
-      (customElement as any)['$$trustedHTMLFromStringBypass$$'] =
-        trustedHTMLFromStringBypass;
       this.customElement = customElement;
       this.updateCustomElement(customElement);
 
@@ -276,8 +273,6 @@ export class ComponentRenderer {
     userEvent.setHandlerId(customEvent.detail['handlerId']);
     userEvent.setKey(this.component.getKey());
     this.channel.dispatch(userEvent);
-
-    // this.channel.dispatch();
   };
 
   updateComponentRef() {
@@ -418,86 +413,4 @@ function isRegularComponent(component: ComponentProto) {
     component.getType() &&
     !(typeName.getCoreModule() && typeName.getFnName() === 'box')
   );
-}
-
-// Copied from:
-// https://github.com/angular/angular/blob/567c2f6d904667263a8657df7023c46d4979a23d/packages/core/src/util/security/trusted_types_bypass.ts#L29
-
-/**
- * The Trusted Types policy, or null if Trusted Types are not
- * enabled/supported, or undefined if the policy has not been created yet.
- */
-let policy: TrustedTypePolicy | null | undefined;
-
-/**
- * Returns the Trusted Types policy, or null if Trusted Types are not
- * enabled/supported. The first call to this function will create the policy.
- */
-function getPolicy(): TrustedTypePolicy | null {
-  if (policy === undefined) {
-    policy = null;
-    if ((window as any).trustedTypes) {
-      try {
-        policy = (
-          (window as any).trustedTypes as TrustedTypePolicyFactory
-        ).createPolicy('mesop#custom-web-components', {
-          createHTML: (s: string) => s,
-          createScript: (s: string) => s,
-          createScriptURL: (s: string) => s,
-        });
-      } catch {
-        // trustedTypes.createPolicy throws if called with a name that is
-        // already registered, even in report-only mode. Until the API changes,
-        // catch the error not to break the applications functionally. In such
-        // cases, the code will fall back to using strings.
-      }
-    }
-  }
-  return policy;
-}
-
-/**
- * Unsafely promote a string to a TrustedHTML, falling back to strings when
- * Trusted Types are not available.
- * @security This is a security-sensitive function; any use of this function
- * must go through security review. In particular, it must be assured that it
- * is only passed strings that come directly from custom sanitizers or the
- * bypassSecurityTrust* functions.
- */
-export function trustedHTMLFromStringBypass(
-  html: string,
-): TrustedHTML | string {
-  return getPolicy()?.createHTML(html) || html;
-}
-
-(window as any)['trustedHTMLFromStringBypass'] = trustedHTMLFromStringBypass;
-
-// copied from: https://github.com/angular/angular/blob/567c2f6d904667263a8657df7023c46d4979a23d/packages/core/src/util/security/trusted_type_defs.ts#L28
-
-export type TrustedHTML = string & {
-  __brand__: 'TrustedHTML';
-};
-export type TrustedScript = string & {
-  __brand__: 'TrustedScript';
-};
-export type TrustedScriptURL = string & {
-  __brand__: 'TrustedScriptURL';
-};
-
-export interface TrustedTypePolicyFactory {
-  createPolicy(
-    policyName: string,
-    policyOptions: {
-      createHTML?: (input: string) => string;
-      createScript?: (input: string) => string;
-      createScriptURL?: (input: string) => string;
-    },
-  ): TrustedTypePolicy;
-  getAttributeType(tagName: string, attribute: string): string | null;
-}
-
-export interface TrustedTypePolicy {
-  createHTML(input: string): TrustedHTML;
-  createScript(input: string): TrustedScript;
-  createScriptURL(input: string): TrustedScriptURL;
 }

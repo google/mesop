@@ -37,7 +37,7 @@ def foo_custom_component(
     style=style,
     properties={
       "value": value,
-      "handler-id": me.register_event_handler(on_event, CustomEvent),
+      "handlerId": me.register_event_handler(on_event, CustomEvent),
     },
   )
   pass
