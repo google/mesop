@@ -11,7 +11,7 @@ from mesop.exceptions import MesopException
 import base64 # Import base64 for encoding
 
 _PANDAS_OBJECT_KEY = "__pandas.DataFrame__"
-_BYTES_OBJECT_KEY = "__python.bytes.__" # Add new key for bytes
+_BYTES_OBJECT_KEY = "__python.bytes__" # Add new key for bytes
 _DIFF_ACTION_DATA_FRAME_CHANGED = "data_frame_changed"
 
 C = TypeVar("C")

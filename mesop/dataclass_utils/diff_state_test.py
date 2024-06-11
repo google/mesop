@@ -410,6 +410,23 @@ def test_diff_set():
   ]
 
 
+def test_diff_bytes():
+@dataclass
+class C:
+  val1: bytes = b"val1"
+
+s1 = C()
+s2 = C(val1=b"VAL1")
+
+assert json.loads(diff_state(s1, s2)) == [
+  {
+    "path": ["val1"],
+    "action": "values_changed",
+    "value": {"__python.bytes__": "VkFMMS=="},
+  }
+]
+
+
 def test_diff_not_dataclass():
   class C:
     val1: set[int] = field(default_factory=lambda: {1, 2, 3})
