@@ -163,6 +163,7 @@ Did you forget to decorate your state class `{state.__name__}` with @stateclass?
 
     payload = cast(Any, event)
     handler = self._handlers.get(event.handler_id)
+    print("RUN event - handler", handler)
     if handler:
       result = handler(payload)
       if result is not None:

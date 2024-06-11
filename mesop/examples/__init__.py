@@ -5,6 +5,7 @@ from mesop.examples import (
 from mesop.examples import buttons as buttons
 from mesop.examples import checkbox_and_radio as checkbox_and_radio
 from mesop.examples import composite as composite
+from mesop.examples import custom_component as custom_component
 from mesop.examples import custom_font as custom_font
 from mesop.examples import docs as docs
 from mesop.examples import dynamic_values as dynamic_values

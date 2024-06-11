@@ -296,6 +296,10 @@ message Type {
     optional int32 type_index = 7;
 }
 
+message WebComponentType {
+    optional string properties_json = 1;
+}
+
 // Represents user-defined components.
 // This is useful for editor/devtools support.
 message UserDefinedType {

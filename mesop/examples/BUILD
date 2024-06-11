@@ -40,6 +40,7 @@ py_library(
         "//mesop/components/box/e2e",
         "//mesop/components/checkbox/e2e",
         "//mesop/components/text/e2e",
+        "//mesop/examples/custom_component",
         "//mesop/examples/docs",
         "//mesop/examples/integrations",
         "//mesop/examples/shared",

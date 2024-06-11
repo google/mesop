@@ -1,5 +1,6 @@
 import hashlib
 import inspect
+import json
 from functools import wraps
 from typing import Any, Callable, Generator, Type, TypeVar, cast, overload
 
@@ -227,6 +228,23 @@ def insert_composite_component(
   )
 
 
+def insert_web_component(
+  name: str,
+  properties: dict[str, Any],
+  key: str | None = None,
+  style: Style | None = None,
+):
+  type = pb.WebComponentType(properties_json=json.dumps(properties))
+  return insert_component(
+    # Prefix with <web> to ensure there's never any overlap.
+    type_name="<web>" + name,
+    proto=type,
+    key=key,
+    style=style,
+  )
+
+
+# Remove insert_custom_component?
 def insert_custom_component(
   component_name: str,
   proto: Message,

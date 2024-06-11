@@ -13,6 +13,7 @@ import {CommonModule} from '@angular/common';
 import {
   Component as ComponentProto,
   UserEvent,
+  WebComponentType,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 import {ComponentLoader} from './component_loader';
 import {BoxType} from 'mesop/mesop/components/box/box_jspb_proto_pb/mesop/components/box/box_pb';
@@ -36,6 +37,7 @@ import {formatStyle} from '../utils/styles';
 import {isComponentNameEquals} from '../utils/proto';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {TemplatePortal} from '@angular/cdk/portal';
+import {jsonParse} from '../utils/strict_types';
 
 const CORE_NAMESPACE = 'me';
 
@@ -69,6 +71,7 @@ export class ComponentRenderer {
   isEditorMode: boolean;
   isEditorOverlayOpen = false;
   overlayRef?: OverlayRef;
+  customElement: HTMLElement | undefined;
 
   constructor(
     private channel: Channel,
@@ -143,6 +146,10 @@ export class ComponentRenderer {
   }
 
   ngOnChanges() {
+    if (this.customElement) {
+      this.updateCustomElement(this.customElement);
+      return;
+    }
     if (isRegularComponent(this.component)) {
       this.updateComponentRef();
       return;
@@ -154,6 +161,26 @@ export class ComponentRenderer {
     }
 
     this.computeStyles();
+  }
+
+  updateCustomElement(customElement: HTMLElement) {
+    const webComponentType = WebComponentType.deserializeBinary(
+      this.component.getType()!.getValue() as unknown as Uint8Array,
+    );
+    const jsonObj = jsonParse(webComponentType.getPropertiesJson()!) as object;
+    for (const key of Object.keys(jsonObj)) {
+      customElement.setAttribute(key, (jsonObj as any)[key]);
+    }
+    const style = this.component.getStyle()!;
+    if (style) {
+      (customElement as any)['style'] = formatStyle(style);
+    }
+    customElement.removeEventListener(
+      'mesop-event',
+      this.dispatchCustomUserEvent,
+    );
+    customElement.addEventListener('mesop-event', this.dispatchCustomUserEvent);
+    // TODO: clean up event listener
   }
 
   ngDoCheck() {
@@ -219,14 +246,39 @@ export class ComponentRenderer {
     const componentClass = typeName.getCoreModule()
       ? typeToComponent[typeName.getFnName()!] || UserDefinedComponent // Some core modules rely on UserDefinedComponent
       : UserDefinedComponent;
-    // Need to insert at insertionRef and *not* viewContainerRef, otherwise
-    // the component (e.g. <mesop-text> will not be properly nested inside <component-renderer>).
-    this._componentRef = this.insertionRef.createComponent(
-      componentClass, // If it's an unrecognized type, we assume it's a user-defined component
-      options,
-    );
-    this.updateComponentRef();
+    if (typeName.getFnName()?.startsWith('<web>')) {
+      console.log('**TYPENAME', typeName);
+      const customElementName = typeName.getFnName()!.slice('<web>'.length);
+      const customElement = document.createElement(customElementName);
+      (customElement as any)['$$trustedHTMLFromStringBypass$$'] =
+        trustedHTMLFromStringBypass;
+      this.customElement = customElement;
+      this.updateCustomElement(customElement);
+
+      this.insertionRef.element.nativeElement.parentElement.appendChild(
+        customElement,
+      );
+    } else {
+      // Need to insert at insertionRef and *not* viewContainerRef, otherwise
+      // the component (e.g. <mesop-text> will not be properly nested inside <component-renderer>).
+      this._componentRef = this.insertionRef.createComponent(
+        componentClass, // If it's an unrecognized type, we assume it's a user-defined component
+        options,
+      );
+      this.updateComponentRef();
+    }
   }
+
+  dispatchCustomUserEvent = (event: Event) => {
+    const customEvent = event as CustomEvent;
+    const userEvent = new UserEvent();
+    userEvent.setStringValue(JSON.stringify(customEvent.detail['payload']));
+    userEvent.setHandlerId(customEvent.detail['handlerId']);
+    userEvent.setKey(this.component.getKey());
+    this.channel.dispatch(userEvent);
+
+    // this.channel.dispatch();
+  };
 
   updateComponentRef() {
     if (this._componentRef) {
@@ -366,4 +418,86 @@ function isRegularComponent(component: ComponentProto) {
     component.getType() &&
     !(typeName.getCoreModule() && typeName.getFnName() === 'box')
   );
+}
+
+// Copied from:
+// https://github.com/angular/angular/blob/567c2f6d904667263a8657df7023c46d4979a23d/packages/core/src/util/security/trusted_types_bypass.ts#L29
+
+/**
+ * The Trusted Types policy, or null if Trusted Types are not
+ * enabled/supported, or undefined if the policy has not been created yet.
+ */
+let policy: TrustedTypePolicy | null | undefined;
+
+/**
+ * Returns the Trusted Types policy, or null if Trusted Types are not
+ * enabled/supported. The first call to this function will create the policy.
+ */
+function getPolicy(): TrustedTypePolicy | null {
+  if (policy === undefined) {
+    policy = null;
+    if ((window as any).trustedTypes) {
+      try {
+        policy = (
+          (window as any).trustedTypes as TrustedTypePolicyFactory
+        ).createPolicy('mesop#custom-web-components', {
+          createHTML: (s: string) => s,
+          createScript: (s: string) => s,
+          createScriptURL: (s: string) => s,
+        });
+      } catch {
+        // trustedTypes.createPolicy throws if called with a name that is
+        // already registered, even in report-only mode. Until the API changes,
+        // catch the error not to break the applications functionally. In such
+        // cases, the code will fall back to using strings.
+      }
+    }
+  }
+  return policy;
+}
+
+/**
+ * Unsafely promote a string to a TrustedHTML, falling back to strings when
+ * Trusted Types are not available.
+ * @security This is a security-sensitive function; any use of this function
+ * must go through security review. In particular, it must be assured that it
+ * is only passed strings that come directly from custom sanitizers or the
+ * bypassSecurityTrust* functions.
+ */
+export function trustedHTMLFromStringBypass(
+  html: string,
+): TrustedHTML | string {
+  return getPolicy()?.createHTML(html) || html;
+}
+
+(window as any)['trustedHTMLFromStringBypass'] = trustedHTMLFromStringBypass;
+
+// copied from: https://github.com/angular/angular/blob/567c2f6d904667263a8657df7023c46d4979a23d/packages/core/src/util/security/trusted_type_defs.ts#L28
+
+export type TrustedHTML = string & {
+  __brand__: 'TrustedHTML';
+};
+export type TrustedScript = string & {
+  __brand__: 'TrustedScript';
+};
+export type TrustedScriptURL = string & {
+  __brand__: 'TrustedScriptURL';
+};
+
+export interface TrustedTypePolicyFactory {
+  createPolicy(
+    policyName: string,
+    policyOptions: {
+      createHTML?: (input: string) => string;
+      createScript?: (input: string) => string;
+      createScriptURL?: (input: string) => string;
+    },
+  ): TrustedTypePolicy;
+  getAttributeType(tagName: string, attribute: string): string | null;
+}
+
+export interface TrustedTypePolicy {
+  createHTML(input: string): TrustedHTML;
+  createScript(input: string): TrustedScript;
+  createScriptURL(input: string): TrustedScriptURL;
 }

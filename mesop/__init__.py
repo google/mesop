@@ -28,7 +28,19 @@ from mesop.component_helpers.helper import (
   content_component as content_component,
 )
 from mesop.component_helpers.helper import (
+  insert_web_component as insert_web_component,
+)
+from mesop.component_helpers.helper import (
+  register_event_handler as register_event_handler,
+)
+from mesop.component_helpers.helper import (
+  register_event_mapper as register_event_mapper,
+)
+from mesop.component_helpers.helper import (
   slot as slot,
+)
+from mesop.component_helpers.web_component import (
+  web_component as web_component,
 )
 from mesop.components.audio.audio import audio as audio
 from mesop.components.badge.badge import badge as badge
@@ -137,6 +149,7 @@ from mesop.events import (
 from mesop.events import (
   LoadEvent as LoadEvent,
 )
+from mesop.events import MesopEvent as UserEvent  # noqa: F401
 from mesop.exceptions import (
   MesopDeveloperException as MesopDeveloperException,
 )

@@ -41,12 +41,24 @@ def configure_static_file_serving(
       if "$$INSERT_CSP_NONCE$$" in line:
         lines[i] = lines[i].replace("$$INSERT_CSP_NONCE$$", g.csp_nonce)
       if (
-        livereload_script_url
+        runtime().js_scripts
         and line.strip() == "<!-- Inject script (if needed) -->"
       ):
-        lines[i] = (
-          f'<script src="{livereload_script_url}" nonce={g.csp_nonce}></script>\n'
+        # READ the file content
+        lines[i] = "\n".join(
+          [
+            f"<script nonce={g.csp_nonce}>{script}</script>"
+            for script in runtime().js_scripts
+          ]
         )
+      # TODO: actually support livereload
+      # if (
+      #   livereload_script_url
+      #   and line.strip() == "<!-- Inject script (if needed) -->"
+      # ):
+      #   lines[i] = (
+      #     f'<script src="{livereload_script_url}" nonce={g.csp_nonce}></script>\n'
+      #   )
 
       if (
         page_config
@@ -118,7 +130,7 @@ def configure_static_file_serving(
         "style-src-attr": "'unsafe-inline'",
         "script-src": f"'self' 'nonce-{g.csp_nonce}'",
         # https://angular.io/guide/security#enforcing-trusted-types
-        "trusted-types": "angular angular#unsafe-bypass",
+        "trusted-types": "angular angular#unsafe-bypass mesop#custom-web-components",
         "require-trusted-types-for": "'script'",
       }
     )
