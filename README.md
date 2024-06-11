@@ -2,7 +2,7 @@
 
 - If you're interested in learning how to use Mesop, please [read our main docs](https://google.github.io/mesop/).
 
-- If you're interested in contributing to the core Mesop framework, please [read our contributing guide](https://google.github.io/mesop/contributing/).
+- If you're interested in contributing to the core Mesop framework, please [read our contributing guide](https://google.github.io/mesop/internal/contributing/).
 
 ### Used at Google for rapid internal app development
 
@@ -73,7 +73,7 @@ $ pip install mesop
 $ mesop main.py
 ```
 
-Learn more in [Getting Started](https://google.github.io/mesop/getting_started/).
+Learn more in [Getting Started](https://google.github.io/mesop/getting_started/installing/).
 
 ## Disclaimer
 
