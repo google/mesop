@@ -140,7 +140,7 @@ def test_serialize_pandas_dataframe():
     (b"", '{"data": {"__python.bytes__": ""}}'),
     (
       b"unicode \xe2\x9c\x93",
-      '{"data": {"__python.bytes__": "dW5pY29kZSDijJM="}}',
+      '{"data": {"__python.bytes__": "dW5pY29kZSDinJM="}}',
     ),
   ],
 )
