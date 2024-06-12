@@ -1,3 +1,4 @@
+import base64
 import json
 from dataclasses import asdict, dataclass, field, is_dataclass
 from io import StringIO
@@ -8,10 +9,9 @@ from deepdiff.operator import BaseOperator
 from deepdiff.path import parse_path
 
 from mesop.exceptions import MesopException
-import base64
 
 _PANDAS_OBJECT_KEY = "__pandas.DataFrame__"
-_BYTES_OBJECT_KEY = "__python.bytes__" 
+_BYTES_OBJECT_KEY = "__python.bytes__"
 _DIFF_ACTION_DATA_FRAME_CHANGED = "data_frame_changed"
 
 C = TypeVar("C")
@@ -128,7 +128,7 @@ class MesopJSONEncoder(json.JSONEncoder):
       pass
 
     if isinstance(obj, bytes):
-      return {_BYTES_OBJECT_KEY: base64.b64encode(obj).decode('utf-8')} 
+      return {_BYTES_OBJECT_KEY: base64.b64encode(obj).decode("utf-8")}
 
     if is_dataclass(obj):
       return asdict(obj)
@@ -154,7 +154,7 @@ def decode_mesop_json_state_hook(dct):
 
     if _PANDAS_OBJECT_KEY in dct:
       return pd.read_json(StringIO(dct[_PANDAS_OBJECT_KEY]), orient="table")
-  
+
   if _BYTES_OBJECT_KEY in dct:
     return base64.b64decode(dct[_BYTES_OBJECT_KEY])
 
