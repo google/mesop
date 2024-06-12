@@ -133,13 +133,18 @@ def test_serialize_pandas_dataframe():
   )
 
 
-def test_serialize_bytes():
-  bytes_data = b"hello world"
-  serialized_dataclass = serialize_dataclass(WithBytes(data=bytes_data))
-  assert (
-    serialized_dataclass
-    == '{"data": {"__python.bytes__": "aGVsbG8gd29ybGQ="}}'
-  )
+@pytest.mark.parametrize(
+  "input_bytes, expected_json",
+  [
+  (b"hello world", '{"data": {"__python.bytes__": "aGVsbG8gd29ybGQ="}}'),
+  (b"", '{"data": {"__python.bytes__": ""}}'),
+  (b"unicode \xe2\x9c\x93", '{"data": {"__python.bytes__": "dW5pY29kZSDijJM="}}'),
+  ],
+)
+
+def test_serialize_bytes(input_bytes, expected_json):
+  serialized_dataclass = serialize_dataclass(WithBytes(data=input_bytes))
+  assert serialized_dataclass == expected_json
 
 
 def test_update_dataclass_from_json_nested_dataclass():
