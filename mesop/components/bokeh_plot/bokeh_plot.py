@@ -19,10 +19,10 @@ class figure(Protocol):
 @component(skip_validation=True)
 def bokeh_plot(figure: figure, *, style: Style | None = None):
   """
-  Creates a plot component from a Matplotlib figure.
+  Creates a plot component from a Bokeh figure.
 
   Args:
-    figure: A [Matplotlib figure](https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure) which will be rendered.
+    figure: A [Bokeh figure](https://docs.bokeh.org/en/latest/docs/reference/plotting/figure.html) which will be rendered.
     style: An optional Style object that defines the visual styling for the
       plot component. If None, default styling (e.g. height, width) is used.
   """
