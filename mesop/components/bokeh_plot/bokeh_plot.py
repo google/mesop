@@ -26,4 +26,4 @@ def bokeh_plot(figure: figure, *, style: Style | None = None):
     style: An optional Style object that defines the visual styling for the
       plot component. If None, default styling (e.g. height, width) is used.
   """
-  html(file_html(figure), style=style)
+  html(file_html(figure, "inline"), style=style)
