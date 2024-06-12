@@ -269,7 +269,6 @@ def test_diff_int_dict_keys():
   ]
 
 
-# This looks like a bug.
 def test_diff_tuple_dict_keys():
   @dataclass
   class C:
@@ -394,8 +393,6 @@ def test_diff_nested_pandas():
   ]
 
 
-# The diff will pass, but the Mesop JSON serializer currently fails on sets in state class.
-# See https://github.com/google/mesop/issues/387
 def test_diff_set():
   @dataclass
   class C:
@@ -436,20 +433,6 @@ def test_diff_not_dataclass():
 
   with pytest.raises(MesopException):
     diff_state("s1", C())
-
-
-# Mesop JSON serializer currently fails on bytes
-# See https://github.com/google/mesop/issues/158
-def test_diff_bytes_fails():
-  @dataclass
-  class C:
-    val1: bytes = b"val1"
-
-  s1 = C()
-  s2 = C(val1=b"VAL1")
-
-  with pytest.raises(TypeError):
-    diff_state(s1, s2)
 
 
 if __name__ == "__main__":
