@@ -1,6 +1,6 @@
 import json
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from typing import Optional
 
 import pandas as pd
@@ -436,20 +436,36 @@ def test_diff_bytes_fails():
     diff_state(s1, s2)
 
 
-def test_diff_set_dates():
+def test_diff_dates():
   @dataclass
   class C:
     val1: set = field(default_factory=set)
 
   s1 = C()
-  s2 = C(val1={datetime(1972, 2, 2)})
+  s2 = C(
+    val1={
+      datetime(1972, 2, 2, tzinfo=timezone.utc),
+      datetime(2005, 10, 12, tzinfo=timezone(timedelta(hours=-5))),
+      datetime(2024, 12, 5, tzinfo=timezone(timedelta(hours=5, minutes=30))),
+    }
+  )
 
   assert json.loads(diff_state(s1, s2)) == [
     {
       "path": ["val1"],
-      "value": {"__datetime__": "1972-02-02T00:00:00"},
+      "value": {"__mesop_datetime__": "2024-12-05T00:00:00+05:30"},
       "action": "set_item_added",
-    }
+    },
+    {
+      "path": ["val1"],
+      "value": {"__mesop_datetime__": "1972-02-02T00:00:00+00:00"},
+      "action": "set_item_added",
+    },
+    {
+      "path": ["val1"],
+      "value": {"__mesop_datetime__": "2005-10-12T00:00:00-05:00"},
+      "action": "set_item_added",
+    },
   ]
 
 

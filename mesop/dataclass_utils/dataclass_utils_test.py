@@ -26,8 +26,7 @@ class B:
 class A:
   b: B = field(default_factory=B)
   list_b: list[B] = field(default_factory=list)
-  tuple_date: tuple[datetime, ...] = field(default_factory=tuple)
-  set_tuple: set[tuple[str, ...]] = field(default_factory=set)
+  dates: list[datetime] = field(default_factory=lambda: [datetime(1974, 1, 1)])
   strs: list[str] = field(default_factory=list)
 
 
@@ -41,27 +40,10 @@ JSON_STR = """{"b": {"c": {"val": "<init>"}},
   {"c": {"val": "1"}},
   {"c": {"val": "2"}}
 ],
-"tuple_date": {
-  "__tuple__": [
-     {"__datetime__": "1972-01-01T02:00:30"},
-     {"__datetime__": "1972-01-02T05:00:30"}
-  ]
-},
-"set_tuple": {
-  "__set__": [
-     {
-     "__tuple__":
-        [ "a", "b" ]
-    },
-    {
-     "__tuple__":
-        [ "c", "d" ]
-    }
-  ]
-},
-"date": {
-  "__datetime__": "1972-01-01T05:00:30"
-},
+"dates": [
+  {"__mesop_datetime__": "1972-01-01T02:00:30"},
+  {"__mesop_datetime__": "2024-06-12T05:01:30"}
+],
 "strs": ["a", "b"]}"""
 
 
@@ -125,7 +107,7 @@ def test_serialize_dataclass():
   val = serialize_dataclass(A())
   assert (
     val
-    == """{"b": {"c": {"val": "<init>"}}, "list_b": [], "tuple_date": {"__tuple__": []}, "set_tuple": {"__set__": []}, "strs": []}"""
+    == """{"b": {"c": {"val": "<init>"}}, "list_b": [], "dates": [{"__mesop_datetime__": "1974-01-01T00:00:00"}], "strs": []}"""
   )
 
 
@@ -163,11 +145,10 @@ def test_update_dataclass_from_json_nested_dataclass():
 
   a = A()
   update_dataclass_from_json(a, JSON_STR)
-  assert a.set_tuple == {("a", "b"), ("c", "d")}
-  assert a.tuple_date == (
+  assert a.dates == [
     datetime(1972, 1, 1, 2, 0, 30),
-    datetime(1972, 1, 2, 5, 0, 30),
-  )
+    datetime(2024, 6, 12, 5, 1, 30),
+  ]
   assert a.b.c.val == "<init>"
 
 
