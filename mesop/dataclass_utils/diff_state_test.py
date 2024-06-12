@@ -412,8 +412,8 @@ def test_diff_set():
 
 def test_diff_bytes():
 @dataclass
-class C:
-  val1: bytes = b"val1"
+  class C:
+    val1: bytes = b"val1"
 
 s1 = C()
 s2 = C(val1=b"VAL1")
