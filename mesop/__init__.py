@@ -67,6 +67,9 @@ from mesop.components.markdown.markdown import markdown as markdown
 from mesop.components.plot.plot import (
   plot as plot,
 )
+from mesop.components.bokeh_plot.bokeh_plot import (
+  bokeh_plot as bokeh_plot,
+)
 from mesop.components.progress_bar.progress_bar import (
   progress_bar as progress_bar,
 )
