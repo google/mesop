@@ -1,9 +1,7 @@
 from io import BytesIO
 from typing import Protocol
-from bokeh.plotting import figure
 from mesop.component_helpers import Style, component
 from mesop.components.html.html import html
-from bokeh.embed import file_html
 
 
 class figure(Protocol):
@@ -26,4 +24,5 @@ def bokeh_plot(figure: figure, *, style: Style | None = None):
     style: An optional Style object that defines the visual styling for the
       plot component. If None, default styling (e.g. height, width) is used.
   """
+  from bokeh.embed import file_html
   html(file_html(figure, "inline"), style=style)
