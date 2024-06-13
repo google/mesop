@@ -13,6 +13,7 @@ nav:
       - Interactivity: guides/interactivity.md
       - Multi-Pages: guides/multi_pages.md
       - Deployment: guides/deployment.md
+      - Debugging: guides/debugging.md
       - Web Security: guides/web_security.md
       - Labs: guides/labs.md
   - Components:
