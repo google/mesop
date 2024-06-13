@@ -167,19 +167,19 @@ export class ComponentRenderer {
     const webComponentType = WebComponentType.deserializeBinary(
       this.component.getType()!.getValue() as unknown as Uint8Array,
     );
-    const jsonObj = jsonParse(webComponentType.getPropertiesJson()!) as object;
-    for (const key of Object.keys(jsonObj)) {
-      customElement.setAttribute(key, (jsonObj as any)[key]);
+    const properties = jsonParse(
+      webComponentType.getPropertiesJson()!,
+    ) as object;
+    for (const key of Object.keys(properties)) {
+      customElement.setAttribute(key, (properties as any)[key]);
     }
-    const style = this.component.getStyle()!;
-    if (style) {
-      (customElement as any)['style'] = formatStyle(style);
+
+    const events = jsonParse(webComponentType.getEventsJson()!) as object;
+    for (const event of Object.keys(events)) {
+      customElement.setAttribute(event, (events as any)[event]);
+      customElement.removeEventListener(event, this.dispatchCustomUserEvent);
+      customElement.addEventListener(event, this.dispatchCustomUserEvent);
     }
-    customElement.removeEventListener(
-      'mesop-event',
-      this.dispatchCustomUserEvent,
-    );
-    customElement.addEventListener('mesop-event', this.dispatchCustomUserEvent);
     // TODO: clean up event listener
   }
 

@@ -4,18 +4,20 @@ import {
   css,
 } from 'https://cdn.jsdelivr.net/gh/lit/dist@3/core/lit-core.min.js';
 
+const INCREMENT_EVENT = 'increment-event';
+
 class FooComponent extends LitElement {
   static properties = {
     value: {type: Number},
     style: {type: String},
-    handlerId: {type: String},
+    incrementEventHandlerId: {attribute: INCREMENT_EVENT, type: String},
   };
 
   constructor() {
     super();
     this.value = 0;
     this.style = '';
-    this.handlerId = '';
+    this.incrementEventHandlerId = '';
   }
 
   static styles = css`
@@ -29,18 +31,19 @@ class FooComponent extends LitElement {
       <div class="container" style="${this.style}">
         <span>Value: ${this.value}</span>
         <button id="increment-btn" @click="${this._onIncrement}">
-          Increment
+          Increment2
         </button>
       </div>
     `;
   }
 
   _onIncrement() {
+    debugger;
     this.dispatchEvent(
-      new CustomEvent('mesop-event', {
+      new CustomEvent(INCREMENT_EVENT, {
         detail: {
           payload: {value: this.value + 2},
-          handlerId: this.handlerId,
+          handlerId: this.incrementEventHandlerId,
         },
         bubbles: true,
       }),

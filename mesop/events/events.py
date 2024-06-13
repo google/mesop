@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Any
 
 
 @dataclass(kw_only=True)
@@ -43,3 +44,9 @@ class LoadEvent:
   """
 
   path: str
+
+
+@dataclass(kw_only=True)
+class CustomEvent:
+  value: Any
+  key: str

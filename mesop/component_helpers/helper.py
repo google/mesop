@@ -2,14 +2,22 @@ import hashlib
 import inspect
 import json
 from functools import wraps
-from typing import Any, Callable, Generator, Type, TypeVar, cast, overload
+from typing import (
+  Any,
+  Callable,
+  Generator,
+  Type,
+  TypeVar,
+  cast,
+  overload,
+)
 
 from google.protobuf import json_format
 from google.protobuf.message import Message
 
 import mesop.protos.ui_pb2 as pb
 from mesop.component_helpers.style import Style, to_style_proto
-from mesop.events import ClickEvent, InputEvent, MesopEvent
+from mesop.events import ClickEvent, CustomEvent, InputEvent, MesopEvent
 from mesop.exceptions import MesopDeveloperException
 from mesop.key import Key, key_from_proto
 from mesop.runtime import runtime
@@ -230,17 +238,23 @@ def insert_composite_component(
 
 def insert_web_component(
   name: str,
+  events: dict[str, Callable[[CustomEvent], Any]],
   properties: dict[str, Any],
   key: str | None = None,
-  style: Style | None = None,
 ):
-  type = pb.WebComponentType(properties_json=json.dumps(properties))
+  event_to_ids: dict[str, str] = {}
+  for event in events:
+    event_handler = events[event]
+    event_to_ids[event] = register_event_handler(event_handler, CustomEvent)
+  type_proto = pb.WebComponentType(
+    properties_json=json.dumps(properties),
+    events_json=json.dumps(event_to_ids),
+  )
   return insert_component(
     # Prefix with <web> to ensure there's never any overlap.
     type_name="<web>" + name,
-    proto=type,
+    proto=type_proto,
     key=key,
-    style=style,
   )
 
 
@@ -357,6 +371,14 @@ runtime().register_event_mapper(
   lambda userEvent, key: InputEvent(
     value=userEvent.string_value,
     key=key.key,
+  ),
+)
+
+runtime().register_event_mapper(
+  CustomEvent,
+  lambda userEvent, key: CustomEvent(
+    key=key.key,
+    value=json.loads(userEvent.string_value),
   ),
 )
 

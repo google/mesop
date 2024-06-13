@@ -298,6 +298,7 @@ message Type {
 
 message WebComponentType {
     optional string properties_json = 1;
+    optional string events_json = 2;
 }
 
 // Represents user-defined components.

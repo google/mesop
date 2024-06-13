@@ -1,43 +1,36 @@
-import json
-import os
-from dataclasses import dataclass
 from typing import Any, Callable
 
-import mesop as me
+import mesop.labs as mel
 
-current_module_dir = os.path.dirname(os.path.abspath(__file__))
-js_file_path = os.path.join(current_module_dir, "custom_component.js")
-print(f"JS file path: {js_file_path}")
-
-
-@dataclass(kw_only=True)
-class CustomEvent(me.UserEvent):
-  value: int
+# current_module_dir = os.path.dirname(os.path.abspath(__file__))
+# js_file_path = os.path.join(current_module_dir, "custom_component.js")
+# print(f"JS file path: {js_file_path}")
 
 
-me.register_event_mapper(
-  CustomEvent,
-  lambda event, key: CustomEvent(
-    key=key.key, value=json.loads(event.string_value)["value"]
-  ),
-)
+# mel.register_event_mapper(
+#   IncrementEvent,
+#   lambda event: IncrementEvent(key=event.key, value=event.json["value"]),
+# )
+
+# Instead of explicit event mapper.
+# We will log the target event class when sending the event...
+# Then, we will map the values to the class - key=key, othre attrs, based on key
 
 
-@me.web_component(js_path=js_file_path)
+@mel.web_component(path="./custom_component.js")
 def foo_custom_component(
   *,
   value: int,
-  on_event: Callable[..., Any],
+  on_increment: Callable[[mel.CustomEvent], Any],
   key: str | None = None,
-  style: me.Style | None = None,
 ):
-  me.insert_web_component(
+  mel.insert_web_component(
     name="foo-component",
     key=key,
-    style=style,
+    events={
+      "increment-event": on_increment,
+    },
     properties={
       "value": value,
-      "handlerId": me.register_event_handler(on_event, CustomEvent),
     },
   )
-  pass

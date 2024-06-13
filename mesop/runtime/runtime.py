@@ -4,7 +4,7 @@ from typing import Any, Callable, Generator, Type, TypeVar, cast
 from flask import g
 
 import mesop.protos.ui_pb2 as pb
-from mesop.events import LoadEvent, MesopEvent
+from mesop.events import LoadEvent
 from mesop.exceptions import MesopDeveloperException, MesopUserException
 from mesop.key import Key
 from mesop.security.security_policy import SecurityPolicy
@@ -33,7 +33,7 @@ class PageConfig:
   on_load: OnLoadHandler | None
 
 
-E = TypeVar("E", bound=MesopEvent)
+E = TypeVar("E")
 T = TypeVar("T")
 
 
