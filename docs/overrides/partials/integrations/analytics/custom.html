@@ -1,0 +1,18 @@
+<!-- Google tag (gtag.js) -->
+<script
+  async
+  src="https://www.googletagmanager.com/gtag/js?id=G-H6S9JCWS04"
+></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag('js', new Date());
+  // Must put 'set' before 'config'.
+  gtag('set', 'page_location', window.location.href.split('?')[0]);
+  gtag('config', 'G-H6S9JCWS04', {
+    'referrer': document.referrer.split('?')[0],
+    'anonymize_ip': true,
+  });
+</script>
