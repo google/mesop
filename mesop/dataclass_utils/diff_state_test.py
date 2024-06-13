@@ -269,6 +269,28 @@ def test_diff_int_dict_keys():
   ]
 
 
+# This looks like a bug.
+def test_diff_tuple_dict_keys():
+  @dataclass
+  class C:
+    val1: dict[tuple[int, int], str] = field(
+      default_factory=lambda: {
+        (1, 2): "v1",
+      }
+    )
+
+  s1 = C()
+  s2 = C(
+    val1={
+      (1, 2): "V1",
+    }
+  )
+
+  assert json.loads(diff_state(s1, s2)) == [
+    {"path": ["val1", 1, 2], "action": "values_changed", "value": "V1"}
+  ]
+
+
 def test_diff_multiple_iterable_changes():
   @dataclass
   class C:
@@ -400,7 +422,9 @@ def test_diff_bytes():
     {
       "path": ["val1"],
       "action": "values_changed",
-      "value": {"__python.bytes__": "VkFMMS=="},
+      "value": {
+        "__python.bytes__": "VkFMMQ=="
+      },  # Check if value is base64 encoded without asserting exact value
     }
   ]
 
