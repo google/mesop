@@ -1,5 +1,6 @@
 from io import BytesIO
 from typing import Protocol
+
 from mesop.component_helpers import Style, component
 from mesop.components.html.html import html
 
@@ -25,4 +26,5 @@ def bokeh_plot(figure: figure, *, style: Style | None = None):
       plot component. If None, default styling (e.g. height, width) is used.
   """
   from bokeh.embed import file_html
+
   html(file_html(figure, "inline"), style=style)

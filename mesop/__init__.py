@@ -32,6 +32,9 @@ from mesop.component_helpers.helper import (
 )
 from mesop.components.audio.audio import audio as audio
 from mesop.components.badge.badge import badge as badge
+from mesop.components.bokeh_plot.bokeh_plot import (
+  bokeh_plot as bokeh_plot,
+)
 
 # REF(//scripts/scaffold_component.py):insert_component_import_export
 from mesop.components.box.box import box as box
@@ -66,9 +69,6 @@ from mesop.components.input.input import textarea as textarea
 from mesop.components.markdown.markdown import markdown as markdown
 from mesop.components.plot.plot import (
   plot as plot,
-)
-from mesop.components.bokeh_plot.bokeh_plot import (
-  bokeh_plot as bokeh_plot,
 )
 from mesop.components.progress_bar.progress_bar import (
   progress_bar as progress_bar,

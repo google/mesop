@@ -23,6 +23,7 @@ import glob
 import audio as audio
 import badge as badge
 import basic_animation as basic_animation
+import bokeh_plot as bokeh_plot
 import box as box
 import button as button
 import chat as chat
@@ -39,7 +40,6 @@ import llm_rewriter as llm_rewriter
 import markdown_demo as markdown_demo  # cannot call it markdown due to python library naming conflict
 import markdown_editor as markdown_editor
 import plot as plot
-import bokeh_plot as bokeh_plot
 import progress_bar as progress_bar
 import progress_spinner as progress_spinner
 import radio as radio
