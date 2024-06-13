@@ -1,5 +1,5 @@
 # Build all top-level mesop targets (need to generate protos)
-bazel build //generator:all &&  bazel build //mesop/cli && \
+bazel build //mesop/cli && \
 # Create venv and activate it
 bazel run //mesop/cli:cli.venv && \
 source .cli.venv/bin/activate && \
