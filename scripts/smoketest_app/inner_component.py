@@ -7,7 +7,7 @@ import mesop.labs as mel
 def inner_component(
   *,
   value: int,
-  on_decrement: Callable[[mel.CustomEvent], Any],
+  on_decrement: Callable[[mel.WebEvent], Any],
   key: str | None = None,
 ):
   return mel.insert_web_component(

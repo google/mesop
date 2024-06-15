@@ -47,12 +47,12 @@ class ChangeValue(BaseModel):
   value: int
 
 
-def on_increment(e: mel.CustomEvent):
+def on_increment(e: mel.WebEvent):
   increment = ChangeValue(**e.value)
   me.state(State).value = increment.value
 
 
-def on_decrement(e: mel.CustomEvent):
+def on_decrement(e: mel.WebEvent):
   decrement = ChangeValue(**e.value)
   me.state(State).value = decrement.value
 

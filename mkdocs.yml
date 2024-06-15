@@ -62,6 +62,13 @@ nav:
       - Commands:
           - Navigate: api/commands/navigate.md
           - Scroll into view: api/commands/scroll_into_view.md
+  - Web Components:
+      - Overview: web_components/index.md
+      - API: web_components/api.md
+      - Examples:
+          - JS libraries: web_components/js_libraries.md
+          - Composition: web_components/composition.md
+          - Modules: web_components/modules.md
   - FAQ: faq.md
   - Demo Gallery 🔗: demo.md
   - Blog:

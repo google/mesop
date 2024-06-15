@@ -17,7 +17,7 @@ from google.protobuf.message import Message
 
 import mesop.protos.ui_pb2 as pb
 from mesop.component_helpers.style import Style, to_style_proto
-from mesop.events import ClickEvent, CustomEvent, InputEvent, MesopEvent
+from mesop.events import ClickEvent, InputEvent, MesopEvent, WebEvent
 from mesop.exceptions import MesopDeveloperException
 from mesop.key import Key, key_from_proto
 from mesop.runtime import runtime
@@ -238,14 +238,14 @@ def insert_composite_component(
 
 def insert_web_component(
   name: str,
-  events: dict[str, Callable[[CustomEvent], Any]],
+  events: dict[str, Callable[[WebEvent], Any]],
   properties: dict[str, Any],
   key: str | None = None,
 ):
   event_to_ids: dict[str, str] = {}
   for event in events:
     event_handler = events[event]
-    event_to_ids[event] = register_event_handler(event_handler, CustomEvent)
+    event_to_ids[event] = register_event_handler(event_handler, WebEvent)
   type_proto = pb.WebComponentType(
     properties_json=json.dumps(properties),
     events_json=json.dumps(event_to_ids),
@@ -375,8 +375,8 @@ runtime().register_event_mapper(
 )
 
 runtime().register_event_mapper(
-  CustomEvent,
-  lambda userEvent, key: CustomEvent(
+  WebEvent,
+  lambda userEvent, key: WebEvent(
     key=key.key,
     value=json.loads(userEvent.string_value),
   ),

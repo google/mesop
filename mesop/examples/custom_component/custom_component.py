@@ -8,7 +8,7 @@ def foo_custom_component(
   *,
   disabled: bool,
   value: int,
-  on_increment: Callable[[mel.CustomEvent], Any],
+  on_increment: Callable[[mel.WebEvent], Any],
   key: str | None = None,
 ):
   return mel.insert_web_component(

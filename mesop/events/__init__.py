@@ -2,9 +2,6 @@ from .events import (
   ClickEvent as ClickEvent,
 )
 from .events import (
-  CustomEvent as CustomEvent,
-)
-from .events import (
   InputEvent as InputEvent,
 )
 from .events import (
@@ -12,4 +9,7 @@ from .events import (
 )
 from .events import (
   MesopEvent as MesopEvent,
+)
+from .events import (
+  WebEvent as WebEvent,
 )

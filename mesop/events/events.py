@@ -47,6 +47,6 @@ class LoadEvent:
 
 
 @dataclass(kw_only=True)
-class CustomEvent:
+class WebEvent:
   value: Any
   key: str
