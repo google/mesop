@@ -6,7 +6,12 @@ import mesop.labs as mel
 from .custom_component import foo_custom_component
 
 
-@me.page(path="/custom_component")
+@me.page(
+  path="/custom_component",
+  security_policy=me.SecurityPolicy(
+    dangerously_disable_trusted_types=True,
+  ),
+)
 def page():
   me.text("custom_component12")
   foo_custom_component(value=me.state(State).value, on_increment=on_increment)

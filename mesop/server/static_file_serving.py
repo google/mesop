@@ -135,23 +135,28 @@ def configure_static_file_serving(
         # Mesop app developers should be able to load images and media from various origins.
         "img-src": "'self' data: https: http:",
         "media-src": "'self' data: https:",
-        "style-src": f"'self' 'nonce-{g.csp_nonce}' fonts.googleapis.com",
         # Need 'unsafe-inline' because we apply inline styles for our components.
         # This is also used by Angular for animations:
         # https://github.com/angular/angular/pull/55260
-        "style-src-attr": "'unsafe-inline'",
+        # finally, other third-party libraries like Plotly rely on setting stylesheets dynamically.
+        "style-src": "'self' 'unsafe-inline' fonts.googleapis.com",
         "script-src": f"'self' 'nonce-{g.csp_nonce}'",
         # https://angular.io/guide/security#enforcing-trusted-types
         "trusted-types": "angular angular#unsafe-bypass lit-html",
         "require-trusted-types-for": "'script'",
       }
     )
+    security_policy = page_config and page_config.security_policy
+    if security_policy and security_policy.dangerously_disable_trusted_types:
+      del csp["trusted-types"]
+      del csp["require-trusted-types-for"]
+
     if runtime().debug_mode:
       # Allow all origins in debug mode (aka editor mode) because
       # when Mesop is running under Colab, it will be served from
       # a randomly generated origin.
       csp["frame-ancestors"] = "*"
-    elif page_config and page_config.security_policy.allowed_iframe_parents:
+    elif security_policy and security_policy.allowed_iframe_parents:
       csp["frame-ancestors"] = "'self' " + " ".join(
         list(page_config.security_policy.allowed_iframe_parents)
       )
