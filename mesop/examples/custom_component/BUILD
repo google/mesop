@@ -7,7 +7,7 @@ package(
 py_library(
     name = "custom_component",
     srcs = glob(["*.py"]),
-    data = ["custom_component.js"],
+    data = glob(["*.js"]),
     deps = [
         "//mesop",
     ],

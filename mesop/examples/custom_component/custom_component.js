@@ -3,6 +3,7 @@ import {
   html,
   css,
 } from 'https://cdn.jsdelivr.net/gh/lit/dist@3/core/lit-core.min.js';
+import {FOO} from './library.js';
 
 const INCREMENT_EVENT = 'increment-event';
 
@@ -29,16 +30,16 @@ class FooComponent extends LitElement {
   render() {
     return html`
       <div class="container" style="${this.style}">
+        ${FOO}
         <span>Value: ${this.value}</span>
         <button id="increment-btn" @click="${this._onIncrement}">
-          Increment2
+          Increment
         </button>
       </div>
     `;
   }
 
   _onIncrement() {
-    debugger;
     this.dispatchEvent(
       new CustomEvent(INCREMENT_EVENT, {
         detail: {

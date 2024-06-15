@@ -14,12 +14,14 @@ def web_component(path: str):
   previous_frame = current_frame.f_back
   assert previous_frame
   caller_module_file = inspect.getfile(previous_frame)
-  caller_module_dir = os.path.dirname(os.path.abspath(caller_module_file))
-  full_path = os.path.join(caller_module_dir, path)
+  caller_module_dir = format_filename(
+    os.path.dirname(os.path.abspath(caller_module_file))
+  )
+  full_path = os.path.normpath(os.path.join(caller_module_dir, path))
 
-  with open(full_path) as js_file:
-    js_content = js_file.read()
-  runtime().register_js_script(js_content)
+  # with open(full_path) as js_file:
+  #   js_content = js_file.read()
+  runtime().register_js_script(full_path)
 
   def component_wrapper(fn: C) -> C:
     @wraps(fn)
@@ -29,6 +31,12 @@ def web_component(path: str):
     return cast(C, wrapper)
 
   return component_wrapper
+
+
+def format_filename(filename: str) -> str:
+  if ".runfiles" in filename:
+    filename = filename.split(".runfiles", 1)[1]
+  return filename
 
 
 # @dataclass(kw_only=True)

@@ -10,8 +10,11 @@ from typing import Any, Callable
 from flask import Flask, Response, g, request, send_file
 from werkzeug.security import safe_join
 
+from mesop.exceptions import MesopException
 from mesop.runtime import runtime
 from mesop.utils.runfiles import get_runfile_location
+
+WEB_COMPONENTS_PATH_SEGMENT = "__web-components-module__"
 
 
 def noop():
@@ -42,23 +45,22 @@ def configure_static_file_serving(
         lines[i] = lines[i].replace("$$INSERT_CSP_NONCE$$", g.csp_nonce)
       if (
         runtime().js_scripts
-        and line.strip() == "<!-- Inject script (if needed) -->"
+        and line.strip() == "<!-- Inject web components modules (if needed) -->"
       ):
         # READ the file content
         lines[i] = "\n".join(
           [
-            f"<script type='module' nonce={g.csp_nonce}>{script}</script>"
+            f"<script type='module' nonce={g.csp_nonce} src='/{WEB_COMPONENTS_PATH_SEGMENT}{script}'></script>"
             for script in runtime().js_scripts
           ]
         )
-      # TODO: actually support livereload
-      # if (
-      #   livereload_script_url
-      #   and line.strip() == "<!-- Inject script (if needed) -->"
-      # ):
-      #   lines[i] = (
-      #     f'<script src="{livereload_script_url}" nonce={g.csp_nonce}></script>\n'
-      #   )
+      if (
+        livereload_script_url
+        and line.strip() == "<!-- Inject livereload script (if needed) -->"
+      ):
+        lines[i] = (
+          f'<script src="{livereload_script_url}" nonce={g.csp_nonce}></script>\n'
+        )
 
       if (
         page_config
@@ -82,6 +84,16 @@ def configure_static_file_serving(
   def serve_root():
     preprocess_request()
     return send_file(retrieve_index_html(), download_name="index.html")
+
+  @app.route(f"/{WEB_COMPONENTS_PATH_SEGMENT}/<path:path>")
+  def serve_web_components(path: str):
+    if not is_file_path(path):
+      raise MesopException("Unexpected request to " + path)
+    serving_path = get_runfile_location(path)
+    return send_file_compressed(
+      serving_path,
+      disable_gzip_cache=disable_gzip_cache,
+    )
 
   @app.route("/<path:path>")
   def serve_file(path: str):
