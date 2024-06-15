@@ -18,7 +18,8 @@ def web_component(path: str):
     os.path.dirname(os.path.abspath(caller_module_file))
   )
   full_path = os.path.normpath(os.path.join(caller_module_dir, path))
-
+  if not full_path.startswith("/"):
+    full_path = "/" + full_path
   # with open(full_path) as js_file:
   #   js_content = js_file.read()
   runtime().register_js_script(full_path)
@@ -35,8 +36,11 @@ def web_component(path: str):
 
 def format_filename(filename: str) -> str:
   if ".runfiles" in filename:
-    filename = filename.split(".runfiles", 1)[1]
-  return filename
+    # Handle Bazel case
+    return filename.split(".runfiles", 1)[1]
+  else:
+    # Handle pip CLI case
+    return os.path.relpath(filename, os.getcwd())
 
 
 # @dataclass(kw_only=True)

@@ -12,7 +12,7 @@ from werkzeug.security import safe_join
 
 from mesop.exceptions import MesopException
 from mesop.runtime import runtime
-from mesop.utils.runfiles import get_runfile_location
+from mesop.utils.runfiles import get_runfile_location, has_runfiles
 
 WEB_COMPONENTS_PATH_SEGMENT = "__web-components-module__"
 
@@ -89,7 +89,11 @@ def configure_static_file_serving(
   def serve_web_components(path: str):
     if not is_file_path(path):
       raise MesopException("Unexpected request to " + path)
-    serving_path = get_runfile_location(path)
+    serving_path = (
+      get_runfile_location(path)
+      if has_runfiles()
+      else os.path.join(os.getcwd(), path)
+    )
     return send_file_compressed(
       serving_path,
       disable_gzip_cache=disable_gzip_cache,
