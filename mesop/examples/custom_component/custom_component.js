@@ -7,20 +7,23 @@ import 'https://cdn.plot.ly/plotly-2.32.0.min.js';
 
 import {FOO} from './library.js';
 
-const INCREMENT_EVENT = 'increment-event';
-
 class FooComponent extends LitElement {
   static properties = {
+    disabled: {type: Boolean},
+    active: {type: Boolean, reflect: true},
+
     value: {type: Number},
     style: {type: String},
-    incrementEventHandlerId: {attribute: INCREMENT_EVENT, type: String},
+    incrementEventHandlerId: {attribute: 'increment-event', type: String},
   };
 
   constructor() {
     super();
+    this.disabled = false;
     this.value = 0;
     this.style = '';
     this.incrementEventHandlerId = '';
+    this.active = false;
   }
 
   static styles = css`
@@ -34,47 +37,47 @@ class FooComponent extends LitElement {
     }
   `;
 
-  createRenderRoot() {
-    return this;
-  }
+  // createRenderRoot() {
+  //   return this;
+  // }
 
-  firstUpdated() {
-    this.renderPlot();
-  }
+  // firstUpdated() {
+  //   this.renderPlot();
+  // }
 
-  renderPlot() {
-    var trace1 = {
-      x: [1, 2, 3, 4, 5],
-      y: [10, 15, 13, 17, 21],
-      type: 'scatter',
-      mode: 'lines+markers',
-      marker: {color: 'red'},
-      name: 'Line 1',
-    };
+  // renderPlot() {
+  //   var trace1 = {
+  //     x: [1, 2, 3, 4, 5],
+  //     y: [10, 15, 13, 17, 21],
+  //     type: 'scatter',
+  //     mode: 'lines+markers',
+  //     marker: {color: 'red'},
+  //     name: 'Line 1',
+  //   };
 
-    var trace2 = {
-      x: [1, 2, 3, 4, 5],
-      y: [16, 5, 11, 9, 8],
-      type: 'scatter',
-      mode: 'lines+markers',
-      marker: {color: 'blue'},
-      name: 'Line 2',
-    };
+  //   var trace2 = {
+  //     x: [1, 2, 3, 4, 5],
+  //     y: [16, 5, 11, 9, 8],
+  //     type: 'scatter',
+  //     mode: 'lines+markers',
+  //     marker: {color: 'blue'},
+  //     name: 'Line 2',
+  //   };
 
-    var data = [trace1, trace2];
+  //   var data = [trace1, trace2];
 
-    var layout = {
-      title: 'Simple Line Chart Example',
-      xaxis: {
-        title: 'X Axis',
-      },
-      yaxis: {
-        title: 'Y Axis',
-      },
-    };
+  //   var layout = {
+  //     title: 'Simple Line Chart Example',
+  //     xaxis: {
+  //       title: 'X Axis',
+  //     },
+  //     yaxis: {
+  //       title: 'Y Axis',
+  //     },
+  //   };
 
-    Plotly.newPlot(document.getElementById('plot'), data, layout);
-  }
+  //   Plotly.newPlot(document.getElementById('plot'), data, layout);
+  // }
 
   render() {
     return html`
@@ -85,18 +88,22 @@ class FooComponent extends LitElement {
         <button id="increment-btn" @click="${this._onIncrement}">
           Increment
         </button>
+        <button ?disabled="${this.disabled}">Disablable</button>
+        <span>Active: ${this.active}</span>
+        <button @click="${() => (this.active = !this.active)}">
+          Toggle active
+        </button>
+        Slot:
+        <slot></slot>
+        END
       </div>
     `;
   }
 
   _onIncrement() {
     this.dispatchEvent(
-      new CustomEvent(INCREMENT_EVENT, {
-        detail: {
-          payload: {value: this.value + 2},
-          handlerId: this.incrementEventHandlerId,
-        },
-        bubbles: true,
+      new MesopEvent(this.incrementEventHandlerId, {
+        value: this.value + 2,
       }),
     );
   }

@@ -250,7 +250,7 @@ def insert_web_component(
     properties_json=json.dumps(properties),
     events_json=json.dumps(event_to_ids),
   )
-  return insert_component(
+  return insert_composite_component(
     # Prefix with <web> to ensure there's never any overlap.
     type_name="<web>" + name,
     proto=type_proto,

@@ -3,22 +3,20 @@ from typing import Any, Callable
 import mesop.labs as mel
 
 
-@mel.web_component(path="./custom_component.js")
-def foo_custom_component(
+@mel.web_component(path="./inner_component.js")
+def inner_component(
   *,
-  disabled: bool,
   value: int,
-  on_increment: Callable[[mel.CustomEvent], Any],
+  on_decrement: Callable[[mel.CustomEvent], Any],
   key: str | None = None,
 ):
   return mel.insert_web_component(
-    name="foo-component",
+    name="inner-component",
     key=key,
     events={
-      "increment-event": on_increment,
+      "decrement-event": on_decrement,
     },
     properties={
-      "disabled": disabled,
       "value": value,
       "active": True,
     },

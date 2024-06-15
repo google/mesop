@@ -1,4 +1,5 @@
 from demo import main as main
+from mesop.examples import add_child as add_child
 from mesop.examples import (
   allowed_iframe_parents as allowed_iframe_parents,
 )

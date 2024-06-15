@@ -32,6 +32,7 @@ import {EditorService, SelectionMode} from '../services/editor_service';
 import {Channel} from '../services/channel';
 import {isMac} from '../utils/platform';
 import {CommandDialogService} from '../dev_tools/command_dialog/command_dialog_service';
+import {createCustomElement} from '@angular/elements';
 // Keep the following comment to ensure there's a hook for adding TS imports in the downstream sync.
 // ADD_TS_IMPORT_HERE
 
@@ -278,10 +279,18 @@ function findPath(
 })
 class MesopEditorApp {}
 
-export function bootstrapApp() {
-  bootstrapApplication(MesopEditorApp, {
-    providers: [provideAnimations(), provideRouter(routes)],
+export async function bootstrapApp() {
+  const app = await bootstrapApplication(MesopEditorApp, {
+    providers: [
+      provideAnimations(),
+      provideRouter(routes),
+      {provide: EditorService, useClass: EditorServiceImpl},
+    ],
   });
+  const ComponentRendererElement = createCustomElement(ComponentRenderer, {
+    injector: app.injector,
+  });
+  customElements.define('component-renderer-element', ComponentRendererElement);
 }
 
 export const TEST_ONLY = {EditorServiceImpl};

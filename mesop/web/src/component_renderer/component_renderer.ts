@@ -9,6 +9,7 @@ import {
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
+import {createCustomElement} from '@angular/elements';
 import {CommonModule} from '@angular/common';
 import {
   Component as ComponentProto,
@@ -38,6 +39,7 @@ import {isComponentNameEquals} from '../utils/proto';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {TemplatePortal} from '@angular/cdk/portal';
 import {jsonParse} from '../utils/strict_types';
+import {MESOP_EVENT_NAME, MesopEvent} from './mesop_event';
 
 const CORE_NAMESPACE = 'me';
 
@@ -141,13 +143,32 @@ export class ComponentRenderer {
 
   ngOnInit() {
     if (isRegularComponent(this.component)) {
+      console.log(
+        'createcomponentref',
+        this.component.getChildrenList().length,
+      );
       this.createComponentRef();
     }
   }
 
   ngOnChanges() {
     if (this.customElement) {
+      // Clear existing children
+      for (const element of Array.from(
+        this.customElement.querySelectorAll('component-renderer-element'),
+      )) {
+        this.customElement.removeChild(element);
+      }
+
+      // Update the custom element and its children
       this.updateCustomElement(this.customElement);
+      for (const child of this.component.getChildrenList()) {
+        const childElement = document.createElement(
+          'component-renderer-element',
+        );
+        (childElement as any)['component'] = child;
+        this.customElement.appendChild(childElement);
+      }
       return;
     }
     if (isRegularComponent(this.component)) {
@@ -171,14 +192,26 @@ export class ComponentRenderer {
       webComponentType.getPropertiesJson()!,
     ) as object;
     for (const key of Object.keys(properties)) {
-      customElement.setAttribute(key, (properties as any)[key]);
+      const value = (properties as any)[key];
+      // Explicitly don't set attribute for boolean attribute.
+      if (value !== false) {
+        customElement.setAttribute(key, (properties as any)[key]);
+      }
     }
 
     const events = jsonParse(webComponentType.getEventsJson()!) as object;
     for (const event of Object.keys(events)) {
       customElement.setAttribute(event, (events as any)[event]);
-      customElement.removeEventListener(event, this.dispatchCustomUserEvent);
-      customElement.addEventListener(event, this.dispatchCustomUserEvent);
+    }
+    if (Object.keys(events).length) {
+      customElement.removeEventListener(
+        MESOP_EVENT_NAME,
+        this.dispatchCustomUserEvent,
+      );
+      customElement.addEventListener(
+        MESOP_EVENT_NAME,
+        this.dispatchCustomUserEvent,
+      );
     }
     // TODO: clean up event listener
   }
@@ -252,6 +285,15 @@ export class ComponentRenderer {
       this.customElement = customElement;
       this.updateCustomElement(customElement);
 
+      for (const child of this.component.getChildrenList()) {
+        const childElement = document.createElement(
+          'component-renderer-element',
+        );
+        (childElement as any)['component'] = child;
+        // childElement.setAttribute('slot', 'default');
+        customElement.appendChild(childElement);
+      }
+
       this.insertionRef.element.nativeElement.parentElement.appendChild(
         customElement,
       );
@@ -267,10 +309,10 @@ export class ComponentRenderer {
   }
 
   dispatchCustomUserEvent = (event: Event) => {
-    const customEvent = event as CustomEvent;
+    const mesopEvent = event as MesopEvent<any>;
     const userEvent = new UserEvent();
-    userEvent.setStringValue(JSON.stringify(customEvent.detail['payload']));
-    userEvent.setHandlerId(customEvent.detail['handlerId']);
+    userEvent.setStringValue(JSON.stringify(mesopEvent['payload']));
+    userEvent.setHandlerId(mesopEvent['handlerId']);
     userEvent.setKey(this.component.getKey());
     this.channel.dispatch(userEvent);
   };

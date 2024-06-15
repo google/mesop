@@ -26,7 +26,7 @@ def web_component(path: str):
   def component_wrapper(fn: C) -> C:
     @wraps(fn)
     def wrapper(*args: Any, **kw_args: Any):
-      fn(*args, **kw_args)
+      return fn(*args, **kw_args)
 
     return cast(C, wrapper)
 

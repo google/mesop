@@ -28,6 +28,7 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {ErrorBox} from '../error/error_box';
 import {GlobalErrorHandlerService} from '../services/global_error_handler';
 import {getViewportSize} from '../utils/viewport_size';
+import {createCustomElement} from '@angular/elements';
 
 @Component({
   selector: 'mesop-shell',
@@ -150,8 +151,13 @@ const routes: Routes = [{path: '**', component: Shell}];
 })
 class MesopApp {}
 
-export function bootstrapApp() {
-  bootstrapApplication(MesopApp, {
+export async function bootstrapApp() {
+  // TODO: duplicate this...
+  const app = await bootstrapApplication(MesopApp, {
     providers: [provideAnimations(), provideRouter(routes)],
   });
+  const ComponentRendererElement = createCustomElement(ComponentRenderer, {
+    injector: app.injector,
+  });
+  customElements.define('component-renderer-element', ComponentRendererElement);
 }
