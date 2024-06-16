@@ -11,7 +11,7 @@ Make sure you've installed Mesop, otherwise please follow the [Installing Guide]
 The simplest way to get started with Mesop is to use the [`text_to_text` component](../components/text_to_text.md)
 
 ```python
---8<-- "mesop/examples/text_to_text.py"
+--8<-- "demo/text_to_text.py"
 ```
 
 The rest of this guide will show you step-by-step how something like text_to_text is implemented.
@@ -79,16 +79,11 @@ Rendering dynamic values in Mesop is simple because you can do standard Python s
 me.text(f"Clicks: {state.clicks}")
 ```
 
-The button component demonstrates two aspects of calling a Mesop component:
+The button component demonstrates connecting an event handler to a component. Whenever a click event is triggered by the component, the registered event handler function is called.:
 
 ```python
-with me.button(on_click=button_click):
-  me.text("Increment")
+me.button("Increment", on_click=button_click)
 ```
-
-The `with` statement allows you to nest components inside another component. In this case, we want to show the text "Increment", so we call `me.text` as a child component inside of `me.button`.
-
-The `on_click` argument is how you wire the event handler defined above to a specific component. Whenever a click event is triggered by the component, the registered event handler function is called.
 
 In summary, you've learned how to define a state class, an event handler and wire them together using interactive components.
 
