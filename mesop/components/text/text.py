@@ -37,7 +37,7 @@ def text(
       text: The text to display.
       type: The typography level for the text.
       style: Style to apply to component. Follows [HTML Element inline style API](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/style).
-      key: The component [key](../guides/components.md#component-key).
+      key: The component [key](../components/index.md#component-key).
   """
   insert_component(
     key=key,

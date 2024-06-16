@@ -37,6 +37,7 @@ def configure_static_file_serving(
   def retrieve_index_html() -> io.BytesIO | str:
     page_config = runtime().get_page_config(path=request.path)
     file_path = get_path("index.html")
+    print("file_path", file_path)
     with open(file_path) as file:
       lines = file.readlines()
 

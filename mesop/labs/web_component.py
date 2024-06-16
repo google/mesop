@@ -4,11 +4,22 @@ from functools import wraps
 from typing import Any, Callable, TypeVar, cast
 
 from mesop.runtime import runtime
+from mesop.utils.validate import validate
 
 C = TypeVar("C", bound=Callable[..., Any])
 
 
-def web_component(path: str):
+def web_component(path: str, skip_validation: bool = False):
+  """A decorator for defining a web component.
+
+  This decorator is used to define a web component. It takes a path to the
+  JavaScript file of the web component and an optional parameter to skip
+  validation. It then registers the JavaScript file in the runtime.
+
+  Args:
+    path: The path to the JavaScript file of the web component.
+    skip_validation: If set to True, skips validation. Defaults to False.
+  """
   current_frame = inspect.currentframe()
   assert current_frame
   previous_frame = current_frame.f_back
@@ -25,9 +36,11 @@ def web_component(path: str):
   runtime().register_js_script(full_path)
 
   def component_wrapper(fn: C) -> C:
+    validated_fn = fn if skip_validation else validate(fn)
+
     @wraps(fn)
     def wrapper(*args: Any, **kw_args: Any):
-      return fn(*args, **kw_args)
+      return validated_fn(*args, **kw_args)
 
     return cast(C, wrapper)
 
@@ -41,21 +54,3 @@ def format_filename(filename: str) -> str:
   else:
     # Handle pip CLI case
     return os.path.relpath(filename, os.getcwd())
-
-
-# @dataclass(kw_only=True)
-# class EventOutput:
-#   json: dict[str, Any]
-#   key: str
-
-
-# def register_event_mapper(event: type[_T], map_fn: Callable[[EventOutput], _T]):
-#   runtime().register_event_mapper(
-#     event=event,
-#     map_fn=lambda event, key: map_fn(
-#       EventOutput(
-#         json=json.loads(event.string_value),
-#         key=key.key,
-#       )
-#     ),
-#   )

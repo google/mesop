@@ -16,7 +16,7 @@ def icon(
   """Creates a Icon component.
 
   Args:
-    key: The component [key](../guides/components.md#component-key).
+    key: The component [key](../components/index.md#component-key).
     icon: Name of the [Material Symbols icon](https://fonts.google.com/icons).
     style: Inline styles
   """

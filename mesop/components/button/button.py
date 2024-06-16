@@ -34,7 +34,7 @@ def button(
     disable_ripple: Whether the ripple effect is disabled or not.
     disabled: Whether the button is disabled.
     style: Style for the component.
-    key: The component [key](../guides/components.md#component-key).
+    key: The component [key](../components/index.md#component-key).
   """
   with content_button(
     on_click=on_click,
@@ -70,7 +70,7 @@ def content_button(
     disable_ripple: Whether the ripple effect is disabled or not.
     disabled: Whether the button is disabled.
     style: Style for the component.
-    key: The component [key](../guides/components.md#component-key).
+    key: The component [key](../components/index.md#component-key).
   """
   return insert_composite_component(
     key=key,

@@ -5,7 +5,7 @@ package(
 )
 
 py_library(
-    name = "custom_component",
+    name = "shared_js_module",
     srcs = glob(["*.py"]),
     data = glob(["*.js"]),
     deps = [

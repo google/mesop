@@ -48,5 +48,12 @@ class LoadEvent:
 
 @dataclass(kw_only=True)
 class WebEvent:
+  """Represents a web event.
+
+  Attributes:
+      value: The value associated with the web event.
+      key: key of the component that emitted this event.
+  """
+
   value: Any
   key: str

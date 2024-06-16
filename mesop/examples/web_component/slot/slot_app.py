@@ -2,21 +2,23 @@ from pydantic import BaseModel
 
 import mesop as me
 import mesop.labs as mel
-from mesop.examples.custom_component.inner_component import inner_component
-from mesop.examples.custom_component.outer_component import (
+from mesop.examples.web_component.slot.counter_component import (
+  counter_component,
+)
+from mesop.examples.web_component.slot.outer_component import (
   outer_component,
 )
 
 
 @me.page(
-  path="/simple_slot_app",
+  path="/web_component/slot/slot_app",
 )
 def page():
   with outer_component(
     value=me.state(State).value,
     on_increment=on_increment,
   ):
-    inner_component(
+    counter_component(
       value=me.state(State).value,
       on_decrement=on_decrement,
     )

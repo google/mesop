@@ -8,7 +8,6 @@ nav:
       - Installing: getting_started/installing.md
       - Quickstart: getting_started/quickstart.md
   - Guides:
-      - Components: guides/components.md
       - State Management: guides/state_management.md
       - Interactivity: guides/interactivity.md
       - Multi-Pages: guides/multi_pages.md
@@ -17,6 +16,12 @@ nav:
       - Web Security: guides/web_security.md
       - Labs: guides/labs.md
   - Components:
+      - Types:
+          - Overview: components/index.md
+          - Web Components:
+              - Overview: web_components/index.md
+              - Quickstart: web_components/quickstart.md
+              - API: web_components/api.md
       - High-level:
           - Chat: components/chat.md
           - Text to Text: components/text_to_text.md
@@ -62,13 +67,10 @@ nav:
       - Commands:
           - Navigate: api/commands/navigate.md
           - Scroll into view: api/commands/scroll_into_view.md
-  - Web Components:
-      - Overview: web_components/index.md
-      - API: web_components/api.md
-      - Examples:
-          - JS libraries: web_components/js_libraries.md
-          - Composition: web_components/composition.md
-          - Modules: web_components/modules.md
+  # - Web Components:
+  #     - Overview: web_components/index.md
+  #     - Quickstart: web_components/quickstart.md
+  #     - API: web_components/api.md
   - FAQ: faq.md
   - Demo Gallery 🔗: demo.md
   - Blog:
@@ -112,7 +114,8 @@ theme:
     - navigation.path
     - navigation.instant
     - navigation.tracking
-    - navigation.expand
+    # - navigation.expand
+    - navigation.prune
     - navigation.tabs
     - navigation.tabs.sticky
     - navigation.sections

@@ -1,8 +1,8 @@
 # Components
 
-Please read [Quickstart](../getting_started/quickstart.md) before this as it explains the basics of components. This page provides an in-depth explanation of the different types of components in Mesop.
+Please read [Quickstart](../getting_started/quickstart.md) before this as it explains the basics of components. This page provides an overview of the different types of components in Mesop.
 
-## Kinds of components
+## Types of components
 
 ### Native components
 
@@ -14,9 +14,13 @@ If you have a use case that's not supported by the existing native components, p
 
 User-defined components are essentially Python functions which call other components, which can be native components or other user-defined components. It's very easy to write your own components, and it's encouraged to split your app into modular components for better maintainability and reusability.
 
+### Web components
+
+Web components in Mesop are custom HTML elements created using JavaScript and CSS. They enable custom JavaScript execution and bi-directional communication between the browser and server. They can wrap JavaScript libraries and provide stateful client-side interactions. Learn more about web components [here](../web_components/index.md).
+
 ## Content components
 
-Content components allow you to compose components more flexibly than regular components by accepting child(ren) components. A commonly used content component is the [button](../components/button.md) component, which accepts a child component which oftentimes the [text](../components/text.md) component.
+Content components allow you to compose components more flexibly than regular components by accepting child(ren) components. A commonly used content component is the [button](./button.md) component, which accepts a child component which oftentimes the [text](./text.md) component.
 
 Example:
 
@@ -60,7 +64,7 @@ Every native component in Mesop accepts a `key` argument which is a component id
 
 ### Resetting a component
 
-You can reset a component to the initial state (e.g. reset a [select](../components/select.md) component to the unselected state) by giving it a new key value across renders.
+You can reset a component to the initial state (e.g. reset a [select](./select.md) component to the unselected state) by giving it a new key value across renders.
 
 For example, you can reset a component by "incrementing" the key:
 
@@ -117,4 +121,4 @@ def on_click(event: me.ClickEvent):
 
 !!! Tip "Use component key for reusable event handler"
 
-    This avoids a [subtle issue with using closure variables in event handlers](./interactivity.md#avoid-using-closure-variables-in-event-handler).
+    This avoids a [subtle issue with using closure variables in event handlers](../guides/interactivity.md#avoid-using-closure-variables-in-event-handler).

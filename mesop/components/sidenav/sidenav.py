@@ -19,7 +19,7 @@ def sidenav(
   Args:
       opened: A flag to determine if the sidenav is open or closed. Defaults to True.
       style: An optional Style object to apply custom styles. Defaults to None.
-      key: The component [key](../guides/components.md#component-key).
+      key: The component [key](../components/index.md#component-key).
   """
   return insert_composite_component(
     key=key,

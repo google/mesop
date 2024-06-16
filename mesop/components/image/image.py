@@ -21,7 +21,7 @@ def image(
       src: The source URL of the image.
       alt: The alternative text for the image if it cannot be displayed.
       style: The style to apply to the image, such as width and height.
-      key: The component [key](../guides/components.md#component-key).
+      key: The component [key](../components/index.md#component-key).
   """
   insert_component(
     key=key,

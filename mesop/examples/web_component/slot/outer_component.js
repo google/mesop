@@ -39,4 +39,4 @@ class OuterComponent extends LitElement {
   }
 }
 
-customElements.define('outer-component', OuterComponent);
+customElements.define('slot-outer-component', OuterComponent);

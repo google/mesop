@@ -54,6 +54,10 @@ class _ComponentWithChildren:
 
 
 def slot():
+  """
+  This function is used when defining a content component to mark a place in the component tree where content
+  can be provided by a child component.
+  """
   runtime().context().save_current_node_as_slot()
 
 
@@ -238,10 +242,26 @@ def insert_composite_component(
 
 def insert_web_component(
   name: str,
-  events: dict[str, Callable[[WebEvent], Any]],
-  properties: dict[str, Any],
+  events: dict[str, Callable[[WebEvent], Any]] | None = None,
+  properties: dict[str, Any] | None = None,
   key: str | None = None,
 ):
+  """
+  Inserts a web component into the current component tree.
+
+  Args:
+    name: The name of the web component. This should match the name defined in the JavaScript module.
+    events: A dictionary where the key is the event name, which must match an property name defined in JavaScript.
+            The value is the event handler (callback) function.
+    properties: A dictionary where the key is the property name that's defined in JavaScript and the value is the
+                 property value which is plumbed to the JavaScript component.
+    key: A unique identifier for the web component. Defaults to None.
+  """
+  if events is None:
+    events = dict()
+  if properties is None:
+    properties = dict()
+
   event_to_ids: dict[str, str] = {}
   for event in events:
     event_handler = events[event]

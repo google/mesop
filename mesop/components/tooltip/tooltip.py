@@ -24,7 +24,7 @@ def tooltip(
   Tooltip is a composite component.
 
   Args:
-    key: The component [key](../guides/components.md#component-key).
+    key: The component [key](../components/index.md#component-key).
     position: Allows the user to define the position of the tooltip relative to the parent element
     position_at_origin: Whether tooltip should be relative to the click or touch origin instead of outside the element bounding box.
     disabled: Disables the display of the tooltip.

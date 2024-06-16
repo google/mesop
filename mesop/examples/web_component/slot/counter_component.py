@@ -3,21 +3,20 @@ from typing import Any, Callable
 import mesop.labs as mel
 
 
-@mel.web_component(path="./outer_component.js")
-def outer_component(
+@mel.web_component(path="./counter_component.js")
+def counter_component(
   *,
   value: int,
-  on_increment: Callable[[mel.WebEvent], Any],
+  on_decrement: Callable[[mel.WebEvent], Any],
   key: str | None = None,
 ):
   return mel.insert_web_component(
-    name="outer-component",
+    name="slot-counter-component",
     key=key,
     events={
-      "increment-event": on_increment,
+      "decrementEvent": on_decrement,
     },
     properties={
       "value": value,
-      "active": True,
     },
   )
