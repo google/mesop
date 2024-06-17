@@ -8,6 +8,7 @@ RUN apt-get update && \
   locales-all \
   lsof \
   tmux \
+  sudo \
   vim \
   # Playwright dependencies
   # This is the equivalent of `sudo yarn playwright install-deps`. We add these manually
@@ -54,7 +55,9 @@ RUN npm install -g yarn @bazel/bazelisk @bazel/ibazel
 RUN groupadd -g 900 mesop-dev && useradd -u 900 -s /bin/bash -g mesop-dev mesop-dev && \
   mkdir /home/mesop-dev && \
   mkdir -p /home/mesop-dev/.vscode-server/extensions && \
-  chown -R mesop-dev:mesop-dev /home/mesop-dev
+  chown -R mesop-dev:mesop-dev /home/mesop-dev \
+  && echo mesop-dev ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/mesop-dev \
+  && chmod 0440 /etc/sudoers.d/mesop-dev
 
 USER mesop-dev
 
