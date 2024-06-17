@@ -16,7 +16,7 @@ const enableComponentTreeDiffs = process.env.ENABLE_COMPONENT_TREE_DIFFS
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  timeout: process.env.CI ? 20000 : 10000, // Budget more time for CI since tests run slower there.
+  timeout: process.env.CI ? 30000 : 15000, // Budget more time for CI since tests run slower there.
   testDir: '.',
   // Use a custom snapshot path template because Playwright's default
   // is platform-specific which isn't necessary for Mesop e2e tests
@@ -24,7 +24,7 @@ export default defineConfig({
   snapshotPathTemplate:
     '{testDir}/{testFileDir}/snapshots/{testFileName}_{arg}{ext}',
 
-  testMatch: ['e2e/*_test.ts', 'demo/screenshot.ts'],
+  testMatch: ['e2e/**/*_test.ts', 'demo/screenshot.ts'],
   testIgnore: 'scripts/**',
   /* Run tests in files in parallel */
   fullyParallel: true,

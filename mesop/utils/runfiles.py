@@ -3,6 +3,10 @@ import os
 from rules_python.python.runfiles import runfiles  # type: ignore
 
 
+def has_runfiles():
+  return runfiles.Create() is not None  # type: ignore
+
+
 def get_runfile_location(identifier: str) -> str:
   """Use this wrapper to retrieve a runfile because this util is replaced in downstream sync."""
 

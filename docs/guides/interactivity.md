@@ -101,4 +101,4 @@ def link_component(url: str):
   return me.button(url, key=url, on_click=on_click)
 ```
 
-For more info on using component keys, please refer to the [Component Key docs](./components.md#component-key).
+For more info on using component keys, please refer to the [Component Key docs](../components/index.md#component-key).

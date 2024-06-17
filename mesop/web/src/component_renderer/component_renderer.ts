@@ -9,10 +9,12 @@ import {
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
+import {createCustomElement} from '@angular/elements';
 import {CommonModule} from '@angular/common';
 import {
   Component as ComponentProto,
   UserEvent,
+  WebComponentType,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 import {ComponentLoader} from './component_loader';
 import {BoxType} from 'mesop/mesop/components/box/box_jspb_proto_pb/mesop/components/box/box_pb';
@@ -36,8 +38,12 @@ import {formatStyle} from '../utils/styles';
 import {isComponentNameEquals} from '../utils/proto';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {TemplatePortal} from '@angular/cdk/portal';
+import {jsonParse} from '../utils/strict_types';
+import {MESOP_EVENT_NAME, MesopEvent} from './mesop_event';
 
-const CORE_NAMESPACE = 'me';
+export const COMPONENT_RENDERER_ELEMENT_NAME = 'component-renderer-element';
+
+const WEB_COMPONENT_PREFIX = '<web>';
 
 @Component({
   selector: 'component-renderer',
@@ -69,6 +75,7 @@ export class ComponentRenderer {
   isEditorMode: boolean;
   isEditorOverlayOpen = false;
   overlayRef?: OverlayRef;
+  customElement: HTMLElement | undefined;
 
   constructor(
     private channel: Channel,
@@ -97,6 +104,12 @@ export class ComponentRenderer {
   }
 
   ngOnDestroy() {
+    if (this.customElement) {
+      this.customElement.removeEventListener(
+        MESOP_EVENT_NAME,
+        this.dispatchCustomUserEvent,
+      );
+    }
     if (this.isEditorMode) {
       (this.elementRef.nativeElement as HTMLElement).removeEventListener(
         'mouseover',
@@ -143,6 +156,31 @@ export class ComponentRenderer {
   }
 
   ngOnChanges() {
+    if (this.customElement) {
+      // This is a naive way to apply changes by removing all the children
+      // and creating new children. In the future, this can be optimized
+      // to be more performant, but this naive approach should have the
+      // correct behavior, albeit inefficiently.
+      // See: https://github.com/google/mesop/issues/449
+
+      // Clear existing children
+      for (const element of Array.from(
+        this.customElement.querySelectorAll(COMPONENT_RENDERER_ELEMENT_NAME),
+      )) {
+        this.customElement.removeChild(element);
+      }
+
+      // Update the custom element and its children
+      this.updateCustomElement(this.customElement);
+      for (const child of this.component.getChildrenList()) {
+        const childElement = document.createElement(
+          COMPONENT_RENDERER_ELEMENT_NAME,
+        );
+        (childElement as any)['component'] = child;
+        this.customElement.appendChild(childElement);
+      }
+      return;
+    }
     if (isRegularComponent(this.component)) {
       this.updateComponentRef();
       return;
@@ -154,6 +192,42 @@ export class ComponentRenderer {
     }
 
     this.computeStyles();
+  }
+
+  updateCustomElement(customElement: HTMLElement) {
+    const webComponentType = WebComponentType.deserializeBinary(
+      this.component.getType()!.getValue() as unknown as Uint8Array,
+    );
+    const properties = jsonParse(
+      webComponentType.getPropertiesJson()!,
+    ) as object;
+    for (const key of Object.keys(properties)) {
+      const value = (properties as any)[key];
+      // Explicitly don't set attribute for boolean attribute.
+      // If you set any value to a boolean attribute, it will be treated as enabled.
+      // Source: https://lit.dev/docs/components/properties/#boolean-attributes
+      if (value !== false) {
+        customElement.setAttribute(key, (properties as any)[key]);
+      }
+    }
+
+    const events = jsonParse(webComponentType.getEventsJson()!) as object;
+    for (const event of Object.keys(events)) {
+      customElement.setAttribute(event, (events as any)[event]);
+    }
+    // Always try to remove the event listener since we will attach the event listener
+    // next. If the event listener wasn't already attached, then removeEventListener is
+    // effectively a no-op (i.e. it won't throw an error).
+    customElement.removeEventListener(
+      MESOP_EVENT_NAME,
+      this.dispatchCustomUserEvent,
+    );
+    if (Object.keys(events).length) {
+      customElement.addEventListener(
+        MESOP_EVENT_NAME,
+        this.dispatchCustomUserEvent,
+      );
+    }
   }
 
   ngDoCheck() {
@@ -219,14 +293,46 @@ export class ComponentRenderer {
     const componentClass = typeName.getCoreModule()
       ? typeToComponent[typeName.getFnName()!] || UserDefinedComponent // Some core modules rely on UserDefinedComponent
       : UserDefinedComponent;
-    // Need to insert at insertionRef and *not* viewContainerRef, otherwise
-    // the component (e.g. <mesop-text> will not be properly nested inside <component-renderer>).
-    this._componentRef = this.insertionRef.createComponent(
-      componentClass, // If it's an unrecognized type, we assume it's a user-defined component
-      options,
-    );
-    this.updateComponentRef();
+    if (typeName.getFnName()?.startsWith(WEB_COMPONENT_PREFIX)) {
+      const customElementName = typeName
+        .getFnName()!
+        .slice(WEB_COMPONENT_PREFIX.length);
+      this.customElement = document.createElement(customElementName);
+      this.updateCustomElement(this.customElement);
+
+      for (const child of this.component.getChildrenList()) {
+        const childElement = document.createElement(
+          COMPONENT_RENDERER_ELEMENT_NAME,
+        );
+        (childElement as any)['component'] = child;
+        this.customElement.appendChild(childElement);
+      }
+
+      this.insertionRef.element.nativeElement.parentElement.appendChild(
+        this.customElement,
+      );
+    } else {
+      // Need to insert at insertionRef and *not* viewContainerRef, otherwise
+      // the component (e.g. <mesop-text> will not be properly nested inside <component-renderer>).
+      this._componentRef = this.insertionRef.createComponent(
+        componentClass, // If it's an unrecognized type, we assume it's a user-defined / Python custom component
+        options,
+      );
+      this.updateComponentRef();
+    }
   }
+
+  dispatchCustomUserEvent = (event: Event) => {
+    const mesopEvent = event as MesopEvent<any>;
+    const userEvent = new UserEvent();
+    // Use bracket property access to avoid renaming because MesopEvent
+    // is referenced by web component modules which may be compiled independently
+    // so property renaming is unsafe.
+    userEvent.setStringValue(JSON.stringify(mesopEvent['payload']));
+    userEvent.setHandlerId(mesopEvent['handlerId']);
+    userEvent.setKey(this.component.getKey());
+    this.channel.dispatch(userEvent);
+  };
 
   updateComponentRef() {
     if (this._componentRef) {
