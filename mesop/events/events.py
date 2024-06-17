@@ -47,13 +47,12 @@ class LoadEvent:
 
 
 @dataclass(kw_only=True)
-class WebEvent:
-  """Represents a web event.
+class WebEvent(MesopEvent):
+  """An event emitted by a web component.
 
   Attributes:
       value: The value associated with the web event.
-      key: key of the component that emitted this event.
+      key (str): key of the component that emitted this event.
   """
 
   value: Any
-  key: str

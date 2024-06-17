@@ -1,5 +1,7 @@
 # Quickstart
 
+> Note: Web components are a new experimental feature released under labs and may have breaking changes.
+
 You will learn how to build your first web component step-by-step, a counter component.
 
 Although it's a simple example, it will show you the core APIs of defining your own web component and how to support bi-directional communication between the Python code running on the server and JavaScript code running on the browser.

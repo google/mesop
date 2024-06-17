@@ -16,7 +16,7 @@ User-defined components are essentially Python functions which call other compon
 
 ### Web components
 
-Web components in Mesop are custom HTML elements created using JavaScript and CSS. They enable custom JavaScript execution and bi-directional communication between the browser and server. They can wrap JavaScript libraries and provide stateful client-side interactions. Learn more about web components [here](../web_components/index.md).
+Web components in Mesop are custom HTML elements created using JavaScript and CSS. They enable custom JavaScript execution and bi-directional communication between the browser and server. They can wrap JavaScript libraries and provide stateful client-side interactions. [Learn more about web components](../web_components/index.md).
 
 ## Content components
 

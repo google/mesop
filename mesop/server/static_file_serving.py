@@ -37,7 +37,6 @@ def configure_static_file_serving(
   def retrieve_index_html() -> io.BytesIO | str:
     page_config = runtime().get_page_config(path=request.path)
     file_path = get_path("index.html")
-    print("file_path", file_path)
     with open(file_path) as file:
       lines = file.readlines()
 
@@ -45,14 +44,14 @@ def configure_static_file_serving(
       if "$$INSERT_CSP_NONCE$$" in line:
         lines[i] = lines[i].replace("$$INSERT_CSP_NONCE$$", g.csp_nonce)
       if (
-        runtime().js_scripts
+        runtime().js_modules
         and line.strip() == "<!-- Inject web components modules (if needed) -->"
       ):
         # READ the file content
         lines[i] = "\n".join(
           [
-            f"<script type='module' nonce={g.csp_nonce} src='/{WEB_COMPONENTS_PATH_SEGMENT}{script}'></script>"
-            for script in runtime().js_scripts
+            f"<script type='module' nonce={g.csp_nonce} src='/{WEB_COMPONENTS_PATH_SEGMENT}{js_module}'></script>"
+            for js_module in runtime().js_modules
           ]
         )
       if (
@@ -143,7 +142,7 @@ def configure_static_file_serving(
         # Need 'unsafe-inline' because we apply inline styles for our components.
         # This is also used by Angular for animations:
         # https://github.com/angular/angular/pull/55260
-        # finally, other third-party libraries like Plotly rely on setting stylesheets dynamically.
+        # Finally, other third-party libraries like Plotly rely on setting stylesheets dynamically.
         "style-src": "'self' 'unsafe-inline' fonts.googleapis.com",
         "script-src": f"'self' 'nonce-{g.csp_nonce}'",
         # https://angular.io/guide/security#enforcing-trusted-types

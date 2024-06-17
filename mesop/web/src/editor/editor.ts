@@ -27,7 +27,7 @@ import {
   HotReloadWatcher,
   DefaultHotReloadWatcher,
 } from '../services/hot_reload_watcher';
-import {Shell} from '../shell/shell';
+import {Shell, registerComponentRendererElement} from '../shell/shell';
 import {EditorService, SelectionMode} from '../services/editor_service';
 import {Channel} from '../services/channel';
 import {isMac} from '../utils/platform';
@@ -273,9 +273,8 @@ function findPath(
 @Component({
   selector: 'mesop-editor-app',
   template: '<router-outlet></router-outlet>',
-  standalone: true,
-  providers: [{provide: EditorService, useClass: EditorServiceImpl}],
   imports: [Editor, RouterOutlet],
+  standalone: true,
 })
 class MesopEditorApp {}
 
@@ -287,10 +286,7 @@ export async function bootstrapApp() {
       {provide: EditorService, useClass: EditorServiceImpl},
     ],
   });
-  const ComponentRendererElement = createCustomElement(ComponentRenderer, {
-    injector: app.injector,
-  });
-  customElements.define('component-renderer-element', ComponentRendererElement);
+  registerComponentRendererElement(app);
 }
 
 export const TEST_ONLY = {EditorServiceImpl};

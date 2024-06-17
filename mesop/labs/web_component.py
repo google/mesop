@@ -31,9 +31,8 @@ def web_component(path: str, skip_validation: bool = False):
   full_path = os.path.normpath(os.path.join(caller_module_dir, path))
   if not full_path.startswith("/"):
     full_path = "/" + full_path
-  # with open(full_path) as js_file:
-  #   js_content = js_file.read()
-  runtime().register_js_script(full_path)
+
+  runtime().register_js_module(full_path)
 
   def component_wrapper(fn: C) -> C:
     validated_fn = fn if skip_validation else validate(fn)

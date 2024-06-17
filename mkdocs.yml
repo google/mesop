@@ -67,10 +67,6 @@ nav:
       - Commands:
           - Navigate: api/commands/navigate.md
           - Scroll into view: api/commands/scroll_into_view.md
-  # - Web Components:
-  #     - Overview: web_components/index.md
-  #     - Quickstart: web_components/quickstart.md
-  #     - API: web_components/api.md
   - FAQ: faq.md
   - Demo Gallery 🔗: demo.md
   - Blog:
@@ -114,7 +110,6 @@ theme:
     - navigation.path
     - navigation.instant
     - navigation.tracking
-    # - navigation.expand
     - navigation.prune
     - navigation.tabs
     - navigation.tabs.sticky

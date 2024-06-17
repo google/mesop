@@ -1,4 +1,5 @@
 import {
+  ApplicationRef,
   Component,
   ErrorHandler,
   HostListener,
@@ -18,7 +19,10 @@ import {
   InitRequest,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 import {CommonModule} from '@angular/common';
-import {ComponentRenderer} from '../component_renderer/component_renderer';
+import {
+  COMPONENT_RENDERER_ELEMENT_NAME,
+  ComponentRenderer,
+} from '../component_renderer/component_renderer';
 import {Channel} from '../services/channel';
 import {provideAnimations} from '@angular/platform-browser/animations';
 import {bootstrapApplication} from '@angular/platform-browser';
@@ -145,19 +149,24 @@ const routes: Routes = [{path: '**', component: Shell}];
 @Component({
   selector: 'mesop-app',
   template: '<router-outlet></router-outlet>',
-  standalone: true,
   imports: [Shell, RouterOutlet],
-  // providers: [EditorService],
+  standalone: true,
 })
 class MesopApp {}
 
 export async function bootstrapApp() {
-  // TODO: duplicate this...
   const app = await bootstrapApplication(MesopApp, {
     providers: [provideAnimations(), provideRouter(routes), EditorService],
   });
+  registerComponentRendererElement(app);
+}
+
+export function registerComponentRendererElement(app: ApplicationRef) {
   const ComponentRendererElement = createCustomElement(ComponentRenderer, {
     injector: app.injector,
   });
-  customElements.define('component-renderer-element', ComponentRendererElement);
+  customElements.define(
+    COMPONENT_RENDERER_ELEMENT_NAME,
+    ComponentRendererElement,
+  );
 }

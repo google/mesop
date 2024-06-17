@@ -8,7 +8,9 @@ class SecurityPolicy:
 
   Attributes:
       allowed_iframe_parents: A list of allowed iframe parents.
-      dangerously_disable_trusted_types: A flag to disable trusted types. It's highly recommended to keep this enabled!
+      dangerously_disable_trusted_types: A flag to disable trusted types.
+        Highly recommended to not disable trusted types because
+        it's an important web security feature!
   """
 
   allowed_iframe_parents: list[str] = field(default_factory=list)

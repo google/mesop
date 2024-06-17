@@ -11,4 +11,7 @@ export class MesopEvent<T> extends Event {
   }
 }
 
+// Place it on the global object so that web component modules
+// can consume this class without needing an explicit import
+// (which would require publishing this to an npm package).
 (window as any)['MesopEvent'] = MesopEvent;

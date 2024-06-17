@@ -250,10 +250,10 @@ def insert_web_component(
   Inserts a web component into the current component tree.
 
   Args:
-    name: The name of the web component. This should match the name defined in the JavaScript module.
-    events: A dictionary where the key is the event name, which must match an property name defined in JavaScript.
+    name: The name of the web component. This should match the custom element name defined in JavaScript.
+    events: A dictionary where the key is the event name, which must match a web component property name defined in JavaScript.
             The value is the event handler (callback) function.
-    properties: A dictionary where the key is the property name that's defined in JavaScript and the value is the
+    properties: A dictionary where the key is the web component property name that's defined in JavaScript and the value is the
                  property value which is plumbed to the JavaScript component.
     key: A unique identifier for the web component. Defaults to None.
   """
@@ -271,14 +271,14 @@ def insert_web_component(
     events_json=json.dumps(event_to_ids),
   )
   return insert_composite_component(
-    # Prefix with <web> to ensure there's never any overlap.
+    # Prefix with <web> to ensure there's never any overlap with built-in components.
     type_name="<web>" + name,
     proto=type_proto,
     key=key,
   )
 
 
-# Remove insert_custom_component?
+# TODO: remove insert_custom_component
 def insert_custom_component(
   component_name: str,
   proto: Message,
