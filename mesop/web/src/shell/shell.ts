@@ -5,8 +5,8 @@ import {
   NgZone,
   Renderer2,
 } from '@angular/core';
-import {Router, RouterOutlet, Routes, provideRouter} from '@angular/router';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { Router, RouterOutlet, Routes, provideRouter } from '@angular/router';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import {
   ServerError,
   Component as ComponentProto,
@@ -17,17 +17,17 @@ import {
   UiRequest,
   InitRequest,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
-import {CommonModule} from '@angular/common';
-import {ComponentRenderer} from '../component_renderer/component_renderer';
-import {Channel} from '../services/channel';
-import {provideAnimations} from '@angular/platform-browser/animations';
-import {bootstrapApplication} from '@angular/platform-browser';
-import {MatIconModule, MatIconRegistry} from '@angular/material/icon';
-import {EditorService} from '../services/editor_service';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {ErrorBox} from '../error/error_box';
-import {GlobalErrorHandlerService} from '../services/global_error_handler';
-import {getViewportSize} from '../utils/viewport_size';
+import { CommonModule } from '@angular/common';
+import { ComponentRenderer } from '../component_renderer/component_renderer';
+import { Channel } from '../services/channel';
+import { provideAnimations } from '@angular/platform-browser/animations';
+import { bootstrapApplication } from '@angular/platform-browser';
+import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
+import { EditorService } from '../services/editor_service';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { ErrorBox } from '../error/error_box';
+import { GlobalErrorHandlerService } from '../services/global_error_handler';
+import { getViewportSize } from '../utils/viewport_size';
 
 @Component({
   selector: 'mesop-shell',
@@ -41,7 +41,7 @@ import {getViewportSize} from '../utils/viewport_size';
     MatSidenavModule,
     ErrorBox,
   ],
-  providers: [{provide: ErrorHandler, useClass: GlobalErrorHandlerService}],
+  providers: [{ provide: ErrorHandler, useClass: GlobalErrorHandlerService }],
   styleUrl: 'shell.css',
 })
 export class Shell {
@@ -84,7 +84,14 @@ export class Shell {
         },
         onCommand: (command) => {
           if (command.hasNavigate()) {
-            this.router.navigateByUrl(command.getNavigate()!.getUrl()!);
+            const url = command.getNavigate()!.getUrl()!;
+
+            // Check if URL is absolute
+            if (url.startsWith('http://') || url.startsWith('https://')) {
+              window.location.href = url; // Navigate directly for absolute URLs
+            } else {
+              this.router.navigateByUrl(url); // Use Angular router for relative URLs
+            }
           } else if (command.hasScrollIntoView()) {
             // Scroll into view
             const key = command.getScrollIntoView()!.getKey();
@@ -139,7 +146,7 @@ export class Shell {
   }
 }
 
-const routes: Routes = [{path: '**', component: Shell}];
+const routes: Routes = [{ path: '**', component: Shell }];
 
 @Component({
   selector: 'mesop-app',
@@ -148,7 +155,7 @@ const routes: Routes = [{path: '**', component: Shell}];
   imports: [Shell, RouterOutlet],
   providers: [EditorService],
 })
-class MesopApp {}
+class MesopApp { }
 
 export function bootstrapApp() {
   bootstrapApplication(MesopApp, {
