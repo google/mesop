@@ -151,7 +151,9 @@ def configure_static_file_serving(
         "require-trusted-types-for": "'script'",
       }
     )
-    security_policy = page_config and page_config.security_policy
+    security_policy = None
+    if page_config and page_config.security_policy:
+      security_policy = page_config.security_policy
     if security_policy and security_policy.dangerously_disable_trusted_types:
       del csp["trusted-types"]
       del csp["require-trusted-types-for"]
@@ -163,7 +165,7 @@ def configure_static_file_serving(
       csp["frame-ancestors"] = "*"
     elif security_policy and security_policy.allowed_iframe_parents:
       csp["frame-ancestors"] = "'self' " + " ".join(
-        list(page_config.security_policy.allowed_iframe_parents)
+        list(security_policy.allowed_iframe_parents)
       )
     else:
       csp["frame-ancestors"] = default_allowed_iframe_parents

@@ -147,14 +147,14 @@ const routes: Routes = [{path: '**', component: Shell}];
   template: '<router-outlet></router-outlet>',
   standalone: true,
   imports: [Shell, RouterOutlet],
-  providers: [EditorService],
+  // providers: [EditorService],
 })
 class MesopApp {}
 
 export async function bootstrapApp() {
   // TODO: duplicate this...
   const app = await bootstrapApplication(MesopApp, {
-    providers: [provideAnimations(), provideRouter(routes)],
+    providers: [provideAnimations(), provideRouter(routes), EditorService],
   });
   const ComponentRendererElement = createCustomElement(ComponentRenderer, {
     injector: app.injector,
