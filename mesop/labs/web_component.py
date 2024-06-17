@@ -9,7 +9,7 @@ from mesop.utils.validate import validate
 C = TypeVar("C", bound=Callable[..., Any])
 
 
-def web_component(path: str, skip_validation: bool = False):
+def web_component(*, path: str, skip_validation: bool = False):
   """A decorator for defining a web component.
 
   This decorator is used to define a web component. It takes a path to the

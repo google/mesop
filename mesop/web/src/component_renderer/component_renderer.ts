@@ -161,6 +161,7 @@ export class ComponentRenderer {
       // and creating new children. In the future, this can be optimized
       // to be more performant, but this naive approach should have the
       // correct behavior, albeit inefficiently.
+      // See: https://github.com/google/mesop/issues/449
 
       // Clear existing children
       for (const element of Array.from(
@@ -296,26 +297,25 @@ export class ComponentRenderer {
       const customElementName = typeName
         .getFnName()!
         .slice(WEB_COMPONENT_PREFIX.length);
-      const customElement = document.createElement(customElementName);
-      this.customElement = customElement;
-      this.updateCustomElement(customElement);
+      this.customElement = document.createElement(customElementName);
+      this.updateCustomElement(this.customElement);
 
       for (const child of this.component.getChildrenList()) {
         const childElement = document.createElement(
           COMPONENT_RENDERER_ELEMENT_NAME,
         );
         (childElement as any)['component'] = child;
-        customElement.appendChild(childElement);
+        this.customElement.appendChild(childElement);
       }
 
       this.insertionRef.element.nativeElement.parentElement.appendChild(
-        customElement,
+        this.customElement,
       );
     } else {
       // Need to insert at insertionRef and *not* viewContainerRef, otherwise
       // the component (e.g. <mesop-text> will not be properly nested inside <component-renderer>).
       this._componentRef = this.insertionRef.createComponent(
-        componentClass, // If it's an unrecognized type, we assume it's a user-defined component
+        componentClass, // If it's an unrecognized type, we assume it's a user-defined / Python custom component
         options,
       );
       this.updateComponentRef();

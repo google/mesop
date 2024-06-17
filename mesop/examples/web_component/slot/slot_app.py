@@ -18,14 +18,31 @@ def page():
     value=me.state(State).value,
     on_increment=on_increment,
   ):
-    counter_component(
-      value=me.state(State).value,
-      on_decrement=on_decrement,
-    )
+    with me.box():
+      me.text(
+        "You can use built-in components inside the slot of a web component."
+      )
+      #
+      me.checkbox(
+        # Need to set |checked| because of https://github.com/google/mesop/issues/449
+        checked=me.state(State).checked,
+        label="Checked?",
+        on_change=on_checked,
+      )
+      counter_component(
+        value=me.state(State).value,
+        on_decrement=on_decrement,
+      )
+  me.text(f"Checked? {me.state(State).checked}")
+
+
+def on_checked(e: me.CheckboxChangeEvent):
+  me.state(State).checked = e.checked
 
 
 @me.stateclass
 class State:
+  checked: bool
   value: int = 10
 
 

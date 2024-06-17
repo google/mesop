@@ -47,7 +47,6 @@ def configure_static_file_serving(
         runtime().js_modules
         and line.strip() == "<!-- Inject web components modules (if needed) -->"
       ):
-        # READ the file content
         lines[i] = "\n".join(
           [
             f"<script type='module' nonce={g.csp_nonce} src='/{WEB_COMPONENTS_PATH_SEGMENT}{js_module}'></script>"

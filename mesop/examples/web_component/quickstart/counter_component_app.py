@@ -27,5 +27,7 @@ class ChangeValue(BaseModel):
 
 
 def on_decrement(e: mel.WebEvent):
+  # Creating a Pydantic model from the JSON value of the WebEvent
+  # to enforce type safety.
   decrement = ChangeValue(**e.value)
   me.state(State).value = decrement.value
