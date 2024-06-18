@@ -1,31 +1,14 @@
-import {
-  Component,
-  ElementRef,
-  Input,
-  Renderer2,
-  ViewChild,
-} from '@angular/core';
+import {Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
 import {EditorService} from '../../services/editor_service';
 import {ComponentObject, Logger, RenderLogModel} from '../services/logger';
 import {ComponentTree, FlatNode} from '../component_tree/component_tree';
 import {ObjectTree} from '../object_tree/object_tree';
-import {
-  FieldType,
-  ComponentConfig,
-  EditorField,
-  EditorEvent,
-  EditorDeleteComponent,
-  SourceCodeLocation,
-  ComponentName,
-} from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
-import {MatDialogModule, MatDialog} from '@angular/material/dialog';
+import {ComponentName} from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
+import {MatDialogModule} from '@angular/material/dialog';
 import {MatDividerModule} from '@angular/material/divider';
-import {EditorFields} from './editor_fields/editor_fields';
 import {MatIconModule} from '@angular/material/icon';
-import {Channel} from '../../services/channel';
 import {CommonModule} from '@angular/common';
 import {MatButtonModule} from '@angular/material/button';
-import {isComponentNameEquals} from '../../utils/proto';
 
 @Component({
   selector: 'mesop-editor-panel',
@@ -35,7 +18,6 @@ import {isComponentNameEquals} from '../../utils/proto';
   imports: [
     CommonModule,
     ObjectTree,
-    EditorFields,
     MatDividerModule,
     ComponentTree,
     MatIconModule,
@@ -43,23 +25,16 @@ import {isComponentNameEquals} from '../../utils/proto';
   ],
 })
 export class EditorPanel {
-  @Input()
-  componentConfigs!: readonly ComponentConfig[];
-
-  FieldTypeCase = FieldType.TypeCase;
   selectedNode!: FlatNode;
 
   @ViewChild('dragHandle', {read: ElementRef}) dragHandle!: ElementRef;
   private isDragging = false;
   @ViewChild('topPanel', {read: ElementRef}) topPanel!: ElementRef;
-  @ViewChild('bottomPanel', {read: ElementRef}) bottomPanel!: ElementRef;
 
   constructor(
     private logger: Logger,
     private editorService: EditorService,
-    private channel: Channel,
     private renderer: Renderer2,
-    private dialog: MatDialog,
   ) {}
 
   ngAfterViewInit() {
@@ -72,26 +47,10 @@ export class EditorPanel {
 
       const newHeight = window.innerHeight - event.clientY;
       this.topPanel.nativeElement.style.marginBottom = `${newHeight}px`;
-      this.bottomPanel.nativeElement.style.height = `${newHeight}px`;
     });
 
     this.renderer.listen(document, 'mouseup', (event) => {
       this.isDragging = false;
-    });
-  }
-
-  deleteComponent(location: SourceCodeLocation): void {
-    // Show confirmation dialog
-    const dialogRef = this.dialog.open(DeleteConfirmationDialog);
-    dialogRef.afterClosed().subscribe((value) => {
-      // Abort if user cancelled;
-      if (!value) return;
-
-      const editorEvent = new EditorEvent();
-      const deleteComponent = new EditorDeleteComponent();
-      deleteComponent.setSourceCodeLocation(location);
-      editorEvent.setDeleteComponent(deleteComponent);
-      this.channel.dispatchEditorEvent(editorEvent);
     });
   }
 
@@ -109,19 +68,6 @@ export class EditorPanel {
       return '<root>';
     }
     return type.getName()?.getFnName() ?? '<unknown>';
-  }
-
-  getComponentConfig() {
-    return this.componentConfigs.find((config) =>
-      isComponentNameEquals(
-        config.getComponentName()!,
-        this.editorService.getFocusedComponent()!.getType()?.getName()!,
-      ),
-    );
-  }
-
-  getFields(): readonly EditorField[] {
-    return this.getComponentConfig()?.getFieldsList() ?? [];
   }
 
   component(): ComponentObject {

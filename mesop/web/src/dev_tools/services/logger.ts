@@ -3,7 +3,6 @@ import {
   States,
   UserEvent,
   Component as ComponentProto,
-  EditorEvent,
   ComponentName,
   UserDefinedType,
   CodeValue,
@@ -53,13 +52,6 @@ export class Logger {
           type: 'User Event',
           timestamp: Date.now(),
           userEvent: input.userEvent.toObject(),
-          duration,
-        };
-      case 'EditorEventLog':
-        return {
-          type: 'Editor Event',
-          timestamp: Date.now(),
-          editorEvent: input.editorEvent.toObject(),
           duration,
         };
       case 'RenderLog':
@@ -207,11 +199,6 @@ export interface UserEventLogInput extends BaseLogInput {
   userEvent: UserEvent;
 }
 
-export interface EditorEventLogInput extends BaseLogInput {
-  type: 'EditorEventLog';
-  editorEvent: EditorEvent;
-}
-
 export interface RenderLogInput extends BaseLogInput {
   type: 'RenderLog';
   rootComponent: ComponentProto;
@@ -222,5 +209,4 @@ export type LogInput =
   | StreamStartLogInput
   | StreamEndLogInput
   | UserEventLogInput
-  | EditorEventLogInput
   | RenderLogInput;

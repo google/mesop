@@ -3,7 +3,6 @@ import {LogsPanel} from './logs_panel/logs_panel';
 import {CommonModule} from '@angular/common';
 import {DevToolsSettings, Panel} from './services/dev_tools_settings';
 import {EditorPanel} from './editor_panel/editor_panel';
-import {ComponentConfig} from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 import {MatIconModule} from '@angular/material/icon';
 import {EditorService, SelectionMode} from '../services/editor_service';
 import {MatTooltipModule} from '@angular/material/tooltip';
@@ -24,9 +23,6 @@ import {Channel} from '../services/channel';
   ],
 })
 export class DevTools {
-  @Input()
-  componentConfigs!: readonly ComponentConfig[];
-
   Panel = Panel; // Make it accessible by template.
 
   get selectedPanel(): Panel {

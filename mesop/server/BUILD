@@ -9,7 +9,6 @@ py_library(
     srcs = glob(["*.py"]),
     deps = [
         "//mesop/component_helpers",
-        "//mesop/editor",
         "//mesop/events",
         "//mesop/protos:ui_py_pb2",
         "//mesop/utils",

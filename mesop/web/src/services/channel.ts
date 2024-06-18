@@ -8,8 +8,6 @@ import {
   Component as ComponentProto,
   UiResponse,
   NavigationEvent,
-  ComponentConfig,
-  EditorEvent,
   Command,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 import {Logger} from '../dev_tools/services/logger';
@@ -25,10 +23,7 @@ const WAIT_TIMEOUT_MS = 500;
 
 interface InitParams {
   zone: NgZone;
-  onRender: (
-    rootComponent: ComponentProto,
-    componentConfigs: readonly ComponentConfig[],
-  ) => void;
+  onRender: (rootComponent: ComponentProto) => void;
   onError: (error: ServerError) => void;
   onCommand: (command: Command) => void;
 }
@@ -50,7 +45,6 @@ export class Channel {
   private states: States = new States();
   private rootComponent?: ComponentProto;
   private status!: ChannelStatus;
-  private componentConfigs: readonly ComponentConfig[] = [];
   private queuedEvents: (() => void)[] = [];
   private hotReloadBackoffCounter = 0;
   private hotReloadCounter = 0;
@@ -77,10 +71,6 @@ export class Channel {
 
   getRootComponent(): ComponentProto | undefined {
     return this.rootComponent;
-  }
-
-  getComponentConfigs(): readonly ComponentConfig[] {
-    return this.componentConfigs;
   }
 
   init(initParams: InitParams, request: UiRequest) {
@@ -185,10 +175,7 @@ export class Channel {
               this.rootComponent = rootComponent;
             }
 
-            this.componentConfigs = uiResponse
-              .getRender()!
-              .getComponentConfigsList();
-            onRender(this.rootComponent, this.componentConfigs);
+            onRender(this.rootComponent);
             this.logger.log({
               type: 'RenderLog',
               states: this.states,
@@ -233,13 +220,6 @@ export class Channel {
         initUserEvent();
       });
     }
-  }
-
-  dispatchEditorEvent(event: EditorEvent) {
-    this.logger.log({type: 'EditorEventLog', editorEvent: event});
-    const request = new UiRequest();
-    request.setEditorEvent(event);
-    this.init(this.initParams, request);
   }
 
   checkForHotReload() {

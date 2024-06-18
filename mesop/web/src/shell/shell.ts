@@ -12,7 +12,6 @@ import {
   ServerError,
   Component as ComponentProto,
   UserEvent,
-  ComponentConfig,
   NavigationEvent,
   ResizeEvent,
   UiRequest,
@@ -52,7 +51,6 @@ import {createCustomElement} from '@angular/elements';
 export class Shell {
   rootComponent!: ComponentProto;
   error: ServerError | undefined;
-  componentConfigs: readonly ComponentConfig[] = [];
 
   constructor(
     private zone: NgZone,
@@ -78,13 +76,8 @@ export class Shell {
     this.channel.init(
       {
         zone: this.zone,
-        onRender: (rootComponent, componentConfigs) => {
+        onRender: (rootComponent) => {
           this.rootComponent = rootComponent;
-          // Component configs are only sent for the first response.
-          // For subsequent reponses, use the component configs previously
-          if (componentConfigs.length) {
-            this.componentConfigs = componentConfigs;
-          }
           this.error = undefined;
         },
         onCommand: (command) => {

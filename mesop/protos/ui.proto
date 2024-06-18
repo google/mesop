@@ -9,7 +9,6 @@ message UiRequest {
     oneof type {
         InitRequest init = 1;
         UserEvent user_event = 2;
-        EditorEvent editor_event = 4;
     }
 }
 
@@ -35,76 +34,6 @@ message UserEvent {
         NavigationEvent navigation = 6;
         ResizeEvent resize = 10;
         bytes bytes_value = 9;
-    }
-}
-
-message EditorEvent {
-    oneof type {
-        EditorNewComponent new_component = 2;
-        EditorUpdateCallsite update_callsite = 1;
-        EditorDeleteComponent delete_component = 3;
-    }
-}
-
-message EditorNewComponent {
-    enum Mode {
-        // Do not use.
-        MODE_UNSPECIFIED = 0;
-        // Appends a sibling after the source code location.
-        MODE_APPEND_SIBLING = 1;
-        // Only works for components that allow children.
-        MODE_CHILD = 2;
-    }
-    optional Mode mode = 3;
-    optional SourceCodeLocation source_code_location = 1;
-    optional ComponentName component_name = 2;
-}
-
-message EditorUpdateCallsite {
-    // |source_code_location|, |component_name|, |arg_path| specify
-    // which part of the code should be edited.
-    optional SourceCodeLocation source_code_location = 1;
-    optional ComponentName component_name = 2;
-    optional ArgPath arg_path = 3;
-
-    // Specifies what the targeted code should be replaced with.
-    optional CodeReplacement replacement = 4;
-}
-
-message EditorDeleteComponent {
-    optional SourceCodeLocation source_code_location = 1;
-}
-
-message CodeReplacement {
-    oneof command {
-        CodeValue new_code = 1;
-        DeleteCode delete_code = 2;
-        // Append element to a list.
-        // The last segment of the corresponding arg path should be a list index.
-        CodeValue append_element = 3;
-    }
-}
-
-message DeleteCode {}
-
-message CodeValue {
-    oneof value {
-        string string_value = 1;
-        bool bool_value = 2;
-        int32 int_value = 3;
-        double double_value = 4;
-        string struct_name = 5;
-    }
-}
-
-message ArgPath {
-    repeated ArgPathSegment segments = 1;
-}
-
-message ArgPathSegment {
-    oneof type {
-        string keyword_argument = 1;
-        int32 list_index = 2;
     }
 }
 
@@ -165,9 +94,6 @@ message RenderEvent {
     optional ComponentDiff component_diff = 2;
     optional string title = 3;
     repeated Command commands = 4;
-
-    // Only sent in editor mode:
-    repeated ComponentConfig component_configs = 5;
 }
 
 // UI response event for updating state.
@@ -311,6 +237,16 @@ message UserDefinedType {
     repeated Arg args = 1;
 }
 
+message CodeValue {
+    oneof value {
+        string string_value = 1;
+        bool bool_value = 2;
+        int32 int_value = 3;
+        double double_value = 4;
+        string struct_name = 5;
+    }
+}
+
 // Next id: 67
 message Style {
     optional string align_content = 32;
@@ -400,13 +336,6 @@ message BorderSide {
     optional string style = 3;
 }
 
-message ComponentConfig {
-    optional ComponentName component_name = 1;
-    optional string category = 2;
-    repeated EditorField fields = 3;
-    optional bool accepts_child = 4;
-}
-
 message ComponentName {
     oneof module_id {
         // Python module path, e.g. "mesop.labs.layout"
@@ -417,58 +346,4 @@ message ComponentName {
     }
     // The Python function name (e.g. `text`).
     optional string fn_name = 3;
-}
-
-message EditorField {
-    optional string name = 1;
-    optional FieldType type = 2;
-}
-
-message FieldType {
-    oneof type {
-        BoolType bool_type = 1;
-        IntType int_type = 2;
-        FloatType float_type = 3;
-        StringType string_type = 4;
-        LiteralType literal_type = 5;
-        ListType list_type = 6;
-        StructType struct_type = 7;
-    }
-}
-
-message BoolType {
-    optional bool default_value = 1;
-}
-
-message StructType {
-    // Name of the Python class (usually a dataclass)
-    optional string struct_name = 2;
-    repeated EditorField fields = 1;
-}
-
-message IntType {
-    optional int32 default_value = 1;
-}
-
-message FloatType {
-    optional double default_value = 1;
-}
-
-message StringType {
-    optional string default_value = 1;
-}
-
-message LiteralType {
-    repeated LiteralElement literals = 1; // note: defaults to first element
-}
-
-message LiteralElement {
-    oneof literal {
-        string string_literal = 1;
-        int32 int_literal = 2;
-    }
-}
-
-message ListType {
-    optional FieldType type = 1;
 }
