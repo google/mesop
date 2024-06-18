@@ -241,6 +241,7 @@ def insert_composite_component(
 
 
 def insert_web_component(
+  *,
   name: str,
   events: dict[str, Callable[[WebEvent], Any]] | None = None,
   properties: dict[str, Any] | None = None,
