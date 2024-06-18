@@ -132,25 +132,6 @@ export class ComponentTree {
     return this.editorService.getFocusedComponent() === node.proto;
   }
 
-  canAddChildComponent(node: FlatNode): boolean {
-    return Boolean(
-      this.channel
-        .getComponentConfigs()
-        .find((c) =>
-          isComponentNameEquals(c.getComponentName()!, node.componentName),
-        )
-        ?.getAcceptsChild(),
-    );
-  }
-
-  addChildComponent(node: FlatNode): void {
-    this.editorService.addComponentChild(node.proto);
-  }
-
-  addSiblingComponent(node: FlatNode): void {
-    this.editorService.addComponentSibling(node.proto);
-  }
-
   onMouseenter(node: FlatNode): void {
     this.highlightedNodes.add(node);
   }

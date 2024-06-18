@@ -6,19 +6,13 @@ import {ObjectTree} from '../../object_tree/object_tree';
 import {
   FieldType,
   EditorField,
-  EditorEvent,
-  EditorUpdateCallsite,
-  ArgPath,
-  ArgPathSegment,
   CodeValue,
   LiteralElement,
-  CodeReplacement,
-  DeleteCode,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatDividerModule} from '@angular/material/divider';
-import {MatCheckboxChange, MatCheckboxModule} from '@angular/material/checkbox';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatSelectModule} from '@angular/material/select';
 import {CommonModule} from '@angular/common';
 import {Channel} from '../../../services/channel';
@@ -88,165 +82,6 @@ export class EditorFields {
 
   clearHoveredFieldName(): void {
     this.hoveredFieldName = undefined;
-  }
-
-  onNewProperty(event: Event) {
-    const target = event.target as HTMLSelectElement;
-
-    const segment = new ArgPathSegment();
-    segment.setKeywordArgument(target.value);
-    const type = this.fields
-      .find((f) => f.getName() === target.value)!
-      .getType()!;
-    this.editWithNewCode(segment, getCodeFromType(type));
-
-    // Reset to the first option (empty) to avoid cutoff text
-    target.selectedIndex = 0;
-  }
-
-  onSelectLiteral(event: Event) {
-    const target = event.target as HTMLSelectElement;
-    const segment = new ArgPathSegment();
-    const name = target.getAttribute('data-name');
-    if (!name) {
-      throw new Error('Expected to get data-name attribute from event.');
-    }
-    segment.setKeywordArgument(name);
-
-    const literalIndex = Number(target.value);
-    const literal = this.fields
-      .find((f) => f.getName() === name)!
-      .getType()!
-      .getLiteralType()!
-      .getLiteralsList()[literalIndex];
-
-    this.editWithNewCode(segment, getLiteralCodeValue(literal));
-  }
-
-  onCheckboxChange(event: MatCheckboxChange) {
-    const target = event.source;
-    const segment = new ArgPathSegment();
-    const name = target.value;
-    if (!name) {
-      throw new Error('Expected to get name.');
-    }
-    segment.setKeywordArgument(name);
-
-    const codeValue = new CodeValue();
-    codeValue.setBoolValue(event.checked);
-    this.editWithNewCode(segment, codeValue);
-  }
-
-  onBlur(event: FocusEvent) {
-    const target = event.target as HTMLInputElement;
-    const segment = new ArgPathSegment();
-    const name = target.getAttribute('data-name');
-    if (!name) {
-      throw new Error('Expected to get data-name attribute from event.');
-    }
-    segment.setKeywordArgument(name);
-    const codeValue = new CodeValue();
-    codeValue.setStringValue(target.value);
-    this.editWithNewCode(segment, codeValue);
-  }
-
-  onBlurInt(event: FocusEvent) {
-    const target = event.target as HTMLInputElement;
-    const segment = new ArgPathSegment();
-    const name = target.getAttribute('data-name');
-    if (!name) {
-      throw new Error('Expected to get data-name attribute from event.');
-    }
-    segment.setKeywordArgument(name);
-    const codeValue = new CodeValue();
-    codeValue.setIntValue(Number(target.value));
-    this.editWithNewCode(segment, codeValue);
-  }
-
-  onBlurFloat(event: FocusEvent) {
-    const target = event.target as HTMLInputElement;
-    const segment = new ArgPathSegment();
-    const name = target.getAttribute('data-name');
-    if (!name) {
-      throw new Error('Expected to get data-name attribute from event.');
-    }
-    segment.setKeywordArgument(name);
-    const codeValue = new CodeValue();
-    codeValue.setDoubleValue(Number(target.value));
-    this.editWithNewCode(segment, codeValue);
-  }
-
-  deleteField(fieldName: string) {
-    const segment = new ArgPathSegment();
-    segment.setKeywordArgument(fieldName);
-    const replacement = new CodeReplacement();
-    replacement.setDeleteCode(new DeleteCode());
-    this.dispatchEdit([segment], replacement);
-  }
-
-  deleteFieldWithIndex(fieldName: string, index: number) {
-    const segment1 = new ArgPathSegment();
-    segment1.setKeywordArgument(fieldName);
-    const segment2 = new ArgPathSegment();
-    segment2.setListIndex(index);
-
-    const replacement = new CodeReplacement();
-    replacement.setDeleteCode(new DeleteCode());
-    this.dispatchEdit([segment1, segment2], replacement);
-  }
-
-  appendListElement(fieldName: string) {
-    const segment1 = new ArgPathSegment();
-    segment1.setKeywordArgument(fieldName);
-
-    const segment2 = new ArgPathSegment();
-    const index = this.getPrefixesListForListField(fieldName).length - 1;
-    segment2.setListIndex(index);
-
-    const type = this.fields.find((f) => f.getName() === fieldName)!.getType()!;
-    const replacement = new CodeReplacement();
-    replacement.setAppendElement(getCodeFromType(type));
-    this.dispatchEdit([segment1, segment2], replacement);
-  }
-
-  private editWithNewCode(
-    argPathSegment: ArgPathSegment,
-    codeValue: CodeValue,
-  ) {
-    const replacement = new CodeReplacement();
-    replacement.setNewCode(codeValue);
-    this.dispatchEdit([argPathSegment], replacement);
-  }
-
-  private dispatchEdit(
-    argPathSegments: ArgPathSegment[],
-    replacement: CodeReplacement,
-  ) {
-    const editorEvent = new EditorEvent();
-    const editorUpdate = new EditorUpdateCallsite();
-    editorEvent.setUpdateCallsite(editorUpdate);
-    editorUpdate.setSourceCodeLocation(
-      this.editorService.getFocusedComponent()!.getSourceCodeLocation(),
-    );
-    editorUpdate.setComponentName(
-      this.editorService.getFocusedComponent()!.getType()!.getName()!,
-    );
-    const argPath = new ArgPath();
-    for (const prefix of this.prefixes) {
-      const segment = new ArgPathSegment();
-      if (typeof prefix === 'string') {
-        segment.setKeywordArgument(prefix);
-      } else {
-        segment.setListIndex(prefix);
-      }
-      argPath.addSegments(segment);
-    }
-    for (const segment of argPathSegments) {
-      argPath.addSegments(segment);
-    }
-    editorUpdate.setArgPath(argPath);
-    editorUpdate.setReplacement(replacement);
-    this.channel.dispatchEditorEvent(editorEvent);
   }
 
   getFocusedComponent() {
