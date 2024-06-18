@@ -207,12 +207,18 @@ export class ComponentRenderer {
       // If you set any value to a boolean attribute, it will be treated as enabled.
       // Source: https://lit.dev/docs/components/properties/#boolean-attributes
       if (value !== false) {
+        // We should have checked this in Python, but just in case
+        // we will check the attribute name right before using it.
+        checkAttributeNameIsSafe(key);
         customElement.setAttribute(key, (properties as any)[key]);
       }
     }
 
     const events = jsonParse(webComponentType.getEventsJson()!) as object;
     for (const event of Object.keys(events)) {
+      // We should have checked this in Python, but just in case
+      // we will check the attribute name right before using it.
+      checkAttributeNameIsSafe(event);
       customElement.setAttribute(event, (events as any)[event]);
     }
     // Always try to remove the event listener since we will attach the event listener
@@ -469,4 +475,16 @@ function isRegularComponent(component: ComponentProto) {
     component.getType() &&
     !(typeName.getCoreModule() && typeName.getFnName() === 'box')
   );
+}
+
+// Note: the logic here should be kept in sync with
+// helper.py's check_attribute_keys_is_safe
+export function checkAttributeNameIsSafe(attribute: string) {
+  const normalizedAttribute = attribute.toLowerCase();
+  if (
+    ['src', 'srcdoc'].includes(normalizedAttribute) ||
+    normalizedAttribute.startsWith('on')
+  ) {
+    throw new Error(`Unsafe attribute name '${attribute}' cannot be used.`);
+  }
 }
