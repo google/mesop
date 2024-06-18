@@ -325,11 +325,8 @@ export class ComponentRenderer {
   dispatchCustomUserEvent = (event: Event) => {
     const mesopEvent = event as MesopEvent<any>;
     const userEvent = new UserEvent();
-    // Use bracket property access to avoid renaming because MesopEvent
-    // is referenced by web component modules which may be compiled independently
-    // so property renaming is unsafe.
-    userEvent.setStringValue(JSON.stringify(mesopEvent['payload']));
-    userEvent.setHandlerId(mesopEvent['handlerId']);
+    userEvent.setStringValue(JSON.stringify(mesopEvent.payload));
+    userEvent.setHandlerId(mesopEvent.handlerId);
     userEvent.setKey(this.component.getKey());
     this.channel.dispatch(userEvent);
   };
