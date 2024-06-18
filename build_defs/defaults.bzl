@@ -74,10 +74,6 @@ THIRD_PARTY_PY_FLASK = [
     requirement("flask"),
 ]
 
-THIRD_PARTY_PY_LIBCST = [
-    requirement("libcst"),
-]
-
 THIRD_PARTY_PY_MATPLOTLIB = [
     requirement("matplotlib"),
 ]
