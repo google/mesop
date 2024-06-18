@@ -149,6 +149,8 @@ def configure_static_file_serving(
         "require-trusted-types-for": "'script'",
       }
     )
+    if page_config and page_config.stylesheets:
+      csp["style-src"] += " " + " ".join(page_config.stylesheets)
     security_policy = None
     if page_config and page_config.security_policy:
       security_policy = page_config.security_policy
