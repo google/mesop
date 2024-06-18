@@ -453,17 +453,17 @@ def test_diff_dates():
   assert json.loads(diff_state(s1, s2)) == [
     {
       "path": ["val1"],
-      "value": {"__mesop_datetime__": "2024-12-05T00:00:00+05:30"},
+      "value": {"__datetime.datetime__": "2024-12-05T00:00:00+05:30"},
       "action": "set_item_added",
     },
     {
       "path": ["val1"],
-      "value": {"__mesop_datetime__": "1972-02-02T00:00:00+00:00"},
+      "value": {"__datetime.datetime__": "1972-02-02T00:00:00+00:00"},
       "action": "set_item_added",
     },
     {
       "path": ["val1"],
-      "value": {"__mesop_datetime__": "2005-10-12T00:00:00-05:00"},
+      "value": {"__datetime.datetime__": "2005-10-12T00:00:00-05:00"},
       "action": "set_item_added",
     },
   ]

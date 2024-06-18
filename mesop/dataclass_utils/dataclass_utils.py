@@ -11,8 +11,8 @@ from deepdiff.path import parse_path
 from mesop.exceptions import MesopException
 
 _PANDAS_OBJECT_KEY = "__pandas.DataFrame__"
+_DATETIME_OBJECT_KEY = "__datetime.datetime__"
 _DIFF_ACTION_DATA_FRAME_CHANGED = "data_frame_changed"
-_DATETIME_OBJECT_KEY = "__mesop_datetime__"
 
 C = TypeVar("C")
 

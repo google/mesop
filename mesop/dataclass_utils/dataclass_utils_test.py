@@ -41,8 +41,8 @@ JSON_STR = """{"b": {"c": {"val": "<init>"}},
   {"c": {"val": "2"}}
 ],
 "dates": [
-  {"__mesop_datetime__": "1972-01-01T02:00:30"},
-  {"__mesop_datetime__": "2024-06-12T05:01:30"}
+  {"__datetime.datetime__": "1972-01-01T02:00:30"},
+  {"__datetime.datetime__": "2024-06-12T05:01:30"}
 ],
 "strs": ["a", "b"]}"""
 
@@ -107,7 +107,7 @@ def test_serialize_dataclass():
   val = serialize_dataclass(A())
   assert (
     val
-    == """{"b": {"c": {"val": "<init>"}}, "list_b": [], "dates": [{"__mesop_datetime__": "1974-01-01T00:00:00"}], "strs": []}"""
+    == """{"b": {"c": {"val": "<init>"}}, "list_b": [], "dates": [{"__datetime.datetime__": "1974-01-01T00:00:00"}], "strs": []}"""
   )
 
 
