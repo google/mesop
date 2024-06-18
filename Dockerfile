@@ -8,7 +8,25 @@ RUN apt-get update && \
   locales-all \
   lsof \
   tmux \
-  vim && \
+  vim \
+  # Playwright dependencies
+  # This is the equivalent of `sudo yarn playwright install-deps`. We add these manually
+  # since the mesop-dev user does not have sudo.
+  libnss3 \
+  libnspr4 \
+  libdbus-1-3 \
+  libatk1.0-0 \
+  libatk-bridge2.0-0 \
+  libcups2 \
+  libdrm2 \
+  libxkbcommon0 \
+  libatspi2.0-0 \
+  libxcomposite1 \
+  libxdamage1 \
+  libxfixes3 \
+  libxrandr2 \
+  libgbm1 \
+  libasound2 && \
   # Clean local repository of package files since they won't be needed anymore.
   # Make sure this line is called after all apt-get update/install commands have
   # run.

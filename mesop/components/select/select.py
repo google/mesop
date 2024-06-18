@@ -95,7 +95,7 @@ def select(
     placeholder: Placeholder to be shown if no value has been selected.
     value: Value of the select control.
     style: Style.
-    key: The component [key](../guides/components.md#component-key).
+    key: The component [key](../components/index.md#component-key).
   """
   insert_component(
     key=key,

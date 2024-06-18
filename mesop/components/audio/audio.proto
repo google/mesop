@@ -4,4 +4,5 @@ package mesop.components.audio;
 
 message AudioType {
     optional string src = 1;
+    optional bool autoplay = 2;
 }

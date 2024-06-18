@@ -35,6 +35,11 @@ class WithPandasDataFrame:
   val: pd.DataFrame | None = None
 
 
+@dataclass
+class WithBytes:
+  data: bytes = b""
+
+
 JSON_STR = """{"b": {"c": {"val": "<init>"}},
 "list_b": [
   {"c": {"val": "1"}},
@@ -138,6 +143,18 @@ def test_serialize_pandas_dataframe():
   )
 
 
+@pytest.mark.parametrize(
+  "input_bytes, expected_json",
+  [
+    (b"hello world", '{"data": {"__python.bytes__": "aGVsbG8gd29ybGQ="}}'),
+    (b"", '{"data": {"__python.bytes__": ""}}'),
+  ],
+)
+def test_serialize_bytes(input_bytes, expected_json):
+  serialized_dataclass = serialize_dataclass(WithBytes(data=input_bytes))
+  assert serialized_dataclass == expected_json
+
+
 def test_update_dataclass_from_json_nested_dataclass():
   b = B()
   update_dataclass_from_json(b, """{"c": {"val": "<init>"}}""")
@@ -203,6 +220,14 @@ def test_update_dataclass_with_pandas_dataframe():
       }
     )
   )
+
+
+def test_update_dataclass_with_bytes():
+  bytes_data = b"hello world"
+  serialized_dataclass = serialize_dataclass(WithBytes(data=bytes_data))
+  bytes_state = WithBytes()
+  update_dataclass_from_json(bytes_state, serialized_dataclass)
+  assert bytes_state.data == bytes_data
 
 
 if __name__ == "__main__":

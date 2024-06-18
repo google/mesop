@@ -64,7 +64,7 @@ def slider(
     color: Palette color of the slider.
     disable_ripple: Whether ripples are disabled in the slider.
     style: Style for the component.
-    key: The component [key](../guides/components.md#component-key).
+    key: The component [key](../components/index.md#component-key).
   """
   insert_component(
     key=key,

@@ -348,4 +348,29 @@ describe('applyStateDiff functionality', () => {
       }),
     );
   });
+
+  it('applies updates to bytes', () => {
+    const state1 = JSON.stringify({
+      data: {
+        '__python.bytes__': 'aGVsbG8gd29ybGQ=',
+      },
+    });
+    const diff = JSON.stringify([
+      {
+        path: ['data'],
+        action: 'values_changed',
+        value: {
+          '__python.bytes__': 'VGhpcyBpcyBhIHRlc3Q=',
+        },
+      },
+    ]);
+
+    expect(applyStateDiff(state1, diff)).toBe(
+      JSON.stringify({
+        data: {
+          '__python.bytes__': 'VGhpcyBpcyBhIHRlc3Q=',
+        },
+      }),
+    );
+  });
 });

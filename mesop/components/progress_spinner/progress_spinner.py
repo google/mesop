@@ -18,7 +18,7 @@ def progress_spinner(
   """Creates a Progress spinner component.
 
   Args:
-    key: The component [key](../guides/components.md#component-key).
+    key: The component [key](../components/index.md#component-key).
     color: Theme palette color of the progress spinner.
     diameter: The diameter of the progress spinner (will set width and height of svg).
     stroke_width: Stroke width of the progress spinner.

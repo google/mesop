@@ -14,6 +14,7 @@ ng_module(
     ]) + ["component_renderer.css"],
     deps = [
         # REF(//scripts/scaffold_component.py):insert_component_import
+        "//mesop/components/html:ng",
         "//mesop/components/uploader:ng",
         "//mesop/components/embed:ng",
         "//mesop/components/table:ng",

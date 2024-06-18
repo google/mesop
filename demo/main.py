@@ -30,6 +30,7 @@ import checkbox as checkbox
 import code_demo as code_demo  # cannot call it code due to python library naming conflict
 import divider as divider
 import embed as embed
+import html_demo as html_demo
 import icon as icon
 import image as image
 import input as input
@@ -146,6 +147,7 @@ COMPONENTS_SECTIONS = [
     name="Advanced",
     examples=[
       Example(name="embed"),
+      Example(name="html_demo"),
       Example(name="plot"),
     ],
   ),

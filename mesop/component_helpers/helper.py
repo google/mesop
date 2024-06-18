@@ -1,14 +1,23 @@
 import hashlib
 import inspect
+import json
 from functools import wraps
-from typing import Any, Callable, Generator, Type, TypeVar, cast, overload
+from typing import (
+  Any,
+  Callable,
+  Generator,
+  Type,
+  TypeVar,
+  cast,
+  overload,
+)
 
 from google.protobuf import json_format
 from google.protobuf.message import Message
 
 import mesop.protos.ui_pb2 as pb
 from mesop.component_helpers.style import Style, to_style_proto
-from mesop.events import ClickEvent, InputEvent, MesopEvent
+from mesop.events import ClickEvent, InputEvent, MesopEvent, WebEvent
 from mesop.exceptions import MesopDeveloperException
 from mesop.key import Key, key_from_proto
 from mesop.runtime import runtime
@@ -45,6 +54,10 @@ class _ComponentWithChildren:
 
 
 def slot():
+  """
+  This function is used when defining a content component to mark a place in the component tree where content
+  can be provided by a child component.
+  """
   runtime().context().save_current_node_as_slot()
 
 
@@ -227,6 +240,46 @@ def insert_composite_component(
   )
 
 
+def insert_web_component(
+  *,
+  name: str,
+  events: dict[str, Callable[[WebEvent], Any]] | None = None,
+  properties: dict[str, Any] | None = None,
+  key: str | None = None,
+):
+  """
+  Inserts a web component into the current component tree.
+
+  Args:
+    name: The name of the web component. This should match the custom element name defined in JavaScript.
+    events: A dictionary where the key is the event name, which must match a web component property name defined in JavaScript.
+            The value is the event handler (callback) function.
+    properties: A dictionary where the key is the web component property name that's defined in JavaScript and the value is the
+                 property value which is plumbed to the JavaScript component.
+    key: A unique identifier for the web component. Defaults to None.
+  """
+  if events is None:
+    events = dict()
+  if properties is None:
+    properties = dict()
+
+  event_to_ids: dict[str, str] = {}
+  for event in events:
+    event_handler = events[event]
+    event_to_ids[event] = register_event_handler(event_handler, WebEvent)
+  type_proto = pb.WebComponentType(
+    properties_json=json.dumps(properties),
+    events_json=json.dumps(event_to_ids),
+  )
+  return insert_composite_component(
+    # Prefix with <web> to ensure there's never any overlap with built-in components.
+    type_name="<web>" + name,
+    proto=type_proto,
+    key=key,
+  )
+
+
+# TODO: remove insert_custom_component
 def insert_custom_component(
   component_name: str,
   proto: Message,
@@ -339,6 +392,14 @@ runtime().register_event_mapper(
   lambda userEvent, key: InputEvent(
     value=userEvent.string_value,
     key=key.key,
+  ),
+)
+
+runtime().register_event_mapper(
+  WebEvent,
+  lambda userEvent, key: WebEvent(
+    key=key.key,
+    value=json.loads(userEvent.string_value),
   ),
 )
 
