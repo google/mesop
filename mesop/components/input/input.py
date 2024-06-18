@@ -71,7 +71,7 @@ def textarea(
     float_label: Whether the label should always float or float as the user types.
     subscript_sizing: Whether the form field should reserve space for one line of hint/error text (default) or to have the spacing grow from 0px as needed based on the size of the hint/error content. Note that when using dynamic sizing, layout shifts will occur when hint/error text changes.
     hint_label: Text for the form field hint.
-    key: The component [key](../guides/components.md#component-key).
+    key: The component [key](../components/index.md#component-key).
   """
 
   insert_component(
@@ -159,7 +159,7 @@ def input(
     float_label: Whether the label should always float or float as the user types.
     subscript_sizing: Whether the form field should reserve space for one line of hint/error text (default) or to have the spacing grow from 0px as needed based on the size of the hint/error content. Note that when using dynamic sizing, layout shifts will occur when hint/error text changes.
     hint_label: Text for the form field hint.
-    key: The component [key](../guides/components.md#component-key).
+    key: The component [key](../components/index.md#component-key).
   """
 
   insert_component(
@@ -217,7 +217,7 @@ def native_textarea(
     placeholder: Placeholder value
     value: Initial value.
     readonly: Whether the element is readonly.
-    key: The component [key](../guides/components.md#component-key).
+    key: The component [key](../components/index.md#component-key).
   """
 
   insert_component(

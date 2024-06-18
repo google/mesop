@@ -43,6 +43,7 @@ class Runtime:
   _state_classes: list[type[Any]]
   _loading_errors: list[pb.ServerError]
   component_fns: set[Callable[..., Any]]
+  js_modules: set[str] = set()
   debug_mode: bool = False
   # If True, then the server is still re-executing the modules
   # needed for hot reloading.
@@ -133,6 +134,9 @@ Try one of the following paths:
 
   def register_native_component_fn(self, component_fn: Callable[..., Any]):
     self.component_fns.add(component_fn)
+
+  def register_js_module(self, js_module: str) -> None:
+    self.js_modules.add(js_module)
 
   def get_component_fns(self) -> set[Callable[..., Any]]:
     return self.component_fns

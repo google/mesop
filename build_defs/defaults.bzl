@@ -39,6 +39,7 @@ ts_library = _ts_library
 ANGULAR_CORE_DEPS = [
     "@npm//@angular/compiler",
     "@npm//@angular/router",
+    "@npm//@angular/elements",
 ]
 
 ANGULAR_MATERIAL_TS_DEPS = [

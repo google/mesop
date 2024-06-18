@@ -3,9 +3,8 @@ font-src fonts.gstatic.com
 frame-src 'self' https:
 img-src 'self' data: https: http:
 media-src 'self' data: https:
-style-src 'self' 'nonce-{{NONCE}}' fonts.googleapis.com
-style-src-attr 'unsafe-inline'
+style-src 'self' 'unsafe-inline' fonts.googleapis.com
 script-src 'self' 'nonce-{{NONCE}}'
-trusted-types angular angular#unsafe-bypass
+trusted-types angular angular#unsafe-bypass lit-html
 require-trusted-types-for 'script'
 frame-ancestors 'self' google.com

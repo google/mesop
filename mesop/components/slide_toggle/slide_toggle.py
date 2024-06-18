@@ -60,7 +60,7 @@ def slide_toggle(
     tab_index: Tabindex of slide toggle.
     checked: Whether the slide-toggle element is checked or not.
     hide_icon: Whether to hide the icon inside of the slide toggle.
-    key: The component [key](../guides/components.md#component-key).
+    key: The component [key](../components/index.md#component-key).
   """
   with content_slide_toggle(
     key=key,
@@ -106,7 +106,7 @@ def content_slide_toggle(
     tab_index: Tabindex of slide toggle.
     checked: Whether the slide-toggle element is checked or not.
     hide_icon: Whether to hide the icon inside of the slide toggle.
-    key: The component [key](../guides/components.md#component-key).
+    key: The component [key](../components/index.md#component-key).
   """
   return insert_composite_component(
     key=key,

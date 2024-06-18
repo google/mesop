@@ -10,3 +10,6 @@ from .events import (
 from .events import (
   MesopEvent as MesopEvent,
 )
+from .events import (
+  WebEvent as WebEvent,
+)

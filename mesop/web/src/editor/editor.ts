@@ -27,11 +27,12 @@ import {
   HotReloadWatcher,
   DefaultHotReloadWatcher,
 } from '../services/hot_reload_watcher';
-import {Shell} from '../shell/shell';
+import {Shell, registerComponentRendererElement} from '../shell/shell';
 import {EditorService, SelectionMode} from '../services/editor_service';
 import {Channel} from '../services/channel';
 import {isMac} from '../utils/platform';
 import {CommandDialogService} from '../dev_tools/command_dialog/command_dialog_service';
+import {createCustomElement} from '@angular/elements';
 // Keep the following comment to ensure there's a hook for adding TS imports in the downstream sync.
 // ADD_TS_IMPORT_HERE
 
@@ -272,16 +273,20 @@ function findPath(
 @Component({
   selector: 'mesop-editor-app',
   template: '<router-outlet></router-outlet>',
-  standalone: true,
-  providers: [{provide: EditorService, useClass: EditorServiceImpl}],
   imports: [Editor, RouterOutlet],
+  standalone: true,
 })
 class MesopEditorApp {}
 
-export function bootstrapApp() {
-  bootstrapApplication(MesopEditorApp, {
-    providers: [provideAnimations(), provideRouter(routes)],
+export async function bootstrapApp() {
+  const app = await bootstrapApplication(MesopEditorApp, {
+    providers: [
+      provideAnimations(),
+      provideRouter(routes),
+      {provide: EditorService, useClass: EditorServiceImpl},
+    ],
   });
+  registerComponentRendererElement(app);
 }
 
 export const TEST_ONLY = {EditorServiceImpl};
