@@ -1,4 +1,5 @@
 from dataclasses import dataclass, field
+from datetime import datetime
 
 import numpy as np
 import pandas as pd
@@ -25,6 +26,7 @@ class B:
 class A:
   b: B = field(default_factory=B)
   list_b: list[B] = field(default_factory=list)
+  dates: list[datetime] = field(default_factory=lambda: [datetime(1974, 1, 1)])
   strs: list[str] = field(default_factory=list)
 
 
@@ -42,7 +44,12 @@ JSON_STR = """{"b": {"c": {"val": "<init>"}},
 "list_b": [
   {"c": {"val": "1"}},
   {"c": {"val": "2"}}
-], "strs": ["a", "b"]}"""
+],
+"dates": [
+  {"__datetime.datetime__": "1972-01-01T02:00:30"},
+  {"__datetime.datetime__": "2024-06-12T05:01:30"}
+],
+"strs": ["a", "b"]}"""
 
 
 @dataclass_with_defaults
@@ -103,7 +110,10 @@ def test_dataclass_defaults_works_with_already_annotated_nested_class_fails_with
 
 def test_serialize_dataclass():
   val = serialize_dataclass(A())
-  assert val == """{"b": {"c": {"val": "<init>"}}, "list_b": [], "strs": []}"""
+  assert (
+    val
+    == """{"b": {"c": {"val": "<init>"}}, "list_b": [], "dates": [{"__datetime.datetime__": "1974-01-01T00:00:00"}], "strs": []}"""
+  )
 
 
 def test_serialize_pandas_dataframe():
@@ -152,6 +162,10 @@ def test_update_dataclass_from_json_nested_dataclass():
 
   a = A()
   update_dataclass_from_json(a, JSON_STR)
+  assert a.dates == [
+    datetime(1972, 1, 1, 2, 0, 30),
+    datetime(2024, 6, 12, 5, 1, 30),
+  ]
   assert a.b.c.val == "<init>"
 
 
