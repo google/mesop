@@ -9,7 +9,6 @@ import {
   UiResponse,
   NavigationEvent,
   ComponentConfig,
-  EditorEvent,
   Command,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 import {Logger} from '../dev_tools/services/logger';
@@ -233,13 +232,6 @@ export class Channel {
         initUserEvent();
       });
     }
-  }
-
-  dispatchEditorEvent(event: EditorEvent) {
-    this.logger.log({type: 'EditorEventLog', editorEvent: event});
-    const request = new UiRequest();
-    request.setEditorEvent(event);
-    this.init(this.initParams, request);
   }
 
   checkForHotReload() {

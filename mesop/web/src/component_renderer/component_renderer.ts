@@ -433,28 +433,6 @@ export class ComponentRenderer {
     return this.editorService.getSelectionMode();
   }
 
-  canAddChildComponent(): boolean {
-    return Boolean(
-      this.channel
-        .getComponentConfigs()
-        .find((c) =>
-          isComponentNameEquals(
-            c.getComponentName()!,
-            this.component.getType()?.getName(),
-          ),
-        )
-        ?.getAcceptsChild(),
-    );
-  }
-
-  addChildComponent(): void {
-    this.editorService.addComponentChild(this.component);
-  }
-
-  addSiblingComponent(): void {
-    this.editorService.addComponentSibling(this.component);
-  }
-
   SelectionMode = SelectionMode;
 
   getComponentName(): string {
