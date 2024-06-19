@@ -42,7 +42,7 @@ class SelectSelectionChangeEvent(MesopEvent):
       key (str): Key of the component that emitted this event.
   """
 
-  values: str
+  values: list[str]
 
   @property
   def value(self):
