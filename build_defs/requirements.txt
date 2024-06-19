@@ -1,10 +1,10 @@
 flask
 absl-py
+deepdiff
 markdown
 protobuf
 pydantic
 pygments
-deepdiff==6.7.1
 
 # Deps for dev/testing:
 mypy-protobuf
