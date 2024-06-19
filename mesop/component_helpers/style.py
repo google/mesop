@@ -322,6 +322,7 @@ class Style:
   bottom: int | str | None = None
   box_shadow: str | None = None
   box_sizing: str | None = None
+  classes: list[str] | None = None
   color: str | None = None
   column_gap: int | str | None = None
   columns: int | str | None = None
@@ -469,6 +470,7 @@ def to_style_proto(s: Style) -> pb.Style:
     bottom=_px_str(s.bottom),
     box_shadow=s.box_shadow,
     box_sizing=s.box_sizing,
+    classes=s.classes,
     color=s.color,
     column_gap=_px_str(s.column_gap),
     columns=_int_str(s.columns),
