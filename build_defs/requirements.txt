@@ -15,5 +15,6 @@ mkdocs-material
 mkdocstrings[python]
 
 # Deps for examples:
+firebase-admin
 matplotlib
 pandas
