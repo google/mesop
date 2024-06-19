@@ -70,6 +70,10 @@ THIRD_PARTY_PY_ABSL_PY = [
     requirement("absl-py"),
 ]
 
+THIRD_PARTY_PY_FIREBASE_ADMIN = [
+    requirement("firebase-admin"),
+]
+
 THIRD_PARTY_PY_FLASK = [
     requirement("flask"),
 ]
