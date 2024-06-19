@@ -8,6 +8,7 @@
     [value]="config().getValue()"
     (openedChange)="onSelectOpenedChangeEvent($event)"
     (selectionChange)="onSelectSelectionChangeEvent($event)"
+    [multiple]="config().getMultiple()"
   >
     @for(option of config().getOptionsList(); track $index) {
     <mat-option [value]="option.getValue()">{{option.getLabel()}}</mat-option>
