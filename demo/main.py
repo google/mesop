@@ -23,6 +23,7 @@ import glob
 import audio as audio
 import badge as badge
 import basic_animation as basic_animation
+import bokeh_plot as bokeh_plot
 import box as box
 import button as button
 import chat as chat
@@ -149,6 +150,7 @@ COMPONENTS_SECTIONS = [
       Example(name="embed"),
       Example(name="html_demo"),
       Example(name="plot"),
+      Example(name="bokeh_plot"),
     ],
   ),
 ]
