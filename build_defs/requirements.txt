@@ -1,6 +1,6 @@
 flask
 absl-py
-deepdiff
+deepdiff==6.*
 markdown
 protobuf
 pydantic

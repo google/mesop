@@ -1,5 +1,5 @@
 absl-py
-deepdiff
+deepdiff==6.*
 flask
 markdown
 protobuf
