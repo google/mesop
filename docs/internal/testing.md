@@ -7,7 +7,7 @@ You can run our unit tests using Bazel.
 ### Run tests
 
 ```sh
-bazel test //tests/...:all
+bazel test //mesop/...
 ```
 
 ## E2E tests
