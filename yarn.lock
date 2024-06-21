@@ -9566,10 +9566,10 @@ graphviz@0.0.9:
   dependencies:
     temp "~0.4.0"
 
-grpc-tools@1.11.3:
-  version "1.11.3"
-  resolved "https://registry.yarnpkg.com/grpc-tools/-/grpc-tools-1.11.3.tgz#8218a86ef994e58bd06330b74033de8d7719ea0d"
-  integrity sha512-cRSK2uhDKHtZ9hLRM35HxaMAMxyh/L7C96Ojt58DhQBdwTOQlV1VIJHSK6X/pDeSQKhaQqWMFfebt8tIcvRfjQ==
+grpc-tools@1.12.4:
+  version "1.12.4"
+  resolved "https://registry.yarnpkg.com/grpc-tools/-/grpc-tools-1.12.4.tgz#a044c9e8157941033ea7a5f144c2dc9dc4501de4"
+  integrity sha512-5+mLAJJma3BjnW/KQp6JBjUMgvu7Mu3dBvBPd1dcbNIb+qiR0817zDpgPjS7gRb+l/8EVNIa3cB02xI9JLToKg==
   dependencies:
     "@mapbox/node-pre-gyp" "^1.0.5"
 
