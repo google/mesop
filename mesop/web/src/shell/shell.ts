@@ -89,7 +89,12 @@ export class Shell {
         },
         onCommand: (command) => {
           if (command.hasNavigate()) {
-            this.router.navigateByUrl(command.getNavigate()!.getUrl()!);
+            const url = command.getNavigate()!.getUrl()!;
+            if (url.startsWith("http://") || url.startsWith("https://")) {
+              window.location.href = url; // Handle absolute URLs
+            } else {
+              this.router.navigateByUrl(url); // Handle relative URLs
+            }
           } else if (command.hasScrollIntoView()) {
             // Scroll into view
             const key = command.getScrollIntoView()!.getKey();
