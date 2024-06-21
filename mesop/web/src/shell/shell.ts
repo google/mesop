@@ -5,9 +5,9 @@ import {
   HostListener,
   NgZone,
   Renderer2,
-} from '@angular/core';
-import {Router, RouterOutlet, Routes, provideRouter} from '@angular/router';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
+} from "@angular/core";
+import { Router, RouterOutlet, Routes, provideRouter } from "@angular/router";
+import { MatProgressBarModule } from "@angular/material/progress-bar";
 import {
   ServerError,
   Component as ComponentProto,
@@ -17,26 +17,26 @@ import {
   ResizeEvent,
   UiRequest,
   InitRequest,
-} from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
-import {CommonModule} from '@angular/common';
+} from "mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb";
+import { CommonModule } from "@angular/common";
 import {
   COMPONENT_RENDERER_ELEMENT_NAME,
   ComponentRenderer,
-} from '../component_renderer/component_renderer';
-import {Channel} from '../services/channel';
-import {provideAnimations} from '@angular/platform-browser/animations';
-import {bootstrapApplication} from '@angular/platform-browser';
-import {MatIconModule, MatIconRegistry} from '@angular/material/icon';
-import {EditorService} from '../services/editor_service';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {ErrorBox} from '../error/error_box';
-import {GlobalErrorHandlerService} from '../services/global_error_handler';
-import {getViewportSize} from '../utils/viewport_size';
-import {createCustomElement} from '@angular/elements';
+} from "../component_renderer/component_renderer";
+import { Channel } from "../services/channel";
+import { provideAnimations } from "@angular/platform-browser/animations";
+import { bootstrapApplication } from "@angular/platform-browser";
+import { MatIconModule, MatIconRegistry } from "@angular/material/icon";
+import { EditorService } from "../services/editor_service";
+import { MatSidenavModule } from "@angular/material/sidenav";
+import { ErrorBox } from "../error/error_box";
+import { GlobalErrorHandlerService } from "../services/global_error_handler";
+import { getViewportSize } from "../utils/viewport_size";
+import { createCustomElement } from "@angular/elements";
 
 @Component({
-  selector: 'mesop-shell',
-  templateUrl: 'shell.ng.html',
+  selector: "mesop-shell",
+  templateUrl: "shell.ng.html",
   standalone: true,
   imports: [
     CommonModule,
@@ -46,8 +46,8 @@ import {createCustomElement} from '@angular/elements';
     MatSidenavModule,
     ErrorBox,
   ],
-  providers: [{provide: ErrorHandler, useClass: GlobalErrorHandlerService}],
-  styleUrl: 'shell.css',
+  providers: [{ provide: ErrorHandler, useClass: GlobalErrorHandlerService }],
+  styleUrl: "shell.css",
 })
 export class Shell {
   rootComponent!: ComponentProto;
@@ -60,9 +60,9 @@ export class Shell {
     private channel: Channel,
     iconRegistry: MatIconRegistry,
     private router: Router,
-    errorHandler: ErrorHandler,
+    errorHandler: ErrorHandler
   ) {
-    iconRegistry.setDefaultFontSetClass('material-symbols-rounded');
+    iconRegistry.setDefaultFontSetClass("material-symbols-rounded");
     (errorHandler as GlobalErrorHandlerService).setOnError((error) => {
       const errorProto = new ServerError();
       errorProto.setException(`JS Error: ${error.toString()}`);
@@ -89,30 +89,31 @@ export class Shell {
         },
         onCommand: (command) => {
           if (command.hasNavigate()) {
-            this.router.navigateByUrl(command.getNavigate()!.getUrl()!);
+            const url = command.getNavigate()!.getUrl()!;
+            this.navigate(url);
           } else if (command.hasScrollIntoView()) {
             // Scroll into view
             const key = command.getScrollIntoView()!.getKey();
             const targetElements = document.querySelectorAll(
-              `[data-key="${key}"]`,
+              `[data-key="${key}"]`
             );
             if (!targetElements.length) {
               console.error(
-                `Could not scroll to component with key ${key} because no component found`,
+                `Could not scroll to component with key ${key} because no component found`
               );
               return;
             }
             if (targetElements.length > 1) {
               console.warn(
-                'Found multiple components',
+                "Found multiple components",
                 targetElements,
-                'to potentially scroll to for key',
+                "to potentially scroll to for key",
                 key,
-                '. This is probably a bug and you should use a unique key identifier.',
+                ". This is probably a bug and you should use a unique key identifier."
               );
             }
             targetElements[0].parentElement!.scrollIntoView({
-              behavior: 'smooth',
+              behavior: "smooth",
             });
           }
         },
@@ -120,12 +121,24 @@ export class Shell {
           this.error = error;
         },
       },
-      request,
+      request
     );
   }
 
+  private navigate(url: string) {
+    if (this.isAbsoluteUrl(url)) {
+      window.location.href = url;
+    } else {
+      this.router.navigateByUrl(url);
+    }
+  }
+
+  private isAbsoluteUrl(url: string): boolean {
+    return url.startsWith("http://") || url.startsWith("https://");
+  }
+
   /** Listen to browser navigation events (go back/forward). */
-  @HostListener('window:popstate', ['$event'])
+  @HostListener("window:popstate", ["$event"])
   onPopState(event: Event) {
     const userEvent = new UserEvent();
     userEvent.setNavigation(new NavigationEvent());
@@ -136,7 +149,7 @@ export class Shell {
     return this.channel.isBusy();
   }
 
-  @HostListener('window:resize')
+  @HostListener("window:resize")
   onResize() {
     const userEvent = new UserEvent();
     userEvent.setResize(new ResizeEvent());
@@ -144,11 +157,11 @@ export class Shell {
   }
 }
 
-const routes: Routes = [{path: '**', component: Shell}];
+const routes: Routes = [{ path: "**", component: Shell }];
 
 @Component({
-  selector: 'mesop-app',
-  template: '<router-outlet></router-outlet>',
+  selector: "mesop-app",
+  template: "<router-outlet></router-outlet>",
   imports: [Shell, RouterOutlet],
   standalone: true,
 })
@@ -167,6 +180,6 @@ export function registerComponentRendererElement(app: ApplicationRef) {
   });
   customElements.define(
     COMPONENT_RENDERER_ELEMENT_NAME,
-    ComponentRendererElement,
+    ComponentRendererElement
   );
 }
