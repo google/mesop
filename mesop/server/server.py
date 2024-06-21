@@ -1,9 +1,10 @@
 import base64
+import secrets
 import time
 import urllib.parse as urlparse
 from typing import Generator, Sequence
 
-from flask import Flask, Response, abort, request, stream_with_context
+from flask import Flask, Response, abort, request, session, stream_with_context
 
 import mesop.protos.ui_pb2 as pb
 from mesop.component_helpers import diff_component
@@ -11,6 +12,7 @@ from mesop.editor.component_configs import get_component_configs
 from mesop.events import LoadEvent
 from mesop.exceptions import format_traceback
 from mesop.runtime import runtime
+from mesop.server.config import app_config
 from mesop.warn import warn
 
 LOCALHOSTS = (
@@ -34,6 +36,7 @@ def configure_flask_app(
   *, prod_mode: bool = True, exceptions_to_propagate: Sequence[type] = ()
 ) -> Flask:
   flask_app = Flask(__name__)
+  flask_app.secret_key = app_config.secret_key
 
   def render_loop(
     path: str,
@@ -125,7 +128,14 @@ def configure_flask_app(
       elif ui_request.HasField("user_event"):
         event = ui_request.user_event
         runtime().context().set_viewport_size(event.viewport_size)
-        runtime().context().update_state(event.states)
+
+        if event.states.states:
+          runtime().context().update_state(event.states)
+        else:
+          runtime().context().restore_state_from_session(
+            session.get("state_session_id", event.state_hash)
+          )
+
         for _ in render_loop(path=ui_request.path, trace_mode=True):
           pass
         if ui_request.user_event.handler_id:
@@ -220,6 +230,10 @@ def configure_flask_app(
     global _requests_in_flight
     _requests_in_flight -= 1
 
+  @flask_app.teardown_request
+  def teardown_clear_stale_state_sessions(error=None):
+    runtime().context().clear_stale_state_sessions()
+
   if not prod_mode:
 
     @flask_app.route("/hot-reload")
@@ -250,21 +264,31 @@ def create_update_state_event(diff: bool = False) -> str:
   Returns:
     serialized `pb.UiResponse`
   """
-  if diff:
-    return serialize(
-      pb.UiResponse(
-        update_state_event=pb.UpdateStateEvent(
-          diff_states=runtime().context().diff_state()
-        )
-      )
-    )
-  return serialize(
-    pb.UiResponse(
-      update_state_event=pb.UpdateStateEvent(
-        full_states=runtime().context().serialize_state()
-      )
-    )
+
+  temp_state_hash = ""
+
+  # If enabled, we will save the user's state on the server, so that the client does not
+  # need to send the full state back on the next user event request
+  if app_config.state_session_enabled:
+    state_session_id = session.get("state_session_id")
+
+    # Session ID may not be enabled if the user has not configured a secret_key. In that
+    # that case we will generate temporary token that the client can use to look up the
+    # the last saved state.
+    if state_session_id:
+      runtime().context().save_state_to_session(state_session_id)
+    else:
+      temp_state_hash = secrets.token_urlsafe(16)
+      runtime().context().save_state_to_session(temp_state_hash)
+
+  update_state_event = pb.UpdateStateEvent(
+    state_session_enabled=app_config.state_session_enabled,
+    state_hash=temp_state_hash,
+    diff_states=runtime().context().diff_state() if diff else None,
+    full_states=runtime().context().serialize_state() if not diff else None,
   )
+
+  return serialize(pb.UiResponse(update_state_event=update_state_event))
 
 
 def is_same_site(url1: str | None, url2: str | None):

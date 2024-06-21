@@ -16,6 +16,7 @@ message InitRequest {
     optional ViewportSize viewport_size = 1;
 }
 
+// Next ID: 13
 message UserEvent {
     optional States states = 1;
 
@@ -35,6 +36,12 @@ message UserEvent {
         ResizeEvent resize = 10;
         bytes bytes_value = 9;
     }
+
+    // If no session is available (due to not setting the secret key), we can use the
+    // a temporary state_hash to look up cached state.
+    optional string state_hash = 12;
+
+
 }
 
 
@@ -127,6 +134,12 @@ message UpdateStateEvent {
         States full_states = 1;
         States diff_states = 2;
     }
+    // If enabled, then we will not send the state back on each request. We will only
+    // send back the state in cases in recovery scenarios.
+    optional bool state_session_enabled = 3;
+    // If no session is available (due to not setting the secret key), we can use the
+    // a temporary state_hash to look up cached state.
+    optional string state_hash = 4;
 }
 
 message Command {

@@ -5,4 +5,5 @@ markdown
 protobuf
 pydantic
 pygments
+python-dotenv
 watchdog # used by mesop CLI for hot reloading

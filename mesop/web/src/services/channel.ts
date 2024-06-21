@@ -47,6 +47,8 @@ export class Channel {
   private eventSource!: SSE;
   private initParams!: InitParams;
   private states: States = new States();
+  private state_hash: string = '';
+  private state_session_enabled: boolean = false;
   private rootComponent?: ComponentProto;
   private status!: ChannelStatus;
   private componentConfigs: readonly ComponentConfig[] = [];
@@ -119,6 +121,10 @@ export class Channel {
         console.debug('Server event: ', uiResponse.toObject());
         switch (uiResponse.getTypeCase()) {
           case UiResponse.TypeCase.UPDATE_STATE_EVENT: {
+            this.state_hash = uiResponse.getUpdateStateEvent()!.getStateHash()!;
+            this.state_session_enabled = uiResponse
+              .getUpdateStateEvent()!
+              .getStateSessionEnabled()!;
             switch (uiResponse.getUpdateStateEvent()!.getTypeCase()) {
               case UpdateStateEvent.TypeCase.FULL_STATES: {
                 this.states = uiResponse
@@ -196,6 +202,13 @@ export class Channel {
             break;
           }
           case UiResponse.TypeCase.ERROR:
+            if (
+              uiResponse.getError()?.getException() ===
+              'No state hash found in state session backend.'
+            ) {
+              // How to retry?
+              // this.init(this.initParams, request);
+            }
             onError(uiResponse.getError()!);
             console.log('error', uiResponse.getError());
             break;
@@ -219,7 +232,12 @@ export class Channel {
       return;
     }
     const initUserEvent = () => {
-      userEvent.setStates(this.states);
+      if (this.state_session_enabled) {
+        userEvent.setStateHash(this.state_hash);
+      } else {
+        userEvent.setStates(this.states);
+      }
+
       const request = new UiRequest();
       request.setUserEvent(userEvent);
       this.init(this.initParams, request);
