@@ -149,9 +149,17 @@ def configure_static_file_serving(
         "require-trusted-types-for": "'script'",
       }
     )
+    if page_config and page_config.stylesheets:
+      csp["style-src"] += " " + " ".join(page_config.stylesheets)
     security_policy = None
     if page_config and page_config.security_policy:
       security_policy = page_config.security_policy
+    if security_policy and security_policy.allowed_connect_srcs:
+      csp["connect-src"] = "'self' " + " ".join(
+        security_policy.allowed_connect_srcs
+      )
+    if security_policy and security_policy.allowed_script_srcs:
+      csp["script-src"] += " " + " ".join(security_policy.allowed_script_srcs)
     if security_policy and security_policy.dangerously_disable_trusted_types:
       del csp["trusted-types"]
       del csp["require-trusted-types-for"]

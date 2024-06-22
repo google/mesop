@@ -3,9 +3,14 @@ syntax = "proto2";
 
 package mesop.components.select;
 
+message SelectChangeEvent {
+    repeated string values = 1;
+}
+
 message SelectType {
   optional bool disabled = 2;
   optional bool disable_ripple = 3;
+  optional bool multiple = 18;
   optional double tab_index = 4;
   optional string placeholder = 6;
   optional string value = 9;

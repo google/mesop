@@ -6,7 +6,10 @@ import {
   Type,
   Style,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
-import {SelectType} from 'mesop/mesop/components/select/select_jspb_proto_pb/mesop/components/select/select_pb';
+import {
+  SelectChangeEvent,
+  SelectType,
+} from 'mesop/mesop/components/select/select_jspb_proto_pb/mesop/components/select/select_pb';
 import {Channel} from '../../web/src/services/channel';
 import {formatStyle} from '../../web/src/utils/styles';
 
@@ -45,11 +48,18 @@ export class SelectComponent {
 
   onSelectSelectionChangeEvent(event: MatSelectChange): void {
     const userEvent = new UserEvent();
-
     userEvent.setHandlerId(
       this.config().getOnSelectSelectionChangeEventHandlerId()!,
     );
-    userEvent.setStringValue(event.value);
+    const changeEvent = new SelectChangeEvent();
+    if (typeof event.value === 'string') {
+      changeEvent.addValues(event.value);
+    } else {
+      for (const value of event.value) {
+        changeEvent.addValues(value);
+      }
+    }
+    userEvent.setBytesValue(changeEvent.serializeBinary());
     userEvent.setKey(this.key);
     this.channel.dispatch(userEvent);
   }

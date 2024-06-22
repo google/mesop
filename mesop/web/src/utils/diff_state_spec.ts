@@ -339,4 +339,38 @@ describe('applyStateDiff functionality', () => {
       }),
     );
   });
+
+  it('applies updates to list of datetime objects', () => {
+    const state1 = JSON.stringify({
+      dates: [],
+    });
+
+    const diff = JSON.stringify([
+      {
+        'path': ['dates', 0],
+        'value': {'__datetime.datetime__': '2024-12-05T00:00:00+05:30'},
+        'action': 'iterable_item_added',
+      },
+      {
+        'path': ['dates', 1],
+        'value': {'__datetime.datetime__': '1972-02-02T00:00:00+00:00'},
+        'action': 'iterable_item_added',
+      },
+      {
+        'path': ['dates', 2],
+        'value': {'__datetime.datetime__': '2005-10-12T00:00:00-05:00'},
+        'action': 'iterable_item_added',
+      },
+    ]);
+
+    expect(applyStateDiff(state1, diff)).toBe(
+      JSON.stringify({
+        dates: [
+          {'__datetime.datetime__': '2024-12-05T00:00:00+05:30'},
+          {'__datetime.datetime__': '1972-02-02T00:00:00+00:00'},
+          {'__datetime.datetime__': '2005-10-12T00:00:00-05:00'},
+        ],
+      }),
+    );
+  });
 });

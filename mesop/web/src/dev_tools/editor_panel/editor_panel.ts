@@ -13,8 +13,6 @@ import {
   FieldType,
   ComponentConfig,
   EditorField,
-  EditorEvent,
-  EditorDeleteComponent,
   SourceCodeLocation,
   ComponentName,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
@@ -77,21 +75,6 @@ export class EditorPanel {
 
     this.renderer.listen(document, 'mouseup', (event) => {
       this.isDragging = false;
-    });
-  }
-
-  deleteComponent(location: SourceCodeLocation): void {
-    // Show confirmation dialog
-    const dialogRef = this.dialog.open(DeleteConfirmationDialog);
-    dialogRef.afterClosed().subscribe((value) => {
-      // Abort if user cancelled;
-      if (!value) return;
-
-      const editorEvent = new EditorEvent();
-      const deleteComponent = new EditorDeleteComponent();
-      deleteComponent.setSourceCodeLocation(location);
-      editorEvent.setDeleteComponent(deleteComponent);
-      this.channel.dispatchEditorEvent(editorEvent);
     });
   }
 

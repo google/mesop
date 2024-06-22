@@ -22,21 +22,6 @@
           <span class="name" [title]="node.text">{{node.text}}</span>
           <span class="label">{{node.label}}</span>
         </div>
-        <mat-icon
-          matTooltip="Add sibling component"
-          matTooltipShowDelay="700"
-          class="add-component"
-          (click)="addSiblingComponent(node)"
-          >add</mat-icon
-        >
-        <mat-icon
-          *ngIf="canAddChildComponent(node)"
-          matTooltip="Add child component"
-          matTooltipShowDelay="700"
-          class="add-component"
-          (click)="addChildComponent(node)"
-          >new_window</mat-icon
-        >
       </div>
     </cdk-tree-node>
     <!-- This is the tree node template for expandable nodes -->
@@ -71,23 +56,6 @@
           <span class="name" [title]="node.text">{{node.text}}</span>
           <span class="label">{{node.label}}</span>
         </div>
-        <span [hidden]="isRootNode(node)">
-          <mat-icon
-            matTooltip="Add sibling component"
-            matTooltipShowDelay="700"
-            class="add-component"
-            (click)="addSiblingComponent(node)"
-            >add</mat-icon
-          >
-          <mat-icon
-            *ngIf="canAddChildComponent(node)"
-            matTooltip="Add child component"
-            matTooltipShowDelay="700"
-            class="add-component"
-            (click)="addChildComponent(node)"
-            >new_window</mat-icon
-          >
-        </span>
       </div>
     </cdk-tree-node>
   </cdk-tree>

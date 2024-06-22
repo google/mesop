@@ -31,8 +31,6 @@ import {Shell, registerComponentRendererElement} from '../shell/shell';
 import {EditorService, SelectionMode} from '../services/editor_service';
 import {Channel} from '../services/channel';
 import {isMac} from '../utils/platform';
-import {CommandDialogService} from '../dev_tools/command_dialog/command_dialog_service';
-import {createCustomElement} from '@angular/elements';
 // Keep the following comment to ensure there's a hook for adding TS imports in the downstream sync.
 // ADD_TS_IMPORT_HERE
 
@@ -167,33 +165,11 @@ class EditorServiceImpl implements EditorService {
   constructor(
     private channel: Channel,
     private devToolsSettings: DevToolsSettings,
-    private commandDialogService: CommandDialogService,
   ) {}
 
   indexPath: number[] | undefined;
   isEditorMode(): boolean {
     return true;
-  }
-
-  async addComponentSibling(component: ComponentProto) {
-    await this.commandDialogService.openDialog(component, {
-      newComponentMode: 'appendSibling',
-    });
-    this.setFocusedComponent(component);
-    if (!this.indexPath) return;
-    this.indexPath[this.indexPath.length - 1] =
-      this.indexPath[this.indexPath.length - 1] + 1;
-    this.setSelectionMode(SelectionMode.SELECTED);
-  }
-
-  async addComponentChild(component: ComponentProto) {
-    await this.commandDialogService.openDialog(component, {
-      newComponentMode: 'addChild',
-    });
-    this.setFocusedComponent(component);
-    if (!this.indexPath) return;
-    this.indexPath.push(component.getChildrenList().length);
-    this.setSelectionMode(SelectionMode.SELECTED);
   }
 
   getSelectionMode(): SelectionMode {

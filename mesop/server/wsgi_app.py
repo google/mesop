@@ -40,6 +40,7 @@ def create_app(
     static_file_runfiles_base=PROD_PACKAGE_PATH
     if prod_mode
     else EDITOR_PACKAGE_PATH,
+    disable_gzip_cache=not prod_mode,
   )
 
   return App(flask_app=flask_app)

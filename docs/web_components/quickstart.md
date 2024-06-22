@@ -27,6 +27,8 @@ Finally, we call the function `mel.insert_web_component` with the following argu
 - `events` - A dictionary where the key is the event name. This must match a property name, defined in JavaScript. The value is the event handler (callback) function.
 - `properties` - A dictionary where the key is the property name that's defined in JavaScript and the value is the property value which is plumbed to the JavaScript component.
 
+> Note: Keys for events and properties must not be "src", "srcdoc", or start with "on" to avoid web security risks.
+
 In summary, when you see a string literal, it should match something on the JavaScript side which is explained next.
 
 ### JavaScript module
