@@ -89,7 +89,7 @@ export class Shell {
         },
         onCommand: (command) => {
           if (command.hasNavigate()) {
-             const url = command.getNavigate()!.getUrl()!;
+            const url = command.getNavigate()!.getUrl()!;
             this.navigate(url);
           } else if (command.hasScrollIntoView()) {
             // Scroll into view
@@ -134,9 +134,9 @@ export class Shell {
   }
 
   private isAbsoluteUrl(url: string): boolean {
-    return url.startsWith("http://") || url.startsWith("https://");
+    return url.startsWith('http://') || url.startsWith('https://');
   }
-  
+
   /** Listen to browser navigation events (go back/forward). */
   @HostListener('window:popstate', ['$event'])
   onPopState(event: Event) {
