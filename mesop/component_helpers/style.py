@@ -73,12 +73,14 @@ class BorderSide:
                                 a string with a unit (e.g., '2em'), or None for no width.
       color: The color of the border, represented as a string. This can be any valid CSS color value,
                           or None for no color.
-      style: The style of the border, which can be 'none' for no border, 'solid' for a solid line.
+      style: The style of the border, which can be 'none' for no border, 'solid' for a solid line, 'dashed' for dashed line,
+              'dotted' for dotted line, 'double' for double line, 'groove' for 3D grooved border, 'ridge' for 3D ridged border,
+              'inset' for 3D inset border, 'outset' for 3D outset border.
   """
 
   width: int | str | None = None
   color: str | None = None
-  style: Literal["none", "solid"] | None = None
+  style: Literal["none", "solid", "dashed", "dotted", "double", "groove", "ridge", "inset", "outset"] | None = None
 
 
 @dataclass(kw_only=True)
