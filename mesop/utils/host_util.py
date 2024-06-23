@@ -5,8 +5,6 @@ def get_default_host() -> str:
   """
   Returns the default host (which is externally accessible)
   based on the availability of IPv6.
-
-  See: https://github.com/urllib3/urllib3/pull/611
   """
   if has_ipv6():
     return "::"
@@ -25,9 +23,13 @@ def has_ipv6():
     # Attempt to create an IPv6 socket
     sock = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
 
-    # Try to bind to the IPv6 loopback address
+    # Try to bind to the IPv6 unspecified address
+    # Note: cannot use IPv6 loopback address: "::1"
+    # because it doesn't work on Colab, likely due to
+    # some networking configuration w/ the container.
+    #
     # Using port 0 lets the OS choose an available port
-    sock.bind(("::1", 0))
+    sock.bind(("::", 0))
 
     # If we get here, the bind was successful
     return True
