@@ -35,23 +35,33 @@ register_event_mapper(
 
 @dataclass(kw_only=True)
 class SelectSelectionChangeEvent(MesopEvent):
-  """Event representing a change in the select component's value.
+  """Event representing a change in the select component's value(s).
 
   Attributes:
-      value: The new value of the select component after the change.
+      values: New values of the select component after the change.
       key (str): Key of the component that emitted this event.
   """
 
-  value: str
+  values: list[str]
+
+  @property
+  def value(self):
+    """Shortcut for returning a single value."""
+    if not self.values:
+      return ""
+    return self.values[0]
 
 
-register_event_mapper(
-  SelectSelectionChangeEvent,
-  lambda event, key: SelectSelectionChangeEvent(
+def map_select_change_event(event, key):
+  select_event = select_pb.SelectChangeEvent()
+  select_event.ParseFromString(event.bytes_value)
+  return SelectSelectionChangeEvent(
     key=key.key,
-    value=event.string_value,
-  ),
-)
+    values=list(select_event.values),
+  )
+
+
+register_event_mapper(SelectSelectionChangeEvent, map_select_change_event)
 
 
 @dataclass(kw_only=True)
@@ -82,6 +92,7 @@ def select(
   placeholder: str = "",
   value: str = "",
   style: Style | None = None,
+  multiple: bool = False,
 ):
   """Creates a Select component.
 
@@ -91,11 +102,12 @@ def select(
     on_opened_change: Event emitted when the select panel has been toggled.
     disabled: Whether the select is disabled.
     disable_ripple: Whether ripples in the select are disabled.
+    multiple: Whether multiple selections are allowed.
     tab_index: Tab index of the select.
     placeholder: Placeholder to be shown if no value has been selected.
     value: Value of the select control.
     style: Style.
-    key: The component [key](../guides/components.md#component-key).
+    key: The component [key](../components/index.md#component-key).
   """
   insert_component(
     key=key,
@@ -109,6 +121,7 @@ def select(
       label=label,
       disabled=disabled,
       disable_ripple=disable_ripple,
+      multiple=multiple,
       tab_index=tab_index,
       placeholder=placeholder,
       value=value,

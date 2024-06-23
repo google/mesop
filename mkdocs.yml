@@ -8,14 +8,21 @@ nav:
       - Installing: getting_started/installing.md
       - Quickstart: getting_started/quickstart.md
   - Guides:
-      - Components: guides/components.md
       - State Management: guides/state_management.md
       - Interactivity: guides/interactivity.md
       - Multi-Pages: guides/multi_pages.md
+      - Auth: guides/auth.md
       - Deployment: guides/deployment.md
+      - Debugging: guides/debugging.md
       - Web Security: guides/web_security.md
       - Labs: guides/labs.md
   - Components:
+      - Types:
+          - Overview: components/index.md
+          - Web Components:
+              - Overview: web_components/index.md
+              - Quickstart: web_components/quickstart.md
+              - API: web_components/api.md
       - High-level:
           - Chat: components/chat.md
           - Text to Text: components/text_to_text.md
@@ -104,7 +111,7 @@ theme:
     - navigation.path
     - navigation.instant
     - navigation.tracking
-    - navigation.expand
+    - navigation.prune
     - navigation.tabs
     - navigation.tabs.sticky
     - navigation.sections

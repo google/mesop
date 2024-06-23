@@ -10,8 +10,11 @@ from typing import Any, Callable
 from flask import Flask, Response, g, request, send_file
 from werkzeug.security import safe_join
 
+from mesop.exceptions import MesopException
 from mesop.runtime import runtime
-from mesop.utils.runfiles import get_runfile_location
+from mesop.utils.runfiles import get_runfile_location, has_runfiles
+
+WEB_COMPONENTS_PATH_SEGMENT = "__web-components-module__"
 
 
 def noop():
@@ -41,8 +44,18 @@ def configure_static_file_serving(
       if "$$INSERT_CSP_NONCE$$" in line:
         lines[i] = lines[i].replace("$$INSERT_CSP_NONCE$$", g.csp_nonce)
       if (
+        runtime().js_modules
+        and line.strip() == "<!-- Inject web components modules (if needed) -->"
+      ):
+        lines[i] = "\n".join(
+          [
+            f"<script type='module' nonce={g.csp_nonce} src='/{WEB_COMPONENTS_PATH_SEGMENT}{js_module}'></script>"
+            for js_module in runtime().js_modules
+          ]
+        )
+      if (
         livereload_script_url
-        and line.strip() == "<!-- Inject script (if needed) -->"
+        and line.strip() == "<!-- Inject livereload script (if needed) -->"
       ):
         lines[i] = (
           f'<script src="{livereload_script_url}" nonce={g.csp_nonce}></script>\n'
@@ -70,6 +83,20 @@ def configure_static_file_serving(
   def serve_root():
     preprocess_request()
     return send_file(retrieve_index_html(), download_name="index.html")
+
+  @app.route(f"/{WEB_COMPONENTS_PATH_SEGMENT}/<path:path>")
+  def serve_web_components(path: str):
+    if not is_file_path(path):
+      raise MesopException("Unexpected request to " + path)
+    serving_path = (
+      get_runfile_location(path)
+      if has_runfiles()
+      else os.path.join(os.getcwd(), path)
+    )
+    return send_file_compressed(
+      serving_path,
+      disable_gzip_cache=disable_gzip_cache,
+    )
 
   @app.route("/<path:path>")
   def serve_file(path: str):
@@ -111,25 +138,40 @@ def configure_static_file_serving(
         # Mesop app developers should be able to load images and media from various origins.
         "img-src": "'self' data: https: http:",
         "media-src": "'self' data: https:",
-        "style-src": f"'self' 'nonce-{g.csp_nonce}' fonts.googleapis.com",
         # Need 'unsafe-inline' because we apply inline styles for our components.
         # This is also used by Angular for animations:
         # https://github.com/angular/angular/pull/55260
-        "style-src-attr": "'unsafe-inline'",
+        # Finally, other third-party libraries like Plotly rely on setting stylesheets dynamically.
+        "style-src": "'self' 'unsafe-inline' fonts.googleapis.com",
         "script-src": f"'self' 'nonce-{g.csp_nonce}'",
         # https://angular.io/guide/security#enforcing-trusted-types
-        "trusted-types": "angular angular#unsafe-bypass",
+        "trusted-types": "angular angular#unsafe-bypass lit-html",
         "require-trusted-types-for": "'script'",
       }
     )
+    if page_config and page_config.stylesheets:
+      csp["style-src"] += " " + " ".join(page_config.stylesheets)
+    security_policy = None
+    if page_config and page_config.security_policy:
+      security_policy = page_config.security_policy
+    if security_policy and security_policy.allowed_connect_srcs:
+      csp["connect-src"] = "'self' " + " ".join(
+        security_policy.allowed_connect_srcs
+      )
+    if security_policy and security_policy.allowed_script_srcs:
+      csp["script-src"] += " " + " ".join(security_policy.allowed_script_srcs)
+    if security_policy and security_policy.dangerously_disable_trusted_types:
+      del csp["trusted-types"]
+      del csp["require-trusted-types-for"]
+
     if runtime().debug_mode:
       # Allow all origins in debug mode (aka editor mode) because
       # when Mesop is running under Colab, it will be served from
       # a randomly generated origin.
       csp["frame-ancestors"] = "*"
-    elif page_config and page_config.security_policy.allowed_iframe_parents:
+    elif security_policy and security_policy.allowed_iframe_parents:
       csp["frame-ancestors"] = "'self' " + " ".join(
-        list(page_config.security_policy.allowed_iframe_parents)
+        list(security_policy.allowed_iframe_parents)
       )
     else:
       csp["frame-ancestors"] = default_allowed_iframe_parents

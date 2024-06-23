@@ -9,7 +9,6 @@ message UiRequest {
     oneof type {
         InitRequest init = 1;
         UserEvent user_event = 2;
-        EditorEvent editor_event = 4;
     }
 }
 
@@ -38,54 +37,6 @@ message UserEvent {
     }
 }
 
-message EditorEvent {
-    oneof type {
-        EditorNewComponent new_component = 2;
-        EditorUpdateCallsite update_callsite = 1;
-        EditorDeleteComponent delete_component = 3;
-    }
-}
-
-message EditorNewComponent {
-    enum Mode {
-        // Do not use.
-        MODE_UNSPECIFIED = 0;
-        // Appends a sibling after the source code location.
-        MODE_APPEND_SIBLING = 1;
-        // Only works for components that allow children.
-        MODE_CHILD = 2;
-    }
-    optional Mode mode = 3;
-    optional SourceCodeLocation source_code_location = 1;
-    optional ComponentName component_name = 2;
-}
-
-message EditorUpdateCallsite {
-    // |source_code_location|, |component_name|, |arg_path| specify
-    // which part of the code should be edited.
-    optional SourceCodeLocation source_code_location = 1;
-    optional ComponentName component_name = 2;
-    optional ArgPath arg_path = 3;
-
-    // Specifies what the targeted code should be replaced with.
-    optional CodeReplacement replacement = 4;
-}
-
-message EditorDeleteComponent {
-    optional SourceCodeLocation source_code_location = 1;
-}
-
-message CodeReplacement {
-    oneof command {
-        CodeValue new_code = 1;
-        DeleteCode delete_code = 2;
-        // Append element to a list.
-        // The last segment of the corresponding arg path should be a list index.
-        CodeValue append_element = 3;
-    }
-}
-
-message DeleteCode {}
 
 message CodeValue {
     oneof value {
@@ -294,6 +245,11 @@ message Type {
     // Needed outside of |value| because ComponentRenderer (TS) needs to know
     // the type index in order to do content projection correctly.
     optional int32 type_index = 7;
+}
+
+message WebComponentType {
+    optional string properties_json = 1;
+    optional string events_json = 2;
 }
 
 // Represents user-defined components.

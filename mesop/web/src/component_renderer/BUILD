@@ -1,4 +1,4 @@
-load("//build_defs:defaults.bzl", "ANGULAR_CDK_TS_DEPS", "ANGULAR_CORE_DEPS", "ANGULAR_MATERIAL_TS_DEPS", "ng_module", "sass_binary")
+load("//build_defs:defaults.bzl", "ANGULAR_CDK_TS_DEPS", "ANGULAR_CORE_DEPS", "ANGULAR_MATERIAL_TS_DEPS", "ng_module", "ng_test_library", "ng_web_test_suite", "sass_binary")
 
 package(
     default_visibility = ["//build_defs:mesop_internal"],
@@ -6,9 +6,12 @@ package(
 
 ng_module(
     name = "component_renderer",
-    srcs = glob([
-        "*.ts",
-    ]),
+    srcs = glob(
+        [
+            "*.ts",
+        ],
+        exclude = ["*_spec.ts"],
+    ),
     assets = glob([
         "*.ng.html",
     ]) + ["component_renderer.css"],
@@ -48,4 +51,19 @@ sass_binary(
     name = "component_renderer_styles",
     src = "component_renderer.scss",
     sourcemap = False,
+)
+
+ng_test_library(
+    name = "tests_lib",
+    srcs = glob(["*_spec.ts"]),
+    deps = [
+        ":component_renderer",
+    ],
+)
+
+ng_web_test_suite(
+    name = "unit_tests",
+    deps = [
+        ":tests_lib",
+    ],
 )

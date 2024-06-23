@@ -1,5 +1,5 @@
 {
-  "include": ["mesop", "generator", "demo"],
+  "include": ["mesop", "demo"],
   "exclude": ["**/node_modules", "**/__pycache__", "**/fixtures"],
   "extraPaths": ["bazel-bin"],
   "reportMissingImports": true,

@@ -39,6 +39,7 @@ ts_library = _ts_library
 ANGULAR_CORE_DEPS = [
     "@npm//@angular/compiler",
     "@npm//@angular/router",
+    "@npm//@angular/elements",
 ]
 
 ANGULAR_MATERIAL_TS_DEPS = [
@@ -69,12 +70,12 @@ THIRD_PARTY_PY_ABSL_PY = [
     requirement("absl-py"),
 ]
 
-THIRD_PARTY_PY_FLASK = [
-    requirement("flask"),
+THIRD_PARTY_PY_FIREBASE_ADMIN = [
+    requirement("firebase-admin"),
 ]
 
-THIRD_PARTY_PY_LIBCST = [
-    requirement("libcst"),
+THIRD_PARTY_PY_FLASK = [
+    requirement("flask"),
 ]
 
 THIRD_PARTY_PY_MATPLOTLIB = [

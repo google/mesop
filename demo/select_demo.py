@@ -3,12 +3,12 @@ import mesop as me
 
 @me.stateclass
 class State:
-  selected_value: str = ""
+  selected_values: list[str]
 
 
 def on_selection_change(e: me.SelectSelectionChangeEvent):
   s = me.state(State)
-  s.selected_value = e.value
+  s.selected_values = e.values
 
 
 @me.page(
@@ -28,6 +28,7 @@ def app():
     ],
     on_selection_change=on_selection_change,
     style=me.Style(width=500),
+    multiple=True,
   )
   s = me.state(State)
-  me.text(text="Selected value: " + s.selected_value)
+  me.text(text="Selected values: " + ", ".join(s.selected_values))

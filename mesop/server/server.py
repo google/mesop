@@ -8,7 +8,6 @@ from flask import Flask, Response, abort, request, stream_with_context
 import mesop.protos.ui_pb2 as pb
 from mesop.component_helpers import diff_component
 from mesop.editor.component_configs import get_component_configs
-from mesop.editor.editor_handler import handle_editor_event
 from mesop.events import LoadEvent
 from mesop.exceptions import format_traceback
 from mesop.runtime import runtime
@@ -177,16 +176,6 @@ def configure_flask_app(
           runtime().context().set_previous_node_from_current_node()
           runtime().context().reset_current_node()
         yield create_update_state_event(diff=True)
-        yield STREAM_END
-      elif ui_request.HasField("editor_event"):
-        # Prevent accidental usages of editor mode outside of
-        # one's local computer
-        if request.remote_addr not in LOCALHOSTS:
-          abort(403)  # Throws a Forbidden Error
-        # Visual editor should only be enabled in debug mode.
-        if not runtime().debug_mode:
-          abort(403)  # Throws a Forbidden Error
-        handle_editor_event(ui_request.editor_event)
         yield STREAM_END
       else:
         raise Exception(f"Unknown request type: {ui_request}")

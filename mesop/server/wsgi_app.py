@@ -10,6 +10,7 @@ from mesop.server.flags import port
 from mesop.server.logging import log_startup
 from mesop.server.server import configure_flask_app
 from mesop.server.static_file_serving import configure_static_file_serving
+from mesop.utils.host_util import get_default_host
 
 
 class App:
@@ -20,7 +21,9 @@ class App:
 
   def run(self):
     log_startup(port=port())
-    self._flask_app.run(host="::", port=port(), use_reloader=False)
+    self._flask_app.run(
+      host=get_default_host(), port=port(), use_reloader=False
+    )
 
 
 def create_app(
@@ -40,6 +43,7 @@ def create_app(
     static_file_runfiles_base=PROD_PACKAGE_PATH
     if prod_mode
     else EDITOR_PACKAGE_PATH,
+    disable_gzip_cache=not prod_mode,
   )
 
   return App(flask_app=flask_app)

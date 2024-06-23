@@ -25,24 +25,5 @@ to *not* render it, otherwise it causes weird layout issues (e.g. flexbox) -->
 
 <!-- Editor overlay -->
 <ng-template #editorOverlay>
-  <div class="editor-overlay">
-    {{getComponentName()}}
-    <span class="editor-icons">
-      <mat-icon
-        matTooltip="Add sibling component"
-        matTooltipShowDelay="700"
-        class="add-component"
-        (click)="addSiblingComponent()"
-        >add</mat-icon
-      >
-      <mat-icon
-        *ngIf="canAddChildComponent()"
-        matTooltip="Add child component"
-        matTooltipShowDelay="700"
-        class="add-component"
-        (click)="addChildComponent()"
-        >new_window</mat-icon
-      >
-    </span>
-  </div>
+  <div class="editor-overlay">{{getComponentName()}}</div>
 </ng-template>

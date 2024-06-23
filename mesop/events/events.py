@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Any
 
 
 @dataclass(kw_only=True)
@@ -43,3 +44,15 @@ class LoadEvent:
   """
 
   path: str
+
+
+@dataclass(kw_only=True)
+class WebEvent(MesopEvent):
+  """An event emitted by a web component.
+
+  Attributes:
+      value: The value associated with the web event.
+      key (str): key of the component that emitted this event.
+  """
+
+  value: Any

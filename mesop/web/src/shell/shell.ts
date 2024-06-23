@@ -1,4 +1,5 @@
 import {
+  ApplicationRef,
   Component,
   ErrorHandler,
   HostListener,
@@ -18,7 +19,10 @@ import {
   InitRequest,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 import {CommonModule} from '@angular/common';
-import {ComponentRenderer} from '../component_renderer/component_renderer';
+import {
+  COMPONENT_RENDERER_ELEMENT_NAME,
+  ComponentRenderer,
+} from '../component_renderer/component_renderer';
 import {Channel} from '../services/channel';
 import {provideAnimations} from '@angular/platform-browser/animations';
 import {bootstrapApplication} from '@angular/platform-browser';
@@ -28,6 +32,7 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {ErrorBox} from '../error/error_box';
 import {GlobalErrorHandlerService} from '../services/global_error_handler';
 import {getViewportSize} from '../utils/viewport_size';
+import {createCustomElement} from '@angular/elements';
 
 @Component({
   selector: 'mesop-shell',
@@ -144,14 +149,24 @@ const routes: Routes = [{path: '**', component: Shell}];
 @Component({
   selector: 'mesop-app',
   template: '<router-outlet></router-outlet>',
-  standalone: true,
   imports: [Shell, RouterOutlet],
-  providers: [EditorService],
+  standalone: true,
 })
 class MesopApp {}
 
-export function bootstrapApp() {
-  bootstrapApplication(MesopApp, {
-    providers: [provideAnimations(), provideRouter(routes)],
+export async function bootstrapApp() {
+  const app = await bootstrapApplication(MesopApp, {
+    providers: [provideAnimations(), provideRouter(routes), EditorService],
   });
+  registerComponentRendererElement(app);
+}
+
+export function registerComponentRendererElement(app: ApplicationRef) {
+  const ComponentRendererElement = createCustomElement(ComponentRenderer, {
+    injector: app.injector,
+  });
+  customElements.define(
+    COMPONENT_RENDERER_ELEMENT_NAME,
+    ComponentRendererElement,
+  );
 }

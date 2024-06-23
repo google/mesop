@@ -1,4 +1,5 @@
-import mesop as me
+import mesop as me  # noqa: I001
+import simple_slot_app  # type: ignore  # noqa: F401
 
 
 @me.stateclass

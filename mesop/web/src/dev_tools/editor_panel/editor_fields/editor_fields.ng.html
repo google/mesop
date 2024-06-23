@@ -1,15 +1,5 @@
 <div class="fields-section">
-  @if(getHiddenFields().length) {
-  <div class="add-property">
-    <label class="input-label">+</label>:
-    <select class="select" (change)="onNewProperty($event)">
-      <option value=""></option>
-      @for(fieldName of getHiddenFields(); track $index) {
-      <option [value]="fieldName">{{fieldName}}</option>
-      }
-    </select>
-  </div>
-  } @for(field of getRegularFields(); track $index) {
+  @for(field of getRegularFields(); track $index) {
   <div
     class="field-block"
     [ngClass]="{'field-block-active': this.hoveredFieldName === field.getName()}"
@@ -19,27 +9,21 @@
     @switch(field.getType()?.getTypeCase()) {@case(FieldTypeCase.INT_TYPE) {
     <label class="input-label">{{field.getName()}}</label>:
     <input
+      readonly
       class="input"
       type="number"
-      (blur)="onBlurInt($event)"
       [attr.data-name]="field.getName()"
       [value]="getValueFor(field.getName()!)"
     />
-    <mat-icon class="delete-field" (click)="deleteField(field.getName()!)"
-      >delete</mat-icon
-    >
     } @case(FieldTypeCase.FLOAT_TYPE) {
     <label class="input-label">{{field.getName()}}</label>:
     <input
       class="input"
       type="number"
-      (blur)="onBlurFloat($event)"
+      readonly
       [attr.data-name]="field.getName()"
       [value]="getValueFor(field.getName()!)"
     />
-    <mat-icon class="delete-field" (click)="deleteField(field.getName()!)"
-      >delete</mat-icon
-    >
     } @case(FieldTypeCase.LIST_TYPE) {
     <div class="list-section">
       <div class="list-header">
@@ -50,11 +34,6 @@
       $index) {
       <div class="struct-header">
         <span class="struct-name">[{{$index}}]</span>
-        <mat-icon
-          class="delete-field"
-          (click)="deleteFieldWithIndex(field.getName()!, $index)"
-          >delete</mat-icon
-        >
       </div>
       <div class="struct-body" (mouseenter)="clearHoveredFieldName()">
         <mesop-editor-fields
@@ -63,10 +42,6 @@
         ></mesop-editor-fields>
       </div>
       }
-      <div class="add-element" (click)="appendListElement(field.getName()!)">
-        <mat-icon>add</mat-icon>
-        Add Element
-      </div>
     </div>
     <!-- preserve for fmt -->
     } @case(FieldTypeCase.STRING_TYPE) { @if(field.getName() === "text") {
@@ -75,32 +50,21 @@
       cdkTextareaAutosize
       #autosize="cdkTextareaAutosize"
       class="textarea"
-      (blur)="onBlur($event)"
       [attr.data-name]="field.getName()"
       [value]="getValueFor(field.getName()!)"
     ></textarea>
-    <mat-icon class="delete-field" (click)="deleteField(field.getName()!)"
-      >delete</mat-icon
-    >
     } @else {
     <label class="input-label">{{field.getName()}}</label>:
     <input
       class="input"
-      (blur)="onBlur($event)"
+      readonly
       [attr.data-name]="field.getName()"
       [value]="getValueFor(field.getName()!)"
       [size]="getValueFor(field.getName()!).length || 10"
     />
-    <mat-icon class="delete-field" (click)="deleteField(field.getName()!)"
-      >delete</mat-icon
-    >
     } } @case(FieldTypeCase.LITERAL_TYPE) {
     <label class="input-label">{{field.getName()}}</label>:
-    <select
-      [attr.data-name]="field.getName()"
-      class="select"
-      (change)="onSelectLiteral($event)"
-    >
+    <select [attr.data-name]="field.getName()" class="select">
       @for(literal of field.getType()!.getLiteralType()?.getLiteralsList();
       track $index) {
       <option
@@ -111,16 +75,10 @@
       </option>
       }
     </select>
-    <mat-icon class="delete-field" (click)="deleteField(field.getName()!)"
-      >delete</mat-icon
-    >
     } @case(FieldTypeCase.STRUCT_TYPE) {
     <div class="struct-section">
       <div class="struct-header">
         <span class="struct-name">{{field.getName()}}</span>
-        <mat-icon class="delete-field" (click)="deleteField(field.getName()!)"
-          >delete</mat-icon
-        >
       </div>
       <div class="struct-body" (mouseenter)="clearHoveredFieldName()">
         <mesop-editor-fields
@@ -141,7 +99,7 @@
   <mat-checkbox
     [checked]="!!getValueFor(field.getName()!)"
     [value]="field.getName()!"
-    (change)="onCheckboxChange($event)"
+    disabled
     >{{field.getName()}}</mat-checkbox
   >
   }

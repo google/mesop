@@ -39,7 +39,7 @@ def icon_button(*, icon: str, label: str, tooltip: str, on_click: Callable):
 
 ## Flexibility through Layered Building Blocks
 
-Mesop provides a range of UI building blocks, from low-level [native components](https://google.github.io/mesop/guides/components/#native-components) to high-level components.
+Mesop provides a range of UI building blocks, from low-level [native components](https://google.github.io/mesop/components/#native-components) to high-level components.
 
 - Low-level components: like [box](../../components/box.md), offer granular control over layout and styling. They empower you to create custom UI elements through flexible layouts like flexbox and grid.
 - High-level components: like [chat](../../components/chat.md), are built from low-level components and provide ready-to-use elements for common use cases, enabling rapid development.

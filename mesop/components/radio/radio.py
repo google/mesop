@@ -64,7 +64,7 @@ def radio(
     value: Value for the radio-group. Should equal the value of the selected radio button if there is a corresponding radio button with a matching value.
     disabled: Whether the radio group is disabled.
     style: Style for the component.
-    key: The component [key](../guides/components.md#component-key).
+    key: The component [key](../components/index.md#component-key).
   """
   insert_component(
     key=key,

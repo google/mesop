@@ -28,15 +28,15 @@ If you don't, please [download Python](https://www.python.org/downloads/).
 
 ### Create a venv environment
 
-1. In the terminal, navigate to your project directory: `cd foo`
+1. **Open the terminal** and navigate to a directory: `cd foo`
 
-2. Use [venv](https://docs.python.org/3/library/venv.html) to create a virtual environment, which will help avoid many of the common Python environment issues. Run:
+2. **Create a virtual environment** by using [venv](https://docs.python.org/3/library/venv.html), which will avoid Python environment issues. Run:
 
 ```sh
 python -m venv .venv
 ```
 
-3. Active your virtual environment:
+3. **Activate your virtual environment:**
 
     - macOS and Linux:
 
@@ -57,6 +57,12 @@ python -m venv .venv
         ```
 
 Once you've activated the virtual environment, you will see ".venv" at the start of your terminal prompt.
+
+4. **Install mesop:**
+
+```shell
+$ pip install mesop
+```
 
 Make sure your Python environment is setup correctly by running a hello world app.
 

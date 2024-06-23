@@ -1,5 +1,6 @@
 import json
 from dataclasses import dataclass, field
+from datetime import datetime, timedelta, timezone
 from typing import Optional
 
 import pandas as pd
@@ -438,6 +439,20 @@ def test_diff_not_dataclass():
 
   with pytest.raises(MesopException):
     diff_state("s1", C())
+
+
+# Mesop JSON serializer currently fails on bytes
+# See https://github.com/google/mesop/issues/158
+def test_diff_bytes_fails():
+  @dataclass
+  class C:
+    val1: bytes = b"val1"
+
+  s1 = C()
+  s2 = C(val1=b"VAL1")
+
+  with pytest.raises(TypeError):
+    diff_state(s1, s2)
 
 
 if __name__ == "__main__":

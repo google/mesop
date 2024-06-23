@@ -8,6 +8,7 @@ from mesop.server.constants import EDITOR_PACKAGE_PATH, PROD_PACKAGE_PATH
 from mesop.server.logging import log_startup
 from mesop.server.server import configure_flask_app
 from mesop.server.static_file_serving import configure_static_file_serving
+from mesop.utils.host_util import get_default_host
 
 
 def colab_run(*, port: int = 32123, prod_mode: bool = False):
@@ -43,7 +44,7 @@ def colab_run(*, port: int = 32123, prod_mode: bool = False):
   log_startup(port=port)
 
   def run_flask_app():
-    flask_app.run(host="::", port=port, use_reloader=False)
+    flask_app.run(host=get_default_host(), port=port, use_reloader=False)
 
   # Launch Flask in background thread so we don't hog up the main thread
   # for regular Colab usage.

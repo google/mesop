@@ -5,7 +5,7 @@ import mesop as me
 _INTRO_TEXT = """
 # Mesop Markdown Editor Example
 
-This is example shows how to make a simple markdown editor.
+This example shows how to make a simple markdown editor.
 """.strip()
 
 

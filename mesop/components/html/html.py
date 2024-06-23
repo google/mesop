@@ -21,7 +21,7 @@ def html(
   Args:
       html: The HTML content to be rendered.
       style: The style to apply to the embed, such as width and height.
-      key: The component [key](../guides/components.md#component-key).
+      key: The component [key](../components/index.md#component-key).
   """
   if style is None:
     style = Style()

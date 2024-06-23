@@ -1,4 +1,4 @@
-load("//build_defs:defaults.bzl", "THIRD_PARTY_PY_LIBCST", "THIRD_PARTY_PY_PYTEST", "py_library", "py_test")
+load("//build_defs:defaults.bzl", "THIRD_PARTY_PY_PYTEST", "py_library", "py_test")
 
 package(
     default_visibility = ["//build_defs:mesop_internal"],
@@ -14,7 +14,7 @@ py_library(
         "//mesop/components",
         "//mesop/protos:ui_py_pb2",
         "//mesop/runtime",
-    ] + THIRD_PARTY_PY_LIBCST,
+    ],
 )
 
 py_test(
@@ -28,19 +28,4 @@ py_test(
         "//mesop/components/radio:py",
         "//mesop/labs",
     ] + THIRD_PARTY_PY_PYTEST,
-)
-
-py_test(
-    name = "editor_codemod_test",
-    srcs = ["editor_codemod_test.py"],
-    data = [":testdata_files"],
-    deps = [
-        ":editor",
-        "//mesop/utils",
-    ] + THIRD_PARTY_PY_LIBCST,
-)
-
-filegroup(
-    name = "testdata_files",
-    srcs = glob(["testdata/**/*.py"]),
 )

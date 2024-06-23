@@ -20,3 +20,9 @@ py_test(
     srcs = ["diff_component_test.py"],
     deps = [":component_helpers"] + THIRD_PARTY_PY_PYTEST,
 )
+
+py_test(
+    name = "helper_test",
+    srcs = ["helper_test.py"],
+    deps = [":component_helpers"] + THIRD_PARTY_PY_PYTEST,
+)
