@@ -75,12 +75,23 @@ class BorderSide:
                           or None for no color.
       style: The style of the border, which can be 'none' for no border, 'solid' for a solid line, 'dashed' for dashed line,
               'dotted' for dotted line, 'double' for double line, 'groove' for 3D grooved border, 'ridge' for 3D ridged border,
-              'inset' for 3D inset border, 'outset' for 3D outset border.
+              'inset' for 3D inset border, 'outset' for 3D outset border, "hidden" for hidden border.
   """
 
   width: int | str | None = None
   color: str | None = None
-  style: Literal["none", "solid", "dashed", "dotted", "double", "groove", "ridge", "inset", "outset"] | None = None
+  style: Literal[
+    "none", 
+    "solid", 
+    "dashed", 
+    "dotted", 
+    "double", 
+    "groove", 
+    "ridge", 
+    "inset", 
+    "outset",
+    "hidden"
+  ] | None = None
 
 
 @dataclass(kw_only=True)
