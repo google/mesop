@@ -89,8 +89,9 @@ def _recursive_update_dataclass_from_json_obj(instance: Any, json_dict: Any):
         updated_list: list[Any] = []
         for item in cast(list[Any], value):
           if isinstance(item, dict):
-            # If the json item value is an instance of dict,
-            # we assume it should be converted into a dataclass
+            # If the json item value is an instance of dict
+            # and the instance has an attribute with a matching name,
+            # we assume the dict should be converted into a dataclass.
             attr = getattr(instance, key)
             item_instance = instance.__annotations__[key].__args__[0]()
             updated_list.append(

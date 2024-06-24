@@ -259,6 +259,20 @@ def test_serialize_deserialize_state_with_nested_dict():
 
 
 @dataclass_with_defaults
+class StateWithNestedList:
+  nested_list: list[list[str]]
+
+
+def test_serialize_deserialize_state_with_nested_list():
+  state = StateWithNestedList()
+  state.nested_list.append(["a", "b"])
+  state.nested_list.append([])
+  new_state = StateWithNestedList()
+  update_dataclass_from_json(new_state, serialize_dataclass(state))
+  assert new_state == state
+
+
+@dataclass_with_defaults
 class StateWithListDict:
   list_dict: list[dict[str, bool]]
 
