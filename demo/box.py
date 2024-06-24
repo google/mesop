@@ -8,7 +8,7 @@ import mesop as me
   path="/box",
 )
 def app():
-  border_style = ["dashed", "dotted", "double", "groove", "inset","outset"]
+  border_style = ["dashed", "dotted", "double", "groove", "inset", "outset"]
   with me.box(style=me.Style(background="red", padding=me.Padding.all(16))):
     for style in border_style:
       with me.box(

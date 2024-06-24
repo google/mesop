@@ -80,18 +80,21 @@ class BorderSide:
 
   width: int | str | None = None
   color: str | None = None
-  style: Literal[
-    "none", 
-    "solid", 
-    "dashed", 
-    "dotted", 
-    "double", 
-    "groove", 
-    "ridge", 
-    "inset", 
-    "outset",
-    "hidden"
-  ] | None = None
+  style: (
+    Literal[
+      "none",
+      "solid",
+      "dashed",
+      "dotted",
+      "double",
+      "groove",
+      "ridge",
+      "inset",
+      "outset",
+      "hidden",
+    ]
+    | None
+  ) = None
 
 
 @dataclass(kw_only=True)

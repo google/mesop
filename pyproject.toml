@@ -8,7 +8,7 @@ extend-exclude = [
     "generator/fixtures/*",
     "mesop/editor/testdata/**", # formatting messes up diff.
 ]
-select = [
+lint.select = [
     # pycodestyle
     "E",
     # Pyflakes
@@ -22,7 +22,7 @@ select = [
     # isort
     "I",
 ]
-ignore = [
+lint.ignore = [
     "E501",   # ignore line-length (e.g. long docstring)
     "SIM117", # ignore combine with statements (it leads to harder to read code)
 ]
