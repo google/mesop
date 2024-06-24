@@ -7,7 +7,7 @@ For our Python code, we use [pyright](https://github.com/microsoft/pyright) as o
 To run Python type-checking, run:
 
 ```shell
-$ ./scripts/run_py_typecheck.sh
+./scripts/run_py_typecheck.sh
 ```
 
 This will setup the pre-requisites needed for type-checking.

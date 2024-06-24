@@ -55,7 +55,7 @@ In your terminal, go to the application directory, which has the files listed ab
 Run the following command:
 
 ```sh
-$ gcloud run deploy
+gcloud run deploy
 ```
 
 Follow the instructions and then you should be able to access your deployed app.
