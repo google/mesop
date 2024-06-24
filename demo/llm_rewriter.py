@@ -174,7 +174,7 @@ def on_click_cancel_rewrite(e: me.ClickEvent):
   state.preview_rewrite = ""
 
 
-def on_click_submit_chat_msg(e: me.ClickEvent | me.EnterEvent):
+def on_click_submit_chat_msg(e: me.ClickEvent | me.InputEnterEvent):
   """Handles submitting a chat message."""
   state = me.state(State)
   if state.in_progress or not state.input:

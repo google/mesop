@@ -169,7 +169,7 @@ def chat(
   """
   state = me.state(State)
 
-  def on_submit(e: me.ClickEvent | me.EnterEvent):
+  def on_submit(e: me.ClickEvent | me.InputEnterEvent):
     state = me.state(State)
     if state.in_progress or not state.input:
       return
