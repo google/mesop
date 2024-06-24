@@ -4,8 +4,13 @@ test('test input interactivity works', async ({page}) => {
   await page.goto('/components/input/e2e/input_app');
   await page.getByLabel('Basic input').fill('hi');
   expect(await page.getByText('hi').textContent()).toEqual('hi');
-  await page.getByLabel('Basic input').press('Enter');
-  expect(await page.getByText('boo').textContent()).toEqual('boo');
+});
+
+test('test input on_enter works', async ({page}) => {
+  await page.goto('/components/input/e2e/input_app');
+  await page.getByLabel('Input (on_enter)').fill('typing and then enter');
+  await page.getByLabel('Input (on_enter)').press('Enter');
+  await expect(page.getByText('typing and then enter')).toBeVisible();
 });
 
 test('test input on_blur works', async ({page}) => {
