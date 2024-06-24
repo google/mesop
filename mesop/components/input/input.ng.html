@@ -6,6 +6,7 @@
   [readonly]="config().getReadonly()"
   [style]="getStyle()"
   (input)="onInput($event)"
+  (blur)="onBlur($event)"
   [cdkTextareaAutosize]="config().getAutosize()"
   [cdkAutosizeMinRows]="config().getMinRows()"
   [cdkAutosizeMaxRows]="config().getMaxRows()"
@@ -32,6 +33,7 @@
     [value]="config().getValue()"
     [readonly]="config().getReadonly()"
     (input)="onInput($event)"
+    (blur)="onBlur($event)"
     [rows]="config().getRows()"
     [cdkTextareaAutosize]="config().getAutosize()"
     [cdkAutosizeMinRows]="config().getMinRows()"
@@ -47,6 +49,7 @@
     [type]="config().getType()!"
     [value]="config().getValue()"
     [readonly]="config().getReadonly()"
+    (blur)="onBlur($event)"
     (input)="onInput($event)"
     (keyup)="onKeyUp($event)"
   />

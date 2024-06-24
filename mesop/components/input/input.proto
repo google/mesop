@@ -3,7 +3,7 @@ syntax = "proto2";
 
 package mesop.components.input;
 
-// Next id: 25
+// Next id: 26
 message InputType {
   optional bool disabled = 1;
   optional string id = 2;
@@ -21,6 +21,7 @@ message InputType {
   optional string label = 16;
   optional string on_input_handler_id = 17;
   optional string on_enter_handler_id = 24;
+  optional string on_blur_handler_id = 25;
   // Used for textarea only.
   optional int32 rows = 18;
   optional bool autosize = 20;
