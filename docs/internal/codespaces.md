@@ -15,7 +15,7 @@ CPU available.
 
 You can create a Github Codespace from the [Mesop Github repository page](https://github.com/google/mesop).
 
-![Create Github Codespace](/assets/codespaces/create.png)
+![Create Github Codespace](../assets/codespaces/create.png)
 
 ## Wait for postCreateCommand to run
 
@@ -23,7 +23,7 @@ The Codespace will not be usable until the `postCreateCommand` has completed. Yo
 view the CLI output by pressing `Cmd/Ctrl + Shift + P` and then finding the `View
 Creation Log` option.
 
-![Create Github Codespace](/assets/codespaces/post-create-command.png)
+![Create Github Codespace](../assets/codespaces/post-create-command.png)
 
 ## Set the Python environment for the Codespace
 
@@ -31,7 +31,7 @@ During the `postCreateCommand` step, you'll see a pop up asking if you want to s
 environment for the Codespace. Select `Yes` here to use the virtual env that is created
 as part of the `postCreateCommand` set up.
 
-![Set Python environment](/assets/codespaces/set-env.png)
+![Set Python environment](../assets/codespaces/set-env.png)
 
 ## Run Mesop for development
 
@@ -46,7 +46,7 @@ This step takes some time for the first run.
 You will see some warning messages, but it is OK to ignore them. You can also ignore the
 message shown in the screenshot.
 
-![CLI message to ignore](/assets/codespaces/ignore-error-cli.png)
+![CLI message to ignore](../assets/codespaces/ignore-error-cli.png)
 
 
 ## View Mesop demos
@@ -54,4 +54,4 @@ message shown in the screenshot.
 Once `./scripts/cli.sh` has started the Mesop dev server, you can view the demos from
 the `PORTS` tab.
 
-![View Mesop demos from PORTS panel](/assets/codespaces/view-mesop.png)
+![View Mesop demos from PORTS panel](../assets/codespaces/view-mesop.png)
