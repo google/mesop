@@ -19,7 +19,19 @@ the remote containers.
 - [VS Code](https://code.visualstudio.com/)
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 
+## Fork and Clone the Mesop repository
+
+> It is not recommended to develop locally and on remote containers using the same
+folder since this may cause unexpected conflicts. Instead you should clone the
+repository in a separate directory.
+
+You can follow the instructions here on [how to fork and clone a Github repository](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo).
+
 ## Open folder in container
+
+> It is not recommended to develop locally and on remote containers using the same
+folder since this may cause conflicts with Bazel. Instead you should clone the
+repository in a separate directory.
 
 Open VS Code, press `Cmd/Ctrl + Shift + P`, and select the `Dev Containers: Open Folder in Container...`
 option. This will create a new workspace inside a remote container.
