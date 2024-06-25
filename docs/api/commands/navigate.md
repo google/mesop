@@ -5,7 +5,7 @@ To navigate to another page, you can use `me.navigate`. This is particularly use
 ## Example
 
 ```python
---8<-- "mesop/examples/docs/on_load_generator.py"
+--8<-- "mesop/examples/navigate.py"
 ```
 
 ## API
