@@ -82,7 +82,7 @@ class MemoryStateSessionBackend(StateSessionBackend):
 
 def CreateStateSessionFromConfig(config: Config):
   """Factory function to state session backend."""
-  if config.state_session_backend == "null":
+  if config.state_session_backend == "none":
     return NullStateSessionBackend()
   return MemoryStateSessionBackend()
 

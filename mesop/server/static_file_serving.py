@@ -7,7 +7,7 @@ from collections import OrderedDict
 from io import BytesIO
 from typing import Any, Callable
 
-from flask import Flask, Response, g, request, send_file, session
+from flask import Flask, Response, g, request, send_file
 from werkzeug.security import safe_join
 
 from mesop.exceptions import MesopException
@@ -112,18 +112,6 @@ def configure_static_file_serving(
   @app.before_request
   def generate_nonce():
     g.csp_nonce = secrets.token_urlsafe(16)
-
-  @app.before_request
-  def generate_session():
-    try:
-      # Generate a session ID when first loading a page to create a session cookie. This
-      # allows requests to /ui to receive the session cookie.
-      if "state_session_id" not in session:
-        session["state_session_id"] = secrets.token_urlsafe(16)
-    except RuntimeError:
-      # Secret key may not be set, so the session will be unavailable.
-      # TODO: Log warning in case this is unintentional?
-      pass
 
   @app.after_request
   def add_security_headers(response: Response):

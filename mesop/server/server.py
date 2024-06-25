@@ -2,9 +2,10 @@ import base64
 import secrets
 import time
 import urllib.parse as urlparse
+from datetime import datetime
 from typing import Generator, Sequence
 
-from flask import Flask, Response, abort, request, session, stream_with_context
+from flask import Flask, Response, abort, request, stream_with_context
 
 import mesop.protos.ui_pb2 as pb
 from mesop.component_helpers import diff_component
@@ -36,7 +37,6 @@ def configure_flask_app(
   *, prod_mode: bool = True, exceptions_to_propagate: Sequence[type] = ()
 ) -> Flask:
   flask_app = Flask(__name__)
-  flask_app.secret_key = app_config.secret_key
 
   def render_loop(
     path: str,
@@ -132,9 +132,7 @@ def configure_flask_app(
         if event.states.states:
           runtime().context().update_state(event.states)
         else:
-          runtime().context().restore_state_from_session(
-            session.get("state_session_id", event.state_hash)
-          )
+          runtime().context().restore_state_from_session(event.state_hash)
 
         for _ in render_loop(path=ui_request.path, trace_mode=True):
           pass
@@ -255,6 +253,15 @@ def serialize(response: pb.UiResponse) -> str:
   return f"data: {encoded}\n\n"
 
 
+def generate_state_hash():
+  """Generates a state hash token used to cache and look up Mesop state.
+
+  We include a timestamp to reduce conflicts with the possibility of two identically
+  generated tokens.
+  """
+  return datetime.now().strftime("%Y%m%d%H%M%S%f") + secrets.token_urlsafe(16)
+
+
 def create_update_state_event(diff: bool = False) -> str:
   """Creates a state event to send to the client.
 
@@ -270,16 +277,8 @@ def create_update_state_event(diff: bool = False) -> str:
   # If enabled, we will save the user's state on the server, so that the client does not
   # need to send the full state back on the next user event request
   if app_config.state_session_enabled:
-    state_session_id = session.get("state_session_id")
-
-    # Session ID may not be enabled if the user has not configured a secret_key. In that
-    # that case we will generate temporary token that the client can use to look up the
-    # the last saved state.
-    if state_session_id:
-      runtime().context().save_state_to_session(state_session_id)
-    else:
-      temp_state_hash = secrets.token_urlsafe(16)
-      runtime().context().save_state_to_session(temp_state_hash)
+    temp_state_hash = generate_state_hash()()
+    runtime().context().save_state_to_session(temp_state_hash)
 
   update_state_event = pb.UpdateStateEvent(
     state_session_enabled=app_config.state_session_enabled,

@@ -10,17 +10,15 @@ load_dotenv()
 class Config(BaseModel):
   """Mesop app configuration."""
 
-  secret_key: str = ""
-  state_session_backend: Literal["memory", "null"] = "memory"
+  state_session_backend: Literal["memory", "none"] = "memory"
 
   @property
   def state_session_enabled(self):
-    return self.state_session_backend != "null"
+    return self.state_session_backend != "none"
 
 
 def CreateConfigFromEnv() -> Config:
   return Config(
-    secret_key=os.getenv("MESOP_SECRET_KEY", ""),
     state_session_backend=os.getenv("MESOP_STATE_SESSION_BACKEND", "memory"),
   )
 
