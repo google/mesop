@@ -74,7 +74,9 @@ nav:
       - blog/index.md
   - Contributing:
       - How-to Contribute: internal/contributing.md
-      - Development: internal/development.md
+      - Development:
+          - Main: internal/development.md
+          - Github Codespaces: internal/codespaces.md
       - Architecture: internal/architecture.md
       - Goals: goals.md
       - New component: internal/new_component.md
