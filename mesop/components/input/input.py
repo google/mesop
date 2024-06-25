@@ -14,15 +14,28 @@ from mesop.events import InputEvent, MesopEvent
 
 @dataclass(kw_only=True)
 class EnterEvent(MesopEvent):
-  """Represents an "Enter" keyboard event."""
+  """[Deprecated] Represents an "Enter" keyboard event. Use InputEnterEvent instead."""
 
   pass
 
 
+@dataclass(kw_only=True)
+class InputEnterEvent(MesopEvent):
+  """Represents an "Enter" keyboard event on an input component.
+
+  Attributes:
+    value: Input value.
+    key (str): key of the component that emitted this event.
+  """
+
+  value: str
+
+
 register_event_mapper(
-  EnterEvent,
-  lambda event, key: EnterEvent(
+  InputEnterEvent,
+  lambda event, key: InputEnterEvent(
     key=key.key,
+    value=event.string_value,
   ),
 )
 
@@ -136,7 +149,7 @@ def input(
   label: str = "",
   on_blur: Callable[[InputBlurEvent], Any] | None = None,
   on_input: Callable[[InputEvent], Any] | None = None,
-  on_enter: Callable[[EnterEvent], Any] | None = None,
+  on_enter: Callable[[InputEnterEvent], Any] | None = None,
   type: Literal[
     "color",
     "date",
@@ -215,7 +228,9 @@ def input(
       on_input_handler_id=register_event_handler(on_input, event=InputEvent)
       if on_input
       else "",
-      on_enter_handler_id=register_event_handler(on_enter, event=EnterEvent)
+      on_enter_handler_id=register_event_handler(
+        on_enter, event=InputEnterEvent
+      )
       if on_enter
       else "",
     ),

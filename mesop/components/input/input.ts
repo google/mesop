@@ -87,6 +87,7 @@ export class InputComponent {
     if ((event as KeyboardEvent).key === 'Enter') {
       const userEvent = new UserEvent();
       userEvent.setHandlerId(this.config().getOnEnterHandlerId()!);
+      userEvent.setStringValue((event.target as HTMLInputElement).value);
       userEvent.setKey(this.key);
       this.channel.dispatch(userEvent);
     }
