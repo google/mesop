@@ -148,11 +148,11 @@ Did you forget to decorate your state class `{state.__name__}` with @stateclass?
       states.states.append(pb.State(data=diff_state(previous_state, state)))
     return states
 
-  def restore_state_from_session(self, state_hash: str):
-    state_session.restore(state_hash, self._states)
+  def restore_state_from_session(self, state_token: str):
+    state_session.restore(state_token, self._states)
 
-  def save_state_to_session(self, state_hash: str):
-    state_session.save(state_hash, self._states)
+  def save_state_to_session(self, state_token: str):
+    state_session.save(state_token, self._states)
 
   def clear_stale_state_sessions(self):
     state_session.clear_stale_sessions()

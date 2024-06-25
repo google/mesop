@@ -132,7 +132,7 @@ def configure_flask_app(
         if event.states.states:
           runtime().context().update_state(event.states)
         else:
-          runtime().context().restore_state_from_session(event.state_hash)
+          runtime().context().restore_state_from_session(event.state_token)
 
         for _ in render_loop(path=ui_request.path, trace_mode=True):
           pass
@@ -253,8 +253,8 @@ def serialize(response: pb.UiResponse) -> str:
   return f"data: {encoded}\n\n"
 
 
-def generate_state_hash():
-  """Generates a state hash token used to cache and look up Mesop state.
+def generate_state_token():
+  """Generates a state token used to cache and look up Mesop state.
 
   We include a timestamp to reduce conflicts with the possibility of two identically
   generated tokens.
@@ -272,17 +272,17 @@ def create_update_state_event(diff: bool = False) -> str:
     serialized `pb.UiResponse`
   """
 
-  temp_state_hash = ""
+  state_token = ""
 
   # If enabled, we will save the user's state on the server, so that the client does not
   # need to send the full state back on the next user event request
   if app_config.state_session_enabled:
-    temp_state_hash = generate_state_hash()()
-    runtime().context().save_state_to_session(temp_state_hash)
+    state_token = generate_state_token()
+    runtime().context().save_state_to_session(state_token)
 
   update_state_event = pb.UpdateStateEvent(
     state_session_enabled=app_config.state_session_enabled,
-    state_hash=temp_state_hash,
+    state_token=state_token,
     diff_states=runtime().context().diff_state() if diff else None,
     full_states=runtime().context().serialize_state() if not diff else None,
   )

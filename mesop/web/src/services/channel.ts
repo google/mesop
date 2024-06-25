@@ -47,8 +47,8 @@ export class Channel {
   private eventSource!: SSE;
   private initParams!: InitParams;
   private states: States = new States();
-  private state_hash: string = '';
-  private state_session_enabled: boolean = false;
+  private stateToken: string = '';
+  private stateSessionEnabled: boolean = false;
   private rootComponent?: ComponentProto;
   private status!: ChannelStatus;
   private componentConfigs: readonly ComponentConfig[] = [];
@@ -121,8 +121,10 @@ export class Channel {
         console.debug('Server event: ', uiResponse.toObject());
         switch (uiResponse.getTypeCase()) {
           case UiResponse.TypeCase.UPDATE_STATE_EVENT: {
-            this.state_hash = uiResponse.getUpdateStateEvent()!.getStateHash()!;
-            this.state_session_enabled = uiResponse
+            this.stateToken = uiResponse
+              .getUpdateStateEvent()!
+              .getStateToken()!;
+            this.stateSessionEnabled = uiResponse
               .getUpdateStateEvent()!
               .getStateSessionEnabled()!;
             switch (uiResponse.getUpdateStateEvent()!.getTypeCase()) {
@@ -232,8 +234,8 @@ export class Channel {
       return;
     }
     const initUserEvent = () => {
-      if (this.state_session_enabled) {
-        userEvent.setStateHash(this.state_hash);
+      if (this.stateSessionEnabled) {
+        userEvent.setStateToken(this.stateToken);
       } else {
         userEvent.setStates(this.states);
       }

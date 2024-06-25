@@ -9,12 +9,12 @@ States = dict[type[Any], object]
 class StateSessionBackend(Protocol):
   """Interface for state session backends."""
 
-  def restore(self, state_hash: str, states: States):
-    """Gets the saved state from the given state_hash and updates the given state."""
+  def restore(self, token: str, states: States):
+    """Gets the saved state from the given token and updates the given state."""
     raise NotImplementedError()
 
-  def save(self, state_hash: str, states: States):
-    """Saves state to the backend with the given state_hash."""
+  def save(self, token: str, states: States):
+    """Saves state to the backend with the given token."""
     raise NotImplementedError()
 
   def clear_stale_sessions(self):
@@ -25,10 +25,10 @@ class StateSessionBackend(Protocol):
 class NullStateSessionBackend(StateSessionBackend):
   """State session backend used when state sessions are disabled."""
 
-  def restore(self, state_hash: str, states: States):
+  def restore(self, token: str, states: States):
     raise Exception("No state session backend configured.")
 
-  def save(self, state_hash: str, states: States):
+  def save(self, token: str, states: States):
     pass
 
   def clear_stale_sessions(self):
@@ -53,18 +53,18 @@ class MemoryStateSessionBackend(StateSessionBackend):
   def __init__(self):
     self.cache = {}
 
-  def restore(self, state_hash: str, states: States):
-    if state_hash not in self.cache:
+  def restore(self, token: str, states: States):
+    if token not in self.cache:
       raise Exception("No state hash found in state session backend.")
-    _, cached_states = self.cache[state_hash]
+    _, cached_states = self.cache[token]
     for key, cached_state in cached_states.items():
       states[key] = cached_state
 
     # Delete the cache instance each time since a temporary state may be used.
-    del self.cache[state_hash]
+    del self.cache[token]
 
-  def save(self, state_hash: str, states: States):
-    self.cache[state_hash] = (datetime.now(), states)
+  def save(self, token: str, states: States):
+    self.cache[token] = (datetime.now(), states)
 
   def clear_stale_sessions(self):
     stale_keys = set()
