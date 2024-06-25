@@ -230,5 +230,61 @@ def test_update_dataclass_with_bytes():
   assert bytes_state.data == bytes_data
 
 
+@dataclass_with_defaults
+class StateWithDict:
+  a_dict: dict[str, bool]
+
+
+def test_serialize_deserialize_state_with_dict():
+  state = StateWithDict()
+  state.a_dict["a"] = True
+  state.a_dict["b"] = False
+  new_state = StateWithDict()
+  update_dataclass_from_json(new_state, serialize_dataclass(state))
+  assert new_state == state
+
+
+@dataclass_with_defaults
+class StateWithNestedDict:
+  nested_dict: dict[str, dict[str, bool]]
+
+
+def test_serialize_deserialize_state_with_nested_dict():
+  state = StateWithNestedDict()
+  state.nested_dict["a"] = {"inner": True, "inner2": False}
+  state.nested_dict["b"] = {"val": True}
+  new_state = StateWithNestedDict()
+  update_dataclass_from_json(new_state, serialize_dataclass(state))
+  assert new_state == state
+
+
+@dataclass_with_defaults
+class StateWithNestedList:
+  nested_list: list[list[str]]
+
+
+def test_serialize_deserialize_state_with_nested_list():
+  state = StateWithNestedList()
+  state.nested_list.append(["a", "b"])
+  state.nested_list.append([])
+  new_state = StateWithNestedList()
+  update_dataclass_from_json(new_state, serialize_dataclass(state))
+  assert new_state == state
+
+
+@dataclass_with_defaults
+class StateWithListDict:
+  list_dict: list[dict[str, bool]]
+
+
+def test_serialize_deserialize_state_with_list_dict():
+  state = StateWithListDict()
+  state.list_dict.append({"firstEl": True})
+  state.list_dict.append({"2A": True, "2B": False})
+  new_state = StateWithListDict()
+  update_dataclass_from_json(new_state, serialize_dataclass(state))
+  assert new_state == state
+
+
 if __name__ == "__main__":
   raise SystemExit(pytest.main([__file__]))
