@@ -1,9 +1,20 @@
 import {test, expect} from '@playwright/test';
 
-test('test', async ({page}) => {
+test('test sanitized html', async ({page}) => {
   await page.goto('/components/html/e2e/html_app');
   // mesop is the HTML link so we're checking that it's rendered.
   expect(await page.getByText('Custom HTML').textContent()).toContain(
     'mesoplink',
   );
+});
+
+test('test sandboxed html', async ({page}) => {
+  await page.goto('/components/html/e2e/html_app');
+  await expect(
+    page.frameLocator('iframe').getByText('iamsandboxed-0'),
+  ).toBeVisible();
+  await page.getByRole('button', {name: 'Increment sandboxed HTML'}).click();
+  await expect(
+    page.frameLocator('iframe').getByText('iamsandboxed-1'),
+  ).toBeVisible();
 });
