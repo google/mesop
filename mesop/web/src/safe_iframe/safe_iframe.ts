@@ -5,14 +5,22 @@
 
 import {sanitizeJavaScriptUrl} from './sanitize_javascript_url';
 
-export function setIframeSrc(iframe: HTMLIFrameElement, src: string) {
+export function setIframeSrc(
+  iframe: HTMLIFrameElement,
+  src: string,
+  options: {allowSameOrigin: boolean},
+) {
   // Intentionally delegate to an impl function because the following
   // line will be modified downstream.
-  setIframeSrcImpl(iframe, src);
+  setIframeSrcImpl(iframe, src, options);
 }
 
 // copybara:strip_begin(external-only)
-function setIframeSrcImpl(iframe: HTMLIFrameElement, src: string) {
+function setIframeSrcImpl(
+  iframe: HTMLIFrameElement,
+  src: string,
+  options: {allowSameOrigin: boolean},
+) {
   // This is a tightly controlled list of attributes that enables us to
   // secure sandbox iframes. Do not add additional attributes without
   // consulting a security resource.
@@ -20,13 +28,15 @@ function setIframeSrcImpl(iframe: HTMLIFrameElement, src: string) {
   // Ref:
   // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe#sandbox
   iframe.sandbox.add(
-    'allow-same-origin',
     'allow-scripts',
     'allow-forms',
     'allow-popups',
     'allow-popups-to-escape-sandbox',
     'allow-storage-access-by-user-activation',
   );
+  if (options.allowSameOrigin) {
+    iframe.sandbox.add('allow-same-origin');
+  }
 
   iframe.src = sanitizeJavaScriptUrl(src)!;
 }

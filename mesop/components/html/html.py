@@ -1,3 +1,5 @@
+from typing import Literal
+
 import mesop.components.html.html_pb2 as html_pb
 from mesop.component_helpers import (
   Border,
@@ -12,6 +14,7 @@ from mesop.component_helpers import (
 def html(
   html: str = "",
   *,
+  mode: Literal["sanitized", "sandboxed"] = "sanitized",
   style: Style | None = None,
   key: str | None = None,
 ):
@@ -36,6 +39,7 @@ def html(
     type_name="html",
     proto=html_pb.HtmlType(
       html=html,
+      mode=mode,
     ),
     style=style,
   )

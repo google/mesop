@@ -44,7 +44,9 @@ export class EmbedComponent {
   }
 
   loadIframe() {
-    setIframeSrc(this.iframe.nativeElement, this.srcUrl);
+    setIframeSrc(this.iframe.nativeElement, this.srcUrl, {
+      allowSameOrigin: true,
+    });
   }
 
   config(): EmbedType {

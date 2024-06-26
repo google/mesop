@@ -43,6 +43,7 @@ filegroup(
     srcs = [
         ":favicon.ico",
         ":index.html",
+        ":sandbox_iframe.html",
         ":styles",
     ] + JS_STATIC_FILES,
     visibility = ["//build_defs:mesop_users"],

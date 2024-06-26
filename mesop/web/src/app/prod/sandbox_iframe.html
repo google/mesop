@@ -1,0 +1,9 @@
+<script>
+  window.addEventListener('message', function (event) {
+    if (event.data?.type === 'execMesopHtml') {
+      document.open();
+      document.write(event.data.html);
+      document.close();
+    }
+  });
+</script>
