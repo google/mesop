@@ -206,13 +206,20 @@ export class Channel {
           case UiResponse.TypeCase.ERROR:
             if (
               uiResponse.getError()?.getException() ===
-              'No state hash found in state session backend.'
+              'Token not found in state session backend.'
             ) {
-              // How to retry?
-              // this.init(this.initParams, request);
+              this.queuedEvents.unshift(() => {
+                console.warn(
+                  'Token not found in state session backend. Retrying user event.',
+                );
+                request.getUserEvent()!.clearStateToken();
+                request.getUserEvent()!.setStates(this.states);
+                this.init(this.initParams, request);
+              });
+            } else {
+              onError(uiResponse.getError()!);
+              console.log('error', uiResponse.getError());
             }
-            onError(uiResponse.getError()!);
-            console.log('error', uiResponse.getError());
             break;
           case UiResponse.TypeCase.TYPE_NOT_SET:
             throw new Error(`Unhandled case for server event: ${uiResponse}`);
