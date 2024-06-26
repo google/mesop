@@ -12,6 +12,7 @@ from mesop.events import LoadEvent
 from mesop.exceptions import format_traceback
 from mesop.runtime import runtime
 from mesop.warn import warn
+from mesop.protocol import NavigateResponse
 
 LOCALHOSTS = (
   # For IPv4 localhost
@@ -155,7 +156,17 @@ def configure_flask_app(
             )
           for command in runtime().context().commands():
             if command.HasField("navigate"):
-              path = command.navigate.url
+              if command.navigate.url:
+                try:
+                  parsed_url = urlparse(command.navigate.url)
+                  if parsed_url.scheme and parsed_url.netloc:
+                    return NavigateResponse(url=command.navigate.url)
+                  else:
+                    path = command.navigate.url
+                except ValueError:
+                  # Handle invalid URLs (e.g., log an error or return an error response)
+                  raise ValueError("Invalid URL")
+
               page_config = runtime().get_page_config(path=path)
               if (
                 page_config
