@@ -21,6 +21,18 @@ py_library(
 )
 
 py_test(
+    name = "config_test",
+    srcs = ["config_test.py"],
+    deps = [":server"] + THIRD_PARTY_PY_PYTEST,
+)
+
+py_test(
+    name = "state_session_test",
+    srcs = ["state_session_test.py"],
+    deps = [":server"] + THIRD_PARTY_PY_PYTEST,
+)
+
+py_test(
     name = "wsgi_app_test",
     srcs = ["wsgi_app_test.py"],
     deps = [":server"] + THIRD_PARTY_PY_PYTEST,

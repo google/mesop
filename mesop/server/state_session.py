@@ -55,7 +55,7 @@ class MemoryStateSessionBackend(StateSessionBackend):
 
   def restore(self, token: str, states: States):
     if token not in self.cache:
-      raise Exception("No state hash found in state session backend.")
+      raise Exception("Token not found in state session backend.")
     _, cached_states = self.cache[token]
     for key, cached_state in cached_states.items():
       states[key] = cached_state

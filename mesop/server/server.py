@@ -256,8 +256,7 @@ def serialize(response: pb.UiResponse) -> str:
 def generate_state_token():
   """Generates a state token used to cache and look up Mesop state.
 
-  We include a timestamp to reduce conflicts with the possibility of two identically
-  generated tokens.
+  We include a timestamp to reduce the possibility of two identically generated tokens.
   """
   return datetime.now().strftime("%Y%m%d%H%M%S%f") + secrets.token_urlsafe(16)
 
@@ -275,7 +274,7 @@ def create_update_state_event(diff: bool = False) -> str:
   state_token = ""
 
   # If enabled, we will save the user's state on the server, so that the client does not
-  # need to send the full state back on the next user event request
+  # need to send the full state back on the next user event request.
   if app_config.state_session_enabled:
     state_token = generate_state_token()
     runtime().context().save_state_to_session(state_token)
