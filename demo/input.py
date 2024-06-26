@@ -6,7 +6,7 @@ class State:
   input: str = ""
 
 
-def on_input(e: me.InputEvent):
+def on_blur(e: me.InputBlurEvent):
   state = me.state(State)
   state.input = e.value
 
@@ -19,5 +19,5 @@ def on_input(e: me.InputEvent):
 )
 def app():
   s = me.state(State)
-  me.input(label="Basic input", on_input=on_input)
+  me.input(label="Basic input", on_blur=on_blur)
   me.text(text=s.input)

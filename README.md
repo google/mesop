@@ -66,7 +66,7 @@ You can try [Mesop on Colab](https://colab.research.google.com/github/google/mes
 **Step 1:** Install it
 
 ```sh
-$ pip install mesop
+pip install mesop
 ```
 
 **Step 2:** Copy the example above into `main.py`
@@ -74,7 +74,7 @@ $ pip install mesop
 **Step 3:** Run the app
 
 ```sh
-$ mesop main.py
+mesop main.py
 ```
 
 Learn more in [Getting Started](https://google.github.io/mesop/getting_started/installing/).

@@ -68,7 +68,7 @@ Try Mesop on Colab: [![Open In Colab](assets/colab.svg)](https://colab.research.
 __Step 1:__ Install it
 
 ```sh
-$ pip install mesop
+pip install mesop
 ```
 
 __Step 2:__ Copy the example above into `main.py`
@@ -76,7 +76,7 @@ __Step 2:__ Copy the example above into `main.py`
 __Step 3:__ Run the app
 
 ```sh
-$ mesop main.py
+mesop main.py
 ```
 
 ## Next Steps

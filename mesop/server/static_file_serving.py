@@ -1,5 +1,6 @@
 import gzip
 import io
+import mimetypes
 import os
 import re
 import secrets
@@ -15,6 +16,12 @@ from mesop.runtime import runtime
 from mesop.utils.runfiles import get_runfile_location, has_runfiles
 
 WEB_COMPONENTS_PATH_SEGMENT = "__web-components-module__"
+
+
+# mimetypes are not always set correctly, thus manually
+# setting the mimetype here.
+# See: https://github.com/google/mesop/issues/441
+mimetypes.add_type("application/javascript", ".js")
 
 
 def noop():

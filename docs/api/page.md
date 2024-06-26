@@ -35,7 +35,7 @@ def foo():
 ## API
 
 ::: mesop.features.page.page
-
+::: mesop.security.security_policy.SecurityPolicy
 ::: mesop.events.events.LoadEvent
 
 ## `on_load`

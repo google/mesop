@@ -15,4 +15,6 @@ For longer text inputs, also see [Textarea](./textarea.md)
 ## API
 
 ::: mesop.components.input.input.input
-::: mesop.components.input.input.native_textarea
+::: mesop.components.input.input.InputBlurEvent
+::: mesop.components.input.input.InputEnterEvent
+::: mesop.events.InputEvent

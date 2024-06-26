@@ -36,3 +36,7 @@ def app():
 ```
 
 You can also use wildcards to allow-list multiple subdomains from the same site, such as: `https://*.example.com`.
+
+## API
+
+You can configure the security policy at the page level. See [SecurityPolicy on the Page API docs](../api/page.md#mesop.security.security_policy.SecurityPolicy).

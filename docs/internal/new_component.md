@@ -3,7 +3,7 @@
 ## How-to
 
 ```sh
-$ python scripts/scaffold_component.py $component_name
+python scripts/scaffold_component.py $component_name
 ```
 
 ## API Guidelines
