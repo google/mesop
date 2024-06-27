@@ -8,14 +8,13 @@ from mesop.component_helpers import (
   insert_component,
   register_native_component,
 )
-from mesop.warn import warn
 
 
 @register_native_component
 def html(
   html: str = "",
   *,
-  mode: Literal["sanitized", "sandboxed"] = "sanitized",
+  mode: Literal["sanitized", "sandboxed"] | None = None,
   style: Style | None = None,
   key: str | None = None,
 ):
@@ -24,15 +23,19 @@ def html(
 
   Args:
       html: The HTML content to be rendered.
-      mode: The mode of the iframe. Can be either "sanitized" or "sandboxed". If "sanitized" then potentially dangerous content like `<script>` and `<style>` are
+      mode: Determines how the HTML is rendered. Mode can be either "sanitized" or "sandboxed".
+          If "sanitized" then potentially dangerous content like `<script>` and `<style>` are
           stripped out. If "sandboxed", then all content is allowed, but rendered in an iframe for isolation.
       style: The style to apply to the embed, such as width and height.
       key: The component [key](../components/index.md#component-key).
   """
-  if mode != "sandboxed" and ("<script>" in html or "<style>" in html):
-    warn(
-      "HTML content contains <script> or <style> tags which will be removed in sanitized mode. Use mode='sandboxed' instead."
+  if mode is None and (
+    any(
+      activeContent in html
+      for activeContent in ("<script>", "<style>", "style=")
     )
+  ):
+    mode = "sandboxed"
   if style is None:
     style = Style()
   if style.border is None:

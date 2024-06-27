@@ -1,4 +1,10 @@
-import {Component, ElementRef, Input, ViewChild} from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  ElementRef,
+  Input,
+  ViewChild,
+} from '@angular/core';
 import {
   Key,
   Style,
@@ -21,6 +27,8 @@ export class HtmlComponent {
   private _config!: HtmlType;
   isSandboxed!: boolean;
   html!: string;
+
+  constructor(private destroyRef: DestroyRef) {}
 
   ngOnChanges() {
     this._config = HtmlType.deserializeBinary(
@@ -56,10 +64,29 @@ export class HtmlComponent {
       return;
     }
     const iframe = this.iframe.nativeElement as HTMLIFrameElement;
+    // It's *critical* for web security isolation that allowSameOrigin is false
+    // because sandbox_iframe.html is served from the main Mesop app origin
+    // so we rely on iframe sandboxing to set this iframe to a null origin
+    // (i.e. doesn't match any origin).
+    //
+    // Inside the iframe, we execute untrusted content which can include
+    // user input.
     setIframeSrc(iframe, '/sandbox_iframe.html', {allowSameOrigin: false});
     iframe.onload = () => {
+      const messageHandler = (event: MessageEvent) => {
+        if (event.data?.type === 'mesopHtmlDimensions') {
+          const iframe = this.iframe.nativeElement;
+          iframe.style.width = event.data.width + 'px';
+          iframe.style.height = event.data.height + 'px';
+        }
+      };
+      window.addEventListener('message', messageHandler);
+      this.destroyRef.onDestroy(() => {
+        window.removeEventListener('message', messageHandler);
+      });
+
       iframe.contentWindow!.postMessage(
-        {type: 'execMesopHtml', html: this.html},
+        {type: 'mesopExecHtml', html: this.html},
         '*', // targetOrigin is wildcard because it's given a null origin
       );
     };

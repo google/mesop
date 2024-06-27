@@ -1,9 +1,22 @@
 <script>
   window.addEventListener('message', function (event) {
-    if (event.data?.type === 'execMesopHtml') {
-      document.open();
-      document.write(event.data.html);
-      document.close();
+    if (event.data?.type !== 'mesopExecHtml') {
+      return;
     }
+    document.open();
+    document.write(event.data.html);
+    document.close();
+
+    const width = document.documentElement.scrollWidth;
+    const height = document.documentElement.scrollHeight;
+
+    window.parent.postMessage(
+      {
+        type: 'mesopHtmlDimensions',
+        width: width + 1, // Add 1 for rounding
+        height: height + 1,
+      },
+      '*',
+    );
   });
 </script>

@@ -5,6 +5,11 @@
 
 import {sanitizeJavaScriptUrl} from './sanitize_javascript_url';
 
+/**
+ * setIframeSrc is a safe wrapper for setting an iframe src.
+ * Be explicit about the rationale on whether allowSameOrigin should be enabled
+ * at the callsite, because there's major security implications.
+ */
 export function setIframeSrc(
   iframe: HTMLIFrameElement,
   src: string,

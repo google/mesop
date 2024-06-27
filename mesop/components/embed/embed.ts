@@ -44,6 +44,18 @@ export class EmbedComponent {
   }
 
   loadIframe() {
+    if (this.srcUrl === '/sandbox_iframe.html') {
+      throw new Error(
+        "Dangerous to iframe sandbox_iframe.html. Use me.html(mode='sandboxed') instead.",
+      );
+    }
+    // It's OK to allow same origin because if this.srcUrl is the
+    // same origin as the Mesop app, then an attacker could navigate the user to
+    // that URL directly to exploit the Mesop app's origin.
+    // If this.srcUrl is another origin, then it will be treated as a
+    // separate origin from the Mesop app origin even with allowSameOrigin: true.
+    // Setting allowSameOrigin to true enables various functionalities
+    // to work (e.g. cookies, local storage).
     setIframeSrc(this.iframe.nativeElement, this.srcUrl, {
       allowSameOrigin: true,
     });
