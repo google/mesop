@@ -5,7 +5,7 @@ import mesop as me
 def app():
   me.html(
     """<body>
-      <script>document.body.innerHTML=window.location.origin</script>
+      <script>document.body.innerHTML="origin: " + window.location.origin</script>
       </body>""",
     mode="sandboxed",
   )

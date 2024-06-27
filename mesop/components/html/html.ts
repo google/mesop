@@ -71,20 +71,6 @@ export class HtmlComponent {
     const iframe = this.iframe.nativeElement as HTMLIFrameElement;
     setIframeSrc(iframe, '/sandbox_iframe.html');
     iframe.onload = () => {
-      const messageHandler = (event: MessageEvent) => {
-        if (event.data?.type === 'mesopHtmlDimensions') {
-          const iframe = this.iframe.nativeElement;
-          // Explicitly cast event.data into number type just in case
-          // the sandboxed iframe is trying to send malicious content.
-          iframe.style.width = Number(event.data.width) + 'px';
-          iframe.style.height = Number(event.data.height) + 'px';
-        }
-      };
-      window.addEventListener('message', messageHandler);
-      this.destroyRef.onDestroy(() => {
-        window.removeEventListener('message', messageHandler);
-      });
-
       iframe.contentWindow!.postMessage(
         {
           type: 'mesopExecHtml',
@@ -92,7 +78,7 @@ export class HtmlComponent {
             .split('<script>')
             .join(`<script nonce="nonce-${this.cspNonce}">`),
         },
-        '*', // targetOrigin is wildcard because it's given a null origin
+        window.location.origin,
       );
     };
   }
