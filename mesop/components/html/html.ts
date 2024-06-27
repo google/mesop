@@ -76,8 +76,10 @@ export class HtmlComponent {
       const messageHandler = (event: MessageEvent) => {
         if (event.data?.type === 'mesopHtmlDimensions') {
           const iframe = this.iframe.nativeElement;
-          iframe.style.width = event.data.width + 'px';
-          iframe.style.height = event.data.height + 'px';
+          // Explicitly cast event.data into number type just in case
+          // the sandboxed iframe is trying to send malicious content.
+          iframe.style.width = Number(event.data.width) + 'px';
+          iframe.style.height = Number(event.data.height) + 'px';
         }
       };
       window.addEventListener('message', messageHandler);
