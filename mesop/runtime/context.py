@@ -154,6 +154,7 @@ Did you forget to decorate your state class `{state.__name__}` with @stateclass?
     If the `state_token` is not found in the cache, an exception will be raised.
     """
     state_session.restore(state_token, self._states)
+    self._previous_states = copy.deepcopy(self._states)
 
   def save_state_to_session(self, state_token: str):
     """Caches the current state into the state session."""
