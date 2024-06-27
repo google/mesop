@@ -5,6 +5,7 @@ markdown
 protobuf
 pydantic
 pygments
+python-dotenv
 
 # Deps for dev/testing:
 mypy-protobuf

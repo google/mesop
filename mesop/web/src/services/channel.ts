@@ -47,6 +47,7 @@ export class Channel {
   private eventSource!: SSE;
   private initParams!: InitParams;
   private states: States = new States();
+  private stateToken: string = '';
   private rootComponent?: ComponentProto;
   private status!: ChannelStatus;
   private componentConfigs: readonly ComponentConfig[] = [];
@@ -119,6 +120,9 @@ export class Channel {
         console.debug('Server event: ', uiResponse.toObject());
         switch (uiResponse.getTypeCase()) {
           case UiResponse.TypeCase.UPDATE_STATE_EVENT: {
+            this.stateToken = uiResponse
+              .getUpdateStateEvent()!
+              .getStateToken()!;
             switch (uiResponse.getUpdateStateEvent()!.getTypeCase()) {
               case UpdateStateEvent.TypeCase.FULL_STATES: {
                 this.states = uiResponse
@@ -196,8 +200,22 @@ export class Channel {
             break;
           }
           case UiResponse.TypeCase.ERROR:
-            onError(uiResponse.getError()!);
-            console.log('error', uiResponse.getError());
+            if (
+              uiResponse.getError()?.getException() ===
+              'Token not found in state session backend.'
+            ) {
+              this.queuedEvents.unshift(() => {
+                console.warn(
+                  'Token not found in state session backend. Retrying user event.',
+                );
+                request.getUserEvent()!.clearStateToken();
+                request.getUserEvent()!.setStates(this.states);
+                this.init(this.initParams, request);
+              });
+            } else {
+              onError(uiResponse.getError()!);
+              console.log('error', uiResponse.getError());
+            }
             break;
           case UiResponse.TypeCase.TYPE_NOT_SET:
             throw new Error(`Unhandled case for server event: ${uiResponse}`);
@@ -219,7 +237,12 @@ export class Channel {
       return;
     }
     const initUserEvent = () => {
-      userEvent.setStates(this.states);
+      if (this.stateToken) {
+        userEvent.setStateToken(this.stateToken);
+      } else {
+        userEvent.setStates(this.states);
+      }
+
       const request = new UiRequest();
       request.setUserEvent(userEvent);
       this.init(this.initParams, request);

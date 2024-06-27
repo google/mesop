@@ -13,6 +13,7 @@ from mesop.exceptions import (
   MesopDeveloperException,
   MesopException,
 )
+from mesop.server.state_session import state_session
 
 FLAGS = flags.FLAGS
 
@@ -146,6 +147,22 @@ Did you forget to decorate your state class `{state.__name__}` with @stateclass?
     ):
       states.states.append(pb.State(data=diff_state(previous_state, state)))
     return states
+
+  def restore_state_from_session(self, state_token: str):
+    """Updates the current state with the state cached in the state session.
+
+    If the `state_token` is not found in the cache, an exception will be raised.
+    """
+    state_session.restore(state_token, self._states)
+    self._previous_states = copy.deepcopy(self._states)
+
+  def save_state_to_session(self, state_token: str):
+    """Caches the current state into the state session."""
+    state_session.save(state_token, self._states)
+
+  def clear_stale_state_sessions(self):
+    """Deletes old cached state since it will not be used anymore."""
+    state_session.clear_stale_sessions()
 
   def update_state(self, states: pb.States) -> None:
     for state, previous_state, proto_state in zip(
