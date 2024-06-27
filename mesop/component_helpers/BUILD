@@ -18,11 +18,17 @@ py_library(
 py_test(
     name = "diff_component_test",
     srcs = ["diff_component_test.py"],
-    deps = [":component_helpers"] + THIRD_PARTY_PY_PYTEST,
+    deps = [
+        ":component_helpers",
+        "//mesop/server",
+    ] + THIRD_PARTY_PY_PYTEST,
 )
 
 py_test(
     name = "helper_test",
     srcs = ["helper_test.py"],
-    deps = [":component_helpers"] + THIRD_PARTY_PY_PYTEST,
+    deps = [
+        ":component_helpers",
+        "//mesop/server",
+    ] + THIRD_PARTY_PY_PYTEST,
 )
