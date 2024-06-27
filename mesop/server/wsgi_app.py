@@ -70,8 +70,7 @@ def wsgi_app(environ: dict[Any, Any], start_response: Callable[..., Any]):
     # $ gunicorn --bind :8080 main:me
     #
     # We will ignore all CLI flags, but we could provide a way to override
-    # Mesop defined flags in the future (e.g. enable_component_tree_diffs)
-    # if necessary.
+    # Mesop defined flags in the future if necessary.
     #
     # Note: absl-py requires the first arg (program name), and will raise an error
     # if we pass an empty list.

@@ -26,8 +26,7 @@ def colab_run(*, port: int = 32123, prod_mode: bool = False):
   # Depending on the Colab environment, the flags may or may not be parsed.
   #
   # Note: this ignore all Mesop CLI flags, but we could provide a way to override
-  # Mesop defined flags in the future (e.g. enable_component_tree_diffs)
-  # if necessary.
+  # Mesop defined flags in the future if necessary.
   if not flags.FLAGS.is_parsed():
     flags.FLAGS.mark_as_parsed()
   flask_app = configure_flask_app(prod_mode=prod_mode)

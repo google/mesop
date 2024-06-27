@@ -1,8 +1,6 @@
 import copy
 from typing import Any, Callable, Generator, TypeVar, cast
 
-from absl import flags
-
 import mesop.protos.ui_pb2 as pb
 from mesop.dataclass_utils import (
   diff_state,
@@ -14,15 +12,6 @@ from mesop.exceptions import (
   MesopException,
 )
 from mesop.server.state_session import state_session
-
-FLAGS = flags.FLAGS
-
-flags.DEFINE_bool(
-  "enable_component_tree_diffs",
-  True,
-  "set to true to return component tree diffs on user event responses (rather than the full tree).",
-)
-
 
 T = TypeVar("T")
 
@@ -92,9 +81,7 @@ class Context:
   def previous_node(self) -> pb.Component | None:
     """Used to track the last/previous state of the component tree before the UI updated.
 
-    This is used for performing component tree diffs when the
-    `enable_component_tree_diffs` flag is enabled. When previous node is `None`, that
-    implies that no component tree diff is to be performed.
+    This is used for performing component tree diffs.
     """
     return self._previous_node
 
@@ -112,12 +99,7 @@ class Context:
     self._current_node = node
 
   def set_previous_node_from_current_node(self) -> None:
-    # Gate this feature with a flag since this is a new feature and may have some
-    # unexpected issues. In addition, some users may have a case where sending the full
-    # component tree back on each response is more performant than sending back the
-    # diff.
-    if FLAGS.enable_component_tree_diffs:
-      self._previous_node = self._current_node
+    self._previous_node = self._current_node
 
   def reset_current_node(self) -> None:
     self._current_node = pb.Component()
