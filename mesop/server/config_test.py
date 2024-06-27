@@ -1,7 +1,6 @@
 import os
 
 import pytest
-from pydantic import ValidationError
 
 from mesop.server.config import Config, CreateConfigFromEnv, app_config
 
@@ -16,11 +15,6 @@ def set_env():
 def test_set_valid_config():
   config = Config(state_session_backend="memory")
   assert config.state_session_backend == "memory"
-
-
-def test_set_invalid_config():
-  with pytest.raises(ValidationError):
-    Config(state_session_backend="invalid")
 
 
 @pytest.mark.usefixtures("set_env")

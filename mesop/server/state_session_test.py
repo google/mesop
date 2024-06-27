@@ -8,6 +8,7 @@ from mesop.server.state_session import (
   CreateStateSessionFromConfig,
   MemoryStateSessionBackend,
   NullStateSessionBackend,
+  States,
 )
 
 
@@ -62,11 +63,11 @@ def test_memory_backend_restore_token_not_found_returns_exception():
 
 def test_memory_backend_save_and_restore_states():
   # GIVEN
-  empty_states = {
+  empty_states: States = {
     type(StateA): StateA(),
     type(StateB): StateB(),
   }
-  saved_states = {
+  saved_states: States = {
     type(StateA): StateA(str_value="ABC"),
     type(StateB): StateB(int_value=20, bool_value=False),
   }
@@ -82,11 +83,11 @@ def test_memory_backend_save_and_restore_states():
 
 def test_memory_backend_token_is_cleared_after_restore():
   # GIVEN
-  empty_states = {
+  empty_states: States = {
     type(StateA): StateA(),
     type(StateB): StateB(),
   }
-  saved_states = {
+  saved_states: States = {
     type(StateA): StateA(str_value="ABC"),
     type(StateB): StateB(int_value=20, bool_value=False),
   }
@@ -103,7 +104,7 @@ def test_memory_backend_token_is_cleared_after_restore():
 
 def test_memory_backend_clear_stale_sessions():
   # GIVEN
-  empty_states = {
+  empty_states: States = {
     type(StateA): StateA(str_value="ABC"),
   }
   backend = MemoryStateSessionBackend()
