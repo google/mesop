@@ -4,10 +4,8 @@ The HTML component allows you to add custom HTML to your Mesop app.
 
 There are two modes for rendering HTML components:
 
-- `sanitized`, where the HTML is [sanitized by Angular](https://angular.dev/best-practices/security#sanitization-example) to remove potentially unsafe code like `<script>` and `<style>` for web security reasons.
-- `sandboxed`, which allows rendering of `<script>` and `<style>` HTML content by using an iframe.
-
-If you do not explicitly select a mode, then Mesop will select `sandboxed` if Javascript or styles are detected, otherwise it will use `sanitized`.
+- `sanitized` (default), where the HTML is [sanitized by Angular](https://angular.dev/best-practices/security#sanitization-example) to remove potentially unsafe code like `<script>` and `<style>` for web security reasons.
+- `sandboxed`, which allows rendering of `<script>` and `<style>` HTML content by using an iframe sandbox.
 
 ## Examples
 

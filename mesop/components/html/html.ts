@@ -1,7 +1,9 @@
 import {
+  CSP_NONCE,
   Component,
   DestroyRef,
   ElementRef,
+  Inject,
   Input,
   ViewChild,
 } from '@angular/core';
@@ -28,7 +30,10 @@ export class HtmlComponent {
   isSandboxed!: boolean;
   html!: string;
 
-  constructor(private destroyRef: DestroyRef) {}
+  constructor(
+    private destroyRef: DestroyRef,
+    @Inject(CSP_NONCE) private cspNonce: string,
+  ) {}
 
   ngOnChanges() {
     this._config = HtmlType.deserializeBinary(
@@ -64,14 +69,7 @@ export class HtmlComponent {
       return;
     }
     const iframe = this.iframe.nativeElement as HTMLIFrameElement;
-    // It's *critical* for web security isolation that allowSameOrigin is false
-    // because sandbox_iframe.html is served from the main Mesop app origin
-    // so we rely on iframe sandboxing to set this iframe to a null origin
-    // (i.e. doesn't match any origin).
-    //
-    // Inside the iframe, we execute untrusted content which can include
-    // user input.
-    setIframeSrc(iframe, '/sandbox_iframe.html', {allowSameOrigin: false});
+    setIframeSrc(iframe, '/sandbox_iframe.html');
     iframe.onload = () => {
       const messageHandler = (event: MessageEvent) => {
         if (event.data?.type === 'mesopHtmlDimensions') {
@@ -88,7 +86,12 @@ export class HtmlComponent {
       });
 
       iframe.contentWindow!.postMessage(
-        {type: 'mesopExecHtml', html: this.html},
+        {
+          type: 'mesopExecHtml',
+          html: this.html
+            .split('<script>')
+            .join(`<script nonce="nonce-${this.cspNonce}">`),
+        },
         '*', // targetOrigin is wildcard because it's given a null origin
       );
     };

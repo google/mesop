@@ -8,6 +8,7 @@ from mesop.component_helpers import (
   insert_component,
   register_native_component,
 )
+from mesop.warn import warn
 
 
 @register_native_component
@@ -35,7 +36,9 @@ def html(
       for activeContent in ("<script>", "<style>", "style=")
     )
   ):
-    mode = "sandboxed"
+    warn(
+      "Javascript or Stylesheets were sanitized from me.html. Use me.html(mode='sandboxed') instead."
+    )
   if style is None:
     style = Style()
   if style.border is None:
