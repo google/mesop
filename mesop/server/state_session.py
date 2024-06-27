@@ -82,9 +82,9 @@ class MemoryStateSessionBackend(StateSessionBackend):
 
 def CreateStateSessionFromConfig(config: Config):
   """Factory function to state session backend."""
-  if config.state_session_backend == "none":
-    return NullStateSessionBackend()
-  return MemoryStateSessionBackend()
+  if config.state_session_backend == "memory":
+    return MemoryStateSessionBackend()
+  return NullStateSessionBackend()
 
 
 # The state session is a singleton object.

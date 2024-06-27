@@ -2,7 +2,6 @@ import base64
 import secrets
 import time
 import urllib.parse as urlparse
-from datetime import datetime
 from typing import Generator, Sequence
 
 from flask import Flask, Response, abort, request, stream_with_context
@@ -254,11 +253,8 @@ def serialize(response: pb.UiResponse) -> str:
 
 
 def generate_state_token():
-  """Generates a state token used to cache and look up Mesop state.
-
-  We include a timestamp to reduce the possibility of two identically generated tokens.
-  """
-  return datetime.now().strftime("%Y%m%d%H%M%S%f") + secrets.token_urlsafe(16)
+  """Generates a state token used to cache and look up Mesop state."""
+  return secrets.token_urlsafe(16)
 
 
 def create_update_state_event(diff: bool = False) -> str:
@@ -280,7 +276,6 @@ def create_update_state_event(diff: bool = False) -> str:
     runtime().context().save_state_to_session(state_token)
 
   update_state_event = pb.UpdateStateEvent(
-    state_session_enabled=app_config.state_session_enabled,
     state_token=state_token,
     diff_states=runtime().context().diff_state() if diff else None,
     full_states=runtime().context().serialize_state() if not diff else None,

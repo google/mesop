@@ -130,9 +130,8 @@ message UpdateStateEvent {
         States full_states = 1;
         States diff_states = 2;
     }
-    // If enabled, then we will not send the state back on each request. We will only
-    // send back the state in cases in recovery scenarios.
-    optional bool state_session_enabled = 3;
+    // If a state token is present, then we will not send the state back on each request.
+    // We will only send back the state in cases in recovery scenarios.
     optional string state_token = 4;
 }
 

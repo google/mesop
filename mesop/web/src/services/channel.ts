@@ -48,7 +48,6 @@ export class Channel {
   private initParams!: InitParams;
   private states: States = new States();
   private stateToken: string = '';
-  private stateSessionEnabled: boolean = false;
   private rootComponent?: ComponentProto;
   private status!: ChannelStatus;
   private componentConfigs: readonly ComponentConfig[] = [];
@@ -124,9 +123,6 @@ export class Channel {
             this.stateToken = uiResponse
               .getUpdateStateEvent()!
               .getStateToken()!;
-            this.stateSessionEnabled = uiResponse
-              .getUpdateStateEvent()!
-              .getStateSessionEnabled()!;
             switch (uiResponse.getUpdateStateEvent()!.getTypeCase()) {
               case UpdateStateEvent.TypeCase.FULL_STATES: {
                 this.states = uiResponse
@@ -241,7 +237,7 @@ export class Channel {
       return;
     }
     const initUserEvent = () => {
-      if (this.stateSessionEnabled) {
+      if (this.stateToken) {
         userEvent.setStateToken(this.stateToken);
       } else {
         userEvent.setStates(this.states);
