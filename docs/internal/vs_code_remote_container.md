@@ -1,8 +1,5 @@
 # VS Code Remote Container
 
-> Git credentials need to be setup in order to commit changes inside the remote
-container using VS Code.
-
 VS Code Remote Containers is a quick way to get started with internal Mesop
 development if you have [VS Code](https://code.visualstudio.com/) and
 [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed.
@@ -27,11 +24,20 @@ repository in a separate directory.
 
 You can follow the instructions here on [how to fork and clone a Github repository](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo).
 
-## Open folder in container
+## Share Git credentials with your container
 
-> It is not recommended to develop locally and on remote containers using the same
-folder since this may cause conflicts with Bazel. Instead you should clone the
-repository in a separate directory.
+The VS Code Dev Containers extension provides a few ways to share your local Git
+credentials with your remote container.
+
+If you cloned the Mesop repo using HTTPS, you can use a [Github CLI or Git Credential Manager](https://docs.github.com/en/get-started/getting-started-with-git/caching-your-github-credentials-in-git).
+
+If you used SSH, then your local ssh agent will automatically be forwarded into your
+remote container. All you need do is run the `ssh-add` command to add the ssh key you've
+configured for GitHub access.
+
+See the [Sharing Git credentials with your container page](https://code.visualstudio.com/remote/advancedcontainers/sharing-git-credentials) for full details.
+
+## Open folder in container
 
 Open VS Code, press `Cmd/Ctrl + Shift + P`, and select the `Dev Containers: Open Folder in Container...`
 option. This will create a new workspace inside a remote container.
