@@ -3,7 +3,7 @@
 If you are familiar with setting up a Python environment, then run the following command in your terminal:
 
 ```shell
-$ pip install mesop
+pip install mesop
 ```
 
 If you're not familiar with setting up a Python environment, follow one of the options below.
@@ -61,7 +61,7 @@ Once you've activated the virtual environment, you will see ".venv" at the start
 4. **Install mesop:**
 
 ```shell
-$ pip install mesop
+pip install mesop
 ```
 
 Make sure your Python environment is setup correctly by running a hello world app.
@@ -80,7 +80,7 @@ def app():
 Then run the following command in your terminal:
 
 ```shell
-$ mesop hello_world.py
+mesop hello_world.py
 ```
 
 Open the URL printed in the terminal (i.e. http://localhost:32123) in the browser to see your Mesop app loaded.

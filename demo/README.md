@@ -25,7 +25,7 @@ pip install -r demo/requirements.txt --no-binary pydantic
 This app is deployed to Google Cloud Run.
 
 ```sh
-$ gcloud run deploy mesop --source .
+gcloud run deploy mesop --source .
 ```
 
 See our Mesop deployment [docs](https://google.github.io/mesop/guides/deployment/#deploy-to-google-cloud-run) for more background.

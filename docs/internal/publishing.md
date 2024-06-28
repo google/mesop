@@ -17,7 +17,7 @@ For example, if the current version is: `0.7.0`, then you should increment the v
 From the workspace root, run the following command:
 
 ```sh
-$ source ./scripts/pip.sh
+source ./scripts/pip.sh
 ```
 
 This will build the Mesop pip package and install it locally so you can test it.
@@ -29,7 +29,7 @@ This will build the Mesop pip package and install it locally so you can test it.
 The above shell script will run the following command:
 
 ```sh
-$ mesop main.py
+mesop main.py
 ```
 
 This will start the Mesop dev server and you can test that hot reload works.
@@ -37,7 +37,7 @@ This will start the Mesop dev server and you can test that hot reload works.
 ### Gunicorn integration
 
 ```sh
-$ pip install gunicorn && gunicorn main:me
+pip install gunicorn && gunicorn main:me
 ```
 
 ## Upload to PyPI

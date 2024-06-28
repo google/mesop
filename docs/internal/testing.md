@@ -17,11 +17,11 @@ We use [Playwright](https://playwright.dev/) as our e2e test framework. Unlike m
 ### Run tests
 
 ```shell
-$ yarn playwright test
+yarn playwright test
 ```
 
 ### Debug tests
 
 ```shell
-$ yarn playwright test --debug
+yarn playwright test --debug
 ```

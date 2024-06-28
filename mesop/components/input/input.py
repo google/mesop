@@ -14,14 +14,48 @@ from mesop.events import InputEvent, MesopEvent
 
 @dataclass(kw_only=True)
 class EnterEvent(MesopEvent):
-  """Represents an "Enter" keyboard event."""
+  """[Deprecated] Represents an "Enter" keyboard event. Use InputEnterEvent instead."""
 
   pass
 
 
+@dataclass(kw_only=True)
+class InputEnterEvent(MesopEvent):
+  """Represents an "Enter" keyboard event on an input component.
+
+  Attributes:
+    value: Input value.
+    key (str): key of the component that emitted this event.
+  """
+
+  value: str
+
+
 register_event_mapper(
-  EnterEvent,
-  lambda event, key: EnterEvent(
+  InputEnterEvent,
+  lambda event, key: InputEnterEvent(
+    key=key.key,
+    value=event.string_value,
+  ),
+)
+
+
+@dataclass(kw_only=True)
+class InputBlurEvent(MesopEvent):
+  """Represents an inpur blur event (when a user loses focus of an input).
+
+  Attributes:
+      value: Input value.
+      key (str): key of the component that emitted this event.
+  """
+
+  value: str
+
+
+register_event_mapper(
+  InputBlurEvent,
+  lambda userEvent, key: InputBlurEvent(
+    value=userEvent.string_value,
     key=key.key,
   ),
 )
@@ -31,6 +65,7 @@ register_event_mapper(
 def textarea(
   *,
   label: str = "",
+  on_blur: Callable[[InputBlurEvent], Any] | None = None,
   on_input: Callable[[InputEvent], Any] | None = None,
   rows: int = 5,
   autosize: bool = False,
@@ -54,10 +89,11 @@ def textarea(
 
   Args:
     label: Label for input.
+    on_blur: [blur](https://developer.mozilla.org/en-US/docs/Web/API/Element/blur_event) is fired when the input has lost focus.
+    on_input: [input](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/input_event) is fired whenever the input has changed (e.g. user types). Note: this can cause performance issues. Use `on_blur` instead.
     autosize: If True, the textarea will automatically adjust its height to fit the content, up to the max_rows limit.
     min_rows: The minimum number of rows the textarea will display.
     max_rows: The maximum number of rows the textarea will display.
-    on_input: [input](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/input_event) is a native browser event.
     rows: The number of lines to show in the text area.
     appearance: The form field appearance style.
     style: Style for input.
@@ -96,6 +132,9 @@ def textarea(
       subscript_sizing=subscript_sizing,
       hint_label=hint_label,
       label=label,
+      on_blur_handler_id=register_event_handler(on_blur, event=InputBlurEvent)
+      if on_blur
+      else "",
       on_input_handler_id=register_event_handler(on_input, event=InputEvent)
       if on_input
       else "",
@@ -108,8 +147,9 @@ def textarea(
 def input(
   *,
   label: str = "",
+  on_blur: Callable[[InputBlurEvent], Any] | None = None,
   on_input: Callable[[InputEvent], Any] | None = None,
-  on_enter: Callable[[EnterEvent], Any] | None = None,
+  on_enter: Callable[[InputEnterEvent], Any] | None = None,
   type: Literal[
     "color",
     "date",
@@ -144,7 +184,8 @@ def input(
 
   Args:
     label: Label for input.
-    on_input: [input](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/input_event) is a native browser event.
+    on_blur: [blur](https://developer.mozilla.org/en-US/docs/Web/API/Element/blur_event) is fired when the input has lost focus.
+    on_input: [input](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/input_event) is fired whenever the input has changed (e.g. user types). Note: this can cause performance issues. Use `on_blur` instead.
     on_enter: triggers when the browser detects an "Enter" key on a [keyup](https://developer.mozilla.org/en-US/docs/Web/API/Element/keyup_event) native browser event.
     type: Input type of the element. For textarea, use `me.Textarea(...)`
     appearance: The form field appearance style.
@@ -181,10 +222,15 @@ def input(
       subscript_sizing=subscript_sizing,
       hint_label=hint_label,
       label=label,
+      on_blur_handler_id=register_event_handler(on_blur, event=InputBlurEvent)
+      if on_blur
+      else "",
       on_input_handler_id=register_event_handler(on_input, event=InputEvent)
       if on_input
       else "",
-      on_enter_handler_id=register_event_handler(on_enter, event=EnterEvent)
+      on_enter_handler_id=register_event_handler(
+        on_enter, event=InputEnterEvent
+      )
       if on_enter
       else "",
     ),
@@ -194,6 +240,7 @@ def input(
 
 def native_textarea(
   *,
+  on_blur: Callable[[InputBlurEvent], Any] | None = None,
   on_input: Callable[[InputEvent], Any] | None = None,
   autosize: bool = False,
   min_rows: int | None = None,
@@ -208,7 +255,8 @@ def native_textarea(
   """Creates a browser native Textarea component. Intended for advanced use cases with maximum UI control.
 
   Args:
-    on_input: [input](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/input_event) is a native browser event.
+    on_blur: [blur](https://developer.mozilla.org/en-US/docs/Web/API/Element/blur_event) is fired when the input has lost focus.
+    on_input: [input](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/input_event) is fired whenever the input has changed (e.g. user types). Note: this can cause performance issues. Use `on_blur` instead.
     autosize: If True, the textarea will automatically adjust its height to fit the content, up to the max_rows limit.
     min_rows: The minimum number of rows the textarea will display.
     max_rows: The maximum number of rows the textarea will display.
@@ -233,6 +281,9 @@ def native_textarea(
       placeholder=placeholder,
       value=value,
       readonly=readonly,
+      on_blur_handler_id=register_event_handler(on_blur, event=InputBlurEvent)
+      if on_blur
+      else "",
       on_input_handler_id=register_event_handler(on_input, event=InputEvent)
       if on_input
       else "",

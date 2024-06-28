@@ -133,19 +133,9 @@ class State:
   in_progress: bool = False
 
 
-def on_input_update(State):
-  """Generic on text input handler that saves input to State using the given key.
-
-  This helper only works if you have one state instance. If use multiple state classes
-  with this helper, then only the last event handler will be stored. For more info, see
-  https://google.github.io/mesop/guides/troubleshooting/#avoid-using-closure-variables-in-event-handler.
-  """
-
-  def _on_update(e: me.InputEvent):
-    state = me.state(State)
-    setattr(state, e.key.split("-", 1)[0], e.value)
-
-  return _on_update
+def on_blur(e: me.InputBlurEvent):
+  state = me.state(State)
+  state.input = e.value
 
 
 def chat(
@@ -169,7 +159,15 @@ def chat(
   """
   state = me.state(State)
 
-  def on_submit(e: me.ClickEvent | me.EnterEvent):
+  def on_click_submit(e: me.ClickEvent):
+    yield from submit()
+
+  def on_input_enter(e: me.InputEnterEvent):
+    state = me.state(State)
+    state.input = e.value
+    yield from submit()
+
+  def submit():
     state = me.state(State)
     if state.in_progress or not state.input:
       return
@@ -227,16 +225,16 @@ def chat(
           me.input(
             label=_LABEL_INPUT,
             # Workaround: update key to clear input.
-            key=f"input-{len(state.output)}",
-            on_input=on_input_update(State),
-            on_enter=on_submit,
+            key=f"{len(state.output)}",
+            on_blur=on_blur,
+            on_enter=on_input_enter,
             style=_STYLE_CHAT_INPUT,
           )
         with me.content_button(
           color="primary",
           type="flat",
           disabled=state.in_progress,
-          on_click=on_submit,
+          on_click=on_click_submit,
           style=_STYLE_CHAT_BUTTON,
         ):
           me.icon(

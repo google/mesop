@@ -10,6 +10,7 @@ from mesop.server.flags import port
 from mesop.server.logging import log_startup
 from mesop.server.server import configure_flask_app
 from mesop.server.static_file_serving import configure_static_file_serving
+from mesop.utils.host_util import get_default_host
 
 
 class App:
@@ -20,7 +21,9 @@ class App:
 
   def run(self):
     log_startup(port=port())
-    self._flask_app.run(host="::", port=port(), use_reloader=False)
+    self._flask_app.run(
+      host=get_default_host(), port=port(), use_reloader=False
+    )
 
 
 def create_app(
@@ -67,8 +70,7 @@ def wsgi_app(environ: dict[Any, Any], start_response: Callable[..., Any]):
     # $ gunicorn --bind :8080 main:me
     #
     # We will ignore all CLI flags, but we could provide a way to override
-    # Mesop defined flags in the future (e.g. enable_component_tree_diffs)
-    # if necessary.
+    # Mesop defined flags in the future if necessary.
     #
     # Note: absl-py requires the first arg (program name), and will raise an error
     # if we pass an empty list.

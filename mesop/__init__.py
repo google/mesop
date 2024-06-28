@@ -60,6 +60,8 @@ from mesop.components.html.html import html as html
 from mesop.components.icon.icon import icon as icon
 from mesop.components.image.image import image as image
 from mesop.components.input.input import EnterEvent as EnterEvent
+from mesop.components.input.input import InputBlurEvent as InputBlurEvent
+from mesop.components.input.input import InputEnterEvent as InputEnterEvent
 from mesop.components.input.input import input as input
 from mesop.components.input.input import native_textarea as native_textarea
 from mesop.components.input.input import textarea as textarea

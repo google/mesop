@@ -23,6 +23,7 @@ from mesop.server.flags import port
 from mesop.server.logging import log_startup
 from mesop.server.server import configure_flask_app
 from mesop.server.static_file_serving import configure_static_file_serving
+from mesop.utils.host_util import get_default_host
 from mesop.utils.runfiles import get_runfile_location
 
 FLAGS = flags.FLAGS
@@ -152,7 +153,7 @@ def main(argv: Sequence[str]):
     log_startup(port=port())
     logging.getLogger("werkzeug").setLevel(logging.WARN)
 
-  flask_app.run(host="::", port=port(), use_reloader=False)
+  flask_app.run(host=get_default_host(), port=port(), use_reloader=False)
 
 
 if __name__ == "__main__":

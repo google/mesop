@@ -7,3 +7,6 @@ from mesop.examples.testing import (
 from mesop.examples.testing import (
   minimal_chat as minimal_chat,
 )
+from mesop.examples.testing import (
+  text_to_text as text_to_text,
+)

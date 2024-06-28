@@ -16,6 +16,7 @@ message InitRequest {
     optional ViewportSize viewport_size = 1;
 }
 
+// Next ID: 13
 message UserEvent {
     optional States states = 1;
 
@@ -35,6 +36,8 @@ message UserEvent {
         ResizeEvent resize = 10;
         bytes bytes_value = 9;
     }
+
+    optional string state_token = 12;
 }
 
 
@@ -127,6 +130,9 @@ message UpdateStateEvent {
         States full_states = 1;
         States diff_states = 2;
     }
+    // If a state token is present, then we will not send the state back on each request.
+    // We will only send back the state in cases in recovery scenarios.
+    optional string state_token = 4;
 }
 
 message Command {

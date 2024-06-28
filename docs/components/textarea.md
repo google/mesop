@@ -15,3 +15,6 @@ This is similar to [Input](./input.md), but Textarea is better suited for long t
 ## API
 
 ::: mesop.components.input.input.textarea
+::: mesop.components.input.input.native_textarea
+::: mesop.components.input.input.InputBlurEvent
+::: mesop.events.InputEvent
