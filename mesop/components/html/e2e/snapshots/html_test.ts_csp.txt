@@ -1,1 +1,0 @@
-frame-ancestors 'self'
