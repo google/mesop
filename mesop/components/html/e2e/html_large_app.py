@@ -3,7 +3,7 @@ import mesop as me
 
 @me.page(path="/components/html/e2e/html_large_app")
 def app():
-  me.html(HTML, mode="sandboxed")
+  me.html(HTML, mode="sandboxed", style=me.Style(height=400, width=830))
 
 
 HTML = """<table border="1" class="dataframe">
