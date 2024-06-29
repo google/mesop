@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+  <style>
+    html,
+    body {
+      height: 100%;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+
+      overflow: hidden;
+    }
+
+    iframe {
+      border: 0;
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+  <body>
+    <script>
+      // Do not allow being opened by another window.
+      if (window.opener) {
+        window.opener = null;
+        window.open('', '_self');
+        window.close();
+      }
+      window.addEventListener('message', function (event) {
+        if (event.data?.type !== 'mesopExecHtml') {
+          return;
+        }
+
+        if (event.origin !== window.location.origin) {
+          console.warn('Rejected message from origin:', event.origin);
+          return;
+        }
+
+        document.getElementById('iframe').srcdoc = event.data.html;
+      });
+    </script>
+    <iframe id="iframe" sandbox="allow-scripts allow-forms"></iframe>
+  </body>
+</html>
