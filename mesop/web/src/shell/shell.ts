@@ -89,7 +89,8 @@ export class Shell {
         },
         onCommand: (command) => {
           if (command.hasNavigate()) {
-            this.router.navigateByUrl(command.getNavigate()!.getUrl()!);
+            const url = command.getNavigate()!.getUrl()!;
+            this.navigate(url);
           } else if (command.hasScrollIntoView()) {
             // Scroll into view
             const key = command.getScrollIntoView()!.getKey();
@@ -122,6 +123,18 @@ export class Shell {
       },
       request,
     );
+  }
+
+  private navigate(url: string) {
+    if (this.isAbsoluteUrl(url)) {
+      window.location.href = url;
+    } else {
+      this.router.navigateByUrl(url);
+    }
+  }
+
+  private isAbsoluteUrl(url: string): boolean {
+    return url.startsWith('http://') || url.startsWith('https://');
   }
 
   /** Listen to browser navigation events (go back/forward). */
