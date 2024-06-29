@@ -30,7 +30,7 @@ def html(
       style: The style to apply to the embed, such as width and height.
       key: The component [key](../components/index.md#component-key).
   """
-  if mode is None and (
+  if mode != "sandboxed" and (
     any(
       activeContent in html
       for activeContent in ("<script>", "<style>", "style=")

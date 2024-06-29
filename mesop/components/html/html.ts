@@ -56,27 +56,26 @@ export class HtmlComponent {
   }
 
   ngAfterViewInit() {
-    this.loadIframe();
+    if (this.isSandboxed) {
+      this.loadIframe();
+    }
   }
 
   loadIframe(): void {
     if (!this.iframe) {
-      if (this.isSandboxed) {
-        console.warn(
-          'iframe element in Mesop html component unexpectedly not found',
-        );
-      }
+      console.warn(
+        'iframe element in Mesop html component unexpectedly not found',
+      );
       return;
     }
+
     const iframe = this.iframe.nativeElement as HTMLIFrameElement;
     setIframeSrc(iframe, '/sandbox_iframe.html');
     iframe.onload = () => {
       iframe.contentWindow!.postMessage(
         {
           type: 'mesopExecHtml',
-          html: this.html
-            .split('<script>')
-            .join(`<script nonce="nonce-${this.cspNonce}">`),
+          html: this.html,
         },
         window.location.origin,
       );
