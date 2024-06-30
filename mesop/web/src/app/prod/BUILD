@@ -30,12 +30,20 @@ genrule(
     cmd = "cp $(SRCS) $(@D)/styles.css",
 )
 
+genrule(
+    name = "sandbox_iframe",
+    srcs = ["//mesop/web/src/app:sandbox_iframe.html"],
+    outs = ["sandbox_iframe.html"],
+    cmd = "cp $(SRCS) $(@D)/sandbox_iframe.html",
+)
+
 # File group for all static files which are needed to serve the prod version of the app.
 filegroup(
     name = "prod_static_files",
     srcs = [
         ":favicon.ico",
         ":index.html",
+        ":sandbox_iframe.html",
         ":styles",
     ] + JS_STATIC_FILES,
     visibility = ["//build_defs:mesop_users"],

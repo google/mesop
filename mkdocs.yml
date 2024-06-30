@@ -68,6 +68,7 @@ nav:
       - Commands:
           - Navigate: api/commands/navigate.md
           - Scroll into view: api/commands/scroll_into_view.md
+      - Config: api/config.md
   - FAQ: faq.md
   - Demo Gallery 🔗: demo.md
   - Blog:

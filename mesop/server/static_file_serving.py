@@ -91,6 +91,13 @@ def configure_static_file_serving(
     preprocess_request()
     return send_file(retrieve_index_html(), download_name="index.html")
 
+  @app.route("/sandbox_iframe.html")
+  def serve_sandbox_iframe():
+    preprocess_request()
+    return send_file(
+      get_path("sandbox_iframe.html"), download_name="sandbox_iframe.html"
+    )
+
   @app.route(f"/{WEB_COMPONENTS_PATH_SEGMENT}/<path:path>")
   def serve_web_components(path: str):
     if not is_file_path(path):
@@ -188,11 +195,20 @@ def configure_static_file_serving(
       if livereload_origin:
         csp["connect-src"] = f"'self' {livereload_origin}"
 
-    # Set Content-Security-Policy header to restrict resource loading
-    # Based on https://angular.io/guide/security#content-security-policy
-    response.headers["Content-Security-Policy"] = "; ".join(
-      [key + " " + value for key, value in csp.items()]
-    )
+    if request.path == "/sandbox_iframe.html":
+      # Set a minimal CSP to not restrict Mesop app developers.
+      # Need frame-ancestors to ensure other sites do not iframe
+      # this page and exploit it.
+      csp_subset = OrderedDict({"frame-ancestors": csp["frame-ancestors"]})
+      response.headers["Content-Security-Policy"] = "; ".join(
+        [key + " " + value for key, value in csp_subset.items()]
+      )
+    else:
+      # Set Content-Security-Policy header to restrict resource loading
+      # Based on https://angular.io/guide/security#content-security-policy
+      response.headers["Content-Security-Policy"] = "; ".join(
+        [key + " " + value for key, value in csp.items()]
+      )
 
     # Set Referrer-Policy header to control referrer information
     # Recommended by https://web.dev/articles/referrer-best-practices
