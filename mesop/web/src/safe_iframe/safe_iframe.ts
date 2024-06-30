@@ -5,6 +5,9 @@
 
 import {sanitizeJavaScriptUrl} from './sanitize_javascript_url';
 
+/**
+ * setIframeSrc is a safe wrapper for setting an iframe src.
+ */
 export function setIframeSrc(iframe: HTMLIFrameElement, src: string) {
   // Intentionally delegate to an impl function because the following
   // line will be modified downstream.

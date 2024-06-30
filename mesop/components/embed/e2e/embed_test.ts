@@ -1,10 +1,12 @@
-import {test} from '@playwright/test';
+import {test, expect} from '@playwright/test';
 
 test('test', async ({page}) => {
   await page.goto('/components/embed/e2e/embed_app');
   let iframe = await page.waitForSelector(
     'iframe[src="https://google.github.io/mesop/"]',
   );
+  const snapshotName = 'iframe_sandbox_attributes';
+  expect(await iframe.getAttribute('sandbox')).toMatchSnapshot(snapshotName);
   let frame = await iframe.contentFrame();
   await frame!.waitForLoadState('load');
 
@@ -16,4 +18,6 @@ test('test', async ({page}) => {
   );
   frame = await iframe.contentFrame();
   await frame!.waitForLoadState('load');
+  // Sandbox attributes should be the same:
+  expect(await iframe.getAttribute('sandbox')).toMatchSnapshot(snapshotName);
 });
