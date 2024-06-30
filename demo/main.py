@@ -89,6 +89,7 @@ FIRST_SECTIONS = [
     name="Misc",
     examples=[
       Example(name="basic_animation"),
+      Example(name="feedback"),
     ],
   ),
 ]
