@@ -1,7 +1,7 @@
 import mesop as me
 import mesop.labs as mel
 
-from svg_icon_component import (
+from esop.examples.web_component.svg_icon_component import (
     svg_icon,
 )
 
