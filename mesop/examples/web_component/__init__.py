@@ -13,3 +13,6 @@ from mesop.examples.web_component.shared_js_module import (
 from mesop.examples.web_component.slot import (
   slot_app as slot_app,
 )
+from mesop.examples.web_component.svg_icon import (
+  svg_icon as svg_icon,
+)
