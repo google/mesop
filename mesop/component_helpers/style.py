@@ -74,6 +74,7 @@ class BorderSide:
       color: The color of the border, represented as a string. This can be any valid CSS color value,
                           or None for no color.
       style: The style of the border.
+      https://developer.mozilla.org/en-US/docs/Web/CSS/border-style
   """
 
   width: int | str | None = None
