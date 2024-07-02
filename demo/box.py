@@ -41,9 +41,8 @@ def app():
         background="purple",
         height=50,
         margin=me.Margin.symmetric(vertical=24, horizontal=12),
-        border=me.Border(
-          top=me.BorderSide(width=4, color="white", style="double"),
-          bottom=me.BorderSide(width=4, color="white", style="double"),
+        border=me.Border.symmetric(
+          vertical=me.BorderSide(width=4, color="white", style="double")
         ),
       )
     ):
@@ -54,9 +53,8 @@ def app():
         background="cyan",
         height=50,
         margin=me.Margin.symmetric(vertical=24, horizontal=12),
-        border=me.Border(
-          left=me.BorderSide(width=2, color="black", style="groove"),
-          right=me.BorderSide(width=2, color="black", style="groove"),
+        border=me.Border.symmetric(
+          horizontal=me.BorderSide(width=2, color="black", style="groove")
         ),
       )
     ):
