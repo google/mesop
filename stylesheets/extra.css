@@ -1,0 +1,303 @@
+p {
+  letter-spacing: 0.07px;
+}
+
+/*
+ * Forked from: https://github.com/mesop-sh/ruff/blob/39728a1198f1ed6081a0fd159715737848a50aa2/docs/stylesheets/extra.css#L32
+ */
+:root {
+  --black: #0f0f11;
+  --almost-white: #e3e3e3;
+  --white: white;
+  --radiate: #d7ff64;
+  --flare: #6340ac;
+  --rock: #78876e;
+  --galaxy: #121230;
+  --space: #171414;
+  --comet: #6f5d6f;
+  --cosmic: #cb00dc;
+  --sun: #ffac2f;
+  --electron: #46ebe1;
+  --aurora: #46eb74;
+  --constellation: #5f6de9;
+  --neutron: #cff3cf;
+  --proton: #f6afbc;
+  --nebula: #cdcbfb;
+  --supernova: #f1aff6;
+  --starlight: #f4f4f1;
+  --lunar: #fbf2fc;
+  --asteroid: #e3cee3;
+  --crater: #f0dfdf;
+}
+
+[data-md-color-scheme='mesop-light'] {
+  /* --md-default-bg-color: #fafafc; */
+  --md-default-bg-color--dark: var(--black);
+  --md-default-bg-color--lighter: var(--almost-white);
+  --md-primary-fg-color: var(--white);
+  --md-primary-bg-color: #333;
+  --md-typeset-a-color: var(--cosmic);
+  --md-accent-fg-color: var(--flare);
+}
+
+[data-md-color-scheme='mesop-dark'] {
+  --md-default-bg-color: var(--black); /* var(--galaxy);*/
+  --md-default-fg-color: var(--almost-white);
+  --md-default-fg-color--light: var(--almost-white);
+  --md-default-fg-color--lighter: var(--almost-white);
+  --md-primary-fg-color: var(--black); /* var(--space); */
+  --md-primary-bg-color: var(--almost-white);
+  --md-accent-fg-color: var(--cosmic);
+
+  --md-typeset-color: var(--almost-white);
+  --md-typeset-a-color: var(--radiate);
+  --md-typeset-mark-color: var(--sun);
+
+  --md-code-fg-color: var(--almost-white);
+  --md-code-bg-color: var(--space);
+
+  --md-code-hl-comment-color: var(--asteroid);
+  --md-code-hl-punctuation-color: var(--asteroid);
+  --md-code-hl-generic-color: var(--supernova);
+  --md-code-hl-variable-color: var(--starlight);
+  --md-code-hl-string-color: var(--radiate);
+  --md-code-hl-keyword-color: var(--supernova);
+  --md-code-hl-operator-color: var(--supernova);
+  --md-code-hl-number-color: var(--electron);
+  --md-code-hl-special-color: var(--electron);
+  --md-code-hl-function-color: var(--neutron);
+  --md-code-hl-constant-color: var(--radiate);
+  --md-code-hl-name-color: var(--md-code-fg-color);
+
+  --md-typeset-del-color: hsla(6, 90%, 60%, 0.15);
+  --md-typeset-ins-color: hsla(150, 90%, 44%, 0.15);
+
+  --md-typeset-table-color: hsla(0, 0%, 100%, 0.12);
+  --md-typeset-table-color--light: hsla(0, 0%, 100%, 0.035);
+}
+
+[data-md-color-scheme='mesop-light'] img[src$='#only-dark'],
+[data-md-color-scheme='mesop-light'] img[src$='#gh-dark-mode-only'] {
+  display: none; /* Hide dark images in light mode */
+}
+
+[data-md-color-scheme='mesop-light'] img[src$='#only-light'],
+[data-md-color-scheme='mesop-light'] img[src$='#gh-light-mode-only'] {
+  display: inline; /* Show light images in light mode */
+}
+
+[data-md-color-scheme='mesop-dark'] img[src$='#only-light'],
+[data-md-color-scheme='mesop-dark'] img[src$='#gh-light-mode-only'] {
+  display: none; /* Hide light images in dark mode */
+}
+
+[data-md-color-scheme='mesop-dark'] img[src$='#only-dark'],
+[data-md-color-scheme='mesop-dark'] img[src$='#gh-dark-mode-only'] {
+  display: inline; /* Show dark images in dark mode */
+}
+
+.md-header--shadow {
+  box-shadow: none;
+}
+
+[data-md-color-scheme='mesop-light'] .md-header__topic {
+  /* color: #444; TODO */
+  font-weight: 600;
+}
+
+/* See: https://github.com/squidfunk/mkdocs-material/issues/175#issuecomment-616694465 */
+.md-typeset__table {
+  min-width: 100%;
+}
+.md-typeset table:not([class]) {
+  display: table;
+}
+
+/* See: https://github.com/mesop-sh/ruff/issues/8519 */
+[data-md-color-scheme='mesop-dark'] details summary a {
+  color: var(--flare);
+}
+
+.md-nav--primary {
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.md-nav--secondary {
+  font-size: 0.75rem;
+}
+
+.md-main__inner {
+  margin-top: 0.5rem;
+}
+
+.md-nav--primary a.md-nav__link {
+  color: #444;
+  font-size: 0.8rem;
+  letter-spacing: 0.14px;
+}
+
+[data-md-color-scheme='mesop-dark'] .md-nav--primary a.md-nav__link {
+  color: white;
+}
+
+.md-typeset {
+  font-size: 0.8rem;
+}
+
+.md-typeset .admonition {
+  font-size: 0.75rem;
+}
+
+.highlight code {
+  font-size: 0.7rem;
+}
+
+.md-tabs__link {
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.md-search__input,
+.md-search__form {
+  border-radius: 8px;
+}
+
+.md-search__input {
+  background-color: var(--md-default-bg-color--lighter);
+}
+
+.md-search__input::placeholder {
+  color: var(--md-default-bg-color--dark);
+}
+
+/* Based on https://github.com/squidfunk/mkdocs-material/issues/2574#issuecomment-821979698 */
+[data-md-toggle='search']:not(:checked) ~ .md-header .md-search__form::after {
+  position: absolute;
+  top: 0.3rem;
+  right: 0.5rem;
+  display: block;
+  padding: 0.1rem 0.4rem;
+  background: var(--md-default-bg-color);
+  color: var(--md-default-bg-color--dark);
+  font-weight: bold;
+  font-size: 0.8rem;
+  border: 0.05rem solid var(--md-default-bg-color--lighter);
+  box-shadow: 0 1px 2px var(--md-default-bg-color--lighter);
+  text-shadow: 0 1px 0 var(--md-default-bg-color--lighter);
+  border-radius: 0.2rem;
+  z-index: 9;
+  content: '/';
+}
+
+[data-md-color-scheme='mesop-dark'] .md-logo {
+  filter: invert(1);
+}
+
+.mascot-image-container {
+  border-radius: 12px;
+  display: flex;
+  padding: 0 24px;
+  background: #d1cab8;
+  min-height: 240px;
+  align-items: center;
+}
+
+.mascot-image {
+  width: 280px;
+  margin-left: 16px;
+}
+
+@media (max-width: 768px) {
+  .mascot-image {
+    width: 200px;
+  }
+}
+
+.mascot-text-container {
+  position: relative;
+  text-align: center;
+  flex-grow: 1;
+}
+
+.mascot-text {
+  letter-spacing: 0.17px;
+  color: rgba(0, 0, 0, 0.87);
+  font-size: 1.5rem;
+  line-height: 1.25;
+  font-weight: 500;
+}
+
+.mascot-subtext {
+  margin-top: 12px;
+  text-shadow: 0 0 0.02rem #211d2dcc;
+  font-size: 1rem;
+  font-weight: normal;
+}
+
+.box-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin: 0 auto;
+  width: min(100%, 1024px);
+}
+
+.reason-box {
+  box-shadow:
+    0 10px 20px #0000000a,
+    0 2px 6px #0000000a,
+    0 0 1px #0000000a;
+  background: var(--md-code-hl-color--light);
+  width: min(100%, 280px);
+  padding: 16px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  margin-right: 24px;
+}
+
+@media (max-width: 768px) {
+  .reason-box {
+    width: 100%;
+  }
+}
+
+.reason-title {
+  font-weight: 500;
+}
+
+.code-demo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  height: 480px;
+  align-items: center;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  margin-top: -16px;
+}
+
+.code-demo .highlight {
+  height: 100%;
+  overflow-y: auto;
+}
+
+.code-demo .highlight pre {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.immersive-demo {
+  width: 100%;
+  height: 600px;
+  overflow-y: auto;
+  border: 0;
+}
+
+.component-demo {
+  width: 100%;
+  height: 400px;
+  overflow-y: auto;
+  border: 1px solid #dcdcdc;
+}
