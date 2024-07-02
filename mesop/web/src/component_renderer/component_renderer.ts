@@ -278,6 +278,7 @@ export class ComponentRenderer {
 
   computeStyles() {
     this.elementRef.nativeElement.style = this.getStyle();
+    this.elementRef.nativeElement.classList = this.getClasses();
   }
 
   createComponentRef() {
@@ -384,6 +385,14 @@ export class ComponentRenderer {
     return (
       style + (this.isEditorFocusedComponent() ? this.getFocusedStyle() : '')
     );
+  }
+
+  getClasses(): string {
+    const classes = this.component.getStyle()?.getClassesList();
+    if (!classes || !classes.length) {
+      return '';
+    }
+    return classes.join(' ');
   }
 
   @HostListener('click', ['$event'])

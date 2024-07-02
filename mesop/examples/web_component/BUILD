@@ -15,5 +15,6 @@ py_library(
         "//mesop/examples/web_component/quickstart",
         "//mesop/examples/web_component/shared_js_module",
         "//mesop/examples/web_component/slot",
+        "//mesop/examples/web_component/tailwind",
     ],
 )
