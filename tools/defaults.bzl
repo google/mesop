@@ -364,17 +364,17 @@ def ng_web_test_suite(browsers = [], deps = [], static_css = [], exclude_init_sc
             srcs = [css_label],
             outs = ["%s.css.js" % css_id],
             output_to_bindir = True,
-            cmd = """\r
-        files=($(execpaths %s))\r
-        # Escape all double-quotes so that the content can be safely inlined into the\r
-        # JS template. Note that it needs to be escaped a second time because the string\r
-        # will be evaluated first in Bash and will then be stored in the JS output.\r
-        css_content=$$(cat $${files[0]} | sed 's/"/\\\\"/g')\r
-        js_template='var cssElement = document.createElement("style"); \\\r
-                    cssElement.type = "text/css"; \\\r
-                    cssElement.innerHTML = "'"$$css_content"'"; \\\r
-                    document.head.appendChild(cssElement);'\r
-         echo "$$js_template" > $@\r
+            cmd = """
+        files=($(execpaths %s))
+        # Escape all double-quotes so that the content can be safely inlined into the
+        # JS template. Note that it needs to be escaped a second time because the string
+        # will be evaluated first in Bash and will then be stored in the JS output.
+        css_content=$$(cat $${files[0]} | sed 's/"/\\\\"/g')
+        js_template='var cssElement = document.createElement("style"); \
+                    cssElement.type = "text/css"; \
+                    cssElement.innerHTML = "'"$$css_content"'"; \
+                    document.head.appendChild(cssElement);'
+         echo "$$js_template" > $@
       """ % css_label,
         )
 
