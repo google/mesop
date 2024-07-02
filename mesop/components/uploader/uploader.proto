@@ -15,8 +15,18 @@ message UploadEvent {
 }
 
 
+// Next ID: 9
 message UploaderType {
     optional string label = 1;
     repeated string accepted_file_type = 2;
     optional string on_upload_event_handler_id = 3;
+    optional string color = 4;
+    optional bool disable_ripple = 5;
+    optional bool disabled = 6;
+
+    // Type has two properties:
+    // |type_index| is used for rendering
+    // |type| is used for editor value
+    optional int32 type_index = 7;
+    optional string type = 8;
 }
