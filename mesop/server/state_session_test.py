@@ -1,11 +1,13 @@
 from dataclasses import dataclass
 from datetime import datetime, timedelta
+from unittest.mock import patch
 
 import pytest
 
 from mesop.server.config import Config
 from mesop.server.state_session import (
   CreateStateSessionFromConfig,
+  FileStateSessionBackend,
   MemoryStateSessionBackend,
   NullStateSessionBackend,
   States,
@@ -23,6 +25,15 @@ class StateB:
   bool_value: bool = True
 
 
+@pytest.fixture
+def state_session_backend_factory(tmp_path):
+  """Fixture to provide state session backends for parameterized tests."""
+  return {
+    "memory": MemoryStateSessionBackend(),
+    "file": FileStateSessionBackend(tmp_path),
+  }
+
+
 @pytest.mark.parametrize(
   "backend,expected_backend",
   [
@@ -34,6 +45,17 @@ def test_create_state_session_from_config(backend, expected_backend):
   assert isinstance(
     CreateStateSessionFromConfig(Config(state_session_backend=backend)),
     expected_backend,
+  )
+
+
+def test_create_state_session_file():
+  assert isinstance(
+    CreateStateSessionFromConfig(
+      Config(
+        state_session_backend="file", state_session_backend_file_base_dir="/tmp"
+      )
+    ),
+    FileStateSessionBackend,
   )
 
 
@@ -53,16 +75,23 @@ def test_null_backend_clear_stale_sessions_is_noop():
   backend.clear_stale_sessions()
 
 
-def test_memory_backend_restore_token_not_found_returns_exception():
-  backend = MemoryStateSessionBackend()
+@pytest.mark.parametrize("backend_key", ["memory", "file"])
+def test_backend_restore_token_not_found_returns_exception(
+  backend_key, state_session_backend_factory
+):
+  backend = state_session_backend_factory[backend_key]
   with pytest.raises(
     Exception, match="Token not found in state session backend."
   ):
     backend.restore("test", {})
 
 
-def test_memory_backend_save_and_restore_states():
+@pytest.mark.parametrize("backend_key", ["memory", "file"])
+def test_backend_save_and_restore_states(
+  backend_key, state_session_backend_factory
+):
   # GIVEN
+  backend = state_session_backend_factory[backend_key]
   empty_states: States = {
     type(StateA): StateA(),
     type(StateB): StateB(),
@@ -81,7 +110,11 @@ def test_memory_backend_save_and_restore_states():
   assert empty_states == saved_states
 
 
-def test_memory_backend_token_is_cleared_after_restore():
+@pytest.mark.parametrize("backend_key", ["memory", "file"])
+def test_backend_token_is_cleared_after_restore(
+  backend_key, state_session_backend_factory
+):
+  backend = state_session_backend_factory[backend_key]
   # GIVEN
   empty_states: States = {
     type(StateA): StateA(),
@@ -128,6 +161,79 @@ def test_memory_backend_clear_stale_sessions():
     backend.restore("key3", empty_states)
   backend.restore("key2", empty_states)
   assert empty_states == {type(StateA): StateA()}
+
+
+def test_file_backend_clear_stale_sessions_not_stale(tmp_path):
+  # GIVEN
+  backend = FileStateSessionBackend(tmp_path)
+  # Modify the clear rate so that sessions are always cleared.
+  backend._SESSION_CLEAR_RATE = 1.0
+  empty_states: States = {
+    type(StateA): StateA(str_value="ABC"),
+  }
+  backend.save("key1", {type(StateA): StateA()})
+
+  # WHEN
+  with patch(
+    "mesop.server.state_session._current_datetime",
+  ) as _mock_current_datetime:
+    _mock_current_datetime.return_value = datetime.now() - timedelta(minutes=15)
+    backend.clear_stale_sessions()
+
+    # THEN
+    backend.restore("key1", empty_states)
+    assert empty_states == {type(StateA): StateA()}
+
+
+def test_file_backend_clear_stale_sessions(tmp_path):
+  # GIVEN
+  backend = FileStateSessionBackend(tmp_path)
+  # Modify the clear rate so that sessions are always cleared.
+  backend._SESSION_CLEAR_RATE = 1.0
+  empty_states: States = {
+    type(StateA): StateA(str_value="ABC"),
+  }
+  backend.save("key1", {type(StateA): StateA()})
+  backend.save("key2", {type(StateA): StateA()})
+
+  # WHEN
+  with patch(
+    "mesop.server.state_session._current_datetime",
+  ) as _mock_current_datetime:
+    _mock_current_datetime.return_value = datetime.now() + timedelta(minutes=15)
+    backend.clear_stale_sessions()
+
+    # THEN
+    with pytest.raises(
+      Exception, match="Token not found in state session backend."
+    ):
+      backend.restore("key1", empty_states)
+    with pytest.raises(
+      Exception, match="Token not found in state session backend."
+    ):
+      backend.restore("key2", empty_states)
+
+
+def test_file_backend_clear_stale_sessions_skipped(tmp_path):
+  # GIVEN
+  backend = FileStateSessionBackend(tmp_path)
+  # Modify the clear rate so that sessions are never cleared
+  backend._SESSION_CLEAR_RATE = -1.0
+  empty_states: States = {
+    type(StateA): StateA(str_value="ABC"),
+  }
+  backend.save("key1", {type(StateA): StateA()})
+
+  # WHEN
+  with patch(
+    "mesop.server.state_session._current_datetime",
+  ) as _mock_current_datetime:
+    _mock_current_datetime.return_value = datetime.now() + timedelta(minutes=15)
+    backend.clear_stale_sessions()
+
+    # THEN
+    backend.restore("key1", empty_states)
+    assert empty_states == {type(StateA): StateA()}
 
 
 if __name__ == "__main__":
