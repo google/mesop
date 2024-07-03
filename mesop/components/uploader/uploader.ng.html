@@ -53,16 +53,5 @@
     {{ config().getLabel() }}
   </button>
 
-  } @if(config().getTypeIndex() === 4) {
-  <button
-    mat-icon-button
-    [color]="config().getColor()"
-    [disableRipple]="config().getDisableRipple()"
-    [disabled]="config().getDisabled()"
-    [style]="getStyle()"
-    (click)="fileUpload.click()"
-  >
-    {{ config().getLabel() }}
-  </button>
   } {{ filename() || "No file chosen" }}
 </div>

@@ -115,7 +115,7 @@ def uploader(
 
 
 def _get_type_index(
-  type: Literal["raised", "flat", "stroked", "icon"] | None,
+  type: Literal["raised", "flat", "stroked"] | None,
 ) -> int:
   if type is None:
     return 0
@@ -125,6 +125,4 @@ def _get_type_index(
     return 2
   if type == "stroked":
     return 3
-  if type == "icon":
-    return 4
   raise Exception("Unexpected type: " + type)
