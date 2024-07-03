@@ -19,20 +19,24 @@ class State:
 )
 def app():
   state = me.state(State)
-  me.uploader(
-    label="Upload Image",
-    accepted_file_types=["image/jpeg", "image/png"],
-    on_upload=handle_upload,
-  )
+  with me.box(style=me.Style(padding=me.Padding.all(15))):
+    me.uploader(
+      label="Upload Image",
+      accepted_file_types=["image/jpeg", "image/png"],
+      on_upload=handle_upload,
+      type="flat",
+      color="primary",
+      style=me.Style(font_weight="bold"),
+    )
 
-  if state.contents:
-    with me.box(style=me.Style(margin=me.Margin.all(10))):
-      me.text(f"File name: {state.name}")
-      me.text(f"File size: {state.size}")
-      me.text(f"File type: {state.mime_type}")
+    if state.contents:
+      with me.box(style=me.Style(margin=me.Margin.all(10))):
+        me.text(f"File name: {state.name}")
+        me.text(f"File size: {state.size}")
+        me.text(f"File type: {state.mime_type}")
 
-    with me.box(style=me.Style(margin=me.Margin.all(10))):
-      me.image(src=state.contents)
+      with me.box(style=me.Style(margin=me.Margin.all(10))):
+        me.image(src=state.contents)
 
 
 def handle_upload(event: me.UploadEvent):
