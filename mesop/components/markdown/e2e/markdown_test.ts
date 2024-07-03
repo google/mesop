@@ -15,6 +15,14 @@ test('renders table markup', async ({page}) => {
   ).toHaveCount(2);
 
   await expect(
-    page.locator(`//table/tbody/tr/td[contains(text(), "Content Cell")]`),
-  ).toHaveCount(4);
+    page.locator(
+      `//table/tbody/tr/td[contains(text(), "Content Cell") and @class="foo"]`,
+    ),
+  ).toHaveCount(2);
+
+  await expect(
+    page.locator(
+      `//table/tbody/tr/td[contains(text(), "Content Cell") and @class="bar"]`,
+    ),
+  ).toHaveCount(2);
 });

@@ -76,8 +76,8 @@ Inline `code`
 
 First Header  | Second Header
 ------------- | -------------
-Content Cell  | Content Cell
-Content Cell  | Content Cell
+Content Cell { .foo }  | Content Cell { .foo }
+Content Cell { .bar } | Content Cell { .bar }
 """
 
 
