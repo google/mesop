@@ -132,7 +132,7 @@ class FileStateSessionBackend(StateSessionBackend):
     file_path = self._make_file_path(token)
     try:
       with open(file_path, "rb") as f:
-        states_data = msgpack.loads(f.read())
+        states_data = msgpack.unpackb(f.read())
       _deserialize_state(states, states_data)
     except FileNotFoundError as e:
       raise Exception("Token not found in state session backend.") from e
@@ -145,7 +145,7 @@ class FileStateSessionBackend(StateSessionBackend):
   def save(self, token: str, states: States):
     """Saves state to the backend with the given token."""
     with open(self._make_file_path(token), "wb") as f:
-      f.write(msgpack.dumps(_serialize_state(states)))
+      f.write(msgpack.packb(_serialize_state(states)))  # type: ignore
 
   def clear_stale_sessions(self):
     """Deletes unused state data."""
@@ -189,6 +189,6 @@ def _serialize_state(states: States) -> list[str]:
   return states_data
 
 
-def _deserialize_state(states: States, states_data: list[str]) -> str:
+def _deserialize_state(states: States, states_data: list[str]):
   for state, serialized_state in zip(states.values(), states_data):
     update_dataclass_from_json(state, serialized_state)

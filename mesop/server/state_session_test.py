@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime, timedelta
+from pathlib import Path
 from unittest.mock import patch
 
 import pytest
@@ -52,7 +53,8 @@ def test_create_state_session_file():
   assert isinstance(
     CreateStateSessionFromConfig(
       Config(
-        state_session_backend="file", state_session_backend_file_base_dir="/tmp"
+        state_session_backend="file",
+        state_session_backend_file_base_dir=Path("/tmp"),
       )
     ),
     FileStateSessionBackend,
