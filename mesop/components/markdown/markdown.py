@@ -28,6 +28,8 @@ def markdown(
     html = markdown_lib.markdown(
       text,
       extensions=[
+        "attr_list",
+        "tables",
         CodeHiliteExtension(css_class="highlight"),
         "fenced_code",
       ],

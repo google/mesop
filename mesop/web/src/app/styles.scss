@@ -235,6 +235,15 @@ mesop-markdown pre {
   overflow-x: scroll;
 }
 
+// Add some basic style to the table mark up.
+mesop-markdown table,
+mesop-markdown th,
+mesop-markdown td {
+  border: 1px #000 solid;
+  border-collapse: collapse;
+  padding: 10px;
+}
+
 // Generated with pygments
 // pygmentize -S xcode -f html -a .highlight > style.css
 pre {
