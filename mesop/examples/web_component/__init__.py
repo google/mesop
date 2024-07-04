@@ -14,5 +14,5 @@ from mesop.examples.web_component.slot import (
   slot_app as slot_app,
 )
 from mesop.examples.web_component.svg_icon import (
-  svg_icon as svg_icon,
+  svg_icon_app as svg_icon_app,
 )
