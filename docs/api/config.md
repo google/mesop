@@ -23,7 +23,7 @@ own RAM, which means cache misses will be common if each server has multiple pro
 and there is no session affinity. In addition, the amount of RAM must be carefully
 specified per instance in accordance with the expected user traffic and state size.
 
-The safest option for using the `memory` backend is to use a single a process with a
+The safest option for using the `memory` backend is to use a single process with a
 good amount of RAM. Python is not the most memory efficient, especially when saving data
 structures such as dicts.
 
