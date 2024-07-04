@@ -30,6 +30,7 @@ import checkbox as checkbox
 import code_demo as code_demo  # cannot call it code due to python library naming conflict
 import divider as divider
 import embed as embed
+import grid_table as grid_table
 import html_demo as html_demo
 import icon as icon
 import image as image
@@ -83,6 +84,12 @@ FIRST_SECTIONS = [
       Example(name="llm_rewriter"),
       Example(name="llm_playground"),
       Example(name="markdown_editor"),
+    ],
+  ),
+  Section(
+    name="Patterns",
+    examples=[
+      Example(name="grid_table"),
     ],
   ),
   Section(
