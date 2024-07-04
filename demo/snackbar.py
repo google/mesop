@@ -1,4 +1,4 @@
-"""Simple toast component that is similar to Angular Component Snackbar."""
+"""Simple snackbar component that is similar to Angular Component Snackbar."""
 
 import time
 from typing import Callable, Literal
@@ -10,23 +10,23 @@ import mesop as me
 class State:
   is_visible: bool = False
   duration: int = 0
-  horizontal_position: str = "start"
-  vertical_position: str = "start"
+  horizontal_position: str = "center"
+  vertical_position: str = "end"
 
 
 @me.page(
   security_policy=me.SecurityPolicy(
     allowed_iframe_parents=["https://google.github.io"]
   ),
-  path="/toast",
+  path="/snackbar",
 )
 def app():
   state = me.state(State)
 
-  toast(
+  snackbar(
     label="Cannonball!!!",
     action_label="Splash",
-    on_click_action=on_click_toast_close,
+    on_click_action=on_click_snackbar_close,
     is_visible=state.is_visible,
     horizontal_position=state.horizontal_position,  # type: ignore
     vertical_position=state.vertical_position,  # type: ignore
@@ -66,10 +66,10 @@ def app():
       )
 
     me.button(
-      "Trigger Toast",
+      "Trigger snackbar",
       type="flat",
       color="primary",
-      on_click=on_click_toast_open,
+      on_click=on_click_snackbar_open,
     )
 
 
@@ -88,16 +88,16 @@ def on_duration_change(e: me.SelectSelectionChangeEvent):
   state.duration = int(e.value)
 
 
-def on_click_toast_close(e: me.ClickEvent):
+def on_click_snackbar_close(e: me.ClickEvent):
   state = me.state(State)
   state.is_visible = False
 
 
-def on_click_toast_open(e: me.ClickEvent):
+def on_click_snackbar_open(e: me.ClickEvent):
   state = me.state(State)
   state.is_visible = True
 
-  # Use yield to create a timed toast message.
+  # Use yield to create a timed snackbar message.
   if state.duration:
     yield
     time.sleep(state.duration)
@@ -108,7 +108,7 @@ def on_click_toast_open(e: me.ClickEvent):
 
 
 @me.component
-def toast(
+def snackbar(
   *,
   is_visible: bool,
   label: str,
@@ -117,24 +117,24 @@ def toast(
   horizontal_position: Literal["start", "center", "end"] = "center",
   vertical_position: Literal["start", "center", "end"] = "end",
 ):
-  """Creates a toast.
+  """Creates a snackbar.
 
-  By default the toast is rendered at bottom center.
+  By default the snackbar is rendered at bottom center.
 
-  The on_click_action should typically close the toast as part of its actions. If no
-  click event is included, you'll need to manually hide the toast.
+  The on_click_action should typically close the snackbar as part of its actions. If no
+  click event is included, you'll need to manually hide the snackbar.
 
-  Note that there is one issue with this toast example. No actions are possible until
-  the toast is dismissed or closed. This is due to the fixed box that gets created when
-  the toast is visible.
+  Note that there is one issue with this snackbar example. No actions are possible until
+  the snackbar is dismissed or closed. This is due to the fixed box that gets created when
+  the snackbar is visible.
 
   Args:
-    is_visible: Whether the toast is currently visible or not.
-    label: Message for the toast
-    action_label: Optional message for the action of the toast
+    is_visible: Whether the snackbar is currently visible or not.
+    label: Message for the snackbar
+    action_label: Optional message for the action of the snackbar
     on_click_action: Optional click event when action is triggered.
-    horizontal_position: Horizontal position of the toast
-    vertical_position: Vertical position of the toast
+    horizontal_position: Horizontal position of the snackbar
+    vertical_position: Vertical position of the snackbar
   """
   with me.box(
     style=me.Style(

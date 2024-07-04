@@ -28,6 +28,7 @@ import button as button
 import chat as chat
 import checkbox as checkbox
 import code_demo as code_demo  # cannot call it code due to python library naming conflict
+import dialog as dialog
 import divider as divider
 import embed as embed
 import html_demo as html_demo
@@ -38,7 +39,6 @@ import llm_playground as llm_playground
 import llm_rewriter as llm_rewriter
 import markdown_demo as markdown_demo  # cannot call it markdown due to python library naming conflict
 import markdown_editor as markdown_editor
-import modal as modal
 import plot as plot
 import progress_bar as progress_bar
 import progress_spinner as progress_spinner
@@ -47,12 +47,12 @@ import select_demo as select_demo  # cannot call it select due to python library
 import sidenav as sidenav
 import slide_toggle as slide_toggle
 import slider as slider
+import snackbar as snackbar
 import table as table
 import text as text
 import text_to_image as text_to_image
 import text_to_text as text_to_text
 import textarea as textarea
-import toast as toast
 import tooltip as tooltip
 import uploader as uploader
 import video as video
@@ -90,8 +90,8 @@ FIRST_SECTIONS = [
   Section(
     name="Patterns",
     examples=[
-      Example(name="modal"),
-      Example(name="toast"),
+      Example(name="dialog"),
+      Example(name="snackbar"),
     ],
   ),
   Section(
