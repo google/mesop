@@ -38,6 +38,7 @@ import llm_playground as llm_playground
 import llm_rewriter as llm_rewriter
 import markdown_demo as markdown_demo  # cannot call it markdown due to python library naming conflict
 import markdown_editor as markdown_editor
+import modal as modal
 import plot as plot
 import progress_bar as progress_bar
 import progress_spinner as progress_spinner
@@ -51,6 +52,7 @@ import text as text
 import text_to_image as text_to_image
 import text_to_text as text_to_text
 import textarea as textarea
+import toast as toast
 import tooltip as tooltip
 import uploader as uploader
 import video as video
@@ -83,6 +85,13 @@ FIRST_SECTIONS = [
       Example(name="llm_rewriter"),
       Example(name="llm_playground"),
       Example(name="markdown_editor"),
+    ],
+  ),
+  Section(
+    name="Patterns",
+    examples=[
+      Example(name="modal"),
+      Example(name="toast"),
     ],
   ),
   Section(
