@@ -1,4 +1,4 @@
-"""Pure Mesop Table builting using CSS Grid.
+"""Pure Mesop Table built using CSS Grid.
 
 Functionality:
 
@@ -174,7 +174,9 @@ class GridTableRow:
   """
 
   columns: dict[str, GridTableColumn] = field(default_factory=lambda: {})
-  expander: GridTableExpander = None
+  expander: GridTableExpander = field(
+    default_factory=lambda: GridTableExpander()
+  )
   style: Callable | None = None
 
 
@@ -448,7 +450,10 @@ def grid_table(
             me.text(str(col))
 
       # Render the expander if it's enabled and a row has been selected.
-      if row_config.expander and row_config.expander.row_index == row[0]:
+      if (
+        row_config.expander.component
+        and row_config.expander.row_index == row[0]
+      ):
         with me.box(
           style=_make_expander_style(
             expander_style=row_config.expander.style, col_span=len(data.columns)
