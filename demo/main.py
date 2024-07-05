@@ -92,7 +92,7 @@ FIRST_SECTIONS = [
     name="Patterns",
     examples=[
       Example(name="dialog"),
-      Example(name="grid_table"),      
+      Example(name="grid_table"),
       Example(name="snackbar"),
     ],
   ),
