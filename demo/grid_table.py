@@ -210,16 +210,16 @@ class GridTableTheme(Protocol):
   """Interface for theming the grid table"""
 
   def header(self, sortable: bool = False) -> me.Style:
-    pass
+    return me.Style()
 
   def sort_icon(self, current_column: str, sort_column: str) -> me.Style:
-    pass
+    return me.Style()
 
-  def row(self, cell_meta: GridTableCellMeta) -> me.Style:
-    pass
+  def cell(self, cell_meta: GridTableCellMeta) -> me.Style:
+    return me.Style()
 
-  def expander(self, cell_meta: GridTableCellMeta) -> me.Style:
-    pass
+  def expander(self, df_row_index: int) -> me.Style:
+    return me.Style()
 
 
 class GridTableThemeDark(GridTableTheme):
@@ -264,7 +264,7 @@ class GridTableThemeDark(GridTableTheme):
       border=self._BORDER,
     )
 
-  def expander(self, cell_meta: GridTableCellMeta) -> me.Style:
+  def expander(self, df_row_index: int) -> me.Style:
     return me.Style(
       background=self._CELL_BG,
       color=self._COLOR,
@@ -319,7 +319,7 @@ class GridTableThemeLight(GridTableTheme):
       border=self._CELL_BORDER,
     )
 
-  def expander(self, cell_meta: GridTableCellMeta) -> me.Style:
+  def expander(self, df_row_index: int) -> me.Style:
     return me.Style(
       background=self._CELL_BG,
       color=self._COLOR,
@@ -386,7 +386,7 @@ def on_table_sort(e: me.ClickEvent):
   state.sort_column = column
 
 
-def expander(cell_meta: GridTableCellMeta):
+def expander(df_row_index: int):
   """Rendering logic for expanded row.
 
   Here we just display the row data in two columns as text inputs.
@@ -399,7 +399,7 @@ def expander(cell_meta: GridTableCellMeta):
   """
   columns = list(df.columns)
   with me.box(style=me.Style(padding=me.Padding.all(15))):
-    me.text(f"Expanded row: {cell_meta.df_row_index}", type="headline-5")
+    me.text(f"Expanded row: {df_row_index}", type="headline-5")
     with me.box(
       style=me.Style(
         display="grid",
@@ -407,7 +407,7 @@ def expander(cell_meta: GridTableCellMeta):
         gap=10,
       )
     ):
-      for index, col in enumerate(df.iloc[cell_meta.df_row_index]):
+      for index, col in enumerate(df.iloc[df_row_index]):
         me.input(
           label=columns[index], value=str(col), style=me.Style(width="100%")
         )
@@ -506,8 +506,9 @@ def grid_table(
       grid_template_columns=f"repeat({len(data.columns)}, 1fr)",
     )
   ):
-    if not theme:
-      theme = GridTableThemeDark()
+    _theme: GridTableTheme = GridTableThemeLight()
+    if theme:
+      _theme = theme
 
     if not header_config:
       header_config = GridTableHeader()
@@ -525,7 +526,7 @@ def grid_table(
         # Sort key format: ColumName-SortDirection
         key=_make_sort_key(col, sort_column, sort_direction),
         style=_make_header_style(
-          theme=theme, header_config=header_config, sortable=sortable_col
+          theme=_theme, header_config=header_config, sortable=sortable_col
         ),
         on_click=on_sort if sortable_col else None,
       ):
@@ -546,7 +547,7 @@ def grid_table(
               "arrow_downward"
               if sort_column == col and sort_direction == "desc"
               else "arrow_upward",
-              style=theme.sort_icon(col, sort_column),
+              style=_theme.sort_icon(col, sort_column),
             )
           me.text(col)
 
@@ -568,7 +569,7 @@ def grid_table(
           # which cell is clicked.
           key=f"{row[0]}-{col_index}",
           style=_make_cell_style(
-            theme=theme,
+            theme=_theme,
             cell_meta=cell_meta,
             column=cell_config,
             row_style=row_config.style,
@@ -588,13 +589,13 @@ def grid_table(
       ):
         with me.box(
           style=_make_expander_style(
-            cell_meta=cell_meta,
+            df_row_index=row[0],
             col_span=len(data.columns),
             expander_style=row_config.expander.style,
-            theme=theme,
+            theme=_theme,
           )
         ):
-          row_config.expander.component(cell_meta)
+          row_config.expander.component(row[0])
 
 
 def _make_header_style(
@@ -654,7 +655,7 @@ def _make_cell_style(
 def _make_expander_style(
   *,
   theme: GridTableTheme,
-  cell_meta: GridTableCellMeta,
+  df_row_index: int,
   col_span: int,
   expander_style: Callable | None = None,
 ) -> me.Style:
@@ -665,9 +666,9 @@ def _make_expander_style(
   - Cell style override
   - Theme default
   """
-  style = theme.expander(cell_meta)
+  style = theme.expander(df_row_index)
   if expander_style:
-    style = expander_style(cell_meta)
+    style = expander_style(df_row_index)
 
   style.grid_column = f"span {col_span}"
 
