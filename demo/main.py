@@ -28,6 +28,7 @@ import button as button
 import chat as chat
 import checkbox as checkbox
 import code_demo as code_demo  # cannot call it code due to python library naming conflict
+import dialog as dialog
 import divider as divider
 import embed as embed
 import grid_table as grid_table
@@ -47,6 +48,7 @@ import select_demo as select_demo  # cannot call it select due to python library
 import sidenav as sidenav
 import slide_toggle as slide_toggle
 import slider as slider
+import snackbar as snackbar
 import table as table
 import text as text
 import text_to_image as text_to_image
@@ -89,7 +91,9 @@ FIRST_SECTIONS = [
   Section(
     name="Patterns",
     examples=[
-      Example(name="grid_table"),
+      Example(name="dialog"),
+      Example(name="grid_table"),      
+      Example(name="snackbar"),
     ],
   ),
   Section(
