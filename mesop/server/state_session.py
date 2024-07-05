@@ -1,6 +1,5 @@
 import logging
 import os
-import random
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any, Protocol
@@ -109,12 +108,7 @@ class FileStateSessionBackend(StateSessionBackend):
 
   # Hardcode for now, but probably make adjustable in the future.
   _SESSION_TTL_MINUTES = 10
-  # Rate in which we will attempt to clear stale sessions. This is done to
-  # to reduce concurrent attempts to delete stale sessions.
-  #
-  # Example: If the rate is set to 0.1, that means the clear state sessions function
-  # will run 1 in 10 requests or 10% of the time.
-  _SESSION_CLEAR_RATE = 0.1
+  _SESSION_LOCK_FILE = "mesop_session.lock"
 
   def __init__(self, base_dir: Path):
     if base_dir is None:
@@ -149,7 +143,7 @@ class FileStateSessionBackend(StateSessionBackend):
 
   def clear_stale_sessions(self):
     """Deletes unused state data."""
-    if random.random() > self._SESSION_CLEAR_RATE:
+    if not self._can_clear_stale_session():
       return
 
     for filename in os.listdir(self.base_dir):
@@ -167,6 +161,30 @@ class FileStateSessionBackend(StateSessionBackend):
             logging.warning(
               "Failed to delete file while clearing sessions - " + str(e)
             )
+
+  def _can_clear_stale_session(self):
+    """Check if we should try to clean up stale sessions.
+
+    We do not want to clear file sessions after every request, so we will limit attempts
+    to every `_SESSION_TTL_MINUTES`.
+
+    This does not prevent the possibility of multiple concurrent deletions, but that
+    is fine. We will just ignore the deletion errors in those scenarios.
+    """
+    lock_file_path = self.base_dir / self._SESSION_LOCK_FILE
+    if os.path.isfile(lock_file_path):
+      current_time = _current_datetime()
+      timestamp = datetime.fromtimestamp(os.path.getmtime(lock_file_path))
+      if (
+        timestamp + timedelta(minutes=self._SESSION_TTL_MINUTES) > current_time
+      ):
+        return False
+
+    # Update modification time.
+    with open(lock_file_path, "a"):
+      os.utime(lock_file_path, None)
+
+    return True
 
 
 def CreateStateSessionFromConfig(config: Config):

@@ -168,8 +168,6 @@ def test_memory_backend_clear_stale_sessions():
 def test_file_backend_clear_stale_sessions_not_stale(tmp_path):
   # GIVEN
   backend = FileStateSessionBackend(tmp_path)
-  # Modify the clear rate so that sessions are always cleared.
-  backend._SESSION_CLEAR_RATE = 1.0
   empty_states: States = {
     type(StateA): StateA(str_value="ABC"),
   }
@@ -190,8 +188,6 @@ def test_file_backend_clear_stale_sessions_not_stale(tmp_path):
 def test_file_backend_clear_stale_sessions(tmp_path):
   # GIVEN
   backend = FileStateSessionBackend(tmp_path)
-  # Modify the clear rate so that sessions are always cleared.
-  backend._SESSION_CLEAR_RATE = 1.0
   empty_states: States = {
     type(StateA): StateA(str_value="ABC"),
   }
@@ -219,8 +215,8 @@ def test_file_backend_clear_stale_sessions(tmp_path):
 def test_file_backend_clear_stale_sessions_skipped(tmp_path):
   # GIVEN
   backend = FileStateSessionBackend(tmp_path)
-  # Modify the clear rate so that sessions are never cleared
-  backend._SESSION_CLEAR_RATE = -1.0
+  # Force create lock file to test skip behavior.
+  backend._can_clear_stale_session()
   empty_states: States = {
     type(StateA): StateA(str_value="ABC"),
   }
@@ -230,7 +226,7 @@ def test_file_backend_clear_stale_sessions_skipped(tmp_path):
   with patch(
     "mesop.server.state_session._current_datetime",
   ) as _mock_current_datetime:
-    _mock_current_datetime.return_value = datetime.now() + timedelta(minutes=15)
+    _mock_current_datetime.return_value = datetime.now()
     backend.clear_stale_sessions()
 
     # THEN
