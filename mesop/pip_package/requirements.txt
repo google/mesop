@@ -2,6 +2,7 @@ absl-py
 deepdiff==6.*
 flask
 markdown
+msgpack
 protobuf
 pydantic
 pygments
