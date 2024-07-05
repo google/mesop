@@ -4,6 +4,8 @@ package(
     default_visibility = ["//build_defs:mesop_internal"],
 )
 
+exports_files(["sandbox_iframe.html"])
+
 esbuild_config(
     name = "esbuild_config",
     config_file = "esbuild.config.mjs",

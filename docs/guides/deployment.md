@@ -76,6 +76,20 @@ gcloud run deploy
 
 Follow the instructions and then you should be able to access your deployed app.
 
+### Session Affinity
+
+If you're running Mesop with [MESOP_STATE_SESSION_BACKEND=memory](../api/config.md#mesop_state_session_backend),
+then you will want to enable [session affinity](https://cloud.google.com/run/docs/configuring/session-affinity) in order to utilize the `memory` backend efficiently.
+
+The command should be:
+
+```sh
+gcloud run services update $YOUR_SERVICE --session-affinity
+```
+
+By default gunicorn allocates one worker, but you should double check that gunicorn is
+configured correctly for the `memory` backend.
+
 ## App Engine
 
 This section describes deployment to [Google App Engine](https://cloud.google.com/appengine) using

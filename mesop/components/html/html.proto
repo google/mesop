@@ -4,4 +4,5 @@ package mesop.components.html;
 
 message HtmlType {
     optional string html = 1;
+    optional string mode = 2;
 }

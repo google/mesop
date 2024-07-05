@@ -1,1 +1,7 @@
+@if(isSandboxed) {
+<iframe #iframe [style]="getStyle()"></iframe>
+
+} @else {
+
 <div [innerHTML]="config().getHtml()" [style]="getStyle()"></div>
+}

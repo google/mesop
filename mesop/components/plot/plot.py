@@ -27,6 +27,6 @@ def plot(figure: Figure, *, style: Style | None = None):
       plot component. If None, default styling (e.g. height, width) is used.
   """
   buf = BytesIO()
-  figure.savefig(buf, format="png")
+  figure.savefig(buf, format="svg")
   data = base64.b64encode(buf.getbuffer()).decode("ascii")
-  image(src=f"data:image/png;base64,{data}", style=style)
+  image(src=f"data:image/svg+xml;base64,{data}", style=style)
