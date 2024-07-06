@@ -20,6 +20,7 @@ if current_dir not in sys.path:
 
 import glob
 
+import chat_pad as chat_pad
 import audio as audio
 import badge as badge
 import basic_animation as basic_animation
@@ -94,6 +95,12 @@ FIRST_SECTIONS = [
       Example(name="dialog"),
       Example(name="grid_table"),
       Example(name="snackbar"),
+    ],
+  ),
+  Section(
+    name="Apps",
+    examples=[
+      Example(name="chat_pad"),
     ],
   ),
   Section(

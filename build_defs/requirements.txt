@@ -18,5 +18,6 @@ mkdocstrings[python]
 
 # Deps for examples:
 firebase-admin
+google-generativeai
 matplotlib
 pandas

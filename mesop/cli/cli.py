@@ -59,6 +59,15 @@ def clear_demo_modules():
     if module in sys.modules:
       del sys.modules[module]
 
+  demo_app_modules: set[str] = set()
+  for module in sys.modules:
+    if "chat_pad_components" in module:
+      demo_app_modules.add(module)
+
+  for module in demo_app_modules:
+    if module in sys.modules:
+      del sys.modules[module]
+
 
 def monitor_stdin():
   while True:

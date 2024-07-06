@@ -339,29 +339,39 @@ ghp-import==2.1.0 \
     --hash=sha256:8337dd7b50877f163d4c0289bc1f1c7f127550241988d568c1db512c4324a619 \
     --hash=sha256:9c535c4c61193c2df8871222567d7fd7e5014d835f97dc7b7439069e2413d343
     # via mkdocs
+google-ai-generativelanguage==0.6.6 \
+    --hash=sha256:1739f035caeeeca5c28f887405eec8690f3372daf79fecf26454a97a4f1733a8 \
+    --hash=sha256:59297737931f073d55ce1268dcc6d95111ee62850349d2b6cde942b16a4fca5c
+    # via google-generativeai
 google-api-core[grpc]==2.19.0 \
     --hash=sha256:8661eec4078c35428fd3f69a2c7ee29e342896b70f01d1a1cbcb334372dd6251 \
     --hash=sha256:cf1b7c2694047886d2af1128a03ae99e391108a08804f87cfd35970e49c9cd10
     # via
     #   firebase-admin
+    #   google-ai-generativelanguage
     #   google-api-python-client
     #   google-cloud-core
     #   google-cloud-firestore
     #   google-cloud-storage
+    #   google-generativeai
 google-api-python-client==2.133.0 \
     --hash=sha256:293092905b66a046d3187a99ac454e12b00cc2c70444f26eb2f1f9c1a82720b4 \
     --hash=sha256:396fe676ea0dfed066654dcf9f8dea77a1342f9d9bb23bb88e45b7b81e773926
-    # via firebase-admin
+    # via
+    #   firebase-admin
+    #   google-generativeai
 google-auth==2.30.0 \
     --hash=sha256:8df7da660f62757388b8a7f249df13549b3373f24388cb5d2f1dd91cc18180b5 \
     --hash=sha256:ab630a1320f6720909ad76a7dbdb6841cdf5c66b328d690027e4867bdfb16688
     # via
+    #   google-ai-generativelanguage
     #   google-api-core
     #   google-api-python-client
     #   google-auth-httplib2
     #   google-cloud-core
     #   google-cloud-firestore
     #   google-cloud-storage
+    #   google-generativeai
 google-auth-httplib2==0.2.0 \
     --hash=sha256:38aa7badf48f974f1eb9861794e9c0cb2a0511a4ec0679b1f886d108f5640e05 \
     --hash=sha256:b65a0a2123300dd71281a7bf6e64d65a0759287df52729bdd1ae2e47dc311a3d
@@ -452,6 +462,9 @@ google-crc32c==1.5.0 \
     # via
     #   google-cloud-storage
     #   google-resumable-media
+google-generativeai==0.7.1 \
+    --hash=sha256:25017b1278c873b6db65ba41c70566ee9fce8f265498e8b2f6aac036528ba1c7
+    # via -r build_defs/requirements.txt
 google-resumable-media==2.7.1 \
     --hash=sha256:103ebc4ba331ab1bfdac0250f8033627a2cd7cde09e7ccff9181e31ba4315b2c \
     --hash=sha256:eae451a7b2e2cdbaaa0fd2eb00cc8a1ee5e95e16b55597359cbc3d27d7d90e33
@@ -1047,6 +1060,7 @@ proto-plus==1.23.0 \
     --hash=sha256:89075171ef11988b3fa157f5dbd8b9cf09d65fffee97e29ce403cd8defba19d2 \
     --hash=sha256:a829c79e619e1cf632de091013a4173deed13a55f326ef84f05af6f50ff4c82c
     # via
+    #   google-ai-generativelanguage
     #   google-api-core
     #   google-cloud-firestore
 protobuf==4.25.3 \
@@ -1063,8 +1077,10 @@ protobuf==4.25.3 \
     --hash=sha256:f4f118245c4a087776e0a8408be33cf09f6c547442c00395fbfb116fac2f8ac2
     # via
     #   -r build_defs/requirements.txt
+    #   google-ai-generativelanguage
     #   google-api-core
     #   google-cloud-firestore
+    #   google-generativeai
     #   googleapis-common-protos
     #   grpcio-status
     #   mypy-protobuf
@@ -1086,7 +1102,9 @@ pycparser==2.22 \
 pydantic==2.7.4 \
     --hash=sha256:0c84efd9548d545f63ac0060c1e4d39bb9b14db8b3c0652338aecc07b5adec52 \
     --hash=sha256:ee8538d41ccb9c0a9ad3e0e5f07bf15ed8015b481ced539a1759d8cc89ae90d0
-    # via -r build_defs/requirements.txt
+    # via
+    #   -r build_defs/requirements.txt
+    #   google-generativeai
 pydantic-core==2.18.4 \
     --hash=sha256:01dd777215e2aa86dfd664daed5957704b769e726626393438f9c87690ce78c3 \
     --hash=sha256:0eb2a4f660fcd8e2b1c90ad566db2b98d7f3f4717c64fe0a83e0adb39766d5b8 \
@@ -1371,6 +1389,10 @@ tomli==2.0.1 \
     --hash=sha256:939de3e7a6161af0c887ef91b7d41a53e7c5a1ca976325f429cb46ea9bc30ecc \
     --hash=sha256:de526c12914f0c550d15924c62d72abc48d6fe7364aa87328337a31007fe8a4f
     # via pytest
+tqdm==4.66.4 \
+    --hash=sha256:b75ca56b413b030bc3f00af51fd2c1a1a5eac6a0c1cca83cbb37a5c52abce644 \
+    --hash=sha256:e4d936c9de8727928f3be6079590e97d9abfe8d39a590be678eb5919ffc186bb
+    # via google-generativeai
 types-protobuf==5.26.0.20240422 \
     --hash=sha256:e4dc2554d342501d5aebc3c71203868b51118340e105fc190e3a64ca1be43831 \
     --hash=sha256:e6074178109f97efe9f0b20a035ba61d7c3b03e867eb47d254d2b2ab6a805e36
@@ -1379,6 +1401,7 @@ typing-extensions==4.12.2 \
     --hash=sha256:04e5ca0351e0f3f85c6853954072df659d0d13fac324d0072316b67d7794700d \
     --hash=sha256:1a7ead55c7e559dd4dee8856e3a88b41225abfe1ce8df57b7c13915fe121ffb8
     # via
+    #   google-generativeai
     #   pydantic
     #   pydantic-core
 tzdata==2024.1 \

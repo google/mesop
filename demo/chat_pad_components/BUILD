@@ -5,18 +5,10 @@ package(
 )
 
 py_library(
-    name = "demo",
+    name = "chat_pad_components",
     srcs = glob(["*.py"]),
-    data = [":screenshots"],
     deps = [
-        "//demo/chat_pad_components",
         "//mesop",
         "//mesop/labs",
     ],
-)
-
-# Make source files available for distribution via pkg_npm
-filegroup(
-    name = "screenshots",
-    srcs = glob(["screenshots/*"]),
 )
