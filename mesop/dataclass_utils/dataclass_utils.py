@@ -107,6 +107,7 @@ def _recursive_update_dataclass_from_json_obj(instance: Any, json_dict: Any):
     else:
       if isinstance(instance, dict):
         instance[key] = value
+        # _recursive_update_dataclass_from_json_obj(instance[key], value)
       else:
         raise MesopException(
           f"Unhandled stateclass deserialization where key={key}, value={value}, instance={instance}"

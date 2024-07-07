@@ -1,7 +1,11 @@
-import mesop as me
-from chat_pad_components.foo import foo
-from chat_pad_components import gemini
+from dataclasses import field
+from enum import Enum
+
+from chat_pad_components import claude, gemini
 from chat_pad_components.data_model import ChatMessage
+from chat_pad_components.dialog import dialog, dialog_actions
+
+import mesop as me
 
 ROOT_BOX_STYLE = me.Style(
   background="#e7f2ff",
@@ -13,14 +17,65 @@ ROOT_BOX_STYLE = me.Style(
 
 darker_bg_color = "#b9e1ff"
 
+STYLESHEETS = [
+  "https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"
+]
 
-@me.page(
-  path="/chat_pad",
-  stylesheets=[
-    "https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"
-  ],
-)
+
+class Models(Enum):
+  GEMINI_1_5_FLASH = "Gemini 1.5 Flash"
+  GEMINI_1_5_PRO = "Gemini 1.5 Pro"
+  CLAUDE_3_5_SONNET = "Claude 3.5 Sonnet"
+
+
+@me.stateclass
+class State:
+  is_model_picker_dialog_open: bool
+  input: str
+  messages_by_model: dict[str, list[ChatMessage]]
+  models: list[str] = field(
+    default_factory=lambda: [Models.GEMINI_1_5_FLASH.value]
+  )
+
+
+@me.stateclass
+class ModelDialogState:
+  selected_models: list[str]
+
+
+def change_model_option(e: me.CheckboxChangeEvent):
+  s = me.state(ModelDialogState)
+  if e.checked:
+    s.selected_models.append(e.key)
+  else:
+    s.selected_models.remove(e.key)
+
+
+def model_picker_dialog():
+  state = me.state(State)
+  with dialog(state.is_model_picker_dialog_open):
+    me.text("Pick a model")
+    for model in Models:
+      me.checkbox(
+        key=model.value,
+        label=model.value,
+        checked=model.value in state.models,
+        on_change=change_model_option,
+        style=me.Style(
+          display="flex",
+          flex_direction="column",
+          gap=4,
+          padding=me.Padding(top=12),
+        ),
+      )
+    with dialog_actions():
+      me.button("Cancel", on_click=close_model_picker_dialog)
+      me.button("Confirm", on_click=confirm_model_picker_dialog)
+
+
+@me.page(path="/chat_pad", stylesheets=STYLESHEETS)
 def page():
+  model_picker_dialog()
   with me.box(style=ROOT_BOX_STYLE):
     header()
     with me.box(
@@ -33,7 +88,7 @@ def page():
       )
     ):
       me.text(
-        "Chat with a scratch pad on the side",
+        "Chat with multiple models at once",
         style=me.Style(
           font_size=20,
           margin=me.Margin(
@@ -43,7 +98,6 @@ def page():
       )
       examples_row()
       chat_input()
-    # foo()
 
 
 EXAMPLES = [
@@ -91,7 +145,7 @@ def header():
   def navigate_home(e: me.ClickEvent):
     me.navigate("/chat_pad")
     state = me.state(State)
-    state.messages = []
+    state.messages_by_model = {}
 
   with me.box(
     on_click=navigate_home,
@@ -113,6 +167,7 @@ def header():
 
 def chat_input():
   state = me.state(State)
+
   with me.box(
     style=me.Style(
       border_radius=16,
@@ -127,89 +182,147 @@ def chat_input():
         flex_grow=1,
       )
     ):
-      me.native_textarea(
-        value=state.input,
-        autosize=True,
-        min_rows=4,
-        max_rows=8,
-        placeholder="Enter a prompt",
-        on_blur=on_blur,
-        style=me.Style(
-          padding=me.Padding(top=16, left=16),
-          outline="none",
-          width="100%",
-          overflow_y="auto",
-          border=me.Border.all(
-            me.BorderSide(style="none"),
+      with me.box():
+        me.native_textarea(
+          value=state.input,
+          autosize=True,
+          min_rows=4,
+          max_rows=8,
+          placeholder="Enter a prompt",
+          on_blur=on_blur,
+          style=me.Style(
+            padding=me.Padding(top=16, left=16),
+            outline="none",
+            width="100%",
+            overflow_y="auto",
+            border=me.Border.all(
+              me.BorderSide(style="none"),
+            ),
           ),
-        ),
-      )
-    with me.content_button(type="icon", on_click=click_send):
+        )
+        with me.box(
+          style=me.Style(
+            display="flex",
+            padding=me.Padding(left=12, bottom=12),
+            cursor="pointer",
+          ),
+          on_click=switch_model,
+        ):
+          me.text(
+            "Model:",
+            style=me.Style(font_weight=500, padding=me.Padding(right=6)),
+          )
+          me.text(
+            ", ".join(state.models),
+            style=me.Style(),
+          )
+    with me.content_button(type="icon", on_click=send_prompt):
       me.icon("send")
 
 
-@me.stateclass
-class State:
-  input: str
-  messages: list[ChatMessage]
+def switch_model(e: me.ClickEvent):
+  state = me.state(State)
+  state.is_model_picker_dialog_open = True
+  dialog_state = me.state(ModelDialogState)
+  dialog_state.selected_models = state.models[:]
 
 
-def on_blur(e: me.InputEvent):
+def close_model_picker_dialog(e: me.ClickEvent):
+  state = me.state(State)
+  state.is_model_picker_dialog_open = False
+
+
+def confirm_model_picker_dialog(e: me.ClickEvent):
+  dialog_state = me.state(ModelDialogState)
+  state = me.state(State)
+  state.is_model_picker_dialog_open = False
+  state.models = dialog_state.selected_models
+
+
+def on_blur(e: me.InputBlurEvent):
   state = me.state(State)
   state.input = e.value
 
 
-def click_send(e: me.ClickEvent):
-  yield from send_prompt()
-
-
-def send_prompt():
+def send_prompt(e: me.ClickEvent):
   state = me.state(State)
-  if not len(state.messages):
+  if not len(state.messages_by_model.keys()):
     me.navigate("/chat_pad/conversation")
-  history = state.messages[:]
-  state.messages.append(ChatMessage(role="user", content=state.input))
   input = state.input
   state.input = ""
-  state.messages.append(ChatMessage(role="model", in_progress=True))
-  yield
-  me.scroll_into_view(key="end_of_messages")
-  print("history", history)
-  for chunk in gemini.send_prompt(input, history):
-    state.messages[-1].content += chunk.text
+
+  for model in state.models:
+    if model not in state.messages_by_model:
+      state.messages_by_model[model] = []
+    messages = state.messages_by_model.get(model)
+    assert messages is not None
+    history = messages[:]
+    messages.append(ChatMessage(role="user", content=input))
+    messages.append(ChatMessage(role="model", in_progress=True))
     yield
-  state.messages[-1].in_progress = False
-  yield
+    me.scroll_into_view(key="end_of_messages")
+    if model == Models.GEMINI_1_5_FLASH.value:
+      llm_response = gemini.send_prompt_flash(input, history)
+    elif model == Models.GEMINI_1_5_PRO.value:
+      llm_response = gemini.send_prompt_pro(input, history)
+    elif model == Models.CLAUDE_3_5_SONNET.value:
+      llm_response = claude.call_claude_sonnet(input, history)  # type: ignore
+    else:
+      raise Exception("Unhandled model", model)
+    for chunk in llm_response:  # type: ignore
+      messages[-1].content += chunk
+      yield
+    messages[-1].in_progress = False
+    yield
 
 
-@me.page(path="/chat_pad/conversation")
+@me.page(path="/chat_pad/conversation", stylesheets=STYLESHEETS)
 def conversation_page():
   state = me.state(State)
+  model_picker_dialog()
   with me.box(style=ROOT_BOX_STYLE):
     header()
+    # me.text("len " + str(len(state.messages_by_model.items())))
+    models = len(state.messages_by_model.items())
+    models_px = models * 680
     with me.box(
       style=me.Style(
+        width=f"min({models_px}px, calc(100% - 32px)",
+        display="grid",
+        gap=16,
+        grid_template_columns=f"repeat({models}, 1fr)",
         flex_grow=1,
-        width="min(680px, 100%)",
+        overflow_y="hidden",
         margin=me.Margin.symmetric(horizontal="auto"),
         padding=me.Padding.symmetric(horizontal=16),
-        overflow_y="auto",
       )
     ):
-      for message in state.messages:
-        if message.role == "user":
-          user_message(message.content)
-        else:
-          model_message(message)
-      if state.messages:
-        me.box(
-          key="end_of_messages",
+      for model, messages in state.messages_by_model.items():
+        with me.box(
           style=me.Style(
-            margin=me.Margin(
-              bottom="50vh" if state.messages[-1].in_progress else 0
+            overflow_y="auto",
+          )
+        ):
+          me.text("Model: " + model, style=me.Style(font_weight=500))
+          # TODO: remove this hack for lack of proper serialization
+          state.messages_by_model[model] = messages = [
+            ChatMessage(**message) if isinstance(message, dict) else message
+            for message in messages
+          ]
+          for message in messages:
+            if message.role == "user":
+              user_message(message.content)
+            else:
+              model_message(message)
+          if messages and model == list(state.messages_by_model.keys())[-1]:
+            me.box(
+              key="end_of_messages",
+              style=me.Style(
+                margin=me.Margin(
+                  bottom="50vh" if messages[-1].in_progress else 0
+                )
+              ),
             )
-          ),
-        )
     with me.box(
       style=me.Style(
         display="flex",

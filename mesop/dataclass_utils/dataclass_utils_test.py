@@ -244,6 +244,25 @@ def test_serialize_deserialize_state_with_dict():
   assert new_state == state
 
 
+@dataclass
+class SimpleDataclass:
+  str_field: str = ""
+
+
+@dataclass_with_defaults
+class StateWithDictListStateclass:
+  a_dict: dict[str, list[SimpleDataclass]]
+
+
+def test_serialize_deserialize_state_with_dict_list_dataclass():
+  state = StateWithDictListStateclass()
+  state.a_dict["a"] = [SimpleDataclass(str_field="123")]
+  state.a_dict["b"] = []
+  new_state = StateWithDictListStateclass()
+  update_dataclass_from_json(new_state, serialize_dataclass(state))
+  assert new_state == state
+
+
 @dataclass_with_defaults
 class StateWithNestedDict:
   nested_dict: dict[str, dict[str, bool]]
