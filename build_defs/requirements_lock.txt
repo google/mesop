@@ -856,7 +856,9 @@ msgpack==1.0.8 \
     --hash=sha256:f51bab98d52739c50c56658cc303f190785f9a2cd97b823357e7aeae54c8f68a \
     --hash=sha256:f9904e24646570539a8950400602d66d2b2c492b9010ea7e965025cb71d0c86d \
     --hash=sha256:f9af38a89b6a5c04b7d18c492c8ccf2aee7048aff1ce8437c4683bb5a1df893d
-    # via cachecontrol
+    # via
+    #   -r build_defs/requirements.txt
+    #   cachecontrol
 mypy-protobuf==3.6.0 \
     --hash=sha256:02f242eb3409f66889f2b1a3aa58356ec4d909cdd0f93115622e9e70366eca3c \
     --hash=sha256:56176e4d569070e7350ea620262478b49b7efceba4103d468448f1d21492fd6c

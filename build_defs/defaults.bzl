@@ -113,3 +113,7 @@ THIRD_PARTY_PY_DEEPDIFF = [
 THIRD_PARTY_PY_DOTENV = [
     requirement("python-dotenv"),
 ]
+
+THIRD_PARTY_PY_MSGPACK = [
+    requirement("msgpack"),
+]
