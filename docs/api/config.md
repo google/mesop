@@ -6,8 +6,6 @@ Mesop is configured at the application level using environment variables.
 
 ## Configuration values
 
-Mesop currently only has one configuration value, but more will be added in the future.
-
 ### MESOP_STATE_SESSION_BACKEND
 
 Sets the backend to use for caching state data server-side. This makes it so state does

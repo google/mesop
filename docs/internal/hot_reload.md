@@ -4,7 +4,7 @@ One of Mesop's key benefits is that it provides a fast iteration cycle through h
 
 ## How it works
 
-See:https://github.com/google/mesop/pull/211
+See: [https://github.com/google/mesop/pull/211](https://github.com/google/mesop/pull/211)
 
 ## Design decisions
 
