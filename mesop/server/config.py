@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 from typing import Literal
 
 from dotenv import load_dotenv
@@ -10,7 +11,8 @@ load_dotenv()
 class Config(BaseModel):
   """Mesop app configuration."""
 
-  state_session_backend: Literal["memory", "none"] = "none"
+  state_session_backend: Literal["memory", "file", "none"] = "none"
+  state_session_backend_file_base_dir: Path = Path("/tmp")
 
   @property
   def state_session_enabled(self):
@@ -20,6 +22,9 @@ class Config(BaseModel):
 def CreateConfigFromEnv() -> Config:
   return Config(
     state_session_backend=os.getenv("MESOP_STATE_SESSION_BACKEND", "none"),  # type: ignore
+    state_session_backend_file_base_dir=Path(
+      os.getenv("MESOP_STATE_SESSION_BACKEND_FILE_BASE_DIR", "/tmp")
+    ),
   )
 
 

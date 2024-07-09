@@ -42,9 +42,9 @@ Sometimes, you may want to define your own content component for better reusabil
 ```python
 @me.content_component
 def scaffold(url: str):
-  with me.box(style="background: white"):
+  with me.box(style=me.Style(background="white")):
     menu(url=url)
-    with me.box(style=f"padding-left: {MENU_WIDTH}px"):
+    with me.box(style=me.Style(padding=me.Padding(left=MENU_WIDTH))):
       me.slot()
 ```
 

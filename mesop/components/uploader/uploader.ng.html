@@ -5,8 +5,53 @@
   #fileUpload
 />
 <div>
-  <button mat-flat-button (click)="fileUpload.click()">
+  @if(config().getTypeIndex() === 0) {
+  <button
+    mat-button
+    [color]="config().getColor()"
+    [disableRipple]="config().getDisableRipple()"
+    [disabled]="config().getDisabled()"
+    [style]="getStyle()"
+    (click)="fileUpload.click()"
+  >
     {{ config().getLabel() }}
   </button>
-  {{ filename() || "No file chosen" }}
+
+  } @if(config().getTypeIndex() === 1) {
+  <button
+    mat-raised-button
+    [color]="config().getColor()"
+    [disableRipple]="config().getDisableRipple()"
+    [disabled]="config().getDisabled()"
+    [style]="getStyle()"
+    (click)="fileUpload.click()"
+  >
+    {{ config().getLabel() }}
+  </button>
+
+  } @if(config().getTypeIndex() === 2) {
+  <button
+    mat-flat-button
+    [color]="config().getColor()"
+    [disableRipple]="config().getDisableRipple()"
+    [disabled]="config().getDisabled()"
+    [style]="getStyle()"
+    (click)="fileUpload.click()"
+  >
+    {{ config().getLabel() }}
+  </button>
+
+  } @if(config().getTypeIndex() === 3) {
+  <button
+    mat-stroked-button
+    [color]="config().getColor()"
+    [disableRipple]="config().getDisableRipple()"
+    [disabled]="config().getDisabled()"
+    [style]="getStyle()"
+    (click)="fileUpload.click()"
+  >
+    {{ config().getLabel() }}
+  </button>
+
+  } {{ filename() || "No file chosen" }}
 </div>

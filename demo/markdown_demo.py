@@ -45,6 +45,13 @@ SAMPLE_MARKDOWN = """
 
 ## Code
 Inline `code`
+
+## Table
+
+First Header  | Second Header
+------------- | -------------
+Content Cell { .foo }  | Content Cell { .foo }
+Content Cell { .bar } | Content Cell { .bar }
 """
 
 
