@@ -203,6 +203,12 @@ class FirestoreStateSessionBackend(StateSessionBackend):
     self.db = self._initialize_firestore_db()
 
   def _initialize_firestore_db(self):
+    logging.warning(
+      "You need to manually create a TTL policy on your Firestore to clear out stale\n"
+      "session data. Otherwise, you will exceed the 1GB free storage allowance.\n\n"
+      "You can create a TTL policy by running this command: \n\n"
+      f"  gcloud firestore fields ttls update expiresAt --collection-group={self.collection_name}\n\n"
+    )
     # Lazy load Firestore dependencies since it is not a core functionality.
     import firebase_admin
     from firebase_admin import firestore
