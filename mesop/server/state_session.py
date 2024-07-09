@@ -20,6 +20,11 @@ def _current_datetime():
   return datetime.now()
 
 
+def _current_datetime_utc():
+  """Helper to return datetime utc now so we can mock the time easier."""
+  return datetime.utcnow()
+
+
 class StateSessionBackend(Protocol):
   """Interface for state session backends."""
 
@@ -187,12 +192,87 @@ class FileStateSessionBackend(StateSessionBackend):
     return True
 
 
+class FirestoreStateSessionBackend(StateSessionBackend):
+  """State session backend using GCP Firestore."""
+
+  # Hardcode for now, but probably make adjustable in the future.
+  _SESSION_TTL_MINUTES = 10
+
+  def __init__(self, collection_name: str):
+    self.collection_name = collection_name
+    self.db = self._initialize_firestore_db()
+
+  def _initialize_firestore_db(self):
+    # Lazy load Firestore dependencies since it is not a core functionality.
+    import firebase_admin
+    from firebase_admin import firestore
+
+    # This uses the application default credentials (ADC) which are set by default on
+    # GCP services, such as Cloud Run.
+    #
+    # For local development, you will need to initialize the ADC using this command:
+    #
+    #   gcloud auth application-default login
+    #
+    # If you have multiple GCP projects, you may need to update the project associated
+    # with the ADC:
+    #
+    #   GCP_PROJECT=gcp-project
+    #   gcloud config set project $GCP_PROJECT
+    #   gcloud auth application-default set-quota-project $GCP_PROJECT
+    firebase_admin.initialize_app()
+    # We use the default Firestore database associated with the ADC project.
+    return firestore.client()
+
+  def restore(self, token: str, states: States):
+    """Gets the saved state from the given token and updates the given state."""
+    doc_ref = self.db.collection(self.collection_name).document(token)
+    doc = doc_ref.get()
+
+    if not doc.exists:
+      raise Exception("Token not found in state session backend.")
+
+    states_data = msgpack.unpackb(doc.to_dict()["state"])  # type: ignore
+    _deserialize_state(states, states_data)
+
+    doc_ref.delete()
+
+  def save(self, token: str, states: States):
+    """Saves state to the backend with the given token."""
+    doc_ref = self.db.collection(self.collection_name).document(token)
+    doc_ref.set(
+      {
+        "state": msgpack.packb(_serialize_state(states)),
+        "expiresAt": _current_datetime_utc()
+        + timedelta(minutes=self._SESSION_TTL_MINUTES),
+      }
+    )
+
+  def clear_stale_sessions(self):
+    """Deletes unused state data.
+
+    In Firestore, you can set TTLs to delete stale data,
+    so this method is a noop.
+
+    The command to enable a TTL policy is:
+
+      COLLECTION_NAME=collection_name
+      gcloud firestore fields ttls update expiresAt \
+        --collection-group=$COLLECTION_NAME
+    """
+    pass
+
+
 def CreateStateSessionFromConfig(config: Config):
   """Factory function to state session backend."""
   if config.state_session_backend == "memory":
     return MemoryStateSessionBackend()
   elif config.state_session_backend == "file":
     return FileStateSessionBackend(config.state_session_backend_file_base_dir)
+  elif config.state_session_backend == "firestore":
+    return FirestoreStateSessionBackend(
+      config.state_session_backend_firestore_collection
+    )
   return NullStateSessionBackend()
 
 

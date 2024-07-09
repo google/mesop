@@ -1,14 +1,26 @@
+from collections import defaultdict
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from pathlib import Path
+from typing import Iterable, Optional
 from unittest.mock import patch
 
 import pytest
+from google.api_core import gapic_v1
+from google.api_core import retry as retries
+from google.cloud import firestore
+from google.cloud.firestore_v1 import _helpers
+from google.cloud.firestore_v1.base_document import DocumentSnapshot
+from google.cloud.firestore_v1.collection import CollectionReference
+from google.cloud.firestore_v1.document import DocumentReference
+from google.cloud.firestore_v1.types import write
+from google.protobuf.timestamp_pb2 import Timestamp
 
 from mesop.server.config import Config
 from mesop.server.state_session import (
   CreateStateSessionFromConfig,
   FileStateSessionBackend,
+  FirestoreStateSessionBackend,
   MemoryStateSessionBackend,
   NullStateSessionBackend,
   States,
@@ -29,10 +41,15 @@ class StateB:
 @pytest.fixture
 def state_session_backend_factory(tmp_path):
   """Fixture to provide state session backends for parameterized tests."""
-  return {
-    "memory": MemoryStateSessionBackend(),
-    "file": FileStateSessionBackend(tmp_path),
-  }
+  with patch(
+    "mesop.server.state_session.FirestoreStateSessionBackend._initialize_firestore_db",
+  ) as _initialize_firestore_db:
+    _initialize_firestore_db.return_value = FakeFirestoreClient()
+    return {
+      "memory": MemoryStateSessionBackend(),
+      "file": FileStateSessionBackend(tmp_path),
+      "firestore": FirestoreStateSessionBackend("collection"),
+    }
 
 
 @pytest.mark.parametrize(
@@ -77,7 +94,7 @@ def test_null_backend_clear_stale_sessions_is_noop():
   backend.clear_stale_sessions()
 
 
-@pytest.mark.parametrize("backend_key", ["memory", "file"])
+@pytest.mark.parametrize("backend_key", ["memory", "file", "firestore"])
 def test_backend_restore_token_not_found_returns_exception(
   backend_key, state_session_backend_factory
 ):
@@ -88,7 +105,7 @@ def test_backend_restore_token_not_found_returns_exception(
     backend.restore("test", {})
 
 
-@pytest.mark.parametrize("backend_key", ["memory", "file"])
+@pytest.mark.parametrize("backend_key", ["memory", "file", "firestore"])
 def test_backend_save_and_restore_states(
   backend_key, state_session_backend_factory
 ):
@@ -112,7 +129,7 @@ def test_backend_save_and_restore_states(
   assert empty_states == saved_states
 
 
-@pytest.mark.parametrize("backend_key", ["memory", "file"])
+@pytest.mark.parametrize("backend_key", ["memory", "file", "firestore"])
 def test_backend_token_is_cleared_after_restore(
   backend_key, state_session_backend_factory
 ):
@@ -232,6 +249,90 @@ def test_file_backend_clear_stale_sessions_skipped(tmp_path):
     # THEN
     backend.restore("key1", empty_states)
     assert empty_states == {type(StateA): StateA()}
+
+
+# Note: The `FakeFirestoreClient` implementation here ignores a bunch of type checking
+# errors since we need to match the parent class method interfaces.
+
+
+class FakeFirestoreClient(firestore.Client):
+  """Fake Firestore client for testing `FirestoreStateSessionBackend`.
+
+  We use a fake since we don't want to make real API calls. This is fairly brittle, but
+  covers the basic APIs that we use.
+
+  Ideally, we also include integration tests that use the Firestore emulator.
+  """
+
+  def __init__(self):
+    self.collections = defaultdict(lambda: FakeFirestoreCollectionReference())  # type: ignore
+
+  def collection(self, *collection_path: str) -> CollectionReference:
+    return self.collections[collection_path]  # type: ignore
+
+
+class FakeFirestoreCollectionReference(CollectionReference):
+  def __init__(self):
+    self.docs = defaultdict(lambda: FakeFirestoreDocumentReference())
+
+  def document(self, document_id: Optional[str] = None) -> DocumentReference:
+    return self.docs[document_id]
+
+
+class FakeFirestoreDocumentReference(DocumentReference):
+  def __init__(self):
+    self.doc = DocumentSnapshot(
+      self,
+      None,
+      exists=False,
+      read_time=None,
+      create_time=None,
+      update_time=None,
+    )
+
+  def get(
+    self,
+    field_paths: Iterable[str] = None,  # type: ignore
+    transaction=None,
+    retry: retries.Retry = gapic_v1.method.DEFAULT,  # type: ignore
+    timeout: float = None,  # type: ignore
+  ) -> DocumentSnapshot:
+    return self.doc
+
+  def set(
+    self,
+    document_data: dict,
+    merge: bool = False,
+    retry: retries.Retry = gapic_v1.method.DEFAULT,  # type: ignore
+    timeout: float = None,  # type: ignore
+  ) -> write.WriteResult:
+    self.doc = DocumentSnapshot(
+      self,
+      document_data,
+      exists=True,
+      read_time=None,
+      create_time=None,
+      update_time=None,
+    )
+
+    return write.WriteResult()
+
+
+def delete(
+  self,
+  option: _helpers.WriteOption = None,  # type: ignore
+  retry: retries.Retry = gapic_v1.method.DEFAULT,  # type: ignore
+  timeout: float = None,  # type: ignore
+) -> Timestamp:
+  self.doc = DocumentSnapshot(
+    self,
+    None,
+    exists=False,
+    read_time=None,
+    create_time=None,
+    update_time=None,
+  )
+  return Timestamp()
 
 
 if __name__ == "__main__":
