@@ -25,7 +25,8 @@ export class InputComponent {
   @Input() style!: Style;
   private _config!: InputType;
   private inputSubject = new Subject<Event>();
-
+  private isComposingCount: number = 1;
+  private expectedIsComposingCount: number = 1;
   constructor(private readonly channel: Channel) {
     this.inputSubject
       .pipe(
@@ -35,6 +36,14 @@ export class InputComponent {
         debounceTime(150),
       )
       .subscribe((event) => this.onInputDebounced(event));
+    // See keyDown event for explanation for why we have a special case for Safari.
+    if (
+      navigator.userAgent.indexOf('Safari') > -1 &&
+      navigator.userAgent.indexOf('Chrome') === -1
+    ) {
+      this.expectedIsComposingCount = 2;
+      this.isComposingCount = 2;
+    }
   }
 
   ngOnDestroy(): void {
@@ -84,12 +93,46 @@ export class InputComponent {
   }
 
   onKeyUp(event: Event): void {
-    if ((event as KeyboardEvent).key === 'Enter') {
+    // See onKeyDown event for why need to check this.isComposingCount.
+    const keyboardEvent = event as KeyboardEvent;
+    if (
+      keyboardEvent.key === 'Enter' &&
+      this.isComposingCount === this.expectedIsComposingCount
+    ) {
       const userEvent = new UserEvent();
       userEvent.setHandlerId(this.config().getOnEnterHandlerId()!);
       userEvent.setStringValue((event.target as HTMLInputElement).value);
       userEvent.setKey(this.key);
       this.channel.dispatch(userEvent);
+    }
+  }
+
+  onKeyDown(event: Event): void {
+    // The isComposing field tells us if we are using an input method editor (IME) which
+    // will display a menu of characters that can't be represented on a standard QWERTY
+    // keyboard. The user can select from this menu by pressing "enter" or clicking the
+    // menu item. The user will then need to press "enter" to confirm the selection (at
+    // least on MacOS).
+    //
+    // If we do not check isComposing on key up, this will trigger the Mesop on enter
+    // event.
+    //
+    // If we check isComposing on key up, the enter confirmation will trigger the Mesop
+    // on enter event since isComposing becomes false on key up.
+    //
+    // We need to track isComposing with the key down event since this will trigger the
+    // on enter event when "enter" is pressed again (when the IME is inactive and
+    // a selection has been made and applied).
+    //
+    // Safari has a bug where the order of operations for isComposing is in a different
+    // order. See https://bugs.webkit.org/show_bug.cgi?id=165004.
+    //
+    // In order to work around this issue, we need to count expectedIsComposingCount
+    // equals false twice on Safari rather than just once.
+    if ((event as KeyboardEvent).isComposing) {
+      this.isComposingCount = 0;
+    } else if (this.isComposingCount < this.expectedIsComposingCount) {
+      this.isComposingCount += 1;
     }
   }
 
