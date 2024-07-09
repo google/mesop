@@ -50,10 +50,10 @@ def test_state_session_backend_file():
 
 @pytest.mark.usefixtures("clear_mesop_env")
 def test_state_session_backend_firestore():
-  os.environ["MESOP_STATE_SESSION_BACKEND"] = "filestore"
+  os.environ["MESOP_STATE_SESSION_BACKEND"] = "firestore"
   os.environ["MESOP_STATE_SESSION_BACKEND_FIRESTORE_COLLECTION"] = "collection"
   config = CreateConfigFromEnv()
-  assert config.state_session_backend == "filestore"
+  assert config.state_session_backend == "firestore"
   assert config.state_session_backend_firestore_collection == "collection"
 
 
