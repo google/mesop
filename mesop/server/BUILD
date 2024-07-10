@@ -2,6 +2,7 @@ load(
     "//build_defs:defaults.bzl",
     "THIRD_PARTY_PY_ABSL_PY",
     "THIRD_PARTY_PY_DOTENV",
+    "THIRD_PARTY_PY_FIREBASE_ADMIN",
     "THIRD_PARTY_PY_FLASK",
     "THIRD_PARTY_PY_MSGPACK",
     "THIRD_PARTY_PY_PYTEST",
@@ -41,7 +42,7 @@ py_test(
 py_test(
     name = "state_session_test",
     srcs = ["state_session_test.py"],
-    deps = [":server"] + THIRD_PARTY_PY_PYTEST,
+    deps = [":server"] + THIRD_PARTY_PY_PYTEST + THIRD_PARTY_PY_FIREBASE_ADMIN,
 )
 
 py_test(
