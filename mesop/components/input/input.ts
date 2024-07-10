@@ -37,9 +37,12 @@ export class InputComponent {
       )
       .subscribe((event) => this.onInputDebounced(event));
     // See keyDown event for explanation for why we have a special case for Safari.
+    //
+    // Chrome's user-agent basically spoofs other browsers and includes Safari, so we
+    // need to explicitly look for the absence of it.
     if (
-      navigator.userAgent.indexOf('Safari') > -1 &&
-      navigator.userAgent.indexOf('Chrome') === -1
+      navigator.userAgent.includes('Safari') &&
+      !navigator.userAgent.includes('Chrome')
     ) {
       this.expectedIsComposingCount = 2;
       this.isComposingCount = 2;
