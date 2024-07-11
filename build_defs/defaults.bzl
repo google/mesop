@@ -121,3 +121,7 @@ THIRD_PARTY_PY_MSGPACK = [
 THIRD_PARTY_PY_SQLALCHEMY = [
     requirement("sqlalchemy"),
 ]
+
+THIRD_PARTY_PY_GREENLET = [
+    requirement("greenlet"),
+]
