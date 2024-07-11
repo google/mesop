@@ -57,7 +57,7 @@ hide:
 </section>
 
 <section class="container">
-  <div class="section-chip">Python-native</div>
+  <div class="section-chip teal">Python-native</div>
   <div class="section-headline">
     Write your UI in idiomatic Python
   </div>

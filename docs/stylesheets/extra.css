@@ -394,7 +394,7 @@ a.secondary-button:hover {
     radial-gradient(circle farthest-side at 60% 60%, var(--c), transparent 50%);
 }
 
-.section-chip {
+.section-chip.teal {
   color: var(--teal-600);
   font-weight: 600;
   margin-bottom: 12px;

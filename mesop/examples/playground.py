@@ -7,8 +7,8 @@ from mesop.examples.shared.navmenu import scaffold
 class Fake:
   def generate_text(self, input: str) -> str:
     # Simulate a slow-ish API call
-    time.sleep(0.2)
-    return "Pretend this was an LLM: " + input
+    time.sleep(2)
+    return "Some random text from input: " + input
 
 
 @me.stateclass
@@ -21,13 +21,7 @@ class State:
 @me.page(path="/playground")
 def app():
   with scaffold(url="/playground"):
-    with me.box(
-      style=me.Style(
-        display="flex",
-        flex_direction="column",
-        background="pink",
-      )
-    ):
+    with me.box(style=me.Style(display="flex", flex_direction="column")):
       header()
       body()
 
@@ -42,7 +36,7 @@ def header():
     )
   ):
     me.text(
-      "Hot reload works",
+      "Playground Page",
       type="headline-5",
       style=me.Style(margin=me.Margin(top=0, right=0, bottom=0, left=0)),
     )
