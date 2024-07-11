@@ -2,10 +2,15 @@ import os
 from pathlib import Path
 from typing import Literal
 
-from dotenv import load_dotenv
+from dotenv import find_dotenv, load_dotenv
 from pydantic import BaseModel
 
-load_dotenv()
+# Try to load .env file for PyPi Mesop build which should be in the user's current
+# working directory.
+if not load_dotenv(find_dotenv(usecwd=True)):
+  # If this fails, we may be running Mesop with Bazel, which looks for the .env file in
+  # `mesop/.env` from the root workspace.
+  load_dotenv()
 
 
 class Config(BaseModel):
