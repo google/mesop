@@ -84,19 +84,20 @@ from sqlalchemy import (
 )
 
 CONNECTION_URI = "your-database-connection-uri"
-TABLE_NAME = "your-table-name" # or the default "mesop_state_session"
+# Update to "your-table-name" if you've overridden `MESOP_STATE_SESSION_BACKEND_SQL_TABLE`.
+TABLE_NAME = "mesop_state_session"
 
-self.db = create_engine(CONNECTION_URI)
-self.metadata = MetaData()
-self.table = Table(
+db = create_engine(CONNECTION_URI)
+metadata = MetaData()
+table = Table(
   TABLE_NAME,
-  self.metadata,
+  metadata,
   Column("token", String(23), primary_key=True),
   Column("states", LargeBinary, nullable=False),
   Column("created_at", DateTime, nullable=False, index=True),
 )
 
-self.metadata.create_all(self.db)
+metadata.create_all(db)
 ```
 
 The Mesop server will raise a `sqlalchemy.exc.ProgrammingError` if there is a

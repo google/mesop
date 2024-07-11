@@ -8,6 +8,15 @@ pydantic
 pygments
 python-dotenv
 
+# Optional (lazily-loaded) deps:
+sqlalchemy
+# greenlet is needed for SQL Alchemy depending on the architecture, but because of how
+# Bazel works using requirements_lock.txt, it does seem to able to install the
+# architecture specific requirements (in this case caught on Github CI).
+#
+# See this comment https://github.com/sqlalchemy/sqlalchemy/discussions/8392#discussioncomment-3400992
+greenlet
+
 # Deps for dev/testing:
 mypy-protobuf
 pytest
@@ -20,10 +29,3 @@ mkdocstrings[python]
 firebase-admin
 matplotlib
 pandas
-sqlalchemy
-# greenlet is needed for SQL Alchemy depending on the architecture, but because of how
-# Bazel works using requirements_lock.txt, it does seem to able to install the
-# architecture specific requirements (in this case caught on Github CI).
-#
-# See this comment https://github.com/sqlalchemy/sqlalchemy/discussions/8392#discussioncomment-3400992
-greenlet

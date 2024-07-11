@@ -10,6 +10,7 @@ from mesop.dataclass_utils import (
   serialize_dataclass,
   update_dataclass_from_json,
 )
+from mesop.exceptions import MesopException
 from mesop.server.config import Config, app_config
 
 States = dict[type[Any], object]
@@ -45,7 +46,7 @@ class NullStateSessionBackend(StateSessionBackend):
   """State session backend used when state sessions are disabled."""
 
   def restore(self, token: str, states: States):
-    raise Exception("No state session backend configured.")
+    raise MesopException("No state session backend configured.")
 
   def save(self, token: str, states: States):
     pass
@@ -74,7 +75,7 @@ class MemoryStateSessionBackend(StateSessionBackend):
 
   def restore(self, token: str, states: States):
     if token not in self.cache:
-      raise Exception("Token not found in state session backend.")
+      raise MesopException("Token not found in state session backend.")
     _, cached_states = self.cache[token]
     for key, cached_state in cached_states.items():
       states[key] = cached_state
@@ -134,7 +135,7 @@ class FileStateSessionBackend(StateSessionBackend):
         states_data = msgpack.unpackb(f.read())
       _deserialize_state(states, states_data)
     except FileNotFoundError as e:
-      raise Exception("Token not found in state session backend.") from e
+      raise MesopException("Token not found in state session backend.") from e
     else:
       try:
         os.remove(file_path)
@@ -236,7 +237,7 @@ class FirestoreStateSessionBackend(StateSessionBackend):
     doc = doc_ref.get()
 
     if not doc.exists:
-      raise Exception("Token not found in state session backend.")
+      raise MesopException("Token not found in state session backend.")
 
     states_data = msgpack.unpackb(doc.to_dict()["state"])  # type: ignore
     _deserialize_state(states, states_data)
@@ -274,7 +275,7 @@ class SqlStateSessionBackend(StateSessionBackend):
 
   # Hardcode for now, but probably make adjustable in the future.
   _SESSION_TTL_MINUTES = 10
-  _SESSION_CLEAR_N_REQUESTS = 100
+  _SESSION_CLEAR_N_REQUESTS = 10
 
   def __init__(self, connection_uri: str, table_name: str):
     from sqlalchemy import (
@@ -321,7 +322,7 @@ class SqlStateSessionBackend(StateSessionBackend):
         states_data = msgpack.unpackb(result.states)  # type: ignore
         _deserialize_state(states, states_data)
       else:
-        raise Exception("Token not found in state session backend.")
+        raise MesopException("Token not found in state session backend.")
 
     with self.db.begin() as conn:
       conn.execute(delete(self.table).where(self.table.c.token == token))
