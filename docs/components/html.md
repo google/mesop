@@ -9,7 +9,7 @@ There are two modes for rendering HTML components:
 
 ## Examples
 
-<iframe class="component-demo" src="https://mesop-y677hytkra-uc.a.run.app/html"></iframe>
+<iframe class="component-demo" src="https://google.github.io/mesop/demo/?demo=html_demo" style="height: 200px"></iframe>
 
 ```python
 --8<-- "demo/html_demo.py"
