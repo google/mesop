@@ -93,7 +93,8 @@ theme:
   name: material
   logo: assets/logo.png
   favicon: assets/favicon.ico
-  font: false
+  font:
+    text: Inter
 
   palette:
     # Palette toggle for light mode
