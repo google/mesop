@@ -402,7 +402,7 @@ def demo_ui(src: str):
       style=me.Style(
         border=me.Border.all(me.BorderSide(width=0)),
         border_radius=2,
-        height="calc(100vh - 155px)",
+        height="calc(100vh - 106px)",
         width="100%",
       ),
     )
@@ -477,7 +477,7 @@ def demo_code(code_arg: str):
         ),
         font_size=13,
         padding=me.Padding.all(12),
-        height="calc(100vh - 120px)",
+        height="calc(100vh - 106px)",
         overflow_y="auto",
         width="100%",
       ),
@@ -621,4 +621,4 @@ def get_module(module_name: str):
 
 
 def is_desktop():
-  return me.viewport_size().width > 640
+  return me.viewport_size().width > 760
