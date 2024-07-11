@@ -269,6 +269,98 @@ class FirestoreStateSessionBackend(StateSessionBackend):
     pass
 
 
+class SqlStateSessionBackend(StateSessionBackend):
+  """State session backend using SQL via SQL Alchemy."""
+
+  # Hardcode for now, but probably make adjustable in the future.
+  _SESSION_TTL_MINUTES = 10
+  _SESSION_CLEAR_N_REQUESTS = 100
+
+  def __init__(self, connection_uri: str, table_name: str):
+    from sqlalchemy import (
+      Column,
+      DateTime,
+      LargeBinary,
+      MetaData,
+      String,
+      Table,
+      create_engine,
+    )
+
+    self.db = create_engine(connection_uri)
+    self.metadata = MetaData()
+    self.table = Table(
+      table_name,
+      self.metadata,
+      Column("token", String(23), primary_key=True),
+      Column("states", LargeBinary, nullable=False),
+      Column("created_at", DateTime, nullable=False, index=True),
+    )
+    # Tries to create the database if it does not exist. Outside of SQLite3, the user
+    # will need to manually create the database table since the database user should
+    # generally have the minimum necessary privileges.
+    #
+    # If the table does not exist and cannot be created a sqlalchemy.exc.ProgrammingError
+    # error will be raised.
+    self.metadata.create_all(self.db)
+
+    # We will count each restore call as a request. This is used for tracking when we
+    # should clear stale database sessions.
+    self.request_count = 0
+
+  def restore(self, token: str, states: States):
+    from sqlalchemy import delete, select
+
+    self.request_count += 1
+
+    with self.db.connect() as conn:
+      result = conn.execute(
+        select(self.table).where(self.table.c.token == token)
+      ).one_or_none()
+      if result:
+        states_data = msgpack.unpackb(result.states)  # type: ignore
+        _deserialize_state(states, states_data)
+      else:
+        raise Exception("Token not found in state session backend.")
+
+    with self.db.begin() as conn:
+      conn.execute(delete(self.table).where(self.table.c.token == token))
+
+  def save(self, token: str, states: States):
+    from sqlalchemy import insert
+
+    with self.db.begin() as conn:
+      conn.execute(
+        insert(self.table).values(
+          token=token,
+          states=msgpack.packb(_serialize_state(states)),
+          created_at=_current_datetime_utc(),
+        )
+      )
+
+  def clear_stale_sessions(self):
+    """Clears stale sessions from database.
+
+    Only query the database after every X requests to avoid fruitlessly querying the
+    database unnecessarily.
+    """
+    from sqlalchemy import delete
+
+    if self.request_count < self._SESSION_CLEAR_N_REQUESTS:
+      return
+
+    self.request_count = 0
+
+    with self.db.begin() as conn:
+      conn.execute(
+        delete(self.table).where(
+          self.table.c.created_at
+          < _current_datetime_utc()
+          - timedelta(minutes=self._SESSION_TTL_MINUTES)
+        )
+      )
+
+
 def CreateStateSessionFromConfig(config: Config):
   """Factory function to state session backend."""
   if config.state_session_backend == "memory":
@@ -278,6 +370,11 @@ def CreateStateSessionFromConfig(config: Config):
   elif config.state_session_backend == "firestore":
     return FirestoreStateSessionBackend(
       config.state_session_backend_firestore_collection
+    )
+  elif config.state_session_backend == "sql":
+    return SqlStateSessionBackend(
+      config.state_session_backend_sql_connection_uri,
+      config.state_session_backend_sql_table,
     )
   return NullStateSessionBackend()
 

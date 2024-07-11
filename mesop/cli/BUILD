@@ -1,4 +1,15 @@
-load("//build_defs:defaults.bzl", "THIRD_PARTY_PY_ABSL_PY", "THIRD_PARTY_PY_FIREBASE_ADMIN", "THIRD_PARTY_PY_MATPLOTLIB", "THIRD_PARTY_PY_PANDAS", "THIRD_PARTY_PY_PYTEST", "py_binary", "py_library", "py_test")
+load(
+    "//build_defs:defaults.bzl",
+    "THIRD_PARTY_PY_ABSL_PY",
+    "THIRD_PARTY_PY_FIREBASE_ADMIN",
+    "THIRD_PARTY_PY_MATPLOTLIB",
+    "THIRD_PARTY_PY_PANDAS",
+    "THIRD_PARTY_PY_PYTEST",
+    "THIRD_PARTY_PY_SQLALCHEMY",
+    "py_binary",
+    "py_library",
+    "py_test",
+)
 
 package(
     default_visibility = ["//build_defs:mesop_internal"],
@@ -8,12 +19,18 @@ COMMON_DATA = [
     "//mesop:example_index",
 ]
 
-COMMON_DEPS = [
-    ":execute_module",
-    "//mesop",  # Keep dep to ensure the entire Mesop library is loaded.
-    "//mesop/exceptions",
-    "//mesop/runtime",
-] + THIRD_PARTY_PY_ABSL_PY + THIRD_PARTY_PY_MATPLOTLIB + THIRD_PARTY_PY_PANDAS + THIRD_PARTY_PY_FIREBASE_ADMIN  # Used for /examples
+COMMON_DEPS = (
+    [
+        ":execute_module",
+        "//mesop",  # Keep dep to ensure the entire Mesop library is loaded.
+        "//mesop/exceptions",
+        "//mesop/runtime",
+    ] + THIRD_PARTY_PY_ABSL_PY +
+    THIRD_PARTY_PY_MATPLOTLIB +
+    THIRD_PARTY_PY_PANDAS +
+    THIRD_PARTY_PY_FIREBASE_ADMIN +
+    THIRD_PARTY_PY_SQLALCHEMY
+)  # Used for /examples
 
 exports_files(["cli.py"])
 

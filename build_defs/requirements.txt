@@ -20,3 +20,4 @@ mkdocstrings[python]
 firebase-admin
 matplotlib
 pandas
+sqlalchemy

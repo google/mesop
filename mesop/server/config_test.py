@@ -57,5 +57,18 @@ def test_state_session_backend_firestore():
   assert config.state_session_backend_firestore_collection == "collection"
 
 
+@pytest.mark.usefixtures("clear_mesop_env")
+def test_state_session_backend_sql():
+  os.environ["MESOP_STATE_SESSION_BACKEND"] = "sql"
+  os.environ["MESOP_STATE_SESSION_BACKEND_SQL_CONNECTION_URI"] = (
+    "connection://uri"
+  )
+  os.environ["MESOP_STATE_SESSION_BACKEND_SQL_TABLE"] = "session"
+  config = CreateConfigFromEnv()
+  assert config.state_session_backend == "sql"
+  assert config.state_session_backend_sql_connection_uri == "connection://uri"
+  assert config.state_session_backend_sql_table == "session"
+
+
 if __name__ == "__main__":
   raise SystemExit(pytest.main([__file__]))

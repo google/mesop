@@ -12,7 +12,7 @@ Sets the backend to use for caching state data server-side. This makes it so sta
 not have to be sent to the server on every request, reducing bandwidth, especially if
 you have large state objects.
 
-The backend options available at the moment are `memory`, `file`, and `firestore`.
+The backend options available at the moment are `memory`, `file`, `sql`, and `firestore`.
 
 #### memory
 
@@ -48,6 +48,62 @@ traffic and state size.
 
 You will also need to specify a directory to write the state data using
 `MESOP_STATE_SESSION_BACKEND_FILE_BASE_DIR`.
+
+#### SQL
+
+> NOTE: Setting up and configuring databases is out of scope of this document.
+
+This option uses [SqlAlchemy](https://www.sqlalchemy.org/) to store Mesop state sessions
+in supported SQL databases, such as SQLite3 and PostgreSQL. You can also connect to
+hosted options, such as GCP CloudSQL.
+
+If you use SQLite3, you cannot use an in-memory database. It has to be a file. This
+option has similar pros/cons as the `file` backend. Mesop uses the default configuration
+for SQLite3, so the performance will not be optimized for Mesop's usage patterns.
+SQLite3 is OK for development purposes.
+
+Using a database like PostgreSQL will allow for better scalability, both vertically and
+horizontally, since the database is decoupled from the Mesop server.
+
+The drawback here is that this requires knowledge of the database you're using. At
+minimum, you will need to create a database and a database user with the right
+privileges. You will also need to create the database table, which you can create
+with this script. You will need to update the CONNECTION_URI and TABLE_NAME to match
+your database and settings. Also the database user for this script will need privileges
+to create tables on the target database.
+
+```python
+from sqlalchemy import (
+  Column,
+  DateTime,
+  LargeBinary,
+  MetaData,
+  String,
+  Table,
+  create_engine,
+)
+
+CONNECTION_URI = "your-database-connection-uri"
+TABLE_NAME = "your-table-name" # or the default "mesop_state_session"
+
+self.db = create_engine(CONNECTION_URI)
+self.metadata = MetaData()
+self.table = Table(
+  TABLE_NAME,
+  self.metadata,
+  Column("token", String(23), primary_key=True),
+  Column("states", LargeBinary, nullable=False),
+  Column("created_at", DateTime, nullable=False, index=True),
+)
+
+self.metadata.create_all(self.db)
+```
+
+The Mesop server will raise a `sqlalchemy.exc.ProgrammingError` if there is a
+database configuration issue.
+
+By default, Mesop will use the table name `mesop_state_session`, but this can be
+overridden using `MESOP_STATE_SESSION_BACKEND_SQL_TABLE`.
 
 #### GCP Firestore
 
@@ -108,6 +164,14 @@ This is only used when the `MESOP_STATE_SESSION_BACKEND` is set to `firestore`. 
 parameter specifies which Firestore collection that Mesop will write state sessions to.
 
 **Default:** `mesop_state_sessions`
+
+### MESOP_STATE_SESSION_BACKEND_SQL_TABLE
+
+This is only used when the `MESOP_STATE_SESSION_BACKEND` is set to `sql`. This
+parameter specifies which SQL database table that Mesop will write state sessions to.
+
+**Default:** `mesop_state_session`
+
 
 ## Usage Examples
 

@@ -117,3 +117,7 @@ THIRD_PARTY_PY_DOTENV = [
 THIRD_PARTY_PY_MSGPACK = [
     requirement("msgpack"),
 ]
+
+THIRD_PARTY_PY_SQLALCHEMY = [
+    requirement("sqlalchemy"),
+]
