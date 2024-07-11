@@ -44,7 +44,7 @@ def CreateConfigFromEnv() -> Config:
   )
 
   return Config(
-    **{key: value for key, value in env_vars.items() if value is not None}
+    **{key: value for key, value in env_vars.items() if value is not None}  # type: ignore
   )
 
 
