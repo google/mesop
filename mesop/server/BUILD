@@ -4,8 +4,10 @@ load(
     "THIRD_PARTY_PY_DOTENV",
     "THIRD_PARTY_PY_FIREBASE_ADMIN",
     "THIRD_PARTY_PY_FLASK",
+    "THIRD_PARTY_PY_GREENLET",
     "THIRD_PARTY_PY_MSGPACK",
     "THIRD_PARTY_PY_PYTEST",
+    "THIRD_PARTY_PY_SQLALCHEMY",
     "py_library",
     "py_test",
 )
@@ -42,7 +44,11 @@ py_test(
 py_test(
     name = "state_session_test",
     srcs = ["state_session_test.py"],
-    deps = [":server"] + THIRD_PARTY_PY_PYTEST + THIRD_PARTY_PY_FIREBASE_ADMIN,
+    deps = [":server"] +
+           THIRD_PARTY_PY_PYTEST +
+           THIRD_PARTY_PY_FIREBASE_ADMIN +
+           THIRD_PARTY_PY_SQLALCHEMY +
+           THIRD_PARTY_PY_GREENLET,
 )
 
 py_test(

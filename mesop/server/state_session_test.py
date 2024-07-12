@@ -16,6 +16,7 @@ from google.cloud.firestore_v1.document import DocumentReference
 from google.cloud.firestore_v1.types import write
 from google.protobuf.timestamp_pb2 import Timestamp
 
+from mesop.exceptions import MesopException
 from mesop.server.config import Config
 from mesop.server.state_session import (
   CreateStateSessionFromConfig,
@@ -23,6 +24,7 @@ from mesop.server.state_session import (
   FirestoreStateSessionBackend,
   MemoryStateSessionBackend,
   NullStateSessionBackend,
+  SqlStateSessionBackend,
   States,
 )
 
@@ -39,7 +41,15 @@ class StateB:
 
 
 @pytest.fixture
-def state_session_backend_factory(tmp_path):
+def sqlite_backend(tmp_path):
+  return SqlStateSessionBackend(
+    "sqlite:///" + str(tmp_path / "db.sqlite"),
+    "mesop_state_session",
+  )
+
+
+@pytest.fixture
+def state_session_backend_factory(tmp_path, sqlite_backend):
   """Fixture to provide state session backends for parameterized tests."""
   with patch(
     "mesop.server.state_session.FirestoreStateSessionBackend._initialize_firestore_db",
@@ -49,6 +59,7 @@ def state_session_backend_factory(tmp_path):
       "memory": MemoryStateSessionBackend(),
       "file": FileStateSessionBackend(tmp_path),
       "firestore": FirestoreStateSessionBackend("collection"),
+      "sql": sqlite_backend,
     }
 
 
@@ -80,7 +91,9 @@ def test_create_state_session_file():
 
 def test_null_backend_restore_raises_exception():
   backend = NullStateSessionBackend()
-  with pytest.raises(Exception, match="No state session backend configured."):
+  with pytest.raises(
+    MesopException, match="No state session backend configured."
+  ):
     backend.restore("test", {})
 
 
@@ -94,18 +107,18 @@ def test_null_backend_clear_stale_sessions_is_noop():
   backend.clear_stale_sessions()
 
 
-@pytest.mark.parametrize("backend_key", ["memory", "file", "firestore"])
+@pytest.mark.parametrize("backend_key", ["memory", "file", "firestore", "sql"])
 def test_backend_restore_token_not_found_returns_exception(
   backend_key, state_session_backend_factory
 ):
   backend = state_session_backend_factory[backend_key]
   with pytest.raises(
-    Exception, match="Token not found in state session backend."
+    MesopException, match="Token not found in state session backend."
   ):
     backend.restore("test", {})
 
 
-@pytest.mark.parametrize("backend_key", ["memory", "file", "firestore"])
+@pytest.mark.parametrize("backend_key", ["memory", "file", "firestore", "sql"])
 def test_backend_save_and_restore_states(
   backend_key, state_session_backend_factory
 ):
@@ -129,7 +142,7 @@ def test_backend_save_and_restore_states(
   assert empty_states == saved_states
 
 
-@pytest.mark.parametrize("backend_key", ["memory", "file", "firestore"])
+@pytest.mark.parametrize("backend_key", ["memory", "file", "firestore", "sql"])
 def test_backend_token_is_cleared_after_restore(
   backend_key, state_session_backend_factory
 ):
@@ -149,14 +162,14 @@ def test_backend_token_is_cleared_after_restore(
 
   # WHEN / THEN
   with pytest.raises(
-    Exception, match="Token not found in state session backend."
+    MesopException, match="Token not found in state session backend."
   ):
     backend.restore("test", empty_states)
 
 
 def test_memory_backend_clear_stale_sessions():
   # GIVEN
-  empty_states: States = {
+  states: States = {
     type(StateA): StateA(str_value="ABC"),
   }
   backend = MemoryStateSessionBackend()
@@ -171,21 +184,21 @@ def test_memory_backend_clear_stale_sessions():
 
   # THEN
   with pytest.raises(
-    Exception, match="Token not found in state session backend."
+    MesopException, match="Token not found in state session backend."
   ):
-    backend.restore("key1", empty_states)
+    backend.restore("key1", states)
   with pytest.raises(
-    Exception, match="Token not found in state session backend."
+    MesopException, match="Token not found in state session backend."
   ):
-    backend.restore("key3", empty_states)
-  backend.restore("key2", empty_states)
-  assert empty_states == {type(StateA): StateA()}
+    backend.restore("key3", states)
+  backend.restore("key2", states)
+  assert states == {type(StateA): StateA()}
 
 
 def test_file_backend_clear_stale_sessions_not_stale(tmp_path):
   # GIVEN
   backend = FileStateSessionBackend(tmp_path)
-  empty_states: States = {
+  states: States = {
     type(StateA): StateA(str_value="ABC"),
   }
   backend.save("key1", {type(StateA): StateA()})
@@ -198,14 +211,14 @@ def test_file_backend_clear_stale_sessions_not_stale(tmp_path):
     backend.clear_stale_sessions()
 
     # THEN
-    backend.restore("key1", empty_states)
-    assert empty_states == {type(StateA): StateA()}
+    backend.restore("key1", states)
+    assert states == {type(StateA): StateA()}
 
 
 def test_file_backend_clear_stale_sessions(tmp_path):
   # GIVEN
   backend = FileStateSessionBackend(tmp_path)
-  empty_states: States = {
+  states: States = {
     type(StateA): StateA(str_value="ABC"),
   }
   backend.save("key1", {type(StateA): StateA()})
@@ -220,13 +233,13 @@ def test_file_backend_clear_stale_sessions(tmp_path):
 
     # THEN
     with pytest.raises(
-      Exception, match="Token not found in state session backend."
+      MesopException, match="Token not found in state session backend."
     ):
-      backend.restore("key1", empty_states)
+      backend.restore("key1", states)
     with pytest.raises(
-      Exception, match="Token not found in state session backend."
+      MesopException, match="Token not found in state session backend."
     ):
-      backend.restore("key2", empty_states)
+      backend.restore("key2", states)
 
 
 def test_file_backend_clear_stale_sessions_skipped(tmp_path):
@@ -249,6 +262,78 @@ def test_file_backend_clear_stale_sessions_skipped(tmp_path):
     # THEN
     backend.restore("key1", empty_states)
     assert empty_states == {type(StateA): StateA()}
+
+
+def test_sql_backend_clear_stale_sessions_not_stale(sqlite_backend):
+  # GIVEN
+  states: States = {
+    type(StateA): StateA(str_value="ABC"),
+  }
+  sqlite_backend.save("key1", {type(StateA): StateA()})
+
+  # WHEN
+  with patch(
+    "mesop.server.state_session._current_datetime_utc",
+  ) as _mock_current_datetime_utc:
+    _mock_current_datetime_utc.return_value = datetime.utcnow() - timedelta(
+      minutes=15
+    )
+    sqlite_backend.request_count = sqlite_backend._SESSION_CLEAR_N_REQUESTS
+    sqlite_backend.clear_stale_sessions()
+
+    # THEN
+    sqlite_backend.restore("key1", states)
+    assert states == {type(StateA): StateA()}
+
+
+def test_sql_backend_clear_stale_sessions(sqlite_backend):
+  # GIVEN
+  states: States = {
+    type(StateA): StateA(str_value="ABC"),
+  }
+  sqlite_backend.save("key1", {type(StateA): StateA()})
+  sqlite_backend.save("key2", {type(StateA): StateA()})
+
+  # WHEN
+  with patch(
+    "mesop.server.state_session._current_datetime_utc",
+  ) as _mock_current_datetime_utc:
+    _mock_current_datetime_utc.return_value = datetime.utcnow() + timedelta(
+      minutes=15
+    )
+    sqlite_backend.request_count = sqlite_backend._SESSION_CLEAR_N_REQUESTS
+    sqlite_backend.clear_stale_sessions()
+
+    # THEN
+    with pytest.raises(
+      MesopException, match="Token not found in state session backend."
+    ):
+      sqlite_backend.restore("key1", states)
+    with pytest.raises(
+      MesopException, match="Token not found in state session backend."
+    ):
+      sqlite_backend.restore("key2", states)
+
+
+def test_sql_backend_clear_stale_sessions_skipped(sqlite_backend):
+  # GIVEN
+  states: States = {
+    type(StateA): StateA(str_value="ABC"),
+  }
+  sqlite_backend.save("key1", {type(StateA): StateA()})
+
+  # WHEN
+  with patch(
+    "mesop.server.state_session._current_datetime_utc",
+  ) as _mock_current_datetime_utc:
+    _mock_current_datetime_utc.return_value = datetime.utcnow() + timedelta(
+      minutes=15
+    )
+    sqlite_backend.clear_stale_sessions()
+
+    # THEN
+    sqlite_backend.restore("key1", states)
+    assert states == {type(StateA): StateA()}
 
 
 # Note: The `FakeFirestoreClient` implementation here ignores a bunch of type checking

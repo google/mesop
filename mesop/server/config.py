@@ -11,9 +11,13 @@ load_dotenv()
 class Config(BaseModel):
   """Mesop app configuration."""
 
-  state_session_backend: Literal["memory", "file", "firestore", "none"] = "none"
+  state_session_backend: Literal[
+    "memory", "file", "firestore", "sql", "none"
+  ] = "none"
   state_session_backend_file_base_dir: Path = Path("/tmp")
   state_session_backend_firestore_collection: str = "mesop_state_sessions"
+  state_session_backend_sql_connection_uri: str = ""
+  state_session_backend_sql_table: str = "mesop_state_sessions"
 
   @property
   def state_session_enabled(self):
@@ -21,15 +25,26 @@ class Config(BaseModel):
 
 
 def CreateConfigFromEnv() -> Config:
-  return Config(
-    state_session_backend=os.getenv("MESOP_STATE_SESSION_BACKEND", "none"),  # type: ignore
-    state_session_backend_file_base_dir=Path(
-      os.getenv("MESOP_STATE_SESSION_BACKEND_FILE_BASE_DIR", "/tmp")
-    ),
+  file_base_dir = os.getenv("MESOP_STATE_SESSION_BACKEND_FILE_BASE_DIR")
+
+  env_vars = dict(
+    state_session_backend=os.getenv("MESOP_STATE_SESSION_BACKEND"),  # type: ignore
+    state_session_backend_file_base_dir=Path(file_base_dir)
+    if file_base_dir
+    else None,
     state_session_backend_firestore_collection=os.getenv(
-      "MESOP_STATE_SESSION_BACKEND_FIRESTORE_COLLECTION",
-      "mesop_state_sessions",
+      "MESOP_STATE_SESSION_BACKEND_FIRESTORE_COLLECTION"
     ),
+    state_session_backend_sql_connection_uri=os.getenv(
+      "MESOP_STATE_SESSION_BACKEND_SQL_CONNECTION_URI"
+    ),
+    state_session_backend_sql_table=os.getenv(
+      "MESOP_STATE_SESSION_BACKEND_SQL_TABLE",
+    ),
+  )
+
+  return Config(
+    **{key: value for key, value in env_vars.items() if value is not None}  # type: ignore
   )
 
 
