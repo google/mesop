@@ -20,6 +20,10 @@ def colab_run(*, port: int = 32123, prod_mode: bool = False):
   if not colab_utils.is_running_in_colab():
     print("Not running Colab: `colab_run` is a no-op")
     return
+  notebook_run(port=port, prod_mode=prod_mode)
+
+
+def notebook_run(*, port: int = 32123, prod_mode: bool = False):
   # Ensures the flags are marked as parsed before creating the app otherwise you will
   # get UnparsedFlagAccessError.
   #

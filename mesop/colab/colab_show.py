@@ -14,3 +14,14 @@ def colab_show(
     width=width,
     height=height,
   )
+
+
+def notebook_show(
+  port: int = 32123, path: str = "/", width: str = "100%", height: str = "400"
+):
+  """Displays the Mesop app in a JupyterLab cell output as an IFrame."""
+  from IPython.display import IFrame, display
+
+  display(
+    IFrame(src=f"http://localhost:{port}{path}", width=width, height=height)
+  )
