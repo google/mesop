@@ -1,7 +1,7 @@
 import hashlib
 import inspect
 import json
-from functools import wraps
+from functools import lru_cache, wraps
 from typing import (
   Any,
   Callable,
@@ -374,6 +374,7 @@ def register_event_handler(
   return fn_id
 
 
+@lru_cache(maxsize=None)
 def compute_fn_id(fn: Callable[..., Any]) -> str:
   source_code = inspect.getsource(fn)
   # Skip hashing the fn/module name in debug mode because it makes it hard to debug.
