@@ -374,6 +374,10 @@ def register_event_handler(
   return fn_id
 
 
+from functools import lru_cache
+
+
+@lru_cache(maxsize=100)
 def compute_fn_id(fn: Callable[..., Any]) -> str:
   source_code = inspect.getsource(fn)
   # Skip hashing the fn/module name in debug mode because it makes it hard to debug.
