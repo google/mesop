@@ -1,4 +1,5 @@
 import base64
+import cProfile
 import secrets
 import time
 import urllib.parse as urlparse
@@ -95,104 +96,106 @@ def configure_flask_app(
     yield STREAM_END
 
   def generate_data(ui_request: pb.UiRequest) -> Generator[str, None, None]:
-    try:
-      # Wait for hot reload to complete on the server-side before processing the
-      # request. This avoids a race condition where the client-side reloads before
-      # the server has reloaded.
-      runtime().wait_for_hot_reload()
-      if runtime().has_loading_errors():
-        # Only showing the first error since our error UI only
-        # shows one error at a time, and in practice there's usually
-        # one error.
-        yield from yield_errors(runtime().get_loading_errors()[0])
+    with cProfile.Profile() as pr:
+      try:
+        # Wait for hot reload to complete on the server-side before processing the
+        # request. This avoids a race condition where the client-side reloads before
+        # the server has reloaded.
+        runtime().wait_for_hot_reload()
+        if runtime().has_loading_errors():
+          # Only showing the first error since our error UI only
+          # shows one error at a time, and in practice there's usually
+          # one error.
+          yield from yield_errors(runtime().get_loading_errors()[0])
 
-      if ui_request.HasField("init"):
-        runtime().context().set_viewport_size(ui_request.init.viewport_size)
-        page_config = runtime().get_page_config(path=ui_request.path)
-        if page_config and page_config.on_load:
-          result = page_config.on_load(LoadEvent(path=ui_request.path))
-          # on_load is a generator function then we need to iterate through
-          # the generator object.
-          if result:
-            for _ in result:
+        if ui_request.HasField("init"):
+          runtime().context().set_viewport_size(ui_request.init.viewport_size)
+          page_config = runtime().get_page_config(path=ui_request.path)
+          if page_config and page_config.on_load:
+            result = page_config.on_load(LoadEvent(path=ui_request.path))
+            # on_load is a generator function then we need to iterate through
+            # the generator object.
+            if result:
+              for _ in result:
+                yield from render_loop(path=ui_request.path, init_request=True)
+                runtime().context().set_previous_node_from_current_node()
+                runtime().context().reset_current_node()
+            else:
               yield from render_loop(path=ui_request.path, init_request=True)
-              runtime().context().set_previous_node_from_current_node()
-              runtime().context().reset_current_node()
           else:
             yield from render_loop(path=ui_request.path, init_request=True)
-        else:
-          yield from render_loop(path=ui_request.path, init_request=True)
-        yield create_update_state_event()
-        yield STREAM_END
-      elif ui_request.HasField("user_event"):
-        event = ui_request.user_event
-        runtime().context().set_viewport_size(event.viewport_size)
+          yield create_update_state_event()
+          yield STREAM_END
+        elif ui_request.HasField("user_event"):
+          event = ui_request.user_event
+          runtime().context().set_viewport_size(event.viewport_size)
 
-        if event.states.states:
-          runtime().context().update_state(event.states)
-        else:
-          runtime().context().restore_state_from_session(event.state_token)
+          if event.states.states:
+            runtime().context().update_state(event.states)
+          else:
+            runtime().context().restore_state_from_session(event.state_token)
 
-        for _ in render_loop(path=ui_request.path, trace_mode=True):
-          pass
-        if ui_request.user_event.handler_id:
-          runtime().context().set_previous_node_from_current_node()
-        else:
-          # Set previous node to None to skip component diffs on hot reload. This is
-          # because we lose the previous state before hot reloading, which results in
-          # no diff.
-          #
-          # This will also skip component diffs for back button events on the browser
-          # since no event handler ID is provided in that case.
-          runtime().context().reset_previous_node()
-        runtime().context().reset_current_node()
-
-        result = runtime().context().run_event_handler(ui_request.user_event)
-        path = ui_request.path
-        has_run_navigate_on_load = False
-        for _ in result:
-          navigate_commands = [
-            command
-            for command in runtime().context().commands()
-            if command.HasField("navigate")
-          ]
-          if len(navigate_commands) > 1:
-            warn(
-              "Dedicated multiple navigate commands! Only the first one will be used."
-            )
-          for command in runtime().context().commands():
-            if command.HasField("navigate"):
-              path = command.navigate.url
-              page_config = runtime().get_page_config(path=path)
-              if (
-                page_config
-                and page_config.on_load
-                and not has_run_navigate_on_load
-              ):
-                has_run_navigate_on_load = True
-                result = page_config.on_load(LoadEvent(path=path))
-                # on_load is a generator function then we need to iterate through
-                # the generator object.
-                if result:
-                  for _ in result:
-                    yield from render_loop(path=path, init_request=True)
-                    runtime().context().set_previous_node_from_current_node()
-                    runtime().context().reset_current_node()
-
-          yield from render_loop(path=path)
-          runtime().context().set_previous_node_from_current_node()
+          for _ in render_loop(path=ui_request.path, trace_mode=True):
+            pass
+          if ui_request.user_event.handler_id:
+            runtime().context().set_previous_node_from_current_node()
+          else:
+            # Set previous node to None to skip component diffs on hot reload. This is
+            # because we lose the previous state before hot reloading, which results in
+            # no diff.
+            #
+            # This will also skip component diffs for back button events on the browser
+            # since no event handler ID is provided in that case.
+            runtime().context().reset_previous_node()
           runtime().context().reset_current_node()
-        yield create_update_state_event(diff=True)
-        yield STREAM_END
-      else:
-        raise Exception(f"Unknown request type: {ui_request}")
 
-    except Exception as e:
-      if e in exceptions_to_propagate:
-        raise e
-      yield from yield_errors(
-        error=pb.ServerError(exception=str(e), traceback=format_traceback())
-      )
+          result = runtime().context().run_event_handler(ui_request.user_event)
+          path = ui_request.path
+          has_run_navigate_on_load = False
+          for _ in result:
+            navigate_commands = [
+              command
+              for command in runtime().context().commands()
+              if command.HasField("navigate")
+            ]
+            if len(navigate_commands) > 1:
+              warn(
+                "Dedicated multiple navigate commands! Only the first one will be used."
+              )
+            for command in runtime().context().commands():
+              if command.HasField("navigate"):
+                path = command.navigate.url
+                page_config = runtime().get_page_config(path=path)
+                if (
+                  page_config
+                  and page_config.on_load
+                  and not has_run_navigate_on_load
+                ):
+                  has_run_navigate_on_load = True
+                  result = page_config.on_load(LoadEvent(path=path))
+                  # on_load is a generator function then we need to iterate through
+                  # the generator object.
+                  if result:
+                    for _ in result:
+                      yield from render_loop(path=path, init_request=True)
+                      runtime().context().set_previous_node_from_current_node()
+                      runtime().context().reset_current_node()
+
+            yield from render_loop(path=path)
+            runtime().context().set_previous_node_from_current_node()
+            runtime().context().reset_current_node()
+          yield create_update_state_event(diff=True)
+          pr.print_stats()
+          yield STREAM_END
+        else:
+          raise Exception(f"Unknown request type: {ui_request}")
+
+      except Exception as e:
+        if e in exceptions_to_propagate:
+          raise e
+        yield from yield_errors(
+          error=pb.ServerError(exception=str(e), traceback=format_traceback())
+        )
 
   @flask_app.route("/ui", methods=["POST"])
   def ui_stream() -> Response:
@@ -215,6 +218,7 @@ def configure_flask_app(
       stream_with_context(generate_data(ui_request)),
       content_type="text/event-stream",
     )
+
     return response
 
   @flask_app.before_request
