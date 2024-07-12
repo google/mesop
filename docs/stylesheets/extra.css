@@ -28,9 +28,9 @@ p {
   --lunar: #fbf2fc;
   --asteroid: #e3cee3;
   --crater: #f0dfdf;
+  --mesop-blue-40: #0064ff;
+  --mesop-blue-35: #0052ce;
   /* Tailwind colors: https://tailwindcss.com/docs/customizing-colors#default-color-palette */
-  --blue-600: #2563eb;
-  --blue-700: #1d4ed8;
   --teal-600: #0d9488;
   --indigo-600: #4f46e5;
   --pink-600: #db2777;
@@ -38,8 +38,8 @@ p {
 }
 
 :root {
-  --primary-button-background-color: var(--blue-600);
-  --primary-button-background-color-hover: var(--blue-700);
+  --primary-button-background-color: var(--mesop-blue-40);
+  --primary-button-background-color-hover: var(--mesop-blue-35);
   --primary-button-text-color: var(--white);
   --primary-button-text-color-hover: var(--almost-white);
 }
@@ -248,6 +248,7 @@ body {
   margin-top: 24px;
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 16px;
 }
 
@@ -255,7 +256,7 @@ a.primary-button {
   background: var(--primary-button-background-color);
   color: var(--primary-button-text-color);
   font-weight: 600;
-  padding: 16px;
+  padding: 12px 16px;
   border-radius: 12px;
   font-size: 14px;
 }
@@ -269,7 +270,7 @@ a.secondary-button {
   border: 1px solid var(--md-default-fg-color--lightest);
   color: var(--md-default-fg-color);
   font-weight: 600;
-  padding: 16px;
+  padding: 12px 16px;
   border-radius: 12px;
   font-size: 14px;
 }
@@ -304,7 +305,7 @@ a.secondary-button:hover {
 
 .chat-inputs-iframe {
   margin-top: 24px;
-  width: 640px;
+  width: min(100%, 760px);
   border-radius: 8px;
   height: 450px;
   border: 0;
@@ -394,14 +395,17 @@ a.secondary-button:hover {
     radial-gradient(circle farthest-side at 60% 60%, var(--c), transparent 50%);
 }
 
-.section-chip.teal {
-  color: var(--teal-600);
+.section-chip {
   font-weight: 600;
   margin-bottom: 12px;
 }
 
+.section-chip.teal {
+  color: var(--teal-600);
+}
+
 .section-chip.blue {
-  color: var(--blue-600);
+  color: var(--mesop-blue-40);
 }
 
 .section-chip.pink {

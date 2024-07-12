@@ -6,7 +6,7 @@ hide:
 
 <style>
   :root {
-    --modern-ui-principles-offset: 280px;
+    --modern-ui-principles-offset: 560px;
   }
 
   .md-typeset h1 {
@@ -38,8 +38,8 @@ hide:
 <header>
   <div class="headline">Rapidly build AI apps in Python</div>
   <div class="sub-headline">
-    Used at Google for rapid AI app development.</br>
-    Create web apps without the complexity of frontend development.
+    Create web apps without the complexity of frontend development.</br>
+    Used at Google for rapid AI app development.
   </div>
   <div class="header-buttons">
     <a class="primary-button" href="./getting_started/installing">Get started</a>
@@ -50,7 +50,7 @@ hide:
 <section style="padding: 72px 0">
   <div class="center column">
     <div class="section-headline">
-      Build your AI chat app in a few lines of code...
+      Make your AI chat app in minutes
     </div>
     <iframe src="https://google.github.io/mesop/demo/?demo=embed/chat" class="main-demo-iframe box-shadow"></iframe>
   </div>
@@ -109,6 +109,10 @@ hide:
         menu(url=url)
         me.slot()
 
+    @me.component
+    def menu(url: str):
+      ...
+
     def page1():
       with scaffold(url="/page1"):
         some_content(...)
@@ -121,7 +125,7 @@ hide:
     Declarative UI that's easy to understand
   </div>
   <div class="section-body">
-    Mesop embraces a declarative approach to UI development, making your code more intuitive and maintainable. Say goodbye to complex imperative logic and hello to clean, expressive code. Build user interaces using battle-tested patterns, without leaving Python.
+    Mesop streamlines UI development with a declarative approach. Build expressive, maintainable interfaces using battle-tested patterns in Python. Say goodbye to complex imperative logic and hello to intuitive, clean code.
   </div>
 </section>
 
@@ -159,7 +163,7 @@ def on_image_upload(e: me.UploadEvent):
 <section class="container pink-gradient-background">
   <div class="section-chip pink">Building blocks</div>
   <div class="section-headline">
-    Ready-to-use components
+    Jumpstart with ready-to-use components
   </div>
   <div class="section-body">
     Mesop provides a versatile range of <a href="./components/">30 components</a>, from low-level building blocks to high-level, AI-focused components. This flexibility lets you rapidly prototype ML apps or build custom UIs, all within a single framework that adapts to your project's use case.
@@ -179,29 +183,37 @@ def on_image_upload(e: me.UploadEvent):
   </div>
 </section>
 
-<section class="container teal-gradient-background">
-  <div class="section-chip teal">Build anything</div>
+<section class="container amber-gradient-background">
+  <div class="section-chip amber">Build anything</div>
   <div class="section-headline">
     Build any user interface you can imagine
   </div>
   <div class="section-body">
 With Mesop, you can build virtually any web-based user interface or application you can imagine. From quick prototypes to enterprise tools, Mesop provides the customizability to bring your ideas to life.
   </div>
-  <div class="center">
-  <!-- UPDATE: -->
-  <iframe src="http://localhost:32123/embed/chat_inputs" class="chat-inputs-iframe box-shadow"></iframe>
-  </div>
+  <iframe src="https://google.github.io/mesop/demo/?demo=embed/chat_inputs" class="chat-inputs-iframe box-shadow"></iframe>
 </section>
 
-<section class="container amber-gradient-background">
-  <div class="section-chip amber">Extensible</div>
+<section class="container">
+  <div class="section-chip teal">Extensible</div>
   <div class="section-headline">
   Seamlessly integrate JS with web components
   </div>
   <div class="section-body">
-With Mesop <a href="./web_components/">web components</a>, you get the best of both worlds: the simplicity and power of Python, with the ability to drop down into JavaScript when you need that extra control.  Use existing JS libraries - all while keeping your core logic in Python.
+    Get the best of both worlds with Mesop <a href="./web_components/">web components</a>. Leverage Python's simplicity for core logic, while accessing the vast ecosystem of JS libraries
   </div>
 </section>
+
+=== "counter_component.py"
+
+    ```python
+    --8<-- "mesop/examples/web_component/quickstart/counter_component.py"
+    ```
+=== "counter_component.js"
+
+    ```python
+    --8<-- "mesop/examples/web_component/quickstart/counter_component.js"
+    ```
 
 <section class="container blue-gradient-background">
   <div class="section-chip blue">Simple deployment</div>
@@ -210,7 +222,7 @@ With Mesop <a href="./web_components/">web components</a>, you get the best of b
   </div>
   <div class="section-body">
 Mesop streamlines cloud deployment, enabling you to share your AI application with the world in minutes. With step-by-step guides for deploying to Google Cloud Run or any cloud service that takes a container, you can go from local development to production-ready deployment without wrestling with complex server setups.
-<a class="section-button" href="./guides/deployment" style="display: flex">
+<a class="section-button" href="./guides/deployment/#cloud-run" style="display: flex">
 <img src="https://www.gstatic.com/bricks/image/f2e0986a2802c0b6c4be7f1355599d5aadfb21a63b7e9643d96697ff9334a1e1.svg" style="width: 40px; margin-right: 12px">
   <div>
       Google Cloud Run
