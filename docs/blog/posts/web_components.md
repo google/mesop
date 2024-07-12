@@ -12,7 +12,7 @@ At first, I thought of it as joke, but now that Mesop has launched experimental 
 
 ## What is Mesop?
 
-Before we dive in, let me explain what Mesop is. Mesop is a Python UI framework focused on rapidly building AI apps. You can write a lot of kinds of apps all in Python as you can see from the examples on our [home page](https://google.github.io/mesop/), but when you need to, Mesop provide the flexibility of dropping down into web components so you can use existing JS libraries or have fine-grained UI control.
+Before we dive in, let me explain what Mesop is. Mesop is a Python UI framework focused on rapidly building AI apps. You can write a lot of kinds of apps all in Python as you can see from the examples on our [home page](https://google.github.io/mesop/), but when you need to, Mesop provides the flexibility of dropping down into web components so you can  have fine-grained UI control and use existing JS libraries.
 
 ## Avoid the builds
 
@@ -22,25 +22,25 @@ DHH, creator of Rails, recently gave an [interview](https://youtu.be/rEZNbM4MUdo
 
 As someone who's done front-end for almost a decade, I can attest to the sentiment of feeling the pain of compiling JavaScript options. Setting up compiler configs and options can easily take hours. I want to be clear, I think a lot of these tools like TypeScript are fantastic, and the core Mesop framework itself is compiled using TypeScript and Angular's compilers.
 
-But when it comes to rapid prototyping, I want to avoid that overhead.
+But when it comes to rapid prototyping, I want to avoid that overhead. In our [design proposal](https://docs.google.com/document/d/1Nc7Ub8DMNSxAmFuPRdyrlZXh_AoxVjZM-YEeWF8dAyI/edit#heading=h.36b20xkar02d), we intentionally designed a lightweight model where you don't _need_ to set up a complex build chain to start writing JavaScript.
 
-In our [design proposal](https://docs.google.com/document/d/1Nc7Ub8DMNSxAmFuPRdyrlZXh_AoxVjZM-YEeWF8dAyI/edit#heading=h.36b20xkar02d) for Mesop, we intentionally designed a lightweight model where you don't _need_ to set up a complex build chain to write JavaScript. Sometimes a build step is inevitable, e.g. you're using TypeScript, and you still have the option of compiling your JavaScript.
+Sometimes a build step is unavoidable, e.g. you're writing TypeScript, and you can still compile your JavaScript as needed.
 
 ## Framework churn
 
-The front-end ecosystem is infamous for its steady and constant churn. The good thing about building on top of web components is that it's a web standard that's supported by all modern browsers. This means, that given browser makers' focus on "not breaking the web", this will be there for many years, if not decades to come.
+The front-end ecosystem is infamous for its steady and constant churn. The good thing about building on top of web components is that it's based on [web standards](https://developer.mozilla.org/en-US/docs/Web/API/Web_components) supported by all modern browsers. This means, that given browser makers' focus on "not breaking the web", this will be there for many years, if not decades to come.
 
-For years, web components had a reputation of being an immature technology due to iffy browser support, but fast forward to 2024, and web components are well-supported in modern browsers and libraries built on web components like Lit are downloaded millions of times a week.
+For years, web components had a reputation of being an immature technology due to inconsistent support across browsers, but fast forward to 2024, and web components are well-supported in modern browsers and libraries built on web components like [Lit](https://lit.dev/), which is downloaded millions of times a week.
 
 ## Minimizing front-end fatigue in Mesop
 
 FE developers are so used to the pain and complexity of front-end development that they can forget how steep the learning curve is until someone from another domain tries to build a simple web app, and struggles with just getting the web app up and started.
 
-Mesop app developers are mostly _not_ front-end developers which means that reducing the complexity, especially learning curve, of building custom components is very important. In Mesop, we want to provide a smooth pathway where you can [get started](https://google.github.io/mesop/web_components/quickstart/) with minimal front-end knowledge and build simple custom components with vanilla JavaScript without learning the steep complexity of grasping the entire front-end ecosystem.
+Mesop app developers are mostly _not_ front-end developers which means that reducing the complexity, especially learning curve, of building custom components is very important. In Mesop, we've designed a smooth pathway where you can [get started](https://google.github.io/mesop/web_components/quickstart/) with a little front-end knowledge and build simple custom components without learning a complex front-end framework.
 
 ## What's next
 
-Follow [our X/Twitter account, @mesop_dev](https://x.com/mesop_dev) for more updates. We're working on improving our web component stories, in particular by:
+Follow [our X/Twitter account, @mesop_dev](https://x.com/mesop_dev) for more updates. We're working on improving our web component support, in particular by:
 
 - Creating guides for wrapping React components into Mesop web components
 - Fostering an ecosystem of open-source Mesop web components by making it easy to discover and reuse web components that other people have built.
