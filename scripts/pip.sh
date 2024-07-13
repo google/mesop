@@ -28,7 +28,10 @@ pip install -r mesop/pip_package/requirements.txt --no-binary pydantic && \
 pip uninstall -y mesop && \
 bazel run //mesop/pip_package:build_pip_package -- /tmp/mesoprelease-test/mesop.tar.gz && \
 cp -r ./scripts/smoketest_app /tmp/mesoprelease-test && \
-cd /tmp/mesoprelease-test/ && \
+# Do "-P" so that it follows the physical path so that
+# it follows the symlink on MacOs from /tmp to /private/tmp
+# Otherwise, gunicorn cannot serve the web component files properly
+cd -P /tmp/mesoprelease-test/ && \
 tar -xzf mesop.tar.gz && \
 pip install --upgrade /tmp/mesoprelease-test/mesop*.whl && \
 cd smoketest_app && mesop main.py
