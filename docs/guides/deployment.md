@@ -360,7 +360,7 @@ git push origin main
 
 ### View deployed app
 
-Congratulations, uou should now be able to view your app on Hugging Face Spaces.
+Congratulations! You should now be able to view your app on Hugging Face Spaces.
 
 The URL should be something like this:
 
