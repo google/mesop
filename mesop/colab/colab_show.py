@@ -34,7 +34,7 @@ def notebook_show(
     print("Not running in a notebook environment: `notebook_show` is a no-op")
     return
 
-  from IPython.display import IFrame, display
+  from IPython.display import IFrame, display  # type: ignore
 
   display(
     IFrame(src=f"http://localhost:{port}{path}", width=width, height=height)
