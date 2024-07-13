@@ -11,7 +11,7 @@ const pythonDemoFiles = fs
 console.log(pythonDemoFiles);
 
 // Remove the skip if you want to re-generate the screenshots.
-test.skip('screenshot each demo', async ({page}) => {
+test('screenshot each demo', async ({page}) => {
   // This will take a while.
   test.setTimeout(0);
 
