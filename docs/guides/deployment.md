@@ -1,6 +1,6 @@
 # Deployment
 
-> We recommend Google Cloud Run or Hugging Face Spaces which both have free tiers.
+> We recommend Google Cloud Run or Hugging Face Spaces, which both have a free tier.
 
 This section describes how to run your Mesop application using the following
 platforms:
