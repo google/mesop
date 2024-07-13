@@ -521,9 +521,7 @@ greenlet==3.0.3 \
     --hash=sha256:fcd2469d6a2cf298f198f0487e0a5b1a47a42ca0fa4dfd1b6862c999f018ebbf \
     --hash=sha256:fd096eb7ffef17c456cfa587523c5f92321ae02427ff955bebe9e3c63bc9f0da \
     --hash=sha256:fe754d231288e1e64323cfad462fcee8f0288654c10bdf4f603a39ed923bef33
-    # via
-    #   -r build_defs/requirements.txt
-    #   sqlalchemy
+    # via -r build_defs/requirements.txt
 griffe==0.47.0 \
     --hash=sha256:07a2fd6a8c3d21d0bbb0decf701d62042ccc8a576645c7f8799fe1f10de2b2de \
     --hash=sha256:95119a440a3c932b13293538bdbc405bee4c36428547553dc6b327e7e7d35e5a
