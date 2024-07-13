@@ -60,9 +60,9 @@ class Runtime:
     self._loading_errors = []
 
   def context(self) -> Context:
-    if "context" not in g:
-      g.context = self.create_context()
-    return g.context
+    if "_mesop_context" not in g:
+      g._mesop_context = self.create_context()
+    return g._mesop_context
 
   def create_context(self) -> Context:
     if len(self._state_classes) == 0:
