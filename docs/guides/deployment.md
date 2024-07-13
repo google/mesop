@@ -1,14 +1,18 @@
 # Deployment
 
+> We recommend Google Cloud Run or Hugging Face Spaces, which both have a free tier.
+
 This section describes how to run your Mesop application using the following
 platforms:
 
 - [Google Cloud Run](#cloud-run)
 - [Google App Engine](#app-engine)
 - [Docker](#docker)
+- [Hugging Face Spaces](#hugging-face-spaces)
 
 If you can run your Mesop app on [Docker](https://www.docker.com/), you should be able
-to run it on many other cloud platforms as well.
+to run it on many other cloud platforms, such as
+[Hugging Face Spaces](https://huggingface.co/spaces).
 
 ## Example application
 
@@ -152,38 +156,7 @@ Make sure [Docker and Docker Compose are installed](https://docs.docker.com/engi
 ### Dockerfile
 
 ```Docker title="Dockerfile"
-FROM python:3.10.14-bullseye
-
-RUN apt-get update && \
-  apt-get install -y \
-  # General dependencies
-  locales \
-  locales-all && \
-  # Clean local repository of package files since they won't be needed anymore.
-  # Make sure this line is called after all apt-get update/install commands have
-  # run.
-  apt-get clean && \
-  # Also delete the index files which we also don't need anymore.
-  rm -rf /var/lib/apt/lists/*
-
-ENV LC_ALL en_US.UTF-8
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US.UTF-8
-
-# Install dependencies
-COPY requirements.txt .
-RUN pip install -r requirements.txt
-
-# Create non-root user
-RUN groupadd -g 900 mesop && useradd -u 900 -s /bin/bash -g mesop mesop
-USER mesop
-
-# Add app code here
-COPY . /srv/mesop-app
-WORKDIR /srv/mesop-app
-
-# Run Mesop through gunicorn. Should be available at localhost:8080
-CMD ["gunicorn", "--bind", "0.0.0.0:8080", "main:me"]
+--8<-- "docs/assets/hf/example.Dockerfile"
 ```
 
 ### docker-compose.yaml
@@ -213,3 +186,123 @@ docker build -t mesop-app . && docker run -d -p 8080:8080 mesop-app
 ```
 
 You should now be able to view your Mesop app at http://localhost:8080.
+
+
+## Hugging Face Spaces
+
+Hugging Face Spaces has a free tier that gives you 2 vCPU and 16GB RAM, which is plenty
+for running Mesop applications that leverage generative AI APIs.
+
+### Pre-requisites
+
+This section assumes you already have a free Hugging Face Space account.
+
+### Create new Space
+
+Go to [https://huggingface.co/spaces](https://huggingface.co/spaces) and click
+`Create new Space`.
+
+![Create new Hugging Face Space](../assets/hf/create-hf-space.png)
+
+#### Name your app and use Docker SDK
+
+Name the Space `mesop-hello-world` you want and select the `apache-2.0` license.
+
+Next select the Docker SDK with a blank template.
+
+![Select Docker](../assets/hf/select-docker.png)
+
+#### CPU Basic and Create Space
+
+Next make sure that you are using the free `CPU Basic` plan. Then click `Create Space`.
+
+![Create Hugging Face Space](../assets/hf/create-hf-space-2.png)
+
+### Clone your Hugging Face Space Git Repository
+
+Example command using Git over SSH:
+
+```sh
+git clone git@hf.co:spaces/<user-name>/mesop-hello-world
+cd mesop-hello-world
+```
+
+> Note: You'll need to have an SSH key configured on Hugging Face. See [https://huggingface.co/docs/hub/en/security-git-ssh](https://huggingface.co/docs/hub/en/security-git-ssh).
+
+### Create main.py
+
+This is the same `main.py` file shown earlier, except we need to allow Hugging Face to
+iframe our Mesop app.
+
+```py title="main.py"
+import mesop as me
+
+@me.page(
+  title="Home",
+  security_policy=me.SecurityPolicy(
+    allowed_iframe_parents=["https://huggingface.co"]
+  ),
+)
+def home():
+  me.text("Hello, world")
+```
+
+### Create requirements.txt
+
+This file is the same as the generic Docker setup:
+
+```title="requirements.txt"
+mesop
+gunicorn
+```
+
+### Create Dockerfile
+
+This file is the same as the generic Docker setup:
+
+```Docker title="Dockerfile"
+--8<-- "docs/assets/hf/example.Dockerfile"
+```
+
+### Add app_port in README.md
+
+Next we will need to open port `8080` which we specified in the Dockerfile. This is
+done through a config section in the `README.md`.
+
+```md  title="README.md"
+---
+title: Mesop Hello World
+emoji: 🐠
+colorFrom: blue
+colorTo: purple
+sdk: docker
+pinned: false
+license: apache-2.0
+app_port: 8080
+---
+
+Check out the configuration reference at https://huggingface.co/docs/hub/spaces-config-reference
+```
+
+### Deploy to Hugging Face Spaces
+
+The commands to commit your changes and push to the Hugging Face Spaces git repository
+are:
+
+```sh
+git add -A
+git commit -m "Add hello world Mesop app"
+git push origin main
+```
+
+### View deployed app
+
+Congratulations! You should now be able to view your app on Hugging Face Spaces.
+
+The URL should be something like this:
+
+```
+https://huggingface.co/spaces/<user-name>/mesop-hello-world
+```
+
+![Your deployed Hugging Face Spaces app](../assets/hf/deployed-hf-space.png)
