@@ -235,8 +235,7 @@ Go to [https://huggingface.co/spaces](https://huggingface.co/spaces) and click
 
 #### Name your app and use Docker SDK
 
-Name the Space whatever you want and select an appropriate license, such as
-`mesop-hello-world` and `apache-2.0` respectively.
+Name the Space `mesop-hello-world` you want and select the `apache-2.0` license.
 
 Next select the Docker SDK with a blank template.
 
@@ -365,7 +364,7 @@ Congratulations! You should now be able to view your app on Hugging Face Spaces.
 The URL should be something like this:
 
 ```
-https://huggingface.co/spaces/<user-name>/<app-name>
+https://huggingface.co/spaces/<user-name>/mesop-hello-world
 ```
 
 ![Your deployed Hugging Face Spaces app](../assets/hf/deployed-hf-space.png)
