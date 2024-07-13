@@ -219,7 +219,7 @@ You should now be able to view your Mesop app at http://localhost:8080.
 
 ## Hugging Face Spaces
 
-Hugging Face Spaces has free tier that gives you 2 vCPU and 16GB RAM, which is plenty
+Hugging Face Spaces has a free tier that gives you 2 vCPU and 16GB RAM, which is plenty
 for running Mesop applications that leverage generative AI APIs.
 
 ### Pre-requisites
@@ -229,7 +229,7 @@ This section assumes you already have a free Hugging Face Space account.
 ### Create new Space
 
 Go to [https://huggingface.co/spaces](https://huggingface.co/spaces) and click
-`Create new Space`
+`Create new Space`.
 
 ![Create new Hugging Face Space](../assets/hf/create-hf-space.png)
 
@@ -257,11 +257,11 @@ git clone git@hf.co:spaces/<user-name>/mesop-hello-world
 cd mesop-hello-world
 ```
 
-> Note that you'll need to have an SSH key configured on Hugging Face. See [https://huggingface.co/docs/hub/en/security-git-ssh](https://huggingface.co/docs/hub/en/security-git-ssh).
+> Note: You'll need to have an SSH key configured on Hugging Face. See [https://huggingface.co/docs/hub/en/security-git-ssh](https://huggingface.co/docs/hub/en/security-git-ssh).
 
 ### Create main.py
 
-This is the same main.py file shown earlier, except we need to allow Hugging Face to
+This is the same `main.py` file shown earlier, except we need to allow Hugging Face to
 iframe our Mesop app.
 
 ```py title="main.py"
@@ -289,7 +289,7 @@ gunicorn
 
 ### Create Dockerfile
 
-This file is the exact same as what was shown earlier in the Dockerfile section. Just
+This file is the exact same as what was shown earlier in the Docker section. Just
 showing it again to avoid confusion.
 
 ```Docker title="Dockerfile"
@@ -330,7 +330,7 @@ CMD ["gunicorn", "--bind", "0.0.0.0:8080", "main:me"]
 ### Add app_port in README.md
 
 Next we will need to open port `8080` which we specified in the Dockerfile. This is
-done through a config file in the README.md
+done through a config section in the `README.md`.
 
 ```md  title="README.md"
 ---
@@ -368,4 +368,4 @@ The URL should be something like this:
 https://huggingface.co/spaces/<user-name>/<app-name>
 ```
 
-![Your deploy Hugging Face Spaces app](../assets/hf/deployed-hf-space.png)
+![Your deployed Hugging Face Spaces app](../assets/hf/deployed-hf-space.png)
