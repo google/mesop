@@ -62,7 +62,7 @@ Visit [https://pypi.org/project/mesop/](https://pypi.org/project/mesop/) to see 
 
 Because Colab installs from PyPI, you will need to test the RC on Colab after uploading to PyPI.
 
-Open our [Mesop Colab notebook](https://colab.research.google.com/github/google/mesop/blob/main/notebooks/mesop_colab_getting_started.ipynb). You will need to explicitly pip install the RC version as pip will _not_ automatically instally a pre-release version, even if it's the newest version. So change the first cell to something like:
+Open our [Mesop Colab notebook](https://colab.research.google.com/github/google/mesop/blob/main/notebooks/mesop_colab_getting_started.ipynb). You will need to explicitly pip install the RC version as pip will _not_ automatically install a pre-release version, even if it's the newest version. So change the first cell to something like:
 
 ```sh
  !pip install mesop==0.X.Yrc0
