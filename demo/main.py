@@ -21,6 +21,7 @@ if current_dir not in sys.path:
 import glob
 
 import audio as audio
+import authenticator as authenticator
 import badge as badge
 import basic_animation as basic_animation
 import box as box
@@ -84,6 +85,7 @@ FIRST_SECTIONS = [
   Section(
     name="Use cases",
     examples=[
+      Example(name="authenticator"),
       Example(name="llm_rewriter"),
       Example(name="llm_playground"),
       Example(name="markdown_editor"),
