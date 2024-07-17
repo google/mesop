@@ -7,6 +7,13 @@ nav:
   - Getting Started:
       - Installing: getting_started/installing.md
       - Quickstart: getting_started/quickstart.md
+      - Codelabs:
+          - DuoChat Codelab:
+              - 1 - Overview & setup: codelab/index.md
+              - 2 - Building the basic UI: codelab/2.md
+              - 3 - Managing state & dialogs: codelab/3.md
+              - 4 - Integrating AI APIs: codelab/4.md
+              - 5 - Wrapping it up: codelab/5.md
   - Guides:
       - State Management: guides/state_management.md
       - Interactivity: guides/interactivity.md
