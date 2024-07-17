@@ -2,17 +2,15 @@
 
 This tutorial walks you through building DuoChat, an interactive web application for chatting with multiple AI models simultaneously. You'll learn how to leverage Mesop's powerful features to create a responsive UI and integrate with AI APIs like Google Gemini and Anthropic Claude.
 
-### What is Mesop?
+### What you will build
 
-Mesop is a Python-based UI framework designed to simplify web UI development for engineers without frontend experience. It leverages the power of the Angular web framework and Angular Material components, allowing rapid construction of web demos and internal tools.
+By the end of this codelab, you will build [DuoChat (demo)](https://huggingface.co/spaces/wwwillchen/mesop-duo-chat) that will allow users to:
 
-### Project Overview
-
-DuoChat will allow users to:
-- Chat with multiple AI models (Gemini and Claude) in parallel
+- Select multiple AI models to chat with
 - Compare responses from different models side-by-side
 - Provide their own API keys
-- Use a responsive and intuitive user interface
+
+If you want to dive straight into the code, you can look at the [DuoChat repo](https://github.com/wwwillchen/mesop-duo-chat) and each branch represents the completed code after each section.
 
 ### Setting Up the Development Environment
 
@@ -25,11 +23,11 @@ mkdir duochat
 cd duochat
 ```
 
-2. Create a virtual environment and activate it:
+2. Create a [virtual environment](../getting_started/installing.md#create-a-venv-environment) and activate it:
 
 ```bash
-python -m venv venv
-source venv/bin/activate  # On Windows, use: venv\Scripts\activate
+python -m venv .venv
+source .venv/bin/activate
 ```
 
 3. Create a `requirements.txt` file with the following content:
@@ -47,25 +45,9 @@ google-generativeai
 pip install -r requirements.txt
 ```
 
-### Project Structure
-
-Create the following files in your project directory:
-
-```
-duochat/
-├── main.py
-├── data_model.py
-├── dialog.py
-├── claude.py
-├── gemini.py
-├── requirements.txt
-```
-
-We'll populate these files as we progress through the codelab.
-
 ### Setting Up the Main Application
 
-Let's start by creating a basic Mesop application. Open `main.py` and add the following code:
+Let's start by creating a basic Mesop application. Create `main.py` and add the following code:
 
 ```python
 import mesop as me
@@ -73,12 +55,9 @@ import mesop as me
 @me.page(path="/")
 def page():
     me.text("Welcome to DuoChat!")
-
-if __name__ == "__main__":
-    me.run()
 ```
 
-This creates a simple Mesop application with a single page that displays a welcome message.
+This creates a simple Mesop application with a welcome message.
 
 ### Running the Application
 
@@ -89,6 +68,10 @@ mesop main.py
 ```
 
 Navigate to `http://localhost:32123` in your web browser. You should see the welcome message.
+
+### Troubleshooting
+
+If you're having trouble, compare your code to the [solution](https://github.com/wwwillchen/mesop-duo-chat/tree/1_completed).
 
 ### Next Steps
 

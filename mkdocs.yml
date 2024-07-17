@@ -13,7 +13,7 @@ nav:
               - 2 - Building the basic UI: codelab/2.md
               - 3 - Managing state & dialogs: codelab/3.md
               - 4 - Integrating AI APIs: codelab/4.md
-              - 5 - Creating multi-model chat: codelab/5.md
+              - 5 - Wrapping it up: codelab/5.md
   - Guides:
       - State Management: guides/state_management.md
       - Interactivity: guides/interactivity.md
