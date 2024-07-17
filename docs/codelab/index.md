@@ -69,6 +69,15 @@ mesop main.py
 
 Navigate to `http://localhost:32123` in your web browser. You should see the welcome message.
 
+### Getting API keys
+
+Later on, you will need API keys to call the respective AI models:
+
+- [Get a Google Gemini API Key](https://ai.google.dev/gemini-api/docs/api-key) and use the Gemini API [free tier](https://ai.google.dev/pricing).
+- [Get an Anthropic API Key](https://docs.anthropic.com/en/docs/quickstart#prerequisites). Check their docs for pricing.
+
+> TIP: You can get started with one API key and create the other one later.
+
 ### Troubleshooting
 
 If you're having trouble, compare your code to the [solution](https://github.com/wwwillchen/mesop-duo-chat/tree/1_completed).
