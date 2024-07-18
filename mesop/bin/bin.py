@@ -37,6 +37,30 @@ $\u001b[35m mesop file.py\u001b[0m"""
     )
     sys.exit(1)
 
+  if argv[1] == "init":
+    if len(argv) > 2:
+      print(
+        f"""\u001b[31mERROR: Too many command-line arguments for mesop init.\u001b[0m
+
+Actual:
+$\u001b[35m mesop {" ".join(argv[1:])}\u001b[0m
+
+Re-run with:
+$\u001b[35m mesop init file.py\u001b[0m"""
+      )
+      sys.exit(1)
+
+    print("Initializing Mesop app at main.py...")
+    filename = argv[1] if len(argv) == 2 else "main.py"
+    absolute_path = make_path_absolute(filename)
+    if os.path.isfile(absolute_path):
+      print(f"\u001b[31mERROR: {filename} already exists.\u001b[0m")
+      sys.exit(1)
+    with open("../examples/starter_kit/starter_kit.py") as src_file:
+      with open(absolute_path, "w") as dest_file:
+        dest_file.write(src_file.read())
+    print(f"Created {filename} at {absolute_path}")
+    sys.exit(0)
   if len(argv) > 2:
     print(
       f"""\u001b[31mERROR: Too many command-line arguments.\u001b[0m
