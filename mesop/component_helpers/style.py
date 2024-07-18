@@ -302,6 +302,10 @@ class Style:
       letter_spacing: Increases or decreases the space between characters in text. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/letter-spacing).
       line height: Set the line height (relative to the font size). See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/line-height).
       margin: Sets the margin space required on each side of an element. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/margin).
+      max_height: Sets the maximum height of an element. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/max-height).
+      max_width: Sets the maximum width of an element. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/max-width).
+      min_height: Sets the minimum height of an element. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/min-height).
+      min_width: Sets the minimum width of an element. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/min-width).
       opacity: Sets the opacity property. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/opacity).
       outline: Sets the outline property. Note: `input` component has default browser stylings. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/outline).
       overflow_wrap: Specifies how long text can be broken up by new lines to prevent overflowing. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/overflow-wrap).
@@ -410,6 +414,10 @@ class Style:
   letter_spacing: int | str | None = None
   line_height: str | None = None
   margin: Margin | None = None
+  max_height: int | str | None = None
+  max_width: int | str | None = None
+  min_height: int | str | None = None
+  min_width: int | str | None = None
   opacity: float | str | None = None
   outline: str | None = None
   overflow_wrap: OverflowWrapValues | None = None
@@ -519,6 +527,10 @@ def to_style_proto(s: Style) -> pb.Style:
     letter_spacing=_px_str(s.letter_spacing),
     line_height=str(s.line_height),
     margin=_map_edge_insets(s.margin),
+    max_height=_px_str(s.max_height),
+    max_width=_px_str(s.max_width),
+    min_height=_px_str(s.min_height),
+    min_width=_px_str(s.min_width),
     opacity=_float_str(s.opacity),
     outline=s.outline,
     overflow_wrap=s.overflow_wrap,

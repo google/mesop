@@ -165,6 +165,18 @@ export function formatStyle(styleObj: Style): string {
       margin.getBottom() || 0
     } ${margin.getLeft() || 0};`;
   }
+  if (styleObj.getMaxHeight()) {
+    style += `max-height: ${styleObj.getMaxHeight()};`;
+  }
+  if (styleObj.getMaxWidth()) {
+    style += `max-width: ${styleObj.getMaxWidth()};`;
+  }
+  if (styleObj.getMinHeight()) {
+    style += `min-height: ${styleObj.getMinHeight()};`;
+  }
+  if (styleObj.getMinWidth()) {
+    style += `min-width: ${styleObj.getMinWidth()};`;
+  }
   if (styleObj.getOpacity()) {
     style += `opacity: ${styleObj.getOpacity()};`;
   }
