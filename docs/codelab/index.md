@@ -71,7 +71,7 @@ Later on, you will need API keys to call the respective AI models:
 - [Get a Google Gemini API Key](https://ai.google.dev/gemini-api/docs/api-key) and use the Gemini API [free tier](https://ai.google.dev/pricing).
 - [Get an Anthropic API Key](https://docs.anthropic.com/en/docs/quickstart#prerequisites) and setup billing. Check their docs for pricing.
 
-> TIP: You can get started with the Gemini API key, which has a free tier, first and create the Anhropic API key later.
+> TIP: You can get started with the Gemini API key, which has a free tier, first and create the Anthropic API key later.
 
 ### Troubleshooting
 
