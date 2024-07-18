@@ -15,6 +15,8 @@ def page():
   with me.box(
     style=me.Style(
       background="#fff",
+      min_height="calc(100% - 48px)",
+      padding=me.Padding(bottom=16),
     )
   ):
     with me.box(
@@ -145,27 +147,44 @@ def textarea_on_blur(e: me.InputBlurEvent):
 
 def click_send(e: me.ClickEvent):
   state = me.state(State)
+  if not state.input:
+    return
   state.in_progress = True
   input = state.input
   state.input = ""
   yield
-  time.sleep(0.5)
-  state.output = "Example of streaming an output"
-  yield
-  time.sleep(1)
-  state.output += "\n\nOutput: " + input
+
+  for chunk in call_api(input):
+    state.output += chunk
+    yield
   state.in_progress = False
   yield
 
 
+def call_api(input):
+  # Replace this with an actual API call
+  time.sleep(0.5)
+  yield "Example of streaming an output"
+  time.sleep(1)
+  yield "\n\nOutput: " + input
+
+
 def output():
   state = me.state(State)
-  if state.output:
-    with me.box(style=me.Style(margin=me.Margin(top=36))):
-      me.markdown(state.output)
-  if state.in_progress:
-    with me.box(style=me.Style(margin=me.Margin(top=16))):
-      me.progress_spinner()
+  if state.output or state.in_progress:
+    with me.box(
+      style=me.Style(
+        background="#F0F4F9",
+        padding=me.Padding.all(16),
+        border_radius=16,
+        margin=me.Margin(top=36),
+      )
+    ):
+      if state.output:
+        me.markdown(state.output)
+      if state.in_progress:
+        with me.box(style=me.Style(margin=me.Margin(top=16))):
+          me.progress_spinner()
 
 
 def footer():
@@ -173,14 +192,12 @@ def footer():
     style=me.Style(
       position="sticky",
       bottom=0,
-      margin=me.Margin(top=36),
       padding=me.Padding.symmetric(vertical=16, horizontal=16),
       width="100%",
       background="#F0F4F9",
       font_size=14,
     )
   ):
-    me.markdown(
-      "Made with [Mesop](https://google.github.io/mesop/)",
-      style=me.Style(margin=me.Margin.symmetric(vertical=-16)),
+    me.html(
+      "Made with <a href='https://google.github.io/mesop/'>Mesop</a>",
     )
