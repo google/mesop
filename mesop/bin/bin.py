@@ -30,15 +30,15 @@ flags.DEFINE_bool(
 def main(argv: Sequence[str]):
   if len(argv) < 2:
     print(
-      """\u001b[31mERROR: missing command-line argument to Mesop application.\u001b[0m
+      """\u001b[31mERROR: missing command-line argument to Mesop.\u001b[0m
 
-Example command:
+Example run command:
 $\u001b[35m mesop file.py\u001b[0m"""
     )
     sys.exit(1)
 
   if argv[1] == "init":
-    if len(argv) > 2:
+    if len(argv) > 3:
       print(
         f"""\u001b[31mERROR: Too many command-line arguments for mesop init.\u001b[0m
 
@@ -50,16 +50,24 @@ $\u001b[35m mesop init file.py\u001b[0m"""
       )
       sys.exit(1)
 
-    print("Initializing Mesop app at main.py...")
-    filename = argv[1] if len(argv) == 2 else "main.py"
+    filename = argv[2] if len(argv) == 3 else "main.py"
     absolute_path = make_path_absolute(filename)
     if os.path.isfile(absolute_path):
       print(f"\u001b[31mERROR: {filename} already exists.\u001b[0m")
       sys.exit(1)
-    with open("../examples/starter_kit/starter_kit.py") as src_file:
+    with open(
+      os.path.join(
+        os.path.dirname(os.path.abspath(__file__)),
+        "../examples/starter_kit/starter_kit.py",
+      )
+    ) as src_file:
       with open(absolute_path, "w") as dest_file:
-        dest_file.write(src_file.read())
-    print(f"Created {filename} at {absolute_path}")
+        dest_file.write(src_file.read().replace("/starter_kit", "/"))
+    print(f"""Created starter kit Mesop app at {filename} 🎉
+
+Run Mesop app:
+$\u001b[35m mesop {filename}\u001b[0m
+""")
     sys.exit(0)
   if len(argv) > 2:
     print(
