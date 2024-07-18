@@ -44,7 +44,7 @@ pip install -r requirements.txt
 
 Let's start by creating a basic Mesop application. Create `main.py` and add the following code:
 
-```python
+```python title="main.py"
 import mesop as me
 
 @me.page(path="/")
@@ -69,9 +69,9 @@ Navigate to `http://localhost:32123` in your web browser. You should see the wel
 Later on, you will need API keys to call the respective AI models:
 
 - [Get a Google Gemini API Key](https://ai.google.dev/gemini-api/docs/api-key) and use the Gemini API [free tier](https://ai.google.dev/pricing).
-- [Get an Anthropic API Key](https://docs.anthropic.com/en/docs/quickstart#prerequisites). Check their docs for pricing.
+- [Get an Anthropic API Key](https://docs.anthropic.com/en/docs/quickstart#prerequisites) and setup billing. Check their docs for pricing.
 
-> TIP: You can get started with one API key and create the other one later.
+> TIP: You can get started with the Gemini API key, which has a free tier, first and create the Anthropic API key later.
 
 ### Troubleshooting
 
@@ -80,3 +80,7 @@ If you're having trouble, compare your code to the [solution](https://github.com
 ### Next Steps
 
 In the next section, we'll start building the user interface for DuoChat, including the header, chat input area, and basic styling. We'll explore Mesop's components and styling system to create an attractive and functional layout.
+
+<a href="./2" class="next-step">
+    Building the basic UI
+</a>
