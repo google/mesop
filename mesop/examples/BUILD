@@ -44,6 +44,7 @@ py_library(
         "//mesop/examples/docs",
         "//mesop/examples/integrations",
         "//mesop/examples/shared",
+        "//mesop/examples/starter_kit",
         "//mesop/examples/testing",
     ],
 )
