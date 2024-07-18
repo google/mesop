@@ -6,15 +6,15 @@ Let's build a simple interactive Mesop app.
 
 Make sure you've installed Mesop, otherwise please follow the [Installing Guide](./installing.md).
 
-## Text to text app
+## Starter kit
 
-The simplest way to get started with Mesop is to use the [`text_to_text` component](../components/text_to_text.md)
+The simplest way to get started with Mesop is to use the starter kit by running `mesop init`. You can also copy and paste the code.
 
 ```python
---8<-- "demo/text_to_text.py"
+--8<-- "mesop/examples/starter_kit/starter_kit.py"
 ```
 
-The rest of this guide will show you step-by-step how something like text_to_text is implemented.
+The rest of this guide will show you the concepts of building something like the starter kit from scratch.
 
 ## Hello World app
 
