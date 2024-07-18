@@ -410,6 +410,10 @@ class Style:
   letter_spacing: int | str | None = None
   line_height: str | None = None
   margin: Margin | None = None
+  max_height: int | str | None = None
+  max_width: int | str | None = None
+  min_height: int | str | None = None
+  min_width: int | str | None = None
   opacity: float | str | None = None
   outline: str | None = None
   overflow_wrap: OverflowWrapValues | None = None
@@ -519,6 +523,10 @@ def to_style_proto(s: Style) -> pb.Style:
     letter_spacing=_px_str(s.letter_spacing),
     line_height=str(s.line_height),
     margin=_map_edge_insets(s.margin),
+    max_height=_px_str(s.max_height),
+    max_width=_px_str(s.max_width),
+    min_height=_px_str(s.min_height),
+    min_width=_px_str(s.min_width),
     opacity=_float_str(s.opacity),
     outline=s.outline,
     overflow_wrap=s.overflow_wrap,
