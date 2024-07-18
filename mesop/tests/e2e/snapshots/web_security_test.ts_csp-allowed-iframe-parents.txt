@@ -1,6 +1,6 @@
 default-src 'self'
 font-src fonts.gstatic.com
-frame-src 'self' https:
+frame-src *
 img-src 'self' data: https: http:
 media-src 'self' data: https:
 style-src 'self' 'unsafe-inline' fonts.googleapis.com
