@@ -62,4 +62,4 @@ def process_eval_question(eval_question: EvalQuestion):
 
 
 with concurrent.futures.ThreadPoolExecutor() as executor:
-  executor.map(process_eval_question, eval_questions)
+  executor.map(process_eval_question, eval_questions[:4])
