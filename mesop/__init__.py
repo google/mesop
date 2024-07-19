@@ -1,6 +1,6 @@
 import sys
 import types
-from typing import Any, Callable, TypeVar, cast
+from typing import Any, Callable, TypeVar
 
 from mesop.colab.colab_run import colab_run as colab_run
 from mesop.colab.colab_show import colab_show as colab_show
@@ -130,7 +130,6 @@ from mesop.components.uploader.uploader import (
 )
 from mesop.components.uploader.uploader import uploader as uploader
 from mesop.components.video.video import video as video
-from mesop.dataclass_utils import dataclass_with_defaults
 from mesop.events import (
   ClickEvent as ClickEvent,
 )
@@ -162,6 +161,7 @@ from mesop.key import Key as Key
 from mesop.runtime import runtime
 from mesop.security.security_policy import SecurityPolicy as SecurityPolicy
 from mesop.server.wsgi_app import wsgi_app
+from mesop.stateclass.stateclass import stateclass as stateclass
 from mesop.version import VERSION
 
 __version__ = VERSION
@@ -181,22 +181,3 @@ _T = TypeVar("_T")
 
 def state(state: type[_T]) -> _T:
   return runtime().context().state(state)
-
-
-def stateclass(cls: type[_T] | None, **kw_args: Any) -> type[_T]:
-  """
-  Similar as dataclass, but it also registers with Mesop runtime().
-  """
-
-  def wrapper(cls: type[_T]) -> type[_T]:
-    dataclass_cls = dataclass_with_defaults(cls, **kw_args)
-    runtime().register_state_class(dataclass_cls)
-    return dataclass_cls
-
-  if cls is None:
-    # too difficult to properly type annotate
-    anyWrapper = cast(Any, wrapper)
-    # We're called with parens.
-    return anyWrapper
-
-  return wrapper(cls)
