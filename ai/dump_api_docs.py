@@ -64,13 +64,13 @@ with open(output_file, "a", encoding="utf-8") as output:
     "I will teach you how to use a Python UI framework called Mesop:\n\n"
   )
 crawl(path="../docs", ext=".md")
-# crawl(path="./docs/guides", ext=".md")
-# crawl(path="./docs/components", ext=".md")
+
 with open(output_file, "a", encoding="utf-8") as output:
   output.write("These are all the components and their APIs:")
 crawl(path="../mesop/labs", ext=".py")
 crawl(path="../mesop/components", ext=".py")
 crawl(path="../mesop/component_helpers", ext="style.py")
+
 with open(output_file, "a", encoding="utf-8") as output:
   output.write("These are example applications you can build with Mesop:")
 crawl(path="../demo", ext=".py")

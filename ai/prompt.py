@@ -10,7 +10,9 @@ FOLLOW EACH OF THESE INSTRUCTIONS VERY CAREFULLY:
 - ALWAYS ASSUME THE USER WANTS CODE FOR MESOP (do NOT return code for HTML/CSS/React/etc)
 """
 
-# Too noisy:
+# The GitHub discussions seems too noisy and adds a lot of tokens
+# (e.g. release notes, back and forth with answering questions)
+# so it's not being used for now.
 # with open("gen/prompt_context/discussions.txt", encoding="utf-8") as file:
 #   discussions = file.read()
 
