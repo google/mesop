@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
+import mesop.protos.ui_pb2 as pb
 from mesop.dataclass_utils.dataclass_utils import (
   dataclass_with_defaults,
   serialize_dataclass,
@@ -284,6 +285,46 @@ def test_serialize_deserialize_state_with_list_dict():
   new_state = StateWithListDict()
   update_dataclass_from_json(new_state, serialize_dataclass(state))
   assert new_state == state
+
+
+def test_raises_exception_for_mutable_default_value_default_list():
+  with pytest.raises(Exception) as exc_info:
+
+    @dataclass_with_defaults
+    class StateWithMutableDefaultValue:
+      mutable_list: list[str] = []
+
+  assert "Detected potentially mutable type" in str(exc_info.value)
+
+
+def test_raises_exception_for_mutable_default_value_default_list_no_type_annotation():
+  with pytest.raises(Exception) as exc_info:
+
+    @dataclass_with_defaults
+    class StateWithMutableDefaultValue:
+      mutable_list = []
+
+  assert "Detected potentially mutable type" in str(exc_info.value)
+
+
+def test_raises_exception_for_mutable_default_value_proto():
+  with pytest.raises(Exception) as exc_info:
+
+    @dataclass_with_defaults
+    class StateWithMutableProto:
+      proto: pb.Style = pb.Style()
+
+  assert "Detected potentially mutable type" in str(exc_info.value)
+
+
+def test_proto_works():
+  with pytest.raises(Exception) as exc_info:
+
+    @dataclass_with_defaults
+    class StateWithMutableProto:
+      proto: pb.Style
+
+  assert "FAIL" in str(exc_info.value)
 
 
 if __name__ == "__main__":

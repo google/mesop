@@ -1,6 +1,6 @@
 import base64
 import json
-from dataclasses import asdict, dataclass, field, is_dataclass
+from dataclasses import Field, asdict, dataclass, field, is_dataclass
 from datetime import datetime
 from io import StringIO
 from typing import Any, Type, TypeVar, cast, get_origin, get_type_hints
@@ -32,15 +32,28 @@ def _check_has_pandas():
 _has_pandas = _check_has_pandas()
 
 
+def is_primitive(obj: Any):
+  return isinstance(obj, (int, float, bool, str, type(None), complex, bytes))
+
+
 def dataclass_with_defaults(cls: Type[C]) -> Type[C]:
   """
   Provides defaults for every attribute in a dataclass (recursively) so
   Mesop developers don't need to manually set default values
   """
-  pass
+  for name in cls.__dict__:
+    if name.startswith("__") and name.endswith("__"):
+      continue
+    # If default is already set, make sure it's a primitive value
+    if not isinstance(cls.__dict__[name], Field) and not is_primitive(
+      cls.__dict__[name]
+    ):
+      raise Exception(
+        "Detected potentially mutable type | name", name, "type", type.__name__
+      )
   annotations = get_type_hints(cls)
   for name, type_hint in annotations.items():
-    if name not in cls.__dict__:  # Skip if default already set
+    if name not in cls.__dict__:
       if type_hint == int:
         setattr(cls, name, field(default=0))
       elif type_hint == float:
