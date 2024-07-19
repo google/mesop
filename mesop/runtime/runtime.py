@@ -38,26 +38,21 @@ T = TypeVar("T")
 
 
 class Runtime:
-  _path_to_page_config: dict[str, PageConfig] = {}
-  _handlers: dict[str, Handler]
-  _state_classes: list[type[Any]]
-  _loading_errors: list[pb.ServerError]
-  component_fns: set[Callable[..., Any]]
-  js_modules: set[str] = set()
-  debug_mode: bool = False
-  # If True, then the server is still re-executing the modules
-  # needed for hot reloading.
-  is_hot_reload_in_progress: bool = False
-  # Keeps track of the hot reload count so that the server can tell
-  # clients polling whether to request a hot reload.
-  hot_reload_counter = 0
-
   def __init__(self):
-    self.component_fns = set()
-    self._handlers = {}
+    self.debug_mode: bool = False
+    # If True, then the server is still re-executing the modules
+    # needed for hot reloading.
+    self.is_hot_reload_in_progress: bool = False
+    # Keeps track of the hot reload count so that the server can tell
+    # clients polling whether to request a hot reload.
+    self.hot_reload_counter = 0
+    self._path_to_page_config: dict[str, PageConfig] = {}
+    self.component_fns: set[Callable[..., Any]] = set()
+    self.js_modules: set[str] = set()
+    self._handlers: dict[str, Handler] = {}
     self.event_mappers: dict[Type[Any], Callable[[pb.UserEvent, Key], Any]] = {}
-    self._state_classes = []
-    self._loading_errors = []
+    self._state_classes: list[type[Any]] = []
+    self._loading_errors: list[pb.ServerError] = []
 
   def context(self) -> Context:
     if "_mesop_context" not in g:
