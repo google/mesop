@@ -6,6 +6,9 @@ __pycache__
 
 *.log
 
+# Do not save generated files
+/ai/gen/
+
 # Allow .env file to be loaded for Mesop development if it exists.
 mesop/.env
 
