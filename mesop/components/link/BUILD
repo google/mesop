@@ -8,7 +8,6 @@ package(
 mesop_component(
     name = "link",
     assets = ["link.css"],
-    py_deps = ["//mesop/components/text:py"],
 )
 
 sass_binary(
