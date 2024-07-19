@@ -3,5 +3,7 @@ syntax = "proto2";
 package mesop.components.link;
 
 message LinkType {
-    optional string label = 1;
+    optional string text = 1;
+    optional string url = 2;
+    optional string target = 3;
 }
