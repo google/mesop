@@ -65,6 +65,7 @@ from mesop.components.input.input import InputEnterEvent as InputEnterEvent
 from mesop.components.input.input import input as input
 from mesop.components.input.input import native_textarea as native_textarea
 from mesop.components.input.input import textarea as textarea
+from mesop.components.link.link import link as link
 from mesop.components.markdown.markdown import markdown as markdown
 from mesop.components.plot.plot import (
   plot as plot,

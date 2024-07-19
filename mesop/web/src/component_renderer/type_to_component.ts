@@ -1,3 +1,4 @@
+import {LinkComponent} from '../../../components/link/link';
 import {HtmlComponent} from '../../../components/html/html';
 import {UploaderComponent} from '../../../components/uploader/uploader';
 import {EmbedComponent} from '../../../components/embed/embed';
@@ -54,6 +55,7 @@ export class UserDefinedComponent implements BaseComponent {
 }
 
 export const typeToComponent = {
+  'link': LinkComponent,
   'html': HtmlComponent,
   'uploader': UploaderComponent,
   'embed': EmbedComponent,
