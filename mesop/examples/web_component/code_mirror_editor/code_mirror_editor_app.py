@@ -15,13 +15,7 @@ class State:
   stylesheets=[
     "https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.css"
   ],
-  # CAUTION: this disables an important web security feature and
-  # should not be used for most mesop apps.
-  #
-  # Disabling trusted types because plotly uses DomParser#parseFromString
-  # which violates TrustedHTML assignment.
   security_policy=me.SecurityPolicy(
-    dangerously_disable_trusted_types=True,
     allowed_connect_srcs=[
       "https://cdnjs.cloudflare.com",
       "*.fonts.gstatic.com",
