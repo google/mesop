@@ -85,7 +85,9 @@ nav:
           - Scroll into view: api/commands/scroll-into-view.md
           - Focus component: api/commands/focus-component.md
       - Config: api/config.md
-  - FAQ: faq.md
+  - FAQ:
+      - FAQ: faq.md
+      - Comparison: comparison.md
   - Demo 🌐: demo.md
   - Showcase 🌐: showcase.md
   - Blog:

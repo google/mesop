@@ -1,8 +1,3 @@
----
-hide:
-  - navigation
----
-
 # Frequently Asked Questions
 
 ## General
@@ -15,8 +10,7 @@ Demanding consumer-facing apps, which have strict requirements in terms of perfo
 
 ### How does Mesop compare to other Python UI frameworks?
 
-Because every Python UI framework has a differnet set of trade-offs, I recommend reading [Mesop's philosophy for building UIs](https://google.github.io/mesop/blog/2024/05/13/why-mesop/).
-
+We have written a [comparison](./comparison.md) doc to answer this question in-depth.
 
 ### Is Mesop production-ready?
 
