@@ -64,20 +64,10 @@ Once you've activated the virtual environment, you will see ".venv" at the start
 pip install mesop
 ```
 
-5. **Create mesop app:**
+## Next steps
 
-You can create a Mesop app using the starter kit by running:
+Follow the quickstart guide to learn how to create and run a Mesop app:
 
-```sh
-mesop init
-```
-
-This will create a file `main.py` in your current directory. Then run the following command in your terminal:
-
-```shell
-mesop main.py
-```
-
-Open the URL printed in the terminal (i.e. http://localhost:32123) in the browser to see your Mesop app loaded.
-
-If you make changes to the code, the Mesop app should be automatically hot reloaded.
+<a href="../quickstart" class="next-step">
+    Quickstart
+</a>
