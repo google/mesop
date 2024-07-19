@@ -23,6 +23,7 @@ class Context:
     self,
     get_handler: Callable[[str], Handler | None],
     states: dict[type[Any], object],
+    query_param_states: set[type[Any]],
   ) -> None:
     self._get_handler = get_handler
     self._current_node = pb.Component()
@@ -30,6 +31,7 @@ class Context:
     self._states: dict[type[Any], object] = states
     # Previous states is used for performing state diffs.
     self._previous_states: dict[type[Any], object] = copy.deepcopy(states)
+    self._query_param_states = query_param_states
     self._trace_mode = False
     self._handlers: dict[str, Handler] = {}
     self._commands: list[pb.Command] = []
@@ -143,8 +145,14 @@ Did you forget to decorate your state class `{state.__name__}` with @stateclass?
 
   def serialize_state(self) -> pb.States:
     states = pb.States()
-    for state in self._states.values():
-      states.states.append(pb.State(data=serialize_dataclass(state)))
+    for key in self._states:
+      state = self._states[key]
+      states.states.append(
+        pb.State(
+          data=serialize_dataclass(state),
+          query_params=key in self._query_param_states,
+        )
+      )
     return states
 
   def diff_state(self) -> pb.States:

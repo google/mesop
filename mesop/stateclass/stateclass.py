@@ -6,14 +6,16 @@ from mesop.runtime import runtime
 _T = TypeVar("_T")
 
 
-def stateclass(cls: type[_T] | None, **kw_args: Any) -> type[_T]:
+def stateclass(
+  cls: type[_T] | None, query_params: bool = False, **kw_args: Any
+) -> type[_T]:
   """
   Similar as dataclass, but it also registers with Mesop runtime().
   """
 
   def wrapper(cls: type[_T]) -> type[_T]:
     dataclass_cls = dataclass_with_defaults(cls, **kw_args)
-    runtime().register_state_class(dataclass_cls)
+    runtime().register_state_class(dataclass_cls, query_params=query_params)
     return dataclass_cls
 
   if cls is None:

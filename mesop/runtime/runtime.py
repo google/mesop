@@ -52,6 +52,7 @@ class Runtime:
     self._handlers: dict[str, Handler] = {}
     self.event_mappers: dict[Type[Any], Callable[[pb.UserEvent, Key], Any]] = {}
     self._state_classes: list[type[Any]] = []
+    self._state_classes_with_query_params: set[type[Any]] = set()
     self._loading_errors: list[pb.ServerError] = []
 
   def context(self) -> Context:
@@ -69,7 +70,9 @@ class Runtime:
         states[state_class] = state_class()
 
     return Context(
-      get_handler=self.get_handler, states=cast(dict[Any, Any], states)
+      get_handler=self.get_handler,
+      states=cast(dict[Any, Any], states),
+      query_param_states=self._state_classes_with_query_params,
     )
 
   def wait_for_hot_reload(self):
@@ -114,7 +117,9 @@ Try one of the following paths:
   def get_handler(self, handler_id: str) -> Handler | None:
     return self._handlers[handler_id]
 
-  def register_state_class(self, state_class: Any) -> None:
+  def register_state_class(self, state_class: Any, query_params: bool) -> None:
+    if query_params:
+      self._state_classes_with_query_params.add(state_class)
     self._state_classes.append(state_class)
 
   def add_loading_error(self, error: pb.ServerError) -> None:

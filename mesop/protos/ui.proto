@@ -184,6 +184,8 @@ message State {
     // Can contain full JSON state or diffs. This depends on
     // `UpdateStateEvent.UpdateStrategy`.
     optional string data = 1;
+    // If true, state is stored as query param.
+    optional bool query_params = 2;
 }
 
 // Represents an instance of a component.
