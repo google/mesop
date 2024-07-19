@@ -146,7 +146,7 @@ def configure_static_file_serving(
     csp = OrderedDict(
       {
         "default-src": "'self'",
-        "font-src": "fonts.gstatic.com",
+        "font-src": "fonts.gstatic.com data:",
         # Mesop app developers should be able to iframe other sites.
         "frame-src": "*",
         # Mesop app developers should be able to load images and media from various origins.
