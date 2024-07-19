@@ -62,4 +62,5 @@ def process_eval_question(eval_question: EvalQuestion):
 
 
 with concurrent.futures.ThreadPoolExecutor() as executor:
+  # Update this to how ever many eval questions you want to run:
   executor.map(process_eval_question, eval_questions[:4])
