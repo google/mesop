@@ -38,12 +38,12 @@ T = TypeVar("T")
 
 
 class Runtime:
-  _path_to_page_config: dict[str, PageConfig] = {}
+  _path_to_page_config: dict[str, PageConfig]
   _handlers: dict[str, Handler]
   _state_classes: list[type[Any]]
   _loading_errors: list[pb.ServerError]
   component_fns: set[Callable[..., Any]]
-  js_modules: set[str] = set()
+  js_modules: set[str]
   debug_mode: bool = False
   # If True, then the server is still re-executing the modules
   # needed for hot reloading.
@@ -53,7 +53,9 @@ class Runtime:
   hot_reload_counter = 0
 
   def __init__(self):
+    self._path_to_page_config = {}
     self.component_fns = set()
+    self.js_modules = set()
     self._handlers = {}
     self.event_mappers: dict[Type[Any], Callable[[pb.UserEvent, Key], Any]] = {}
     self._state_classes = []
