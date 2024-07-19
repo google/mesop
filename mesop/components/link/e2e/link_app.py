@@ -11,6 +11,6 @@ def app():
   )
   me.link(
     text="Open in new tab",
-    target="_blank",
+    open_in_new_tab=True,
     url="https://google.com",
   )
