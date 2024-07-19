@@ -36,7 +36,10 @@ class Context:
     self._node_slot: pb.Component | None = None
     self._node_slot_children_count: int | None = None
     self._viewport_size: pb.ViewportSize | None = None
+<<<<<<< HEAD
     self._theme_settings: pb.ThemeSettings | None = None
+=======
+>>>>>>> 1763a445 (clean)
 
   def commands(self) -> list[pb.Command]:
     return self._commands
