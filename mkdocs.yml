@@ -7,6 +7,7 @@ nav:
   - Getting Started:
       - Installing: getting_started/installing.md
       - Quickstart: getting_started/quickstart.md
+      - Core Concepts: getting_started/core_concepts.md
       - Codelabs:
           - DuoChat Codelab:
               - 1 - Overview & setup: codelab/index.md

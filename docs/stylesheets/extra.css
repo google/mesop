@@ -224,6 +224,11 @@ p {
   border: 1px solid #dcdcdc;
 }
 
+/* Caps the height of the code snippets. */
+.md-typeset pre > code {
+  max-height: 450px;
+}
+
 /* Used for home page */
 
 .headline {

@@ -64,25 +64,10 @@ Once you've activated the virtual environment, you will see ".venv" at the start
 pip install mesop
 ```
 
-Make sure your Python environment is setup correctly by running a hello world app.
+## Next steps
 
-Copy the following hello world code into a file `hello_world.py`:
+Follow the quickstart guide to learn how to create and run a Mesop app:
 
-```python title="hello_world.py"
-import mesop as me
-
-
-@me.page()
-def app():
-  me.text("Hello World")
-```
-
-Then run the following command in your terminal:
-
-```shell
-mesop hello_world.py
-```
-
-Open the URL printed in the terminal (i.e. http://localhost:32123) in the browser to see your Mesop app loaded.
-
-If you make changes to the code (e.g. change `"Hello World"` to `"Hi"`), the Mesop app should be automatically hot reloaded.
+<a href="../quickstart" class="next-step">
+    Quickstart
+</a>

@@ -1,6 +1,6 @@
 # Multi-Pages
 
-You can define multi-page Mesop applications by using the page feature you learned from [Quickstart](../getting_started/quickstart.md).
+You can define multi-page Mesop applications by using the page feature you learned from [Core Concepts](../getting_started/core_concepts.md).
 
 ## Multi-page setup
 
