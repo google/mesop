@@ -19,15 +19,6 @@ Handler = Callable[[Any], Generator[None, None, None] | None]
 
 
 class Context:
-  _states: dict[type[Any], object]
-  # Previous states is used for performing state diffs.
-  _previous_states: dict[type[Any], object]
-  _handlers: dict[str, Handler]
-  _commands: list[pb.Command]
-  _node_slot: pb.Component | None
-  _node_slot_children_count: int | None
-  _viewport_size: pb.ViewportSize | None = None
-
   def __init__(
     self,
     get_handler: Callable[[str], Handler | None],
@@ -36,13 +27,15 @@ class Context:
     self._get_handler = get_handler
     self._current_node = pb.Component()
     self._previous_node: pb.Component | None = None
-    self._states = states
-    self._previous_states = copy.deepcopy(states)
+    self._states: dict[type[Any], object] = states
+    # Previous states is used for performing state diffs.
+    self._previous_states: dict[type[Any], object] = copy.deepcopy(states)
     self._trace_mode = False
-    self._handlers = {}
-    self._commands = []
-    self._node_slot = None
-    self._node_slot_children_count = None
+    self._handlers: dict[str, Handler] = {}
+    self._commands: list[pb.Command] = []
+    self._node_slot: pb.Component | None = None
+    self._node_slot_children_count: int | None = None
+    self._viewport_size: pb.ViewportSize | None = None
 
   def commands(self) -> list[pb.Command]:
     return self._commands
