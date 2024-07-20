@@ -21,6 +21,8 @@ select = [
     "SIM",
     # isort
     "I",
+    # Ruff
+    "RUF",
 ]
 ignore = [
     "E501",   # ignore line-length (e.g. long docstring)

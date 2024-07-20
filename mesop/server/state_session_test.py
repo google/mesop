@@ -377,10 +377,10 @@ class FakeFirestoreDocumentReference(DocumentReference):
 
   def get(
     self,
-    field_paths: Iterable[str] = None,  # type: ignore
+    field_paths: Optional[Iterable[str]] = None,  # type: ignore
     transaction=None,
     retry: retries.Retry = gapic_v1.method.DEFAULT,  # type: ignore
-    timeout: float = None,  # type: ignore
+    timeout: Optional[float] = None,  # type: ignore
   ) -> DocumentSnapshot:
     return self.doc
 
@@ -389,7 +389,7 @@ class FakeFirestoreDocumentReference(DocumentReference):
     document_data: dict,
     merge: bool = False,
     retry: retries.Retry = gapic_v1.method.DEFAULT,  # type: ignore
-    timeout: float = None,  # type: ignore
+    timeout: Optional[float] = None,  # type: ignore
   ) -> write.WriteResult:
     self.doc = DocumentSnapshot(
       self,
@@ -407,7 +407,7 @@ def delete(
   self,
   option: _helpers.WriteOption = None,  # type: ignore
   retry: retries.Retry = gapic_v1.method.DEFAULT,  # type: ignore
-  timeout: float = None,  # type: ignore
+  timeout: Optional[float] = None,  # type: ignore
 ) -> Timestamp:
   self.doc = DocumentSnapshot(
     self,
