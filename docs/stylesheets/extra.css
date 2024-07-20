@@ -161,8 +161,9 @@ p {
   font-size: 0.8rem;
 }
 
-.md-typeset .admonition {
-  font-size: 0.75rem;
+.md-typeset .admonition,
+.md-typeset details {
+  font-size: 0.8rem;
 }
 
 .highlight code {

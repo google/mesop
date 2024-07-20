@@ -21,6 +21,63 @@ def page():
     me.text(state.val)
 ```
 
+## Use immutable default values
+
+Similar to [regular dataclasses which disallow mutable default values](https://docs.python.org/3/library/dataclasses.html#mutable-default-values), you need to avoid mutable default values such as list and dict for state classes. Using mutable default values can result in leaking state across sessions which can be a serious privacy issue.
+
+You **MUST** use immutable default values _or_ use dataclasses `field` initializer _or_ not set a default value.
+
+???+ success "Good: immutable default value"
+      Setting a default value to an immutable type like str is OK.
+
+      ```py
+      @me.stateclass
+      class State:
+        a: str = "abc"
+      ```
+
+???+ failure "Bad: mutable default value"
+
+    This will raise an exception because dataclasses prevents you from using mutable collection types like `list` as the default value because this is a common footgun.
+
+    ```py
+    @me.stateclass
+    class State:
+      a: list[str] = ["abc"]
+    ```
+
+???+ success "Good: default factory"
+
+    If you want to set a field to a mutable default value, use default_factory in the `field`  function from the dataclasses module to create a new instance of the mutable default value for each instance of the state class.
+
+    ```py
+    from dataclasses import field
+
+    @me.stateclass
+    class State:
+      a: list[str] = field(default_factory=lambda: ["abc"])
+    ```
+
+???+ success "Good example of no default value"
+
+    If you want a default of an empty list, you can just not define a default value and Mesop will automatically define an empty list default value.
+
+    For example, if you write the following:
+
+    ```py
+    @me.stateclass
+    class State:
+      a: list[str]
+    ```
+
+    It's the equivalent of:
+
+    ```py
+    @me.stateclass
+    class State:
+      a: list[str] = field(default_factory=list)
+    ```
+
 ## How State Works
 
 `me.stateclass` is a class decorator which tells Mesop that this class can be retrieved using the `me.state` method, which will return the state instance for the current user session.
@@ -108,28 +165,6 @@ def on_click(e):
 If you didn't explicitly annotate NestedState as a dataclass, then you would get an error instantiating NestedState because there's no initializer defined.
 
 ## Tips
-
-### Set mutable default values (e.g. list) correctly
-
-Similar to [regular dataclasses which disallow mutable default values](https://docs.python.org/3/library/dataclasses.html#mutable-default-values), you need to avoid mutable default values such as list and dict for state classes. Allowing mutable default values could lead to erroneously sharing state across users which would be bad!
-
-**Bad:** Setting a mutable field directly on a state class attribute.
-
-```py
-@me.stateclass
-class State:
-  x: list[str] = ["a"]
-```
-
-**Good:** Use dataclasses `field` method to define a default factory so a new instance of the mutable value is created with each state class instance.
-
-```py
-from dataclasses import field
-
-@me.stateclass
-class State:
-  x: list[str] = field(default_factory=lambda: ["a"])
-```
 
 ### State performance issues
 
