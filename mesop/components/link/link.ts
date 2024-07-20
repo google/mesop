@@ -20,7 +20,6 @@ export class LinkComponent {
   @Input() key!: Key;
   @Input() style!: Style;
   private _config!: LinkType;
-  isChecked = false;
 
   ngOnChanges() {
     this._config = LinkType.deserializeBinary(
