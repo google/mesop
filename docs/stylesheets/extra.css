@@ -50,6 +50,7 @@ p {
   --md-default-bg-color--dark: var(--black);
   --md-default-bg-color--lighter: var(--almost-white);
   --md-primary-fg-color: rgb(248 250 252 / 1);
+  --md-primary-fg-color--dark: var(--md-primary-fg-color);
   --md-default-bg-color: var(--md-primary-fg-color);
   --md-primary-bg-color: #333;
   --md-typeset-a-color: var(--cosmic);
