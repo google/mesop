@@ -16,9 +16,6 @@ export class ComponentNameComponent {
   @Input({required: true}) type!: Type;
   @Input() key!: Key;
   private _config!: ComponentNameType;
-  isChecked = false;
-
-  constructor(private readonly channel: Channel) {}
 
   ngOnChanges() {
     this._config = ComponentNameType.deserializeBinary(

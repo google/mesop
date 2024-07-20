@@ -15,9 +15,6 @@ export class AudioComponent {
   @Input({required: true}) type!: Type;
   @Input() key!: Key;
   private _config!: AudioType;
-  isChecked = false;
-
-  constructor(private readonly channel: Channel) {}
 
   ngOnChanges() {
     this._config = AudioType.deserializeBinary(

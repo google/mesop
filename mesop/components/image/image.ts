@@ -18,9 +18,6 @@ export class ImageComponent {
   @Input() key!: Key;
   @Input() style!: Style;
   private _config!: ImageType;
-  isChecked = false;
-
-  constructor(private readonly channel: Channel) {}
 
   ngOnChanges() {
     this._config = ImageType.deserializeBinary(

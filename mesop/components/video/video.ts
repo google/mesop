@@ -18,9 +18,6 @@ export class VideoComponent {
   @Input() key!: Key;
   @Input() style!: Style;
   private _config!: VideoType;
-  isChecked = false;
-
-  constructor(private readonly channel: Channel) {}
 
   ngOnChanges() {
     this._config = VideoType.deserializeBinary(

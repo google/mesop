@@ -20,9 +20,6 @@ export class SidenavComponent {
   @Input() key!: Key;
   @Input() style!: Style;
   private _config!: SidenavType;
-  isChecked = false;
-
-  constructor(private readonly channel: Channel) {}
 
   ngOnChanges() {
     this._config = SidenavType.deserializeBinary(
