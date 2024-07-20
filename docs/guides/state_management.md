@@ -38,12 +38,20 @@ You **MUST** use immutable default values _or_ use dataclasses `field` initializ
 
 ???+ failure "Bad: mutable default value"
 
-    This will raise an exception because dataclasses prevents you from using mutable collection types like `list` as the default value because this is a common footgun.
+    The following will raise an exception because dataclasses prevents you from using mutable collection types like `list` as the default value because this is a common footgun.
 
     ```py
     @me.stateclass
     class State:
       a: list[str] = ["abc"]
+    ```
+
+    If you set a default value to an instance of a custom type, an exception will not be raised, but you will be dangerously sharing the same mutable instance across sessions which could cause a serious privacy issue.
+
+    ```py
+    @me.stateclass
+    class State:
+      a: MutableClass = MutableClass()
     ```
 
 ???+ success "Good: default factory"
