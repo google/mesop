@@ -2,6 +2,7 @@ from demo import main as main
 from mesop.examples import (
   allowed_iframe_parents as allowed_iframe_parents,
 )
+from mesop.examples import box as box
 from mesop.examples import buttons as buttons
 from mesop.examples import checkbox_and_radio as checkbox_and_radio
 from mesop.examples import composite as composite
@@ -26,6 +27,7 @@ from mesop.examples import playground as playground
 from mesop.examples import playground_critic as playground_critic
 from mesop.examples import readme_app as readme_app
 from mesop.examples import scroll_into_view as scroll_into_view
+from mesop.examples import starter_kit as starter_kit
 from mesop.examples import sxs as sxs
 from mesop.examples import testing as testing
 from mesop.examples import viewport_size as viewport_size

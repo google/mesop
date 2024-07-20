@@ -1,6 +1,6 @@
 # Components
 
-Please read [Quickstart](../getting_started/quickstart.md) before this as it explains the basics of components. This page provides an overview of the different types of components in Mesop.
+Please read [Core Concepts](../getting_started/core_concepts.md) before this as it explains the basics of components. This page provides an overview of the different types of components in Mesop.
 
 ## Types of components
 

@@ -15,6 +15,7 @@ py_library(
     deps = [
         "//demo",
         # REF(//scripts/scaffold_component.py):insert_component_e2e_import
+        "//mesop/components/link/e2e",
         "//mesop/components/html/e2e",
         "//mesop/components/uploader/e2e",
         "//mesop/components/embed/e2e",
@@ -44,6 +45,7 @@ py_library(
         "//mesop/examples/docs",
         "//mesop/examples/integrations",
         "//mesop/examples/shared",
+        "//mesop/examples/starter_kit",
         "//mesop/examples/testing",
     ],
 )

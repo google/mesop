@@ -20,6 +20,20 @@ def colab_run(*, port: int = 32123, prod_mode: bool = False):
   if not colab_utils.is_running_in_colab():
     print("Not running Colab: `colab_run` is a no-op")
     return
+  notebook_run(port=port, prod_mode=prod_mode)
+
+
+def notebook_run(*, port: int = 32123, prod_mode: bool = False):
+  """
+  When running in a notebook environment, this will launch the web server.
+
+  Otherwise, this is a no-op.
+
+  Use this for non-Colab notebook environments like Jupyter/JupyterLab.
+  """
+  if not colab_utils.is_running_ipython():
+    print("Not running in a notebook environment: `notebook_run` is a no-op")
+    return
   # Ensures the flags are marked as parsed before creating the app otherwise you will
   # get UnparsedFlagAccessError.
   #

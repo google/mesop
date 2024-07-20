@@ -50,6 +50,8 @@ p {
   --md-default-bg-color--dark: var(--black);
   --md-default-bg-color--lighter: var(--almost-white);
   --md-primary-fg-color: rgb(248 250 252 / 1);
+  --md-primary-fg-color--dark: var(--md-primary-fg-color);
+  --md-default-bg-color: var(--md-primary-fg-color);
   --md-primary-bg-color: #333;
   --md-typeset-a-color: var(--cosmic);
   --md-accent-fg-color: var(--flare);
@@ -109,10 +111,6 @@ p {
 [data-md-color-scheme='mesop-dark'] img[src$='#only-dark'],
 [data-md-color-scheme='mesop-dark'] img[src$='#gh-dark-mode-only'] {
   display: inline; /* Show dark images in dark mode */
-}
-
-body {
-  background-color: var(--md-primary-fg-color);
 }
 
 .md-header--shadow {
@@ -225,6 +223,11 @@ body {
   height: 400px;
   overflow-y: auto;
   border: 1px solid #dcdcdc;
+}
+
+/* Caps the height of the code snippets. */
+.md-typeset pre > code {
+  max-height: 450px;
 }
 
 /* Used for home page */
@@ -491,4 +494,27 @@ a.section-button:hover {
 .dev-gif {
   width: 560px;
   border-radius: 16px;
+}
+
+a.next-step {
+  display: block;
+  position: relative;
+  margin-top: 16px;
+  border: 1px solid var(--md-default-bg-color--lighter);
+
+  padding: 32px 16px 16px;
+  border-radius: 8px;
+  width: 400px;
+}
+
+a.next-step:before {
+  content: 'Next';
+  color: var(--md-typeset-color);
+  font-size: 14px;
+  position: absolute;
+  top: 8px;
+}
+
+a.next-step:hover {
+  border: 1px solid var(--md-accent-fg-color);
 }

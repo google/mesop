@@ -1,0 +1,8 @@
+<!-- Always use noopener, see: https://developer.chrome.com/docs/lighthouse/best-practices/external-anchors-use-rel-noopener -->
+<a
+  [href]="config().getUrl()"
+  [target]="config().getTarget()"
+  [style]="getStyle()"
+  rel="noopener"
+  >{{config().getText()}}</a
+>
