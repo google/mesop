@@ -1,0 +1,9 @@
+syntax = "proto2";
+
+package mesop.components.link;
+
+message LinkType {
+    optional string text = 1;
+    optional string url = 2;
+    optional string target = 3;
+}

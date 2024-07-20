@@ -64,9 +64,11 @@ nav:
           - Progress spinner: components/progress_spinner.md
           - Table: components/table.md
           - Tooltip: components/tooltip.md
-      - Advanced:
+      - Web:
           - Embed: components/embed.md
           - HTML: components/html.md
+          - Link: components/link.md
+      - Others:
           - Plot: components/plot.md
   - API:
       - Page: api/page.md

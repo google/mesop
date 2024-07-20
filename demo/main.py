@@ -37,6 +37,7 @@ import html_demo as html_demo
 import icon as icon
 import image as image
 import input as input
+import link as link
 import llm_playground as llm_playground
 import llm_rewriter as llm_rewriter
 import markdown_demo as markdown_demo  # cannot call it markdown due to python library naming conflict
@@ -157,10 +158,16 @@ COMPONENTS_SECTIONS = [
     ],
   ),
   Section(
-    name="Advanced",
+    name="Web",
     examples=[
       Example(name="embed"),
       Example(name="html_demo"),
+      Example(name="link"),
+    ],
+  ),
+  Section(
+    name="Others",
+    examples=[
       Example(name="plot"),
     ],
   ),
