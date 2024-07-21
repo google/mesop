@@ -1,6 +1,6 @@
 import base64
 import json
-from dataclasses import asdict, dataclass, field, is_dataclass
+from dataclasses import Field, asdict, dataclass, field, is_dataclass
 from datetime import datetime
 from io import StringIO
 from typing import Any, Type, TypeVar, cast, get_origin, get_type_hints
@@ -37,7 +37,24 @@ def dataclass_with_defaults(cls: Type[C]) -> Type[C]:
   Provides defaults for every attribute in a dataclass (recursively) so
   Mesop developers don't need to manually set default values
   """
-  pass
+  for name in cls.__dict__:
+    # Skip dunder methods.
+    if name.startswith("__") and name.endswith("__"):
+      continue
+    classVar = cls.__dict__[name]
+    if not isinstance(classVar, Field):
+      try:
+        hash(classVar)
+      except TypeError as exc:
+        raise Exception(
+          "Detected non-hashable type=",
+          type(classVar).__name__,
+          "for name=",
+          name,
+          "for class=",
+          cls,
+        ) from exc
+
   annotations = get_type_hints(cls)
   for name, type_hint in annotations.items():
     if name not in cls.__dict__:  # Skip if default already set

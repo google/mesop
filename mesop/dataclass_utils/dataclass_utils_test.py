@@ -286,5 +286,11 @@ def test_serialize_deserialize_state_with_list_dict():
   assert new_state == state
 
 
+# def test_proto_without_default_does_not_throw():
+#   @dataclass_with_defaults
+#   class StateWithMutableProto:
+#     proto: pb.Style
+
+
 if __name__ == "__main__":
   raise SystemExit(pytest.main([__file__]))
