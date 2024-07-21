@@ -66,7 +66,7 @@ You **MUST** use immutable default values _or_ use dataclasses `field` initializ
       a: list[str] = field(default_factory=lambda: ["abc"])
     ```
 
-???+ success "Good example of no default value"
+???+ success "Good: no default value"
 
     If you want a default of an empty list, you can just not define a default value and Mesop will automatically define an empty list default value.
 
