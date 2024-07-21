@@ -57,5 +57,5 @@ def on_click(e: me.TableClickEvent):
   state = me.state(State)
   state.selected_cell = (
     f"Selected cell at col {e.col_index} and row {e.row_index} "
-    f"with value {str(df.iat[e.row_index, e.col_index])}"
+    f"with value {df.iat[e.row_index, e.col_index]!s}"
   )
