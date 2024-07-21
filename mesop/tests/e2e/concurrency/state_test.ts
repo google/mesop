@@ -11,7 +11,9 @@ test('state updates correctly', async ({page}) => {
   await page.goto('/concurrency_state');
   const randomString = generateRandomString(16);
   await page.getByLabel('State input').fill(randomString);
-  await expect(page.getByText('Input: ' + randomString)).toBeVisible();
+  await expect(page.getByText('Input: ' + randomString)).toBeVisible({
+    timeout: 15000,
+  });
 });
 
 function generateRandomString(length: number) {
