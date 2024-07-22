@@ -349,7 +349,7 @@ def test_proto_in_dataclass_with_default_throws():
 
     @dataclass
     class DataclassWithProto:
-      style: pb.Style = pb.Style()
+      style: pb.Style = pb.Style()  # noqa: RUF009 (intentionally do an anti-pattern to make sure exception is raised)
 
     @dataclass_with_defaults
     class StateWithMutableProto:
