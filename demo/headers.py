@@ -28,8 +28,7 @@ def app():
 
   with me.box(style=me.Style(margin=me.Margin(bottom=15))):
     # Two section basic header.
-    # As an example, we don't use mobile view here since the header is short enough.
-    with header():
+    with header(is_mobile=is_mobile):
       with header_section():
         me.text(
           "Mesop", type="headline-6", style=me.Style(margin=me.Margin(bottom=0))
@@ -131,8 +130,8 @@ def header(
       me.Style(width=max_width, margin=me.Margin.symmetric(horizontal="auto")),
     )
 
-  # The style override is a bit hacky here since we apply the styles both boxes here
-  # which could cause problems depending on what styles are added;
+  # The style override is a bit hacky here since we apply the override styles to both
+  # boxes here which could cause problems depending on what styles are added.
   with me.box(style=merge_styles(_DEFAULT_STYLE, style)):
     with me.box(style=merge_styles(default_flex_style, style)):
       me.slot()
