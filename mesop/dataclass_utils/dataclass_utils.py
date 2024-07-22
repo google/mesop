@@ -1,3 +1,4 @@
+# ruff: noqa: E721
 import base64
 import json
 from dataclasses import Field, asdict, dataclass, field, is_dataclass
