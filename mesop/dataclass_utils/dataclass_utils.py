@@ -37,6 +37,7 @@ def dataclass_with_defaults(cls: Type[C]) -> Type[C]:
   Provides defaults for every attribute in a dataclass (recursively) so
   Mesop developers don't need to manually set default values
   """
+
   for name in cls.__dict__:
     # Skip dunder methods.
     if name.startswith("__") and name.endswith("__"):
@@ -47,12 +48,9 @@ def dataclass_with_defaults(cls: Type[C]) -> Type[C]:
         hash(classVar)
       except TypeError as exc:
         raise Exception(
-          "Detected non-hashable type=",
-          type(classVar).__name__,
-          "for name=",
-          name,
-          "for class=",
-          cls,
+          f"Detected mutable default value for non-hashable type={type(classVar).__name__} "
+          f"for attribute={name} in class={cls.__name__}. "
+          "See: https://google.github.io/mesop/guides/state_management/#use-immutable-default-values"
         ) from exc
 
   annotations = get_type_hints(cls)
@@ -71,11 +69,18 @@ def dataclass_with_defaults(cls: Type[C]) -> Type[C]:
       elif get_origin(type_hint) == dict:
         setattr(cls, name, field(default_factory=dict))
       elif isinstance(type_hint, type):
-        setattr(
-          cls, name, field(default_factory=dataclass_with_defaults(type_hint))
-        )
+        if is_dataclass(cls) or has_parent(type_hint):
+          setattr(cls, name, field(default_factory=type_hint))
+        else:
+          setattr(
+            cls, name, field(default_factory=dataclass_with_defaults(type_hint))
+          )
 
   return dataclass(cls)
+
+
+def has_parent(cls: Type[Any]) -> bool:
+  return len(cls.__bases__) > 0 and cls.__bases__[0] != object
 
 
 def serialize_dataclass(state: Any):

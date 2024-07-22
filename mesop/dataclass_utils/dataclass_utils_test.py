@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
+import mesop.protos.ui_pb2 as pb
 from mesop.dataclass_utils.dataclass_utils import (
   dataclass_with_defaults,
   serialize_dataclass,
@@ -286,10 +287,20 @@ def test_serialize_deserialize_state_with_list_dict():
   assert new_state == state
 
 
-# def test_proto_without_default_does_not_throw():
-#   @dataclass_with_defaults
-#   class StateWithMutableProto:
-#     proto: pb.Style
+def test_proto_without_default_does_not_throw():
+  @dataclass_with_defaults
+  class StateWithMutableProto:
+    proto: pb.Style
+
+
+def test_proto_with_default_throws():
+  with pytest.raises(Exception) as exc_info:
+
+    @dataclass_with_defaults
+    class StateWithMutableProto:
+      proto: pb.Style = pb.Style()
+
+  assert "Detected mutable default value" in str(exc_info.value)
 
 
 if __name__ == "__main__":
