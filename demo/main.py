@@ -33,6 +33,7 @@ import dialog as dialog
 import divider as divider
 import embed as embed
 import grid_table as grid_table
+import headers as headers
 import html_demo as html_demo
 import icon as icon
 import image as image
@@ -95,6 +96,7 @@ FIRST_SECTIONS = [
     examples=[
       Example(name="dialog"),
       Example(name="grid_table"),
+      Example(name="headers"),
       Example(name="snackbar"),
       Example(name="chat_inputs"),
     ],
