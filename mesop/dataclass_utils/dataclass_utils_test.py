@@ -8,6 +8,7 @@ import pytest
 import mesop.protos.ui_pb2 as pb
 from mesop.dataclass_utils.dataclass_utils import (
   dataclass_with_defaults,
+  has_parent,
   serialize_dataclass,
   update_dataclass_from_json,
 )
@@ -399,6 +400,32 @@ def test_proto_in_unannotated_class_with_default_throws():
     "Detected mutable default value for non-hashable type=Style for attribute=style in class=UnannotatedClassWithProto"
     in str(exc_info.value)
   )
+
+
+def test_has_parent_simple_class():
+  class SimpleClass:
+    val: str
+
+  assert has_parent(SimpleClass) is False
+
+
+def test_has_parent_dataclass():
+  @dataclass
+  class ADataclass:
+    val: str
+
+  assert has_parent(ADataclass) is False
+
+
+def test_has_parent_child_class():
+  class ParentClass:
+    pass
+
+  class ChildClass(ParentClass):
+    val: str
+
+  assert has_parent(ChildClass) is True
+  assert has_parent(ParentClass) is False
 
 
 if __name__ == "__main__":
