@@ -9,7 +9,7 @@ from deepdiff import DeepDiff, Delta
 from deepdiff.operator import BaseOperator
 from deepdiff.path import parse_path
 
-from mesop.exceptions import MesopException
+from mesop.exceptions import MesopDeveloperException, MesopException
 
 _PANDAS_OBJECT_KEY = "__pandas.DataFrame__"
 _DATETIME_OBJECT_KEY = "__datetime.datetime__"
@@ -38,20 +38,25 @@ def dataclass_with_defaults(cls: Type[C]) -> Type[C]:
   Mesop developers don't need to manually set default values
   """
 
+  # Make sure that none of the class variables use a mutable default value
+  # which can cause state to be accidentally shared across sessions which can
+  # be very bad!
   for name in cls.__dict__:
-    # Skip dunder methods.
+    # Skip dunder methods/attributes.
     if name.startswith("__") and name.endswith("__"):
       continue
     classVar = cls.__dict__[name]
     if not isinstance(classVar, Field):
       try:
+        # If a value is not hashable, then we will treat it as mutable.
         hash(classVar)
       except TypeError as exc:
-        raise Exception(
+        error_message = (
           f"Detected mutable default value for non-hashable type={type(classVar).__name__} "
           f"for attribute={name} in class={cls.__name__}. "
           "See: https://google.github.io/mesop/guides/state_management/#use-immutable-default-values"
-        ) from exc
+        )
+        raise MesopDeveloperException(error_message) from exc
 
   annotations = get_type_hints(cls)
   for name, type_hint in annotations.items():
@@ -70,8 +75,15 @@ def dataclass_with_defaults(cls: Type[C]) -> Type[C]:
         setattr(cls, name, field(default_factory=dict))
       elif isinstance(type_hint, type):
         if has_parent(type_hint):
+          # If this isn't a simple class (i.e. it inherits from another class)
+          # then we will preserve its semantics (not try to set default values
+          # because it's not a dataclass) and instantiate it with each new instance
+          # of a state class.
           setattr(cls, name, field(default_factory=type_hint))
         else:
+          # If it's a simple dataclass (i.e. does not inherit from another class)
+          # then we will try to set default values and then wrap it with a dataclass
+          # decorator (if necessary).
           setattr(
             cls, name, field(default_factory=dataclass_with_defaults(type_hint))
           )
