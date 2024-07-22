@@ -301,6 +301,21 @@ def test_serialize_deserialize_state_with_list_dict():
   assert new_state == state
 
 
+def test_serialize_deserialize_state_with_proto_throws():
+  @dataclass_with_defaults
+  class State:
+    proto: pb.ComponentName
+
+  state = State()
+
+  with pytest.raises(Exception) as exc_info:
+    serialize_dataclass(state)
+
+  assert "Object of type ComponentName is not JSON serializable" in str(
+    exc_info.value
+  )
+
+
 def test_dataclass_default_value_throws():
   with pytest.raises(Exception) as exc_info:
 
