@@ -69,13 +69,15 @@ def dataclass_with_defaults(cls: Type[C]) -> Type[C]:
       elif get_origin(type_hint) == dict:
         setattr(cls, name, field(default_factory=dict))
       elif isinstance(type_hint, type):
-        if is_dataclass(cls) or has_parent(type_hint):
+        if has_parent(type_hint):
           setattr(cls, name, field(default_factory=type_hint))
         else:
           setattr(
             cls, name, field(default_factory=dataclass_with_defaults(type_hint))
           )
-
+  # If a class is already a dataclass, then don't wrap it with another dataclass decorator.
+  if is_dataclass(cls):
+    return cls
   return dataclass(cls)
 
 
