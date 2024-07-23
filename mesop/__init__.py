@@ -153,6 +153,8 @@ from mesop.exceptions import (
   MesopUserException as MesopUserException,
 )
 from mesop.features import page as page
+from mesop.features.theme_mode import ThemeMode as ThemeMode
+from mesop.features.theme_mode import set_theme_mode as set_theme_mode
 from mesop.features.viewport_size import Size as Size
 from mesop.features.viewport_size import viewport_size as viewport_size
 from mesop.key import Key as Key

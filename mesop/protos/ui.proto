@@ -14,9 +14,10 @@ message UiRequest {
 
 message InitRequest {
     optional ViewportSize viewport_size = 1;
+    optional bool prefers_dark_theme = 2;
 }
 
-// Next ID: 13
+// Next ID: 14
 message UserEvent {
     optional States states = 1;
 
@@ -26,6 +27,7 @@ message UserEvent {
     optional Key key = 3;
 
     optional ViewportSize viewport_size = 11;
+    optional bool prefers_dark_theme = 13;
 
     oneof type {
         bool bool_value = 4;
@@ -139,6 +141,7 @@ message Command {
     oneof command {
         NavigateCommand navigate = 1;
         ScrollIntoViewCommand scroll_into_view = 2;
+        SetThemeMode set_theme_mode = 3;
     }
 }
 
@@ -150,6 +153,16 @@ message NavigateCommand {
 message ScrollIntoViewCommand {
     // Key of the component to scroll into view
     optional string key = 1;
+}
+
+enum ThemeMode {
+    THEME_MODE_SYSTEM = 0;
+    THEME_MODE_LIGHT = 1;
+    THEME_MODE_DARK = 2;
+}
+
+message SetThemeMode {
+    optional ThemeMode theme_mode = 1;
 }
 
 message States {

@@ -226,6 +226,9 @@ export class Channel {
 
   dispatch(userEvent: UserEvent) {
     userEvent.setViewportSize(getViewportSize());
+    userEvent.setPrefersDarkTheme(
+      window.matchMedia('(prefers-color-scheme: dark)').matches,
+    );
     // Every user event should have an event handler,
     // except for navigation and resize.
     if (

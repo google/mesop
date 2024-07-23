@@ -51,6 +51,14 @@ class Context:
       pb.Command(scroll_into_view=pb.ScrollIntoViewCommand(key=key))
     )
 
+  def set_theme_mode(self, theme_mode: pb.ThemeMode.ValueType) -> None:
+    self._commands.append(
+      pb.Command(set_theme_mode=pb.SetThemeMode(theme_mode=theme_mode))
+    )
+
+  def theme_brightness(self) -> Any:
+    return ""
+
   def set_viewport_size(self, size: pb.ViewportSize):
     self._viewport_size = size
 

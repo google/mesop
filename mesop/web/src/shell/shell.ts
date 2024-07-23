@@ -17,6 +17,7 @@ import {
   ResizeEvent,
   UiRequest,
   InitRequest,
+  ThemeMode,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 import {CommonModule} from '@angular/common';
 import {
@@ -80,6 +81,9 @@ export class Shell {
     const request = new UiRequest();
     const initRequest = new InitRequest();
     initRequest.setViewportSize(getViewportSize());
+    initRequest.setPrefersDarkTheme(
+      window.matchMedia('(prefers-color-scheme: dark)').matches,
+    );
     request.setInit(initRequest);
     this.channel.init(
       {
@@ -120,6 +124,17 @@ export class Shell {
             targetElements[0].parentElement!.scrollIntoView({
               behavior: 'smooth',
             });
+          } else if (command.hasSetThemeMode()) {
+            const themeMode = command.getSetThemeMode()?.getThemeMode();
+            if (themeMode == ThemeMode.THEME_MODE_DARK) {
+              document.body.classList.add('dark-theme');
+            } else {
+              document.body.classList.remove('dark-theme');
+            }
+          } else {
+            throw new Error(
+              'Unhandled command: ' + command.getCommandCase().toString(),
+            );
           }
         },
         onError: (error) => {

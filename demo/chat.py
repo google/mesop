@@ -5,12 +5,19 @@ import mesop as me
 import mesop.labs as mel
 
 
+def on_load(e: me.LoadEvent):
+  me.set_theme_mode(
+    me.ThemeMode.DARK if e.prefers_dark_theme else me.ThemeMode.LIGHT
+  )
+
+
 @me.page(
   security_policy=me.SecurityPolicy(
     allowed_iframe_parents=["https://google.github.io"]
   ),
   path="/chat",
   title="Mesop Demo Chat",
+  on_load=on_load,
 )
 def page():
   mel.chat(transform, title="Mesop Demo Chat", bot_user="Mesop Bot")

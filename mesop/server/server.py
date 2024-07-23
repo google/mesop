@@ -110,7 +110,12 @@ def configure_flask_app(
         runtime().context().set_viewport_size(ui_request.init.viewport_size)
         page_config = runtime().get_page_config(path=ui_request.path)
         if page_config and page_config.on_load:
-          result = page_config.on_load(LoadEvent(path=ui_request.path))
+          result = page_config.on_load(
+            LoadEvent(
+              path=ui_request.path,
+              prefers_dark_theme=ui_request.init.prefers_dark_theme,
+            )
+          )
           # on_load is a generator function then we need to iterate through
           # the generator object.
           if result:
@@ -170,7 +175,11 @@ def configure_flask_app(
                 and not has_run_navigate_on_load
               ):
                 has_run_navigate_on_load = True
-                result = page_config.on_load(LoadEvent(path=path))
+                result = page_config.on_load(
+                  LoadEvent(
+                    path=path, prefers_dark_theme=event.prefers_dark_theme
+                  )
+                )
                 # on_load is a generator function then we need to iterate through
                 # the generator object.
                 if result:
