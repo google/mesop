@@ -84,7 +84,7 @@ def test_dataclass_defaults_recursive():
   assert d.unannotated.val == ""
 
 
-def test_dataclass_field_defaults_works_with_already_annotated_nested_class_requires_default():
+def test_dataclass_field_defaults_works_with_already_annotated_nested_class():
   @dataclass
   class NestedDataclass:
     val: str = field(default="<default>")
@@ -97,7 +97,7 @@ def test_dataclass_field_defaults_works_with_already_annotated_nested_class_requ
   assert instance.nested.val == "<default>"
 
 
-def test_dataclass_defaults_works_with_already_annotated_nested_class_requires_default():
+def test_dataclass_defaults_works_with_already_annotated_nested_class():
   @dataclass
   class NestedDataclass:
     val: str = "default"
