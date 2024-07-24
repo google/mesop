@@ -99,7 +99,7 @@ def dialog_actions():
   """
   with me.box(
     style=me.Style(
-      display="flex", justify_content="end", margin=me.Margin(top=20)
+      display="flex", justify_content="end", gap=5, margin=me.Margin(top=20)
     )
   ):
     me.slot()
