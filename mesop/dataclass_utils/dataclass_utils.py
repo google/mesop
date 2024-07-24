@@ -1,6 +1,7 @@
+# ruff: noqa: E721
 import base64
 import json
-from dataclasses import asdict, dataclass, field, is_dataclass
+from dataclasses import Field, asdict, dataclass, field, is_dataclass
 from datetime import datetime
 from io import StringIO
 from typing import Any, Type, TypeVar, cast, get_origin, get_type_hints
@@ -9,7 +10,7 @@ from deepdiff import DeepDiff, Delta
 from deepdiff.operator import BaseOperator
 from deepdiff.path import parse_path
 
-from mesop.exceptions import MesopException
+from mesop.exceptions import MesopDeveloperException, MesopException
 
 _PANDAS_OBJECT_KEY = "__pandas.DataFrame__"
 _DATETIME_OBJECT_KEY = "__datetime.datetime__"
@@ -37,7 +38,27 @@ def dataclass_with_defaults(cls: Type[C]) -> Type[C]:
   Provides defaults for every attribute in a dataclass (recursively) so
   Mesop developers don't need to manually set default values
   """
-  pass
+
+  # Make sure that none of the class variables use a mutable default value
+  # which can cause state to be accidentally shared across sessions which can
+  # be very bad!
+  for name in cls.__dict__:
+    # Skip dunder methods/attributes.
+    if name.startswith("__") and name.endswith("__"):
+      continue
+    classVar = cls.__dict__[name]
+    if not isinstance(classVar, Field):
+      try:
+        # If a value is not hashable, then we will treat it as mutable.
+        hash(classVar)
+      except TypeError as exc:
+        error_message = (
+          f"Detected mutable default value for non-hashable type={type(classVar).__name__} "
+          f"for attribute={name} in class={cls.__name__}. "
+          "See: https://google.github.io/mesop/guides/state_management/#use-immutable-default-values"
+        )
+        raise MesopDeveloperException(error_message) from exc
+
   annotations = get_type_hints(cls)
   for name, type_hint in annotations.items():
     if name not in cls.__dict__:  # Skip if default already set
@@ -54,11 +75,27 @@ def dataclass_with_defaults(cls: Type[C]) -> Type[C]:
       elif get_origin(type_hint) == dict:
         setattr(cls, name, field(default_factory=dict))
       elif isinstance(type_hint, type):
-        setattr(
-          cls, name, field(default_factory=dataclass_with_defaults(type_hint))
-        )
-
+        if has_parent(type_hint):
+          # If this isn't a simple class (i.e. it inherits from another class)
+          # then we will preserve its semantics (not try to set default values
+          # because it's not a dataclass) and instantiate it with each new instance
+          # of a state class.
+          setattr(cls, name, field(default_factory=type_hint))
+        else:
+          # If it's a simple dataclass (i.e. does not inherit from another class)
+          # then we will try to set default values and then wrap it with a dataclass
+          # decorator (if necessary).
+          setattr(
+            cls, name, field(default_factory=dataclass_with_defaults(type_hint))
+          )
+  # If a class is already a dataclass, then don't wrap it with another dataclass decorator.
+  if is_dataclass(cls):
+    return cls
   return dataclass(cls)
+
+
+def has_parent(cls: Type[Any]) -> bool:
+  return len(cls.__bases__) > 0 and cls.__bases__[0] != object
 
 
 def serialize_dataclass(state: Any):

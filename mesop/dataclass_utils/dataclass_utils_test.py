@@ -5,8 +5,10 @@ import numpy as np
 import pandas as pd
 import pytest
 
+import mesop.protos.ui_pb2 as pb
 from mesop.dataclass_utils.dataclass_utils import (
   dataclass_with_defaults,
+  has_parent,
   serialize_dataclass,
   update_dataclass_from_json,
 )
@@ -28,6 +30,7 @@ class A:
   list_b: list[B] = field(default_factory=list)
   dates: list[datetime] = field(default_factory=lambda: [datetime(1974, 1, 1)])
   strs: list[str] = field(default_factory=list)
+  str_dict: dict[str, str] = field(default_factory=dict)
 
 
 @dataclass
@@ -81,7 +84,7 @@ def test_dataclass_defaults_recursive():
   assert d.unannotated.val == ""
 
 
-def test_dataclass_defaults_works_with_already_annotated_nested_class_requires_default():
+def test_dataclass_field_defaults_works_with_already_annotated_nested_class():
   @dataclass
   class NestedDataclass:
     val: str = field(default="<default>")
@@ -92,6 +95,19 @@ def test_dataclass_defaults_works_with_already_annotated_nested_class_requires_d
 
   instance = RootDataclass()
   assert instance.nested.val == "<default>"
+
+
+def test_dataclass_defaults_works_with_already_annotated_nested_class():
+  @dataclass
+  class NestedDataclass:
+    val: str = "default"
+
+  @dataclass_with_defaults
+  class RootDataclass:
+    nested: NestedDataclass
+
+  instance = RootDataclass()
+  assert instance.nested.val == "default"
 
 
 def test_dataclass_defaults_works_with_already_annotated_nested_class_fails_without_default():
@@ -112,7 +128,7 @@ def test_serialize_dataclass():
   val = serialize_dataclass(A())
   assert (
     val
-    == """{"b": {"c": {"val": "<init>"}}, "list_b": [], "dates": [{"__datetime.datetime__": "1974-01-01T00:00:00"}], "strs": []}"""
+    == """{"b": {"c": {"val": "<init>"}}, "list_b": [], "dates": [{"__datetime.datetime__": "1974-01-01T00:00:00"}], "strs": [], "str_dict": {}}"""
   )
 
 
@@ -284,6 +300,132 @@ def test_serialize_deserialize_state_with_list_dict():
   new_state = StateWithListDict()
   update_dataclass_from_json(new_state, serialize_dataclass(state))
   assert new_state == state
+
+
+def test_serialize_deserialize_state_with_proto_throws():
+  @dataclass_with_defaults
+  class State:
+    proto: pb.ComponentName
+
+  state = State()
+
+  with pytest.raises(Exception) as exc_info:
+    serialize_dataclass(state)
+
+  assert "Object of type ComponentName is not JSON serializable" in str(
+    exc_info.value
+  )
+
+
+def test_dataclass_default_value_throws():
+  with pytest.raises(Exception) as exc_info:
+
+    @dataclass
+    class MutableDataclass:
+      str_value: str
+
+    @dataclass_with_defaults
+    class StateWithMutableDefaultDataclassValue:
+      value: MutableDataclass = MutableDataclass(str_value="abc")
+
+  assert (
+    "Detected mutable default value for non-hashable type=MutableDataclass for attribute=value in class=StateWithMutableDefaultDataclassValue"
+    in str(exc_info.value)
+  )
+
+
+def test_proto_without_default_does_not_throw():
+  @dataclass_with_defaults
+  class StateWithMutableProto:
+    proto: pb.Style
+
+
+def test_proto_with_default_throws():
+  with pytest.raises(Exception) as exc_info:
+
+    @dataclass_with_defaults
+    class StateWithMutableProto:
+      proto: pb.Style = pb.Style()
+
+  assert "Detected mutable default value" in str(exc_info.value)
+
+
+def test_proto_in_dataclass_without_default_does_not_throw():
+  @dataclass
+  class DataclassWithProto:
+    style: pb.Style
+
+  @dataclass_with_defaults
+  class StateWithMutableProto:
+    dataclass: DataclassWithProto
+
+
+def test_proto_in_dataclass_with_default_throws():
+  with pytest.raises(Exception) as exc_info:
+
+    @dataclass
+    class DataclassWithProto:
+      style: pb.Style = pb.Style()  # noqa: RUF009 (intentionally do an anti-pattern to make sure exception is raised)
+
+    @dataclass_with_defaults
+    class StateWithMutableProto:
+      dataclass: DataclassWithProto
+
+  assert (
+    "Detected mutable default value for non-hashable type=Style for attribute=style in class=DataclassWithProto"
+    in str(exc_info.value)
+  )
+
+
+def test_proto_in_unannotated_class_without_default_does_not_throw():
+  class UnannotatedClassWithProto:
+    style: pb.Style
+
+  @dataclass_with_defaults
+  class StateWithMutableProto:
+    dataclass: UnannotatedClassWithProto
+
+
+def test_proto_in_unannotated_class_with_default_throws():
+  with pytest.raises(Exception) as exc_info:
+
+    class UnannotatedClassWithProto:
+      style: pb.Style = pb.Style()
+
+    @dataclass_with_defaults
+    class StateWithMutableProto:
+      dataclass: UnannotatedClassWithProto
+
+  assert (
+    "Detected mutable default value for non-hashable type=Style for attribute=style in class=UnannotatedClassWithProto"
+    in str(exc_info.value)
+  )
+
+
+def test_has_parent_simple_class():
+  class SimpleClass:
+    val: str
+
+  assert has_parent(SimpleClass) is False
+
+
+def test_has_parent_dataclass():
+  @dataclass
+  class ADataclass:
+    val: str
+
+  assert has_parent(ADataclass) is False
+
+
+def test_has_parent_child_class():
+  class ParentClass:
+    pass
+
+  class ChildClass(ParentClass):
+    val: str
+
+  assert has_parent(ChildClass) is True
+  assert has_parent(ParentClass) is False
 
 
 if __name__ == "__main__":
