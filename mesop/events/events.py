@@ -44,7 +44,6 @@ class LoadEvent:
   """
 
   path: str
-  prefers_dark_theme: bool
 
 
 @dataclass(kw_only=True)

@@ -14,10 +14,10 @@ message UiRequest {
 
 message InitRequest {
     optional ViewportSize viewport_size = 1;
-    optional bool prefers_dark_theme = 2;
+    optional ThemeSettings theme_settings = 2;
 }
 
-// Next ID: 14
+// Next ID: 15
 message UserEvent {
     optional States states = 1;
 
@@ -27,7 +27,7 @@ message UserEvent {
     optional Key key = 3;
 
     optional ViewportSize viewport_size = 11;
-    optional bool prefers_dark_theme = 13;
+    optional ThemeSettings theme_settings = 13;
 
     oneof type {
         bool bool_value = 4;
@@ -37,11 +37,17 @@ message UserEvent {
         NavigationEvent navigation = 6;
         ResizeEvent resize = 10;
         bytes bytes_value = 9;
+        ChangePrefersColorScheme change_prefers_color_scheme = 14;
     }
 
     optional string state_token = 12;
 }
 
+message ThemeSettings {
+    optional bool prefers_dark_theme = 1;
+    optional ThemeMode theme_mode = 2;
+
+}
 
 message CodeValue {
     oneof value {
@@ -71,6 +77,9 @@ message NavigationEvent{
 // Fired whenever a user resizes the viewport/browser.
 message ResizeEvent {
 }
+
+// Fired whenever the user changes their (system) color scheme preference.
+message ChangePrefersColorScheme {}
 
 message ViewportSize {
     // Viewport width, in pixels.

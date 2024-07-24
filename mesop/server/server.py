@@ -107,13 +107,13 @@ def configure_flask_app(
         yield from yield_errors(runtime().get_loading_errors()[0])
 
       if ui_request.HasField("init"):
+        runtime().context().set_theme_settings(ui_request.init.theme_settings)
         runtime().context().set_viewport_size(ui_request.init.viewport_size)
         page_config = runtime().get_page_config(path=ui_request.path)
         if page_config and page_config.on_load:
           result = page_config.on_load(
             LoadEvent(
               path=ui_request.path,
-              prefers_dark_theme=ui_request.init.prefers_dark_theme,
             )
           )
           # on_load is a generator function then we need to iterate through
@@ -131,6 +131,7 @@ def configure_flask_app(
         yield STREAM_END
       elif ui_request.HasField("user_event"):
         event = ui_request.user_event
+        runtime().context().set_theme_settings(event.theme_settings)
         runtime().context().set_viewport_size(event.viewport_size)
 
         if event.states.states:
@@ -175,11 +176,7 @@ def configure_flask_app(
                 and not has_run_navigate_on_load
               ):
                 has_run_navigate_on_load = True
-                result = page_config.on_load(
-                  LoadEvent(
-                    path=path, prefers_dark_theme=event.prefers_dark_theme
-                  )
-                )
+                result = page_config.on_load(LoadEvent(path=path))
                 # on_load is a generator function then we need to iterate through
                 # the generator object.
                 if result:

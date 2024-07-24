@@ -1,29 +1,21 @@
-from enum import Enum
+from typing import Literal
 
 import mesop.protos.ui_pb2 as pb
 from mesop.runtime import runtime
 
-
-class ThemeMode(Enum):
-  SYSTEM = "system"
-  LIGHT = "light"
-  DARK = "dark"
+ThemeMode = Literal["system", "light", "dark"]
+ThemeBrightness = Literal["light", "dark"]
 
 
 def set_theme_mode(theme_mode: ThemeMode) -> None:
-  if theme_mode == ThemeMode.DARK:
+  if theme_mode == "dark":
     theme_mode_proto = pb.ThemeMode.THEME_MODE_DARK
-  elif theme_mode == ThemeMode.LIGHT:
+  elif theme_mode == "light":
     theme_mode_proto = pb.ThemeMode.THEME_MODE_LIGHT
   else:
     theme_mode_proto = pb.ThemeMode.THEME_MODE_SYSTEM
   runtime().context().set_theme_mode(theme_mode_proto)
 
 
-class ThemeBrightness(Enum):
-  LIGHT = "light"
-  DARK = "dark"
-
-
 def theme_brightness() -> ThemeBrightness:
-  return runtime().context().theme_brightness()
+  return "dark" if runtime().context().using_dark_theme() else "light"

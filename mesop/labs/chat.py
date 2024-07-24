@@ -131,7 +131,6 @@ class State:
   input: str
   output: list[ChatMessage]
   in_progress: bool = False
-  is_dark_theme: bool = False
 
 
 def on_blur(e: me.InputBlurEvent):
@@ -203,12 +202,10 @@ def chat(
     yield
 
   def toggle_theme(e: me.ClickEvent):
-    state = me.state(State)
-    if state.is_dark_theme:
-      me.set_theme_mode(me.ThemeMode.LIGHT)
+    if me.theme_brightness() == "light":
+      me.set_theme_mode("dark")
     else:
-      me.set_theme_mode(me.ThemeMode.DARK)
-    state.is_dark_theme = not state.is_dark_theme
+      me.set_theme_mode("light")
 
   with me.box(style=_STYLE_APP_CONTAINER):
     with me.content_button(
@@ -216,7 +213,7 @@ def chat(
       style=me.Style(position="absolute", right=0),
       on_click=toggle_theme,
     ):
-      me.icon("light_mode" if state.is_dark_theme else "dark_mode")
+      me.icon("light_mode" if me.theme_brightness() == "dark" else "dark_mode")
     with me.box(style=_make_style_chat_ui_container(bool(title))):
       if title:
         me.text(title, type="headline-5", style=_STYLE_TITLE)

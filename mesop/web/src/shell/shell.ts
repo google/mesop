@@ -36,6 +36,7 @@ import {getViewportSize} from '../utils/viewport_size';
 import {createCustomElement} from '@angular/elements';
 import {Subject} from 'rxjs';
 import {debounceTime} from 'rxjs/operators';
+import {ThemeService} from '../services/theme_service';
 
 @Component({
   selector: 'mesop-shell',
@@ -65,6 +66,7 @@ export class Shell {
     iconRegistry: MatIconRegistry,
     private router: Router,
     errorHandler: ErrorHandler,
+    private themeService: ThemeService,
   ) {
     iconRegistry.setDefaultFontSetClass('material-symbols-rounded');
     (errorHandler as GlobalErrorHandlerService).setOnError((error) => {
@@ -81,9 +83,7 @@ export class Shell {
     const request = new UiRequest();
     const initRequest = new InitRequest();
     initRequest.setViewportSize(getViewportSize());
-    initRequest.setPrefersDarkTheme(
-      window.matchMedia('(prefers-color-scheme: dark)').matches,
-    );
+    initRequest.setThemeSettings(this.themeService.getThemeSettings());
     request.setInit(initRequest);
     this.channel.init(
       {
@@ -126,11 +126,10 @@ export class Shell {
             });
           } else if (command.hasSetThemeMode()) {
             const themeMode = command.getSetThemeMode()?.getThemeMode();
-            if (themeMode == ThemeMode.THEME_MODE_DARK) {
-              document.body.classList.add('dark-theme');
-            } else {
-              document.body.classList.remove('dark-theme');
+            if (themeMode == null) {
+              throw new Error('Theme mode undefined in setThemeMode command');
             }
+            this.themeService.setThemeMode(themeMode);
           } else {
             throw new Error(
               'Unhandled command: ' + command.getCommandCase().toString(),

@@ -6,9 +6,7 @@ import mesop.labs as mel
 
 
 def on_load(e: me.LoadEvent):
-  me.set_theme_mode(
-    me.ThemeMode.DARK if e.prefers_dark_theme else me.ThemeMode.LIGHT
-  )
+  me.set_theme_mode("system")
 
 
 @me.page(
