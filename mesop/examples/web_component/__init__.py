@@ -1,6 +1,9 @@
 from mesop.examples.web_component.code_mirror_editor import (
   code_mirror_editor_app as code_mirror_editor_app,
 )
+from mesop.examples.web_component.custom_font_csp_repro import (
+  custom_font_app as custom_font_app,
+)
 from mesop.examples.web_component.firebase_auth import (
   firebase_auth_app as firebase_auth_app,
 )
