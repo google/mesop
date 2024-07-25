@@ -148,7 +148,6 @@ export class Shell {
   }
 
   onResizeDebounced() {
-    console.log('debounce resize');
     const userEvent = new UserEvent();
     userEvent.setResize(new ResizeEvent());
     this.channel.dispatch(userEvent);
