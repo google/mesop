@@ -14,6 +14,7 @@ from werkzeug.security import safe_join
 from mesop.exceptions import MesopException
 from mesop.runtime import runtime
 from mesop.utils.runfiles import get_runfile_location, has_runfiles
+from mesop.utils.url_utils import remove_url_query_param
 
 WEB_COMPONENTS_PATH_SEGMENT = "__web-components-module__"
 
@@ -164,7 +165,9 @@ def configure_static_file_serving(
       }
     )
     if page_config and page_config.stylesheets:
-      csp["style-src"] += " " + " ".join(page_config.stylesheets)
+      csp["style-src"] += " " + " ".join(
+        [remove_url_query_param(url) for url in page_config.stylesheets]
+      )
     security_policy = None
     if page_config and page_config.security_policy:
       security_policy = page_config.security_policy
