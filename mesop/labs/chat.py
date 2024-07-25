@@ -11,13 +11,13 @@ _ROLE_ASSISTANT = "assistant"
 
 _BOT_USER_DEFAULT = "mesop-bot"
 
-_COLOR_BACKGROUND = "var(--sys-background)"
-_COLOR_CHAT_BUBBLE_YOU = "var(--sys-surface-container-low)"
-_COLOR_CHAT_BUBBLE_BOT = "var(--sys-secondary-container)"
+_COLOR_BACKGROUND = me.theme_var("background")
+_COLOR_CHAT_BUBBLE_YOU = me.theme_var("surface-container-low")
+_COLOR_CHAT_BUBBLE_BOT = me.theme_var("secondary-container")
 
 _DEFAULT_PADDING = me.Padding.all(20)
 _DEFAULT_BORDER_SIDE = me.BorderSide(
-  width="1px", style="solid", color="var(--sys-secondary-fixed)"
+  width="1px", style="solid", color=me.theme_var("secondary-fixed")
 )
 
 _LABEL_BUTTON = "send"

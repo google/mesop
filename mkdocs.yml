@@ -22,6 +22,7 @@ nav:
       - Auth: guides/auth.md
       - Deployment: guides/deployment.md
       - Debugging: guides/debugging.md
+      - Theming: guides/theming.md
       - Web Security: guides/web_security.md
       - Labs: guides/labs.md
   - Components:
