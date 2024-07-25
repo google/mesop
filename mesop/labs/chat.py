@@ -210,7 +210,7 @@ def chat(
   with me.box(style=_STYLE_APP_CONTAINER):
     with me.content_button(
       type="icon",
-      style=me.Style(position="absolute", right=0),
+      style=me.Style(position="absolute", right=4, top=8),
       on_click=toggle_theme,
     ):
       me.icon("light_mode" if me.theme_brightness() == "dark" else "dark_mode")
