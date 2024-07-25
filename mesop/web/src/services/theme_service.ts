@@ -49,7 +49,15 @@ export class ThemeService {
     this.updateTheme();
   }
 
-  isUsingDarkTheme(): boolean {
+  private updateTheme(): void {
+    if (this.isUsingDarkTheme()) {
+      document.body.classList.add('dark-theme');
+    } else {
+      document.body.classList.remove('dark-theme');
+    }
+  }
+
+  private isUsingDarkTheme(): boolean {
     if (this.mode == ThemeMode.THEME_MODE_DARK) {
       return true;
     }
@@ -58,13 +66,5 @@ export class ThemeService {
     }
 
     return this.prefersDarkColorSchemeMediaQuery.matches;
-  }
-
-  private updateTheme(): void {
-    if (this.isUsingDarkTheme()) {
-      document.body.classList.add('dark-theme');
-    } else {
-      document.body.classList.remove('dark-theme');
-    }
   }
 }

@@ -237,7 +237,7 @@ export class Channel {
     userEvent.setViewportSize(getViewportSize());
     userEvent.setThemeSettings(this.themeService.getThemeSettings());
     // Every user event should have an event handler,
-    // except for navigation and resize.
+    // except for the ones below:
     if (
       !userEvent.getHandlerId() &&
       !userEvent.getNavigation() &&
