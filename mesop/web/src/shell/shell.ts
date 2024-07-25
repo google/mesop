@@ -33,6 +33,8 @@ import {ErrorBox} from '../error/error_box';
 import {GlobalErrorHandlerService} from '../services/global_error_handler';
 import {getViewportSize} from '../utils/viewport_size';
 import {createCustomElement} from '@angular/elements';
+import {Subject} from 'rxjs';
+import {debounceTime} from 'rxjs/operators';
 
 @Component({
   selector: 'mesop-shell',
@@ -53,6 +55,7 @@ export class Shell {
   rootComponent!: ComponentProto;
   error: ServerError | undefined;
   componentConfigs: readonly ComponentConfig[] = [];
+  private resizeSubject = new Subject<void>();
 
   constructor(
     private zone: NgZone,
@@ -68,6 +71,9 @@ export class Shell {
       errorProto.setException(`JS Error: ${error.toString()}`);
       this.error = errorProto;
     });
+    this.resizeSubject
+      .pipe(debounceTime(500))
+      .subscribe(() => this.onResizeDebounced());
   }
 
   ngOnInit() {
@@ -137,7 +143,11 @@ export class Shell {
   }
 
   @HostListener('window:resize')
-  onResize() {
+  onResize(event: Event) {
+    this.resizeSubject.next();
+  }
+
+  onResizeDebounced() {
     const userEvent = new UserEvent();
     userEvent.setResize(new ResizeEvent());
     this.channel.dispatch(userEvent);
