@@ -14,7 +14,7 @@ from werkzeug.security import safe_join
 from mesop.exceptions import MesopException
 from mesop.runtime import runtime
 from mesop.utils.runfiles import get_runfile_location, has_runfiles
-from mesop.utils.url_utils import remove_url_query_param
+from mesop.utils.url_utils import sanitize_url_for_csp
 
 WEB_COMPONENTS_PATH_SEGMENT = "__web-components-module__"
 
@@ -166,17 +166,25 @@ def configure_static_file_serving(
     )
     if page_config and page_config.stylesheets:
       csp["style-src"] += " " + " ".join(
-        [remove_url_query_param(url) for url in page_config.stylesheets]
+        [sanitize_url_for_csp(url) for url in page_config.stylesheets]
       )
     security_policy = None
     if page_config and page_config.security_policy:
       security_policy = page_config.security_policy
     if security_policy and security_policy.allowed_connect_srcs:
       csp["connect-src"] = "'self' " + " ".join(
-        security_policy.allowed_connect_srcs
+        [
+          sanitize_url_for_csp(url)
+          for url in security_policy.allowed_connect_srcs
+        ]
       )
     if security_policy and security_policy.allowed_script_srcs:
-      csp["script-src"] += " " + " ".join(security_policy.allowed_script_srcs)
+      csp["script-src"] += " " + " ".join(
+        [
+          sanitize_url_for_csp(url)
+          for url in security_policy.allowed_script_srcs
+        ]
+      )
     if security_policy and security_policy.dangerously_disable_trusted_types:
       del csp["trusted-types"]
       del csp["require-trusted-types-for"]
@@ -188,7 +196,10 @@ def configure_static_file_serving(
       csp["frame-ancestors"] = "*"
     elif security_policy and security_policy.allowed_iframe_parents:
       csp["frame-ancestors"] = "'self' " + " ".join(
-        list(security_policy.allowed_iframe_parents)
+        [
+          sanitize_url_for_csp(url)
+          for url in security_policy.allowed_iframe_parents
+        ]
       )
     else:
       csp["frame-ancestors"] = default_allowed_iframe_parents

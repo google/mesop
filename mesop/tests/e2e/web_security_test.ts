@@ -13,6 +13,12 @@ test('csp: allowed parent iframe origins', async ({page}) => {
   expect(cleanCsp(csp)).toMatchSnapshot('csp_allowed_iframe_parents.txt');
 });
 
+test('csp escaping', async ({page}) => {
+  const response = await page.goto('/testing/csp_escaping');
+  const csp = response?.headers()['content-security-policy']!;
+  expect(cleanCsp(csp)).toMatchSnapshot('csp_escaping.txt');
+});
+
 function cleanCsp(csp: string): string {
   return (
     csp
