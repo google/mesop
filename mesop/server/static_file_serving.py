@@ -159,7 +159,7 @@ def configure_static_file_serving(
         "style-src": "'self' 'unsafe-inline' fonts.googleapis.com",
         "script-src": f"'self' 'nonce-{g.csp_nonce}'",
         # https://angular.io/guide/security#enforcing-trusted-types
-        "trusted-types": "angular angular#unsafe-bypass lit-html 'allow-duplicates'",
+        "trusted-types": "angular angular#unsafe-bypass lit-html",
         "require-trusted-types-for": "'script'",
       }
     )

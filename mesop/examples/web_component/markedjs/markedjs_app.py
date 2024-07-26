@@ -46,8 +46,21 @@ SAMPLE_MARKDOWN = """
 ## Links
 [Google](https://www.google.com/)
 
+## Code Inline
+
+This is `var code = 'code';`
+
+
 ## Code
-Inline `code`
+
+```python
+import mesop as me
+
+
+@me.page(path="/hello_world")
+def app():
+  me.text("Hello World")
+```
 
 ## Table
 
@@ -66,11 +79,18 @@ class State:
 @me.page(
   path="/web_component/markedjs/markedjs_app",
   stylesheets=[
-    "https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.css"
+    # Other themes here: https://www.jsdelivr.com/package/npm/highlight.js?tab=files&path=styles
+    "https://cdn.jsdelivr.net/npm/highlight.js@11.10.0/styles/night-owl.min.css",
   ],
   security_policy=me.SecurityPolicy(
     allowed_connect_srcs=["https://cdn.jsdelivr.net"],
     allowed_script_srcs=["https://cdn.jsdelivr.net"],
+    # CAUTION: this disables an important web security feature and
+    # should not be used for most mesop apps.
+    #
+    # Disabling trusted types because we need DomPurifier is not listed in TrustedHTML
+    # assignment.
+    dangerously_disable_trusted_types=True,
   ),
 )
 def page():
