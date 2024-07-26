@@ -53,6 +53,7 @@ class Runtime:
     self.event_mappers: dict[Type[Any], Callable[[pb.UserEvent, Key], Any]] = {}
     self._state_classes: list[type[Any]] = []
     self._loading_errors: list[pb.ServerError] = []
+    self._has_served_traffic = False
 
   def context(self) -> Context:
     if "_mesop_context" not in g:
@@ -60,6 +61,7 @@ class Runtime:
     return g._mesop_context
 
   def create_context(self) -> Context:
+    self._has_served_traffic = True
     if len(self._state_classes) == 0:
       states = {EmptyState: EmptyState()}
     else:
@@ -103,6 +105,10 @@ Try one of the following paths:
     self._path_to_page_config[path].page_fn()
 
   def register_page(self, *, path: str, page_config: PageConfig) -> None:
+    if self._has_served_traffic:
+      raise MesopDeveloperException(
+        "Cannot register a page after traffic has been served. You must register all pages upon server startup before any traffic has been served. This prevents security issues."
+      )
     self._path_to_page_config[path] = page_config
 
   def get_page_config(self, *, path: str) -> PageConfig | None:
@@ -131,6 +137,10 @@ Try one of the following paths:
     self.component_fns.add(component_fn)
 
   def register_js_module(self, js_module: str) -> None:
+    if self._has_served_traffic:
+      raise MesopDeveloperException(
+        "Cannot register a JS module after traffic has been served. You must define all web components upon server startup before any traffic has been served. This prevents security issues."
+      )
     self.js_modules.add(js_module)
 
   def get_component_fns(self) -> set[Callable[..., Any]]:

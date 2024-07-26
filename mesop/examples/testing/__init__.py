@@ -8,6 +8,12 @@ from mesop.examples.testing import (
   csp_escaping as csp_escaping,
 )
 from mesop.examples.testing import (
+  error_register_page_too_late as error_register_page_too_late,
+)
+from mesop.examples.testing import (
+  error_register_web_component_too_late as error_register_web_component_too_late,
+)
+from mesop.examples.testing import (
   minimal_chat as minimal_chat,
 )
 from mesop.examples.testing import (
