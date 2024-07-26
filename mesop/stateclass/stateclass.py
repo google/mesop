@@ -1,4 +1,4 @@
-from typing import Any, TypeVar, cast
+from typing import Any, TypeVar, cast, overload
 
 from mesop.dataclass_utils import dataclass_with_defaults
 from mesop.runtime import runtime
@@ -6,8 +6,18 @@ from mesop.runtime import runtime
 _T = TypeVar("_T")
 
 
+@overload
+def stateclass(*, query_params: bool = False, **kw_args: Any) -> type[Any]:
+  pass
+
+
+@overload
+def stateclass(cls: type[_T], /) -> type[_T]:
+  pass
+
+
 def stateclass(
-  cls: type[_T] | None, query_params: bool = False, **kw_args: Any
+  cls: type[_T] | None = None, /, *, query_params: bool = False, **kw_args: Any
 ) -> type[_T]:
   """
   Similar as dataclass, but it also registers with Mesop runtime().

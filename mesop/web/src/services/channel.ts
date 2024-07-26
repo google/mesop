@@ -167,6 +167,17 @@ export class Channel {
               case UpdateStateEvent.TypeCase.TYPE_NOT_SET:
                 throw new Error('No state event data set');
             }
+            for (const state of this.states.getStatesList()) {
+              if (state.getQueryParams()) {
+                const params = new URLSearchParams(window.location.search);
+                params.set('state', state.getData()!);
+                window.history.replaceState(
+                  null,
+                  '',
+                  `${window.location.pathname}?${params}`,
+                );
+              }
+            }
             break;
           }
           case UiResponse.TypeCase.RENDER: {
