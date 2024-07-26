@@ -11,13 +11,13 @@ _ROLE_ASSISTANT = "assistant"
 
 _BOT_USER_DEFAULT = "mesop-bot"
 
-_COLOR_BACKGROUND = "#f0f4f8"
-_COLOR_CHAT_BUBBLE_YOU = "#f2f2f2"
-_COLOR_CHAT_BUBBLE_BOT = "#ebf3ff"
+_COLOR_BACKGROUND = me.theme_var("background")
+_COLOR_CHAT_BUBBLE_YOU = me.theme_var("surface-container-low")
+_COLOR_CHAT_BUBBLE_BOT = me.theme_var("secondary-container")
 
 _DEFAULT_PADDING = me.Padding.all(20)
 _DEFAULT_BORDER_SIDE = me.BorderSide(
-  width="1px", style="solid", color="#ececec"
+  width="1px", style="solid", color=me.theme_var("secondary-fixed")
 )
 
 _LABEL_BUTTON = "send"
@@ -70,7 +70,7 @@ def _make_style_chat_ui_container(has_title: bool) -> me.Style:
     margin=me.Margin.symmetric(vertical=0, horizontal="auto"),
     width="min(1024px, 100%)",
     height="100vh",
-    background="#fff",
+    background=_COLOR_BACKGROUND,
     box_shadow=(
       "0 3px 1px -2px #0003, 0 2px 2px #00000024, 0 1px 5px #0000001f"
     ),
@@ -201,7 +201,19 @@ def chat(
     state.in_progress = False
     yield
 
+  def toggle_theme(e: me.ClickEvent):
+    if me.theme_brightness() == "light":
+      me.set_theme_mode("dark")
+    else:
+      me.set_theme_mode("light")
+
   with me.box(style=_STYLE_APP_CONTAINER):
+    with me.content_button(
+      type="icon",
+      style=me.Style(position="absolute", right=4, top=8),
+      on_click=toggle_theme,
+    ):
+      me.icon("light_mode" if me.theme_brightness() == "dark" else "dark_mode")
     with me.box(style=_make_style_chat_ui_container(bool(title))):
       if title:
         me.text(title, type="headline-5", style=_STYLE_TITLE)

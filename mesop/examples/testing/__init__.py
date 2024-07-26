@@ -10,3 +10,6 @@ from mesop.examples.testing import (
 from mesop.examples.testing import (
   text_to_text as text_to_text,
 )
+from mesop.examples.testing import (
+  theme as theme,
+)
