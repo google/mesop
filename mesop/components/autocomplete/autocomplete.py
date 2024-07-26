@@ -44,7 +44,7 @@ class AutocompleteOptionGroup:
 class AutocompleteInputEvent(MesopEvent):
   """Represents an on input event on an autocomplete component.
 
-  This will return the raw input value even if when `require_selection` is true.
+  This will return the raw input value even when `require_selection` is true.
 
   This event should mainly be used custom filtering of autocomplate results based on
   the given user input.
@@ -73,7 +73,7 @@ class AutocompleteEnterEvent(MesopEvent):
   This will return the raw value if `require_selection` is False.
 
   If `require_selection` is True, then only a valid selection will be returned. An empty
-  string will be return if valid selection has been made.
+  string will be return if not valid selection has been made.
 
   Attributes:
     value: Input/selected value.
@@ -94,7 +94,7 @@ register_event_mapper(
 
 @dataclass(kw_only=True)
 class AutocompleteSelectionChangeEvent(MesopEvent):
-  """Represents an selection change event.
+  """Represents a selection change event.
 
   Attributes:
       value: Selected value.

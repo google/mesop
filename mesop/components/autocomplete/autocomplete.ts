@@ -41,7 +41,6 @@ export class AutocompleteComponent {
   @Input() key!: Key;
   @Input() style!: Style;
   private _config!: AutocompleteType;
-  options: string[] = ['One', 'Two', 'Three'];
   filteredOptions: Observable<AutocompleteOptionSet[]> = new Observable<
     AutocompleteOptionSet[]
   >();
