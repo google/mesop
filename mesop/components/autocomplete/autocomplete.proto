@@ -1,0 +1,41 @@
+syntax = "proto2";
+
+package mesop.components.autocomplete;
+
+message AutocompleteOptionGroup {
+  optional string label = 1;
+  repeated AutocompleteOption options = 2;
+}
+
+message AutocompleteOption {
+  optional string label = 1;
+  optional string value = 2;
+}
+
+message AutocompleteOptionSet {
+  oneof option_type {
+    AutocompleteOptionGroup option_group = 1;
+    AutocompleteOption option = 2;
+  }
+}
+
+// Next ID: 18
+message AutocompleteType {
+  optional bool disabled = 1;
+  optional string id = 2;
+  optional string placeholder = 3;
+  optional bool require_selection = 4;
+  optional string value = 5;
+  optional bool readonly = 6;
+  optional bool hide_required_marker = 7;
+  optional string color = 8;
+  optional string float_label = 9;
+  optional string appearance = 10;
+  optional string subscript_sizing = 11;
+  optional string hint_label = 12;
+  optional string label = 13;
+  optional string on_input_handler_id = 14;
+  optional string on_enter_handler_id = 15;
+  optional string on_selection_change_handler_id = 16;
+  repeated AutocompleteOptionSet options = 17;
+}

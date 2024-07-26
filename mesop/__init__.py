@@ -31,6 +31,24 @@ from mesop.component_helpers.helper import (
   slot as slot,
 )
 from mesop.components.audio.audio import audio as audio
+from mesop.components.autocomplete.autocomplete import (
+  AutocompleteEnterEvent as AutocompleteEnterEvent,
+)
+from mesop.components.autocomplete.autocomplete import (
+  AutocompleteInputEvent as AutocompleteInputEvent,
+)
+from mesop.components.autocomplete.autocomplete import (
+  AutocompleteOption as AutocompleteOption,
+)
+from mesop.components.autocomplete.autocomplete import (
+  AutocompleteOptionGroup as AutocompleteOptionGroup,
+)
+from mesop.components.autocomplete.autocomplete import (
+  AutocompleteSelectionChangeEvent as AutocompleteSelectionChangeEvent,
+)
+from mesop.components.autocomplete.autocomplete import (
+  autocomplete as autocomplete,
+)
 from mesop.components.badge.badge import badge as badge
 
 # REF(//scripts/scaffold_component.py):insert_component_import_export

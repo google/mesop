@@ -21,6 +21,7 @@ if current_dir not in sys.path:
 import glob
 
 import audio as audio
+import autocomplete as autocomplete
 import badge as badge
 import basic_animation as basic_animation
 import box as box
@@ -136,14 +137,15 @@ COMPONENTS_SECTIONS = [
   Section(
     name="Form",
     examples=[
+      Example(name="autocomplete"),
       Example(name="button"),
       Example(name="checkbox"),
       Example(name="input"),
-      Example(name="textarea"),
       Example(name="radio"),
       Example(name="select_demo"),
       Example(name="slide_toggle"),
       Example(name="slider"),
+      Example(name="textarea"),
       Example(name="uploader"),
     ],
   ),

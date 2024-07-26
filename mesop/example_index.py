@@ -30,4 +30,5 @@ import mesop.components.embed.e2e as embed_e2e
 import mesop.components.uploader.e2e as uploader_e2e
 import mesop.components.html.e2e as html_e2e
 import mesop.components.link.e2e as link_e2e
+import mesop.components.autocomplete.e2e as autocomplete_e2e
 # REF(//scripts/scaffold_component.py):insert_component_e2e_import_export
