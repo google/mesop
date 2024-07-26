@@ -1,5 +1,6 @@
 import copy
-from typing import Any, Callable, Generator, TypeVar, cast
+import urllib.parse as urlparse
+from typing import Any, Callable, Generator, Sequence, TypeVar, cast
 
 import mesop.protos.ui_pb2 as pb
 from mesop.dataclass_utils import (
@@ -38,6 +39,7 @@ class Context:
     self._viewport_size: pb.ViewportSize | None = None
     self._theme_settings: pb.ThemeSettings | None = None
     self._js_modules: set[str] = set()
+    self._query_params: dict[str, list[str]] = {}
 
   def register_js_module(self, js_module_path: str) -> None:
     self._js_modules.add(js_module_path)
@@ -48,14 +50,67 @@ class Context:
   def clear_js_modules(self):
     self._js_modules = set()
 
+  def query_params(self) -> dict[str, list[str]]:
+    return self._query_params
+
+  def initialize_query_params(self, query_params: Sequence[pb.QueryParam]):
+    for query_param in query_params:
+      self._query_params[query_param.key] = list(query_param.values)
+
+  def set_query_param(self, key: str, value: str | Sequence[str] | None):
+    if value is None:
+      del self._query_params[key]
+    else:
+      self._query_params[key] = (
+        [value] if isinstance(value, str) else list(value)
+      )
+    self._commands.append(
+      pb.Command(
+        update_query_param=pb.UpdateQueryParam(
+          query_param=pb.QueryParam(
+            key=key, values=[value] if isinstance(value, str) else value
+          )
+        )
+      )
+    )
+
   def commands(self) -> list[pb.Command]:
     return self._commands
 
   def clear_commands(self) -> None:
     self._commands = []
 
-  def navigate(self, url: str) -> None:
-    self._commands.append(pb.Command(navigate=pb.NavigateCommand(url=url)))
+  def navigate(
+    self, url: str, query_params: dict[str, str | Sequence[str]] | None = None
+  ) -> None:
+    query_param_protos = None
+    if query_params is not None:
+      query_param_protos = [
+        pb.QueryParam(
+          key=key, values=[value] if isinstance(value, str) else value
+        )
+        for key, value in query_params.items()
+      ]
+    # Construct the full URL with query parameters
+    full_url = url
+    if query_params:
+      query_string = "&".join(
+        f"{urlparse.quote(key)}={urlparse.quote(value)}"
+        if isinstance(value, str)
+        else "&".join(
+          f"{urlparse.quote(key)}={urlparse.quote(v)}" for v in value
+        )
+        for key, value in query_params.items()
+      )
+      full_url += f"?{query_string}"
+
+    self._commands.append(
+      pb.Command(
+        navigate=pb.NavigateCommand(
+          url=full_url, query_params=query_param_protos
+        )
+      )
+    )
 
   def scroll_into_view(self, key: str) -> None:
     self._commands.append(

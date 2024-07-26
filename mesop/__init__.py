@@ -169,6 +169,7 @@ from mesop.exceptions import (
   MesopUserException as MesopUserException,
 )
 from mesop.features import page as page
+from mesop.features.query_params import query_params as query_params
 from mesop.features.theme import set_theme_density as set_theme_density
 from mesop.features.theme import set_theme_mode as set_theme_mode
 from mesop.features.theme import theme_brightness as theme_brightness

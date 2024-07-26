@@ -1,8 +1,10 @@
 import pytest
 
+import mesop.protos.ui_pb2 as pb
 from mesop.utils.url_utils import (
   _escape_url_for_csp,
-  _remove_url_query_param,
+  get_url_query_params,
+  remove_url_query_param,
   sanitize_url_for_csp,
 )
 
@@ -24,7 +26,7 @@ from mesop.utils.url_utils import (
   ],
 )
 def test_remove_url_query_param(input_url: str, expected_output: str):
-  assert _remove_url_query_param(input_url) == expected_output
+  assert remove_url_query_param(input_url) == expected_output
 
 
 @pytest.mark.parametrize(
@@ -66,6 +68,50 @@ def test_escape_url_for_csp(input_url: str, expected_output: str):
 )
 def test_sanitize_url_for_csp(input_url: str, expected_output: str):
   assert sanitize_url_for_csp(input_url) == expected_output
+
+
+@pytest.mark.parametrize(
+  "input_url,expected_output",
+  [
+    ("http://example.com", []),
+    ("http://example.com?", []),
+    (
+      "http://example.com?key=value",
+      [pb.QueryParam(key="key", values=["value"])],
+    ),
+    (
+      "http://example.com?key1=value1&key2=value2",
+      [
+        pb.QueryParam(key="key1", values=["value1"]),
+        pb.QueryParam(key="key2", values=["value2"]),
+      ],
+    ),
+    (
+      "http://example.com?key=value1&key=value2",
+      [pb.QueryParam(key="key", values=["value1", "value2"])],
+    ),
+    ("http://example.com?key=", [pb.QueryParam(key="key", values=[""])]),
+    (
+      "http://example.com?key1=value1&key2=",
+      [
+        pb.QueryParam(key="key1", values=["value1"]),
+        pb.QueryParam(key="key2", values=[""]),
+      ],
+    ),
+    (
+      "http://example.com?key=value#fragment",
+      [pb.QueryParam(key="key", values=["value"])],
+    ),
+    (
+      "http://example.com?key=value%20with%20escapes",
+      [pb.QueryParam(key="key", values=["value%20with%20escapes"])],
+    ),
+  ],
+)
+def test_get_url_query_params(
+  input_url: str, expected_output: list[pb.QueryParam]
+):
+  assert get_url_query_params(input_url) == expected_output
 
 
 if __name__ == "__main__":
