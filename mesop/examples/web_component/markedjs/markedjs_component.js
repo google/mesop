@@ -6,6 +6,12 @@ import {markedHighlight} from 'https://cdn.jsdelivr.net/npm/marked-highlight@2.1
 import highlightJs from 'https://cdn.jsdelivr.net/npm/highlight.js@11.10.0/+esm';
 import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10.9.1/+esm';
 
+/**
+ * Markdown component using MarkedJS
+ *
+ * - HighlightJS used for code highlighting
+ * - Mermaid JS integration for diagrams
+ */
 class MarkedJsComponent extends LitElement {
   static properties = {
     markdown: {type: String},
