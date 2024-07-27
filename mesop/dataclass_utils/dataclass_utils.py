@@ -266,12 +266,11 @@ class DataFrameOperator(BaseOperator):
 class UploadedFileOperator(BaseOperator):
   """Custom operator to detect changes in UploadedFile class.
 
-  DeepDiff does not diff the UploadedFile class correctly, so we will just
-  use a normal equality check, rather than diffing further into the io.BytesIO
-  parent class.
+  DeepDiff does not diff the UploadedFile class correctly, so we will just use a normal
+  equality check, rather than diffing further into the io.BytesIO parent class.
 
-  This class could probably made more generic to handle other classes where we want to
-  diff using equality check.
+  This class could probably be made more generic to handle other classes where we want
+  to diff using equality checks.
   """
 
   def match(self, level) -> bool:
