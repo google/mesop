@@ -8,10 +8,16 @@ package(
 mesop_component(
     name = "uploader",
     assets = [":uploader.css"],
+    py_deps = [":uploaded_file"],
 )
 
 sass_binary(
     name = "styles",
     src = "uploader.scss",
     sourcemap = False,
+)
+
+py_library(
+    name = "uploaded_file",
+    srcs = ["uploaded_file.py"],
 )

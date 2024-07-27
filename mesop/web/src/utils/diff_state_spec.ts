@@ -373,4 +373,32 @@ describe('applyStateDiff functionality', () => {
       }),
     );
   });
+
+  it('applies UploadedFile updates', () => {
+    const state1 = JSON.stringify({
+      data: {
+        '__mesop.UploadedFile__':
+          '{"contents": "", "name": "", "size": 0, "mime_type": ""}',
+      },
+    });
+    const diff = JSON.stringify([
+      {
+        path: ['data'],
+        action: 'mesop_uploaded_file',
+        value: {
+          '__mesop.UploadedFile__':
+            '{"contents": "data", "name": "file.png", "size": 10, "mime_type": "image/png"}',
+        },
+      },
+    ]);
+
+    expect(applyStateDiff(state1, diff)).toBe(
+      JSON.stringify({
+        data: {
+          '__mesop.UploadedFile__':
+            '{"contents": "data", "name": "file.png", "size": 10, "mime_type": "image/png"}',
+        },
+      }),
+    );
+  });
 });

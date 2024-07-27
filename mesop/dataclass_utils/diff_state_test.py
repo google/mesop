@@ -6,6 +6,7 @@ from typing import Optional
 import pandas as pd
 import pytest
 
+from mesop.components.uploader.uploaded_file import UploadedFile
 from mesop.dataclass_utils.dataclass_utils import diff_state
 from mesop.exceptions import MesopException
 
@@ -392,6 +393,32 @@ def test_diff_nested_pandas():
         "__pandas.DataFrame__": '{"schema":{"fields":[{"name":"index","type":"integer"},{"name":"Strings","type":"string"}],"primaryKey":["index"],"pandas_version":"1.4.0"},"data":[{"index":0,"Strings":"Hello"},{"index":1,"Strings":"Universe"}]}'
       },
     },
+  ]
+
+
+def test_diff_uploaded_file():
+  @dataclass
+  class C:
+    data: UploadedFile
+
+  s1 = C(data=UploadedFile())
+  s2 = C(
+    data=UploadedFile(b"data", name="file.png", size=10, mime_type="image/png")
+  )
+
+  assert json.loads(diff_state(s1, s2)) == [
+    {
+      "path": ["data"],
+      "action": "mesop_uploaded_file_changed",
+      "value": {
+        "__mesop.UploadedFile__": {
+          "contents": "ZGF0YQ==",
+          "name": "file.png",
+          "size": 10,
+          "mime_type": "image/png",
+        },
+      },
+    }
   ]
 
 

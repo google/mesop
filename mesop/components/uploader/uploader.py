@@ -1,4 +1,3 @@
-import io
 from dataclasses import dataclass
 from typing import Any, Callable, Literal, Sequence
 
@@ -10,30 +9,9 @@ from mesop.component_helpers import (
   register_event_mapper,
   register_native_component,
 )
+from mesop.components.uploader.uploaded_file import UploadedFile
 from mesop.events import MesopEvent
 from mesop.exceptions import MesopDeveloperException
-
-
-class UploadedFile(io.BytesIO):
-  """Uploaded file contents and metadata."""
-
-  def __init__(self, contents: bytes, *, name: str, size: int, mime_type: str):
-    super().__init__(contents)
-    self._name = name
-    self._size = size
-    self._mime_type = mime_type
-
-  @property
-  def name(self):
-    return self._name
-
-  @property
-  def size(self):
-    return self._size
-
-  @property
-  def mime_type(self):
-    return self._mime_type
 
 
 @dataclass(kw_only=True)
