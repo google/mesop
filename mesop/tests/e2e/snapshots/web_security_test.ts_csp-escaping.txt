@@ -1,0 +1,11 @@
+default-src 'self'
+font-src fonts.gstatic.com data:
+frame-src *
+img-src 'self' data: https: http:
+media-src 'self' data: https:
+style-src 'self' 'unsafe-inline' fonts.googleapis.com http://google.com/stylesheets%2C1%3B2
+script-src 'self' 'nonce-{{NONCE}}' http://google.com/allowed_script_srcs/1%2C1%3B2 http://google.com/allowed_script_srcs/2%2C1%3B2
+trusted-types angular angular#unsafe-bypass lit-html
+require-trusted-types-for 'script'
+connect-src 'self' http://google.com/allowed_connect_srcs/1%2C1%3B2 http://google.com/allowed_connect_srcs/2%2C1%3B2
+frame-ancestors 'self' http://google.com/allowed_iframe_parents/1%2C1%3B2 http://google.com/allowed_iframe_parents/2%2C1%3B2
