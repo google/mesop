@@ -1,13 +1,7 @@
-import {Injectable, Renderer2, RendererFactory2} from '@angular/core';
-import {BehaviorSubject} from 'rxjs';
-import {Channel} from './channel';
+import {Injectable} from '@angular/core';
 import {
-  ChangePrefersColorScheme,
-  ResizeEvent,
   ThemeMode,
   SetThemeMode,
-  UserEvent,
-  ThemeModeMap,
   ThemeSettings,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 
