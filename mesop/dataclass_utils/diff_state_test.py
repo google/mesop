@@ -422,6 +422,21 @@ def test_diff_uploaded_file():
   ]
 
 
+def test_diff_uploaded_file_same_no_diff():
+  @dataclass
+  class C:
+    data: UploadedFile
+
+  s1 = C(
+    data=UploadedFile(b"data", name="file.png", size=10, mime_type="image/png")
+  )
+  s2 = C(
+    data=UploadedFile(b"data", name="file.png", size=10, mime_type="image/png")
+  )
+
+  assert json.loads(diff_state(s1, s2)) == []
+
+
 # The diff will pass, but the Mesop JSON serializer currently fails on sets in state class.
 # See https://github.com/google/mesop/issues/387
 def test_diff_set():
