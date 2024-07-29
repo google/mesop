@@ -22,6 +22,8 @@ pip install -r demo/requirements.txt --no-binary pydantic
 
 ## Deployment
 
+> Note: make sure you [generate screenshots](#generate-screenshots) before deploying!
+
 This app is deployed to Google Cloud Run.
 
 ```sh
