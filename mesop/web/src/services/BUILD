@@ -1,4 +1,4 @@
-load("//build_defs:defaults.bzl", "ANGULAR_CORE_DEPS", "THIRD_PARTY_JS_RXJS", "ng_module")
+load("//build_defs:defaults.bzl", "ANGULAR_CORE_DEPS", "ng_module")
 
 package(
     default_visibility = ["//build_defs:mesop_internal"],
@@ -13,5 +13,5 @@ ng_module(
         "//mesop/protos:ui_jspb_proto",
         "//mesop/web/src/dev_tools/services",
         "//mesop/web/src/utils",
-    ] + ANGULAR_CORE_DEPS + THIRD_PARTY_JS_RXJS,
+    ] + ANGULAR_CORE_DEPS,
 )
