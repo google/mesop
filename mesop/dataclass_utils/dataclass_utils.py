@@ -56,8 +56,7 @@ def dataclass_with_defaults(cls: Type[C]) -> Type[C]:
         hash(classVar)
       except TypeError as exc:
         error_message = (
-          f"Detected mutable default value for non-hashable type={type(classVar).__name__} "
-          f"for attribute={name} in class={cls.__name__}. "
+          f"mutable default {type(classVar)} for field {name} is not allowed: use default_factory for state class {cls.__name__}. "
           "See: https://google.github.io/mesop/guides/state_management/#use-immutable-default-values"
         )
         raise MesopDeveloperException(error_message) from exc

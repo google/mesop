@@ -362,7 +362,7 @@ def test_dataclass_default_value_throws():
       value: MutableDataclass = MutableDataclass(str_value="abc")
 
   assert (
-    "Detected mutable default value for non-hashable type=MutableDataclass for attribute=value in class=StateWithMutableDefaultDataclassValue"
+    "mutable default <class 'dataclass_utils.dataclass_utils_test.test_dataclass_default_value_throws.<locals>.MutableDataclass'> for field value is not allowed"
     in str(exc_info.value)
   )
 
@@ -380,7 +380,10 @@ def test_proto_with_default_throws():
     class StateWithMutableProto:
       proto: pb.Style = pb.Style()
 
-  assert "Detected mutable default value" in str(exc_info.value)
+  assert (
+    "mutable default <class 'mesop.protos.ui_pb2.Style'> for field proto is not allowed"
+    in str(exc_info.value)
+  )
 
 
 def test_proto_in_dataclass_without_default_does_not_throw():
@@ -405,7 +408,7 @@ def test_proto_in_dataclass_with_default_throws():
       dataclass: DataclassWithProto
 
   assert (
-    "Detected mutable default value for non-hashable type=Style for attribute=style in class=DataclassWithProto"
+    "mutable default <class 'mesop.protos.ui_pb2.Style'> for field style is not allowed"
     in str(exc_info.value)
   )
 
@@ -430,7 +433,7 @@ def test_proto_in_unannotated_class_with_default_throws():
       dataclass: UnannotatedClassWithProto
 
   assert (
-    "Detected mutable default value for non-hashable type=Style for attribute=style in class=UnannotatedClassWithProto"
+    "mutable default <class 'mesop.protos.ui_pb2.Style'> for field style is not allowed"
     in str(exc_info.value)
   )
 
@@ -462,4 +465,4 @@ def test_has_parent_child_class():
 
 
 if __name__ == "__main__":
-  raise SystemExit(pytest.main([__file__]))
+  raise SystemExit(pytest.main(["-vv", __file__]))
