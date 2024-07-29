@@ -11,6 +11,11 @@ import {
   ThemeSettings,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 
+// Default to light theme because many Mesop apps only support
+// light theme, but eventually we will want to default to THEME_MODE_AUTO.
+const DEFAULT_THEME_MODE = new SetThemeMode();
+DEFAULT_THEME_MODE.setThemeMode(ThemeMode.THEME_MODE_LIGHT);
+
 @Injectable({
   providedIn: 'root',
 })
@@ -19,9 +24,9 @@ export class ThemeService {
     '(prefers-color-scheme: dark)',
   );
 
-  // Default to light theme because many Mesop apps only support
-  // light theme, but eventually we will want to default to THEME_MODE_AUTO.
-  mode: ThemeModeMap[keyof ThemeModeMap] = ThemeMode.THEME_MODE_LIGHT;
+  // Use SetThemeMode instead of ThemeMode directly because the TS type
+  // of proto enum differs between upstream and downstream.
+  mode = DEFAULT_THEME_MODE;
   onChangePrefersColorScheme!: () => void;
 
   constructor() {
@@ -40,11 +45,11 @@ export class ThemeService {
     settings.setPrefersDarkTheme(
       window.matchMedia('(prefers-color-scheme: dark)').matches,
     );
-    settings.setThemeMode(this.mode);
+    settings.setThemeMode(this.mode.getThemeMode()!);
     return settings;
   }
 
-  setThemeMode(mode: ThemeModeMap[keyof ThemeModeMap]) {
+  setThemeMode(mode: SetThemeMode) {
     this.mode = mode;
     this.updateTheme();
   }
@@ -58,10 +63,10 @@ export class ThemeService {
   }
 
   private isUsingDarkTheme(): boolean {
-    if (this.mode == ThemeMode.THEME_MODE_DARK) {
+    if (this.mode.getThemeMode() === ThemeMode.THEME_MODE_DARK) {
       return true;
     }
-    if (this.mode == ThemeMode.THEME_MODE_LIGHT) {
+    if (this.mode.getThemeMode() === ThemeMode.THEME_MODE_LIGHT) {
       return false;
     }
 

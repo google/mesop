@@ -125,8 +125,8 @@ export class Shell {
               behavior: 'smooth',
             });
           } else if (command.hasSetThemeMode()) {
-            const themeMode = command.getSetThemeMode()?.getThemeMode();
-            if (themeMode == null) {
+            const themeMode = command.getSetThemeMode();
+            if (themeMode?.getThemeMode() == null) {
               throw new Error('Theme mode undefined in setThemeMode command');
             }
             this.themeService.setThemeMode(themeMode);
