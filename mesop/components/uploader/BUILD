@@ -1,5 +1,5 @@
+load("//build_defs:defaults.bzl", "py_library", "sass_binary")
 load("//mesop/components:defs.bzl", "mesop_component")
-load("//build_defs:defaults.bzl", "sass_binary")
 
 package(
     default_visibility = ["//build_defs:mesop_internal"],
