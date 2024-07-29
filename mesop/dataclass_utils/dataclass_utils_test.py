@@ -6,6 +6,7 @@ import pandas as pd
 import pytest
 
 import mesop.protos.ui_pb2 as pb
+from mesop.components.uploader.uploaded_file import UploadedFile
 from mesop.dataclass_utils.dataclass_utils import (
   dataclass_with_defaults,
   has_parent,
@@ -41,6 +42,11 @@ class WithPandasDataFrame:
 @dataclass
 class WithBytes:
   data: bytes = b""
+
+
+@dataclass
+class WithUploadedFile:
+  data: UploadedFile = field(default_factory=UploadedFile)
 
 
 JSON_STR = """{"b": {"c": {"val": "<init>"}},
@@ -159,6 +165,21 @@ def test_serialize_pandas_dataframe():
   )
 
 
+def test_serialize_uploaded_file():
+  serialized_dataclass = serialize_dataclass(
+    WithUploadedFile(
+      data=UploadedFile(
+        b"data", name="file.png", size=10, mime_type="image/png"
+      )
+    )
+  )
+
+  assert (
+    serialized_dataclass
+    == '{"data": {"__mesop.UploadedFile__": {"contents": "ZGF0YQ==", "name": "file.png", "size": 10, "mime_type": "image/png"}}}'
+  )
+
+
 @pytest.mark.parametrize(
   "input_bytes, expected_json",
   [
@@ -236,6 +257,18 @@ def test_update_dataclass_with_pandas_dataframe():
       }
     )
   )
+
+
+def test_update_dataclass_with_uploaded_file():
+  uploaded_file = UploadedFile(
+    b"data", name="file.png", size=10, mime_type="image/png"
+  )
+  serialized_dataclass = serialize_dataclass(
+    WithUploadedFile(data=uploaded_file)
+  )
+  uploaded_file_state = WithUploadedFile()
+  update_dataclass_from_json(uploaded_file_state, serialized_dataclass)
+  assert uploaded_file_state.data == uploaded_file
 
 
 def test_update_dataclass_with_bytes():
