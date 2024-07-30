@@ -1,4 +1,4 @@
-from mesop.colab import colab_utils
+from mesop.utils import colab_utils
 
 
 def colab_show(

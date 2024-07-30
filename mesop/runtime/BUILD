@@ -12,5 +12,6 @@ py_library(
         "//mesop/exceptions",
         "//mesop/protos:ui_py_pb2",
         "//mesop/security",
+        "//mesop/utils",
     ] + THIRD_PARTY_PY_FLASK,
 )
