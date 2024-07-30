@@ -4,11 +4,11 @@ from typing import Any, Callable, Generator, Type, TypeVar, cast
 from flask import g
 
 import mesop.protos.ui_pb2 as pb
-from mesop.colab import colab_utils
 from mesop.events import LoadEvent, MesopEvent
 from mesop.exceptions import MesopDeveloperException, MesopUserException
 from mesop.key import Key
 from mesop.security.security_policy import SecurityPolicy
+from mesop.utils import colab_utils
 from mesop.utils.backoff import exponential_backoff
 
 from .context import Context
