@@ -8,7 +8,6 @@ from mesop.events import LoadEvent, MesopEvent
 from mesop.exceptions import MesopDeveloperException, MesopUserException
 from mesop.key import Key
 from mesop.security.security_policy import SecurityPolicy
-from mesop.utils import colab_utils
 from mesop.utils.backoff import exponential_backoff
 
 from .context import Context
@@ -63,13 +62,15 @@ class Runtime:
 
   def create_context(self) -> Context:
     # If running in prod mode, *always* enable the has served traffic safety check.
-    # If running in debug mode, only enable the has served traffic safety check if
-    # app is not running in IPython / notebook environments.
+    # If running in debug mode, *disable* the has served traffic safety check.
     #
     # We don't want to break iterative development where notebook app developers
     # will want to register pages after traffic has been served.
     # Unlike CLI (w/ hot reload), in notebook envs, runtime is *not* reset.
-    if not self.debug_mode or not colab_utils.is_running_ipython():
+    #
+    # For unclear reasons detecting `colab_utils.is_running_ipython` does
+    # *not* work here.
+    if not self.debug_mode:
       self._has_served_traffic = True
     if len(self._state_classes) == 0:
       states = {EmptyState: EmptyState()}
