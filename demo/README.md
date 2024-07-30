@@ -20,18 +20,6 @@ pip install -r demo/requirements.txt --no-binary pydantic
 1. `cd demo`
 1. `mesop main.py`
 
-## Deployment
-
-> Note: make sure you [generate screenshots](#generate-screenshots) before deploying!
-
-This app is deployed to Google Cloud Run.
-
-```sh
-gcloud run deploy mesop --source .
-```
-
-See our Mesop deployment [docs](https://google.github.io/mesop/guides/deployment/#deploy-to-google-cloud-run) for more background.
-
 ## Generate screenshots
 
 If you add more demos and want to re-generate screenshots, do the following steps:
@@ -44,3 +32,15 @@ If you add more demos and want to re-generate screenshots, do the following step
 ```sh
 `for file in demo/screenshots/*; do cwebp -q 50 "$file" -o "${file%.*}.webp"; done`
 ```
+
+## Deployment
+
+> Note: make sure you [generate screenshots](#generate-screenshots) before deploying!
+
+This app is deployed to Google Cloud Run.
+
+```sh
+gcloud run deploy mesop --source .
+```
+
+See our Mesop deployment [docs](https://google.github.io/mesop/guides/deployment/#deploy-to-google-cloud-run) for more background.
