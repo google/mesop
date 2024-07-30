@@ -44,8 +44,6 @@ class AutocompleteOptionGroup:
 class AutocompleteInputEvent(MesopEvent):
   """Represents an on input event on an autocomplete component.
 
-  This will return the raw input value even when `require_selection` is true.
-
   This event should mainly be used custom filtering of autocomplate results based on
   the given user input.
 
@@ -149,7 +147,6 @@ def autocomplete(
     appearance: The form field appearance style.
     disabled: Whether it's disabled.
     placeholder: Placeholder value.
-    require_selection: Whether you must select from the given options.
     value: Initial value.
     readonly: Whether the element is readonly.
     hide_required_marker: Whether the required marker should be hidden.
@@ -168,7 +165,6 @@ def autocomplete(
       options=_make_autocomplete_options(options),
       disabled=disabled,
       placeholder=placeholder,
-      require_selection=require_selection,
       value=value,
       readonly=readonly,
       hide_required_marker=hide_required_marker,

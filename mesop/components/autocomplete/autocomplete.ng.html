@@ -19,10 +19,9 @@
   />
   <mat-autocomplete
     (optionSelected)="onAutocompleteSelectEvent($event)"
-    [requireSelection]="config().getRequireSelection()"
     #auto="matAutocomplete"
   >
-    @for (option of config().getOptionsList(); track $index) { @if
+    @for (option of filteredOptions | async; track $index) { @if
     (option.getOptionGroup()) {
     <mat-optgroup [label]="option.getOptionGroup()!.getLabel()!">
       @for (sub_option of option.getOptionGroup()!.getOptionsList(); track

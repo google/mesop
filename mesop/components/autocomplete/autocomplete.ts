@@ -1,6 +1,6 @@
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {
   Key,
   Type,
@@ -10,12 +10,13 @@ import {
 import {
   AutocompleteType,
   AutocompleteOptionSet,
+  AutocompleteOptionGroup,
 } from 'mesop/mesop/components/autocomplete/autocomplete_jspb_proto_pb/mesop/components/autocomplete/autocomplete_pb';
 import {Channel} from '../../web/src/services/channel';
 import {formatStyle} from '../../web/src/utils/styles';
 import {Subject} from 'rxjs';
-import {debounceTime} from 'rxjs/operators';
-import {CommonModule} from '@angular/common';
+import {debounceTime, startWith} from 'rxjs/operators';
+import {AsyncPipe, CommonModule} from '@angular/common';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -34,9 +35,10 @@ import {
     CommonModule,
     MatAutocompleteModule,
     ReactiveFormsModule,
+    AsyncPipe,
   ],
 })
-export class AutocompleteComponent {
+export class AutocompleteComponent implements OnInit {
   @Input({required: true}) type!: Type;
   @Input() key!: Key;
   @Input() style!: Style;
@@ -58,9 +60,11 @@ export class AutocompleteComponent {
   }
 
   ngOnInit(): void {
-    // Options are filtered on the backend for more control.
     this.filteredOptions = this.autocompleteControl.valueChanges.pipe(
-      map((value) => this._config.getOptionsList()),
+      startWith(''),
+      map((value) => {
+        return this._filter(value || '', this._config.getOptionsList());
+      }),
     );
   }
 
@@ -126,5 +130,39 @@ export class AutocompleteComponent {
     userEvent.setStringValue(this.autocompleteControl.value || '');
     userEvent.setKey(this.key);
     this.channel.dispatch(userEvent);
+  }
+
+  private _filter(
+    value: string,
+    options: AutocompleteOptionSet[],
+  ): AutocompleteOptionSet[] {
+    if (!value) {
+      return options;
+    }
+    const filterValue = value.toLowerCase();
+    const filteredOptions = new Array<AutocompleteOptionSet>();
+    for (const option of options) {
+      if (option.getOptionGroup()) {
+        const filteredOptionGroup = new AutocompleteOptionGroup();
+        filteredOptionGroup.setLabel(option.getOptionGroup()?.getLabel()!);
+        for (const subOption of option.getOptionGroup()?.getOptionsList()!) {
+          if (subOption?.getValue()?.toLowerCase().includes(filterValue)) {
+            filteredOptionGroup.addOptions(subOption);
+          }
+        }
+        if (filteredOptionGroup.getOptionsList().length > 0) {
+          const optionSet = new AutocompleteOptionSet();
+          optionSet.setOptionGroup(filteredOptionGroup);
+          filteredOptions.push(optionSet);
+        }
+      } else {
+        if (
+          option.getOption()?.getValue()?.toLowerCase().includes(filterValue)
+        ) {
+          filteredOptions.push(option);
+        }
+      }
+    }
+    return filteredOptions;
   }
 }
