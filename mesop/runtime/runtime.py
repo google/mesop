@@ -62,12 +62,14 @@ class Runtime:
     return g._mesop_context
 
   def create_context(self) -> Context:
-    # In IPython (e.g. Colab/Jupyter notebook envs),
-    # do not set _has_served_traffic to True,
-    # otherwise this breaks the iterative development where developers
+    # If running in prod mode, *always* enable the has served traffic safety check.
+    # If running in debug mode, only enable the has served traffic safety check if
+    # app is not running in IPython / notebook environments.
+    #
+    # We don't want to break iterative development where notebook app developers
     # will want to register pages after traffic has been served.
     # Unlike CLI (w/ hot reload), in notebook envs, runtime is *not* reset.
-    if not colab_utils.is_running_ipython():
+    if not self.debug_mode or not colab_utils.is_running_ipython():
       self._has_served_traffic = True
     if len(self._state_classes) == 0:
       states = {EmptyState: EmptyState()}
