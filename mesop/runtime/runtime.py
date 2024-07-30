@@ -4,6 +4,7 @@ from typing import Any, Callable, Generator, Type, TypeVar, cast
 from flask import g
 
 import mesop.protos.ui_pb2 as pb
+from mesop.colab import colab_utils
 from mesop.events import LoadEvent, MesopEvent
 from mesop.exceptions import MesopDeveloperException, MesopUserException
 from mesop.key import Key
@@ -61,10 +62,12 @@ class Runtime:
     return g._mesop_context
 
   def create_context(self) -> Context:
-    # In debug mode, do not set _has_served_traffic to True,
-    # otherwise this breaks Colab / notebok use cases where users
+    # In IPython (e.g. Colab/Jupyter notebook envs),
+    # do not set _has_served_traffic to True,
+    # otherwise this breaks the iterative development where developers
     # will want to register pages after traffic has been served.
-    if not self.debug_mode:
+    # Unlike CLI (w/ hot reload), in notebook envs, runtime is *not* reset.
+    if not colab_utils.is_running_ipython():
       self._has_served_traffic = True
     if len(self._state_classes) == 0:
       states = {EmptyState: EmptyState()}
