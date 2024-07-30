@@ -17,7 +17,7 @@ repos:
       - id: check-case-conflict
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
-    rev: v0.4.4
+    rev: v0.5.4
     hooks:
       - id: ruff
         args: [--fix, --exit-non-zero-on-fix]

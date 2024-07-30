@@ -17,6 +17,7 @@ import {
   ResizeEvent,
   UiRequest,
   InitRequest,
+  ThemeMode,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 import {CommonModule} from '@angular/common';
 import {
@@ -33,6 +34,9 @@ import {ErrorBox} from '../error/error_box';
 import {GlobalErrorHandlerService} from '../services/global_error_handler';
 import {getViewportSize} from '../utils/viewport_size';
 import {createCustomElement} from '@angular/elements';
+import {Subject} from 'rxjs';
+import {debounceTime} from 'rxjs/operators';
+import {ThemeService} from '../services/theme_service';
 
 @Component({
   selector: 'mesop-shell',
@@ -53,6 +57,7 @@ export class Shell {
   rootComponent!: ComponentProto;
   error: ServerError | undefined;
   componentConfigs: readonly ComponentConfig[] = [];
+  private resizeSubject = new Subject<void>();
 
   constructor(
     private zone: NgZone,
@@ -61,6 +66,7 @@ export class Shell {
     iconRegistry: MatIconRegistry,
     private router: Router,
     errorHandler: ErrorHandler,
+    private themeService: ThemeService,
   ) {
     iconRegistry.setDefaultFontSetClass('material-symbols-rounded');
     (errorHandler as GlobalErrorHandlerService).setOnError((error) => {
@@ -68,12 +74,16 @@ export class Shell {
       errorProto.setException(`JS Error: ${error.toString()}`);
       this.error = errorProto;
     });
+    this.resizeSubject
+      .pipe(debounceTime(500))
+      .subscribe(() => this.onResizeDebounced());
   }
 
   ngOnInit() {
     const request = new UiRequest();
     const initRequest = new InitRequest();
     initRequest.setViewportSize(getViewportSize());
+    initRequest.setThemeSettings(this.themeService.getThemeSettings());
     request.setInit(initRequest);
     this.channel.init(
       {
@@ -114,6 +124,16 @@ export class Shell {
             targetElements[0].parentElement!.scrollIntoView({
               behavior: 'smooth',
             });
+          } else if (command.hasSetThemeMode()) {
+            const themeMode = command.getSetThemeMode();
+            if (themeMode?.getThemeMode() == null) {
+              throw new Error('Theme mode undefined in setThemeMode command');
+            }
+            this.themeService.setThemeMode(themeMode);
+          } else {
+            throw new Error(
+              'Unhandled command: ' + command.getCommandCase().toString(),
+            );
           }
         },
         onError: (error) => {
@@ -137,7 +157,11 @@ export class Shell {
   }
 
   @HostListener('window:resize')
-  onResize() {
+  onResize(event: Event) {
+    this.resizeSubject.next();
+  }
+
+  onResizeDebounced() {
     const userEvent = new UserEvent();
     userEvent.setResize(new ResizeEvent());
     this.channel.dispatch(userEvent);

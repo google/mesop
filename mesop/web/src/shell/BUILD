@@ -1,4 +1,4 @@
-load("//build_defs:defaults.bzl", "ANGULAR_CDK_TS_DEPS", "ANGULAR_CORE_DEPS", "ANGULAR_MATERIAL_TS_DEPS", "ng_module", "sass_binary")
+load("//build_defs:defaults.bzl", "ANGULAR_CDK_TS_DEPS", "ANGULAR_CORE_DEPS", "ANGULAR_MATERIAL_TS_DEPS", "THIRD_PARTY_JS_RXJS", "ng_module", "sass_binary")
 
 package(
     default_visibility = ["//build_defs:mesop_internal"],
@@ -19,7 +19,7 @@ ng_module(
         "//mesop/web/src/error",
         "//mesop/web/src/services",
         "//mesop/web/src/utils",
-    ] + ANGULAR_CORE_DEPS + ANGULAR_CDK_TS_DEPS + ANGULAR_MATERIAL_TS_DEPS,
+    ] + ANGULAR_CORE_DEPS + ANGULAR_CDK_TS_DEPS + ANGULAR_MATERIAL_TS_DEPS + THIRD_PARTY_JS_RXJS,
 )
 
 sass_binary(

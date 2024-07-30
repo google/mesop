@@ -36,6 +36,7 @@ class Context:
     self._node_slot: pb.Component | None = None
     self._node_slot_children_count: int | None = None
     self._viewport_size: pb.ViewportSize | None = None
+    self._theme_settings: pb.ThemeSettings | None = None
 
   def commands(self) -> list[pb.Command]:
     return self._commands
@@ -50,6 +51,34 @@ class Context:
     self._commands.append(
       pb.Command(scroll_into_view=pb.ScrollIntoViewCommand(key=key))
     )
+
+  def set_theme_mode(self, theme_mode: pb.ThemeMode.ValueType) -> None:
+    self._commands.append(
+      pb.Command(set_theme_mode=pb.SetThemeMode(theme_mode=theme_mode))
+    )
+
+  def set_theme_settings(self, settings: pb.ThemeSettings) -> None:
+    self._theme_settings = settings
+
+  def using_dark_theme(self) -> bool:
+    last_theme_mode_command = None
+    for command in reversed(self._commands):
+      if command.HasField("set_theme_mode"):
+        last_theme_mode_command = command
+        break
+    assert self._theme_settings
+    if last_theme_mode_command is None:
+      theme_mode = self._theme_settings.theme_mode
+    else:
+      theme_mode = last_theme_mode_command.set_theme_mode.theme_mode
+
+    if theme_mode == pb.ThemeMode.THEME_MODE_LIGHT:
+      return False
+    if theme_mode == pb.ThemeMode.THEME_MODE_DARK:
+      return True
+    if theme_mode == pb.THEME_MODE_SYSTEM:
+      return self._theme_settings.prefers_dark_theme
+    raise MesopException("Unhandled theme mode", theme_mode)
 
   def set_viewport_size(self, size: pb.ViewportSize):
     self._viewport_size = size
@@ -149,7 +178,11 @@ Did you forget to decorate your state class `{state.__name__}` with @stateclass?
   def run_event_handler(
     self, event: pb.UserEvent
   ) -> Generator[None, None, None]:
-    if event.HasField("navigation") or event.HasField("resize"):
+    if (
+      event.HasField("navigation")
+      or event.HasField("resize")
+      or event.HasField("change_prefers_color_scheme")
+    ):
       yield  # empty yield so there's one tick of the render loop
       return  # return early b/c there's no event handler for these events.
 

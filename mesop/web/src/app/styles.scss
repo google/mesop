@@ -146,6 +146,7 @@ $light-theme: mat.define-theme(
       theme-type: light,
       primary: $_primary,
       tertiary: $_tertiary,
+      use-system-variables: true,
     ),
   )
 );
@@ -155,6 +156,7 @@ $dark-theme: mat.define-theme(
       theme-type: dark,
       primary: $_primary,
       tertiary: $_tertiary,
+      use-system-variables: true,
     ),
   )
 );
@@ -165,6 +167,11 @@ $dark-theme: mat.define-theme(
 body {
   @include mat.all-component-themes($light-theme);
   @include mat.color-variants-backwards-compatibility($light-theme);
+  @include mat.system-level-colors($light-theme);
+}
+
+body.dark-theme {
+  @include mat.system-level-colors($dark-theme);
 }
 
 html,

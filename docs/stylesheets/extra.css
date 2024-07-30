@@ -162,8 +162,9 @@ p {
   font-size: 0.8rem;
 }
 
-.md-typeset .admonition {
-  font-size: 0.75rem;
+.md-typeset .admonition,
+.md-typeset details {
+  font-size: 0.8rem;
 }
 
 .highlight code {
@@ -496,6 +497,8 @@ a.section-button:hover {
   border-radius: 16px;
 }
 
+/* Styles for various docs page */
+
 a.next-step {
   display: block;
   position: relative;
@@ -517,4 +520,8 @@ a.next-step:before {
 
 a.next-step:hover {
   border: 1px solid var(--md-accent-fg-color);
+}
+
+h3#mesop\.features\.theme\.ThemeVar {
+  font-size: 0.8rem;
 }

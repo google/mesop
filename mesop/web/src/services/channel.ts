@@ -10,12 +10,14 @@ import {
   NavigationEvent,
   ComponentConfig,
   Command,
+  ChangePrefersColorScheme,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 import {Logger} from '../dev_tools/services/logger';
 import {Title} from '@angular/platform-browser';
 import {SSE} from '../utils/sse';
 import {applyComponentDiff, applyStateDiff} from '../utils/diff';
 import {getViewportSize} from '../utils/viewport_size';
+import {ThemeService} from './theme_service';
 
 // Pick 500ms as the minimum duration before showing a progress/busy indicator
 // for the channel.
@@ -58,7 +60,14 @@ export class Channel {
   constructor(
     private logger: Logger,
     private title: Title,
-  ) {}
+    private themeService: ThemeService,
+  ) {
+    this.themeService.setOnChangePrefersColorScheme(() => {
+      const userEvent = new UserEvent();
+      userEvent.setChangePrefersColorScheme(new ChangePrefersColorScheme());
+      this.dispatch(userEvent);
+    });
+  }
 
   getStatus(): ChannelStatus {
     return this.status;
@@ -226,12 +235,14 @@ export class Channel {
 
   dispatch(userEvent: UserEvent) {
     userEvent.setViewportSize(getViewportSize());
+    userEvent.setThemeSettings(this.themeService.getThemeSettings());
     // Every user event should have an event handler,
-    // except for navigation and resize.
+    // except for the ones below:
     if (
       !userEvent.getHandlerId() &&
       !userEvent.getNavigation() &&
-      !userEvent.getResize()
+      !userEvent.getResize() &&
+      !userEvent.getChangePrefersColorScheme()
     ) {
       // This is a no-op user event, so we don't send it.
       return;

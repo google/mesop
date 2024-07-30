@@ -94,7 +94,7 @@ $\u001b[35m mesop {argv[1]}\u001b[0m"""
   #
   # Ref:
   # https://docs.python.org/3/library/sys_path_init.html
-  sys.path = [os.path.dirname(absolute_path)] + sys.path
+  sys.path = [os.path.dirname(absolute_path), *sys.path]
 
   app = create_app(
     prod_mode=FLAGS.prod,
