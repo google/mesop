@@ -61,7 +61,11 @@ class Runtime:
     return g._mesop_context
 
   def create_context(self) -> Context:
-    self._has_served_traffic = True
+    # In debug mode, do not set _has_served_traffic to True,
+    # otherwise this breaks Colab / notebok use cases where users
+    # will want to register pages after traffic has been served.
+    if not self.debug_mode:
+      self._has_served_traffic = True
     if len(self._state_classes) == 0:
       states = {EmptyState: EmptyState()}
     else:
