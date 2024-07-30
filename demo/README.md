@@ -63,6 +63,8 @@ See our Mesop deployment [docs](https://google.github.io/mesop/guides/deployment
 
 ### Deploy to Hugging Face Spaces
 
+> NOTE: You need to update demo/requirements.txt to point to the latest Mesop version because Hugging Face Spaces may use a cached version of Mesop which is too old.
+
 Because Hugging Face Spaces has restrictions on not having binary files (e.g. image files), we cannot push the full Mesop Git repo to Hugging Face Spaces. Instead, we copy just the `demo` directory and turn it into a standalone Git repo which we deploy.
 
 ```sh
