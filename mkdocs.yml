@@ -48,6 +48,7 @@ nav:
           - Audio: components/audio.md
           - Video: components/video.md
       - Form controls:
+          - Autocomplete: components/autocomplete.md
           - Button: components/button.md
           - Checkbox: components/checkbox.md
           - Input: components/input.md

@@ -17,6 +17,7 @@ ng_module(
     ]) + ["component_renderer.css"],
     deps = [
         # REF(//scripts/scaffold_component.py):insert_component_import
+        "//mesop/components/autocomplete:ng",
         "//mesop/components/link:ng",
         "//mesop/components/html:ng",
         "//mesop/components/uploader:ng",

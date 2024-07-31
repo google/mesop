@@ -1,0 +1,40 @@
+<mat-form-field
+  [hideRequiredMarker]="config().getHideRequiredMarker()"
+  [color]="getColor()"
+  [floatLabel]="getFloatLabel()"
+  [appearance]="getAppearance()"
+  [subscriptSizing]="getSubscriptSizing()"
+  [hintLabel]="config().getHintLabel()!"
+  [style]="getStyle()"
+>
+  <mat-label *ngIf="config().getLabel()">{{config().getLabel()}}</mat-label>
+  <input
+    type="text"
+    [placeholder]="config().getPlaceholder()!"
+    matInput
+    (input)="onInput($event)"
+    (keyup)="onKeyUp($event)"
+    [formControl]="autocompleteControl"
+    [matAutocomplete]="auto"
+  />
+  <mat-autocomplete
+    (optionSelected)="onAutocompleteSelectEvent($event)"
+    #auto="matAutocomplete"
+  >
+    @for (option of filteredOptions | async; track $index) { @if
+    (option.getOptionGroup()) {
+    <mat-optgroup [label]="option.getOptionGroup()!.getLabel()!">
+      @for (sub_option of option.getOptionGroup()!.getOptionsList(); track
+      sub_option.getValue()!) {
+      <mat-option [value]="sub_option.getValue()!">
+        {{ sub_option.getLabel()! }}
+      </mat-option>
+      }
+    </mat-optgroup>
+    } @else {
+    <mat-option [value]="option.getOption()!.getValue()!">
+      {{ option.getOption()!.getLabel()! }}
+    </mat-option>
+    } }
+  </mat-autocomplete>
+</mat-form-field>

@@ -1,3 +1,4 @@
+import {AutocompleteComponent} from '../../../components/autocomplete/autocomplete';
 import {LinkComponent} from '../../../components/link/link';
 import {HtmlComponent} from '../../../components/html/html';
 import {UploaderComponent} from '../../../components/uploader/uploader';
@@ -55,6 +56,7 @@ export class UserDefinedComponent implements BaseComponent {
 }
 
 export const typeToComponent = {
+  'autocomplete': AutocompleteComponent,
   'link': LinkComponent,
   'html': HtmlComponent,
   'uploader': UploaderComponent,
