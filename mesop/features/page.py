@@ -1,3 +1,4 @@
+from copy import deepcopy
 from typing import Callable
 
 from mesop.runtime import OnLoadHandler, PageConfig, runtime
@@ -39,8 +40,8 @@ def page(
       page_config=PageConfig(
         page_fn=wrapper,
         title=title or f"Mesop: {path}",
-        stylesheets=stylesheets or default_stylesheets,
-        security_policy=security_policy
+        stylesheets=deepcopy(stylesheets or default_stylesheets),
+        security_policy=deepcopy(security_policy)
         if security_policy
         else SecurityPolicy(),
         on_load=on_load,
