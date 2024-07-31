@@ -21,6 +21,7 @@ class State:
   path="/snackbar",
 )
 def app():
+  me.set_theme_mode("dark")
   state = me.state(State)
 
   snackbar(
@@ -158,7 +159,7 @@ def snackbar(
       with me.box(
         style=me.Style(
           align_items="center",
-          background="#2f3033",
+          background=me.theme_var("on-surface-variant"),
           border_radius=5,
           box_shadow=(
             "0 3px 1px -2px #0003, 0 2px 2px #00000024, 0 1px 5px #0000001f"
@@ -173,10 +174,12 @@ def snackbar(
           width=300,
         )
       ):
-        me.text(label, style=me.Style(color="#fcfcfc"))
+        me.text(
+          label, style=me.Style(color=me.theme_var("surface-container-lowest"))
+        )
         if action_label:
           me.button(
             action_label,
             on_click=on_click_action,
-            style=me.Style(color="#d6e3fe"),
+            style=me.Style(color=me.theme_var("primary-container")),
           )

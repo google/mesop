@@ -169,9 +169,13 @@ def merge_styles(
 
 
 _DEFAULT_STYLE = me.Style(
-  background="#F5F8FC",
+  background=me.theme_var("surface-container"),
   border=me.Border.symmetric(
-    vertical=me.BorderSide(width=1, style="solid", color="#DEE2E6")
+    vertical=me.BorderSide(
+      width=1,
+      style="solid",
+      color=me.theme_var("outline-variant"),
+    )
   ),
   padding=me.Padding.all(10),
 )
