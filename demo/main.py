@@ -32,6 +32,7 @@ import code_demo as code_demo  # cannot call it code due to python library namin
 import dialog as dialog
 import divider as divider
 import embed as embed
+import feedback as feedback
 import grid_table as grid_table
 import headers as headers
 import html_demo as html_demo
@@ -105,6 +106,7 @@ FIRST_SECTIONS = [
     name="Misc",
     examples=[
       Example(name="basic_animation"),
+      Example(name="feedback"),
     ],
   ),
 ]
