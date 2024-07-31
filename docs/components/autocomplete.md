@@ -24,6 +24,6 @@ has been left out.
 ::: mesop.components.autocomplete.autocomplete.autocomplete
 ::: mesop.components.autocomplete.autocomplete.AutocompleteOption
 ::: mesop.components.autocomplete.autocomplete.AutocompleteOptionGroup
-::: mesop.components.autocomplete.autocomplete.AutocompleteInputEvent
 ::: mesop.components.autocomplete.autocomplete.AutocompleteEnterEvent
 ::: mesop.components.autocomplete.autocomplete.AutocompleteSelectionChangeEvent
+::: mesop.events.InputEvent
