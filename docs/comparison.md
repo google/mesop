@@ -34,19 +34,19 @@ Streamlit has a larger ecosystem of community-developed components, while Mesop 
 
 Gradio and Mesop both focus on enabling rapid ML/AI app development but with different approaches.
 
-Gradio has a strong focus on creating demos and interfaces for machine learning models and makes it very easy to build a UI for a model.
+Gradio has a strong focus on creating demos and interfaces for machine learning models and makes it easy to build a UI for a model.
 
 Mesop, while well-suited for ML/AI use cases, is a more general-purpose framework that can be used for a wider range of web applications.
 
 ### Customization and Flexibility
 
-Gradio provides a set of pre-built components optimized for common ML inputs and outputs (e.g. image classification, text generation). This makes it very fast to set up standard model interfaces.
+Gradio provides a set of pre-built components optimized for common ML inputs and outputs (e.g. image classification, text generation). This makes it fast to set up standard model interfaces. Gradio has a powerful [theming system](https://www.gradio.app/guides/theming-guide) that provides prebuilt theme options and many options for customizing the UI theme.
 
 Although Mesop offers a few AI-specific components like [chat](./components/chat.md), Mesop provides general-purpose UI components, which can be used for a variety of layout and UI designs. This makes it better suited for building custom interfaces, for example like the [demo gallery](https://google.github.io/mesop/demo/).
 
 ### Deployment
 
-Gradio makes it very easy to share demos via Hugging Face Spaces. Mesop apps can also be deployed on Hugging Face Spaces, but with a [few more steps](./guides/deployment.md#hugging-face-spaces).
+Gradio makes it easy to share demos via Hugging Face Spaces. Mesop apps can also be deployed on Hugging Face Spaces, but it requires a [few more steps](./guides/deployment.md#hugging-face-spaces).
 
 ### State Management
 
