@@ -56,8 +56,8 @@ Gradio makes it easy to share demos via Hugging Face Spaces. Mesop apps can also
 
 ## Conclusion
 
-Both Streamlit and Gradio have a gentle learning curve and make it easy for Python developers to get started quickly.
+Both Streamlit and Gradio offer gentle learning curves, making it easy for Python developers to quickly build simple applications.
 
-Mesop introduces concepts like event handling and state management, which can provide additional control and flexibility for more complex applications. Its API aims to be intuitive for Python developers while introducing modern web development patterns.
+Mesop embraces a declarative UI paradigm, which introduces additional concepts but can provide better scalability and flexibility for more complex applications.
 
-Ultimately, the best choice depends on your specific use case, desired level of customization, and development experience. We encourage you to try out each framework and see which fits your use case best.
+Ultimately, the best choice depends on your specific use case, desired level of customization, and development preferences. We encourage you to explore each framework to determine which best fits your needs.
