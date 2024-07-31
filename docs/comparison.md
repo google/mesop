@@ -14,21 +14,21 @@ However, there are some key differences:
 
 ### Execution Model
 
-Streamlit executes apps in a [script-like manner](https://docs.streamlit.io/get-started/fundamentals/main-concepts#data-flow) where the entire app reruns on each user interaction. This enables a boilerplate-free UI development model that's easy to get started with, but requires using mechanisms like [caching](https://docs.streamlit.io/develop/concepts/architecture/caching) and [fragments](https://docs.streamlit.io/develop/concepts/architecture/fragments) to mitigate the performance issues with this model.
+Streamlit executes apps in a [script-like manner](https://docs.streamlit.io/get-started/fundamentals/main-concepts#data-flow) where the entire app reruns on each user interaction. This enables a boilerplate-free UI development model that's easy to get started with, but requires mechanisms like [caching](https://docs.streamlit.io/develop/concepts/architecture/caching) and [fragments](https://docs.streamlit.io/develop/concepts/architecture/fragments) to optimize the performance with this model.
 
-Mesop uses a component-based model similar to web frameworks where the program is executed once on server initialization and then the component functions are executed in each render loop. This provides finer-grained control because global initialization code is executed exactly once.
+Mesop uses a function-based model commonly found in web frameworks where the program is executed once on server initialization and then the page and component functions are executed in each render loop. This provides regular Python execution semantics because top-level initialization code is executed exactly once.
 
 ### Styling and Customization
 
-Streamlit provides a set of pre-styled components with limited UI customizability using [themes](https://docs.streamlit.io/develop/concepts/configuration/theming). This ensures a consistent look but can be restrictive for custom designs.
+Streamlit provides a set of pre-styled components with limited UI customizability using [themes](https://docs.streamlit.io/develop/concepts/configuration/theming). Streamlit offers pre-styled components with customization primarily through themes, prioritizing consistency and ease of use over flexibility.
 
-Mesop provides a low-level [Style](./api/style.md) that exposes CSS properties through a Python API. Mesop currently does not provide theming support.
+In addition to providing, Material-themed components, Mesop provides a low-level [Style](./api/style.md) that exposes CSS properties through a Python API. Mesop currently provides [limited theming support](./guides/theming.md) with dark theming, but doesn't yet [support theming to other colors](https://github.com/google/mesop/issues/669).
 
 ### Components
 
 While Streamlit and Mesop contain many similar standard components (e.g. form, table, chat), Streamlit has a larger set of built-in components, particularly for data science use cases such as data visualization.
 
-Streamlit has a larger ecosystem of community-developed components, while Mesop has a much more nascent community.
+Streamlit has a larger ecosystem of community-developed components, while Mesop has a more nascent community.
 
 ## Gradio
 
@@ -42,30 +42,22 @@ Mesop, while well-suited for ML/AI use cases, is a more general-purpose framewor
 
 Gradio provides a set of pre-built components optimized for common ML inputs and outputs (e.g. image classification, text generation). This makes it very fast to set up standard model interfaces.
 
-Although Mesop offers a few AI-specific components like [chat](./components/chat.md), Mesop is focused on providing general-purpose UI components which offers greater flexibility in layout and UI design. This makes it better suited for building custom interfaces.
+Although Mesop offers a few AI-specific components like [chat](./components/chat.md), Mesop provides general-purpose UI components, which can be used for a variety of layout and UI designs. This makes it better suited for building custom interfaces, for example like the [demo gallery](https://google.github.io/mesop/demo/).
 
 ### Deployment
 
-Gradio makes it very easy to share demos via Hugging Face Spaces. Mesop apps can also be deployed on Hugging Face Spaces albeit with a [few more steps](./guides/deployment.md#hugging-face-spaces).
+Gradio makes it very easy to share demos via Hugging Face Spaces. Mesop apps can also be deployed on Hugging Face Spaces, but with a [few more steps](./guides/deployment.md#hugging-face-spaces).
 
 ### State Management
 
-Gradio has a simple state management system focused on passing inputs to models and displaying outputs.
+Gradio provides an imperative approach to [state management](https://www.gradio.app/guides/state-in-blocks) where state is managed together with components.
 
-Mesop provides a more comprehensive state management solution, allowing for complex application logic and multi-step workflows.
-
-## Learning Curve
-
-Both Streamlit and Gradio have a gentle learning curve, making it very easy for Python developers to get started quickly.
-
-Mesop requires understanding more concepts like event handling to get started, but it offers more flexibility in return. Its API aims to be intuitive for Python developers while introducing modern web development patterns.
-
-## Scale and Ecosystem
-
-Streamlit and Gradio both have larger, more established ecosystems due to their earlier entry into the market. They offer more pre-built components and integrations specific to data science workflows.
-
-Mesop is newer but growing quickly. It benefits from leveraging the mature Angular ecosystem for its frontend, while providing a Python-centric development experience. Mesop's architecture makes it well-suited for larger, more complex applications as well as simple prototypes.
+Mesop provides a more declarative approach to [UI state management](guides/state_management.md) by separating application state updates from component rendering. Mesop also uses a dataclass-based approach managing state which provides type-safety and more structure for managing complex states.
 
 ## Conclusion
 
-Ultimately, the best choice depends on your specific use case, desired level of customization, and development experience. We encourage you to try out each framework and see which fits your workflow best.
+Both Streamlit and Gradio have a gentle learning curve and make it easy for Python developers to get started quickly.
+
+Mesop introduces concepts like event handling and state management, which can provide additional control and flexibility for more complex applications. Its API aims to be intuitive for Python developers while introducing modern web development patterns.
+
+Ultimately, the best choice depends on your specific use case, desired level of customization, and development experience. We encourage you to try out each framework and see which fits your use case best.
