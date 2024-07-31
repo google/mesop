@@ -35,9 +35,6 @@ from mesop.components.autocomplete.autocomplete import (
   AutocompleteEnterEvent as AutocompleteEnterEvent,
 )
 from mesop.components.autocomplete.autocomplete import (
-  AutocompleteInputEvent as AutocompleteInputEvent,
-)
-from mesop.components.autocomplete.autocomplete import (
   AutocompleteOption as AutocompleteOption,
 )
 from mesop.components.autocomplete.autocomplete import (

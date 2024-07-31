@@ -26,15 +26,15 @@
     <mat-optgroup [label]="option.getOptionGroup()!.getLabel()!">
       @for (sub_option of option.getOptionGroup()!.getOptionsList(); track
       sub_option.getValue()!) {
-      <mat-option [value]="sub_option.getValue()!"
-        >{{ sub_option.getLabel()! }}</mat-option
-      >
+      <mat-option [value]="sub_option.getValue()!">
+        {{ sub_option.getLabel()! }}
+      </mat-option>
       }
     </mat-optgroup>
     } @else {
-    <mat-option [value]="option.getOption()!.getValue()!"
-      >{{ option.getOption()!.getLabel()! }}</mat-option
-    >
+    <mat-option [value]="option.getOption()!.getValue()!">
+      {{ option.getOption()!.getLabel()! }}
+    </mat-option>
     } }
   </mat-autocomplete>
 </mat-form-field>

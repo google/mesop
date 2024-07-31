@@ -5,8 +5,11 @@ and is based on the [Angular Material autocomplete component](https://material.a
 
 This components only renders text labels and values.
 
-The autocomplete filters by case-insensitively matching substrings against any position
-of the option value.
+The autocomplete filters by case-insensitively matching substrings of the option label.
+
+Currently, there is no on blur event with this component since the blur event does not
+get the selected value on the first blur. Due to this ambiguous behavior, the blur event
+has been left out.
 
 ## Examples
 

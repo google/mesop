@@ -36,7 +36,7 @@ def on_value_change(
   state.selected_value = e.value
 
 
-def on_input(e: me.AutocompleteInputEvent):
+def on_input(e: me.InputEvent):
   state = me.state(State)
   state.raw_value = e.value
 

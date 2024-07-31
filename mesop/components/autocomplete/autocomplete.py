@@ -9,7 +9,7 @@ from mesop.component_helpers import (
   register_event_mapper,
   register_native_component,
 )
-from mesop.events import MesopEvent
+from mesop.events import InputEvent, MesopEvent
 
 
 @dataclass(kw_only=True)
@@ -38,30 +38,6 @@ class AutocompleteOptionGroup:
 
   label: str
   options: list[AutocompleteOption]
-
-
-@dataclass(kw_only=True)
-class AutocompleteInputEvent(MesopEvent):
-  """Represents an on input event on an autocomplete component.
-
-  This event should mainly be used custom filtering of autocomplate results based on
-  the given user input.
-
-  Attributes:
-    value: Input value.
-    key (str): key of the component that emitted this event.
-  """
-
-  value: str
-
-
-register_event_mapper(
-  AutocompleteInputEvent,
-  lambda event, key: AutocompleteEnterEvent(
-    key=key.key,
-    value=event.string_value,
-  ),
-)
 
 
 @dataclass(kw_only=True)
@@ -114,13 +90,11 @@ register_event_mapper(
 @register_native_component
 def autocomplete(
   *,
-  # This should be Iterable[AutocompleteOption | AutocompleteOptionGroup], but breaks
-  # visual editor.
-  options: Iterable[Any] | None = None,
+  options: Iterable[AutocompleteOption | AutocompleteOptionGroup] | None = None,
   label: str = "",
   on_selection_change: Callable[[AutocompleteSelectionChangeEvent], Any]
   | None = None,
-  on_input: Callable[[AutocompleteInputEvent], Any] | None = None,
+  on_input: Callable[[InputEvent], Any] | None = None,
   on_enter: Callable[[AutocompleteEnterEvent], Any] | None = None,
   appearance: Literal["fill", "outline"] = "fill",
   disabled: bool = False,
@@ -142,7 +116,7 @@ def autocomplete(
     options: Selectable options from autocomplete.
     label: Label for input.
     on_selection_change: Event emitted when the selected value has been changed by the user.
-    on_input: [input](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/input_event) is fired whenever the input has changed (e.g. user types). Note: this can cause performance issues. Use `on_blur` instead.
+    on_input: [input](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/input_event) is fired whenever the input has changed (e.g. user types).
     on_enter: triggers when the browser detects an "Enter" key on a [keyup](https://developer.mozilla.org/en-US/docs/Web/API/Element/keyup_event) native browser event.
     appearance: The form field appearance style.
     disabled: Whether it's disabled.
@@ -179,9 +153,7 @@ def autocomplete(
       )
       if on_selection_change
       else "",
-      on_input_handler_id=register_event_handler(
-        on_input, event=AutocompleteInputEvent
-      )
+      on_input_handler_id=register_event_handler(on_input, event=InputEvent)
       if on_input
       else "",
       on_enter_handler_id=register_event_handler(

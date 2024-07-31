@@ -132,6 +132,16 @@ export class AutocompleteComponent implements OnInit {
     this.channel.dispatch(userEvent);
   }
 
+  /**
+   * Filters the autocomplete options based on the current input.
+   *
+   * The filtering will perform a case-insensitive substring match against the
+   * options labels.
+   *
+   * @param value Value of the input
+   * @param options Autocomplete options
+   * @returns
+   */
   private _filter(
     value: string,
     options: AutocompleteOptionSet[],
@@ -146,7 +156,7 @@ export class AutocompleteComponent implements OnInit {
         const filteredOptionGroup = new AutocompleteOptionGroup();
         filteredOptionGroup.setLabel(option.getOptionGroup()?.getLabel()!);
         for (const subOption of option.getOptionGroup()?.getOptionsList()!) {
-          if (subOption?.getValue()?.toLowerCase().includes(filterValue)) {
+          if (subOption?.getLabel()?.toLowerCase().includes(filterValue)) {
             filteredOptionGroup.addOptions(subOption);
           }
         }
@@ -157,7 +167,7 @@ export class AutocompleteComponent implements OnInit {
         }
       } else {
         if (
-          option.getOption()?.getValue()?.toLowerCase().includes(filterValue)
+          option.getOption()?.getLabel()?.toLowerCase().includes(filterValue)
         ) {
           filteredOptions.push(option);
         }

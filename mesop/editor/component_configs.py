@@ -88,13 +88,18 @@ def get_fields(
       )
     elif getattr(param_type, "__origin__", None) is collections.abc.Iterable:
       cls = param_type.__args__[0]
-      el_fields = get_fields(inspect.signature(cls).parameters.items())
+      try:
+        el_fields = get_fields(inspect.signature(cls).parameters.items())
+      except TypeError:
+        el_fields = None
+      try:
+        struct_name = cls.__name__
+      except AttributeError:
+        struct_name = ""
       field_type = pb.FieldType(
         list_type=pb.ListType(
           type=pb.FieldType(
-            struct_type=pb.StructType(
-              struct_name=cls.__name__, fields=el_fields
-            )
+            struct_type=pb.StructType(struct_name=struct_name, fields=el_fields)
           )
         )
       )
