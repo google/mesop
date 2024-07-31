@@ -42,17 +42,17 @@ Mesop, while well-suited for ML/AI use cases, is a more general-purpose framewor
 
 Gradio provides a set of pre-built components optimized for common ML inputs and outputs (e.g. image classification, text generation). This makes it fast to set up standard model interfaces. Gradio has a powerful [theming system](https://www.gradio.app/guides/theming-guide) that provides prebuilt theme options and many options for customizing the UI theme.
 
-Although Mesop offers a few AI-specific components like [chat](./components/chat.md), Mesop provides general-purpose UI components, which can be used for a variety of layout and UI designs. This makes it better suited for building custom interfaces, for example like the [demo gallery](https://google.github.io/mesop/demo/).
+Mesop provides general-purpose UI components, which can be used for a variety of layout and UI designs. Higher-level components like the [chat](./components/chat.md) component are [built](https://github.com/google/mesop/blob/main/mesop/labs/chat.py) on top of these low-level UI components. This makes it better suited for building custom interfaces, for example like the [demo gallery](https://google.github.io/mesop/demo/).
+
+### State management
+
+Gradio uses an imperative approach to [state management](https://www.gradio.app/guides/state-in-blocks), tightly coupling state with component updates. State is typically managed through function parameters and return values, which can be straightforward for simple interfaces but may become complex as applications grow.
+
+Mesop offers a more declarative [state management](guides/state_management.md) approach, separating state updates from UI rendering. It uses dataclasses for state, providing type-safety and structure for complex states. This separation allows for more granular control over UI updates but may have a steeper learning curve for beginners.
 
 ### Deployment
 
 Gradio makes it easy to share demos via Hugging Face Spaces. Mesop apps can also be deployed on Hugging Face Spaces, but it requires a [few more steps](./guides/deployment.md#hugging-face-spaces).
-
-### State Management
-
-Gradio provides an imperative approach to [state management](https://www.gradio.app/guides/state-in-blocks) where state is managed together with components.
-
-Mesop provides a more declarative approach to [UI state management](guides/state_management.md) by separating application state updates from component rendering. Mesop also uses a dataclass-based approach managing state which provides type-safety and more structure for managing complex states.
 
 ## Conclusion
 
