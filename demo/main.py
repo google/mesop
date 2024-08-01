@@ -635,7 +635,7 @@ def nav_section(section: Section):
       example_name = format_example_name(example.name)
       path = f"/embed/{example.name}"
       with me.box(
-        style=me.Style(color="#0B57D0", cursor="pointer"),
+        style=me.Style(color=me.theme_var("primary"), cursor="pointer"),
         on_click=set_demo,
         key=path,
       ):
