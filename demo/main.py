@@ -198,6 +198,10 @@ screenshots: dict[str, str] = {}
 
 
 def load_home_page(e: me.LoadEvent):
+  if me.state(ThemeState).dark_mode:
+    me.set_theme_mode("dark")
+  else:
+    me.set_theme_mode("system")
   yield
   screenshot_dir = os.path.join(current_dir, "screenshots")
   screenshot_files = glob.glob(os.path.join(screenshot_dir, "*.webp"))
@@ -222,6 +226,7 @@ def main_page():
   header()
   with me.box(
     style=me.Style(
+      background=me.theme_var("background"),
       flex_grow=1,
       display="flex",
     )
@@ -287,7 +292,7 @@ def example_card(name: str):
       cursor="pointer",
       width="min(100%, 150px)",
       border_radius=12,
-      background="#fff",
+      background=me.theme_var("background"),
     ),
   ):
     image_url = screenshots.get(name, "")
@@ -316,6 +321,10 @@ def example_card(name: str):
 
 
 def on_load_embed(e: me.LoadEvent):
+  if me.state(ThemeState).dark_mode:
+    me.set_theme_mode("dark")
+  else:
+    me.set_theme_mode("system")
   if not is_desktop():
     me.state(State).panel_fullscreen = "preview"
 
@@ -335,7 +344,7 @@ def create_main_fn(example: Example):
         height="100%",
         display="flex",
         flex_direction="column",
-        background="#fff",
+        background=me.theme_var("background"),
       )
     ):
       header(demo_name=example.name)
@@ -493,6 +502,7 @@ def demo_code(code_arg: str):
         height="calc(100vh - 106px)",
         overflow_y="auto",
         width="100%",
+        background=me.theme_var("background"),
       ),
     )
 
@@ -540,25 +550,43 @@ def header(demo_name: str | None = None):
             align_items="baseline",
           ),
         ):
-          me.markdown(
-            "<a href='https://github.com/google/mesop/' target='_blank'>google/mesop</a>",
+          me.link(
+            text="google/mesop",
+            url="https://github.com/google/mesop/",
+            open_in_new_tab=True,
             style=me.Style(
               font_size=18,
+              color=me.theme_var("primary"),
+              text_decoration="none",
               margin=me.Margin(left=8, right=4, bottom=-16, top=-16),
-            ),
-          )
-          me.image(
-            src="https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png",
-            style=me.Style(
-              height=36,
-              position="relative",
-              top=8,
             ),
           )
         me.text(
           "v" + me.__version__,
           style=me.Style(font_size=18, margin=me.Margin(left=16)),
         )
+        with me.content_button(
+          type="icon",
+          style=me.Style(left=8, right=4, top=4),
+          on_click=toggle_theme,
+        ):
+          me.icon(
+            "light_mode" if me.theme_brightness() == "dark" else "dark_mode"
+          )
+
+
+@me.stateclass
+class ThemeState:
+  dark_mode: bool
+
+
+def toggle_theme(e: me.ClickEvent):
+  if me.theme_brightness() == "light":
+    me.set_theme_mode("dark")
+    me.state(ThemeState).dark_mode = True
+  else:
+    me.set_theme_mode("light")
+    me.state(ThemeState).dark_mode = False
 
 
 def navigate_home(e: me.ClickEvent):
@@ -607,7 +635,7 @@ def nav_section(section: Section):
       example_name = format_example_name(example.name)
       path = f"/embed/{example.name}"
       with me.box(
-        style=me.Style(color="#0B57D0", cursor="pointer"),
+        style=me.Style(color=me.theme_var("primary"), cursor="pointer"),
         on_click=set_demo,
         key=path,
       ):
