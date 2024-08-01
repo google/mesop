@@ -18,11 +18,16 @@ from mesop.utils.url_utils import sanitize_url_for_csp
 
 WEB_COMPONENTS_PATH_SEGMENT = "__web-components-module__"
 
-
 # mimetypes are not always set correctly, thus manually
 # setting the mimetype here.
 # See: https://github.com/google/mesop/issues/441
 mimetypes.add_type("application/javascript", ".js")
+
+# How do I reset the cache??
+# Maybe:
+# index.html - cache 1 day
+# JS files - cache 1 year BUT with some kind of hash or get date modified
+DEFAULT_MAX_AGE = 31536000  # 1 year
 
 
 def noop():
@@ -37,6 +42,8 @@ def configure_static_file_serving(
   disable_gzip_cache: bool = False,
   default_allowed_iframe_parents: str = "'self'",
 ):
+  max_age = None if disable_gzip_cache else DEFAULT_MAX_AGE
+
   def get_path(path: str):
     safe_path = safe_join(static_file_runfiles_base, path)
     assert safe_path
@@ -90,13 +97,19 @@ def configure_static_file_serving(
   @app.route("/")
   def serve_root():
     preprocess_request()
-    return send_file(retrieve_index_html(), download_name="index.html")
+    return send_file(
+      retrieve_index_html(),
+      download_name="index.html",
+      max_age=max_age,
+    )
 
   @app.route("/sandbox_iframe.html")
   def serve_sandbox_iframe():
     preprocess_request()
     return send_file(
-      get_path("sandbox_iframe.html"), download_name="sandbox_iframe.html"
+      get_path("sandbox_iframe.html"),
+      download_name="sandbox_iframe.html",
+      max_age=max_age,
     )
 
   @app.route(f"/{WEB_COMPONENTS_PATH_SEGMENT}/<path:path>")
@@ -117,12 +130,18 @@ def configure_static_file_serving(
   def serve_file(path: str):
     preprocess_request()
     if is_file_path(path):
+      # Should check these files against an allow-list?
+      # Definitely make sure there isn't a directory traversal attack.
       return send_file_compressed(
         get_path(path),
         disable_gzip_cache=disable_gzip_cache,
       )
     else:
-      return send_file(retrieve_index_html(), download_name="index.html")
+      return send_file(
+        retrieve_index_html(),
+        download_name="index.html",
+        max_age=max_age,
+      )
 
   @app.before_request
   def generate_nonce():
@@ -248,7 +267,8 @@ gzip_cache: dict[str, bytes] = {}
 
 
 def send_file_compressed(path: str, disable_gzip_cache: bool) -> Any:
-  response = send_file(path)
+  max_age = None if disable_gzip_cache else DEFAULT_MAX_AGE
+  response = send_file(path, max_age=max_age)
   response.headers["Content-Encoding"] = "gzip"
   response.direct_passthrough = False
   if path in gzip_cache:
