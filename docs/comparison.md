@@ -30,7 +30,7 @@ Both Streamlit and Mesop offer a range of standard components (e.g., forms, tabl
 
 Streamlit supports [custom components](https://docs.streamlit.io/develop/concepts/custom-components/intro) rendered in iframes for isolation. It offers first-class support for React components and can accommodate other frameworks through a framework-agnostic template.
 
-Mesop enables creating custom [web components](https://google.github.io/mesop/web_components/) based on open web standards, facilitating interoperability with components from different frameworks like React, Lit and others. Mesop web components are rendered in the same frame as the rest of the Mesop app which provides more flexibility but less isolation.
+Mesop enables creating custom [web components](https://google.github.io/mesop/web_components/) based on open web standards, facilitating interoperability with components from different frameworks like Lit and others. Mesop web components are rendered in the same frame as the rest of the Mesop app which provides more flexibility but less isolation.
 
 Streamlit has a more established ecosystem of community-developed components, while Mesop's community and component ecosystem are still developing.
 
