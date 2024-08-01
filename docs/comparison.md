@@ -22,7 +22,7 @@ Mesop uses a function-based model commonly found in web frameworks where the pro
 
 Streamlit provides a set of pre-styled components with limited UI customizability using [themes](https://docs.streamlit.io/develop/concepts/configuration/theming). Streamlit offers pre-styled components with customization primarily through themes, prioritizing consistency and ease of use over flexibility.
 
-In addition to providing Material-themed components, Mesop offers a low-level [Style](./api/style.md) that exposes CSS properties through a Python API. Mesop currently provides [limited theming support](./guides/theming.md) with dark theming, but doesn't yet [support theming to other colors](https://github.com/google/mesop/issues/669).
+In addition to providing Material-themed components, Mesop offers a low-level [Style](./api/style.md) API to configure CSS properties. Mesop currently provides [limited theming support](./guides/theming.md) with dark theming, but doesn't yet [support theming to other colors](https://github.com/google/mesop/issues/669).
 
 ### Components
 
