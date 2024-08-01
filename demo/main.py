@@ -379,12 +379,12 @@ def body(current_demo: str):
       )
     ):
       if state.panel_fullscreen != "editor":
-        demo_ui(src)
+        demo_ui(current_demo)
       if state.panel_fullscreen != "preview":
         demo_code(inspect.getsource(get_module(current_demo)))
 
 
-def demo_ui(src: str):
+def demo_ui(current_demo: str):
   state = me.state(State)
   with me.box(
     style=me.Style(flex_grow=1),
@@ -419,15 +419,28 @@ def demo_ui(src: str):
             )
       else:
         swap_button()
-    me.embed(
-      src=src,
+    example_module = globals()[current_demo]
+    func = getattr(example_module, "page", None)
+    if func is None:
+      func = getattr(example_module, "app", None)
+    with me.box(
       style=me.Style(
         border=me.Border.all(me.BorderSide(width=0)),
         border_radius=2,
         height="calc(100vh - 106px)",
         width="100%",
       ),
-    )
+    ):
+      func()  # type: ignore
+    # me.embed(
+    #   src=src,
+    #   style=me.Style(
+    #     border=me.Border.all(me.BorderSide(width=0)),
+    #     border_radius=2,
+    #     height="calc(100vh - 106px)",
+    #     width="100%",
+    #   ),
+    # )
 
 
 def swap_button():
