@@ -80,6 +80,7 @@ nav:
       - Commands:
           - Navigate: api/commands/navigate.md
           - Scroll into view: api/commands/scroll_into_view.md
+          - Focus component: api/commands/focus_component.md
       - Config: api/config.md
   - FAQ: faq.md
   - Demo Gallery 🔗: demo.md

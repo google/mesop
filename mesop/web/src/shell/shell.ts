@@ -124,6 +124,54 @@ export class Shell {
             targetElements[0].parentElement!.scrollIntoView({
               behavior: 'smooth',
             });
+          } else if (command.hasFocusComponent()) {
+            // Focus on component
+            const key = command.getFocusComponent()!.getKey();
+            const targetElements = document.querySelectorAll(
+              `[data-key="${key}"]`,
+            );
+            if (!targetElements.length) {
+              console.error(
+                `Could not focus on component with key ${key} because no component found`,
+              );
+              return;
+            }
+            if (targetElements.length > 1) {
+              console.warn(
+                'Found multiple components',
+                targetElements,
+                'to potentially focus on for key',
+                key,
+                '. This is probably a bug and you should use a unique key identifier.',
+              );
+            }
+            const matchingElements = targetElements[0].nextElementSibling
+              ?.querySelectorAll(`
+                a[href]:not([tabindex='-1']),
+                area[href]:not([tabindex='-1']),
+                input:not([disabled]):not([tabindex='-1']):not([type='file']),
+                select:not([disabled]):not([tabindex='-1']),
+                textarea:not([disabled]):not([tabindex='-1']),
+                button:not([disabled]):not([tabindex='-1']),
+                iframe:not([tabindex='-1']),
+                [tabindex]:not([tabindex='-1']),
+                [contentEditable=true]:not([tabindex='-1'])
+              `);
+            if (
+              matchingElements &&
+              typeof matchingElements[0] === 'object' &&
+              'focus' in matchingElements[0]
+            ) {
+              (
+                matchingElements[0] as {
+                  focus: () => void;
+                }
+              ).focus();
+            } else {
+              console.warn(
+                `Component with key ${key} does not have a focus method.`,
+              );
+            }
           } else if (command.hasSetThemeMode()) {
             const themeMode = command.getSetThemeMode();
             if (themeMode?.getThemeMode() == null) {

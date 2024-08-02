@@ -166,6 +166,8 @@ def chat(
     state = me.state(State)
     state.input = e.value
     yield from submit()
+    me.focus_component(key=f"{len(state.output)}")
+    yield
 
   def submit():
     state = me.state(State)
@@ -199,6 +201,8 @@ def chat(
         start_time = time.time()
         yield
     state.in_progress = False
+    yield
+    me.focus_component(key=f"{len(state.output)}")
     yield
 
   def toggle_theme(e: me.ClickEvent):

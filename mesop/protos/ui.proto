@@ -151,6 +151,7 @@ message Command {
         NavigateCommand navigate = 1;
         ScrollIntoViewCommand scroll_into_view = 2;
         SetThemeMode set_theme_mode = 3;
+        FocusComponentCommand focus_component = 4;
     }
 }
 
@@ -161,6 +162,11 @@ message NavigateCommand {
 
 message ScrollIntoViewCommand {
     // Key of the component to scroll into view
+    optional string key = 1;
+}
+
+message FocusComponentCommand {
+    // Key of the component to focus on
     optional string key = 1;
 }
 
