@@ -38,13 +38,13 @@ Streamlit has a more established ecosystem of community-developed components, wh
 
 Gradio and Mesop both enable rapid ML/AI app development but with different approaches.
 
-Gradio has a strong focus on creating demos and interfaces for machine learning models and makes it easy to build a UI for a model.
+Gradio has a strong focus on creating demos and interfaces for machine learning models and makes it easy to build a UI for a model. Gradio also offers a lower-level abstraction known as Blocks for more general web applications. 
 
 Mesop, while well-suited for ML/AI use cases, is a more general-purpose framework that can be used for a wider range of web applications.
 
 ### Components
 
-Gradio provides a set of pre-built components optimized for common ML inputs and outputs (e.g. image classification, text generation). This makes it fast to set up standard model interfaces. In addition to built-in components, you can create [custom components](https://www.gradio.app/guides/custom-components-in-five-minutes) in JavaScript using Svelte.
+Gradio provides a set of pre-built components optimized for common ML inputs and outputs (e.g. image classification, text generation). This makes it fast to set up standard model interfaces. In addition to built-in components, you can create [custom components](https://www.gradio.app/guides/custom-components-in-five-minutes) in Python and JavaScript (Svelte).
 
 Mesop provides general-purpose UI components, which can be used for a variety of layout and UI designs. Higher-level components like the [chat](./components/chat.md) component are [built](https://github.com/google/mesop/blob/main/mesop/labs/chat.py) on top of these low-level UI components. This makes it better suited for building custom interfaces, such as the [demo gallery](https://google.github.io/mesop/demo/). Mesop also supports creating custom [web components](https://google.github.io/mesop/web_components/) based on open web standards, facilitating interoperability with components from different frameworks.
 
