@@ -140,16 +140,23 @@ $_tertiary: map.merge(map.get($_palettes, tertiary), $_rest);
 $primary: $_primary;
 $tertiary: $_tertiary;
 
-$light-theme: mat.define-theme(
-  (
-    color: (
-      theme-type: light,
-      primary: $_primary,
-      tertiary: $_tertiary,
-      use-system-variables: true,
-    ),
-  )
-);
+@function create-theme($density: 0) {
+  @return mat.define-theme(
+    (
+      color: (
+        theme-type: light,
+        primary: $_primary,
+        tertiary: $_tertiary,
+        use-system-variables: true,
+      ),
+      density: (
+        scale: $density,
+      ),
+    )
+  );
+}
+
+$light-theme: create-theme();
 $dark-theme: mat.define-theme(
   (
     color: (
@@ -172,6 +179,16 @@ body {
 
 body.dark-theme {
   @include mat.system-level-colors($dark-theme);
+}
+
+$density-scales: (-1, -2, -3, -4);
+@each $scale in $density-scales {
+  .theme-density-#{$scale} {
+    $density-theme: create-theme(
+      $density: $scale,
+    );
+    @include mat.all-component-densities($density-theme);
+  }
 }
 
 html,

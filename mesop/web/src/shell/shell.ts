@@ -130,6 +130,13 @@ export class Shell {
               throw new Error('Theme mode undefined in setThemeMode command');
             }
             this.themeService.setThemeMode(themeMode);
+          } else if (command.hasSetThemeDensity()) {
+            const setThemeDensity = command.getSetThemeDensity()!;
+            const density = setThemeDensity.getDensity();
+            if (density == null) {
+              throw new Error('Density undefined in setThemeDensity command');
+            }
+            this.themeService.setDensity(density);
           } else {
             throw new Error(
               'Unhandled command: ' + command.getCommandCase().toString(),

@@ -7,6 +7,18 @@ ThemeMode = Literal["system", "light", "dark"]
 ThemeBrightness = Literal["light", "dark"]
 
 
+def set_theme_density(density: Literal[0, -1, -2, -3, -4]) -> None:
+  """
+  Sets the theme density for the Material components in the application.
+  A higher density (more negative value) results in a more compact UI layout.
+
+  Args:
+      density: The desired theme density. It can be 0 (least dense),
+                              -1, -2, -3, or -4 (most dense).
+  """
+  runtime().context().set_theme_density(density)
+
+
 def set_theme_mode(theme_mode: ThemeMode) -> None:
   """
   Sets the theme mode for the application.

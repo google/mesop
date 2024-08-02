@@ -52,6 +52,11 @@ class Context:
       pb.Command(scroll_into_view=pb.ScrollIntoViewCommand(key=key))
     )
 
+  def set_theme_density(self, density: int) -> None:
+    self._commands.append(
+      pb.Command(set_theme_density=pb.SetThemeDensity(density=density))
+    )
+
   def set_theme_mode(self, theme_mode: pb.ThemeMode.ValueType) -> None:
     self._commands.append(
       pb.Command(set_theme_mode=pb.SetThemeMode(theme_mode=theme_mode))
