@@ -21,7 +21,7 @@ def page():
     style=me.Style(
       width=300,
       margin=me.Margin.all(15),
-      padding=me.Margin.all(10),
+      padding=me.Padding.all(10),
       border=me.Border.all(
         me.BorderSide(
           width=1, color=me.theme_var("outline-variant"), style="solid"
