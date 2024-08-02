@@ -60,6 +60,10 @@ p {
 [data-md-color-scheme='mesop-dark'] {
   --md-default-bg-color: var(--black); /* var(--galaxy);*/
   --md-default-fg-color: var(--almost-white);
+
+  --md-admonition-fg-color: var(--md-default-fg-color);
+  --md-admonition-bg-color: var(--md-default-bg-color);
+
   --md-default-fg-color--light: var(--almost-white);
   --md-default-fg-color--lighter: var(--almost-white);
   --md-primary-fg-color: var(--black); /* var(--space); */

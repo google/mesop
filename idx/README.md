@@ -1,7 +1,8 @@
-# IDX template
+# Mesop IDX template
 
-This sets up a custom IDX template for Mesop.
-https://developers.google.com/idx/guides/custom-templates
+This is the Mesop IDX template. For more information about Mesop, please visit:
+https://google.github.io/mesop/
 
-How to use:
-https://idx.google.com/new?template=https://github.com/wwwillchen/mesop/tree/idx/idx/
+## Tips
+
+Use "Output: Focus on Output View" in the Command Palette to open the bottom output panel which shows you logs from the Mesop server.

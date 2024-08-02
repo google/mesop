@@ -26,6 +26,32 @@ python --version
 
 If you don't, please [download Python](https://www.python.org/downloads/).
 
+## C. IDX
+
+If you want an IDE _without_ having to set-up your own local Python environment, then IDX is a good option for having a free cloud-based IDE:
+
+<a href="https://idx.google.com/new?template=https%3A%2F%2Fgithub.com%2Fgoogle%2Fmesop%2Ftree%2Fidx%2Fidx%2F">
+  <picture>
+    <source
+      media="(prefers-color-scheme: dark)"
+      srcset="https://cdn.idx.dev/btn/try_dark_32.svg">
+    <source
+      media="(prefers-color-scheme: light)"
+      srcset="https://cdn.idx.dev/btn/try_light_32.svg">
+    <img
+      height="32"
+      alt="Try in IDX"
+      src="https://cdn.idx.dev/btn/try_purple_32.svg">
+  </picture>
+</a>
+
+???+ tip "Tips for setting up IDX"
+
+    You will need to wait a minute or two for the IDX workspace to setup. Wait until the preview (web browser) opens with the Mesop app.
+
+    If your workspace doesn't setup correctly, try again and create another IDX workspace.
+
+
 ### Create a venv environment
 
 1. **Open the terminal** and navigate to a directory: `cd foo`
