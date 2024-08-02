@@ -1,3 +1,3 @@
 #!/bin/sh
 source .venv/bin/activate
-mesop main.py
+mesop main.py --port $PORT
