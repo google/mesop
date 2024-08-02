@@ -30,6 +30,7 @@ import chat as chat
 import chat_inputs as chat_inputs
 import checkbox as checkbox
 import code_demo as code_demo  # cannot call it code due to python library naming conflict
+import density as density
 import dialog as dialog
 import divider as divider
 import embed as embed
@@ -101,6 +102,12 @@ FIRST_SECTIONS = [
       Example(name="headers"),
       Example(name="snackbar"),
       Example(name="chat_inputs"),
+    ],
+  ),
+  Section(
+    name="Features",
+    examples=[
+      Example(name="density"),
     ],
   ),
   Section(

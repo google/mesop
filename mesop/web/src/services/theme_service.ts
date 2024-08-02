@@ -22,6 +22,7 @@ export class ThemeService {
   // of proto enum differs between upstream and downstream.
   mode = DEFAULT_THEME_MODE;
   onChangePrefersColorScheme!: () => void;
+  previousDensityClass: string | undefined;
 
   constructor() {
     this.prefersDarkColorSchemeMediaQuery.addEventListener('change', (e) => {
@@ -46,6 +47,15 @@ export class ThemeService {
   setThemeMode(mode: SetThemeMode) {
     this.mode = mode;
     this.updateTheme();
+  }
+
+  setDensity(density: number) {
+    const densityClass = `theme-density-${density}`;
+    if (this.previousDensityClass) {
+      document.body.classList.remove(this.previousDensityClass);
+    }
+    document.body.classList.add(densityClass);
+    this.previousDensityClass = densityClass;
   }
 
   private updateTheme(): void {

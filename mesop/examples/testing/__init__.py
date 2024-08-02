@@ -22,3 +22,6 @@ from mesop.examples.testing import (
 from mesop.examples.testing import (
   theme as theme,
 )
+from mesop.examples.testing import (
+  theme_density as theme_density,
+)

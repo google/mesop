@@ -2,7 +2,7 @@
 
 Mesop has early-stage support for theming so you can support light theme and dark theme in a Mesop application.
 
-## Example
+## Dark Theming
 
 For an actual example of using Mesop's theming API to support light theme and dark theme, we will look at the labs [chat component](../components/chat.md) which itself is written all in Python built on top of lower-level Mesop components.
 
@@ -61,8 +61,29 @@ def on_load(e: me.LoadEvent):
   me.set_theme_mode("system")
 ```
 
+## Theme Density
+
+You can set the visual density of the Material components. By default, Mesop uses the least visually dense setting, i.e.
+
+```py
+me.set_theme_density(0) # 0 is the least dense
+```
+
+You can configure the density as an integer from 0 (least dense) to -4 (most dense). For example, if you want a medium-dense UI, you can do the following:
+
+```py
+def on_load(e: me.LoadEvent):
+  me.set_theme_density(-2) # -2 is more dense the default
+
+
+@me.page(on_load=on_load)
+def page():
+  ...
+```
+
 ## API
 
+::: mesop.features.theme.set_theme_density
 ::: mesop.features.theme.set_theme_mode
 ::: mesop.features.theme.theme_brightness
 ::: mesop.features.theme.theme_var

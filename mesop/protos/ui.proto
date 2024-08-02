@@ -151,6 +151,7 @@ message Command {
         NavigateCommand navigate = 1;
         ScrollIntoViewCommand scroll_into_view = 2;
         SetThemeMode set_theme_mode = 3;
+        SetThemeDensity set_theme_density = 4;
     }
 }
 
@@ -172,6 +173,10 @@ enum ThemeMode {
 
 message SetThemeMode {
     optional ThemeMode theme_mode = 1;
+}
+
+message SetThemeDensity {
+    optional int32 density =1;
 }
 
 message States {
