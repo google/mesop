@@ -181,7 +181,7 @@ body.dark-theme {
   @include mat.system-level-colors($dark-theme);
 }
 
-$density-scales: (-1, -2, -3, -4, minimum, maximum);
+$density-scales: (-1, -2, -3, -4);
 @each $scale in $density-scales {
   .theme-density-#{$scale} {
     $density-theme: create-theme(
