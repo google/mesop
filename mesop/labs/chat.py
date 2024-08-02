@@ -166,7 +166,7 @@ def chat(
     state = me.state(State)
     state.input = e.value
     yield from submit()
-    me.focus_component(key=f"{len(state.output)}")
+    me.focus_component(key=f"input-{len(state.output)}")
     yield
 
   def submit():
@@ -201,8 +201,7 @@ def chat(
         start_time = time.time()
         yield
     state.in_progress = False
-    yield
-    me.focus_component(key=f"{len(state.output)}")
+    me.focus_component(key=f"input-{len(state.output)}")
     yield
 
   def toggle_theme(e: me.ClickEvent):
@@ -241,7 +240,7 @@ def chat(
           me.input(
             label=_LABEL_INPUT,
             # Workaround: update key to clear input.
-            key=f"{len(state.output)}",
+            key=f"input-{len(state.output)}",
             on_blur=on_blur,
             on_enter=on_input_enter,
             style=_STYLE_CHAT_INPUT,

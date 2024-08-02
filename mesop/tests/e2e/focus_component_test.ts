@@ -1,92 +1,83 @@
-import {test, expect} from '@playwright/test';
+import {Page, test, expect} from '@playwright/test';
 
-const isFocused = (selector: string) => {
+const checkIsFocused = (selector: string) => {
   const element = document.querySelector(selector);
   return document.activeElement === element;
+};
+
+const expectIsFocused = async (page: Page, selector: string) => {
+  return await expect(async () => {
+    const isFocused = await page.evaluate(checkIsFocused, selector);
+    expect(isFocused).toBe(true);
+  }).toPass({timeout: 5000});
 };
 
 test('focus autocomplete', async ({page}) => {
   await page.goto('/focus_component');
   await page.locator('//mat-select[@id="mat-select-0"]').click();
   await page.getByRole('option', {name: 'Autocomplete'}).click();
-  await expect(
-    await page.evaluate(isFocused, 'input[aria-controls="mat-autocomplete-0"]'),
-  ).toBe(true);
+  await expectIsFocused(page, 'input[aria-controls="mat-autocomplete-0"]');
 });
 
 test('focus checkbox', async ({page}) => {
   await page.goto('/focus_component');
   await page.locator('//mat-select[@id="mat-select-0"]').click();
   await page.getByRole('option', {name: 'Checkbox'}).click();
-  await expect(await page.evaluate(isFocused, 'input[type="checkbox"]')).toBe(
-    true,
-  );
+  await expectIsFocused(page, 'input[type="checkbox"]');
 });
 
 test('focus text input', async ({page}) => {
   await page.goto('/focus_component');
   await page.locator('//mat-select[@id="mat-select-0"]').click();
   await page.getByRole('option', {name: 'Input'}).click();
-  await expect(await page.evaluate(isFocused, 'input[id="mat-input-1"]')).toBe(
-    true,
-  );
+  await expectIsFocused(page, 'input[id="mat-input-1"]');
 });
 
 test('focus link', async ({page}) => {
   await page.goto('/focus_component');
   await page.locator('//mat-select[@id="mat-select-0"]').click();
   await page.getByRole('option', {name: 'Link'}).click();
-  await expect(await page.evaluate(isFocused, 'a')).toBe(true);
+  await expectIsFocused(page, 'a');
 });
 
 test('focus radio', async ({page}) => {
   await page.goto('/focus_component');
   await page.locator('//mat-select[@id="mat-select-0"]').click();
   await page.getByRole('option', {name: 'Radio'}).click();
-  await expect(
-    await page.evaluate(isFocused, 'input[name="mat-radio-group-0"]'),
-  ).toBe(true);
+  await expectIsFocused(page, 'input[name="mat-radio-group-0"]');
 });
 
 test('focus select', async ({page}) => {
   await page.goto('/focus_component');
   await page.locator('//mat-select[@id="mat-select-0"]').click();
   await page.getByRole('option', {name: 'Select'}).click();
-  await expect(
-    await page.evaluate(isFocused, 'mat-select[id="mat-select-2"]'),
-  ).toBe(true);
+  await expectIsFocused(page, 'mat-select[id="mat-select-2"]');
 });
 
 test('focus slider', async ({page}) => {
   await page.goto('/focus_component');
   await page.locator('//mat-select[@id="mat-select-0"]').click();
   await page.getByRole('option', {name: 'Slider'}).click();
-  await expect(await page.evaluate(isFocused, 'input[type="range"]')).toBe(
-    true,
-  );
+  await expectIsFocused(page, 'input[type="range"]');
 });
 
 test('focus slider toggle', async ({page}) => {
   await page.goto('/focus_component');
   await page.locator('//mat-select[@id="mat-select-0"]').click();
   await page.getByRole('option', {name: 'Slide Toggle'}).click();
-  await expect(await page.evaluate(isFocused, 'button[role="switch"]')).toBe(
-    true,
-  );
+  await expectIsFocused(page, 'button[role="switch"]');
 });
 
 test('focus textarea', async ({page}) => {
   await page.goto('/focus_component');
   await page.locator('//mat-select[@id="mat-select-0"]').click();
   await page.getByRole('option', {name: 'Textarea'}).click();
-  await expect(await page.evaluate(isFocused, 'textarea')).toBe(true);
+  await expectIsFocused(page, 'textarea');
 });
 
 test('focus uploader', async ({page}) => {
   await page.goto('/focus_component');
   await page.locator('//mat-select[@id="mat-select-0"]').click();
   await page.getByRole('option', {name: 'Uploader'}).click();
-  await expect(await page.evaluate(isFocused, 'mesop-uploader button')).toBe(
-    true,
-  );
+  await expectIsFocused(page, 'mesop-uploader button');
 });
