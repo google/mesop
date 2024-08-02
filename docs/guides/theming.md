@@ -73,7 +73,7 @@ You can configure the density as an integer from 0 (least dense) to -4 (most den
 
 ```py
 def on_load(e: me.LoadEvent):
-  me.set_theme_density(-2) # -2 is more dense the default
+  me.set_theme_density(-2) # -2 is more dense than the default
 
 
 @me.page(on_load=on_load)
