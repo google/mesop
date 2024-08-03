@@ -7,13 +7,15 @@ import secrets
 from collections import OrderedDict
 from io import BytesIO
 from typing import Any, Callable
+from urllib.parse import urlparse
 
-from flask import Flask, Response, g, request, send_file
+from flask import Flask, Response, g, make_response, request, send_file
 from werkzeug.security import safe_join
 
 from mesop.exceptions import MesopException
 from mesop.runtime import runtime
 from mesop.server.constants import WEB_COMPONENTS_PATH_SEGMENT
+from mesop.utils import terminal_colors as tc
 from mesop.utils.runfiles import get_runfile_location, has_runfiles
 from mesop.utils.url_utils import sanitize_url_for_csp
 
@@ -112,6 +114,62 @@ def configure_static_file_serving(
     else:
       return send_file(retrieve_index_html(), download_name="index.html")
 
+  @app.route("/__csp__", methods=["POST"])
+  def csp_report():
+    # Get the CSP violation report from the request
+    # Flask expects the MIME type to be application/json
+    # but it's actually application/csp-report
+    report = request.get_json(force=True)
+
+    document_uri: str = report["csp-report"]["document-uri"]
+    path = urlparse(document_uri).path
+    blocked_uri: str = report["csp-report"]["blocked-uri"]
+    # Remove the path from blocked_uri, keeping only the origin.
+    blocked_site = (
+      urlparse(blocked_uri).scheme + "://" + urlparse(blocked_uri).netloc
+    )
+    violated_directive: str = report["csp-report"]["violated-directive"]
+    if violated_directive == "script-src-elem":
+      keyword_arg = "allowed_script_srcs"
+    elif violated_directive == "connect-src":
+      keyword_arg = "allowed_connect_srcs"
+    elif violated_directive == "frame-ancestors":
+      keyword_arg = "allowed_iframe_parents"
+    elif violated_directive == "require-trusted-types-for":
+      keyword_arg = "dangerously_disable_trusted_types"
+    else:
+      raise Exception("Unexpected CSP violation:", violated_directive, report)
+    keyword_arg_value = f"""[
+      '{tc.CYAN}{blocked_site}{tc.RESET}',
+    ]"""
+    if keyword_arg == "dangerously_disable_trusted_types":
+      keyword_arg_value = f"{tc.CYAN}True{tc.RESET}"
+    print(
+      f"""
+{tc.RED}⚠️  Content Security Policy Error  ⚠️{tc.RESET}
+{tc.YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━{tc.RESET}
+
+{tc.CYAN}Directive:{tc.RESET}   {tc.GREEN}{violated_directive}{tc.RESET}
+{tc.CYAN}Blocked URL:{tc.RESET} {tc.GREEN}{blocked_uri}{tc.RESET}
+{tc.CYAN}App path:{tc.RESET}    {tc.GREEN}{path}{tc.RESET}
+
+{tc.YELLOW}ℹ️  If this is coming from your web component,
+   update your security policy like this:{tc.RESET}
+
+{tc.MAGENTA}@me.page({tc.RESET}
+  {tc.BLUE}security_policy={tc.RESET}{tc.MAGENTA}me.SecurityPolicy({tc.RESET}
+    {tc.GREEN}{keyword_arg}={tc.RESET}{keyword_arg_value}
+  {tc.MAGENTA}){tc.RESET}
+{tc.MAGENTA}){tc.RESET}
+
+{tc.YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━{tc.RESET}
+"""  # noqa: RUF001
+    )
+
+    response = make_response()
+    response.status_code = 204
+    return response
+
   @app.before_request
   def generate_nonce():
     g.csp_nonce = secrets.token_urlsafe(16)
@@ -150,6 +208,7 @@ def configure_static_file_serving(
         # https://angular.io/guide/security#enforcing-trusted-types
         "trusted-types": "angular angular#unsafe-bypass lit-html",
         "require-trusted-types-for": "'script'",
+        "report-uri": "/__csp__",
       }
     )
     if page_config and page_config.stylesheets:
