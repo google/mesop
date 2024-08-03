@@ -52,6 +52,11 @@ class Context:
       pb.Command(scroll_into_view=pb.ScrollIntoViewCommand(key=key))
     )
 
+  def focus_component(self, key: str) -> None:
+    self._commands.append(
+      pb.Command(focus_component=pb.FocusComponentCommand(key=key))
+    )
+
   def set_theme_density(self, density: int) -> None:
     self._commands.append(
       pb.Command(set_theme_density=pb.SetThemeDensity(density=density))
