@@ -29,6 +29,7 @@ interface InitParams {
   onRender: (
     rootComponent: ComponentProto,
     componentConfigs: readonly ComponentConfig[],
+    jsModules: readonly string[],
   ) => void;
   onError: (error: ServerError) => void;
   onCommand: (command: Command) => void;
@@ -200,7 +201,11 @@ export class Channel {
             this.componentConfigs = uiResponse
               .getRender()!
               .getComponentConfigsList();
-            onRender(this.rootComponent, this.componentConfigs);
+            onRender(
+              this.rootComponent,
+              this.componentConfigs,
+              uiResponse.getRender()!.getJsModulesList(),
+            );
             this.logger.log({
               type: 'RenderLog',
               states: this.states,

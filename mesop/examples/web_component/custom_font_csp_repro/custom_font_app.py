@@ -17,6 +17,11 @@ from mesop.examples.web_component.quickstart.counter_component import (
   stylesheets=[
     "https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&family=Inter:wght@100..900&display=swap",
   ],
+  security_policy=me.SecurityPolicy(
+    allowed_script_srcs=[
+      "https://cdn.jsdelivr.net",
+    ]
+  ),
 )
 def page():
   me.text("Custom font: Inter Tight", style=me.Style(font_family="Inter Tight"))

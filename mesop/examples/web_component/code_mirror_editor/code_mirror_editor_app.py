@@ -20,7 +20,11 @@ class State:
       "https://cdnjs.cloudflare.com",
       "*.fonts.gstatic.com",
     ],
-    allowed_script_srcs=["https://cdnjs.cloudflare.com", "*.fonts.gstatic.com"],
+    allowed_script_srcs=[
+      "https://cdnjs.cloudflare.com",
+      "*.fonts.gstatic.com",
+      "https://cdn.jsdelivr.net",
+    ],
   ),
 )
 def page():

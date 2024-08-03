@@ -48,7 +48,6 @@ class Runtime:
     self.hot_reload_counter = 0
     self._path_to_page_config: dict[str, PageConfig] = {}
     self.component_fns: set[Callable[..., Any]] = set()
-    self.js_modules: set[str] = set()
     self._handlers: dict[str, Handler] = {}
     self.event_mappers: dict[Type[Any], Callable[[pb.UserEvent, Key], Any]] = {}
     self._state_classes: list[type[Any]] = []
@@ -146,12 +145,11 @@ Try one of the following paths:
   def register_native_component_fn(self, component_fn: Callable[..., Any]):
     self.component_fns.add(component_fn)
 
-  def register_js_module(self, js_module: str) -> None:
+  def check_register_web_component_is_valid(self) -> None:
     if self._has_served_traffic:
       raise MesopDeveloperException(
         "Cannot register a JS module after traffic has been served. You must define all web components upon server startup before any traffic has been served. This prevents security issues."
       )
-    self.js_modules.add(js_module)
 
   def get_component_fns(self) -> set[Callable[..., Any]]:
     return self.component_fns

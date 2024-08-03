@@ -21,7 +21,11 @@ if firebase_admin._DEFAULT_APP_NAME not in firebase_admin._apps:
   security_policy=me.SecurityPolicy(
     dangerously_disable_trusted_types=True,
     allowed_connect_srcs=["*.googleapis.com"],
-    allowed_script_srcs=["*.google.com"],
+    allowed_script_srcs=[
+      "*.google.com",
+      "https://www.gstatic.com",
+      "https://cdn.jsdelivr.net",
+    ],
   ),
 )
 def page():
