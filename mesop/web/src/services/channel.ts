@@ -94,7 +94,7 @@ export class Channel {
   }
 
   init(initParams: InitParams, request: UiRequest) {
-    this.eventSource = new SSE('/ui', {
+    this.eventSource = new SSE('/__ui__', {
       payload: generatePayloadString(request),
     });
     this.status = ChannelStatus.OPEN;
@@ -277,7 +277,7 @@ export class Channel {
     const pollHotReloadEndpoint = async () => {
       try {
         const response = await fetch(
-          `/hot-reload?counter=${this.hotReloadCounter}`,
+          `/__hot-reload__?counter=${this.hotReloadCounter}`,
         );
         if (response.status === 200) {
           const text = await response.text();

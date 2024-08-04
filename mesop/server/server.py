@@ -210,7 +210,7 @@ def configure_flask_app(
         error=pb.ServerError(exception=str(e), traceback=format_traceback())
       )
 
-  @flask_app.route("/ui", methods=["POST"])
+  @flask_app.route("/__ui__", methods=["POST"])
   def ui_stream() -> Response:
     # Prevent CSRF by checking the request site matches the site
     # of the URL root (where the Flask app is being served from)
@@ -220,7 +220,7 @@ def configure_flask_app(
     if not runtime().debug_mode and not is_same_site(
       request.headers.get("Origin"), request.url_root
     ):
-      abort(403, "Rejecting cross-site POST request to /ui")
+      abort(403, "Rejecting cross-site POST request to /__ui__")
     data = request.data
     if not data:
       raise Exception("Missing request payload")
@@ -249,7 +249,7 @@ def configure_flask_app(
 
   if not prod_mode:
 
-    @flask_app.route("/hot-reload")
+    @flask_app.route("/__hot-reload__")
     def hot_reload() -> Response:
       counter = int(request.args["counter"])
       while True:
