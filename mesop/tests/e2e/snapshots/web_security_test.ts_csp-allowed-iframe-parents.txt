@@ -7,4 +7,5 @@ style-src 'self' 'unsafe-inline' fonts.googleapis.com
 script-src 'self' 'nonce-{{NONCE}}'
 trusted-types angular angular#unsafe-bypass lit-html
 require-trusted-types-for 'script'
+report-uri /__csp__
 frame-ancestors 'self' google.com
