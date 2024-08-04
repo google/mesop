@@ -249,7 +249,7 @@ def configure_flask_app(
 
   if not prod_mode:
 
-    @flask_app.route("/hot-reload")
+    @flask_app.route("/__hot-reload__")
     def hot_reload() -> Response:
       counter = int(request.args["counter"])
       while True:

@@ -277,7 +277,7 @@ export class Channel {
     const pollHotReloadEndpoint = async () => {
       try {
         const response = await fetch(
-          `/hot-reload?counter=${this.hotReloadCounter}`,
+          `/__hot-reload__?counter=${this.hotReloadCounter}`,
         );
         if (response.status === 200) {
           const text = await response.text();
