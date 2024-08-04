@@ -37,6 +37,16 @@ class Context:
     self._node_slot_children_count: int | None = None
     self._viewport_size: pb.ViewportSize | None = None
     self._theme_settings: pb.ThemeSettings | None = None
+    self._js_modules: set[str] = set()
+
+  def register_js_module(self, js_module_path: str) -> None:
+    self._js_modules.add(js_module_path)
+
+  def js_modules(self) -> set[str]:
+    return self._js_modules
+
+  def clear_js_modules(self):
+    self._js_modules = set()
 
   def commands(self) -> list[pb.Command]:
     return self._commands

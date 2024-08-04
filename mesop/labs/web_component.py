@@ -20,6 +20,8 @@ def web_component(*, path: str, skip_validation: bool = False):
     path: The path to the JavaScript file of the web component.
     skip_validation: If set to True, skips validation. Defaults to False.
   """
+  runtime().check_register_web_component_is_valid()
+
   current_frame = inspect.currentframe()
   assert current_frame
   previous_frame = current_frame.f_back
@@ -31,14 +33,14 @@ def web_component(*, path: str, skip_validation: bool = False):
   full_path = os.path.normpath(os.path.join(caller_module_dir, path))
   if not full_path.startswith("/"):
     full_path = "/" + full_path
-
-  runtime().register_js_module(full_path)
+  js_module_path = full_path
 
   def component_wrapper(fn: C) -> C:
     validated_fn = fn if skip_validation else validate(fn)
 
     @wraps(fn)
     def wrapper(*args: Any, **kw_args: Any):
+      runtime().context().register_js_module(js_module_path)
       return validated_fn(*args, **kw_args)
 
     return cast(C, wrapper)

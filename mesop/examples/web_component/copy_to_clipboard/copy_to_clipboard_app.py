@@ -15,6 +15,11 @@ lacinia magnis donec. Nostra vulputate litora luctus id ut.
 
 @me.page(
   path="/web_component/copy_to_clipboard/copy_to_clipboard_app",
+  security_policy=me.SecurityPolicy(
+    allowed_script_srcs=[
+      "https://cdn.jsdelivr.net",
+    ]
+  ),
 )
 def page():
   with me.box(

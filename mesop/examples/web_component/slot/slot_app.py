@@ -12,6 +12,11 @@ from mesop.examples.web_component.slot.outer_component import (
 
 @me.page(
   path="/web_component/slot/slot_app",
+  security_policy=me.SecurityPolicy(
+    allowed_script_srcs=[
+      "https://cdn.jsdelivr.net",
+    ]
+  ),
 )
 def page():
   with outer_component(

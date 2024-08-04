@@ -13,6 +13,7 @@ from mesop.events import LoadEvent
 from mesop.exceptions import format_traceback
 from mesop.runtime import runtime
 from mesop.server.config import app_config
+from mesop.server.constants import WEB_COMPONENTS_PATH_SEGMENT
 from mesop.warn import warn
 
 LOCALHOSTS = (
@@ -58,6 +59,11 @@ def configure_flask_app(
       # (e.g. scroll into view) for the same context (e.g. multiple render loops
       # when processing a generator handler function)
       runtime().context().clear_commands()
+      js_modules = runtime().context().js_modules()
+      # Similar to above, clear JS modules after sending it once to minimize payload.
+      # Although it shouldn't cause any issue because client-side, each js module
+      # should only be imported once.
+      runtime().context().clear_js_modules()
       data = pb.UiResponse(
         render=pb.RenderEvent(
           root_component=root_component,
@@ -67,6 +73,10 @@ def configure_flask_app(
           if prod_mode or not init_request
           else get_component_configs(),
           title=title,
+          js_modules=[
+            f"/{WEB_COMPONENTS_PATH_SEGMENT}{js_module}"
+            for js_module in js_modules
+          ],
         )
       )
       yield serialize(data)

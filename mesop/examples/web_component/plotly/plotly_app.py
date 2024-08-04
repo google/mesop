@@ -11,7 +11,13 @@ from mesop.examples.web_component.plotly.plotly_component import (
   #
   # Disabling trusted types because plotly uses DomParser#parseFromString
   # which violates TrustedHTML assignment.
-  security_policy=me.SecurityPolicy(dangerously_disable_trusted_types=True),
+  security_policy=me.SecurityPolicy(
+    allowed_script_srcs=[
+      "https://cdn.jsdelivr.net",
+      "https://cdn.plot.ly",
+    ],
+    dangerously_disable_trusted_types=True,
+  ),
 )
 def page():
   plotly_component()

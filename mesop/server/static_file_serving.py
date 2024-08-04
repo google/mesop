@@ -13,11 +13,9 @@ from werkzeug.security import safe_join
 
 from mesop.exceptions import MesopException
 from mesop.runtime import runtime
+from mesop.server.constants import WEB_COMPONENTS_PATH_SEGMENT
 from mesop.utils.runfiles import get_runfile_location, has_runfiles
 from mesop.utils.url_utils import sanitize_url_for_csp
-
-WEB_COMPONENTS_PATH_SEGMENT = "__web-components-module__"
-
 
 # mimetypes are not always set correctly, thus manually
 # setting the mimetype here.
@@ -51,16 +49,6 @@ def configure_static_file_serving(
     for i, line in enumerate(lines):
       if "$$INSERT_CSP_NONCE$$" in line:
         lines[i] = lines[i].replace("$$INSERT_CSP_NONCE$$", g.csp_nonce)
-      if (
-        runtime().js_modules
-        and line.strip() == "<!-- Inject web components modules (if needed) -->"
-      ):
-        lines[i] = "\n".join(
-          [
-            f"<script type='module' nonce={g.csp_nonce} src='/{WEB_COMPONENTS_PATH_SEGMENT}{js_module}'></script>"
-            for js_module in runtime().js_modules
-          ]
-        )
       if (
         livereload_script_url
         and line.strip() == "<!-- Inject livereload script (if needed) -->"

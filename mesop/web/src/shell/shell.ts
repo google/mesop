@@ -88,7 +88,26 @@ export class Shell {
     this.channel.init(
       {
         zone: this.zone,
-        onRender: (rootComponent, componentConfigs) => {
+        onRender: async (rootComponent, componentConfigs, jsModules) => {
+          // Import all JS modules concurrently
+          await Promise.all(
+            jsModules.map((modulePath) =>
+              import(modulePath)
+                .then(() =>
+                  console.debug(
+                    `Successfully imported JS module: ${modulePath}`,
+                  ),
+                )
+                .catch((error) =>
+                  console.error(
+                    `Failed to import JS module: ${modulePath}`,
+                    error,
+                  ),
+                ),
+            ),
+          ).then(() => {
+            console.debug('All JS modules imported');
+          });
           this.rootComponent = rootComponent;
           // Component configs are only sent for the first response.
           // For subsequent reponses, use the component configs previously

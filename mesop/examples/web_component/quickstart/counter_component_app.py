@@ -9,6 +9,11 @@ from mesop.examples.web_component.quickstart.counter_component import (
 
 @me.page(
   path="/web_component/quickstart/counter_component_app",
+  security_policy=me.SecurityPolicy(
+    allowed_script_srcs=[
+      "https://cdn.jsdelivr.net",
+    ]
+  ),
 )
 def page():
   counter_component(

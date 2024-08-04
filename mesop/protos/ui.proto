@@ -131,6 +131,8 @@ message RenderEvent {
     optional string title = 3;
     repeated Command commands = 4;
 
+    repeated string js_modules = 6;
+
     // Only sent in editor mode:
     repeated ComponentConfig component_configs = 5;
 }
