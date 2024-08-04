@@ -1,3 +1,6 @@
+from mesop.examples.web_component.async_action import (
+  async_action_app as async_action_app,
+)
 from mesop.examples.web_component.code_mirror_editor import (
   code_mirror_editor_app as code_mirror_editor_app,
 )
@@ -12,6 +15,9 @@ from mesop.examples.web_component.custom_font_csp_repro import (
 )
 from mesop.examples.web_component.firebase_auth import (
   firebase_auth_app as firebase_auth_app,
+)
+from mesop.examples.web_component.hotkeys import (
+  hotkeys_app as hotkeys_app,
 )
 from mesop.examples.web_component.markedjs import (
   markedjs_app as markedjs_app,
