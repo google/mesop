@@ -135,7 +135,7 @@ def configure_static_file_serving(
       keyword_arg = "allowed_connect_srcs"
     elif violated_directive == "frame-ancestors":
       keyword_arg = "allowed_iframe_parents"
-    elif violated_directive == "require-trusted-types-for":
+    elif violated_directive in ("require-trusted-types-for", "trusted-types"):
       keyword_arg = "dangerously_disable_trusted_types"
     else:
       raise Exception("Unexpected CSP violation:", violated_directive, report)
@@ -148,7 +148,6 @@ def configure_static_file_serving(
       f"""
 {tc.RED}⚠️  Content Security Policy Error  ⚠️{tc.RESET}
 {tc.YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━{tc.RESET}
-
 {tc.CYAN}Directive:{tc.RESET}   {tc.GREEN}{violated_directive}{tc.RESET}
 {tc.CYAN}Blocked URL:{tc.RESET} {tc.GREEN}{blocked_uri}{tc.RESET}
 {tc.CYAN}App path:{tc.RESET}    {tc.GREEN}{path}{tc.RESET}
@@ -162,6 +161,8 @@ def configure_static_file_serving(
   {tc.MAGENTA}){tc.RESET}
 {tc.MAGENTA}){tc.RESET}
 
+{tc.YELLOW}For more info:
+{tc.CYAN}https://google.github.io/mesop/web-components/troubleshooting/{tc.RESET}
 {tc.YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━{tc.RESET}
 """  # noqa: RUF001
     )

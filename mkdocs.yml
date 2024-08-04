@@ -32,6 +32,7 @@ nav:
               - Overview: web-components/index.md
               - Quickstart: web-components/quickstart.md
               - API: web-components/api.md
+              - Troubleshooting: web-components/troubleshooting.md
       - High-level:
           - Chat: components/chat.md
           - Text to Text: components/text-to-text.md
