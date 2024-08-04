@@ -11,7 +11,7 @@ After working on Mesop for the last two months, I'm excited to finally announce 
 Mesop is in many ways a remix of many existing ideas packaged into a single cohesive UI framework, designed for Python developers. I've documented some of these [goals](../../goals.md) previously, but I'll quickly recap the benefits of Mesop here:
 
 - Allows non-frontend engineers to rapidly build UIs for internal use cases like demos.
-- Provides a fast build-edit-refresh loop through [hot reload](../../internal/hot_reload.md).
+- Provides a fast build-edit-refresh loop through [hot reload](../../internal/hot-reload.md).
 - Enables developers to benefit from the mature [Angular](https://angular.dev/) web framework and [Angular Material](https://material.angular.io/) components.
 - Provides a flexible and composable components API that's idiomatic to Python.
 - Easy to deploy by using standard HTTP technologies like [Server-Sent Events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events).
@@ -41,7 +41,7 @@ Using Mesop today requires following our [internal development setup](../../inte
 
 **Areas of work:**
 
-- **Find a suitable ibazel replacement for Hot Reload.** Instead of requiring Mesop developers to sync the entire repo and building the project with Bazel and iBazel, we should distribute a ready-to-use pip package of Mesop. However, this leaves an open question of how we support [hot reload](../../internal/hot_reload.md) without iBazel which provides: 1) a filesystem watching mechanism and 2) live reload. We'll need to investigate good open-source equivalents for each of these capabilities.
+- **Find a suitable ibazel replacement for Hot Reload.** Instead of requiring Mesop developers to sync the entire repo and building the project with Bazel and iBazel, we should distribute a ready-to-use pip package of Mesop. However, this leaves an open question of how we support [hot reload](../../internal/hot-reload.md) without iBazel which provides: 1) a filesystem watching mechanism and 2) live reload. We'll need to investigate good open-source equivalents for each of these capabilities.
 
 - **Provide web-based interactive demos.** Many JavaScript UI frameworks provide a playground (e.g. [Angular](https://angular.dev/playground)) or interactive tutorial (e.g. [Solid](https://www.solidjs.com/tutorial/introduction_basics)) so that prospective developers can use the framework before going through the hassle of setting up their own local dev environment. This would also be very helpful to provide for each component as it's a lot easier to understand a component by tinkering with a live example.
 

@@ -77,7 +77,7 @@ pip install mesop
 mesop main.py
 ```
 
-Learn more in [Getting Started](https://google.github.io/mesop/getting_started/installing/).
+Learn more in [Getting Started](https://google.github.io/mesop/getting-started/installing/).
 
 ## Disclaimer
 

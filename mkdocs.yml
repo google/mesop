@@ -5,9 +5,9 @@ strict: true
 nav:
   - index.md
   - Getting Started:
-      - Installing: getting_started/installing.md
-      - Quickstart: getting_started/quickstart.md
-      - Core Concepts: getting_started/core_concepts.md
+      - Installing: getting-started/installing.md
+      - Quickstart: getting-started/quickstart.md
+      - Core Concepts: getting-started/core-concepts.md
       - Codelabs:
           - DuoChat Codelab:
               - 1 - Overview & setup: codelab/index.md
@@ -16,26 +16,26 @@ nav:
               - 4 - Integrating AI APIs: codelab/4.md
               - 5 - Wrapping it up: codelab/5.md
   - Guides:
-      - State Management: guides/state_management.md
+      - State Management: guides/state-management.md
       - Interactivity: guides/interactivity.md
-      - Multi-Pages: guides/multi_pages.md
+      - Multi-Pages: guides/multi-pages.md
       - Auth: guides/auth.md
       - Deployment: guides/deployment.md
       - Debugging: guides/debugging.md
       - Theming: guides/theming.md
-      - Web Security: guides/web_security.md
+      - Web Security: guides/web-security.md
       - Labs: guides/labs.md
   - Components:
       - Types:
           - Overview: components/index.md
           - Web Components:
-              - Overview: web_components/index.md
-              - Quickstart: web_components/quickstart.md
-              - API: web_components/api.md
+              - Overview: web-components/index.md
+              - Quickstart: web-components/quickstart.md
+              - API: web-components/api.md
       - High-level:
           - Chat: components/chat.md
-          - Text to Text: components/text_to_text.md
-          - Text to Image: components/text_to_image.md
+          - Text to Text: components/text-to-text.md
+          - Text to Image: components/text-to-image.md
       - Layout:
           - Box: components/box.md
           - Sidenav: components/sidenav.md
@@ -55,15 +55,15 @@ nav:
           - Textarea: components/textarea.md
           - Radio: components/radio.md
           - Select: components/select.md
-          - Slide toggle: components/slide_toggle.md
+          - Slide toggle: components/slide-toggle.md
           - Slider: components/slider.md
           - Uploader: components/uploader.md
       - Visual:
           - Badge: components/badge.md
           - Divider: components/divider.md
           - Icon: components/icon.md
-          - Progress bar: components/progress_bar.md
-          - Progress spinner: components/progress_spinner.md
+          - Progress bar: components/progress-bar.md
+          - Progress spinner: components/progress-spinner.md
           - Table: components/table.md
           - Tooltip: components/tooltip.md
       - Web:
@@ -76,11 +76,11 @@ nav:
       - Page: api/page.md
       - UI Customization:
           - Style: api/style.md
-          - Viewport Size: api/viewport_size.md
+          - Viewport Size: api/viewport-size.md
       - Commands:
           - Navigate: api/commands/navigate.md
-          - Scroll into view: api/commands/scroll_into_view.md
-          - Focus component: api/commands/focus_component.md
+          - Scroll into view: api/commands/scroll-into-view.md
+          - Focus component: api/commands/focus-component.md
       - Config: api/config.md
   - FAQ: faq.md
   - Demo Gallery 🔗: demo.md
@@ -91,14 +91,14 @@ nav:
       - Development:
           - Main: internal/development.md
           - Github Codespaces: internal/codespaces.md
-          - VS Code Remote Container: internal/vs_code_remote_container.md
+          - VS Code Remote Container: internal/vs-code-remote-container.md
       - Architecture: internal/architecture.md
       - Goals: goals.md
-      - New component: internal/new_component.md
-      - Hot reload: internal/hot_reload.md
+      - New component: internal/new-component.md
+      - Hot reload: internal/hot-reload.md
       - Modes: internal/modes.md
       - Testing: internal/testing.md
-      - Type checking: internal/type_checking.md
+      - Type checking: internal/type-checking.md
       - CI: internal/ci.md
       - Build / Toolchain: internal/toolchain.md
       - Publishing: internal/publishing.md
