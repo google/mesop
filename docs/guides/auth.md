@@ -58,6 +58,8 @@ Let's put it all together:
 --8<-- "mesop/examples/web_component/firebase_auth/firebase_auth_app.py"
 ```
 
+*Note* You must add `firebase-admin` to your Mesop app's `requirements.txt` file
+
 **How it works:**
 
 - The `firebase_auth_app.py` module integrates the Firebase Auth web component into the Mesop app. It initializes the Firebase app, defines the page where the Firebase Auth web component will be used, and sets up the state to store the user's email.
