@@ -42,7 +42,7 @@ hide:
     Used at Google for rapid AI app development.
   </div>
   <div class="header-buttons">
-    <a class="primary-button" href="./getting_started/installing">Get started</a>
+    <a class="primary-button" href="./getting-started/installing">Get started</a>
     <a class="secondary-button" href="./demo">View examples</a>
   </div>
 </header>
@@ -200,7 +200,7 @@ With Mesop, you can build virtually any web-based user interface or application 
   Seamlessly integrate JS with web components
   </div>
   <div class="section-body">
-    Get the best of both worlds with Mesop <a href="./web_components/">web components</a>. Leverage Python's simplicity for core logic, while accessing the vast ecosystem of JS libraries
+    Get the best of both worlds with Mesop <a href="./web-components/">web components</a>. Leverage Python's simplicity for core logic, while accessing the vast ecosystem of JS libraries
   </div>
 </section>
 
@@ -244,13 +244,13 @@ Mesop streamlines app development with features like hot reload and strong IDE s
     <div class="gif-caption">
       Instant hot reload
     </div>
-    <img src="./assets/hot_reload.gif" class="dev-gif box-shadow">
+    <img src="./assets/hot-reload.gif" class="dev-gif box-shadow">
   </div>
   <div class="dev-gif-row row-reverse">
   <div class="gif-caption">
       IDE support with static types
     </div>
-    <img src="./assets/ide_support.gif" class="dev-gif box-shadow">
+    <img src="./assets/ide-support.gif" class="dev-gif box-shadow">
   </div>
 </section>
 

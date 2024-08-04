@@ -23,7 +23,7 @@ mkdir duochat
 cd duochat
 ```
 
-2. Follow the [Mesop command-line installation guide](../getting_started/installing.md#b-command-line) and create a [virtual environment](../getting_started/installing.md#create-a-venv-environment) and activate it.
+2. Follow the [Mesop command-line installation guide](../getting-started/installing.md#b-command-line) and create a [virtual environment](../getting-started/installing.md#create-a-venv-environment) and activate it.
 
 3. Create a `requirements.txt` file with the following content:
 

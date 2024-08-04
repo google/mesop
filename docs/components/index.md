@@ -1,6 +1,6 @@
 # Components
 
-Please read [Core Concepts](../getting_started/core_concepts.md) before this as it explains the basics of components. This page provides an overview of the different types of components in Mesop.
+Please read [Core Concepts](../getting-started/core-concepts.md) before this as it explains the basics of components. This page provides an overview of the different types of components in Mesop.
 
 ## Types of components
 
@@ -16,7 +16,7 @@ User-defined components are essentially Python functions which call other compon
 
 ### Web components
 
-Web components in Mesop are custom HTML elements created using JavaScript and CSS. They enable custom JavaScript execution and bi-directional communication between the browser and server. They can wrap JavaScript libraries and provide stateful client-side interactions. [Learn more about web components](../web_components/index.md).
+Web components in Mesop are custom HTML elements created using JavaScript and CSS. They enable custom JavaScript execution and bi-directional communication between the browser and server. They can wrap JavaScript libraries and provide stateful client-side interactions. [Learn more about web components](../web-components/index.md).
 
 ## Content components
 

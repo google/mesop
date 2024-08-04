@@ -43,7 +43,7 @@ One of the best way of helping the Mesop project is to share what you've built! 
 If you'd like to contribute code, I recommend taking a look at one of our existing ["starter" issues](https://github.com/google/mesop/labels/starter). These are issues that are good for first-time contributors as they are well-specified.
 
 - [Setup your dev environment](./development.md)
-- If you're creating a new component, you can follow the [new component guide](./new_component.md)
+- If you're creating a new component, you can follow the [new component guide](./new-component.md)
 
 I recommend reading through the various pages in the contributing section as it will give you a sense of our project's goals.
 

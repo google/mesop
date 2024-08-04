@@ -1,6 +1,6 @@
 # Auth
 
-To ensure that the users of your Mesop application are authenticated, this guide provides a detailed, step-by-step process on how to integrate Firebase Authentication with Mesop using a [web component](../web_components/index.md).
+To ensure that the users of your Mesop application are authenticated, this guide provides a detailed, step-by-step process on how to integrate Firebase Authentication with Mesop using a [web component](../web-components/index.md).
 
 Mesop is designed to be auth provider agnostic, allowing you to integrate any auth library you prefer, whether it's on the client-side (JavaScript) or server-side (Python). You can support sign-ins, including social sign-ins like Google's or any others that you prefer. The general approach involves signing in on the client-side first, then transmitting an auth token to the server-side.
 
@@ -38,7 +38,7 @@ The Firebase Authentication web component is a custom component built for handli
 - This creates a simple and configurable auth UI using FirebaseUI Web.
 - Once the user has signed in, then a sign out button is shown.
 - Whenever the user signs in or out, the web component dispatches an event to the Mesop server with the auth token, or absence of it.
-- See our [web component docs](../web_components/quickstart.md#javascript-module) for more details.
+- See our [web component docs](../web-components/quickstart.md#javascript-module) for more details.
 
 #### Python code
 
@@ -48,7 +48,7 @@ The Firebase Authentication web component is a custom component built for handli
 
 **How it works:**
 
-- Implements the Python side of the Mesop web component. See our [web component docs](../web_components/quickstart.md#python-module) for more details.
+- Implements the Python side of the Mesop web component. See our [web component docs](../web-components/quickstart.md#python-module) for more details.
 
 ### Integrating into the app
 
