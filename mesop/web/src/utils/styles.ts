@@ -198,6 +198,12 @@ export function formatStyle(styleObj: Style): string {
       padding.getBottom() || 0
     } ${padding.getLeft() || 0};`;
   }
+  if (styleObj.getPlaceItems()) {
+    style += `place-items: ${styleObj.getPlaceItems()};`;
+  }
+  if (styleObj.getPointerEvents()) {
+    style += `pointer-events: ${styleObj.getPointerEvents()};`;
+  }
   if (styleObj.getPosition()) {
     style += `position: ${styleObj.getPosition()};`;
   }

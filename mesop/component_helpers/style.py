@@ -61,6 +61,26 @@ ItemJustifyValues = Literal[
 ]
 OverflowValues = Literal["visible", "hidden", "clip", "scroll", "auto"]
 OverflowWrapValues = Literal["normal", "break-word", "anywhere"]
+PointerEventsValues = Literal[
+  "auto",
+  "none",
+  # SVG only (experimental for HTML)
+  "bounding-box",
+  "visiblePainted",
+  "visibleFill",
+  "visibleStroke",
+  "visible",
+  "painted",
+  "fill",
+  "stroke",
+  "all",
+  # Global values
+  "inherit",
+  "initial",
+  "revert",
+  "revert-layer",
+  "unset",
+]
 
 
 @dataclass(kw_only=True)
@@ -312,6 +332,8 @@ class Style:
       overflow_x: Specifies the handling of overflow in the horizontal direction. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/overflow-x).
       overflow_y: Specifies the handling of overflow in the vertical direction. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/overflow-y).
       padding: Sets the padding space required on each side of an element. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/padding).
+      place_items: The CSS place-items shorthand property allows you to align items along both the block and inline directions at once. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/place-items).
+      pointer_events: Sets under what circumstances (if any) a particular graphic element can become the target of pointer events. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/pointer-events).
       position: Specifies the type of positioning method used for an element (static, relative, absolute, fixed, or sticky). See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/position).
       right: Helps set horizontal position of a positioned element. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/right).
       rotate: Allows you to specify rotation transforms individually and independently of the transform property. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/rotate).
@@ -424,6 +446,8 @@ class Style:
   overflow_x: OverflowValues | None = None
   overflow_y: OverflowValues | None = None
   padding: Padding | None = None
+  place_items: str | None = None
+  pointer_events: PointerEventsValues | None = None
   position: (
     Literal[
       "static",
@@ -537,6 +561,8 @@ def to_style_proto(s: Style) -> pb.Style:
     overflow_x=s.overflow_x,
     overflow_y=s.overflow_y,
     padding=_map_edge_insets(s.padding),
+    place_items=s.place_items,
+    pointer_events=s.pointer_events,
     position=s.position,
     right=_px_str(s.right),
     rotate=s.rotate,
