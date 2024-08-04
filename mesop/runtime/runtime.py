@@ -148,7 +148,7 @@ Try one of the following paths:
   def check_register_web_component_is_valid(self) -> None:
     if self._has_served_traffic:
       raise MesopDeveloperException(
-        "Cannot register a JS module after traffic has been served. You must define all web components upon server startup before any traffic has been served. This prevents security issues."
+        "Cannot register a web component after traffic has been served. You must define all web components upon server startup before any traffic has been served. This prevents security issues."
       )
 
   def get_component_fns(self) -> set[Callable[..., Any]]:
