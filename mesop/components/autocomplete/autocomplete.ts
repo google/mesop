@@ -43,9 +43,8 @@ export class AutocompleteComponent implements OnInit {
   @Input() key!: Key;
   @Input() style!: Style;
   private _config!: AutocompleteType;
-  filteredOptions: Observable<AutocompleteOptionSet[]> = new Observable<
-    AutocompleteOptionSet[]
-  >();
+  filteredOptions: Observable<readonly AutocompleteOptionSet[]> =
+    new Observable<readonly AutocompleteOptionSet[]>();
   private inputSubject = new Subject<Event>();
   autocompleteControl = new FormControl('');
   constructor(private readonly channel: Channel) {
@@ -144,8 +143,8 @@ export class AutocompleteComponent implements OnInit {
    */
   private _filter(
     value: string,
-    options: AutocompleteOptionSet[],
-  ): AutocompleteOptionSet[] {
+    options: readonly AutocompleteOptionSet[],
+  ): readonly AutocompleteOptionSet[] {
     if (!value) {
       return options;
     }
