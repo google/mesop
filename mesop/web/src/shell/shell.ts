@@ -92,18 +92,9 @@ export class Shell {
           // Import all JS modules concurrently
           await Promise.all(
             jsModules.map((modulePath) =>
-              import(modulePath)
-                .then(() =>
-                  console.debug(
-                    `Successfully imported JS module: ${modulePath}`,
-                  ),
-                )
-                .catch((error) =>
-                  console.error(
-                    `Failed to import JS module: ${modulePath}`,
-                    error,
-                  ),
-                ),
+              import(modulePath).then(() =>
+                console.debug(`Successfully imported JS module: ${modulePath}`),
+              ),
             ),
           ).then(() => {
             console.debug('All JS modules imported');
