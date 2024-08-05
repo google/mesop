@@ -6,7 +6,7 @@ One of the most common issues when using web components is that you will need to
 
 If you use the `mesop` command-line tool to run your app, you will see a detailed error message printed like this that will tell you how to fix the error:
 
-<img src="/assets/csp-message.webp">
+<img src="../../assets/csp-message.webp">
 
 If you are using Colab or another tool to run your Mesop app, and you can't see the terminal messages, then you can use your browser developer tools to view the console error messages.
 
