@@ -8,6 +8,11 @@ import mesop.labs as mel
 
 @me.page(
   path="/simple_slot_app",
+  security_policy=me.SecurityPolicy(
+    allowed_script_srcs=[
+      "https://cdn.jsdelivr.net",
+    ]
+  ),
 )
 def page():
   with outer_component(
