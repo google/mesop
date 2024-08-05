@@ -71,10 +71,9 @@ def dialog(is_open: bool):
   ):
     with me.box(
       style=me.Style(
-        align_items="center",
+        place_items="center",
         display="grid",
         height="100vh",
-        justify_items="center",
       )
     ):
       with me.box(

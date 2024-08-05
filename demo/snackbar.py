@@ -125,9 +125,9 @@ def snackbar(
   The on_click_action should typically close the snackbar as part of its actions. If no
   click event is included, you'll need to manually hide the snackbar.
 
-  Note that there is one issue with this snackbar example. No actions are possible until
-  the snackbar is dismissed or closed. This is due to the fixed box that gets created when
-  the snackbar is visible.
+  Note that there is one issue with this snackbar example. No actions are possible when
+  using "time.sleep and yield" to imitate a status message that fades away after a
+  period of time.
 
   Args:
     is_visible: Whether the snackbar is currently visible or not.
@@ -144,6 +144,7 @@ def snackbar(
       overflow_x="auto",
       overflow_y="auto",
       position="fixed",
+      pointer_events="none",
       width="100%",
       z_index=1000,
     )
@@ -171,6 +172,7 @@ def snackbar(
           padding=me.Padding(top=5, bottom=5, right=5, left=15)
           if action_label
           else me.Padding.all(15),
+          pointer_events="auto",
           width=300,
         )
       ):
