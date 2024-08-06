@@ -21,6 +21,7 @@ from mesop.examples import grid as grid
 from mesop.examples import index as index
 from mesop.examples import integrations as integrations
 from mesop.examples import many_checkboxes as many_checkboxes
+from mesop.examples import navigate_absolute as navigate_absolute
 from mesop.examples import navigate_advanced as navigate_advanced
 from mesop.examples import nested as nested
 from mesop.examples import on_load as on_load

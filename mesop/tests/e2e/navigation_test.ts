@@ -29,3 +29,33 @@ test('navigation inside generator handler function', async ({page}) => {
   // Check the text has changed which means navigation succeeded.
   expect(await page.getByText('page2').textContent()).toEqual('page2');
 });
+
+test('navigation absolute - https', async ({page}) => {
+  await page.goto('/navigate_absolute');
+
+  // Trigger a navigation.
+  await page.getByRole('button', {name: 'navigate https', exact: true}).click();
+
+  // Wait for navigation to complete
+  await expect(page).toHaveURL('https://www.google.com/');
+});
+
+test('navigation absolute - http', async ({page}) => {
+  await page.goto('/navigate_absolute');
+
+  // Trigger a navigation.
+  await page.getByRole('button', {name: 'navigate http', exact: true}).click();
+
+  // Wait for navigation to complete
+  await expect(page).toHaveURL('http://example.com/');
+});
+
+test('navigation yield', async ({page}) => {
+  await page.goto('/navigate_absolute');
+
+  // Trigger a navigation.
+  await page.getByRole('button', {name: 'navigate yield', exact: true}).click();
+
+  // Wait for navigation to complete
+  await expect(page).toHaveURL('https://www.google.com/');
+});
