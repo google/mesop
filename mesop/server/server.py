@@ -178,6 +178,10 @@ def configure_flask_app(
             )
           for command in runtime().context().commands():
             if command.HasField("navigate"):
+              if command.navigate.url.startswith(("http://", "https://")):
+                yield from render_loop(path=path)
+                yield STREAM_END
+                return
               path = command.navigate.url
               page_config = runtime().get_page_config(path=path)
               if (
