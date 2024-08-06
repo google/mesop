@@ -28,6 +28,14 @@ This example builds off the previous Loading example and makes our event handler
 --8<-- "mesop/examples/docs/streaming.py"
 ```
 
+## Async
+
+If you want to do multiple long-running operations concurrently, then we recommend you to use Python's `async` and `await`.
+
+```python
+--8<-- "mesop/examples/async_await.py"
+```
+
 ## Troubleshooting
 
 ### User input race condition
