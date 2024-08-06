@@ -18,6 +18,7 @@ import {SSE} from '../utils/sse';
 import {applyComponentDiff, applyStateDiff} from '../utils/diff';
 import {getViewportSize} from '../utils/viewport_size';
 import {ThemeService} from './theme_service';
+import {getQueryParams} from '../utils/query_params';
 
 // Pick 500ms as the minimum duration before showing a progress/busy indicator
 // for the channel.
@@ -239,8 +240,6 @@ export class Channel {
   }
 
   dispatch(userEvent: UserEvent) {
-    userEvent.setViewportSize(getViewportSize());
-    userEvent.setThemeSettings(this.themeService.getThemeSettings());
     // Every user event should have an event handler,
     // except for the ones below:
     if (
@@ -258,6 +257,12 @@ export class Channel {
       } else {
         userEvent.setStates(this.states);
       }
+      // Make sure we compute these properties right before the user
+      // event is dispatched, otherwise this can cause a weird
+      // race condition.
+      userEvent.setViewportSize(getViewportSize());
+      userEvent.setThemeSettings(this.themeService.getThemeSettings());
+      userEvent.setQueryParamsList(getQueryParams());
 
       const request = new UiRequest();
       request.setUserEvent(userEvent);
@@ -319,6 +324,7 @@ export class Channel {
     const navigationEvent = new NavigationEvent();
     userEvent.setViewportSize(getViewportSize());
     userEvent.setNavigation(navigationEvent);
+    userEvent.setQueryParamsList(getQueryParams());
     request.setUserEvent(userEvent);
     this.init(this.initParams, request);
   }

@@ -75,11 +75,13 @@ nav:
           - Plot: components/plot.md
   - API:
       - Page: api/page.md
+      - URLs & Navigation:
+          - Navigate: api/commands/navigate.md
+          - Query params: api/query_params.md
       - UI Customization:
           - Style: api/style.md
           - Viewport Size: api/viewport-size.md
       - Commands:
-          - Navigate: api/commands/navigate.md
           - Scroll into view: api/commands/scroll-into-view.md
           - Focus component: api/commands/focus-component.md
       - Config: api/config.md

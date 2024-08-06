@@ -15,9 +15,16 @@ message UiRequest {
 message InitRequest {
     optional ViewportSize viewport_size = 1;
     optional ThemeSettings theme_settings = 2;
+    repeated QueryParam query_params = 3;
 }
 
-// Next ID: 15
+message QueryParam {
+    optional string key = 1;
+    // Note: a query param can be repeated, which is why it can have multiple values.
+    repeated string values = 2;
+}
+
+// Next ID: 16
 message UserEvent {
     optional States states = 1;
 
@@ -28,6 +35,7 @@ message UserEvent {
 
     optional ViewportSize viewport_size = 11;
     optional ThemeSettings theme_settings = 13;
+    repeated QueryParam query_params = 15;
 
     oneof type {
         bool bool_value = 4;
@@ -151,6 +159,7 @@ message UpdateStateEvent {
 message Command {
     oneof command {
         NavigateCommand navigate = 1;
+        UpdateQueryParam update_query_param = 6;
         ScrollIntoViewCommand scroll_into_view = 2;
         SetThemeMode set_theme_mode = 3;
         SetThemeDensity set_theme_density = 4;
@@ -161,6 +170,12 @@ message Command {
 message NavigateCommand {
     // absolute route path, e.g. "/foo/bar"
     optional string url = 1;
+
+    repeated QueryParam query_params = 2;
+}
+
+message UpdateQueryParam {
+    optional QueryParam query_param = 1;
 }
 
 message ScrollIntoViewCommand {

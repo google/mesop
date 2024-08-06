@@ -14,6 +14,7 @@ from mesop.exceptions import format_traceback
 from mesop.runtime import runtime
 from mesop.server.config import app_config
 from mesop.server.constants import WEB_COMPONENTS_PATH_SEGMENT
+from mesop.utils.url_utils import remove_url_query_param
 from mesop.warn import warn
 
 LOCALHOSTS = (
@@ -119,6 +120,9 @@ def configure_flask_app(
       if ui_request.HasField("init"):
         runtime().context().set_theme_settings(ui_request.init.theme_settings)
         runtime().context().set_viewport_size(ui_request.init.viewport_size)
+        runtime().context().initialize_query_params(
+          ui_request.init.query_params
+        )
         page_config = runtime().get_page_config(path=ui_request.path)
         if page_config and page_config.on_load:
           result = page_config.on_load(
@@ -143,6 +147,7 @@ def configure_flask_app(
         event = ui_request.user_event
         runtime().context().set_theme_settings(event.theme_settings)
         runtime().context().set_viewport_size(event.viewport_size)
+        runtime().context().initialize_query_params(event.query_params)
 
         if event.states.states:
           runtime().context().update_state(event.states)
@@ -178,11 +183,14 @@ def configure_flask_app(
             )
           for command in runtime().context().commands():
             if command.HasField("navigate"):
+              runtime().context().initialize_query_params(
+                command.navigate.query_params
+              )
               if command.navigate.url.startswith(("http://", "https://")):
                 yield from render_loop(path=path)
                 yield STREAM_END
                 return
-              path = command.navigate.url
+              path = remove_url_query_param(command.navigate.url)
               page_config = runtime().get_page_config(path=path)
               if (
                 page_config

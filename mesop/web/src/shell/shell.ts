@@ -18,6 +18,7 @@ import {
   UiRequest,
   InitRequest,
   ThemeMode,
+  QueryParam,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 import {CommonModule} from '@angular/common';
 import {
@@ -37,6 +38,8 @@ import {createCustomElement} from '@angular/elements';
 import {Subject} from 'rxjs';
 import {debounceTime} from 'rxjs/operators';
 import {ThemeService} from '../services/theme_service';
+import {getQueryParams} from '../utils/query_params';
+import {query} from '@angular/animations';
 
 @Component({
   selector: 'mesop-shell',
@@ -84,6 +87,7 @@ export class Shell {
     const initRequest = new InitRequest();
     initRequest.setViewportSize(getViewportSize());
     initRequest.setThemeSettings(this.themeService.getThemeSettings());
+    initRequest.setQueryParamsList(getQueryParams());
     request.setInit(initRequest);
     this.channel.init(
       {
@@ -200,6 +204,10 @@ export class Shell {
               throw new Error('Density undefined in setThemeDensity command');
             }
             this.themeService.setDensity(density);
+          } else if (command.hasUpdateQueryParam()) {
+            updateUrlFromQueryParam(
+              command.getUpdateQueryParam()!.getQueryParam()!,
+            );
           } else {
             throw new Error(
               'Unhandled command: ' + command.getCommandCase().toString(),
@@ -263,4 +271,17 @@ export function registerComponentRendererElement(app: ApplicationRef) {
     COMPONENT_RENDERER_ELEMENT_NAME,
     ComponentRendererElement,
   );
+}
+
+function updateUrlFromQueryParam(queryParam: QueryParam) {
+  const key = queryParam.getKey()!;
+  const values = queryParam.getValuesList();
+  const url = new URL(window.location.href);
+  url.searchParams.delete(key);
+
+  for (const value of values) {
+    url.searchParams.append(key, value);
+  }
+
+  window.history.replaceState({}, '', url.toString());
 }

@@ -28,6 +28,7 @@ from mesop.examples import on_load as on_load
 from mesop.examples import on_load_generator as on_load_generator
 from mesop.examples import playground as playground
 from mesop.examples import playground_critic as playground_critic
+from mesop.examples import query_params as query_params
 from mesop.examples import readme_app as readme_app
 from mesop.examples import scroll_into_view as scroll_into_view
 from mesop.examples import starter_kit as starter_kit
