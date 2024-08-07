@@ -31,6 +31,10 @@ import {Shell, registerComponentRendererElement} from '../shell/shell';
 import {EditorService, SelectionMode} from '../services/editor_service';
 import {Channel} from '../services/channel';
 import {isMac} from '../utils/platform';
+import {
+  DebugErrorDialogService,
+  ErrorDialogService,
+} from '../services/error_dialog_service';
 // Keep the following comment to ensure there's a hook for adding TS imports in the downstream sync.
 // ADD_TS_IMPORT_HERE
 
@@ -260,6 +264,7 @@ export async function bootstrapApp() {
       provideAnimations(),
       provideRouter(routes),
       {provide: EditorService, useClass: EditorServiceImpl},
+      {provide: ErrorDialogService, useClass: DebugErrorDialogService},
     ],
   });
   registerComponentRendererElement(app);

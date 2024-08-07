@@ -6,10 +6,18 @@ import {
   MatDialogModule,
 } from '@angular/material/dialog';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class ErrorDialogService {
+export abstract class ErrorDialogService {
+  abstract showError(error: any): void;
+}
+
+export class ProdErrorDialogService implements ErrorDialogService {
+  showError(error: any): void {
+    console.error(error);
+  }
+}
+
+@Injectable()
+export class DebugErrorDialogService implements ErrorDialogService {
   constructor(private dialog: MatDialog) {}
 
   showError(error: any): void {
