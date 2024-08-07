@@ -13,7 +13,11 @@ test('theme density', async ({page}) => {
   await page.locator('div').filter({hasText: 'Density-'}).first().click();
   // Select -3 option:
   await page.getByRole('option', {name: '-3'}).click();
-  expect(await page.evaluate(hasThemeDensity, -1)).toEqual(false);
+
+  await expect(async () => {
+    const result = await page.evaluate(hasThemeDensity, -1);
+    expect(result).toEqual(false);
+  }).toPass({timeout: 5000});
   expect(await page.evaluate(hasThemeDensity, -3)).toEqual(true);
 });
 
