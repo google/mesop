@@ -206,7 +206,7 @@ export class ComponentRenderer {
     for (const key of Object.keys(properties)) {
       const value = (properties as any)[key];
       // We should have checked this in Python, but just in case
-      // we will check the attribute name right before using it.
+      // we will check the property name right before using it.
       checkPropertyNameIsSafe(key);
       (customElement as any)[key] = value;
     }
@@ -214,7 +214,7 @@ export class ComponentRenderer {
     const events = jsonParse(webComponentType.getEventsJson()!) as object;
     for (const event of Object.keys(events)) {
       // We should have checked this in Python, but just in case
-      // we will check the attribute name right before using it.
+      // we will check the property name right before using it.
       checkPropertyNameIsSafe(event);
       customElement.setAttribute(event, (events as any)[event]);
     }
