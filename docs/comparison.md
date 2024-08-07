@@ -38,7 +38,7 @@ Streamlit has a more established ecosystem of community-developed components, wh
 
 Gradio and Mesop both enable rapid ML/AI app development but with different approaches.
 
-Gradio has a strong focus on creating demos and interfaces for machine learning models and makes it easy to build a UI for a model. Gradio also offers a lower-level abstraction known as Blocks for more general web applications. 
+Gradio has a strong focus on creating demos and interfaces for machine learning models and makes it easy to build a UI for a model. Gradio also offers a lower-level abstraction known as [Blocks](https://www.gradio.app/docs/gradio/blocks) for more general web applications.
 
 Mesop, while well-suited for ML/AI use cases, is a more general-purpose framework that can be used for a wider range of web applications.
 
