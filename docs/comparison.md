@@ -30,7 +30,7 @@ Both Streamlit and Mesop offer a range of standard components (e.g., forms, tabl
 
 Streamlit supports [custom components](https://docs.streamlit.io/develop/concepts/custom-components/intro) rendered in iframes for isolation. It offers first-class support for React components and can accommodate other frameworks through a framework-agnostic template.
 
-Mesop enables creating custom [web components](./web_components/index.md) based on open web standards, facilitating interoperability with components from different frameworks like Lit. Mesop web components are rendered in the same frame as the rest of the Mesop app which provides more flexibility but less isolation.
+Mesop enables creating custom [web components](./web-components/index.md) based on open web standards, facilitating interoperability with components from different frameworks like Lit. Mesop web components are rendered in the same frame as the rest of the Mesop app which provides more flexibility but less isolation.
 
 Streamlit has a more established ecosystem of community-developed components, while Mesop's community and component ecosystem are still developing.
 
@@ -46,7 +46,7 @@ Mesop, while well-suited for ML/AI use cases, is a more general-purpose framewor
 
 Gradio provides a set of pre-built components optimized for common ML inputs and outputs (e.g. image classification, text generation). This makes it fast to set up standard model interfaces. In addition to built-in components, you can create [custom components](https://www.gradio.app/guides/custom-components-in-five-minutes) in Python and JavaScript (Svelte).
 
-Mesop provides general-purpose UI components, which can be used for a variety of layout and UI designs. Higher-level components like the [chat](./components/chat.md) component are [built](https://github.com/google/mesop/blob/main/mesop/labs/chat.py) on top of these low-level UI components. This makes it better suited for building custom interfaces, such as the [demo gallery](./demo.md). Mesop also supports creating custom [web components](./web_components/index.md) based on open web standards, facilitating interoperability with components from different frameworks.
+Mesop provides general-purpose UI components, which can be used for a variety of layout and UI designs. Higher-level components like the [chat](./components/chat.md) component are [built](https://github.com/google/mesop/blob/main/mesop/labs/chat.py) on top of these low-level UI components. This makes it better suited for building custom interfaces, such as the [demo gallery](./demo.md). Mesop also supports creating custom [web components](./web-components/index.md) based on open web standards, facilitating interoperability with components from different frameworks.
 
 ### Styling and Customization
 
@@ -58,7 +58,7 @@ Mesop offers a statically typed [Style](./api/style.md) API for CSS properties. 
 
 Gradio uses an imperative approach to [state management](https://www.gradio.app/guides/state-in-blocks), coupling state with component updates. State is typically managed through function parameters and return values, which can be straightforward for simple interfaces but may become complex as applications grow.
 
-Mesop adopts a declarative [state management](guides/state_management.md) approach, separating state updates from UI rendering. It uses dataclasses for state, providing type-safety and structure for complex states. This separation allows for more granular control over UI updates but may have a steeper learning curve for beginners.
+Mesop adopts a declarative [state management](guides/state-management.md) approach, separating state updates from UI rendering. It uses dataclasses for state, providing type-safety and structure for complex states. This separation allows for more granular control over UI updates but may have a steeper learning curve for beginners.
 
 ### Deployment
 
