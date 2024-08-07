@@ -216,7 +216,7 @@ export class ComponentRenderer {
       // We should have checked this in Python, but just in case
       // we will check the property name right before using it.
       checkPropertyNameIsSafe(event);
-      customElement.setAttribute(event, (events as any)[event]);
+      (customElement as any)[event] = (events as any)[event];
     }
     // Always try to remove the event listener since we will attach the event listener
     // next. If the event listener wasn't already attached, then removeEventListener is
