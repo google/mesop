@@ -299,12 +299,54 @@ a.secondary-button:hover {
     var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
-.main-demo-iframe {
-  margin-top: 24px;
+.main-demo-iframe-container {
+  position: relative;
   width: 80%;
+  margin-top: 24px;
+}
+
+.main-demo-iframe {
+  width: 100%;
   border-radius: 8px;
   height: 500px;
   border: 0;
+}
+
+.main-demo-iframe-container .embed-overlay {
+  position: absolute;
+  top: 8px;
+  right: 48px;
+}
+
+.main-demo-iframe-container .open-button {
+  background-color: var(--primary-button-background-color);
+  color: white;
+  padding: 12px 16px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.main-demo-iframe-container .open-button:hover {
+  background-color: var(--primary-button-background-color-hover);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.main-demo-iframe-container .open-button svg {
+  width: 24px;
+  height: 24px;
+  transition: transform 0.3s ease;
+}
+
+.main-demo-iframe-container .open-button:hover svg {
+  transform: translateX(2px);
 }
 
 .chat-inputs-iframe {
