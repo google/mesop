@@ -86,7 +86,8 @@ nav:
           - Focus component: api/commands/focus-component.md
       - Config: api/config.md
   - FAQ: faq.md
-  - Demo Gallery 🔗: demo.md
+  - Demo 🌐: demo.md
+  - Showcase 🌐: showcase.md
   - Blog:
       - blog/index.md
   - Contributing:
