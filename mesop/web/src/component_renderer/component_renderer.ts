@@ -212,7 +212,7 @@ export class ComponentRenderer {
         // We should have checked this in Python, but just in case
         // we will check the attribute name right before using it.
         checkAttributeNameIsSafe(key);
-        customElement.setAttribute(key, (properties as any)[key]);
+        (customElement as any)[key] = (properties as any)[key];
       }
     }
 

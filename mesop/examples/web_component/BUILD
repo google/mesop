@@ -11,6 +11,7 @@ py_library(
     deps = [
         "//mesop",
         "//mesop/examples/web_component/code_mirror_editor",
+        "//mesop/examples/web_component/complex_props",
         "//mesop/examples/web_component/copy_to_clipboard",
         "//mesop/examples/web_component/custom_font_csp_repro",
         "//mesop/examples/web_component/firebase_auth",
