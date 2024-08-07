@@ -43,19 +43,34 @@ hide:
   </div>
   <div class="header-buttons">
     <a class="primary-button" href="./getting-started/installing">Get started</a>
-    <a class="secondary-button" href="./demo">View examples</a>
+    <a class="secondary-button" href="./showcase">View showcase</a>
   </div>
 </header>
 
 <section style="padding: 72px 0">
   <div class="center column">
     <div class="section-headline">
-      Make your AI chat app in minutes
+      Create your AI chat app in minutes
     </div>
-    <iframe src="https://google.github.io/mesop/demo/?demo=embed/chat" class="main-demo-iframe box-shadow"></iframe>
+    <div class="main-demo-iframe-container">
+      <iframe src="https://google.github.io/mesop/demo/?demo=embed/chat" class="main-demo-iframe box-shadow"></iframe>
+      <div class="embed-overlay">
+          <button class="open-button" onclick="openDemoGalleryInNewTab()">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+              Open in new tab
+          </button>
+      </div>
+    </div>
   </div>
 </section>
 
+<script>
+function openDemoGalleryInNewTab() {
+  window.open('https://google.github.io/mesop/demo/', '_blank');
+}
+</script>
 <section class="container">
   <div class="section-chip teal">Python-native</div>
   <div class="section-headline">
