@@ -205,22 +205,17 @@ export class ComponentRenderer {
     ) as object;
     for (const key of Object.keys(properties)) {
       const value = (properties as any)[key];
-      // Explicitly don't set attribute for boolean attribute.
-      // If you set any value to a boolean attribute, it will be treated as enabled.
-      // Source: https://lit.dev/docs/components/properties/#boolean-attributes
-      if (value !== false) {
-        // We should have checked this in Python, but just in case
-        // we will check the attribute name right before using it.
-        checkAttributeNameIsSafe(key);
-        (customElement as any)[key] = (properties as any)[key];
-      }
+      // We should have checked this in Python, but just in case
+      // we will check the attribute name right before using it.
+      checkPropertyNameIsSafe(key);
+      (customElement as any)[key] = value;
     }
 
     const events = jsonParse(webComponentType.getEventsJson()!) as object;
     for (const event of Object.keys(events)) {
       // We should have checked this in Python, but just in case
       // we will check the attribute name right before using it.
-      checkAttributeNameIsSafe(event);
+      checkPropertyNameIsSafe(event);
       customElement.setAttribute(event, (events as any)[event]);
     }
     // Always try to remove the event listener since we will attach the event listener
@@ -469,13 +464,13 @@ function isRegularComponent(component: ComponentProto) {
 }
 
 // Note: the logic here should be kept in sync with
-// helper.py's check_attribute_keys_is_safe
-export function checkAttributeNameIsSafe(attribute: string) {
-  const normalizedAttribute = attribute.toLowerCase();
+// helper.py's check_property_keys_is_safe
+export function checkPropertyNameIsSafe(propertyName: string) {
+  const normalizedName = propertyName.toLowerCase();
   if (
-    ['src', 'srcdoc'].includes(normalizedAttribute) ||
-    normalizedAttribute.startsWith('on')
+    ['src', 'srcdoc'].includes(normalizedName) ||
+    normalizedName.startsWith('on')
   ) {
-    throw new Error(`Unsafe attribute name '${attribute}' cannot be used.`);
+    throw new Error(`Unsafe property name '${propertyName}' cannot be used.`);
   }
 }

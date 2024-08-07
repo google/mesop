@@ -265,8 +265,8 @@ def insert_web_component(
     events = dict()
   if properties is None:
     properties = dict()
-  check_attribute_keys_is_safe(events.keys())
-  check_attribute_keys_is_safe(properties.keys())
+  check_property_keys_is_safe(events.keys())
+  check_property_keys_is_safe(properties.keys())
   event_to_ids: dict[str, str] = {}
   for event in events:
     event_handler = events[event]
@@ -288,7 +288,7 @@ def insert_web_component(
 #
 # We check here in Python to provide a better error message and
 # developer experience.
-def check_attribute_keys_is_safe(keys: KeysView[str]):
+def check_property_keys_is_safe(keys: KeysView[str]):
   """
   Follow web security best practices by ensuring dangerous attributes
   aren't used by raising an exception.
