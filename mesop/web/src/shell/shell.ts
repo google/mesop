@@ -40,6 +40,10 @@ import {debounceTime} from 'rxjs/operators';
 import {ThemeService} from '../services/theme_service';
 import {getQueryParams} from '../utils/query_params';
 import {query} from '@angular/animations';
+import {
+  ErrorDialogService,
+  ProdErrorDialogService,
+} from '../services/error_dialog_service';
 
 @Component({
   selector: 'mesop-shell',
@@ -258,7 +262,12 @@ class MesopApp {}
 
 export async function bootstrapApp() {
   const app = await bootstrapApplication(MesopApp, {
-    providers: [provideAnimations(), provideRouter(routes), EditorService],
+    providers: [
+      provideAnimations(),
+      provideRouter(routes),
+      EditorService,
+      {provide: ErrorDialogService, useClass: ProdErrorDialogService},
+    ],
   });
   registerComponentRendererElement(app);
 }
