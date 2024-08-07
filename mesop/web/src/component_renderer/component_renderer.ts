@@ -40,6 +40,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {TemplatePortal} from '@angular/cdk/portal';
 import {jsonParse} from '../utils/strict_types';
 import {MESOP_EVENT_NAME, MesopEvent} from './mesop_event';
+import {ErrorDialogService} from '../services/error_dialog_service';
 
 export const COMPONENT_RENDERER_ELEMENT_NAME = 'component-renderer-element';
 
@@ -84,6 +85,7 @@ export class ComponentRenderer {
     private elementRef: ElementRef,
     private overlay: Overlay,
     private viewContainerRef: ViewContainerRef,
+    private errorDialogService: ErrorDialogService,
   ) {
     this.isEditorMode = this.editorService.isEditorMode();
   }
@@ -303,6 +305,17 @@ export class ComponentRenderer {
       const customElementName = typeName
         .getFnName()!
         .slice(WEB_COMPONENT_PREFIX.length);
+
+      // Check if the custom element is already defined
+      if (!customElements.get(customElementName)) {
+        const error = new Error(
+          `Expected web component '${customElementName}' to be registered by the JS module.
+
+Make sure the web component name is spelled the same between Python and JavaScript.`,
+        );
+        this.errorDialogService.showError(error);
+      }
+
       this.customElement = document.createElement(customElementName);
       this.updateCustomElement(this.customElement);
 
