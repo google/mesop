@@ -149,7 +149,10 @@ def toggle_menu_button(e: me.ClickEvent):
   title="Mesop Showcase",
   on_load=on_load,
   security_policy=me.SecurityPolicy(
-    allowed_iframe_parents=["https://huggingface.co"],
+    allowed_iframe_parents=[
+      "https://huggingface.co",
+      "https://google.github.io",
+    ],
   ),
 )
 def page():
