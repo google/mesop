@@ -145,6 +145,10 @@ def toggle_menu_button(e: me.ClickEvent):
   s.sidenav_menu_open = not s.sidenav_menu_open
 
 
+def is_mobile():
+  return me.viewport_size().width < 640
+
+
 @me.page(
   title="Mesop Showcase",
   on_load=on_load,
@@ -154,17 +158,22 @@ def toggle_menu_button(e: me.ClickEvent):
 )
 def page():
   with me.box(style=me.Style(display="flex", height="100%")):
-    if me.viewport_size().width > 640:
-      sidenav()
-    else:
+    if is_mobile():
       with me.content_button(
         type="icon",
-        style=me.Style(top=4, left=4),
+        style=me.Style(top=6, left=8, position="absolute", z_index=9),
         on_click=toggle_menu_button,
       ):
         me.icon("menu")
-      with me.sidenav(opened=me.state(State).sidenav_menu_open):
+      with me.sidenav(
+        opened=me.state(State).sidenav_menu_open,
+        style=me.Style(
+          background=me.theme_var("surface-container-low"),
+        ),
+      ):
         sidenav()
+    else:
+      sidenav()
     with me.box(
       style=me.Style(
         background=me.theme_var("surface-container-low"),
@@ -175,18 +184,21 @@ def page():
     ):
       with me.box(
         style=me.Style(
-          height=80,
+          height=240,
           width="100%",
           padding=me.Padding.all(16),
+          display="flex",
+          align_items="center",
         ),
       ):
         me.text(
           "Mesop Showcase",
           style=me.Style(
             color=me.theme_var("on-background"),
-            font_size=18,
+            font_size=22,
             font_weight=500,
             letter_spacing="0.8px",
+            padding=me.Padding(left=36) if is_mobile() else None,
           ),
         )
 
@@ -280,7 +292,7 @@ def sidenav():
   ):
     with me.box(
       style=me.Style(
-        display="flex", flex_direction="column", margin=me.Margin(top=32)
+        display="flex", flex_direction="column", margin=me.Margin(top=48)
       )
     ):
       with me.content_button(
@@ -346,6 +358,20 @@ def sidenav():
           with me.content_button(type="icon"):
             me.icon(section.icon)
           me.text(section.name)
+      with me.box(
+        style=me.Style(
+          display="flex",
+          align_items="center",
+          cursor="pointer",
+          padding=me.Padding(top=16),
+        ),
+        on_click=lambda e: me.navigate(
+          "https://github.com/google/mesop/issues/new/choose"
+        ),
+      ):
+        with me.content_button(type="icon"):
+          me.icon("add_circle")
+        me.text("Submit your showcase")
 
 
 def card(resource: Resource):
