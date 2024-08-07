@@ -6,7 +6,7 @@ describe('component renderer', () => {
       const unsafeKeys = ['src', 'SRC', 'srcdoc', 'on', 'On', 'ON', 'onClick'];
       unsafeKeys.forEach((key) => {
         expect(() => checkPropertyNameIsSafe(key)).toThrowError(
-          `Unsafe attribute name '${key}' cannot be used.`,
+          `Unsafe property name '${key}' cannot be used.`,
         );
       });
     });
