@@ -22,6 +22,7 @@ class CounterComponent extends LitElement {
         <button id="decrement-btn" @click="${this._onDecrement}">
           Decrement
         </button>
+        <input type="text" />
       </div>
     `;
   }
