@@ -10,6 +10,10 @@ from mesop.examples.web_component.slot.outer_component import (
 )
 
 
+def on_add_checkbox_slot(e: me.ClickEvent):
+  me.state(State).checkbox_slot = True
+
+
 @me.page(
   path="/web_component/slot/slot_app",
   security_policy=me.SecurityPolicy(
@@ -19,6 +23,8 @@ from mesop.examples.web_component.slot.outer_component import (
   ),
 )
 def page():
+  s = me.state(State)
+  me.button("add checkbox slot", on_click=on_add_checkbox_slot)
   with outer_component(
     value=me.state(State).value,
     on_increment=on_increment,
@@ -27,18 +33,22 @@ def page():
       me.text(
         "You can use built-in components inside the slot of a web component."
       )
-      #
-      me.checkbox(
-        # Need to set |checked| because of https://github.com/google/mesop/issues/449
-        checked=me.state(State).checked,
-        label="Checked?",
-        on_change=on_checked,
-      )
+      if s.checkbox_slot:
+        me.checkbox(
+          label="Checked?",
+          on_change=on_checked,
+        )
+      me.input(key="input", label="input slot", on_input=on_input)
       counter_component(
+        key="counter",
         value=me.state(State).value,
         on_decrement=on_decrement,
       )
   me.text(f"Checked? {me.state(State).checked}")
+
+
+def on_input(e: me.InputEvent):
+  me.state(State).input = e.value
 
 
 def on_checked(e: me.CheckboxChangeEvent):
@@ -47,6 +57,8 @@ def on_checked(e: me.CheckboxChangeEvent):
 
 @me.stateclass
 class State:
+  checkbox_slot: bool = False
+  input: str
   checked: bool
   value: int = 10
 

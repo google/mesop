@@ -19,7 +19,7 @@ class OuterComponent extends LitElement {
   render() {
     return html`
       <div class="container">
-        <span>Value: ${this.value}</span>
+        <span id="outer-value">Value: ${this.value}</span>
         <button id="increment-btn" @click="${this._onIncrement}">
           increment
         </button>

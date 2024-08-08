@@ -159,28 +159,11 @@ export class ComponentRenderer {
 
   ngOnChanges() {
     if (this.customElement) {
-      // This is a naive way to apply changes by removing all the children
-      // and creating new children. In the future, this can be optimized
-      // to be more performant, but this naive approach should have the
-      // correct behavior, albeit inefficiently.
-      // See: https://github.com/google/mesop/issues/449
-
-      // Clear existing children
-      for (const element of Array.from(
-        this.customElement.querySelectorAll(COMPONENT_RENDERER_ELEMENT_NAME),
-      )) {
-        this.customElement.removeChild(element);
-      }
-
-      // Update the custom element and its children
+      // Update the custom element properties and events
       this.updateCustomElement(this.customElement);
-      for (const child of this.component.getChildrenList()) {
-        const childElement = document.createElement(
-          COMPONENT_RENDERER_ELEMENT_NAME,
-        );
-        (childElement as any)['component'] = child;
-        this.customElement.appendChild(childElement);
-      }
+
+      // Efficiently update children
+      this.updateCustomElementChildren();
       return;
     }
     if (isRegularComponent(this.component)) {
@@ -230,6 +213,34 @@ export class ComponentRenderer {
         MESOP_EVENT_NAME,
         this.dispatchCustomUserEvent,
       );
+    }
+  }
+
+  private updateCustomElementChildren() {
+    const existingChildren = Array.from(
+      this.customElement!.querySelectorAll(COMPONENT_RENDERER_ELEMENT_NAME),
+    );
+    const newChildren = this.component.getChildrenList();
+
+    // Update or add children
+    for (let i = 0; i < newChildren.length; i++) {
+      const child = newChildren[i];
+      if (i < existingChildren.length) {
+        // Update existing child
+        (existingChildren[i] as any)['component'] = child;
+      } else {
+        // Add new child
+        const childElement = document.createElement(
+          COMPONENT_RENDERER_ELEMENT_NAME,
+        );
+        (childElement as any)['component'] = child;
+        this.customElement!.appendChild(childElement);
+      }
+    }
+
+    // Remove excess children
+    for (let i = newChildren.length; i < existingChildren.length; i++) {
+      this.customElement!.removeChild(existingChildren[i]);
     }
   }
 
