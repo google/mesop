@@ -93,7 +93,7 @@ def buttons():
     me.button(fruit, key=fruit, on_click=on_click)
 
 def on_click(event: me.ClickEvent):
-  fruit = me.key
+  fruit = event.key
   print("fruit name", fruit)
 ```
 
@@ -114,7 +114,7 @@ def buttons():
     me.button(person.name, key=key, on_click=on_click)
 
 def on_click(event: me.ClickEvent):
-  person_dict = json.loads(me.key)
+  person_dict = json.loads(event.key)
   # modify this for more complex deserialization
   person = Person(**person_dict)
 ```
