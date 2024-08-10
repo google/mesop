@@ -7,7 +7,7 @@ __pycache__
 *.log
 
 # Do not save generated files
-/ai/gen/
+/ai/**/gen/
 /demo/screenshots/
 
 # Allow .env file to be loaded for Mesop development if it exists.
