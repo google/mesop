@@ -61,21 +61,23 @@ python docs_index.py
 
 ### UX
 
+- Scroll to specific part of text? DONE
 - Show code (syntax highlighting)
-- Split off sources which are not cited? YES
-- Renumber??
+- Don't show sources which are not cited? done
+- Renumber?? done
+- File GitHub issue if the response isn't good DONE
 
 ### APIs
 
-- Use Google embedding API?
+- Use Google embedding API? done
 
 ### Indexing
 
 - Index GitHub issues / discussions?
   - https://docs.llamaindex.ai/en/stable/examples/usecases/github_issue_analysis/
-- filter out blog posts? (the --- mark settings)
-- filter out internal docs, e.g. bazel commands
-- set title for all pages OR retrieve title by using mkdocs.yml??
+- DONE filter out blog posts? (the --- mark settings)
+- DONE filter out internal docs, e.g. bazel commands
+- DONE set title for all pages OR retrieve title by using mkdocs.yml??
 - Maybe load in the code snippets? Depends on whether that's a goal.
 
 ### Docs TODOs:

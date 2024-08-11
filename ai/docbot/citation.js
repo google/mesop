@@ -6,6 +6,12 @@ import {
 
 class CitationComponent extends LitElement {
   static styles = css`
+    a {
+      display: block;
+      text-decoration: none;
+      color: var(--sys-on-surface);
+    }
+
     .container {
       background: var(--sys-surface-container-high);
       border-radius: 12px;
@@ -27,15 +33,15 @@ class CitationComponent extends LitElement {
 
   render() {
     return html`
-      <div class="container" @click="${this._onClick}">
+      <a class="container" href="${this.url}" target="_blank">
         <slot></slot>
-      </div>
+      </a>
     `;
   }
 
   _onClick() {
-    console.log('clicked', this.url);
-    // TODO: send a message to the parent to open the url
+    window.open(this.url, '_blank');
+    console.log('open url', this.url);
   }
 }
 

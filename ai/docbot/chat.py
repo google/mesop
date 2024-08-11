@@ -1,5 +1,7 @@
+import random
 import re
 import time
+import urllib
 from dataclasses import dataclass, field
 from typing import Generator, Literal
 
@@ -8,21 +10,12 @@ from docs_index import ask
 import mesop as me
 import mesop.labs as mel
 
-# def ask(message: str):
-#   yield "Hello, world![1]"
-#   time.sleep(0.2)
-#   yield "\nAnd More[2]"
-#   time.sleep(0.2)
-#   yield """Citations:
-
-# 1. [Foo](https://foo.com)
-# 2. [Bar](https://bar.com)
-# 3. [Baz](https://baz.com)
-# """
-
 
 def on_load(e: me.LoadEvent):
   state = me.state(State)
+  state.examples = random.sample(EXAMPLES, 3)
+  if "prompt" in me.query_params:
+    state.initial_input = me.query_params["prompt"]
   me.set_theme_mode("system")
   yield
   me.focus_component(key=f"input-{len(state.output)}")
@@ -79,17 +72,12 @@ _STYLE_CHAT_BUBBLE_NAME = me.Style(
 )
 
 
-def _make_style_chat_ui_container(has_title: bool) -> me.Style:
-  """Generates styles for chat UI container depending on if there is a title or not.
-
-  Args:
-    has_title: Whether the Chat UI is display a title or not.
-  """
+def _make_style_chat_ui_container() -> me.Style:
   return me.Style(
     flex_grow=1,
     display="grid",
     grid_template_columns="repeat(1, 1fr)",
-    grid_template_rows="1fr 14fr 1fr" if has_title else "5fr 1fr",
+    grid_template_rows="5fr 1fr",
     margin=me.Margin.symmetric(vertical=0, horizontal="auto"),
     width="min(100%)",
     background=_COLOR_BACKGROUND,
@@ -122,14 +110,17 @@ class Citation:
   url: str = ""
   title: str = ""
   breadcrumbs: list[str] = field(default_factory=list)
+  content: str = ""
 
 
 @me.stateclass
 class State:
   input: str
+  initial_input: str
   output: list[ChatMessage]
   citations: list[Citation]
   in_progress: bool = False
+  examples: list[str]
 
 
 def on_blur(e: me.InputBlurEvent):
@@ -137,7 +128,43 @@ def on_blur(e: me.InputBlurEvent):
   state.input = e.value
 
 
+mesop_questions = [
+  "How do I test a Mesop application?",
+  "What components are available in Mesop?",
+  "How can I reset a text input field in Mesop?",
+  "Show me how to style a component in Mesop",
+  "Create a multi-page app using Mesop",
+  "Is it possible to create custom components in Mesop?",
+  "Implement authentication in a Mesop app",
+  "How do I call an API from a Mesop application?",
+  "What's the process for deploying a Mesop app?",
+  "Optimize performance in a Mesop application",
+  "Implement a datepicker in Mesop",
+  "Can I use JavaScript libraries with Mesop?",
+  "Implement real-time updates in a Mesop app",
+  "Stream UI updates from an LLM API in Mesop",
+  "Debug a Mesop application",
+  "Is Mesop ready for production use?",
+  "Implement form validation in Mesop",
+  "Create a mobile-friendly Mesop app",
+  "Handle asynchronous operations in Mesop",
+  "Implement dark mode in a Mesop application",
+  "Add keyboard shortcuts to a Mesop app",
+  "Implement drag and drop functionality in Mesop",
+  "Create an infinite scroll feature in Mesop",
+  "How to make a row of components in Mesop",
+  "Add tooltips to Mesop components",
+  "Render a pandas DataFrame in a Mesop app",
+  "Add charts to a Mesop application",
+  "Create a table component in Mesop",
+  "Handle file uploads in a Mesop app",
+  "Use command-line flags with a Mesop application",
+  "Create a clickable link in Mesop",
+  "Implement a download link in a Mesop app",
+]
+
 EXAMPLES = [
+  *mesop_questions,
   "How do I create a streaming chat UI?",
   "How do I install Mesop?",
   "How is Mesop different from other UI frameworks?",
@@ -180,11 +207,9 @@ def submit():
 
   for content in output_message:
     assistant_message.content += content
-    # TODO: 0.25 is an abitrary choice. In the future, consider making this adjustable.
-    if (time.time() - start_time) >= 0.25:
+
+    if (time.time() - start_time) >= 0.35:
       start_time = time.time()
-      print("transform_to_chunks")
-      # transform assistant message into chunks
       transform_to_chunks(assistant_message)
       yield
   transform_to_chunks(assistant_message)
@@ -195,6 +220,7 @@ def submit():
 
 # TODO: handle the case where [4,5]
 def transform_to_chunks(message: ChatMessage):
+  message.chunks = []
   # Split the message content into chunks based on citations
   chunks = re.split(r"(\[\d+(?:,\s*\d+)*\])", message.content)
   print("chunks'", chunks)
@@ -213,8 +239,6 @@ def transform_to_chunks(message: ChatMessage):
         current_citations.extend(citation_numbers)
       except Exception as e:
         print(f"Error: Unable to parse citation numbers - {e}")
-      # If it's a citation, add it to the current citations
-      # current_citations.append(int(chunk))
     else:
       # If it's text content
       if current_chunk:
@@ -242,24 +266,11 @@ def transform_to_chunks(message: ChatMessage):
     )
 
   # Clear the original content as it's now split into chunks
-  message.content = ""
   print("message.chunks", message.chunks)
 
 
 def map_citation_numbers(citation_numbers: list[int]) -> list[int]:
-  print("map_citation_numbers", citation_numbers)
-  print("state.citations", me.state(State).citations)
-  state = me.state(State)
-  new_citation_numbers: set[int] = set()
-  for citation_number in citation_numbers:
-    for citation in state.citations:
-      if citation_number in citation.original_numbers:
-        new_citation_numbers.add(citation.number)
-        break
-
-    # raise ValueError(f"Citation number {citation_number} not found")
-  print("new_citation_numbers", new_citation_numbers)
-  return list(new_citation_numbers)
+  return citation_numbers
 
 
 def chat(
@@ -283,12 +294,10 @@ def chat(
       me.icon("light_mode" if me.theme_brightness() == "dark" else "dark_mode")
     with me.box(
       style=me.Style(
-        # padding=me.Padding(top=30),
         display="flex",
         flex_direction="row",
         padding=me.Padding.all(8),
         background=me.theme_var("background"),
-        # display="flex",
         width="100%",
         border=me.Border.all(
           me.BorderSide(width=0, style="solid", color="black")
@@ -298,18 +307,14 @@ def chat(
     ):
       with me.box(style=me.Style(flex_grow=1)):
         me.native_textarea(
-          # appearance="outline",
+          value=state.initial_input,
           placeholder=_LABEL_INPUT,
-          # Workaround: update key to clear input.
           key=f"input-{len(state.output)}",
           on_blur=on_blur,
           on_input=on_input,
-          # on_enter=on_input_enter,
           min_rows=3,
           autosize=True,
           style=me.Style(
-            # height="120px",
-            # font_family="monospace",
             color=me.theme_var("on-background"),
             padding=me.Padding(top=16, left=48),
             background=me.theme_var("background"),
@@ -333,7 +338,7 @@ def chat(
           _LABEL_BUTTON_IN_PROGRESS if state.in_progress else _LABEL_BUTTON
         )
 
-    with me.box(style=_make_style_chat_ui_container(bool(title))):
+    with me.box(style=_make_style_chat_ui_container()):
       if title:
         me.text(title, type="headline-5", style=_STYLE_TITLE)
       with me.box(style=_STYLE_CHAT_BOX):
@@ -352,7 +357,7 @@ def chat(
               gap=24,
             )
           ):
-            for example in EXAMPLES:
+            for example in state.examples:
               example_box(example)
         for msg in state.output:
           with me.box(
@@ -369,16 +374,9 @@ def chat(
                 width="100%",
                 font_size="16px",
                 line_height="1.5",
-                # background=background,
                 border_radius="15px",
                 padding=me.Padding(right=15, left=15, bottom=3),
                 margin=me.Margin(bottom=10),
-                # border=me.Border(
-                #   left=_DEFAULT_BORDER_SIDE,
-                #   right=_DEFAULT_BORDER_SIDE,
-                #   top=_DEFAULT_BORDER_SIDE,
-                #   bottom=_DEFAULT_BORDER_SIDE,
-                # ),
               )
             ):
               if msg.role == _ROLE_USER:
@@ -386,12 +384,20 @@ def chat(
                   msg.content, style=me.Style(margin=me.Margin(bottom=16))
                 )
               else:
+                used_citation_numbers: set[int] = set()
+
                 for chunk in msg.chunks:
                   me.text(
                     chunk.content,
                     style=me.Style(white_space="pre-wrap", display="inline"),
                   )
                   if chunk.citation_numbers:
+                    print(
+                      "chunk.content",
+                      chunk.content,
+                      "chunk.citation_numbers",
+                      me.state(State).citations[chunk.citation_numbers[0] - 1],
+                    )
                     with me.box(
                       style=me.Style(
                         display="inline-flex",
@@ -401,8 +407,14 @@ def chat(
                       )
                     ):
                       for citation_number in chunk.citation_numbers:
-                        citation_tooltip(citation_number)
-                  # me.text(msg.content, style=me.Style(white_space="pre"))
+                        used_citation_numbers.add(citation_number)
+
+                        citation_tooltip(
+                          get_citation_number(
+                            citation_number, used_citation_numbers
+                          )
+                        )
+
                 with me.box(
                   style=me.Style(
                     padding=me.Padding(top=16),
@@ -412,8 +424,56 @@ def chat(
                   ),
                 ):
                   for citation in state.citations:
-                    with citation_box(url=citation.url):
-                      citation_content(citation)
+                    if citation.number in used_citation_numbers:
+                      with citation_box(url=citation.url):
+                        citation_content(
+                          Citation(
+                            url=citation.url,
+                            title=citation.title,
+                            breadcrumbs=citation.breadcrumbs,
+                            original_numbers=citation.original_numbers,
+                            content=citation.content,
+                            number=get_citation_number(
+                              citation.number, used_citation_numbers
+                            ),
+                          )
+                        )
+                if not me.state(State).in_progress:
+                  with me.box(
+                    style=me.Style(
+                      display="flex",
+                      flex_direction="row",
+                      gap=4,
+                      margin=me.Margin(top=16),
+                    )
+                  ):
+                    NEWLINE = "\n"
+                    me.text("Is there an issue with this this response?")
+                    me.link(
+                      text="File an issue",
+                      url="https://github.com/google/mesop/issues/new?assignees=&labels=bug,chatbot&projects=&title=Bad%20chatbot%20response&body="
+                      + urllib.parse.quote(f"""
+What was the issue with the chatbot response?
+
+---
+Original content:
+
+__Prompt:__
+{state.output[0].content}
+
+__Response:__
+{state.output[-1].content}
+
+__Citations:__
+
+{NEWLINE.join([f"1. {citation.url}" for citation in state.citations])}
+"""),
+                      style=me.Style(
+                        color=me.theme_var("primary"),
+                        text_decoration="none",
+                      ),
+                      open_in_new_tab=True,
+                    )
 
 
 def citation_tooltip(citation_number: int):
@@ -518,69 +578,42 @@ def transform(
   citations: list[Citation] = []
 
   for i, source_node in enumerate(response_stream.source_nodes):
-    url = source_node.node.metadata.get("url", "")
+    url: str = source_node.node.metadata.get("url", "")
     breadcrumbs = url.split("https://google.github.io/mesop/")[-1].split("/")
     title = source_node.node.metadata.get("title", "")
+    content_lines = source_node.node.get_content().split("\n")
+
+    for line in content_lines[2:]:
+      if line and not line.startswith("```"):
+        break
+
+    fragment: str = (
+      "#:~:text="
+      + urllib.parse.quote(content_lines[1])
+      + ",-"
+      # Just take the first two words of the line to avoid
+      # mismatching (e.g. URLs).
+      + urllib.parse.quote(" ".join(line.split(" ")[:2]))
+    )
     citations.append(
-      Citation(url=url, breadcrumbs=breadcrumbs, title=title, number=i + 1)
+      Citation(
+        url=url + fragment,
+        breadcrumbs=breadcrumbs,
+        title=title,
+        number=i + 1,
+      )
     )
 
-  me.state(State).citations = dedupe_citations(citations)
+  me.state(State).citations = citations
   yield from response_stream.response_gen
-  # return stubbed_transform(message, history)
 
 
-def dedupe_citations(citations: list[Citation]) -> list[Citation]:
-  # dedupe citations by url and group the number into original_nubmers
-  deduped_citations: dict[str, Citation] = {}
-  for citation in citations:
-    if citation.url in deduped_citations:
-      deduped_citations[citation.url].original_numbers.append(citation.number)
-    else:
-      deduped_citations[citation.url] = citation
-      deduped_citations[citation.url].original_numbers = [citation.number]
-
-  result = list(deduped_citations.values())
-  for i, citation in enumerate(result):
-    citation.number = i + 1
-
-  return result
-
-
-def stubbed_transform(
-  message: str, history: list[ChatMessage]
-) -> Generator[str, None, None]:
-  me.state(State).citations = dedupe_citations(
-    [
-      Citation(
-        url="https://foo.com", title="Foo", breadcrumbs=["Foo", "Bar"], number=1
-      ),
-      Citation(
-        url="https://bar.com", title="Bar", breadcrumbs=["Foo", "Bar"], number=2
-      ),
-      Citation(
-        url="https://baz.com", title="Baz", breadcrumbs=["Foo", "Bar"], number=3
-      ),
-      Citation(
-        url="https://baz.com", title="Baz", breadcrumbs=["Foo", "Bar"], number=4
-      ),
-    ]
-  )
-
-  # response_stream = ask(message)
-  # for text in response_stream.response_gen:
-  yield from ["Hello, world![3, 4, 1]", "And More[2]"]
-  # source_urls: set[str] = set()
-
-  # for source_node in response_stream.source_nodes:
-  #   url = source_node.node.metadata.get("url", "")
-  #   if url:
-  #     source_urls.add(url)
-  # source_urls = set(["https://foo.com", "https://bar.com", "https://baz.com"])
-
-
-#   yield f"""
-# __Sources:__
-
-# {NEWLINE.join([f"- [{url}]({url})" for url in source_urls])}
-#   """
+def get_citation_number(
+  citation_number: int, used_citation_numbers: set[int]
+) -> int:
+  number = 0
+  for n in used_citation_numbers:
+    number += 1  # noqa: SIM113
+    if n == citation_number:
+      return number
+  raise ValueError(f"Citation number {citation_number} not found")

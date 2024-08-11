@@ -1,0 +1,4 @@
+llama-index
+google-generativeai
+llama-index-llms-gemini
+llama-index-embeddings-google
