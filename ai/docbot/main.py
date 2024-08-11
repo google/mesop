@@ -27,7 +27,11 @@ def on_load(e: me.LoadEvent):
   security_policy=me.SecurityPolicy(
     allowed_script_srcs=[
       "https://cdn.jsdelivr.net",
-    ]
+    ],
+    allowed_iframe_parents=[
+      "https://huggingface.co",
+      "https://google.github.io",
+    ],
   ),
   title="Mesop Docs Chat",
 )
