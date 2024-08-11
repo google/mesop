@@ -31,6 +31,7 @@ def on_load(e: me.LoadEvent):
     allowed_iframe_parents=[
       "https://huggingface.co",
       "https://google.github.io",
+      "http://localhost:*",
     ],
   ),
   title="Mesop Docs Chat",

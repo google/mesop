@@ -110,6 +110,7 @@ nav:
       - Publishing: internal/publishing.md
 theme:
   name: material
+  custom_dir: docs/theme
   logo: assets/logo.png
   favicon: assets/favicon.ico
   font:
