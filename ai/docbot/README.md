@@ -1,6 +1,28 @@
+---
+title: Mesop Doc Bot
+emoji: 👓
+colorFrom: red
+colorTo: yellow
+sdk: docker
+pinned: false
+license: apache-2.0
+app_port: 8080
+---
+
 # Docbot
 
 Answers questions grounded based on docs
+
+## Setup
+
+From workspace root:
+
+```sh
+rm -rf ai/docbot/venv && \
+virtualenv --python python3 ai/docbot/venv && \
+source ai/docbot/venv/bin/activate && \
+pip install -r ai/docbot/requirements.txt
+```
 
 ## How to use
 
