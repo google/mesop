@@ -1,7 +1,7 @@
 import random
 import re
 import time
-import urllib
+import urllib.parse
 from dataclasses import dataclass, field
 from typing import Generator, Literal
 
