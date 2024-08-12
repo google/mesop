@@ -62,13 +62,13 @@ $ EVAL_DIR=gen/evals/no_source_1 EVAL_DIR_2=gen/evals/one_source mesop eval_view
 
 TODOs:
 
-- Auto-focus into prompt (via post message)
-- Support ESC to close iframe
 - Respect dark themes into frame
-- Do evals against suggested questions
+- Auto-focus into prompt (via post message) _DONE_
+- Support ESC to close iframe _DONE_
+- Do evals against suggested questions _DONE_
 - Prompt engineer
-  - Do not show code
-  - File new issue if asking for feature that doesn't exist
+  - Do not show code _skip_
+  - File new issue if asking for feature that doesn't exist _skip_
 
 MAYBE:
 

@@ -37,6 +37,7 @@ def on_load(e: me.LoadEvent):
   title="Mesop Docs Chat",
 )
 def page():
+  frame_listener()
   return chat()
 
 
@@ -134,21 +135,20 @@ def on_blur(e: me.InputBlurEvent):
 
 
 mesop_questions = [
-  "How can I reset a text input field in Mesop?",
-  "Show me how to style a component in Mesop",
-  "Create a multi-page app using Mesop",
-  "Is it possible to create custom components in Mesop?",
-  "Implement authentication in a Mesop app",
-  "What's the process for deploying a Mesop app?",
-  "Optimize performance in a Mesop application",
-  "Can I use JavaScript libraries with Mesop?",
-  "Stream UI updates from an LLM API in Mesop",
+  "How can I reset an input component?",
+  "Show me how to style a component",
+  "Create a multi-page app",
+  "Is it possible to create custom components?",
+  "Implement authentication",
+  "Deploy a Mesop app",
+  "Optimize performance",
+  "Can I use JavaScript libraries in Mesop?",
+  "Stream UI updates from an LLM API",
   "Debug a Mesop application",
   "Is Mesop ready for production use?",
-  "Implement form validation in Mesop",
   "Create a mobile-friendly and responsive UI",
-  "Handle asynchronous operations in Mesop",
-  "Implement dark mode in a Mesop application",
+  "Handle asynchronous operations",
+  "Implement dark mode",
   "Add tooltips to Mesop components",
   "Render a pandas DataFrame as a table",
   "Add charts",
@@ -200,7 +200,7 @@ def submit():
   for content in output_message:
     assistant_message.content += content
 
-    if (time.time() - start_time) >= 0.35:
+    if (time.time() - start_time) >= 0.75:
       start_time = time.time()
       transform_to_chunks(assistant_message)
       yield
@@ -304,8 +304,6 @@ def chat(
           key=f"input-{len(state.output)}",
           on_blur=on_blur,
           on_input=on_input,
-          min_rows=3,
-          autosize=True,
           style=me.Style(
             color=me.theme_var("on-background"),
             padding=me.Padding(top=16, left=48),
@@ -376,6 +374,8 @@ def chat(
                   msg.content, style=me.Style(margin=me.Margin(bottom=16))
                 )
               else:
+                if state.in_progress:
+                  me.progress_spinner()
                 used_citation_numbers: set[int] = set()
 
                 for chunk in msg.chunks:
@@ -566,10 +566,10 @@ def on_click_example(e: me.ClickEvent) -> Generator[None, None, None]:
 def transform(
   message: str, history: list[ChatMessage]
 ) -> Generator[str, None, None]:
-  response_stream = ask(message)
+  response = ask(message)
   citations: list[Citation] = []
 
-  for i, source_node in enumerate(response_stream.source_nodes):
+  for i, source_node in enumerate(response.source_nodes):
     url: str = source_node.node.metadata.get("url", "")
     breadcrumbs = url.split("https://google.github.io/mesop/")[-1].split("/")
     title = source_node.node.metadata.get("title", "")
@@ -597,7 +597,7 @@ def transform(
     )
 
   me.state(State).citations = citations
-  yield from response_stream.response_gen
+  yield from response.response_gen
 
 
 def get_citation_number(
@@ -609,3 +609,11 @@ def get_citation_number(
     if n == citation_number:
       return number
   raise ValueError(f"Citation number {citation_number} not found")
+
+
+@mel.web_component(path="./frame_listener.js")
+def frame_listener(
+  *,
+  key: str | None = None,
+):
+  pass

@@ -22,7 +22,7 @@ CITATION_QA_TEMPLATE = PromptTemplate(
   "cite the appropriate source(s) using their corresponding numbers. "
   "Every answer should include at least one source citation. "
   "Only cite a source when you are explicitly referencing it. "
-  "If you are sure NONE of the sources are helpful, then say: 'Sorry, I didn't find docs about this.'"
+  "If you are sure NONE of the sources are helpful, then say: 'Sorry, I didn't find any docs about this.'"
   "If you are not sure if any of the sources are helpful, then say: 'You might find this helpful', where 'this' is the source's title.'"
   "DO NOT say Source 1, Source 2, etc. Only reference sources like this: [1], [2], etc."
   "I want you to pick just ONE source to answer the question."
@@ -145,7 +145,8 @@ else:
 
 NEWLINE = "\n"
 
+cache = {}
+
 
 def ask(query: str):
-  response_stream = query_engine.query(query)
-  return response_stream
+  return query_engine.query(query)

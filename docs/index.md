@@ -354,4 +354,3 @@ Mesop streamlines app development with features like hot reload and strong IDE s
 ## Disclaimer
 
 _This is not an officially supported Google product._
-<script src="./javascript/docbot.js"></script>
