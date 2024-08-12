@@ -46,40 +46,33 @@ python docs_index.py
 
 ## Evals
 
-- How do I test mesop app?
-- What kind of components are there?
-- How do I reset a text input?
-- style a component
-- Create a multi-page app
-- Can I create custom components in Mesop?
-- how do I do auth?
-- call an API
-- deploy mesop
-- make mesop faster
-- datepicker
-- use JS library
-- do real-time updates
-- stream UI updates from LLM API
-- debug mesop app
-- is it production-ready?
-- do form validation
-- mobile
-- async
-- dark mode
-- keyboard shortcuts
-- drag and drop
-- do infinite scroll
-- make a row
-- add tooltip
-- render pandas dataframe
-- add charts
-- create a table
-- handle file uploads
-- use CLI flags
-- create a link
-- create a download link
+**Record eval results**
+
+```py
+$ python recorder.py --out-dir gen/evals/one_source
+```
+
+**View eval results**
+
+```py
+$ EVAL_DIR=gen/evals/no_source_1 EVAL_DIR_2=gen/evals/one_source mesop eval_viewer.py
+```
 
 ## Roadmap
+
+TODOs:
+
+- Auto-focus into prompt (via post message)
+- Support ESC to close iframe
+- Respect dark themes into frame
+- Do evals against suggested questions
+- Prompt engineer
+  - Do not show code
+  - File new issue if asking for feature that doesn't exist
+
+MAYBE:
+
+- Ask Mesop to consolidate sources from the same page
 
 ### UX
 

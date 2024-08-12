@@ -3,6 +3,7 @@ import os
 import sys
 
 from llama_index.core import (
+  PromptTemplate,
   Settings,
   SimpleDirectoryReader,
   StorageContext,
@@ -14,6 +15,32 @@ from llama_index.embeddings.google import GeminiEmbedding
 from llama_index.llms.gemini import Gemini
 
 import mesop as me
+
+CITATION_QA_TEMPLATE = PromptTemplate(
+  "Please provide an answer based solely on the provided sources. "
+  "When referencing information from a source, "
+  "cite the appropriate source(s) using their corresponding numbers. "
+  "Every answer should include at least one source citation. "
+  "Only cite a source when you are explicitly referencing it. "
+  "If you are sure NONE of the sources are helpful, then say: 'Sorry, I didn't find docs about this.'"
+  "If you are not sure if any of the sources are helpful, then say: 'You might find this helpful', where 'this' is the source's title.'"
+  "DO NOT say Source 1, Source 2, etc. Only reference sources like this: [1], [2], etc."
+  "I want you to pick just ONE source to answer the question."
+  "For example:\n"
+  "Source 1:\n"
+  "The sky is red in the evening and blue in the morning.\n"
+  "Source 2:\n"
+  "Water is wet when the sky is red.\n"
+  "Query: When is water wet?\n"
+  "Answer: Water will be wet when the sky is red [2], "
+  "which occurs in the evening [1].\n"
+  "Now it's your turn. Below are several numbered sources of information:"
+  "\n------\n"
+  "{context_str}"
+  "\n------\n"
+  "Query: {query_str}\n"
+  "Answer: "
+)
 
 os.environ["GOOGLE_API_KEY"] = os.environ["GEMINI_API_KEY"]
 
@@ -74,6 +101,8 @@ def build_or_load_index():
       file_metadata=get_meta,
       recursive=True,
     ).load_data()
+    for doc in documents:
+      doc.excluded_llm_metadata_keys = ["url"]
     index = VectorStoreIndex.from_documents(documents, embed_model=embed_model)
     index.storage_context.persist(persist_dir=PERSIST_DIR)
     return index
@@ -95,9 +124,19 @@ else:
   query_engine = CitationQueryEngine.from_args(
     index,
     llm=llm,
+    citation_qa_template=CITATION_QA_TEMPLATE,
     similarity_top_k=5,
     embedding_model=embed_model,
     streaming=True,
+  )
+
+  blocking_query_engine = CitationQueryEngine.from_args(
+    index,
+    llm=llm,
+    citation_qa_template=CITATION_QA_TEMPLATE,
+    similarity_top_k=5,
+    embedding_model=embed_model,
+    streaming=False,
   )
   # TODO: replace with proper mechanism for persisting objects
   # across hot reloads
