@@ -1,4 +1,3 @@
-import logging
 import os
 import sys
 
@@ -43,9 +42,6 @@ CITATION_QA_TEMPLATE = PromptTemplate(
 )
 
 os.environ["GOOGLE_API_KEY"] = os.environ["GEMINI_API_KEY"]
-
-logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
-logging.getLogger().addHandler(logging.StreamHandler(stream=sys.stdout))
 
 
 def get_meta(file_path: str) -> dict[str, str]:
