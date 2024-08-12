@@ -7,7 +7,10 @@ test('theme density', async ({page}) => {
   await page.locator('div').filter({hasText: 'Density'}).first().click();
   // Select -1 option:
   await page.getByRole('option', {name: '-1'}).click();
-  expect(await page.evaluate(hasThemeDensity, -1)).toEqual(true);
+  await expect(async () => {
+    const result = await page.evaluate(hasThemeDensity, -1);
+    expect(result).toEqual(true);
+  }).toPass({timeout: 5000});
 
   // Open select dropdown:
   await page.locator('div').filter({hasText: 'Density-'}).first().click();
