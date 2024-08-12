@@ -56,7 +56,7 @@ def get_meta(file_path: str) -> dict[str, str]:
         .replace("-", " ")
         .capitalize()
       )
-  # truncate everything up to and including ../../docs/ with ""
+
   file_path = file_path.replace(".md", "")
   CONST = "../../docs/"
   docs_index = file_path.index(CONST)
@@ -140,8 +140,6 @@ else:
 
 
 NEWLINE = "\n"
-
-cache = {}
 
 
 def ask(query: str):
