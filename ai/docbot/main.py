@@ -215,22 +215,19 @@ def transform_to_chunks(message: ChatMessage):
   message.chunks = []
   # Split the message content into chunks based on citations
   chunks = re.split(r"(\[\d+(?:,\s*\d+)*\])", message.content)
-  print("chunks'", chunks)
   # Initialize variables
   current_chunk = ""
   current_citations: list[int] = []
 
   # Process each chunk
   for chunk in chunks:
-    print("chunk", chunk)
     if re.match(r"\[\d+(?:,\s*\d+)*\]", chunk):
-      print("chunk is a citation")
       try:
         # Remove brackets and split by comma
         citation_numbers = [int(num.strip()) for num in chunk[1:-1].split(",")]
         current_citations.extend(citation_numbers)
-      except Exception as e:
-        print(f"Error: Unable to parse citation numbers - {e}")
+      except Exception:
+        print("Error: Unable to parse citation numbers")
     else:
       # If it's text content
       if current_chunk:
@@ -246,8 +243,6 @@ def transform_to_chunks(message: ChatMessage):
       # Add the new content
       current_chunk += chunk
 
-  print("current_chunk", current_chunk)
-  print("current_citations", current_citations)
   # Add the last chunk if there's any remaining content
   if current_chunk:
     message.chunks.append(
@@ -256,9 +251,6 @@ def transform_to_chunks(message: ChatMessage):
         citation_numbers=map_citation_numbers(current_citations),
       )
     )
-
-  # Clear the original content as it's now split into chunks
-  print("message.chunks", message.chunks)
 
 
 def map_citation_numbers(citation_numbers: list[int]) -> list[int]:
@@ -384,12 +376,6 @@ def chat(
                     style=me.Style(white_space="pre-wrap", display="inline"),
                   )
                   if chunk.citation_numbers:
-                    print(
-                      "chunk.content",
-                      chunk.content,
-                      "chunk.citation_numbers",
-                      me.state(State).citations[chunk.citation_numbers[0] - 1],
-                    )
                     with me.box(
                       style=me.Style(
                         display="inline-flex",
