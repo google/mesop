@@ -110,6 +110,7 @@ nav:
       - Publishing: internal/publishing.md
 theme:
   name: material
+  custom_dir: docs/theme
   logo: assets/logo.png
   favicon: assets/favicon.ico
   font:
@@ -141,6 +142,8 @@ theme:
     - navigation.sections
     - search.highlight
 
+extra_javascript:
+  - javascript/docbot.js
 extra_css:
   - stylesheets/extra.css
 markdown_extensions:
