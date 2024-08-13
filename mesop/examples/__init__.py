@@ -16,6 +16,7 @@ from mesop.examples import error as error
 from mesop.examples import (
   error_no_stateclass_decorator as error_no_stateclass_decorator,
 )
+from mesop.examples import event_handler_error as event_handler_error
 from mesop.examples import focus_component as focus_component
 from mesop.examples import generator as generator
 from mesop.examples import grid as grid
