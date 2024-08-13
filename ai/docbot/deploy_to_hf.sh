@@ -37,10 +37,8 @@ git add .
 
 git commit -m "Commit"
 
-# The hf remote may already exist if the script has been run
-# on this dest directory before.
-git remote add hf https://huggingface.co/spaces/wwwillchen/mesop-docs-bot || true
-
 git push hf --force
+
+git push --force https://wwwillchen:$HF_TOKEN@huggingface.co/spaces/wwwillchen/mesop-docs-bot main
 
 echo "Pushed to: https://huggingface.co/spaces/wwwillchen/mesop-docs-bot. Check the logs to see that it's deployed correctly."
