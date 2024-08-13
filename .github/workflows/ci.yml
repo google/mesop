@@ -108,6 +108,9 @@ jobs:
           restore-keys: |
             docs-bot-
       - run: pip install -r ai/docbot/requirements.txt
+      - run: |
+          git config user.name github-actions[bot]
+          git config user.email github-actions[bot]@users.noreply.github.com
       - name: Deploy to HuggingFace
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
