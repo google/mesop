@@ -387,7 +387,7 @@ def compute_fn_id(fn: Callable[..., Any]) -> str:
     partial_args = (
       f"{args_str}{', ' if args_str and kwargs_str else ''}{kwargs_str}"
     )
-    source_code = f"partial({inspect.getsource(fn.func)}, {partial_args})"
+    source_code = f"partial(<<{inspect.getsource(fn.func)}>>, {partial_args})"
     print("source_code", source_code)
     fn_name = fn.func.__name__
     fn_module = fn.func.__module__

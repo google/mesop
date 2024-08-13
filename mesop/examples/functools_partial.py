@@ -11,7 +11,7 @@ class State:
 @me.page(path="/functools_partial")
 def main():
   state = me.state(State)
-  me.text(text=f"{state.count}")
+  me.text(text=f"value={state.count}")
   me.button("increment 2*4", on_click=partial(increment_click, 2, amount=4))
   me.button("increment 2*10", on_click=partial(increment_click, 2, amount=10))
 
