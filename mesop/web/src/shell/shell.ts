@@ -44,6 +44,8 @@ import {
   ErrorDialogService,
   ProdErrorDialogService,
 } from '../services/error_dialog_service';
+// Keep the following comment to ensure there's a hook for adding TS imports in the downstream sync.
+// ADD_TS_IMPORT_HERE
 
 @Component({
   selector: 'mesop-shell',
