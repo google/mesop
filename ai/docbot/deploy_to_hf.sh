@@ -34,8 +34,8 @@ echo "Demo files have been copied to $DEST_PATH"
 cd "$DEST_PATH"
 echo "Changed directory to $DEST_PATH"
 
-git config --global init.defaultBranch main
 git init
+git branch -m main
 git config user.name github-actions[bot]
 git config user.email github-actions[bot]@users.noreply.github.com
 echo "Configured git user"
