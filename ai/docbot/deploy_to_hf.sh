@@ -39,6 +39,7 @@ git config user.name github-actions[bot]
 git config user.email github-actions[bot]@users.noreply.github.com
 echo "Configured git user"
 git add .
+git checkout main
 git commit -m "Commit"
 git remote add hf https://wwwillchen:$HF_TOKEN@huggingface.co/spaces/wwwillchen/mesop-docs-bot || true
 git push hf --force
