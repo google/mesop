@@ -42,6 +42,6 @@ echo "Configured git user"
 git add .
 git commit -m "Commit"
 git remote add hf https://wwwillchen:$HF_TOKEN@huggingface.co/spaces/wwwillchen/mesop-docs-bot || true
-git push --force--set-upstream hf main
+git push --force --set-upstream hf main
 
 echo "Pushed to: https://huggingface.co/spaces/wwwillchen/mesop-docs-bot. Check the logs to see that it's deployed correctly."
