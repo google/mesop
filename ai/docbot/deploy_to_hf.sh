@@ -34,14 +34,14 @@ echo "Demo files have been copied to $DEST_PATH"
 cd "$DEST_PATH"
 echo "Changed directory to $DEST_PATH"
 
+git config user.name github-actions[bot]
+git config user.email github-actions[bot]@users.noreply.github.com
+echo "Configured git user"
+
 git init
-
 git add .
-
 git commit -m "Commit"
-
 git push hf --force
-
 git push --force https://wwwillchen:$HF_TOKEN@huggingface.co/spaces/wwwillchen/mesop-docs-bot main
 
 echo "Pushed to: https://huggingface.co/spaces/wwwillchen/mesop-docs-bot. Check the logs to see that it's deployed correctly."
