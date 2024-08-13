@@ -97,6 +97,11 @@ export class Shell {
       {
         zone: this.zone,
         onRender: async (rootComponent, componentConfigs, jsModules) => {
+          // Make sure we clear the error *before* the async work, otherwise
+          // we can hit a weird race condition where the error is cleared
+          // right away before the user sees the error box.
+          this.error = undefined;
+
           // Import all JS modules concurrently
           await Promise.all(
             jsModules.map((modulePath) =>
@@ -113,7 +118,6 @@ export class Shell {
           if (componentConfigs.length) {
             this.componentConfigs = componentConfigs;
           }
-          this.error = undefined;
         },
         onCommand: (command) => {
           if (command.hasNavigate()) {
