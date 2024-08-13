@@ -21,6 +21,7 @@ from mesop.examples import (
 )
 from mesop.examples import event_handler_error as event_handler_error
 from mesop.examples import focus_component as focus_component
+from mesop.examples import functools_partial as functools_partial
 from mesop.examples import generator as generator
 from mesop.examples import grid as grid
 from mesop.examples import index as index

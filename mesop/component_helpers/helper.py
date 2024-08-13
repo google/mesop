@@ -1,7 +1,7 @@
 import hashlib
 import inspect
 import json
-from functools import lru_cache, wraps
+from functools import lru_cache, partial, wraps
 from typing import (
   Any,
   Callable,
@@ -357,8 +357,12 @@ def wrap_handler_with_event(func: Handler[E], actionType: Type[E]):
 
     return func(cast(Any, event))
 
-  wrapper.__module__ = func.__module__
-  wrapper.__name__ = func.__name__
+  if isinstance(func, partial):
+    wrapper.__module__ = func.func.__module__
+    wrapper.__name__ = func.func.__name__
+  else:
+    wrapper.__module__ = func.__module__
+    wrapper.__name__ = func.__name__
 
   return wrapper
 
@@ -376,12 +380,27 @@ def register_event_handler(
 
 @lru_cache(maxsize=None)
 def compute_fn_id(fn: Callable[..., Any]) -> str:
-  source_code = inspect.getsource(fn)
+  if isinstance(fn, partial):
+    # Include the partially applied arguments in the source code
+    args_str = ", ".join(repr(arg) for arg in fn.args)
+    kwargs_str = ", ".join(f"{k}={v!r}" for k, v in fn.keywords.items())
+    partial_args = (
+      f"{args_str}{', ' if args_str and kwargs_str else ''}{kwargs_str}"
+    )
+    source_code = f"partial({inspect.getsource(fn.func)}, {partial_args})"
+    print("source_code", source_code)
+    fn_name = fn.func.__name__
+    fn_module = fn.func.__module__
+  else:
+    source_code = inspect.getsource(fn) if inspect.isfunction(fn) else str(fn)
+    fn_name = fn.__name__
+    fn_module = fn.__module__
+
   # Skip hashing the fn/module name in debug mode because it makes it hard to debug.
   if runtime().debug_mode:
     source_code_hash = hashlib.sha256(source_code.encode()).hexdigest()
-    return f"{fn.__module__}.{fn.__name__}.{source_code_hash}"
-  input = f"{fn.__module__}.{fn.__name__}.{source_code}"
+    return f"{fn_module}.{fn_name}.{source_code_hash}"
+  input = f"{fn_module}.{fn_name}.{source_code}"
   return hashlib.sha256(input.encode()).hexdigest()
 
 
