@@ -7,13 +7,13 @@ import {
 class OuterComponent extends LitElement {
   static properties = {
     value: {type: Number},
-    incrementEventHandlerId: {attribute: 'increment-event', type: String},
+    incrementEvent: {type: String},
   };
 
   constructor() {
     super();
     this.value = 0;
-    this.incrementEventHandlerId = '';
+    this.incrementEvent = '';
   }
 
   render() {
@@ -32,7 +32,7 @@ class OuterComponent extends LitElement {
 
   _onIncrement() {
     this.dispatchEvent(
-      new MesopEvent(this.incrementEventHandlerId, {
+      new MesopEvent(this.incrementEvent, {
         value: this.value + 1,
       }),
     );

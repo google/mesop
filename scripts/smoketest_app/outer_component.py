@@ -14,7 +14,7 @@ def outer_component(
     name="outer-component",
     key=key,
     events={
-      "increment-event": on_increment,
+      "incrementEvent": on_increment,
     },
     properties={
       "value": value,
