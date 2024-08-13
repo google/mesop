@@ -40,6 +40,7 @@ git config user.email github-actions[bot]@users.noreply.github.com
 echo "Configured git user"
 git add .
 git commit -m "Commit"
-git push --force https://wwwillchen:$HF_TOKEN@huggingface.co/spaces/wwwillchen/mesop-docs-bot main
+git remote add hf https://wwwillchen:$HF_TOKEN@huggingface.co/spaces/wwwillchen/mesop-docs-bot || true
+git push hf --force
 
 echo "Pushed to: https://huggingface.co/spaces/wwwillchen/mesop-docs-bot. Check the logs to see that it's deployed correctly."
