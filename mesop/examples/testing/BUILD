@@ -7,6 +7,7 @@ package(
 py_library(
     name = "testing",
     srcs = glob(["*.py"]),
+    data = glob(["*.js"]),
     deps = [
         "//mesop",
     ],
