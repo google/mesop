@@ -7,13 +7,13 @@ import {
 class InnerComponent extends LitElement {
   static properties = {
     value: {type: Number},
-    decrementEventHandlerId: {attribute: 'decrement-event', type: String},
+    decrementEvent: {type: String},
   };
 
   constructor() {
     super();
     this.value = 0;
-    this.decrementEventHandlerId = '';
+    this.decrementEvent = '';
   }
 
   render() {
@@ -29,7 +29,7 @@ class InnerComponent extends LitElement {
 
   _onDecrement() {
     this.dispatchEvent(
-      new MesopEvent(this.decrementEventHandlerId, {
+      new MesopEvent(this.decrementEvent, {
         value: this.value - 1,
       }),
     );

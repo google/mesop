@@ -14,7 +14,7 @@ def inner_component(
     name="inner-component",
     key=key,
     events={
-      "decrement-event": on_decrement,
+      "decrementEvent": on_decrement,
     },
     properties={
       "value": value,
