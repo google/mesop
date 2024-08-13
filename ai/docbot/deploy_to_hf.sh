@@ -22,25 +22,26 @@ if [ ! -d "$DEST_PATH" ]; then
     mkdir -p "$DEST_PATH"
 fi
 
+# Build the docs index
+cd ai/docbot && python docs_index.py --build-index && cd -
+
 # Get the path of this script which is the demo dir.
 DEMO_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 cp -R "$DEMO_DIR/" "$DEST_PATH"
 echo "Demo files have been copied to $DEST_PATH"
 
-cd "$DEST_PATH"
+cd "$DEST_PATH/docbot"
 echo "Changed directory to $DEST_PATH"
 
 git init
-
+git branch -m main
+git config user.name github-actions[bot]
+git config user.email github-actions[bot]@users.noreply.github.com
+echo "Configured git user"
 git add .
-
 git commit -m "Commit"
-
-# The hf remote may already exist if the script has been run
-# on this dest directory before.
-git remote add hf https://huggingface.co/spaces/wwwillchen/mesop-docs-bot || true
-
-git push hf --force
+git remote add hf https://wwwillchen:$HF_TOKEN@huggingface.co/spaces/wwwillchen/mesop-docs-bot || true
+git push --force --set-upstream hf main
 
 echo "Pushed to: https://huggingface.co/spaces/wwwillchen/mesop-docs-bot. Check the logs to see that it's deployed correctly."
