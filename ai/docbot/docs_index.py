@@ -1,6 +1,8 @@
 import os
 import sys
 
+import nest_asyncio
+import Stemmer
 from llama_index.core import (
   PromptTemplate,
   Settings,
@@ -9,11 +11,16 @@ from llama_index.core import (
   VectorStoreIndex,
   load_index_from_storage,
 )
+from llama_index.core.node_parser import SentenceSplitter
 from llama_index.core.query_engine import CitationQueryEngine
+from llama_index.core.retrievers import QueryFusionRetriever
 from llama_index.embeddings.google import GeminiEmbedding
 from llama_index.llms.gemini import Gemini
+from llama_index.retrievers.bm25 import BM25Retriever
 
 import mesop as me
+
+nest_asyncio.apply()
 
 CITATION_QA_TEMPLATE = PromptTemplate(
   "Please provide an answer based solely on the provided sources. "
@@ -99,14 +106,31 @@ def build_or_load_index():
     ).load_data()
     for doc in documents:
       doc.excluded_llm_metadata_keys = ["url"]
+    splitter = SentenceSplitter(chunk_size=512)
+
+    nodes = splitter.get_nodes_from_documents(documents)
+    bm25_retriever = BM25Retriever.from_defaults(
+      nodes=nodes,
+      similarity_top_k=5,
+      # Optional: We can pass in the stemmer and set the language for stopwords
+      # This is important for removing stopwords and stemming the query + text
+      # The default is english for both
+      stemmer=Stemmer.Stemmer("english"),
+      language="english",
+    )
+    bm25_retriever.persist(PERSIST_DIR + "/bm25_retriever")
+
     index = VectorStoreIndex.from_documents(documents, embed_model=embed_model)
     index.storage_context.persist(persist_dir=PERSIST_DIR)
-    return index
+    return index, bm25_retriever
   else:
     print("Loading index")
+    bm25_retriever = BM25Retriever.from_persist_dir(
+      PERSIST_DIR + "/bm25_retriever"
+    )
     storage_context = StorageContext.from_defaults(persist_dir=PERSIST_DIR)
     index = load_index_from_storage(storage_context)
-    return index
+    return index, bm25_retriever
 
 
 if me.runtime().is_hot_reload_in_progress:
@@ -114,11 +138,20 @@ if me.runtime().is_hot_reload_in_progress:
   query_engine = me._query_engine
 
 else:
-  index = build_or_load_index()
+  index, bm25_retriever = build_or_load_index()
   llm = Gemini(model="models/gemini-1.5-flash-latest")
-
+  retriever = QueryFusionRetriever(
+    [
+      index.as_retriever(similarity_top_k=5),
+      bm25_retriever,
+    ],
+    num_queries=1,
+    use_async=True,
+    similarity_top_k=5,
+  )
   query_engine = CitationQueryEngine.from_args(
     index,
+    retriever=retriever,
     llm=llm,
     citation_qa_template=CITATION_QA_TEMPLATE,
     similarity_top_k=5,
@@ -128,6 +161,7 @@ else:
 
   blocking_query_engine = CitationQueryEngine.from_args(
     index,
+    retriever=retriever,
     llm=llm,
     citation_qa_template=CITATION_QA_TEMPLATE,
     similarity_top_k=5,
