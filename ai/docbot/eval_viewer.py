@@ -110,7 +110,7 @@ def index():
       with me.box(
         style=me.Style(
           display="grid",
-          grid_template_columns="160px 1fr 1fr 1fr 1fr"
+          grid_template_columns="160px 300px 1fr 300px 1fr"
           if state.group_2.items
           else "160px 1fr 1fr",
           gap=16,

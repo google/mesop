@@ -145,6 +145,7 @@ else:
       index.as_retriever(similarity_top_k=5),
       bm25_retriever,
     ],
+    llm=llm,
     num_queries=1,
     use_async=True,
     similarity_top_k=5,
