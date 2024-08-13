@@ -31,11 +31,11 @@ def on_click_yield_from(e: me.ClickEvent) -> Generator[None, None, None]:
 
 def a_generator():
   yield
-  time.sleep(1)
+  time.sleep(0.2)
   raise Exception("Error in a_generator.")
 
 
 async def on_click_async_generator(e: me.ClickEvent):
-  await asyncio.sleep(1)
+  await asyncio.sleep(0.2)
   yield
   raise Exception("Error in on_click_async_generator.")
