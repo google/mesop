@@ -98,6 +98,23 @@ def call_api():
     pass
 ```
 
+If you want to reuse event handler logic between generator functions, you can use the [`yield from`](https://docs.python.org/3/whatsnew/3.3.html#pep-380) syntax. For example, let's say `call_api` in the above example is a generator function. You can use `yield from` to reuse the event handler logic:
+
+```py title="Reusing event handler logic for generator functions"
+def on_enter(event: me.InputEnterEvent):
+    state = me.state(State)
+    state.value = event.value
+    yield from call_api()
+
+def on_click(event: me.ClickEvent):
+    yield from call_api()
+
+def call_api():
+    # Do initial work
+    yield
+    # Do more work
+    yield
+```
 ### Boilerplate-free event handlers
 
 If you're building a form-like UI, it can be tedious to write a separate event handler for each form field. Instead, you can use this pattern which utilizes the `key` attribute that's available in most events and uses Python's built-in `setattr` function to dynamically update the state:
