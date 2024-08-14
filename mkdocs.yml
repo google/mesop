@@ -25,6 +25,7 @@ nav:
       - Theming: guides/theming.md
       - Web Security: guides/web-security.md
       - Labs: guides/labs.md
+      - Testing: guides/testing.md
   - Components:
       - Types:
           - Overview: components/index.md
