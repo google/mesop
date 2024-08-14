@@ -20,6 +20,17 @@ Although Mesop is pre-v1, we take backwards-compatibilty seriously and avoid bac
 
 Occasionally, we will do minor clean-up for our APIs, but we will provide warnings/deprecation notices and provide at least 1 release to migrate to the newer APIs.
 
+### Which modules should I import from Mesop?
+
+Only import from these two modules:
+
+```py
+import mesop as me
+import mesop.labs as mel
+```
+
+All other modules are considered internal implementation details and may change without notice in future releases.
+
 ### Is Mesop an official Google product?
 
 No, Mesop is not an official Google product and Mesop is a 20% project maintained by a small core team of Google engineers with contributions from the broader community.

@@ -16,16 +16,23 @@ nav:
               - 4 - Integrating AI APIs: codelab/4.md
               - 5 - Wrapping it up: codelab/5.md
   - Guides:
-      - State Management: guides/state-management.md
-      - Interactivity: guides/interactivity.md
-      - Multi-Pages: guides/multi-pages.md
-      - Auth: guides/auth.md
-      - Deployment: guides/deployment.md
-      - Debugging: guides/debugging.md
-      - Theming: guides/theming.md
-      - Web Security: guides/web-security.md
-      - Labs: guides/labs.md
-      - Testing: guides/testing.md
+      - Fundamentals:
+          - State Management: guides/state-management.md
+          - Event Handlers: guides/event-handlers.md
+          - Interactivity: guides/interactivity.md
+          - Layouts: guides/layouts.md
+      - Enhancements:
+          - Multi-Pages: guides/multi-pages.md
+          - Auth: guides/auth.md
+          - Theming: guides/theming.md
+      - Development:
+          - Debugging: guides/debugging.md
+          - Testing: guides/testing.md
+          - Labs: guides/labs.md
+      - Production:
+          - Deployment: guides/deployment.md
+          - Performance: guides/performance.md
+          - Web Security: guides/web-security.md
   - Components:
       - Types:
           - Overview: components/index.md

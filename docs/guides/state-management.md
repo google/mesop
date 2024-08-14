@@ -176,12 +176,12 @@ If you didn't explicitly annotate NestedState as a dataclass, then you would get
 
 ### State performance issues
 
-Because the state class is serialized and sent back and forth between the client and server, you should try to keep the state class reasonably sized. For example, if you store a very large string (e.g. base64-encoded image) in state, then it will degrade performance of your Mesop app. Instead, you should try to store large data outside of the state class (e.g. in-memory, filesystem, database, external service) and retrieve the data as needed for rendering.
+Take a look at the [performance guide](./performance.md#state-is-too-large) to learn how to identify and fix State-related performance issues.
 
-#### Storing state in memory
+## Next steps
 
-Mesop has a feature that allows you to store state in memory rather than passing the
-full state on every request. This may help improve performance when dealing with large
-state objects. The caveat is that storing state in memory contains its own set of
-problems that you must carefully consider. See the [config section](../api/config.md#mesop_state_session_backend)
-for details on how to use this feature.
+Event handlers complement state management by providing a way to update your state in response to user interactions.
+
+<a href="../event-handlers" class="next-step">
+    Event handlers
+</a>

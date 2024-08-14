@@ -34,6 +34,6 @@ If you make changes to the code, the Mesop app should be automatically hot reloa
 
 Learn more about the core concepts of Mesop as you learn how to build your own Mesop app:
 
-<a href="../core_concepts" class="next-step">
+<a href="../core-concepts" class="next-step">
     Core Concepts
 </a>
