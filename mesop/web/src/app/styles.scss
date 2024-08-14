@@ -208,8 +208,8 @@ body {
   box-sizing: border-box;
 }
 
-// Need these as global styles since markdown HTML is rendered specially.
-.markdown * {
+// Need these as global styles since markdown HTML is not rendered through Angular.
+.error-box-markdown * {
   margin: 0;
   padding: 0;
   list-style: none;
