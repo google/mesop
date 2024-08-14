@@ -122,3 +122,11 @@ def on_input(event: me.InputEvent):
   state = me.state(State)
   state.current_input_value = event.value
 ```
+
+## Next steps
+
+Learn about layouts to build a customized UI.
+
+<a href="../layouts" class="next-step">
+    Layouts
+</a>
