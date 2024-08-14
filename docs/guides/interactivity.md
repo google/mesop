@@ -1,6 +1,6 @@
 # Interactivity
 
-This guide continues from the Counter app example in [Core Concepts](../getting-started/core-concepts.md#counter-app) and explains advanced interactivity patterns for dealing with common use cases such as calling a slow blocking API call or a streaming API call.
+This guide continues from the [event handlers guide](./event-handlers.md) and explains advanced interactivity patterns for dealing with common use cases such as calling a slow blocking API call or a streaming API call.
 
 ## Intermediate loading state
 
@@ -44,7 +44,7 @@ If you notice a race condition with user input (e.g. [input](../components/input
 
 See the following example using this **anti-pattern** :warning::
 
-```py title="Bad example"
+```py title="Bad example: setting the value and using on_input"
 @me.stateclass
 class State:
   input_value: str
@@ -63,11 +63,33 @@ The problem is that the input value now has a race condition because it's being 
 1. The server is setting the input value based on state.
 2. The client is setting the input value based on what the user is typing.
 
-The way to fix this is by *not* setting the input value from the server.
+There's several ways to fix this which are shown below.
 
-The above example **corrected** would look like this :white_check_mark::
+#### Option 1: Use `on_blur` instead of `on_input`
 
-```py title="Good example" hl_lines="7"
+You can use the `on_blur` event instead of `on_input` to only update the input value when the user loses focus on the input field.
+
+This is also more performant because it sends much fewer network requests.
+
+```py title="Good example: setting the value and using on_input"
+@me.stateclass
+class State:
+  input_value: str
+
+def app():
+  state = me.state(State)
+  me.input(value=state.input_value, on_input=on_input)
+
+def on_input(event: me.InputEvent):
+  state = me.state(State)
+  state.input_value = event.value
+```
+
+#### Option 2: Do not set the input value from the server
+
+If you don't need to set the input value from the server, then you can remove the `value` attribute from the input component.
+
+```py title="Good example: not setting the value" hl_lines="7"
 @me.stateclass
 class State:
   input_value: str
@@ -81,32 +103,30 @@ def on_input(event: me.InputEvent):
   state.input_value = event.value
 ```
 
-### Avoid using closure variables in event handler
+#### Option 3: Use two separate variables for initial and current input value
 
-One subtle mistake when building a reusable component is to have the event handler use a closure variable like the following example:
+If you need set the input value from the server *and* you need to use `on_input`, then you can use two separate variables for the initial and current input value.
 
-```py title="Bad example of using closure variable"
-@me.component
-def link_component(url: str):
-   def on_click(event: me.ClickEvent):
-     me.navigate(url)
-  return me.button(url, on_click=on_click)
+```py title="Good example: using two separate variables for initial and current input value" hl_lines="9"
+@me.stateclass
+class State:
+  initial_input_value: str = "initial_value"
+  current_input_value: str
 
+@me.page()
 def app():
-    link_component("/1")
-    link_component("/2")
+  state = me.state(State)
+  me.input(value=state.initial_input_value, on_input=on_input)
+
+def on_input(event: me.InputEvent):
+  state = me.state(State)
+  state.current_input_value = event.value
 ```
 
-The problem with this above example is that Mesop only stores the last event handler. This means that both instances of the link_component will refer to the last `on_click` instance which references the same `url` closure variable set to `"/2"`. This almost always produces the wrong behavior.
+## Next steps
 
-Instead, you will want to use the pattern of relying on the key in the event handler as demonstrated in the following example:
+Learn about layouts to build a customized UI.
 
-```py title="Good example of using key"
-@me.component
-def link_component(url: str):
-   def on_click(event: me.ClickEvent):
-     me.navigate(event.key)
-  return me.button(url, key=url, on_click=on_click)
-```
-
-For more info on using component keys, please refer to the [Component Key docs](../components/index.md#component-key).
+<a href="../layouts" class="next-step">
+    Layouts
+</a>
