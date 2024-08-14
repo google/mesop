@@ -3,7 +3,7 @@
     <button mat-icon-button class="close-button" (click)="hideError(error)">
       <mat-icon>close</mat-icon>
     </button>
-    <div class="markdown" [innerHTML]="markdownHTML"></div>
+    <div class="error-box-markdown" [innerHTML]="markdownHTML"></div>
   </div>
   <div *ngIf="error.hasTraceback()">
     <div *ngIf="showFullTraceback()" class="traceback-heading">Traceback</div>
