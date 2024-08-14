@@ -39,7 +39,6 @@ import {Subject} from 'rxjs';
 import {debounceTime} from 'rxjs/operators';
 import {ThemeService} from '../services/theme_service';
 import {getQueryParams} from '../utils/query_params';
-import {query} from '@angular/animations';
 import {
   ErrorDialogService,
   ProdErrorDialogService,
