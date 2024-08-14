@@ -139,7 +139,9 @@ export class ComponentRenderer {
     // knows that it's a new child, otherwise it gets confused
     // and tries to pass in the new component properties into the
     // old component and we get an error.
-    return `${index}___${item.getType()?.getName()}`;
+    const typeName = item.getType()?.getName();
+    const urlPath = window.location.pathname;
+    return `${index}___${typeName}___${urlPath}`;
   }
 
   isBoxType() {
