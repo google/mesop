@@ -176,7 +176,7 @@ If you didn't explicitly annotate NestedState as a dataclass, then you would get
 
 ### State performance issues
 
-Take a look at the [performance guide](./performance.md#state-is-too-large) to learn how to identify and fix State-related performance issues.
+Take a look at the [performance guide](./performance.md#optimizing-state-size) to learn how to identify and fix State-related performance issues.
 
 ## Next steps
 

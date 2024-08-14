@@ -143,6 +143,7 @@ theme:
     - content.code.copy
     - navigation.path
     - navigation.instant
+    - navigation.instant.progress
     - navigation.tracking
     - navigation.prune
     - navigation.tabs
@@ -157,6 +158,8 @@ extra_css:
 markdown_extensions:
   - attr_list
   - sane_lists
+  - toc:
+      permalink: true
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg

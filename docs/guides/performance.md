@@ -8,7 +8,7 @@ The first step in debugging performance issues is to identify the cause of the i
 
 ## Common performance bottlenecks and solutions
 
-### Optimizing state size for performance
+### Optimizing state size
 
 If you notice with Chrome DevTools that you're sending very large network payloads between client and server, it's likely that your state is too large.
 
