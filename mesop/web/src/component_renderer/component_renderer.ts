@@ -135,11 +135,14 @@ export class ComponentRenderer {
     if (key) {
       return key;
     }
-    // Include the component type so that Angular
-    // knows that it's a new child, otherwise it gets confused
-    // and tries to pass in the new component properties into the
-    // old component and we get an error.
-    return `${index}___${item.getType()?.getName()}`;
+    // Include the component type and URL path in the key.
+    // This ensures Angular recognizes it as a new child component,
+    // preventing errors from passing new properties to old components
+    // and also avoiding DOM state accidentally being carried over.
+    // The URL path helps distinguish components across different routes.
+    const typeName = item.getType()?.getName();
+    const urlPath = window.location.pathname;
+    return `${index}___${typeName}___${urlPath}`;
   }
 
   isBoxType() {

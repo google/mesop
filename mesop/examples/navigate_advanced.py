@@ -3,6 +3,7 @@ import mesop as me
 
 @me.page(path="/navigate_advanced/page1")
 def page1():
+  me.checkbox("Catch: https://github.com/google/mesop/issues/371")
   me.text("page1")
   me.button("navigate", on_click=navigate)
   me.button("navigate too many times", on_click=navigate_too_many_times)
@@ -10,6 +11,7 @@ def page1():
 
 @me.page(path="/navigate_advanced/page2")
 def page2():
+  me.checkbox("Catch: https://github.com/google/mesop/issues/371")
   me.text("page2")
 
 
