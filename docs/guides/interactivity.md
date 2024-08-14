@@ -1,6 +1,6 @@
 # Interactivity
 
-This guide continues from the Counter app example in [Core Concepts](../getting-started/core-concepts.md#counter-app) and explains advanced interactivity patterns for dealing with common use cases such as calling a slow blocking API call or a streaming API call.
+This guide continues from the [event handlers guide](./event-handlers.md) and explains advanced interactivity patterns for dealing with common use cases such as calling a slow blocking API call or a streaming API call.
 
 ## Intermediate loading state
 

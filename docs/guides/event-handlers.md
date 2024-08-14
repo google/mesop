@@ -1,6 +1,6 @@
 # Event Handlers
 
-Event handlers are a core part of Mesop and enables you to handle user interactions by writing Python functions (callbacks).
+Event handlers are a core part of Mesop and enables you to handle user interactions by writing Python functions which are called by the Mesop framework when a user event is received.
 
 ## How it works
 
@@ -25,7 +25,57 @@ When the counter function is called, it creates an instance of the button compon
 
 We don't actually need to serialize the entire event handler, rather we just need to compute a unique id for the event handler function.
 
-Because Mesop has a stateless architecture, we need a way of computing an id for the event handler function that's stable across Python runtimes. For example, the initial page made be rendered by one Python server, but another server may be used to respond to the user event. This stateless architecture allows Mesop apps to be fault tolerant and allows for easy scaling of the app.
+Because Mesop has a stateless architecture, we need a way of computing an id for the event handler function that's stable across Python runtimes. For example, the initial page may be rendered by one Python server, but another server may be used to respond to the user event. This stateless architecture allows Mesop apps to be fault tolerant and allows for easy scaling of the app.
+
+## Types of event handlers
+
+### Regular functions
+
+These are the simplest and most common type of event handlers used. It's essentially a regular Python function which is called by the Mesop framework when a user event is received.
+
+```py title="Regular function"
+def on_click(event: me.ClickEvent):
+    state = me.state(State)
+    state.count += 1
+```
+
+### Generator functions
+
+Python Generator functions are a powerful tool which allow you to `yield` multiple times in a single event handler. This allows you to render intermediate UI states.
+
+```py title="Generator function"
+def on_click(event: me.ClickEvent):
+    state = me.state(State)
+    state.count += 1
+    yield
+    time.sleep(1)
+    state.count += 1
+    yield
+```
+
+You can learn more about real-world use cases of the generator functions in the [Interactivity guide](./interactivity.md).
+
+???+ info "Always yield at the end of a generator function"
+    If you use a `yield` statement in your event handler, then the event handler will be a generator function. You must have a `yield` statement at the end of the event handler (or each return point), otherwise not all of your code will be executed.
+
+### Async generator functions
+
+Python async generator functions allow you to do concurrent work using Python's `async` and `await` language features. If you are using async Python libraries, you can use these types of event handlers.
+
+```py title="Async generator function"
+async def on_click(event: me.ClickEvent):
+    state = me.state(State)
+    state.count += 1
+    yield
+    await asyncio.sleep(1)
+    state.count += 1
+    yield
+```
+
+For a more complete example, please refer to the [Async section of the Interactivity guide](./interactivity.md#async).
+
+???+ info "Always yield at the end of an async generator function"
+    Similar to a regular generator function, an async generator function must have a `yield` statement at the end of the event handler (or each return point), otherwise not all of your code will be executed.
 
 ## Patterns
 
@@ -50,7 +100,7 @@ def call_api():
 
 ### Boilerplate-free event handlers
 
-If you're building a form-like UI, it can be tedious to write a separate event handler for each form field. Instead, you can use this pattern:
+If you're building a form-like UI, it can be tedious to write a separate event handler for each form field. Instead, you can use this pattern which utilizes the `key` attribute that's available in most events and uses Python's built-in `setattr` function to dynamically update the state:
 
 ```py title="Boilerplate-free event handlers"
 def app():
@@ -87,7 +137,9 @@ def app():
     link_component("/2")
 ```
 
-The problem with this above example is that Mesop only stores the last event handler. This means that both instances of the link_component will refer to the last `on_click` instance which references the same `url` closure variable set to `"/2"`. This almost always produces the wrong behavior.
+The problem with this above example is that Mesop only stores the last event handler. This is because each event handler has the same id which means that Mesop cannot differentiate between the two instances of the same event handler.
+
+This means that both instances of the link_component will refer to the last `on_click` instance which references the same `url` closure variable set to `"/2"`. This almost always produces the wrong behavior.
 
 Instead, you will want to use the pattern of relying on the key in the event handler as demonstrated in the following example:
 
