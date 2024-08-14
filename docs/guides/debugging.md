@@ -22,7 +22,7 @@ Here's how you can use Chrome DevTools to debug your Mesop app:
 
 1. Open your Mesop app in Google Chrome.
 
-1. Right-click anywhere on the page and select "Inspect" or use the keyboard shortcut top open Chrome DevTools:
+1. Right-click anywhere on the page and select "Inspect" or use the keyboard shortcut to open Chrome DevTools:
     - Windows/Linux: Ctrl + Shift + I
     - macOS: Cmd + Option + I
 
@@ -45,9 +45,9 @@ Remember, while Mesop abstracts away much of the frontend complexity, using thes
 
 ## Debugging with VS Code
 
-VS Code is recomended for debugging your Mesop app, but you can also debug Mesop apps in other IDEs.
+VS Code is recommended for debugging your Mesop app, but you can also debug Mesop apps in other IDEs.
 
-**Pre-requisite:** ensure VS Code is downloaded.
+**Pre-requisite:** Ensure VS Code is downloaded.
 
 1. Install the [Python Debugger VS Code extension](https://marketplace.visualstudio.com/items?itemName=ms-python.debugpy).
 

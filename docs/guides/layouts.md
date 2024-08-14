@@ -135,6 +135,8 @@ def app():
 
 This is similar to the Grid Sidebar layout above, except on smaller screens, we will hide the sidebar. Try resizing the browser window and see how the UI changes.
 
+Learn more about responsive UI in the [viewport size docs](../api/viewport-size.md).
+
 ```python
 def app():
     is_desktop = me.viewport_size().width > 640

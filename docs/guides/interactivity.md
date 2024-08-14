@@ -71,7 +71,7 @@ You can use the `on_blur` event instead of `on_input` to only update the input v
 
 This is also more performant because it sends much fewer network requests.
 
-```py title="Bad example: setting the value and using on_input"
+```py title="Good example: setting the value and using on_input"
 @me.stateclass
 class State:
   input_value: str

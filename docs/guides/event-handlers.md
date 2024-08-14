@@ -25,7 +25,7 @@ When the counter function is called, it creates an instance of the button compon
 
 We don't actually need to serialize the entire event handler, rather we just need to compute a unique id for the event handler function.
 
-Because Mesop has a stateless architecture, we need a way of computing an id for the event handler function that's stable across Python runtimes. For example, the initial page may be rendered by one Python server, but another server may be used to respond to the user event. This stateless architecture allows Mesop apps to be fault tolerant and allows for easy scaling of the app.
+Because Mesop has a stateless architecture, we need a way of computing an id for the event handler function that's stable across Python runtimes. For example, the initial page may be rendered by one Python server, but another server may be used to respond to the user event. This stateless architecture allows Mesop apps to be fault-tolerant and enables simple scaling.
 
 ## Types of event handlers
 
@@ -41,7 +41,7 @@ def on_click(event: me.ClickEvent):
 
 ### Generator functions
 
-Python Generator functions are a powerful tool which allow you to `yield` multiple times in a single event handler. This allows you to render intermediate UI states.
+Python Generator functions are a powerful tool, which allow you to `yield` multiple times in a single event handler. This allows you to render intermediate UI states.
 
 ```py title="Generator function"
 def on_click(event: me.ClickEvent):
@@ -134,13 +134,13 @@ def update_state(event: me.InputBlurEvent):
   setattr(state, event.key, event.value)
 ```
 
-The downside with this approach is that you lose type-safety. Generally, defining a separate event handler, although more verbose, is easier to maintain.
+The downside of this approach is that you lose type safety. Generally, defining a separate event handler, although more verbose, is easier to maintain.
 
 ## Troubleshooting
 
 ### Avoid using closure variables in event handler
 
-One subtle mistake when building a reusable component is to have the event handler use a closure variable like the following example:
+One subtle mistake when building a reusable component is having the event handler use a closure variable, as shown in the following example:
 
 ```py title="Bad example of using closure variable"
 @me.component
