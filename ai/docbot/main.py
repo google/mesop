@@ -5,7 +5,7 @@ import urllib.parse
 from dataclasses import dataclass, field
 from typing import Generator, Literal
 
-from docs_index import ask
+from docs_index import NodeWithScore, ask, retrieve
 
 import mesop as me
 import mesop.labs as mel
@@ -125,6 +125,7 @@ class State:
   initial_input: str
   output: list[ChatMessage]
   citations: list[Citation]
+  intermediate_citations: list[Citation]
   in_progress: bool = False
   examples: list[str]
 
@@ -169,9 +170,18 @@ def on_click_submit(e: me.ClickEvent) -> Generator[None, None, None]:
 
 def on_input(e: me.InputEvent) -> Generator[None, None, None]:
   state = me.state(State)
+  if len(e.value) > 2:
+    nodes = retrieve(e.value)
+    citations = get_citations(nodes)
+    citation_by_breadcrumb = {
+      tuple(citation.breadcrumbs): citation for citation in citations
+    }
+    state.intermediate_citations = list(citation_by_breadcrumb.values())
+    yield
   if not e.value.endswith("\n"):
     return
   state.input = e.value
+
   yield from submit()
   me.focus_component(key=f"input-{len(state.output)}")
   yield
@@ -324,7 +334,7 @@ def chat(
       if title:
         me.text(title, type="headline-5", style=_STYLE_TITLE)
       with me.box(style=_STYLE_CHAT_BOX):
-        if not state.output:
+        if not state.output and not state.intermediate_citations:
           me.text(
             "Welcome to Mesop Docs Bot! Ask me anything about Mesop.",
             style=me.Style(
@@ -341,6 +351,27 @@ def chat(
           ):
             for example in state.examples:
               example_box(example)
+        if not state.output and state.intermediate_citations:
+          with me.box(
+            style=me.Style(
+              padding=me.Padding(top=16),
+              display="flex",
+              flex_direction="column",
+              gap=16,
+            ),
+          ):
+            for citation in state.intermediate_citations:
+              with citation_box(url=citation.url):
+                citation_content(
+                  Citation(
+                    url=citation.url,
+                    title=citation.title,
+                    breadcrumbs=citation.breadcrumbs,
+                    original_numbers=citation.original_numbers,
+                    content=citation.content,
+                    number=0,
+                  )
+                )
         for msg in state.output:
           with me.box(
             style=me.Style(
@@ -505,9 +536,10 @@ def citation_content(citation: Citation):
         align_items="start",
       )
     ):
-      me.text(
-        f"{citation.number}", style=me.Style(font_weight=500, font_size=18)
-      )
+      if citation.number:
+        me.text(
+          f"{citation.number}", style=me.Style(font_weight=500, font_size=18)
+        )
       me.icon(
         icon="description",
         style=me.Style(font_size=20, padding=me.Padding(top=3, left=3)),
@@ -553,9 +585,16 @@ def transform(
   message: str, history: list[ChatMessage]
 ) -> Generator[str, None, None]:
   response = ask(message)
+  citations = get_citations(response.source_nodes)
+
+  me.state(State).citations = citations
+  yield from response.response_gen
+
+
+def get_citations(source_nodes: list[NodeWithScore]) -> list[Citation]:
   citations: list[Citation] = []
 
-  for i, source_node in enumerate(response.source_nodes):
+  for i, source_node in enumerate(source_nodes):
     url: str = source_node.node.metadata.get("url", "")
     breadcrumbs = url.split("https://google.github.io/mesop/")[-1].split("/")
     title = source_node.node.metadata.get("title", "")
@@ -564,15 +603,17 @@ def transform(
     for line in content_lines[2:]:
       if line and not line.startswith("```"):
         break
-
-    fragment: str = (
-      "#:~:text="
-      + urllib.parse.quote(content_lines[1])
-      + ",-"
-      # Just take the first two words of the line to avoid
-      # mismatching (e.g. URLs).
-      + urllib.parse.quote(" ".join(line.split(" ")[:2]))
-    )
+    if len(content_lines) > 2:
+      fragment: str = (
+        "#:~:text="
+        + urllib.parse.quote(content_lines[1])
+        + ",-"
+        # Just take the first two words of the line to avoid
+        # mismatching (e.g. URLs).
+        + urllib.parse.quote(" ".join(line.split(" ")[:2]))
+      )
+    else:
+      fragment = ""
     citations.append(
       Citation(
         url=url + fragment,
@@ -581,9 +622,7 @@ def transform(
         number=i + 1,
       )
     )
-
-  me.state(State).citations = citations
-  yield from response.response_gen
+  return citations
 
 
 def get_citation_number(

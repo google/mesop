@@ -14,6 +14,7 @@ from llama_index.core import (
 from llama_index.core.node_parser import SentenceSplitter
 from llama_index.core.query_engine import CitationQueryEngine
 from llama_index.core.retrievers import QueryFusionRetriever
+from llama_index.core.schema import NodeWithScore as NodeWithScore
 from llama_index.embeddings.google import GeminiEmbedding
 from llama_index.llms.gemini import Gemini
 from llama_index.retrievers.bm25 import BM25Retriever
@@ -136,6 +137,7 @@ def build_or_load_index():
 if me.runtime().is_hot_reload_in_progress:
   print("Hot reload - skip building index!")
   query_engine = me._query_engine
+  bm25_retriever = me._bm25_retriever
 
 else:
   index, bm25_retriever = build_or_load_index()
@@ -172,6 +174,7 @@ else:
   # TODO: replace with proper mechanism for persisting objects
   # across hot reloads
   me._query_engine = query_engine
+  me._bm25_retriever = bm25_retriever
 
 
 NEWLINE = "\n"
@@ -179,3 +182,7 @@ NEWLINE = "\n"
 
 def ask(query: str):
   return query_engine.query(query)
+
+
+def retrieve(query: str):
+  return bm25_retriever.retrieve(query)
