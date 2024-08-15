@@ -25,8 +25,8 @@ export class InputComponent {
   @Input() style!: Style;
   private _config!: InputType;
   private inputSubject = new Subject<Event>();
-  private isComposingCount: number = 1;
-  private expectedIsComposingCount: number = 1;
+  private isComposingCount = 1;
+  private expectedIsComposingCount = 1;
   constructor(private readonly channel: Channel) {
     this.inputSubject
       .pipe(

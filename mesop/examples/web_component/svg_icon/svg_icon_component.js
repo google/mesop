@@ -1,6 +1,5 @@
 import {
   LitElement,
-  svg,
   html,
 } from 'https://cdn.jsdelivr.net/gh/lit/dist@3/core/lit-core.min.js';
 
@@ -8,10 +7,6 @@ export class SVGIconComponent extends LitElement {
   static properties = {
     svg: {type: String},
   };
-
-  constructor() {
-    super();
-  }
 
   render() {
     const span = document.createElement('span');

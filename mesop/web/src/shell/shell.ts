@@ -17,7 +17,6 @@ import {
   ResizeEvent,
   UiRequest,
   InitRequest,
-  ThemeMode,
   QueryParam,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 import {CommonModule} from '@angular/common';
@@ -219,7 +218,7 @@ export class Shell {
             );
           } else {
             throw new Error(
-              'Unhandled command: ' + command.getCommandCase().toString(),
+              `Unhandled command: ${command.getCommandCase().toString()}`,
             );
           }
         },

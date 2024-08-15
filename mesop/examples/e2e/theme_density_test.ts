@@ -25,5 +25,5 @@ test('theme density', async ({page}) => {
 });
 
 function hasThemeDensity(density: number) {
-  return document.body.classList.contains('theme-density-' + density);
+  return document.body.classList.contains(`theme-density-${density}`);
 }

@@ -51,7 +51,7 @@ export class Channel {
   private eventSource!: SSE;
   private initParams!: InitParams;
   private states: States = new States();
-  private stateToken: string = '';
+  private stateToken = '';
   private rootComponent?: ComponentProto;
   private status!: ChannelStatus;
   private componentConfigs: readonly ComponentConfig[] = [];

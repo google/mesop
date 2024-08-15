@@ -1,5 +1,4 @@
-import {getQueryParams, getQueryParamsForTesting} from './query_params';
-import {QueryParam} from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
+import {getQueryParamsForTesting} from './query_params';
 
 describe('getQueryParams', () => {
   it('should parse query parameters correctly', () => {

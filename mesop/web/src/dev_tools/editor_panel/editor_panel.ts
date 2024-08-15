@@ -13,7 +13,6 @@ import {
   FieldType,
   ComponentConfig,
   EditorField,
-  SourceCodeLocation,
   ComponentName,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 import {MatDialogModule, MatDialog} from '@angular/material/dialog';
