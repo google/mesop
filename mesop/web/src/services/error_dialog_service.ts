@@ -1,4 +1,4 @@
-import {Component, Inject, Injectable, Input} from '@angular/core';
+import {Component, Inject, Injectable} from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import {
   MAT_DIALOG_DATA,

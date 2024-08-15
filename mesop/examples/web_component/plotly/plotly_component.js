@@ -14,7 +14,7 @@ class PlotlyComponent extends LitElement {
   }
 
   renderPlot() {
-    var trace1 = {
+    const trace1 = {
       x: [1, 2, 3, 4, 5],
       y: [10, 15, 13, 17, 21],
       type: 'scatter',
@@ -23,7 +23,7 @@ class PlotlyComponent extends LitElement {
       name: 'Line 1',
     };
 
-    var trace2 = {
+    const trace2 = {
       x: [1, 2, 3, 4, 5],
       y: [16, 5, 11, 9, 8],
       type: 'scatter',
@@ -32,9 +32,9 @@ class PlotlyComponent extends LitElement {
       name: 'Line 2',
     };
 
-    var data = [trace1, trace2];
+    const data = [trace1, trace2];
 
-    var layout = {
+    const layout = {
       title: 'Simple Line Chart Example',
       xaxis: {
         title: 'X Axis',

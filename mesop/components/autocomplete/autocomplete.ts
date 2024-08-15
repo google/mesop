@@ -19,7 +19,7 @@ import {debounceTime, startWith} from 'rxjs/operators';
 import {AsyncPipe, CommonModule} from '@angular/common';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {FormControl, ReactiveFormsModule} from '@angular/forms';
 import {
   MatAutocompleteModule,
   MatAutocompleteSelectedEvent,

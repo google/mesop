@@ -1,12 +1,10 @@
-import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {
   Key,
   Style,
   Type,
-  UserEvent,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 import {LinkType} from 'mesop/mesop/components/link/link_jspb_proto_pb/mesop/components/link/link_pb';
-import {Channel} from '../../web/src/services/channel';
 import {formatStyle} from '../../web/src/utils/styles';
 
 @Component({

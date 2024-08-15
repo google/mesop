@@ -23,7 +23,6 @@ import {EditorService} from '../../services/editor_service';
 import {CommonModule} from '@angular/common';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {Channel} from '../../services/channel';
-import {isComponentNameEquals} from '../../utils/proto';
 
 const ROOT_NODE_TEXT = '<root>';
 

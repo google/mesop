@@ -1,4 +1,4 @@
-import {test, expect, Page} from '@playwright/test';
+import {test, expect} from '@playwright/test';
 
 test('web components - slot', async ({page}) => {
   await page.goto('/web_component/slot/slot_app');

@@ -20,7 +20,7 @@ const firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
-var uiConfig = {
+const uiConfig = {
   // TODO: change this to your Mesop page path.
   signInSuccessUrl: '/web_component/firebase_auth/firebase_auth_app',
   signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID],
@@ -29,13 +29,13 @@ var uiConfig = {
   // Terms of service url/callback.
   tosUrl: '<your-tos-url>',
   // Privacy policy url/callback.
-  privacyPolicyUrl: function () {
+  privacyPolicyUrl: () => {
     window.location.assign('<your-privacy-policy-url>');
   },
 };
 
 // Initialize the FirebaseUI Widget using Firebase.
-var ui = new firebaseui.auth.AuthUI(firebase.auth());
+const ui = new firebaseui.auth.AuthUI(firebase.auth());
 
 class FirebaseAuthComponent extends LitElement {
   static properties = {
@@ -65,7 +65,7 @@ class FirebaseAuthComponent extends LitElement {
           this.dispatchEvent(new MesopEvent(this.authChanged, ''));
         }
       },
-      function (error) {
+      (error) => {
         console.log(error);
       },
     );

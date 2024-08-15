@@ -1,4 +1,4 @@
-import {test, expect, Page} from '@playwright/test';
+import {test, expect} from '@playwright/test';
 
 test('query_param: on_load hook', async ({page}) => {
   await page.goto('/examples/query_params');
@@ -158,7 +158,7 @@ test('query_param: navigate to another page without query params', async ({
     .getByRole('button', {name: 'navigate to page 2 without query params'})
     .click();
 
-  await expect(page.getByText(`query_params(page_2)={}`)).toBeVisible();
+  await expect(page.getByText('query_params(page_2)={}')).toBeVisible();
   // This isn't flaky because the page has finished navigated since we're checking
   // the page text above.
   expect(new URL(page.url()).search).toEqual('');

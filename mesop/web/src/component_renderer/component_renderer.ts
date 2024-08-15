@@ -9,7 +9,6 @@ import {
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
-import {createCustomElement} from '@angular/elements';
 import {CommonModule} from '@angular/common';
 import {
   Component as ComponentProto,
@@ -35,7 +34,6 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {MatDividerModule} from '@angular/material/divider';
 import {formatStyle} from '../utils/styles';
-import {isComponentNameEquals} from '../utils/proto';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {TemplatePortal} from '@angular/cdk/portal';
 import {jsonParse} from '../utils/strict_types';

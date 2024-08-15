@@ -11,7 +11,8 @@
       "tools/**",
       "mesop/**/*.json",
       "scripts/**",
-      "**/esbuild*"
+      "**/esbuild*",
+      "**/venv/**"
     ]
   },
   "organizeImports": {
