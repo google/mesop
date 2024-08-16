@@ -33,7 +33,21 @@ def concat_refined_outputs():
       # Add a newline between files for better readability
       outfile.write("\n\n")
 
-  print(f"All refined outputs have been concatenated into {output_file}")
+    # Read from concat_demo.txt and append its content to the output file
+    concat_demo_path = "./gen/concat_demo.txt"
+    if os.path.exists(concat_demo_path):
+      with open(concat_demo_path, encoding="utf-8") as concat_demo_file:
+        outfile.write(
+          "I'm going to show you a few example Mesop apps that you can learn from:"
+        )
+        outfile.write(concat_demo_file.read())
+      print(f"Appended content from {concat_demo_path}")
+    else:
+      print(
+        f"Warning: {concat_demo_path} not found. Skipping append operation."
+      )
+
+    print(f"All refined outputs have been concatenated into {output_file}")
 
 
 if __name__ == "__main__":
