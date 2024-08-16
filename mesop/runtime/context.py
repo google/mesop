@@ -270,6 +270,8 @@ Did you forget to decorate your state class `{state.__name__}` with @stateclass?
       if result is not None:
         if isinstance(result, types.AsyncGeneratorType):
           yield from _run_async_generator(result)
+        elif isinstance(result, types.CoroutineType):
+          yield _run_coroutine(result)
         else:
           yield from result
       else:
@@ -287,6 +289,11 @@ def _run_async_generator(agen: types.AsyncGeneratorType[None, None]):
       yield loop.run_until_complete(agen.__anext__())
   except StopAsyncIteration:
     pass
+
+
+def _run_coroutine(coroutine: types.CoroutineType):
+  loop = _get_or_create_event_loop()
+  return loop.run_until_complete(coroutine)
 
 
 def _get_or_create_event_loop():

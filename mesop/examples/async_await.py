@@ -30,4 +30,3 @@ async def click_async(e: me.ClickEvent):
   me.state(State).val1, me.state(State).val2 = await asyncio.gather(
     val1_task, val2_task
   )
-  yield
