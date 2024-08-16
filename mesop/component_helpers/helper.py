@@ -364,7 +364,7 @@ def wrap_handler_with_event(func: Handler[E], actionType: Type[E]):
 
 
 def register_event_handler(
-  handler_fn: Callable[..., Any], event: Type[Any]
+  handler_fn: Callable[..., Any], event: Type[E]
 ) -> str:
   fn_id = compute_fn_id(handler_fn)
 
