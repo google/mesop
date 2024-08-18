@@ -1,0 +1,19 @@
+<div class="floating-editor-toolbar">
+  <textarea
+    placeholder="Type in the UI change you want..."
+    class="floating-editor-toolbar-textarea"
+    [(ngModel)]="prompt"
+    (keydown.enter)="onEnter($event)"
+  ></textarea>
+  @if (responseTime > 0) {
+  <div>
+    <span>{{responseTime}}s</span>
+  </div>
+  }
+  <button mat-icon-button class="send-button">
+    <mat-icon>send</mat-icon>
+  </button>
+  <button mat-icon-button class="frame-inspect-button">
+    <mat-icon>frame_inspect</mat-icon>
+  </button>
+</div>

@@ -1,0 +1,30 @@
+.floating-editor-toolbar {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: absolute;
+  bottom: 28px;
+  width: 80%;
+  height: 48px;
+  left: calc(10%);
+  z-index: 9;
+  background: var(--sys-surface-container-highest);
+  border-radius: 16px;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+}
+
+.floating-editor-toolbar-textarea {
+  border: 0;
+  background: inherit;
+  color: var(--sys-on-primary-container);
+  &::placeholder {
+    color: var(--sys-on-surface-variant);
+  }
+  height: 30px;
+  width: 100%;
+  outline: none;
+  resize: none;
+  overflow: hidden;
+  margin-top: 4px;
+  font-size: 0.9rem;
+}

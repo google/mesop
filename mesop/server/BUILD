@@ -33,6 +33,7 @@ py_library(
                "//mesop/component_helpers",
                "//mesop/editor",
                "//mesop/events",
+               "//mesop/llm",
                "//mesop/protos:ui_py_pb2",
                "//mesop/utils",
                "//mesop/warn",
