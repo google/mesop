@@ -32,3 +32,4 @@ pandas
 
 # Deps for llm:
 google-generativeai
+openai

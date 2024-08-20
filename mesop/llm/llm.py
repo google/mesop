@@ -1,8 +1,11 @@
 import datetime
 import os
+import re
+from os import getenv
 
 import google.generativeai as genai
 from google.generativeai import caching
+from openai import OpenAI
 
 from mesop.utils.runfiles import get_runfile_location
 
@@ -34,18 +37,79 @@ Make sure to remember these rules when making modifications:
 10. Implement proper alignment and grouping of related elements
 Remember to follow Mesop best practices and use only the components and styles explicitly mentioned in the documentation.
 
-8. Only output the python code.
+I want the output to be Python code using the following diff format with separate chunks for original and updated code.
+Existing app code:
+```
+[APP_CODE]
+```
 
-Here is is the code for the app:
+User instructions:
+[USER_INSTRUCTIONS]
 
+Diff output:
+<<<<<<< ORIGINAL
+[ORIGINAL_CODE]
+=======
+[UPDATED_CODE]
+>>>>>>> UPDATED
+
+Here's an example:
+
+Existing app code:
+```
+import mesop as me
+import mesop.labs as mel
+
+@me.stateclass
+class State:
+    count: int = 0
+
+def increment(e: me.ClickEvent):
+    state = me.state(State)
+    state.count += 1
+
+@me.page()
+def counter_page():
+    state = me.state(State)
+    me.text(f"Count: {state.count}")
+    me.button("Increment", on_click=increment, type="flat")
+```
+
+User instructions:
+Add a decrement button
+
+
+Diff output:
+<<<<<<< ORIGINAL
+@me.page()
+def counter_page():
+    state = me.state(State)
+    me.text(f"Count: {state.count}")
+    me.button("Increment", on_click=increment, type="flat")
+=======
+def decrement(e: me.ClickEvent):
+    state = me.state(State)
+    state.count -= 1
+
+@me.page()
+def counter_page():
+    state = me.state(State)
+    me.text(f"Count: {state.count}")
+    me.button("Increment", on_click=increment, type="flat")
+    me.button("Decrement", on_click=decrement, type="flat")
+>>>>>>> UPDATED
+
+OK, now that I've shown you an example, let's do this for real.
+
+Existing app code:
 ```
 <APP_CODE>
 ```
 
-Here is a description of the changes I want:
-
+User instructions:
 <APP_CHANGES>
 
+Diff output:
 """.strip()
 
 generation_config = {
@@ -114,7 +178,28 @@ def create_cache() -> caching.CachedContent:
   )
 
 
+def apply_patch(original_code: str, llm_output: str) -> str:
+  # Extract the diff content
+  diff_pattern = r"<<<<<<< ORIGINAL(.*?)=======\n(.*?)>>>>>>> UPDATED"
+  matches = re.findall(diff_pattern, llm_output, re.DOTALL)
+  patched_code = original_code
+  if len(matches) == 0:
+    print("[WARN] No diff found:", llm_output)
+  for original, updated in matches:
+    original = original.strip()
+    updated = updated.strip()
+
+    # Replace the original part with the updated part
+    patched_code = patched_code.replace(original, updated)
+
+  return patched_code
+
+
 def adjust_mesop_app(code: str, msg: str) -> str:
+  return adjust_mesop_app_openrouter(code, msg)
+
+
+def adjust_mesop_app_gemini(code: str, msg: str) -> str:
   model = make_model()
   response = model.generate_content(
     REVISE_APP_BASE_PROMPT.replace("<APP_CODE>", code).replace(
@@ -124,4 +209,67 @@ def adjust_mesop_app(code: str, msg: str) -> str:
     safety_settings=safety_settings,
     generation_config=generation_config,
   )
-  return response.text.strip().removeprefix("```python").removesuffix("```")
+
+  llm_output = response.text.strip()
+  print("[INFO] LLM output:", llm_output)
+  patched_code = apply_patch(code, llm_output)
+
+  return patched_code
+
+
+# open router client
+client = OpenAI(
+  base_url="https://openrouter.ai/api/v1",
+  api_key=getenv("OPEN_ROUTER_API_KEY"),
+)
+
+# Fireworks client
+# client = OpenAI(
+#     base_url = "https://api.fireworks.ai/inference/v1",
+#     api_key=getenv("FIREWORKS_API_KEY"),
+# )
+
+# Groq client
+# client = OpenAI(
+#     base_url="https://api.groq.com/openai/v1",
+#     api_key=getenv("GROQ_API_KEY")
+# )
+
+# ollama client
+# client = OpenAI(
+#     base_url = 'http://localhost:11434/v1',
+#     api_key='ollama', # required, but unused
+# )
+
+# together client
+# client = OpenAI(
+#   api_key=os.environ.get("TOGETHER_API_KEY"),
+#   base_url="https://api.together.xyz/v1",
+# )
+
+
+def adjust_mesop_app_openrouter(code: str, msg: str) -> str:
+  completion = client.chat.completions.create(
+    #  model = "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+    #  model = "deepseek-coder-v2",
+    #  model="llama-3.1-70b-versatile",
+    model="deepseek/deepseek-coder",
+    max_tokens=10_000,
+    messages=[
+      {
+        "role": "system",
+        "content": SYSTEM_INSTRUCTION,
+      },
+      {
+        "role": "user",
+        "content": REVISE_APP_BASE_PROMPT.replace("<APP_CODE>", code).replace(
+          "<APP_CHANGES>", msg
+        ),
+      },
+    ],
+  )
+  print("[INFO] LLM output:", completion.choices[0].message.content)
+  llm_output = completion.choices[0].message.content
+  patched_code = apply_patch(code, llm_output)
+
+  return patched_code

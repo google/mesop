@@ -88,6 +88,10 @@ THIRD_PARTY_PY_GOOGLE_GENERATIVEAI = [
     requirement("google-generativeai"),
 ]
 
+THIRD_PARTY_PY_OPENAI = [
+    requirement("openai"),
+]
+
 THIRD_PARTY_PY_MATPLOTLIB = [
     requirement("matplotlib"),
 ]
