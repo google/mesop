@@ -26,7 +26,6 @@ export class UploaderComponent {
   @Input() key!: Key;
   @Input() style!: Style;
   private _config!: UploaderType;
-  private _filename = '';
 
   constructor(private readonly channel: Channel) {}
 
