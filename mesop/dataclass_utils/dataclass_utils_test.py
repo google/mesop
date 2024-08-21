@@ -192,6 +192,18 @@ def test_serialize_bytes(input_bytes, expected_json):
   assert serialized_dataclass == expected_json
 
 
+@pytest.mark.parametrize(
+  "input_set, expected_json",
+  [
+    ({1, 2, 3}, '{"data": {"__python.set__": [1, 2, 3]}}'),
+    (set(), '{"data": {"__python.set__": []}}'),
+  ],
+)
+def test_serialize_set(input_set, expected_json):
+  serialized_dataclass = serialize_dataclass(WithBytes(data=input_set))
+  assert serialized_dataclass == expected_json
+
+
 def test_update_dataclass_from_json_nested_dataclass():
   b = B()
   update_dataclass_from_json(b, """{"c": {"val": "<init>"}}""")
@@ -277,6 +289,30 @@ def test_update_dataclass_with_bytes():
   bytes_state = WithBytes()
   update_dataclass_from_json(bytes_state, serialized_dataclass)
   assert bytes_state.data == bytes_data
+
+
+def test_update_dataclass_with_set():
+  @dataclass
+  class StateWithSet:
+    data: set = field(default_factory=set)
+
+  serialized_dataclass = serialize_dataclass(StateWithSet(data={1, 2, 4}))
+  set_state = StateWithSet()
+  update_dataclass_from_json(set_state, serialized_dataclass)
+  assert set_state.data == {1, 2, 4}
+
+
+def test_update_dataclass_with_nested_set():
+  @dataclass
+  class StateWithSet:
+    data: list[set] = field(default_factory=list)
+
+  serialized_dataclass = serialize_dataclass(
+    StateWithSet(data=[{1, 2, 4}, {5, 6}])
+  )
+  set_state = StateWithSet()
+  update_dataclass_from_json(set_state, serialized_dataclass)
+  assert set_state.data == [{1, 2, 4}, {5, 6}]
 
 
 @dataclass_with_defaults
