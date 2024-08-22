@@ -5,7 +5,6 @@ import urllib.parse
 from eval_lib import check_file_is_runnable, run_eval
 from llm_lib import apply_patch
 
-# Global variables to keep track of file statistics
 file_stats: dict[str, list[str]] = {
   "error": [],
   "success": [],
@@ -34,7 +33,6 @@ def process_directory(directory_path: str):
     len(segments) == 2
   ), f"Expected dirname to have two segments, but got: {dirname}"
 
-  # Check if the second segment is "no_source"
   if segments[1] == "no_source":
     content = ""
   else:
@@ -42,17 +40,14 @@ def process_directory(directory_path: str):
     with open(urllib.parse.unquote(segments[1])) as f:
       content = f.read()
 
-  # Apply the patch
   patch_result = apply_patch(original_code=content, patch=patch)
 
   if patch_result.has_error:
-    # write to error.txt
     with open(os.path.join(directory_path, "error.txt"), "w") as f:
       f.write(patch_result.result)
     print("Patch has error:", patch_result.result)
     file_stats["error"].append(diff_file_path)
   else:
-    # Write the patched content to a new .py file
     output_file = os.path.join(directory_path, "patched.py")
     with open(output_file, "w") as f:
       f.write(patch_result.result)

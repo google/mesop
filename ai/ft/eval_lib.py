@@ -22,7 +22,6 @@ def run_eval(
     if os.path.isdir(os.path.join(input_dir, d))
   ]
 
-  # Process directories in parallel
   with concurrent.futures.ThreadPoolExecutor() as executor:
     futures = [
       executor.submit(process_directory, os.path.join(input_dir, directory))
@@ -84,7 +83,11 @@ def check_file_is_executable(file_path: str, file_stats: dict[str, list[str]]):
   )
   if result.status_code != 200:
     file_stats["error"].append(file_path)
-    # write to error.txt
-    with open(os.path.join(os.path.dirname(file_path), "error.txt"), "w") as f:
+    error_file_path = os.path.join(os.path.dirname(file_path), "error.txt")
+    with open(error_file_path, "a") as f:
+      f.write(f"\nExecution error in {file_path}:\n")
       f.write(result.text)
-    print("Could not execute:", file_path, result.text)
+      f.write("\n\n")
+    print(
+      f"Could not execute: {file_path}. Error details appended to {error_file_path}"
+    )

@@ -180,14 +180,6 @@ def adjust_mesop_app_gemini(code: str, msg: str, model: str) -> str:
   return llm_output
 
 
-#   patched_code = apply_patch(code, llm_output)
-
-#   return patched_code
-
-
-# open router client
-
-
 # Fireworks client
 # client = OpenAI(
 #     base_url = "https://api.fireworks.ai/inference/v1",
@@ -241,9 +233,6 @@ def adjust_mesop_app_openai_client(
   code: str, msg: str, client: OpenAI, model: str
 ) -> str:
   completion = client.chat.completions.create(
-    #  model = "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
-    #  model = "deepseek-coder-v2",
-    #  model="llama-3.1-70b-versatile",
     model=model,
     max_tokens=10_000,
     messages=[
@@ -262,8 +251,3 @@ def adjust_mesop_app_openai_client(
   print("[INFO] LLM output:", completion.choices[0].message.content)
   llm_output = completion.choices[0].message.content
   return llm_output
-
-
-#   patched_code = apply_patch(code, llm_output)
-
-#   return patched_code

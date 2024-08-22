@@ -3,7 +3,6 @@ import os
 from eval_lib import check_file_is_runnable, run_eval
 from llm_lib import apply_patch
 
-# Global variables to keep track of file statistics
 file_stats: dict[str, list[str]] = {
   "error": [],
 }
@@ -31,17 +30,14 @@ def process_directory(directory_path: str):
     with open(SOURCE_PY_PATH) as f:
       content = f.read()
 
-  # Apply the patch
   patch_result = apply_patch(original_code=content, patch=patch)
 
   if patch_result.has_error:
-    # write to error.txt
     with open(os.path.join(directory_path, "error.txt"), "w") as f:
       f.write(patch_result.result)
     print("Patch has error:", patch_result.result)
     file_stats["error"].append(diff_file_path)
   else:
-    # Write the patched content to a new .py file
     output_file = os.path.join(directory_path, "patched.py")
     with open(output_file, "w") as f:
       f.write(patch_result.result)
