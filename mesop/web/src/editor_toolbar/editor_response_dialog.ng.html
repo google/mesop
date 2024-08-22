@@ -1,0 +1,12 @@
+<h3 mat-dialog-title>Mesop Editor Response</h3>
+<mat-dialog-content class="mat-typography">
+  <div>{{ data.response.message }}</div>
+  <mesop-code-mirror
+    [beforeCode]="data.response.beforeCode"
+    [afterCode]="data.response.afterCode"
+  ></mesop-code-mirror>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>OK</button>
+  <button mat-button [mat-dialog-close]="false">Cancel</button>
+</mat-dialog-actions>

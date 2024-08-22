@@ -202,6 +202,8 @@ body {
   // Use system font.
   font-family: var(--default-font-family);
   -webkit-font-smoothing: antialiased;
+
+  --mat-dialog-container-max-width: calc(90vw);
 }
 
 * {

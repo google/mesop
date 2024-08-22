@@ -1,6 +1,7 @@
 <mat-sidenav-container class="container">
   <mat-sidenav-content #sidenavContent class="content">
     <mesop-shell></mesop-shell>
+    <mesop-editor-toolbar></mesop-editor-toolbar>
     <div #dragHandle class="resize-handle" [hidden]="!showDevTools()"></div>
     <div class="editor-button-container">
       <button class="editor-button" mat-icon-button (click)="toggleDevTools()">

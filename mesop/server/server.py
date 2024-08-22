@@ -1,4 +1,6 @@
 import base64
+import inspect
+import json
 import secrets
 import time
 import urllib.parse as urlparse
@@ -11,6 +13,7 @@ from mesop.component_helpers import diff_component
 from mesop.editor.component_configs import get_component_configs
 from mesop.events import LoadEvent
 from mesop.exceptions import format_traceback
+from mesop.llm import llm
 from mesop.runtime import runtime
 from mesop.server.config import app_config
 from mesop.server.constants import WEB_COMPONENTS_PATH_SEGMENT
@@ -261,6 +264,72 @@ def configure_flask_app(
 
   if not prod_mode:
 
+    @flask_app.route("/__editor__/page-commit", methods=["POST"])
+    def page_commit() -> Response:
+      check_editor_access()
+      # Parse the request body as JSON
+      try:
+        data = request.get_json()
+      except json.JSONDecodeError:
+        return Response("Invalid JSON format", status=400)
+      code = data.get("code")
+      path = data.get("path")
+      page_config = runtime().get_page_config(path=path)
+      module = inspect.getmodule(page_config.page_fn)
+      module_file_path = module.__file__
+      with open(module_file_path, "w") as file:
+        file.write(code)
+
+      # TODO: Process the request data
+      # For now, we'll just return a simple JSON response
+      response_data = {"message": "Page commit successful"}
+      return Response(
+        json.dumps(response_data), status=200, mimetype="application/json"
+      )
+
+    @flask_app.route("/__editor__/page-generate", methods=["POST"])
+    def page_generate() -> Response:
+      check_editor_access()
+      # Parse the request body as JSON
+      try:
+        data = request.get_json()
+      except json.JSONDecodeError:
+        return Response("Invalid JSON format", status=400)
+      if not data:
+        return Response("Invalid JSON data", status=400)
+
+      prompt = data.get("prompt")
+      if not prompt:
+        return Response("Missing 'prompt' in JSON data", status=400)
+
+      path = data.get("path")
+      page_config = runtime().get_page_config(path=path)
+
+      module = inspect.getmodule(page_config.page_fn)
+      if not module:
+        return Response("Could not retrieve module source code.", status=500)
+      with open(module.__file__) as file:
+        source_code = file.read()
+      print(f"Source code of module {module.__name__}:")
+
+      # TODO: Process the prompt and path as needed
+      # For now, we'll just return them as part of the response
+      # Process the prompt using an AI model or other logic here
+      # For this example, we'll just create a simple JSON response
+      gen_code = llm.adjust_mesop_app(msg=prompt, code=source_code)
+
+      response_data = {
+        "prompt": prompt,
+        "path": path,
+        "beforeCode": source_code,
+        "afterCode": gen_code,
+        "message": "Prompt processed successfully",
+      }
+
+      return Response(
+        json.dumps(response_data), status=200, mimetype="application/json"
+      )
+
     @flask_app.route("/__hot-reload__")
     def hot_reload() -> Response:
       counter = int(request.args["counter"])
@@ -273,6 +342,19 @@ def configure_flask_app(
       return response
 
   return flask_app
+
+
+def check_editor_access():
+  # In the future, check for a client side token
+  # IF not coming from localhost...
+  #
+  # Prevent accidental usages of editor mode outside of
+  # one's local computer
+  if request.remote_addr not in LOCALHOSTS:
+    abort(403)  # Throws a Forbidden Error
+  # Visual editor should only be enabled in debug mode.
+  if not runtime().debug_mode:
+    abort(403)  # Throws a Forbidden Error
 
 
 def serialize(response: pb.UiResponse) -> str:
