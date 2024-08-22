@@ -26,7 +26,6 @@ export class UploaderComponent {
   @Input() key!: Key;
   @Input() style!: Style;
   private _config!: UploaderType;
-  private _filename = '';
 
   constructor(private readonly channel: Channel) {}
 
@@ -46,10 +45,6 @@ export class UploaderComponent {
     return this._config.getAcceptedFileTypeList().join(',');
   }
 
-  filename(): string {
-    return this._filename;
-  }
-
   async onFileSelected(event: Event) {
     const target = event.target as HTMLInputElement;
     const files = target.files as FileList;
@@ -65,12 +60,6 @@ export class UploaderComponent {
       uploaded_file.setMimeType(files[i].type);
       uploaded_file.setContents(new Uint8Array(buffer));
       uploadEvent.addFile(uploaded_file);
-
-      if (i === 0) {
-        this._filename = files[i].name;
-      } else {
-        this._filename = 'Multiple files selected.';
-      }
     }
 
     const userEvent = new UserEvent();
