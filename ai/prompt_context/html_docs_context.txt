@@ -28,10 +28,10 @@
 # ../../site/blog/2023/12/25/hello-mesop/index.html
 # ../../site/blog/archive/2024/index.html
 # ../../site/blog/archive/2023/index.html
-../../site/web-components/index.html
-../../site/web-components/troubleshooting/index.html
-../../site/web-components/quickstart/index.html
-../../site/web-components/api/index.html
+# ../../site/web-components/index.html
+# ../../site/web-components/troubleshooting/index.html
+# ../../site/web-components/quickstart/index.html
+# ../../site/web-components/api/index.html
 ../../site/components/index.html
 ../../site/components/uploader/index.html
 ../../site/components/video/index.html
@@ -65,28 +65,28 @@
 ../../site/components/select/index.html
 ../../site/components/icon/index.html
 ../../site/components/badge/index.html
-../../site/getting-started/installing/index.html
+# ../../site/getting-started/installing/index.html
 ../../site/getting-started/quickstart/index.html
 ../../site/getting-started/core-concepts/index.html
-../../site/theme/partials/search.html
-../../site/theme/partials/header.html
-../../site/guides/labs/index.html
-../../site/guides/auth/index.html
-../../site/guides/debugging/index.html
+# ../../site/theme/partials/search.html
+# ../../site/theme/partials/header.html
+# ../../site/guides/labs/index.html
+# ../../site/guides/auth/index.html
+# ../../site/guides/debugging/index.html
 ../../site/guides/interactivity/index.html
-../../site/guides/testing/index.html
+# ../../site/guides/testing/index.html
 ../../site/guides/theming/index.html
 ../../site/guides/layouts/index.html
 ../../site/guides/state-management/index.html
-../../site/guides/deployment/index.html
+# ../../site/guides/deployment/index.html
 ../../site/guides/multi-pages/index.html
-../../site/guides/performance/index.html
-../../site/guides/web-security/index.html
+# ../../site/guides/performance/index.html
+# ../../site/guides/web-security/index.html
 ../../site/guides/event-handlers/index.html
 ../../site/api/viewport-size/index.html
 ../../site/api/page/index.html
 ../../site/api/query-params/index.html
-../../site/api/config/index.html
+# ../../site/api/config/index.html
 ../../site/api/style/index.html
 ../../site/api/commands/navigate/index.html
 ../../site/api/commands/scroll-into-view/index.html
