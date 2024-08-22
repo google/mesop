@@ -16,6 +16,7 @@ from mesop.exceptions import MesopDeveloperException, MesopException
 _PANDAS_OBJECT_KEY = "__pandas.DataFrame__"
 _DATETIME_OBJECT_KEY = "__datetime.datetime__"
 _BYTES_OBJECT_KEY = "__python.bytes__"
+_SET_OBJECT_KEY = "__python.set__"
 _UPLOADED_FILE_OBJECT_KEY = "__mesop.UploadedFile__"
 _DIFF_ACTION_DATA_FRAME_CHANGED = "data_frame_changed"
 _DIFF_ACTION_UPLOADED_FILE_CHANGED = "mesop_uploaded_file_changed"
@@ -192,6 +193,9 @@ class MesopJSONEncoder(json.JSONEncoder):
     if isinstance(obj, bytes):
       return {_BYTES_OBJECT_KEY: base64.b64encode(obj).decode("utf-8")}
 
+    if isinstance(obj, set):
+      return {_SET_OBJECT_KEY: list(obj)}
+
     if is_dataclass(obj):
       return asdict(obj)
 
@@ -222,6 +226,9 @@ def decode_mesop_json_state_hook(dct):
 
   if _BYTES_OBJECT_KEY in dct:
     return base64.b64decode(dct[_BYTES_OBJECT_KEY])
+
+  if _SET_OBJECT_KEY in dct:
+    return set(dct[_SET_OBJECT_KEY])
 
   if _UPLOADED_FILE_OBJECT_KEY in dct:
     return UploadedFile(
@@ -332,8 +339,11 @@ def diff_state(state1: Any, state2: Any) -> str:
       for path, diff in differences[_DIFF_ACTION_UPLOADED_FILE_CHANGED].items()
     ]
 
-  return json.dumps(
-    Delta(differences, always_include_values=True).to_flat_dicts()
-    + custom_actions,
-    cls=MesopJSONEncoder,
-  )
+  # Handle the set case which will have a modified path after being JSON encoded.
+  diffs = []
+  for action in Delta(differences, always_include_values=True).to_flat_dicts():
+    if action["action"].startswith("set_item_"):
+      action["path"] = action["path"] + ["__python.set__"]
+    diffs.append(action)
+
+  return json.dumps(diffs + custom_actions, cls=MesopJSONEncoder)

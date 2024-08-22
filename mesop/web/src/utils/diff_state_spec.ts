@@ -413,4 +413,37 @@ describe('applyStateDiff functionality', () => {
       }),
     );
   });
+
+  it('applies updates to sets', () => {
+    const state1 = JSON.stringify({
+      data: {
+        '__python.set__': [1, 3, 5],
+      },
+    });
+    const diff = JSON.stringify([
+      {
+        path: ['data', '__python.set__'],
+        action: 'set_item_added',
+        value: 4,
+      },
+      {
+        path: ['data', '__python.set__'],
+        action: 'set_item_removed',
+        value: 1,
+      },
+      {
+        path: ['data', '__python.set__'],
+        action: 'set_item_added',
+        value: 7,
+      },
+    ]);
+
+    expect(applyStateDiff(state1, diff)).toBe(
+      JSON.stringify({
+        data: {
+          '__python.set__': [3, 5, 4, 7],
+        },
+      }),
+    );
+  });
 });

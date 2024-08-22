@@ -17,6 +17,9 @@ from mesop.examples.testing import (
   minimal_chat as minimal_chat,
 )
 from mesop.examples.testing import (
+  set_serialize as set_serialize,
+)
+from mesop.examples.testing import (
   text_to_text as text_to_text,
 )
 from mesop.examples.testing import (

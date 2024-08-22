@@ -81,6 +81,8 @@ const STATE_DIFF_DATA_FRAME_CHANGED = 'data_frame_changed';
 const STATE_DIFF_UPLOADED_FILE_CHANGED = 'mesop_uploaded_file_changed';
 const STATE_DIFF_ITERABLE_ITEM_REMOVED = 'iterable_item_removed';
 const STATE_DIFF_ITERABLE_ITEM_ADDED = 'iterable_item_added';
+const STATE_DIFF_SET_ITEM_REMOVED = 'set_item_removed';
+const STATE_DIFF_SET_ITEM_ADDED = 'set_item_added';
 const STATE_DIFF_DICT_ITEM_REMOVED = 'dictionary_item_removed';
 const STATE_DIFF_DICT_ITEM_ADDED = 'dictionary_item_added';
 
@@ -125,6 +127,10 @@ export function applyStateDiff(stateJson: string, diffJson: string): string {
       removeObjectValue(root, row.path);
     } else if (row.action === STATE_DIFF_ITERABLE_ITEM_ADDED) {
       addArrayValue(root, row.path, row.value);
+    } else if (row.action === STATE_DIFF_SET_ITEM_ADDED) {
+      addSetValue(root, row.path, row.value);
+    } else if (row.action === STATE_DIFF_SET_ITEM_REMOVED) {
+      removeSetValue(root, row.path, row.value);
     }
   }
 
@@ -175,6 +181,53 @@ function removeArrayValue(root: object, path: (string | number)[]) {
       // @ts-ignore: Ignore type
       objectSegment.splice(path[i], 1);
     } else {
+      // @ts-ignore: Ignore type
+      objectSegment = objectSegment[path[i]];
+    }
+  }
+}
+
+// Adds item from the set at path.
+function addSetValue(root: object, path: (string | number)[], value: any) {
+  let objectSegment = root;
+  for (let i = 0; i < path.length; ++i) {
+    if (i + 1 === path.length) {
+      // @ts-ignore: Ignore type
+      objectSegment[path[i]].push(value);
+    } else {
+      // Edge case where the array does not exist yet, so we need to create an array
+      // before we can append.
+      //
+      // @ts-ignore: Ignore type
+      if (objectSegment[path[i]] === undefined && i + 2 === path.length) {
+        // @ts-ignore: Ignore type
+        objectSegment[path[i]] = [];
+      }
+      // @ts-ignore: Ignore type
+      objectSegment = objectSegment[path[i]];
+    }
+  }
+}
+
+// Removes item from the set at path.
+function removeSetValue(root: object, path: (string | number)[], value: any) {
+  let objectSegment = root;
+  for (let i = 0; i < path.length; ++i) {
+    if (i + 1 === path.length) {
+      // @ts-ignore: Ignore type
+      const set = new Set(objectSegment[path[i]]);
+      set.delete(value);
+      // @ts-ignore: Ignore type
+      objectSegment[path[i]] = [...set];
+    } else {
+      // Edge case where the array does not exist yet, so we need to create an array
+      // before we can append.
+      //
+      // @ts-ignore: Ignore type
+      if (objectSegment[path[i]] === undefined && i + 2 === path.length) {
+        // @ts-ignore: Ignore type
+        objectSegment[path[i]] = [];
+      }
       // @ts-ignore: Ignore type
       objectSegment = objectSegment[path[i]];
     }

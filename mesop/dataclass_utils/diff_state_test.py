@@ -437,19 +437,30 @@ def test_diff_uploaded_file_same_no_diff():
   assert json.loads(diff_state(s1, s2)) == []
 
 
-# The diff will pass, but the Mesop JSON serializer currently fails on sets in state class.
-# See https://github.com/google/mesop/issues/387
 def test_diff_set():
   @dataclass
   class C:
     val1: set[int] = field(default_factory=lambda: {1, 2, 3})
 
   s1 = C()
-  s2 = C(val1={1})
+  s2 = C(val1={1, 5})
 
   assert json.loads(diff_state(s1, s2)) == [
-    {"path": ["val1"], "value": 2, "action": "set_item_removed"},
-    {"path": ["val1"], "value": 3, "action": "set_item_removed"},
+    {
+      "path": ["val1", "__python.set__"],
+      "value": 2,
+      "action": "set_item_removed",
+    },
+    {
+      "path": ["val1", "__python.set__"],
+      "value": 3,
+      "action": "set_item_removed",
+    },
+    {
+      "path": ["val1", "__python.set__"],
+      "value": 5,
+      "action": "set_item_added",
+    },
   ]
 
 
@@ -499,17 +510,17 @@ def test_diff_dates():
 
   assert json.loads(diff_state(s1, s2)) == [
     {
-      "path": ["val1"],
+      "path": ["val1", "__python.set__"],
       "value": {"__datetime.datetime__": "2024-12-05T00:00:00+05:30"},
       "action": "set_item_added",
     },
     {
-      "path": ["val1"],
+      "path": ["val1", "__python.set__"],
       "value": {"__datetime.datetime__": "1972-02-02T00:00:00+00:00"},
       "action": "set_item_added",
     },
     {
-      "path": ["val1"],
+      "path": ["val1", "__python.set__"],
       "value": {"__datetime.datetime__": "2005-10-12T00:00:00-05:00"},
       "action": "set_item_added",
     },
