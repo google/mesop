@@ -8,19 +8,19 @@ import requests
 
 import mesop as me
 
-FILE_PATH2 = "outputs/deepseek/r3"
-
 DEFAULT_URL = "http://localhost:8080"
 
 
 @me.stateclass
 class State:
-  dirs: list[str]
-  stats: dict[str, Any]
-  # Query param set
+  # Set by query params
   golden: bool
   model: str
   run_name: str
+
+  # Others
+  dirs: list[str]
+  stats: dict[str, Any]
 
   selected_dir_path: str
 
@@ -38,7 +38,6 @@ def on_load(e: me.LoadEvent):
   else:
     state.model = me.query_params["model"]
     state.run_name = me.query_params["run_name"]
-    # Read all directories in FILE_PATH
     file_path = get_file_path()
   stats_path = os.path.join(file_path, "stats.json")
   with open(stats_path) as f:
@@ -48,8 +47,6 @@ def on_load(e: me.LoadEvent):
     for d in os.listdir(file_path)
     if os.path.isdir(os.path.join(file_path, d))
   ]
-
-  # Store the directories in the state for later use
 
   state.dirs = dirs
 
@@ -140,19 +137,12 @@ def dir_row(dir: str):
   else:
     source_path = os.path.join("goldens", dir, "source.py")
     source_file = str(os.path.exists(source_path))
-
-    # if os.path.exists(source_path):
-    #   with open(source_path) as f:
-    #     source_file = f.read()
-    # else:
-    #   source_file = ""
     with open(os.path.join("goldens", dir, "prompt.txt")) as f:
       prompt = f.read()
     root_dir = "./goldens"
   dir_path = os.path.join(root_dir, dir)
-  # check if error file exists
-  error_file_path = os.path.join(root_dir, dir, "error.txt")
 
+  error_file_path = os.path.join(root_dir, dir, "error.txt")
   has_error = os.path.exists(error_file_path)
   me.text(prompt)
   me.text(source_file)
@@ -173,11 +163,6 @@ def dir_row(dir: str):
     file_link(text="patched.py", path=patched_path)
     if has_error:
       file_link(text="error.txt", path=error_file_path)
-  # me.link(
-  #   text="patched.py",
-  #   open_in_new_tab=True,
-  #   url="file:///users/will/Documents/GitHub/mesop/ai/ft/outputs/deepseek/r3/Create%2520a%2520text%2520to%2520image%2520UI__no_source/diff.txt",
-  # )
 
 
 def file_link(*, text: str, path: str):
@@ -223,7 +208,6 @@ def error_action_cell(*, has_error: bool, error_file_path: str, dir_path: str):
     if has_error:
       with open(error_file_path) as f:
         error_text = f.read()
-      # me.button(error_text, color="warn")
       me.text(
         error_text[:30],
         style=me.Style(

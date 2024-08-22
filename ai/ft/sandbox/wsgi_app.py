@@ -98,10 +98,8 @@ def create_app(
       print(f"Created new module: {new_module.name}")
 
       # Create a new page with the code to run
-      # We expect `@me.page()` here for this to work.
       code = base64.urlsafe_b64decode(param)
       code = code.decode("utf-8")
-      # Extract path="{VAR}"
       path_match = re.search(r'path="([^"]+)"', code)
       if path_match:
         path = path_match.group(1)
@@ -136,41 +134,16 @@ def create_app(
       print(f"Registered modules to delete: {registered_modules_to_delete}")
       registered_modules -= registered_modules_to_delete
 
-      # print("Starting manual hot reload")
-      # reset_runtime()
       for module in registered_modules:
         print(f"Executing module: {module.name}")
         execute_module(
           module_path=make_path_absolute(f"{module.name}.py"),
           module_name=module.name,
         )
-      # hot_reload_finished()
-      # print("Pages", runtime()._path_to_page_config)
-      # print("Hot reload finished successfully")
 
     except Exception as e:
       print(f"Error occurred: {e!s}")
-      # print("Starting error recovery process")
-
-      # if registered_module in registered_modules:
-      #   registered_modules.remove(registered_module)
-
-      # print("Cleared registered modules")
-      # reset_runtime()
-      # for registered_module in registered_modules:
-      #   print(
-      #     f"Executing module during error recovery: {registered_module.name}"
-      #   )
-      #   execute_module(
-      #     module_path=make_path_absolute(f"{registered_module.name}.py"),
-      #     module_name=registered_module.name,
-      #   )
-      # hot_reload_finished()
-      print("Error recovery finished")
-
-      # Get the current exception information
       exc_type, exc_value, exc_traceback = sys.exc_info()
-      # Format the traceback as a string
       tb_string = "".join(
         traceback.format_exception(exc_type, exc_value, exc_traceback)
       )
