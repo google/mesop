@@ -5,10 +5,11 @@ repos:
     rev: v3.2.0
     hooks:
       - id: trailing-whitespace
+        exclude: /goldens/
       - id: end-of-file-fixer
         # do not fix snapshot files because these are golden
         # files which need to match the test output exactly.
-        exclude: /snapshots/
+        exclude: /snapshots/|/goldens/
       # Suppress check-yaml because of false error:
       # "could not determine a constructor for the tag 'tag:yaml.org,2002:python/name:material.extensions.emoji.twemoji'"
       # - id: check-yaml

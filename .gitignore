@@ -7,6 +7,7 @@ __pycache__
 *.log
 
 # Do not save generated files
+/ai/ft/outputs/
 /ai/**/gen/
 /demo/screenshots/
 
