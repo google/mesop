@@ -19,12 +19,10 @@ def list_html_files(directory: str) -> list[str]:
 
 
 def main():
-  # Replace with the path to your directory
-  directory = "../site"
+  directory = "../../site"
 
   html_files = list_html_files(directory)
 
-  # Write the list of HTML files to a text file
   with open("./html_docs_context.txt", "w") as f:
     for file in html_files:
       f.write(f"{file}\n")

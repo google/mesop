@@ -6,6 +6,11 @@ Pre-requisite:
 Run `python transform_html.py` first to extract the text from the HTML files.
 """
 
+import os
+import time
+
+import google.generativeai as genai
+
 # Note: this prompt does not work well for every file
 # in particular, it omits too much information from the style API.
 # I use this to cleanup the style doc:
@@ -55,30 +60,18 @@ Warnings:
 Prioritize accuracy and completeness while minimizing token usage. Preserve code indentation and formatting for readability.
 """
 
-import os
-import time
 
-import google.generativeai as genai
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))  # type: ignore
 
-# from google.api_core import retry
-# from dotenv import load_dotenv
-
-# Load environment variables
-# load_dotenv()
-
-# Configure the Gemini API
-genai.configure(api_key=os.getenv("GEMINI_FREE_API_KEY"))
-
-# Set up the model
 model = genai.GenerativeModel("gemini-1.5-flash-latest")
 
 
-def generate_refined_text(content):
+def generate_refined_text(content: str):
   max_retries = 2
   backoff_factor = 2
   for attempt in range(max_retries):
     try:
-      response = model.generate_content(PROMPT + "\n\n" + content)
+      response = model.generate_content(PROMPT + "\n\n" + content)  # type: ignore
       return response.text
     except Exception as e:
       if attempt == max_retries - 1:
@@ -91,8 +84,8 @@ def generate_refined_text(content):
 
 
 def process_files():
-  input_dir = "./gen/extracted_text"
-  output_dir = "./gen/refined_text"
+  input_dir = "../gen/extracted_text"
+  output_dir = "../gen/refined_text"
 
   # Create output directory if it doesn't exist
   os.makedirs(output_dir, exist_ok=True)
@@ -109,6 +102,7 @@ def process_files():
 
       try:
         refined_content = generate_refined_text(content)
+        assert refined_content is not None
 
         with open(output_path, "w", encoding="utf-8") as outfile:
           outfile.write(refined_content)

@@ -17,8 +17,8 @@ def extract_text_from_html(file_path: str) -> str:
     article = soup.find("article")
     if article:
       # Preserve original whitespace for code blocks
-      for code in article.find_all("code"):
-        code.replace_with(f"\n{code.get_text(strip=False)}\n")
+      for code in article.find_all("code"):  # type: ignore
+        code.replace_with(f"\n{code.get_text(strip=False)}\n")  # type: ignore
 
       # Extract text with preserved code block formatting
       return article.get_text(separator=" ", strip=True)
@@ -27,10 +27,8 @@ def extract_text_from_html(file_path: str) -> str:
 
 
 def main():
-  input_file = (
-    "html_docs_context.txt"  # The file containing the list of HTML files
-  )
-  output_dir = "./gen/extracted_text"  # The directory where we'll store all the extracted text files
+  input_file = "html_docs_context.txt"
+  output_dir = "../gen/extracted_text"  # The directory where we'll store all the extracted text files
 
   os.makedirs(output_dir, exist_ok=True)
 
