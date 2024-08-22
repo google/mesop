@@ -1,4 +1,19 @@
-<div class="floating-editor-toolbar">
+<div
+  class="floating-editor-toolbar"
+  [ngClass]="{'hidden': !isToolbarExpanded}"
+  cdkDrag
+  cdkDragBoundary="body"
+  (cdkDragEnded)="onDragEnded($event)"
+  #toolbar
+>
+  <button mat-icon-button class="toggle-button" (click)="toggleToolbar()">
+    <mat-icon>{{ isToolbarExpanded ? 'hide' : 'open_in_full' }}</mat-icon>
+  </button>
+
+  @if (isToolbarExpanded) {
+  <div class="drag-handle" cdkDragHandle>
+    <mat-icon>drag_indicator</mat-icon>
+  </div>
   <textarea
     placeholder="Type in the UI change you want..."
     class="floating-editor-toolbar-textarea"
@@ -13,4 +28,5 @@
   <button mat-icon-button class="send-button" (click)="sendPrompt()">
     <mat-icon>send</mat-icon>
   </button>
+  }
 </div>

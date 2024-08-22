@@ -1,16 +1,33 @@
 .floating-editor-toolbar {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  position: absolute;
+  position: fixed;
+  left: calc(50% - min(80vw, 480px) / 2);
   bottom: 28px;
-  width: 80%;
   height: 48px;
-  left: calc(10%);
   z-index: 9;
-  background: var(--sys-surface-container-highest);
+  background: rgba(var(--sys-surface-bright), 0.8);
+  backdrop-filter: blur(10px);
+  // opacity: 0.8;
   border-radius: 16px;
   padding: 0 12px;
   display: flex;
   align-items: center;
+
+  transition: all 0.3s ease;
+}
+
+.drag-handle {
+  cursor: grab;
+}
+
+.floating-editor-toolbar.hidden {
+  padding: 0 6px;
+  opacity: 0.7;
+  left: calc(100% - 120px);
+}
+
+.floating-editor-toolbar.cdk-drag {
+  transition: none;
 }
 
 .floating-editor-toolbar-textarea {
@@ -21,7 +38,7 @@
     color: var(--sys-on-surface-variant);
   }
   height: 30px;
-  width: 100%;
+  width: min(80vw, 480px);
   outline: none;
   resize: none;
   overflow: hidden;
