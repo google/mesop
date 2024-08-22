@@ -281,8 +281,6 @@ def configure_flask_app(
       with open(module_file_path, "w") as file:
         file.write(code)
 
-      # TODO: Process the request data
-      # For now, we'll just return a simple JSON response
       response_data = {"message": "Page commit successful"}
       return Response(
         json.dumps(response_data), status=200, mimetype="application/json"
@@ -291,7 +289,7 @@ def configure_flask_app(
     @flask_app.route("/__editor__/page-generate", methods=["POST"])
     def page_generate() -> Response:
       check_editor_access()
-      # Parse the request body as JSON
+
       try:
         data = request.get_json()
       except json.JSONDecodeError:
@@ -363,9 +361,6 @@ def configure_flask_app(
 
 
 def check_editor_access():
-  # In the future, check for a client side token
-  # IF not coming from localhost...
-  #
   # Prevent accidental usages of editor mode outside of
   # one's local computer
   if request.remote_addr not in LOCALHOSTS:

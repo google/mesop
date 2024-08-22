@@ -80,20 +80,14 @@ export class EditorToolbar implements OnInit {
 
     try {
       const response = await this.editorToolbarService.sendPrompt(prompt);
-      console.log('response', response);
-
-      // show material dialog
       const dialogRef = this.dialog.open(EditorPromptResponseDialog, {
         data: {response: response, responseTime: this.responseTime},
         width: '90%',
       });
 
       dialogRef.afterClosed().subscribe((result) => {
-        console.log('result', result);
         if (result) {
-          console.log('User clicked OK');
           this.editorToolbarService.commit(response.afterCode);
-          // Add your logic here for when the user clicks OK
         }
       });
     } catch (error) {
@@ -131,10 +125,9 @@ export class EditorToolbar implements OnInit {
   }
 
   onDragEnded(event: CdkDragEnd) {
+    // Get position relative to the viewport
     const element = event.source.element.nativeElement;
     const rect = element.getBoundingClientRect();
-
-    // Get position relative to the viewport
     const x = rect.left;
     const y = rect.top;
 

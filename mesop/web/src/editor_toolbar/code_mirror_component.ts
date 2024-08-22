@@ -12,7 +12,7 @@ import {
 
 @Component({
   selector: 'mesop-code-mirror',
-  templateUrl: 'code_mirror.ng.html',
+  template: '',
   standalone: true,
 })
 export class CodeMirrorComponent {
@@ -46,7 +46,6 @@ export class CodeMirrorComponent {
         ],
       },
       parent: this.elementRef.nativeElement,
-      //   revertControls: false,
       highlightChanges: true,
       collapseUnchanged: {margin: 2},
       gutter: true,

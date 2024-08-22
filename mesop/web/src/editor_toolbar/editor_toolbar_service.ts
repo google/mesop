@@ -11,7 +11,7 @@ export interface PromptResponse {
 })
 export class EditorToolbarService {
   async sendPrompt(prompt: string): Promise<PromptResponse> {
-    console.log('sendPrompt', prompt);
+    console.debug('sendPrompt', prompt);
     const response = await fetch('/__editor__/page-generate', {
       method: 'POST',
       headers: {
@@ -23,7 +23,7 @@ export class EditorToolbarService {
   }
 
   async commit(code: string): Promise<PromptResponse> {
-    console.log('commit', prompt);
+    console.debug('commit', prompt);
     const response = await fetch('/__editor__/page-commit', {
       method: 'POST',
       headers: {

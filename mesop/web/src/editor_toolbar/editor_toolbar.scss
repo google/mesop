@@ -7,7 +7,6 @@
   z-index: 9;
   background: rgba(var(--sys-surface-bright), 0.8);
   backdrop-filter: blur(10px);
-  // opacity: 0.8;
   border-radius: 16px;
   padding: 0 12px;
   display: flex;
@@ -22,7 +21,7 @@
 
 .floating-editor-toolbar.hidden {
   padding: 0 6px;
-  opacity: 0.7;
+  opacity: 0.8;
   left: calc(100% - 120px);
 }
 
