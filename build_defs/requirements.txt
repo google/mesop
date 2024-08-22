@@ -29,7 +29,3 @@ mkdocstrings[python]
 firebase-admin
 matplotlib
 pandas
-
-# Deps for llm:
-google-generativeai
-openai

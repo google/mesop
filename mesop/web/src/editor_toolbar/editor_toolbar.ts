@@ -10,13 +10,14 @@ import {
 } from '@angular/material/dialog';
 import {CodeMirrorComponent} from './code_mirror_component';
 import {interval, Subscription} from 'rxjs';
+import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'mesop-editor-toolbar',
   templateUrl: 'editor_toolbar.ng.html',
   standalone: true,
   styleUrl: 'editor_toolbar.css',
-  imports: [MatIconModule, MatButtonModule, FormsModule],
+  imports: [MatIconModule, MatButtonModule, FormsModule, MatSnackBarModule],
 })
 export class EditorToolbar {
   prompt = '';
@@ -27,11 +28,15 @@ export class EditorToolbar {
   constructor(
     private editorToolbarService: EditorToolbarService,
     private dialog: MatDialog,
+    private snackBar: MatSnackBar,
   ) {}
 
   async onEnter(event: Event) {
     event.preventDefault();
+    await this.sendPrompt();
+  }
 
+  async sendPrompt() {
     const prompt = this.prompt;
     this.prompt = '';
     this.isLoading = true;
@@ -42,7 +47,6 @@ export class EditorToolbar {
 
     try {
       const response = await this.editorToolbarService.sendPrompt(prompt);
-      this.stopTimer();
       console.log('response', response);
 
       // show material dialog
@@ -61,7 +65,15 @@ export class EditorToolbar {
       });
     } catch (error) {
       console.error('Error:', error);
+      this.snackBar.open(
+        'An error occurred while processing your request',
+        'Close',
+        {
+          duration: 3000,
+        },
+      );
     } finally {
+      this.stopTimer();
       this.isLoading = false;
     }
   }

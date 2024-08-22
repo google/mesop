@@ -5,6 +5,8 @@ import secrets
 import time
 import urllib.parse as urlparse
 from typing import Generator, Sequence
+from urllib import request as urllib_request
+from urllib.error import URLError
 
 from flask import Flask, Response, abort, request, stream_with_context
 
@@ -13,7 +15,6 @@ from mesop.component_helpers import diff_component
 from mesop.editor.component_configs import get_component_configs
 from mesop.events import LoadEvent
 from mesop.exceptions import format_traceback
-from mesop.llm import llm
 from mesop.runtime import runtime
 from mesop.server.config import app_config
 from mesop.server.constants import WEB_COMPONENTS_PATH_SEGMENT
@@ -312,11 +313,28 @@ def configure_flask_app(
         source_code = file.read()
       print(f"Source code of module {module.__name__}:")
 
-      # TODO: Process the prompt and path as needed
-      # For now, we'll just return them as part of the response
-      # Process the prompt using an AI model or other logic here
-      # For this example, we'll just create a simple JSON response
-      gen_code = llm.adjust_mesop_app(msg=prompt, code=source_code)
+      try:
+        data = json.dumps({"prompt": prompt, "code": source_code}).encode(
+          "utf-8"
+        )
+        req = urllib_request.Request(
+          "http://localhost:43234/adjust_mesop_app",
+          data=data,
+          headers={"Content-Type": "application/json"},
+        )
+        with urllib_request.urlopen(req) as response:
+          if response.status == 200:
+            response_data = json.loads(response.read().decode("utf-8"))
+            gen_code = response_data["result"]
+          else:
+            return Response(
+              f"Error from AI service: {response.read().decode('utf-8')}",
+              status=500,
+            )
+      except URLError as e:
+        return Response(
+          f"Error making request to AI service: {e!s}", status=500
+        )
 
       response_data = {
         "prompt": prompt,

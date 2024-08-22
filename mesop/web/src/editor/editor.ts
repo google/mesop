@@ -161,6 +161,10 @@ class Editor {
       return;
     }
   }
+
+  showEditorToolbar(): boolean {
+    return Boolean(window.localStorage.getItem('MESOP://SHOW_EDITOR_TOOLBAR'));
+  }
 }
 
 const routes: Routes = [{path: '**', component: Editor}];
