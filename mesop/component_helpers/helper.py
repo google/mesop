@@ -1,7 +1,9 @@
 import hashlib
 import inspect
 import json
-from functools import lru_cache, partial, wraps
+from dataclasses import is_dataclass
+from enum import Enum
+from functools import partial, wraps
 from typing import (
   Any,
   Callable,
@@ -378,17 +380,51 @@ def register_event_handler(
   return fn_id
 
 
-@lru_cache(maxsize=None)
+def has_stable_repr(obj: Any) -> bool:
+  """Check if an object has a stable repr."""
+  stable_types = (int, float, str, bool, type(None), tuple, frozenset, Enum)  # type: ignore
+
+  if isinstance(obj, stable_types):
+    return True
+  if is_dataclass(obj):
+    return all(
+      has_stable_repr(getattr(obj, f.name))
+      for f in obj.__dataclass_fields__.values()
+    )
+  if isinstance(obj, (list, set)):
+    return all(has_stable_repr(item) for item in obj)  # type: ignore
+  if isinstance(obj, dict):
+    return all(
+      has_stable_repr(k) and has_stable_repr(v)
+      for k, v in obj.items()  # type: ignore
+    )
+
+  return False
+
+
 def compute_fn_id(fn: Callable[..., Any]) -> str:
   if isinstance(fn, partial):
-    # Include the partially applied arguments in the source code
+    func_source = inspect.getsource(fn.func)
+
+    for arg in fn.args:
+      if not has_stable_repr(arg):
+        raise MesopDeveloperException(
+          f"Argument {arg} for functools.partial event handler {fn.func.__name__} does not have a stable repr"
+        )
+
+    for k, v in fn.keywords.items():
+      if not has_stable_repr(v):
+        raise MesopDeveloperException(
+          f"Keyword argument {k}={v} for functools.partial event handler {fn.func.__name__} does not have a stable repr"
+        )
+
     args_str = ", ".join(repr(arg) for arg in fn.args)
     kwargs_str = ", ".join(f"{k}={v!r}" for k, v in fn.keywords.items())
     partial_args = (
       f"{args_str}{', ' if args_str and kwargs_str else ''}{kwargs_str}"
     )
-    source_code = f"partial(<<{inspect.getsource(fn.func)}>>, {partial_args})"
-    print("source_code", source_code)
+
+    source_code = f"partial(<<{func_source}>>, {partial_args})"
     fn_name = fn.func.__name__
     fn_module = fn.func.__module__
   else:
