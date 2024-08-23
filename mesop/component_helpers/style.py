@@ -366,6 +366,7 @@ class Style:
       white_space: Specifies how white space inside an element is handled. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/white-space).
       width: Sets the width of the component. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/width).
       word_wrap: Specifies how long text can be broken up by new lines to prevent overflowing. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/word-wrap).
+      vertical_align: Specifies the vertical alignment of an element. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/vertical-align).
       z-index: Sets the z-index of the component. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/z-index).
   """
 
