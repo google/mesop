@@ -169,7 +169,7 @@ parameter specifies which Firestore collection that Mesop will write state sessi
 ### MESOP_STATE_SESSION_BACKEND_SQL_CONNECTION_URI
 
 This is only used when the `MESOP_STATE_SESSION_BACKEND` is set to `sql`. This
-parameter specifies how the connection string to connect to the SQL database. See the [SqlAlchemy docs for more details](https://docs.sqlalchemy.org/en/20/core/engines.html#database-urls).
+parameter specifies the database connection string. See the [SqlAlchemy docs for more details](https://docs.sqlalchemy.org/en/20/core/engines.html#database-urls).
 
 **Default:** `mesop_state_session`
 
