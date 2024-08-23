@@ -258,7 +258,7 @@ class EditorPromptResponseDialog {
 })
 export class EditorHistoryDialog implements OnInit {
   history: readonly PromptInteraction[] = [];
-  selectedInteraction: number | null = null;
+  selectedInteraction = 0;
 
   constructor(
     private editorToolbarService: EditorToolbarService,
@@ -274,9 +274,6 @@ export class EditorHistoryDialog implements OnInit {
   }
 
   async saveSelectedInteraction() {
-    if (this.selectedInteraction === null) {
-      return;
-    }
     const interaction = this.history[this.selectedInteraction];
     const folder = await this.editorToolbarService.saveInteraction(interaction);
     this.snackBar.open(`Saved interaction to ${folder}`, 'Close', {
