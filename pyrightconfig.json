@@ -1,6 +1,6 @@
 {
   "include": ["mesop", "demo"],
-  "exclude": ["**/node_modules", "**/__pycache__", "**/fixtures"],
+  "exclude": ["**/node_modules", "**/__pycache__", "**/fixtures", "**/venv"],
   "extraPaths": ["bazel-bin"],
   "reportMissingImports": true,
   "reportMissingTypeStubs": false,

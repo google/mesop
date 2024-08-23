@@ -66,6 +66,12 @@ THIRD_PARTY_JS_RXJS = [
     "@npm//rxjs",
 ]
 
+THIRD_PARTY_JS_CODEMIRROR = [
+    "@npm//codemirror",
+    "@npm//@codemirror/lang-python",
+    "@npm//@codemirror/merge",
+]
+
 THIRD_PARTY_PY_ABSL_PY = [
     requirement("absl-py"),
 ]

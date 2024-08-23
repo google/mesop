@@ -30,6 +30,7 @@ import {
 import {Shell, registerComponentRendererElement} from '../shell/shell';
 import {EditorService, SelectionMode} from '../services/editor_service';
 import {Channel} from '../services/channel';
+import {EditorToolbar} from '../editor_toolbar/editor_toolbar';
 import {isMac} from '../utils/platform';
 import {
   DebugErrorDialogService,
@@ -46,6 +47,7 @@ import {
     CommonModule,
     ComponentRenderer,
     MatProgressBarModule,
+    EditorToolbar,
     ErrorBox,
     DevTools,
     MatIconModule,
@@ -158,6 +160,10 @@ class Editor {
       event.preventDefault();
       return;
     }
+  }
+
+  showEditorToolbar(): boolean {
+    return Boolean(window.localStorage.getItem('MESOP://SHOW_EDITOR_TOOLBAR'));
   }
 }
 

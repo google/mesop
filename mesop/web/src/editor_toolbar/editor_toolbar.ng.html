@@ -1,0 +1,39 @@
+<div
+  class="floating-editor-toolbar"
+  [ngClass]="{'hidden': !isToolbarExpanded}"
+  cdkDrag
+  cdkDragBoundary="body"
+  (cdkDragEnded)="onDragEnded($event)"
+  #toolbar
+>
+  <button mat-icon-button class="toggle-button" (click)="toggleToolbar()">
+    <mat-icon>{{ isToolbarExpanded ? 'hide' : 'open_in_full' }}</mat-icon>
+  </button>
+
+  @if (isToolbarExpanded) {
+  <div class="drag-handle" cdkDragHandle>
+    <mat-icon>drag_indicator</mat-icon>
+  </div>
+  <textarea
+    placeholder="Type in the UI change you want..."
+    class="floating-editor-toolbar-textarea"
+    [(ngModel)]="prompt"
+    (keydown.enter)="onEnter($event)"
+  ></textarea>
+  @if (responseTime > 0) {
+  <div>
+    <span>{{responseTime | number:'1.1-1'}}s</span>
+  </div>
+  }
+  <button mat-icon-button class="send-button" (click)="sendPrompt()">
+    <mat-icon>send</mat-icon>
+  </button>
+  <button
+    mat-icon-button
+    (click)="openHistory()"
+    [disabled]="history.length === 0"
+  >
+    <mat-icon>history</mat-icon>
+  </button>
+  }
+</div>

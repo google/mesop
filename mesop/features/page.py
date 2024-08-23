@@ -1,4 +1,5 @@
 from copy import deepcopy
+from functools import wraps
 from typing import Callable
 
 from mesop.runtime import OnLoadHandler, PageConfig, runtime
@@ -29,6 +30,7 @@ def page(
   """
 
   def decorator(func: Callable[[], None]) -> Callable[[], None]:
+    @wraps(func)
     def wrapper() -> None:
       return func()
 
