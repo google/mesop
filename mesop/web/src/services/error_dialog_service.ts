@@ -32,7 +32,7 @@ export class DebugErrorDialogService implements ErrorDialogService {
 @Component({
   selector: 'mesop-error-dialog',
   template: `
-    <h3 mat-dialog-title>Mesop Developer Error</h3>
+    <h3 mat-dialog-title>Mesop Error</h3>
     <mat-dialog-content class="mat-typography">
       <div class="error-content">{{ data.error }}</div>
     </mat-dialog-content>
@@ -45,7 +45,7 @@ export class DebugErrorDialogService implements ErrorDialogService {
   styles: `
     :host {
       display: block;
-      background: #f6dfe3;
+      background: var(--sys-error-container);
       --mdc-dialog-supporting-text-size: 16px;
       --mdc-dialog-supporting-text-line-height: 1.5;
     }

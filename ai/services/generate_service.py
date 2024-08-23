@@ -34,8 +34,11 @@ def adjust_mesop_app_endpoint():
     return jsonify({"error": "Both 'code' and 'prompt' are required"}), 400
 
   try:
-    result = adjust_mesop_app(code, prompt)
-    return jsonify({"result": result})
+    diff = adjust_mesop_app(code, prompt)
+    result = apply_patch(code, diff)
+    if result.has_error:
+      raise Exception(result.result)
+    return jsonify({"code": result.result, "diff": diff})
   except Exception as e:
     return jsonify({"error": str(e)}), 500
 
@@ -71,11 +74,7 @@ def adjust_mesop_app(code: str, msg: str) -> str:
   client = OpenAI(
     api_key=getenv("OPENAI_API_KEY"),
   )
-  response = adjust_mesop_app_openai_client(code, msg, client, model=model)
-  result = apply_patch(code, response)
-  if result.has_error:
-    raise Exception(result.result)
-  return result.result
+  return adjust_mesop_app_openai_client(code, msg, client, model=model)
 
 
 def adjust_mesop_app_openai_client(

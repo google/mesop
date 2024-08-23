@@ -9,9 +9,9 @@ ng_module(
     srcs = glob([
         "*.ts",
     ]),
-    assets = [
-        "editor_toolbar.ng.html",
-        "editor_response_dialog.ng.html",
+    assets = glob([
+        "*.html",
+    ]) + [
         "editor_toolbar.css",
     ],
     deps = [

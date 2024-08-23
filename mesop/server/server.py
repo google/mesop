@@ -319,19 +319,20 @@ def configure_flask_app(
       print(f"Source code of module {module.__name__}:")
 
       try:
-        data = json.dumps({"prompt": prompt, "code": source_code}).encode(
-          "utf-8"
-        )
         req = urllib_request.Request(
           "http://localhost:43234/adjust_mesop_app",
-          data=data,
+          data=json.dumps({"prompt": prompt, "code": source_code}).encode(
+            "utf-8"
+          ),
           headers={"Content-Type": "application/json"},
         )
         with urllib_request.urlopen(req) as response:
           if response.status == 200:
             response_data = json.loads(response.read().decode("utf-8"))
-            gen_code = response_data["result"]
+            generated_code = response_data["code"]
+            diff = response_data["diff"]
           else:
+            print(f"Error from AI service: {response.read().decode('utf-8')}")
             return Response(
               f"Error from AI service: {response.read().decode('utf-8')}",
               status=500,
@@ -345,7 +346,8 @@ def configure_flask_app(
         "prompt": prompt,
         "path": path,
         "beforeCode": source_code,
-        "afterCode": gen_code,
+        "afterCode": generated_code,
+        "diff": diff,
         "message": "Prompt processed successfully",
       }
 

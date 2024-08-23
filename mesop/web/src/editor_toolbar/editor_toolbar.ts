@@ -3,7 +3,11 @@ import {FormsModule} from '@angular/forms';
 import {CdkDrag, CdkDragEnd} from '@angular/cdk/drag-drop';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
-import {EditorToolbarService, PromptResponse} from './editor_toolbar_service';
+import {
+  EditorToolbarService,
+  PromptInteraction,
+  PromptResponse,
+} from './editor_toolbar_service';
 import {
   MAT_DIALOG_DATA,
   MatDialog,
@@ -12,7 +16,8 @@ import {
 import {CodeMirrorComponent} from './code_mirror_component';
 import {interval, Subscription} from 'rxjs';
 import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
-import {CommonModule} from '@angular/common';
+import {CommonModule, DatePipe} from '@angular/common';
+import {ErrorDialogService} from '../services/error_dialog_service';
 
 @Component({
   selector: 'mesop-editor-toolbar',
@@ -41,6 +46,7 @@ export class EditorToolbar implements OnInit {
     private editorToolbarService: EditorToolbarService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
+    private errorDialogService: ErrorDialogService,
   ) {
     const savedState = localStorage.getItem('isToolbarExpanded');
     this.isToolbarExpanded = savedState === 'true';
@@ -85,24 +91,45 @@ export class EditorToolbar implements OnInit {
         width: '90%',
       });
 
-      dialogRef.afterClosed().subscribe((result) => {
+      dialogRef.afterClosed().subscribe(async (result) => {
         if (result) {
-          this.editorToolbarService.commit(response.afterCode);
+          await this.editorToolbarService.commit(response.afterCode);
         }
       });
     } catch (error) {
       console.error('Error:', error);
-      this.snackBar.open(
+      const snackBarRef = this.snackBar.open(
         'An error occurred while processing your request',
-        'Close',
+        'Details',
         {
-          duration: 3000,
+          duration: 5000,
         },
       );
+
+      snackBarRef.onAction().subscribe(() => {
+        this.errorDialogService.showError(error);
+      });
     } finally {
       this.stopTimer();
       this.isLoading = false;
     }
+  }
+
+  get history() {
+    return this.editorToolbarService.getHistory();
+  }
+
+  openHistory() {
+    const dialogRef = this.dialog.open(EditorHistoryDialog, {
+      data: {},
+      width: '90%',
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (Number.isInteger(result)) {
+        const interaction = this.editorToolbarService.getHistory()[result];
+        this.editorToolbarService.commit(interaction.beforeCode);
+      }
+    });
   }
 
   private startTimer(startTime: number) {
@@ -175,4 +202,59 @@ class EditorPromptResponseDialog {
     @Inject(MAT_DIALOG_DATA)
     public data: {response: PromptResponse; responseTime: number},
   ) {}
+}
+
+@Component({
+  templateUrl: './editor_history_dialog.ng.html',
+  standalone: true,
+  imports: [DatePipe, MatDialogModule, MatButtonModule, CodeMirrorComponent],
+  styles: [
+    `
+      mat-dialog-content {
+        overflow: hidden;
+      }
+
+      .history-container {
+        display: flex;
+        flex-direction: row;
+        gap: 16px;
+      }
+      .prompt-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        max-height: 80vh;
+        overflow-y: auto;
+      }
+      .prompt-item {
+        cursor: pointer;
+        background: var(--sys-inverse-on-surface);
+        padding: 8px;
+        border-radius: 12px;
+      }
+      .prompt-item-text {
+        width: 280px;
+        padding-bottom: 4px;
+      }
+      .code-display {
+        flex: 1;
+        max-height: 80vh;
+        overflow-y: auto;
+      }
+    `,
+  ],
+})
+export class EditorHistoryDialog implements OnInit {
+  history: readonly PromptInteraction[] = [];
+  selectedInteraction: number | null = null;
+
+  constructor(private editorToolbarService: EditorToolbarService) {}
+
+  ngOnInit() {
+    this.history = this.editorToolbarService.getHistory();
+  }
+
+  selectInteraction(index: number) {
+    this.selectedInteraction = index;
+  }
 }

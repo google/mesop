@@ -21,7 +21,10 @@ export class CodeMirrorComponent {
   @Output() codeChange = new EventEmitter<string>();
   constructor(private elementRef: ElementRef) {}
 
-  ngAfterViewInit() {
+  ngOnChanges() {
+    while (this.elementRef.nativeElement.firstChild) {
+      this.elementRef.nativeElement.firstChild.remove();
+    }
     this.renderEditor();
   }
 
