@@ -5,7 +5,7 @@ import urllib.parse
 from os import getenv
 from typing import NamedTuple
 
-from flask import Flask, jsonify, request
+from flask import Flask, Response, request
 from openai import OpenAI
 
 app = Flask(__name__)
@@ -27,14 +27,14 @@ with open(PROMPT_PATH) as f:
 
 
 @app.route("/save-interaction", methods=["POST"])
-def save_interaction_endpoint():
+def save_interaction_endpoint() -> Response | dict[str, str]:
   data = request.json
   assert data is not None
   prompt = data.get("prompt")
   before_code = data.get("beforeCode")
   diff = data.get("diff")
   if not prompt or not before_code or not diff:
-    return jsonify({"error": "Invalid request"}), 400
+    return Response("Invalid request", status=400)
 
   folder_name = generate_folder_name(prompt)
   base_path = "../ft/goldens"
@@ -49,27 +49,27 @@ def save_interaction_endpoint():
   with open(os.path.join(folder_path, "diff.txt"), "w") as f:
     f.write(diff)
 
-  return jsonify({"folder": folder_name}), 200
+  return {"folder": folder_name}
 
 
 @app.route("/adjust-mesop-app", methods=["POST"])
-def adjust_mesop_app_endpoint():
+def adjust_mesop_app_endpoint() -> Response | dict[str, str]:
   data = request.json
   assert data is not None
   code = data.get("code")
   prompt = data.get("prompt")
 
   if not code or not prompt:
-    return jsonify({"error": "Both 'code' and 'prompt' are required"}), 400
+    return Response("Both 'code' and 'prompt' are required", status=400)
 
   try:
     diff = adjust_mesop_app(code, prompt)
     result = apply_patch(code, diff)
     if result.has_error:
       raise Exception(result.result)
-    return jsonify({"code": result.result, "diff": diff})
+    return {"code": result.result, "diff": diff}
   except Exception as e:
-    return jsonify({"error": str(e)}), 500
+    return Response(f"Error: {e!s}", status=500)
 
 
 class ApplyPatchResult(NamedTuple):
@@ -127,6 +127,7 @@ def adjust_mesop_app_openai_client(
   )
   print("[INFO] LLM output:", completion.choices[0].message.content)
   llm_output = completion.choices[0].message.content
+  assert llm_output is not None
   return llm_output
 
 

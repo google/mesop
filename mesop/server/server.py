@@ -1,6 +1,7 @@
 import base64
 import inspect
 import json
+import os
 import secrets
 import time
 import urllib.parse as urlparse
@@ -20,6 +21,10 @@ from mesop.server.config import app_config
 from mesop.server.constants import WEB_COMPONENTS_PATH_SEGMENT
 from mesop.utils.url_utils import remove_url_query_param
 from mesop.warn import warn
+
+AI_SERVICE_BASE_URL = os.environ.get(
+  "MESOP_AI_SERVICE_BASE_URL", "http://localhost:43234"
+)
 
 LOCALHOSTS = (
   # For IPv4 localhost
@@ -292,7 +297,7 @@ def configure_flask_app(
       )
 
     @flask_app.route("/__editor__/save-interaction", methods=["POST"])
-    def save_interaction() -> Response:
+    def save_interaction() -> Response | dict[str, str]:
       check_editor_access()
 
       data = request.get_json()
@@ -301,17 +306,14 @@ def configure_flask_app(
 
       try:
         req = urllib_request.Request(
-          "http://localhost:43234/save-interaction",
+          AI_SERVICE_BASE_URL + "/save-interaction",
           data=json.dumps(data).encode("utf-8"),
           headers={"Content-Type": "application/json"},
         )
         with urllib_request.urlopen(req) as response:
           if response.status == 200:
             folder = json.loads(response.read().decode("utf-8"))["folder"]
-            response_data = {"folder": folder}
-            return Response(
-              json.dumps(response_data), status=200, mimetype="application/json"
-            )
+            return {"folder": folder}
           else:
             print(f"Error from AI service: {response.read().decode('utf-8')}")
             return Response(
@@ -324,7 +326,7 @@ def configure_flask_app(
         )
 
     @flask_app.route("/__editor__/page-generate", methods=["POST"])
-    def page_generate() -> Response:
+    def page_generate() -> Response | dict[str, str]:
       check_editor_access()
 
       try:
@@ -352,7 +354,7 @@ def configure_flask_app(
 
       try:
         req = urllib_request.Request(
-          "http://localhost:43234/adjust-mesop-app",
+          AI_SERVICE_BASE_URL + "/adjust-mesop-app",
           data=json.dumps({"prompt": prompt, "code": source_code}).encode(
             "utf-8"
           ),
@@ -374,7 +376,7 @@ def configure_flask_app(
           f"Error making request to AI service: {e!s}", status=500
         )
 
-      response_data = {
+      return {
         "prompt": prompt,
         "path": path,
         "beforeCode": source_code,
@@ -382,10 +384,6 @@ def configure_flask_app(
         "diff": diff,
         "message": "Prompt processed successfully",
       }
-
-      return Response(
-        json.dumps(response_data), status=200, mimetype="application/json"
-      )
 
     @flask_app.route("/__hot-reload__")
     def hot_reload() -> Response:
