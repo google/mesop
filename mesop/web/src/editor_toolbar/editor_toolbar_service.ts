@@ -1,39 +1,15 @@
 import {Injectable} from '@angular/core';
 
 export interface PromptInteraction extends PromptResponse {
-  prompt: string;
-  path: string;
+  readonly prompt: string;
+  readonly path: string;
 }
 
 export interface PromptResponse {
-  beforeCode: string;
-  afterCode: string;
-  diff: string;
+  readonly beforeCode: string;
+  readonly afterCode: string;
+  readonly diff: string;
 }
-
-const CANNED_HISTORY = [
-  {
-    path: '/',
-    prompt: 'Add a button to the home page - some extremely long prompt',
-    beforeCode: 'def fo1o():\n  return "bar"',
-    afterCode: 'def fo4o():\n  return "bar"\n\nprint(foo())',
-    diff: '<==== def foo2():\n  return "bar"\n\nprint(foo())',
-  },
-  {
-    path: '/',
-    prompt: 'Add a 22button to the home page',
-    beforeCode: 'def foo22():\n  return "bar"',
-    afterCode: 'def111 foo():\n  return "bar"\n\nprint(foo())',
-    diff: '<==== def foo():\n  return "bar"\n\nprint(foo())',
-  },
-  {
-    path: '/',
-    prompt: 'Add a 33button to the home page',
-    beforeCode: 'def foo33():\n  return "bar"',
-    afterCode: 'def foo44():\n  return "bar"\n\nprint(foo())',
-    diff: '<==== def foo():\n  return "bar"\n\nprint(foo())',
-  },
-];
 
 @Injectable({
   providedIn: 'root',

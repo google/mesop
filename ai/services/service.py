@@ -1,6 +1,6 @@
-import hashlib
 import os
 import re
+import secrets
 import urllib.parse
 from os import getenv
 from typing import NamedTuple
@@ -36,15 +36,12 @@ def save_interaction_endpoint():
   if not prompt or not before_code or not diff:
     return jsonify({"error": "Invalid request"}), 400
 
-  # Generate a unique folder name
   folder_name = generate_folder_name(prompt)
   base_path = "../ft/goldens"
   folder_path = os.path.join(base_path, folder_name)
 
-  # Create the folder
   os.makedirs(folder_path, exist_ok=True)
 
-  # Save prompt, before_code, and diff
   with open(os.path.join(folder_path, "prompt.txt"), "w") as f:
     f.write(prompt)
   with open(os.path.join(folder_path, "source.py"), "w") as f:
@@ -134,12 +131,9 @@ def adjust_mesop_app_openai_client(
 
 
 def generate_folder_name(prompt: str) -> str:
-  # Generate a unique 4-character suffix
-  suffix = hashlib.md5(prompt.encode()).hexdigest()[:4]
-  # Clean the prompt to create a valid folder name
-  cleaned_prompt = urllib.parse.quote(prompt)[
-    :50
-  ]  # Limit to 50 chars and URL encode
+  # Generate a unique 4-character suffix to avoid naming collisions
+  suffix = secrets.token_urlsafe(4)
+  cleaned_prompt = urllib.parse.quote(prompt)[:50]
   return f"{cleaned_prompt}_{suffix}"
 
 

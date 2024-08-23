@@ -268,7 +268,7 @@ def configure_flask_app(
     @flask_app.route("/__editor__/page-commit", methods=["POST"])
     def page_commit() -> Response:
       check_editor_access()
-      # Parse the request body as JSON
+
       try:
         data = request.get_json()
       except json.JSONDecodeError:
