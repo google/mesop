@@ -87,6 +87,9 @@ from mesop.components.plot.plot import (
   plot as plot,
 )
 from mesop.components.progress_bar.progress_bar import (
+  ProgressBarAnimationEndEvent as ProgressBarAnimationEndEvent,
+)
+from mesop.components.progress_bar.progress_bar import (
   progress_bar as progress_bar,
 )
 from mesop.components.progress_spinner.progress_spinner import (
@@ -100,6 +103,9 @@ from mesop.components.radio.radio import (
 )
 from mesop.components.radio.radio import (
   radio as radio,
+)
+from mesop.components.select.select import (
+  SelectOpenedChangeEvent as SelectOpenedChangeEvent,
 )
 from mesop.components.select.select import (
   SelectOption as SelectOption,

@@ -37,3 +37,4 @@
 ../../docs/guides/auth.md
 ../../docs/guides/debugging.md
 ../../docs/guides/labs.md
+../../docs/api/config.md

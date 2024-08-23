@@ -7,10 +7,12 @@ It does not seem to work when .cli.venv is loaded.
 """
 
 import argparse
+import inspect
 import os
 
 import mesop as me
 import mesop.labs as mel
+from mesop.features.theme import ThemeVar
 
 DOCS_PATH = "../../docs/"
 MARKDOWN_DOCS_CONTEXT_FILE = "markdown_docs_context.txt"
@@ -26,6 +28,12 @@ def main():
   parser.add_argument("--use_cached_files_list", action="store_true")
   parser.add_argument("--cache_files_list", action="store_true")
   args = parser.parse_args()
+
+  if args.use_cached_files_list and args.cache_files_list:
+    print(
+      "The flags --use_cached_files_list and --cache_files_list cannot be enabled at the same time"
+    )
+    return
 
   if args.use_cached_files_list:
     file_paths = read_file_paths_from_file(MARKDOWN_DOCS_CONTEXT_FILE)
@@ -85,21 +93,27 @@ def process_documentation(file_paths):
         # Handle doc strings
         elif line.startswith("::: "):
           try:
-            function = line.removeprefix(":::").strip().split(".")[-1]
-            if function == "ThemeVar":
-              function = "theme_var"
-            if "mesop.labs." in line:
-              updated_lines.append(
-                "### " + getattr(mel, function).__name__ + "\n"
-              )
-              updated_lines.append(
-                getattr(mel, function).__doc__.strip() + "\n"
-              )
+            symbol_name = line.removeprefix(":::").strip().split(".")[-1]
+            if symbol_name == "ThemeVar":
+              updated_lines.append("### ThemeVar \n")
+              updated_lines.append("attr ThemeVar = " + str(ThemeVar) + "\n")
             else:
-              updated_lines.append(
-                "### " + getattr(me, function).__name__ + "\n"
+              if "mesop.labs." in line:
+                symbol = getattr(mel, symbol_name)
+              else:
+                symbol = getattr(me, symbol_name)
+
+              signature = inspect.signature(symbol)
+              updated_lines.append("### " + symbol.__name__ + "\n")
+              type_keyword = (
+                "def" if "function" in str(symbol.__class__) else "class"
               )
-              updated_lines.append(getattr(me, function).__doc__.strip() + "\n")
+              updated_lines.append("```python")
+              updated_lines.append(
+                type_keyword + " " + symbol.__name__ + str(signature) + ":"
+              )
+              updated_lines.append("  " + symbol.__doc__.strip())
+              updated_lines.append("```\n")
           except Exception:
             print("Failed to process: " + line)
             updated_lines.append(line.strip())
