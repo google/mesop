@@ -26,6 +26,11 @@ AI_SERVICE_BASE_URL = os.environ.get(
   "MESOP_AI_SERVICE_BASE_URL", "http://localhost:43234"
 )
 
+EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED = (
+  os.environ.get("MESOP_EXPERIMENTAL_EDITOR_TOOLBAR", "false").lower() == "true"
+)
+
+
 LOCALHOSTS = (
   # For IPv4 localhost
   "127.0.0.1",
@@ -400,6 +405,8 @@ def configure_flask_app(
 
 
 def check_editor_access():
+  if not EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED:
+    abort(403)  # Throws a Forbidden Error
   # Prevent accidental usages of editor mode outside of
   # one's local computer
   if request.remote_addr not in LOCALHOSTS:
