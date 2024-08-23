@@ -17,6 +17,9 @@ export function formatStyle(styleObj: Style): string {
   if (styleObj.getAspectRatio()) {
     style += `aspect-ratio: ${styleObj.getAspectRatio()};`;
   }
+  if (styleObj.getBackdropFilter()) {
+    style += `backdrop-filter: ${styleObj.getBackdropFilter()};`;
+  }
   if (styleObj.getBackground()) {
     style += `background: ${styleObj.getBackground()};`;
   }
@@ -65,6 +68,9 @@ export function formatStyle(styleObj: Style): string {
   }
   if (styleObj.getDisplay()) {
     style += `display: ${styleObj.getDisplay()};`;
+  }
+  if (styleObj.getFlex()) {
+    style += `flex: ${styleObj.getFlex()};`;
   }
   if (styleObj.getFlexBasis()) {
     style += `flex-basis: ${styleObj.getFlexBasis()};`;
@@ -177,6 +183,9 @@ export function formatStyle(styleObj: Style): string {
   if (styleObj.getMinWidth()) {
     style += `min-width: ${styleObj.getMinWidth()};`;
   }
+  if (styleObj.getObjectFit()) {
+    style += `object-fit: ${styleObj.getObjectFit()};`;
+  }
   if (styleObj.getOpacity()) {
     style += `opacity: ${styleObj.getOpacity()};`;
   }
@@ -185,6 +194,9 @@ export function formatStyle(styleObj: Style): string {
   }
   if (styleObj.getOverflowWrap()) {
     style += `overflow-wrap: ${styleObj.getOverflowWrap()};`;
+  }
+  if (styleObj.getOverflow()) {
+    style += `overflow: ${styleObj.getOverflow()};`;
   }
   if (styleObj.getOverflowX()) {
     style += `overflow-x: ${styleObj.getOverflowX()};`;
@@ -225,11 +237,23 @@ export function formatStyle(styleObj: Style): string {
   if (styleObj.getTextOverflow()) {
     style += `text-overflow: ${styleObj.getTextOverflow()};`;
   }
+  if (styleObj.getTextShadow()) {
+    style += `text-shadow: ${styleObj.getTextShadow()};`;
+  }
+  if (styleObj.getTextTransform()) {
+    style += `text-transform: ${styleObj.getTextTransform()};`;
+  }
   if (styleObj.getTop()) {
     style += `top: ${styleObj.getTop()};`;
   }
   if (styleObj.getTransform()) {
     style += `transform: ${styleObj.getTransform()};`;
+  }
+  if (styleObj.getTransition()) {
+    style += `transition: ${styleObj.getTransition()};`;
+  }
+  if (styleObj.getVerticalAlign()) {
+    style += `vertical-align: ${styleObj.getVerticalAlign()};`;
   }
   if (styleObj.getVisibility()) {
     style += `visibility: ${styleObj.getVisibility()};`;
@@ -239,6 +263,9 @@ export function formatStyle(styleObj: Style): string {
   }
   if (styleObj.getWidth()) {
     style += `width: ${styleObj.getWidth()};`;
+  }
+  if (styleObj.getWordWrap()) {
+    style += `word-wrap: ${styleObj.getWordWrap()};`;
   }
   if (styleObj.getZIndex()) {
     style += `z-index: ${styleObj.getZIndex()};`;

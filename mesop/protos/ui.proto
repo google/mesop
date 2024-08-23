@@ -318,12 +318,13 @@ message UserDefinedType {
     repeated Arg args = 1;
 }
 
-// Next id: 73
+// Next id: 83
 message Style {
     optional string align_content = 32;
     optional string align_items = 1;
     optional string align_self = 63;
     optional string aspect_ratio = 50;
+    optional string backdrop_filter = 73;
     optional string background = 2;
     optional Border border = 3;
     optional string border_radius = 28;
@@ -335,6 +336,8 @@ message Style {
     optional string columns = 5;
     optional string cursor = 46;
     optional string display = 6;
+    optional string filter = 74;
+    optional string flex = 82;
     optional string flex_basis = 7;
     optional string flex_direction = 8;
     optional int32 flex_grow = 9;
@@ -370,9 +373,11 @@ message Style {
     optional string max_width = 68;
     optional string min_height = 69;
     optional string min_width = 70;
+    optional string object_fit = 75;
     optional string opacity = 52;
     optional string outline = 44;
     optional string overflow_wrap = 49;
+    optional string overflow = 76;
     optional string overflow_x = 19;
     optional string overflow_y = 20;
     optional EdgeInsets padding = 21;
@@ -385,11 +390,16 @@ message Style {
     optional string text_align = 23;
     optional string text_decoration = 24;
     optional string text_overflow = 25;
+    optional string text_shadow = 77;
+    optional string text_transform = 78;
     optional string top = 56;
     optional string transform = 65;
+    optional string transition = 79;
     optional string visibility = 51;
     optional string white_space = 26;
     optional string width = 27;
+    optional string word_wrap = 80;
+    optional string vertical_align = 81;
     optional int32 z_index = 48;
 }
 
