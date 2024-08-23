@@ -16,8 +16,9 @@ import {
 import {CodeMirrorComponent} from './code_mirror_component';
 import {interval, Subscription} from 'rxjs';
 import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
-import {CommonModule, DatePipe} from '@angular/common';
+import {CommonModule} from '@angular/common';
 import {ErrorDialogService} from '../services/error_dialog_service';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 @Component({
   selector: 'mesop-editor-toolbar',
@@ -207,13 +208,19 @@ class EditorPromptResponseDialog {
 @Component({
   templateUrl: './editor_history_dialog.ng.html',
   standalone: true,
-  imports: [DatePipe, MatDialogModule, MatButtonModule, CodeMirrorComponent],
+  imports: [
+    MatDialogModule,
+    MatButtonModule,
+    CodeMirrorComponent,
+    MatIconModule,
+    MatSnackBarModule,
+    MatTooltipModule,
+  ],
   styles: [
     `
       mat-dialog-content {
         overflow: hidden;
       }
-
       .history-container {
         display: flex;
         flex-direction: row;
@@ -241,6 +248,11 @@ class EditorPromptResponseDialog {
         max-height: 80vh;
         overflow-y: auto;
       }
+      .save-interaction-button {
+        position: absolute;
+        top: 16px;
+        right: 32px;
+      }
     `,
   ],
 })
@@ -248,7 +260,10 @@ export class EditorHistoryDialog implements OnInit {
   history: readonly PromptInteraction[] = [];
   selectedInteraction: number | null = null;
 
-  constructor(private editorToolbarService: EditorToolbarService) {}
+  constructor(
+    private editorToolbarService: EditorToolbarService,
+    private snackBar: MatSnackBar,
+  ) {}
 
   ngOnInit() {
     this.history = this.editorToolbarService.getHistory();
@@ -256,5 +271,16 @@ export class EditorHistoryDialog implements OnInit {
 
   selectInteraction(index: number) {
     this.selectedInteraction = index;
+  }
+
+  async saveSelectedInteraction() {
+    if (this.selectedInteraction === null) {
+      return;
+    }
+    const interaction = this.history[this.selectedInteraction];
+    const folder = await this.editorToolbarService.saveInteraction(interaction);
+    this.snackBar.open(`Saved interaction to ${folder}`, 'Close', {
+      duration: 5000,
+    });
   }
 }

@@ -291,6 +291,38 @@ def configure_flask_app(
         json.dumps(response_data), status=200, mimetype="application/json"
       )
 
+    @flask_app.route("/__editor__/save-interaction", methods=["POST"])
+    def save_interaction() -> Response:
+      check_editor_access()
+
+      data = request.get_json()
+      if not data:
+        return Response("Invalid JSON data", status=400)
+
+      try:
+        req = urllib_request.Request(
+          "http://localhost:43234/save-interaction",
+          data=json.dumps(data).encode("utf-8"),
+          headers={"Content-Type": "application/json"},
+        )
+        with urllib_request.urlopen(req) as response:
+          if response.status == 200:
+            folder = json.loads(response.read().decode("utf-8"))["folder"]
+            response_data = {"folder": folder}
+            return Response(
+              json.dumps(response_data), status=200, mimetype="application/json"
+            )
+          else:
+            print(f"Error from AI service: {response.read().decode('utf-8')}")
+            return Response(
+              f"Error from AI service: {response.read().decode('utf-8')}",
+              status=500,
+            )
+      except URLError as e:
+        return Response(
+          f"Error making request to AI service: {e!s}", status=500
+        )
+
     @flask_app.route("/__editor__/page-generate", methods=["POST"])
     def page_generate() -> Response:
       check_editor_access()
@@ -320,7 +352,7 @@ def configure_flask_app(
 
       try:
         req = urllib_request.Request(
-          "http://localhost:43234/adjust_mesop_app",
+          "http://localhost:43234/adjust-mesop-app",
           data=json.dumps({"prompt": prompt, "code": source_code}).encode(
             "utf-8"
           ),

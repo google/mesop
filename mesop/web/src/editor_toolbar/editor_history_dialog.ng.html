@@ -13,6 +13,15 @@
     </div>
     <div class="code-display">
       @if (selectedInteraction !== null) {
+      <button
+        class="save-interaction-button"
+        mat-icon-button
+        (click)="saveSelectedInteraction()"
+        aria-label="Save interaction"
+        matTooltip="Save interaction"
+      >
+        <mat-icon>save</mat-icon>
+      </button>
       <mesop-code-mirror
         [beforeCode]="history[selectedInteraction].beforeCode"
         [afterCode]="history[selectedInteraction].afterCode"

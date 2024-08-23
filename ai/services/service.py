@@ -1,4 +1,7 @@
+import hashlib
+import os
 import re
+import urllib.parse
 from os import getenv
 from typing import NamedTuple
 
@@ -23,7 +26,36 @@ with open(PROMPT_PATH) as f:
   REVISE_APP_BASE_PROMPT = f.read().strip()
 
 
-@app.route("/adjust_mesop_app", methods=["POST"])
+@app.route("/save-interaction", methods=["POST"])
+def save_interaction_endpoint():
+  data = request.json
+  assert data is not None
+  prompt = data.get("prompt")
+  before_code = data.get("beforeCode")
+  diff = data.get("diff")
+  if not prompt or not before_code or not diff:
+    return jsonify({"error": "Invalid request"}), 400
+
+  # Generate a unique folder name
+  folder_name = generate_folder_name(prompt)
+  base_path = "../ft/goldens"
+  folder_path = os.path.join(base_path, folder_name)
+
+  # Create the folder
+  os.makedirs(folder_path, exist_ok=True)
+
+  # Save prompt, before_code, and diff
+  with open(os.path.join(folder_path, "prompt.txt"), "w") as f:
+    f.write(prompt)
+  with open(os.path.join(folder_path, "source.py"), "w") as f:
+    f.write(before_code)
+  with open(os.path.join(folder_path, "diff.txt"), "w") as f:
+    f.write(diff)
+
+  return jsonify({"folder": folder_name}), 200
+
+
+@app.route("/adjust-mesop-app", methods=["POST"])
 def adjust_mesop_app_endpoint():
   data = request.json
   assert data is not None
@@ -99,6 +131,16 @@ def adjust_mesop_app_openai_client(
   print("[INFO] LLM output:", completion.choices[0].message.content)
   llm_output = completion.choices[0].message.content
   return llm_output
+
+
+def generate_folder_name(prompt: str) -> str:
+  # Generate a unique 4-character suffix
+  suffix = hashlib.md5(prompt.encode()).hexdigest()[:4]
+  # Clean the prompt to create a valid folder name
+  cleaned_prompt = urllib.parse.quote(prompt)[
+    :50
+  ]  # Limit to 50 chars and URL encode
+  return f"{cleaned_prompt}_{suffix}"
 
 
 if __name__ == "__main__":
