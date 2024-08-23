@@ -187,7 +187,7 @@ def input(
     on_blur: [blur](https://developer.mozilla.org/en-US/docs/Web/API/Element/blur_event) is fired when the input has lost focus.
     on_input: [input](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/input_event) is fired whenever the input has changed (e.g. user types). Note: this can cause performance issues. Use `on_blur` instead.
     on_enter: triggers when the browser detects an "Enter" key on a [keyup](https://developer.mozilla.org/en-US/docs/Web/API/Element/keyup_event) native browser event.
-    type: Input type of the element. For textarea, use `me.Textarea(...)`
+    type: Input type of the element. For textarea, use `me.textarea(...)`
     appearance: The form field appearance style.
     style: Style for input.
     disabled: Whether it's disabled.
