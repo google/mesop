@@ -276,8 +276,13 @@ def configure_flask_app(
       code = data.get("code")
       path = data.get("path")
       page_config = runtime().get_page_config(path=path)
+      assert page_config
       module = inspect.getmodule(page_config.page_fn)
+      assert module
+      module_file = module.__file__
+      assert module_file
       module_file_path = module.__file__
+      assert module_file_path
       with open(module_file_path, "w") as file:
         file.write(code)
 
@@ -303,11 +308,13 @@ def configure_flask_app(
 
       path = data.get("path")
       page_config = runtime().get_page_config(path=path)
-
+      assert page_config
       module = inspect.getmodule(page_config.page_fn)
-      if not module:
+      if module is None:
         return Response("Could not retrieve module source code.", status=500)
-      with open(module.__file__) as file:
+      module_file = module.__file__
+      assert module_file
+      with open(module_file) as file:
         source_code = file.read()
       print(f"Source code of module {module.__name__}:")
 
