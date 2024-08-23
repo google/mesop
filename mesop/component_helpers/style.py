@@ -293,6 +293,7 @@ class Style:
       align_items: Specifies the default alignment for items inside a flexible container. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/align-items).
       align_self: Overrides a grid or flex item's align-items value. In Grid, it aligns the item inside the grid area. In Flexbox, it aligns the item on the cross axis. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/align-self).
       aspect_ratio: Specifies the desired width-to-height ratio of a component. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/aspect-ratio).
+      backdrop_filter: Applies a CSS filter to the backdrop of the component. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/backdrop-filter).
       background: Sets the background color or image of the component. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/background).
       border: Defines the border properties for each side of the component. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/border).
       border_radius: Defines the border radius. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/border-radius).
@@ -362,11 +363,11 @@ class Style:
       top: Helps set vertical position of a positioned element. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/top).
       transform: Lets you rotate, scale, skew, or translate an element. It modifies the coordinate space of the CSS visual formatting model. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/transform).
       transition: Specifies the transition effect. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/transition).
+      vertical_align: Specifies the vertical alignment of an element. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/vertical-align).
       visibility: Sets the visibility property. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/visibility).
       white_space: Specifies how white space inside an element is handled. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/white-space).
       width: Sets the width of the component. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/width).
       word_wrap: Specifies how long text can be broken up by new lines to prevent overflowing. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/word-wrap).
-      vertical_align: Specifies the vertical alignment of an element. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/vertical-align).
       z-index: Sets the z-index of the component. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/z-index).
   """
 
