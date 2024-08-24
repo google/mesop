@@ -1,8 +1,0 @@
-mesop>=0.11.1
-gunicorn>=22.0.0
-
-llama-index
-google-generativeai
-llama-index-llms-gemini
-llama-index-embeddings-google
-llama-index-retrievers-bm25

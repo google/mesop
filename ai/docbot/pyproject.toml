@@ -1,0 +1,21 @@
+[project]
+name = "docbot"
+version = "0.1.0"
+description = "A chatbot for docs"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "gunicorn>=23.0.0",
+    "nest-asyncio>=1.6.0",
+    "llama-index==0.10.68",
+    "google-generativeai>=0.5.4",
+    "llama-index-llms-gemini==0.2.0",
+    "llama-index-embeddings-google==0.1.6",
+    "llama-index-retrievers-bm25==0.2.2",
+    "mesop>=0.12.2",
+]
+
+[tool.uv]
+dev-dependencies = []
+
+[tool.uv.workspace]
