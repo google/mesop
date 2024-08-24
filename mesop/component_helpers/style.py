@@ -59,6 +59,19 @@ ItemJustifyValues = Literal[
   "revert-layer",
   "unset",
 ]
+
+ObjectFitValues = Literal[
+  "fill",
+  "contain",
+  "cover",
+  "none",
+  "scale-down",
+  "inherit",
+  "initial",
+  "revert",
+  "revert-layer",
+  "unset",
+]
 OverflowValues = Literal["visible", "hidden", "clip", "scroll", "auto"]
 OverflowWrapValues = Literal["normal", "break-word", "anywhere"]
 PointerEventsValues = Literal[
@@ -280,6 +293,7 @@ class Style:
       align_items: Specifies the default alignment for items inside a flexible container. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/align-items).
       align_self: Overrides a grid or flex item's align-items value. In Grid, it aligns the item inside the grid area. In Flexbox, it aligns the item on the cross axis. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/align-self).
       aspect_ratio: Specifies the desired width-to-height ratio of a component. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/aspect-ratio).
+      backdrop_filter: Applies a CSS filter to the backdrop of the component. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/backdrop-filter).
       background: Sets the background color or image of the component. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/background).
       border: Defines the border properties for each side of the component. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/border).
       border_radius: Defines the border radius. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/border-radius).
@@ -291,6 +305,7 @@ class Style:
       columns: Specifies the number of columns in a multi-column element. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/columns).
       cursor: Sets the mouse cursor. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor).
       display: Defines the display type of the component. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/display).
+      flex: Defines the flexbox layout using a shorthand property. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/flex).
       flex_basis: Specifies the initial length of a flexible item. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/flex-basis).
       flex_direction: Establishes the main-axis, thus defining the direction flex items are placed in the flex container. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/flex-direction).
       flex_grow: Defines the ability for a flex item to grow if necessary. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/flex-grow).
@@ -326,9 +341,11 @@ class Style:
       max_width: Sets the maximum width of an element. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/max-width).
       min_height: Sets the minimum height of an element. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/min-height).
       min_width: Sets the minimum width of an element. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/min-width).
+      object_fit: Specifies how an image or video should be resized to fit its container. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/object-fit).
       opacity: Sets the opacity property. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/opacity).
       outline: Sets the outline property. Note: `input` component has default browser stylings. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/outline).
       overflow_wrap: Specifies how long text can be broken up by new lines to prevent overflowing. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/overflow-wrap).
+      overflow: Specifies the handling of overflow in the horizontal and vertical direction. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/overflow).
       overflow_x: Specifies the handling of overflow in the horizontal direction. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/overflow-x).
       overflow_y: Specifies the handling of overflow in the vertical direction. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/overflow-y).
       padding: Sets the padding space required on each side of an element. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/padding).
@@ -341,11 +358,16 @@ class Style:
       text_align: Specifies the horizontal alignment of text in an element. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/text-align).
       text_decoration: Specifies the decoration added to text. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration).
       text_overflow: Specifies how overflowed content that is not displayed should be signaled to the user. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/text-overflow).
+      text_shadow: Specifies the shadow effect applied to text. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/text-shadow).
+      text_transform: Specifies the transformation applied to text. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/text-transform).
       top: Helps set vertical position of a positioned element. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/top).
       transform: Lets you rotate, scale, skew, or translate an element. It modifies the coordinate space of the CSS visual formatting model. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/transform).
+      transition: Specifies the transition effect. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/transition).
+      vertical_align: Specifies the vertical alignment of an element. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/vertical-align).
       visibility: Sets the visibility property. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/visibility).
       white_space: Specifies how white space inside an element is handled. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/white-space).
       width: Sets the width of the component. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/width).
+      word_wrap: Specifies how long text can be broken up by new lines to prevent overflowing. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/word-wrap).
       z-index: Sets the z-index of the component. See [MDN doc](https://developer.mozilla.org/en-US/docs/Web/CSS/z-index).
   """
 
@@ -356,6 +378,7 @@ class Style:
   align_items: ItemAlignmentValues | None = None
   align_self: ItemAlignmentValues | None = None
   aspect_ratio: str | None = None
+  backdrop_filter: str | None = None
   background: str | None = None
   border: Border | None = None
   border_radius: int | str | None = None
@@ -382,6 +405,7 @@ class Style:
     ]
     | None
   ) = None
+  flex: str | None = None
   flex_basis: str | None = None
   flex_direction: (
     Literal[
@@ -434,15 +458,17 @@ class Style:
   justify_self: ItemJustifyValues | None = None
   left: int | str | None = None
   letter_spacing: int | str | None = None
-  line_height: str | None = None
+  line_height: float | str | None = None
   margin: Margin | None = None
   max_height: int | str | None = None
   max_width: int | str | None = None
   min_height: int | str | None = None
   min_width: int | str | None = None
+  object_fit: ObjectFitValues | None = None
   opacity: float | str | None = None
   outline: str | None = None
   overflow_wrap: OverflowWrapValues | None = None
+  overflow: OverflowValues | None = None
   overflow_x: OverflowValues | None = None
   overflow_y: OverflowValues | None = None
   padding: Padding | None = None
@@ -473,8 +499,39 @@ class Style:
   ) = None
   text_decoration: Literal["underline", "none"] | None = None
   text_overflow: Literal["ellipsis", "clip"] | None = None
+  text_shadow: str | None = None
+  text_transform: (
+    Literal[
+      "uppercase",
+      "lowercase",
+      "capitalize",
+      "none",
+      "full-width",
+      "full-size-kana",
+    ]
+    | None
+  ) = None
   top: int | str | None = None
   transform: str | None = None
+  transition: str | None = None
+  vertical_align: (
+    Literal[
+      "baseline",
+      "sub",
+      "super",
+      "top",
+      "text-top",
+      "middle",
+      "bottom",
+      "text-bottom",
+      "initial",
+      "inherit",
+      "revert",
+      "revert-layer",
+      "unset",
+    ]
+    | None
+  ) = None
   visibility: (
     Literal[
       "visible",
@@ -500,6 +557,7 @@ class Style:
     | None
   ) = None
   width: int | str | None = None
+  word_wrap: Literal["normal", "break-word", "anywhere"] | None = None
   z_index: int | None = None
 
 
@@ -509,6 +567,7 @@ def to_style_proto(s: Style) -> pb.Style:
     align_items=s.align_items,
     align_self=s.align_self,
     aspect_ratio=s.aspect_ratio,
+    backdrop_filter=s.backdrop_filter,
     background=s.background,
     border=_map_border(s.border),
     border_radius=_px_str(s.border_radius),
@@ -520,6 +579,7 @@ def to_style_proto(s: Style) -> pb.Style:
     columns=_int_str(s.columns),
     cursor=s.cursor,
     display=s.display,
+    flex=s.flex,
     flex_basis=s.flex_basis,
     flex_direction=s.flex_direction,
     flex_grow=s.flex_grow,
@@ -549,15 +609,17 @@ def to_style_proto(s: Style) -> pb.Style:
     justify_self=s.justify_self,
     left=_px_str(s.left),
     letter_spacing=_px_str(s.letter_spacing),
-    line_height=str(s.line_height),
+    line_height=_float_str(s.line_height),
     margin=_map_edge_insets(s.margin),
     max_height=_px_str(s.max_height),
     max_width=_px_str(s.max_width),
     min_height=_px_str(s.min_height),
     min_width=_px_str(s.min_width),
+    object_fit=s.object_fit,
     opacity=_float_str(s.opacity),
     outline=s.outline,
     overflow_wrap=s.overflow_wrap,
+    overflow=s.overflow,
     overflow_x=s.overflow_x,
     overflow_y=s.overflow_y,
     padding=_map_edge_insets(s.padding),
@@ -570,11 +632,16 @@ def to_style_proto(s: Style) -> pb.Style:
     text_align=s.text_align,
     text_decoration=s.text_decoration,
     text_overflow=s.text_overflow,
+    text_shadow=s.text_shadow,
+    text_transform=s.text_transform,
     top=_px_str(s.top),
     transform=s.transform,
+    transition=s.transition,
     visibility=s.visibility,
     white_space=s.white_space,
     width=_px_str(s.width),
+    word_wrap=s.word_wrap,
+    vertical_align=s.vertical_align,
     z_index=s.z_index,
   )
 
