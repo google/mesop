@@ -3,7 +3,7 @@ import inspect
 import json
 from dataclasses import is_dataclass
 from enum import Enum
-from functools import partial, wraps
+from functools import lru_cache, partial, wraps
 from typing import (
   Any,
   Callable,
@@ -404,6 +404,7 @@ def has_stable_repr(obj: Any) -> bool:
   return False
 
 
+@lru_cache(maxsize=None)
 def compute_fn_id(fn: Callable[..., Any]) -> str:
   if isinstance(fn, partial):
     func_source = inspect.getsource(fn.func)
