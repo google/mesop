@@ -50,6 +50,9 @@ def create_app(
 
 
 def create_wsgi_app(*, debug_mode: bool = False):
+  """
+  Creates a WSGI app that can be used to run Mesop in a WSGI server.
+  """
   _app = None
 
   def wsgi_app(environ: dict[Any, Any], start_response: Callable[..., Any]):
