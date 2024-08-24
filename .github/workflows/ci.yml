@@ -107,7 +107,8 @@ jobs:
           path: .cache
           restore-keys: |
             docs-bot-
-      - run: pip install -r ai/docbot/requirements.txt
+        # install uv
+      - run: curl -LsSf https://astral.sh/uv/install.sh | sh
       - run: |
           git config user.name github-actions[bot]
           git config user.email github-actions[bot]@users.noreply.github.com

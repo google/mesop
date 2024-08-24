@@ -22,9 +22,6 @@ if [ ! -d "$DEST_PATH" ]; then
     mkdir -p "$DEST_PATH"
 fi
 
-# Install uv
-curl -LsSf https://astral.sh/uv/install.sh | sh
-
 # Build the docs index
 cd ai/docbot && uv run docs_index.py --build-index && cd -
 
