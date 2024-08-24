@@ -1,7 +1,9 @@
 import hashlib
 import inspect
 import json
-from functools import lru_cache, wraps
+from dataclasses import is_dataclass
+from enum import Enum
+from functools import lru_cache, partial, wraps
 from typing import (
   Any,
   Callable,
@@ -357,8 +359,12 @@ def wrap_handler_with_event(func: Handler[E], actionType: Type[E]):
 
     return func(cast(Any, event))
 
-  wrapper.__module__ = func.__module__
-  wrapper.__name__ = func.__name__
+  if isinstance(func, partial):
+    wrapper.__module__ = func.func.__module__
+    wrapper.__name__ = func.func.__name__
+  else:
+    wrapper.__module__ = func.__module__
+    wrapper.__name__ = func.__name__
 
   return wrapper
 
@@ -374,14 +380,67 @@ def register_event_handler(
   return fn_id
 
 
+def has_stable_repr(obj: Any) -> bool:
+  """Check if an object has a stable repr.
+  We need to ensure that the repr is stable between different Python runtimes.
+  """
+  stable_types = (int, float, str, bool, type(None), tuple, frozenset, Enum)  # type: ignore
+
+  if isinstance(obj, stable_types):
+    return True
+  if is_dataclass(obj):
+    return all(
+      has_stable_repr(getattr(obj, f.name))
+      for f in obj.__dataclass_fields__.values()
+    )
+  if isinstance(obj, (list, set)):
+    return all(has_stable_repr(item) for item in obj)  # type: ignore
+  if isinstance(obj, dict):
+    return all(
+      has_stable_repr(k) and has_stable_repr(v)
+      for k, v in obj.items()  # type: ignore
+    )
+
+  return False
+
+
 @lru_cache(maxsize=None)
 def compute_fn_id(fn: Callable[..., Any]) -> str:
-  source_code = inspect.getsource(fn)
+  if isinstance(fn, partial):
+    func_source = inspect.getsource(fn.func)
+    # For partial functions, we need to ensure that the arguments have a stable repr
+    # because we use the repr to compute the fn_id.
+    for arg in fn.args:
+      if not has_stable_repr(arg):
+        raise MesopDeveloperException(
+          f"Argument {arg} for functools.partial event handler {fn.func.__name__} does not have a stable repr"
+        )
+
+    for k, v in fn.keywords.items():
+      if not has_stable_repr(v):
+        raise MesopDeveloperException(
+          f"Keyword argument {k}={v} for functools.partial event handler {fn.func.__name__} does not have a stable repr"
+        )
+
+    args_str = ", ".join(repr(arg) for arg in fn.args)
+    kwargs_str = ", ".join(f"{k}={v!r}" for k, v in fn.keywords.items())
+    partial_args = (
+      f"{args_str}{', ' if args_str and kwargs_str else ''}{kwargs_str}"
+    )
+
+    source_code = f"partial(<<{func_source}>>, {partial_args})"
+    fn_name = fn.func.__name__
+    fn_module = fn.func.__module__
+  else:
+    source_code = inspect.getsource(fn) if inspect.isfunction(fn) else str(fn)
+    fn_name = fn.__name__
+    fn_module = fn.__module__
+
   # Skip hashing the fn/module name in debug mode because it makes it hard to debug.
   if runtime().debug_mode:
     source_code_hash = hashlib.sha256(source_code.encode()).hexdigest()
-    return f"{fn.__module__}.{fn.__name__}.{source_code_hash}"
-  input = f"{fn.__module__}.{fn.__name__}.{source_code}"
+    return f"{fn_module}.{fn_name}.{source_code_hash}"
+  input = f"{fn_module}.{fn_name}.{source_code}"
   return hashlib.sha256(input.encode()).hexdigest()
 
 
