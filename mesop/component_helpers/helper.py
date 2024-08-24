@@ -381,7 +381,9 @@ def register_event_handler(
 
 
 def has_stable_repr(obj: Any) -> bool:
-  """Check if an object has a stable repr."""
+  """Check if an object has a stable repr.
+  We need to ensure that the repr is stable between different Python runtimes.
+  """
   stable_types = (int, float, str, bool, type(None), tuple, frozenset, Enum)  # type: ignore
 
   if isinstance(obj, stable_types):
@@ -405,7 +407,8 @@ def has_stable_repr(obj: Any) -> bool:
 def compute_fn_id(fn: Callable[..., Any]) -> str:
   if isinstance(fn, partial):
     func_source = inspect.getsource(fn.func)
-
+    # For partial functions, we need to ensure that the arguments have a stable repr
+    # because we use the repr to compute the fn_id.
     for arg in fn.args:
       if not has_stable_repr(arg):
         raise MesopDeveloperException(
