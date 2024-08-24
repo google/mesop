@@ -22,8 +22,11 @@ if [ ! -d "$DEST_PATH" ]; then
     mkdir -p "$DEST_PATH"
 fi
 
+# Install uv
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
 # Build the docs index
-cd ai/docbot && python docs_index.py --build-index && cd -
+cd ai/docbot && uv run docs_index.py --build-index && cd -
 
 # Get the path of this script which is the demo dir.
 DEMO_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
