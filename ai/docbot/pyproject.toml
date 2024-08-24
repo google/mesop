@@ -15,7 +15,17 @@ dependencies = [
     "mesop>=0.12.2",
 ]
 
+# uv required properties:
+
 [tool.uv]
 dev-dependencies = []
 
 [tool.uv.workspace]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+# See: https://github.com/astral-sh/uv/issues/6293
+[tool.hatch.build.targets.wheel]
+packages = ["."]
