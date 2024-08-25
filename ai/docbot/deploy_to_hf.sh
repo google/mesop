@@ -23,7 +23,7 @@ if [ ! -d "$DEST_PATH" ]; then
 fi
 
 # Build the docs index
-cd ai/docbot && uv run docs_index.py --build-index && cd -
+cd ai/docbot && python docs_index.py --build-index && cd -
 
 # Get the path of this script which is the demo dir.
 DEMO_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
