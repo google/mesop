@@ -1,4 +1,6 @@
-import {Injectable} from '@angular/core';
+import {Injectable, NgZone} from '@angular/core';
+import {SSE} from '../utils/sse';
+import {BehaviorSubject, Observable} from 'rxjs';
 
 export interface PromptInteraction extends PromptResponse {
   readonly prompt: string;
@@ -11,11 +13,27 @@ export interface PromptResponse {
   readonly diff: string;
 }
 
+interface GenerateEndMessage extends PromptResponse {
+  type: 'end';
+}
+
+interface GenerateProgressMessage {
+  type: 'progress';
+  data: string;
+}
+
+type GenerateData = GenerateEndMessage | GenerateProgressMessage;
+
 @Injectable({
   providedIn: 'root',
 })
 export class EditorToolbarService {
   history: PromptInteraction[] = [];
+  eventSource: SSE | undefined;
+  private progressSubject = new BehaviorSubject<string>('');
+  progress$: Observable<string> = this.progressSubject.asObservable();
+
+  constructor(private readonly ngZone: NgZone) {}
 
   getHistory(): readonly PromptInteraction[] {
     return this.history;
@@ -23,23 +41,52 @@ export class EditorToolbarService {
 
   async sendPrompt(prompt: string): Promise<PromptResponse> {
     console.debug('sendPrompt', prompt);
+    // Clear the progress subject
+    this.progressSubject.next('');
     const path = window.location.pathname;
-    const response = await fetch('/__editor__/page-generate', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({prompt, path}),
+    return new Promise((resolve, reject) => {
+      this.eventSource = new SSE('/__editor__/page-generate', {
+        payload: JSON.stringify({prompt, path}),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      this.eventSource.addEventListener('message', (e) => {
+        // Looks like Angular has a bug where it's not intercepting EventSource onmessage.
+        this.ngZone.run(() => {
+          try {
+            const data = (e as any).data;
+            console.debug('sendPrompt eventSource message', data);
+            const obj = JSON.parse(data) as GenerateData;
+            if (!obj.type) {
+              reject(new Error('Invalid event source message'));
+              return;
+            }
+            if (obj.type === 'end') {
+              this.eventSource!.close();
+              this.eventSource = undefined;
+              const {beforeCode, afterCode, diff} = obj;
+              this.history.unshift({
+                path,
+                prompt,
+                beforeCode,
+                afterCode,
+                diff,
+              });
+              resolve({beforeCode, afterCode, diff});
+            }
+            if (obj.type === 'progress') {
+              this.progressSubject.next(
+                this.progressSubject.getValue() + obj.data,
+              );
+            }
+          } catch (e) {
+            console.error('sendPrompt eventSource error', e);
+            reject(e);
+          }
+        });
+      });
     });
-    await handleError(response);
-    const json = (await response.json()) as PromptResponse;
-    // Insert at the top of the history so we display the most recent interactions first.
-    this.history.unshift({
-      path,
-      prompt,
-      ...json,
-    });
-    return json;
   }
 
   async commit(code: string) {

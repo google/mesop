@@ -1,3 +1,4 @@
+import json
 import os
 import re
 import secrets
@@ -5,7 +6,7 @@ import urllib.parse
 from os import getenv
 from typing import NamedTuple
 
-from flask import Flask, Response, request
+from flask import Flask, Response, request, stream_with_context
 from openai import OpenAI
 
 app = Flask(__name__)
@@ -53,7 +54,7 @@ def save_interaction_endpoint() -> Response | dict[str, str]:
 
 
 @app.route("/adjust-mesop-app", methods=["POST"])
-def adjust_mesop_app_endpoint() -> Response | dict[str, str]:
+def adjust_mesop_app_endpoint():
   data = request.json
   assert data is not None
   code = data.get("code")
@@ -62,14 +63,23 @@ def adjust_mesop_app_endpoint() -> Response | dict[str, str]:
   if not code or not prompt:
     return Response("Both 'code' and 'prompt' are required", status=400)
 
-  try:
-    diff = adjust_mesop_app(code, prompt)
+  def generate():
+    stream = adjust_mesop_app(code, prompt)
+    diff = ""
+    for chunk in stream:
+      if chunk.choices[0].delta.content:
+        diff += chunk.choices[0].delta.content
+        yield f"data: {json.dumps({'type': 'progress', 'data': chunk.choices[0].delta.content})}\n\n"
+
     result = apply_patch(code, diff)
     if result.has_error:
       raise Exception(result.result)
-    return {"code": result.result, "diff": diff}
-  except Exception as e:
-    return Response(f"Error: {e!s}", status=500)
+
+    yield f"data: {json.dumps({'type': 'end', 'code': result.result, 'diff': diff})}\n\n"
+
+  return Response(
+    stream_with_context(generate()), content_type="text/event-stream"
+  )
 
 
 class ApplyPatchResult(NamedTuple):
@@ -98,18 +108,12 @@ def apply_patch(original_code: str, patch: str) -> ApplyPatchResult:
   return ApplyPatchResult(False, patched_code)
 
 
-def adjust_mesop_app(code: str, msg: str) -> str:
+def adjust_mesop_app(code: str, msg: str):
   model = "ft:gpt-4o-mini-2024-07-18:personal::9yoxJtKf"
   client = OpenAI(
     api_key=getenv("OPENAI_API_KEY"),
   )
-  return adjust_mesop_app_openai_client(code, msg, client, model=model)
-
-
-def adjust_mesop_app_openai_client(
-  code: str, msg: str, client: OpenAI, model: str
-) -> str:
-  completion = client.chat.completions.create(
+  return client.chat.completions.create(
     model=model,
     max_tokens=10_000,
     messages=[
@@ -124,11 +128,8 @@ def adjust_mesop_app_openai_client(
         ),
       },
     ],
+    stream=True,
   )
-  print("[INFO] LLM output:", completion.choices[0].message.content)
-  llm_output = completion.choices[0].message.content
-  assert llm_output is not None
-  return llm_output
 
 
 def generate_folder_name(prompt: str) -> str:

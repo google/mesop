@@ -13,7 +13,10 @@ import {
   MatDialog,
   MatDialogModule,
 } from '@angular/material/dialog';
-import {CodeMirrorComponent} from './code_mirror_component';
+import {
+  CodeMirrorDiffComponent,
+  CodeMirrorRawComponent,
+} from './code_mirror_component';
 import {interval, Subscription} from 'rxjs';
 import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
 import {CommonModule} from '@angular/common';
@@ -138,7 +141,16 @@ export class EditorToolbar implements OnInit {
     this.startTimer(startTime);
 
     try {
-      const response = await this.editorToolbarService.sendPrompt(prompt);
+      const responsePromise = this.editorToolbarService.sendPrompt(prompt);
+      const progressDalogRef = this.dialog.open(
+        EditorSendPromptProgressDialog,
+        {
+          width: '90%',
+        },
+      );
+      const response = await responsePromise;
+      progressDalogRef.close();
+      this.autocompleteTrigger.closePanel();
       const dialogRef = this.dialog.open(EditorPromptResponseDialog, {
         data: {response: response, responseTime: this.responseTime},
         width: '90%',
@@ -251,9 +263,27 @@ export class EditorToolbar implements OnInit {
 }
 
 @Component({
+  templateUrl: 'editor_send_prompt_progress_dialog.ng.html',
+  standalone: true,
+  imports: [
+    MatDialogModule,
+    MatButtonModule,
+    CommonModule,
+    CodeMirrorRawComponent,
+  ],
+})
+class EditorSendPromptProgressDialog {
+  constructor(private editorToolbarService: EditorToolbarService) {}
+
+  get progress$() {
+    return this.editorToolbarService.progress$;
+  }
+}
+
+@Component({
   templateUrl: 'editor_response_dialog.ng.html',
   standalone: true,
-  imports: [MatDialogModule, MatButtonModule, CodeMirrorComponent],
+  imports: [MatDialogModule, MatButtonModule, CodeMirrorDiffComponent],
 })
 class EditorPromptResponseDialog {
   constructor(
@@ -268,7 +298,7 @@ class EditorPromptResponseDialog {
   imports: [
     MatDialogModule,
     MatButtonModule,
-    CodeMirrorComponent,
+    CodeMirrorDiffComponent,
     MatIconModule,
     MatSnackBarModule,
     MatTooltipModule,

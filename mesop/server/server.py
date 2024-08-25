@@ -5,7 +5,7 @@ import os
 import secrets
 import time
 import urllib.parse as urlparse
-from typing import Generator, Sequence
+from typing import Any, Generator, Sequence
 from urllib import request as urllib_request
 from urllib.error import URLError
 
@@ -275,6 +275,42 @@ def configure_flask_app(
 
   if not prod_mode:
 
+    def sse_request(
+      url: str, data: dict[str, Any]
+    ) -> Generator[dict[str, Any], None, None]:
+      """
+      Make an SSE request and yield parsed events.
+
+      Args:
+          url (str): The URL to make the request to.
+          data (dict): The data to send in the request body.
+
+      Yields:
+          dict: Parsed SSE events.
+      """
+      headers = {
+        "Content-Type": "application/json",
+        "Accept": "text/event-stream",
+      }
+      encoded_data = json.dumps(data).encode("utf-8")
+      req = urllib_request.Request(
+        url, data=encoded_data, headers=headers, method="POST"
+      )
+
+      try:
+        with urllib_request.urlopen(req) as response:
+          for line in response:
+            if line.strip():
+              decoded_line = line.decode("utf-8").strip()
+              if decoded_line.startswith("data: "):
+                event_data = json.loads(decoded_line[6:])
+                yield event_data
+      except URLError as e:
+        yield {
+          "type": "error",
+          "message": f"Error making request to AI service: {e!s}",
+        }
+
     @flask_app.route("/__editor__/page-commit", methods=["POST"])
     def page_commit() -> Response:
       check_editor_access()
@@ -331,7 +367,7 @@ def configure_flask_app(
         )
 
     @flask_app.route("/__editor__/page-generate", methods=["POST"])
-    def page_generate() -> Response | dict[str, str]:
+    def page_generate():
       check_editor_access()
 
       try:
@@ -357,38 +393,31 @@ def configure_flask_app(
         source_code = file.read()
       print(f"Source code of module {module.__name__}:")
 
-      try:
-        req = urllib_request.Request(
+      def generate():
+        for event in sse_request(
           AI_SERVICE_BASE_URL + "/adjust-mesop-app",
-          data=json.dumps({"prompt": prompt, "code": source_code}).encode(
-            "utf-8"
-          ),
-          headers={"Content-Type": "application/json"},
-        )
-        with urllib_request.urlopen(req) as response:
-          if response.status == 200:
-            response_data = json.loads(response.read().decode("utf-8"))
-            generated_code = response_data["code"]
-            diff = response_data["diff"]
+          {"prompt": prompt, "code": source_code},
+        ):
+          if event.get("type") == "end":
+            sse_data = {
+              "type": "end",
+              "prompt": prompt,
+              "path": path,
+              "beforeCode": source_code,
+              "afterCode": event["code"],
+              "diff": event["diff"],
+              "message": "Prompt processed successfully",
+            }
+            yield f"data: {json.dumps(sse_data)}\n\n"
+            break
+          elif event.get("type") == "progress":
+            print("***", event["data"], type(event["data"]))
+            sse_data = {"data": event["data"], "type": "progress"}
+            yield f"data: {json.dumps(sse_data)}\n\n"
           else:
-            print(f"Error from AI service: {response.read().decode('utf-8')}")
-            return Response(
-              f"Error from AI service: {response.read().decode('utf-8')}",
-              status=500,
-            )
-      except URLError as e:
-        return Response(
-          f"Error making request to AI service: {e!s}", status=500
-        )
+            raise Exception(f"Unknown event type: {event}")
 
-      return {
-        "prompt": prompt,
-        "path": path,
-        "beforeCode": source_code,
-        "afterCode": generated_code,
-        "diff": diff,
-        "message": "Prompt processed successfully",
-      }
+      return Response(generate(), content_type="text/event-stream")
 
     @flask_app.route("/__hot-reload__")
     def hot_reload() -> Response:
