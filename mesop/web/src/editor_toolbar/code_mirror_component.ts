@@ -20,17 +20,18 @@ export class CodeMirrorDiffComponent {
   @Input() beforeCode!: string;
   @Input() afterCode!: string;
   @Output() codeChange = new EventEmitter<string>();
+  view: MergeView | null = null;
   constructor(private elementRef: ElementRef) {}
 
   ngOnChanges() {
-    while (this.elementRef.nativeElement.firstChild) {
-      this.elementRef.nativeElement.firstChild.remove();
+    if (this.view) {
+      this.view.destroy();
     }
     this.renderEditor();
   }
 
   renderEditor() {
-    const mergeView = new MergeView({
+    this.view = new MergeView({
       a: {
         doc: this.beforeCode,
         extensions: [

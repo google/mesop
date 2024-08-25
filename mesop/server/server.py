@@ -375,7 +375,6 @@ def configure_flask_app(
             yield f"data: {json.dumps(sse_data)}\n\n"
             break
           elif event.get("type") == "progress":
-            print("***", event["data"], type(event["data"]))
             sse_data = {"data": event["data"], "type": "progress"}
             yield f"data: {json.dumps(sse_data)}\n\n"
           else:

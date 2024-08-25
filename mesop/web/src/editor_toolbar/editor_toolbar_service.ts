@@ -56,7 +56,6 @@ export class EditorToolbarService {
         this.ngZone.run(() => {
           try {
             const data = (e as any).data;
-            console.debug('sendPrompt eventSource message', data);
             const obj = JSON.parse(data) as GenerateData;
             if (!obj.type) {
               reject(new Error('Invalid event source message'));
