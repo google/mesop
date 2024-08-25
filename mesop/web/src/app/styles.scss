@@ -175,10 +175,14 @@ body {
   @include mat.all-component-themes($light-theme);
   @include mat.color-variants-backwards-compatibility($light-theme);
   @include mat.system-level-colors($light-theme);
+
+  --mesop-editor-toolbar-background-rgb: 240, 237, 241;
 }
 
 body.dark-theme {
   @include mat.system-level-colors($dark-theme);
+
+  --mesop-editor-toolbar-background-rgb: 31, 31, 35;
 }
 
 $density-scales: (-1, -2, -3, -4);
@@ -782,3 +786,9 @@ span.linenos.special {
 .dark-theme .highlight .il {
   color: #a5d6ff;
 } /* Literal.Number.Integer.Long */
+
+// Styles needed for the editor toolbar.
+
+.floating-editor-toolbar-autocomplete {
+  --mat-option-label-text-size: 0.9rem;
+}

@@ -19,6 +19,20 @@ import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
 import {CommonModule} from '@angular/common';
 import {ErrorDialogService} from '../services/error_dialog_service';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import {
+  MAT_AUTOCOMPLETE_SCROLL_STRATEGY,
+  MatAutocomplete,
+  MatAutocompleteModule,
+  MatAutocompleteTrigger,
+} from '@angular/material/autocomplete';
+import {EditorToolbarAutocompleteService} from './editor_toolbar_autocomplete_service';
+import {Overlay} from '@angular/cdk/overlay';
+import {HighlightPipe} from './highlight_pipe';
+
+interface PromptOption {
+  prompt: string;
+  icon: string;
+}
 
 @Component({
   selector: 'mesop-editor-toolbar',
@@ -32,6 +46,15 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     MatSnackBarModule,
     CommonModule,
     CdkDrag,
+    MatAutocompleteModule,
+    HighlightPipe,
+  ],
+  providers: [
+    {
+      provide: MAT_AUTOCOMPLETE_SCROLL_STRATEGY,
+      useFactory: (overlay: Overlay) => () => overlay.scrollStrategies.close(),
+      deps: [Overlay],
+    },
   ],
 })
 export class EditorToolbar implements OnInit {
@@ -42,12 +65,17 @@ export class EditorToolbar implements OnInit {
   isToolbarExpanded = true;
   position: {x: number | null; y: number | null} = {x: null, y: null};
   @ViewChild('toolbar', {static: true}) toolbar!: ElementRef;
+  @ViewChild(MatAutocompleteTrigger)
+  autocompleteTrigger!: MatAutocompleteTrigger;
+  @ViewChild(MatAutocomplete)
+  autocomplete!: MatAutocomplete;
 
   constructor(
     private editorToolbarService: EditorToolbarService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
     private errorDialogService: ErrorDialogService,
+    private autocompleteService: EditorToolbarAutocompleteService,
   ) {
     const savedState = localStorage.getItem('isToolbarExpanded');
     this.isToolbarExpanded = savedState === 'true';
@@ -55,6 +83,25 @@ export class EditorToolbar implements OnInit {
 
   ngOnInit() {
     this.loadSavedPosition();
+  }
+
+  ngAfterViewInit() {
+    this.setupAutocompleteScrolling();
+  }
+
+  setupAutocompleteScrolling() {
+    this.autocomplete.opened.subscribe(() => {
+      setTimeout(() => {
+        if (this.autocomplete?.panel) {
+          this.autocomplete.panel.nativeElement.scrollTop =
+            this.autocomplete.panel.nativeElement.scrollHeight;
+        }
+      });
+    });
+  }
+
+  get filteredOptions(): PromptOption[] {
+    return this.autocompleteService.getFilteredOptions();
   }
 
   toggleToolbar() {
@@ -73,11 +120,16 @@ export class EditorToolbar implements OnInit {
 
   async onEnter(event: Event) {
     event.preventDefault();
+
+    if (this.autocompleteTrigger.panelOpen) {
+      this.autocompleteTrigger.closePanel();
+    }
     await this.sendPrompt();
   }
 
   async sendPrompt() {
     const prompt = this.prompt;
+    this.autocompleteService.addHistoryOption(prompt);
     this.prompt = '';
     this.isLoading = true;
     this.responseTime = 0;
@@ -96,6 +148,7 @@ export class EditorToolbar implements OnInit {
         if (result) {
           await this.editorToolbarService.commit(response.afterCode);
         }
+        this.autocompleteTrigger.closePanel();
       });
     } catch (error) {
       console.error('Error:', error);
@@ -190,6 +243,10 @@ export class EditorToolbar implements OnInit {
       'editorToolbarPosition',
       JSON.stringify(this.position),
     );
+  }
+
+  onPromptChange(newValue: string) {
+    this.autocompleteService.updateFilteredOptions(newValue);
   }
 }
 
