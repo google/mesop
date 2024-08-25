@@ -1,6 +1,6 @@
 import {EditorView, basicSetup} from 'codemirror';
 import {python} from '@codemirror/lang-python';
-import {MergeView} from '@codemirror/merge';
+import {unifiedMergeView} from '@codemirror/merge';
 import {EditorState} from '@codemirror/state';
 
 import {
@@ -20,7 +20,7 @@ export class CodeMirrorDiffComponent {
   @Input() beforeCode!: string;
   @Input() afterCode!: string;
   @Output() codeChange = new EventEmitter<string>();
-  view: MergeView | null = null;
+  view: EditorView | null = null;
   constructor(private elementRef: ElementRef) {}
 
   ngOnChanges() {
@@ -31,29 +31,24 @@ export class CodeMirrorDiffComponent {
   }
 
   renderEditor() {
-    this.view = new MergeView({
-      a: {
-        doc: this.beforeCode,
-        extensions: [
-          basicSetup,
-          python(),
-          EditorView.editable.of(false),
-          EditorView.lineWrapping,
-        ],
-      },
-      b: {
+    this.view = new EditorView({
+      state: EditorState.create({
         doc: this.afterCode,
         extensions: [
           basicSetup,
           python(),
           EditorView.editable.of(false),
           EditorView.lineWrapping,
+          unifiedMergeView({
+            original: this.beforeCode,
+            highlightChanges: true,
+            mergeControls: false,
+            gutter: true,
+            collapseUnchanged: {margin: 2},
+          }),
         ],
-      },
+      }),
       parent: this.elementRef.nativeElement,
-      highlightChanges: true,
-      collapseUnchanged: {margin: 2},
-      gutter: true,
     });
   }
 }
