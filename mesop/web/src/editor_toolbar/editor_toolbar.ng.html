@@ -18,8 +18,22 @@
     placeholder="Type in the UI change you want..."
     class="floating-editor-toolbar-textarea"
     [(ngModel)]="prompt"
+    (ngModelChange)="onPromptChange($event)"
     (keydown.enter)="onEnter($event)"
+    [matAutocomplete]="auto"
   ></textarea>
+  <mat-autocomplete
+    hideSingleSelectionIndicator="true"
+    #auto="matAutocomplete"
+    class="floating-editor-toolbar-autocomplete"
+  >
+    @for (option of filteredOptions; track option) {
+    <mat-option [value]="option.prompt">
+      <mat-icon>{{option.icon}}</mat-icon>
+      <span [innerHTML]="option.prompt | highlight: prompt"></span>
+    </mat-option>
+    }
+  </mat-autocomplete>
   @if (responseTime > 0) {
   <div>
     <span>{{responseTime | number:'1.1-1'}}s</span>
