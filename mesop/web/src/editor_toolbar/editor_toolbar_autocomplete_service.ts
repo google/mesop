@@ -47,7 +47,7 @@ export class EditorToolbarAutocompleteService {
 
   updateFilteredOptions(prompt: string) {
     this.filteredOptions = this.allOptions.filter((opt) =>
-      opt.prompt.includes(prompt),
+      opt.prompt.toLowerCase().includes(prompt.toLowerCase()),
     );
   }
 
