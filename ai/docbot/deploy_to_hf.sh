@@ -22,10 +22,7 @@ if [ ! -d "$DEST_PATH" ]; then
     mkdir -p "$DEST_PATH"
 fi
 
-# Get the path of this script which is the demo dir.
-DEMO_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
-cp -R "$DEMO_DIR/" "$DEST_PATH"
+cp -R "ai/docbot/" "$DEST_PATH"
 echo "Demo files have been copied to $DEST_PATH"
 
 cd "$DEST_PATH"
