@@ -185,17 +185,19 @@ from mesop.features.viewport_size import viewport_size as viewport_size
 from mesop.key import Key as Key
 from mesop.runtime import runtime
 from mesop.security.security_policy import SecurityPolicy as SecurityPolicy
-from mesop.server.wsgi_app import wsgi_app
+from mesop.server.wsgi_app import create_wsgi_app as create_wsgi_app
 from mesop.version import VERSION
 
 __version__ = VERSION
+
+_wsgi_app = create_wsgi_app(debug_mode=False)
 
 
 class _WsgiAppModule(types.ModuleType):
   def __call__(
     self, environ: dict[Any, Any], start_response: Callable[..., Any]
   ):
-    return wsgi_app(environ, start_response)
+    return _wsgi_app(environ, start_response)
 
 
 sys.modules[__name__].__class__ = _WsgiAppModule
