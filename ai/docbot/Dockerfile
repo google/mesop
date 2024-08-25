@@ -28,5 +28,7 @@ USER mesop
 COPY . /srv/mesop-app
 WORKDIR /srv/mesop-app
 
+RUN cd ai/docbot && python docs_index.py --build-index && cd -
+
 # Run Mesop through gunicorn. Should be available at localhost:8080
 CMD ["gunicorn", "--bind", "0.0.0.0:8080", "main:me"]
