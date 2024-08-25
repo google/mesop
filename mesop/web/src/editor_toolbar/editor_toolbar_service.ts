@@ -14,12 +14,12 @@ export interface PromptResponse {
 }
 
 interface GenerateEndMessage extends PromptResponse {
-  type: 'end';
+  readonly type: 'end';
 }
 
 interface GenerateProgressMessage {
-  type: 'progress';
-  data: string;
+  readonly type: 'progress';
+  readonly data: string;
 }
 
 type GenerateData = GenerateEndMessage | GenerateProgressMessage;
@@ -30,8 +30,9 @@ type GenerateData = GenerateEndMessage | GenerateProgressMessage;
 export class EditorToolbarService {
   history: PromptInteraction[] = [];
   eventSource: SSE | undefined;
-  private progressSubject = new BehaviorSubject<string>('');
-  progress$: Observable<string> = this.progressSubject.asObservable();
+  private readonly generationProgressSubject = new BehaviorSubject<string>('');
+  readonly generationProgress$: Observable<string> =
+    this.generationProgressSubject.asObservable();
 
   constructor(private readonly ngZone: NgZone) {}
 
@@ -42,7 +43,7 @@ export class EditorToolbarService {
   async sendPrompt(prompt: string): Promise<PromptResponse> {
     console.debug('sendPrompt', prompt);
     // Clear the progress subject
-    this.progressSubject.next('');
+    this.generationProgressSubject.next('');
     const path = window.location.pathname;
     return new Promise((resolve, reject) => {
       this.eventSource = new SSE('/__editor__/page-generate', {
@@ -75,8 +76,8 @@ export class EditorToolbarService {
               resolve({beforeCode, afterCode, diff});
             }
             if (obj.type === 'progress') {
-              this.progressSubject.next(
-                this.progressSubject.getValue() + obj.data,
+              this.generationProgressSubject.next(
+                this.generationProgressSubject.getValue() + obj.data,
               );
             }
           } catch (e) {

@@ -142,14 +142,14 @@ export class EditorToolbar implements OnInit {
 
     try {
       const responsePromise = this.editorToolbarService.sendPrompt(prompt);
-      const progressDalogRef = this.dialog.open(
+      const progressDialogRef = this.dialog.open(
         EditorSendPromptProgressDialog,
         {
           width: '90%',
         },
       );
       const response = await responsePromise;
-      progressDalogRef.close();
+      progressDialogRef.close();
       this.autocompleteTrigger.closePanel();
       const dialogRef = this.dialog.open(EditorPromptResponseDialog, {
         data: {response: response, responseTime: this.responseTime},
@@ -276,7 +276,7 @@ class EditorSendPromptProgressDialog {
   constructor(private editorToolbarService: EditorToolbarService) {}
 
   get progress$() {
-    return this.editorToolbarService.progress$;
+    return this.editorToolbarService.generationProgress$;
   }
 }
 
