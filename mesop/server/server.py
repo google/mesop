@@ -275,42 +275,6 @@ def configure_flask_app(
 
   if not prod_mode:
 
-    def sse_request(
-      url: str, data: dict[str, Any]
-    ) -> Generator[dict[str, Any], None, None]:
-      """
-      Make an SSE request and yield parsed events.
-
-      Args:
-          url (str): The URL to make the request to.
-          data (dict): The data to send in the request body.
-
-      Yields:
-          dict: Parsed SSE events.
-      """
-      headers = {
-        "Content-Type": "application/json",
-        "Accept": "text/event-stream",
-      }
-      encoded_data = json.dumps(data).encode("utf-8")
-      req = urllib_request.Request(
-        url, data=encoded_data, headers=headers, method="POST"
-      )
-
-      try:
-        with urllib_request.urlopen(req) as response:
-          for line in response:
-            if line.strip():
-              decoded_line = line.decode("utf-8").strip()
-              if decoded_line.startswith("data: "):
-                event_data = json.loads(decoded_line[6:])
-                yield event_data
-      except URLError as e:
-        yield {
-          "type": "error",
-          "message": f"Error making request to AI service: {e!s}",
-        }
-
     @flask_app.route("/__editor__/page-commit", methods=["POST"])
     def page_commit() -> Response:
       check_editor_access()
@@ -495,3 +459,30 @@ def is_same_site(url1: str | None, url2: str | None):
     return p1.hostname == p2.hostname
   except ValueError:
     return False
+
+
+SSE_DATA_PREFIX = "data: "
+
+
+def sse_request(
+  url: str, data: dict[str, Any]
+) -> Generator[dict[str, Any], None, None]:
+  """
+  Make an SSE request and yield JSON parsed events.
+  """
+  headers = {
+    "Content-Type": "application/json",
+    "Accept": "text/event-stream",
+  }
+  encoded_data = json.dumps(data).encode("utf-8")
+  req = urllib_request.Request(
+    url, data=encoded_data, headers=headers, method="POST"
+  )
+
+  with urllib_request.urlopen(req) as response:
+    for line in response:
+      if line.strip():
+        decoded_line = line.decode("utf-8").strip()
+        if decoded_line.startswith(SSE_DATA_PREFIX):
+          event_data = json.loads(decoded_line[len(SSE_DATA_PREFIX) :])
+          yield event_data
