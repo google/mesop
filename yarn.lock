@@ -2133,10 +2133,10 @@
     "@codemirror/view" "^6.0.0"
     crelt "^1.0.5"
 
-"@codemirror/merge@^6.6.7":
-  version "6.6.7"
-  resolved "https://registry.yarnpkg.com/@codemirror/merge/-/merge-6.6.7.tgz#deb1d2778c92b1bd6aa7205a3a17a8ead5c357f1"
-  integrity sha512-fgZHAuLuxIQi1U/oeszzJHAGlQfkGC3Rmd9/Lxs4yO9GUC798h9640aiPWTuAyY3+H2XmlzQcg5wfG9mObKqRQ==
+"@codemirror/merge@^6.7.0":
+  version "6.7.0"
+  resolved "https://registry.yarnpkg.com/@codemirror/merge/-/merge-6.7.0.tgz#429d73d8aa64e06c2d3c5a56d9aa6a86cc2d3cb3"
+  integrity sha512-hVGhYZMBKLnb0Q8NXZ06uR1oFOuiMLNs/igZov5PpOqCaxQLGQA5y2zRojn1G6SyBQ0/nYM3aFeJb5kr4xlZag==
   dependencies:
     "@codemirror/language" "^6.0.0"
     "@codemirror/state" "^6.0.0"

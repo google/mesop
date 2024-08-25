@@ -59,7 +59,7 @@
     "@angular/material-experimental": "^18.0.0",
     "@angular/platform-browser": "^18.0.0",
     "@codemirror/lang-python": "^6.1.6",
-    "@codemirror/merge": "^6.6.7",
+    "@codemirror/merge": "^6.7.0",
     "@types/google.maps": "^3.54.10",
     "@types/youtube": "^0.0.46",
     "codemirror": "^6.0.1",
