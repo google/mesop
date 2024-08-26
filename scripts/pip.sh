@@ -23,9 +23,8 @@ fi
 
 virtualenv --python python3 /tmp/mesoprelease-test/venv-test && \
 source /tmp/mesoprelease-test/venv-test/bin/activate && \
-pip install --upgrade pip && \
-pip install -r mesop/pip_package/requirements.txt --no-binary pydantic && \
-pip uninstall -y mesop && \
+uv pip install --upgrade pip && \
+uv pip install -r mesop/pip_package/requirements.txt --no-binary pydantic && \
 bazel run //mesop/pip_package:build_pip_package -- /tmp/mesoprelease-test/mesop.tar.gz && \
 cp -r ./scripts/smoketest_app /tmp/mesoprelease-test && \
 # Do "-P" so that it follows the physical path so that
@@ -33,5 +32,12 @@ cp -r ./scripts/smoketest_app /tmp/mesoprelease-test && \
 # Otherwise, gunicorn cannot serve the web component files properly
 cd -P /tmp/mesoprelease-test/ && \
 tar -xzf mesop.tar.gz && \
-pip install --upgrade /tmp/mesoprelease-test/mesop*.whl && \
-cd smoketest_app && mesop main.py
+uv pip install --upgrade /tmp/mesoprelease-test/mesop*.whl && \
+cd smoketest_app;
+
+echo -e "\n\033[1;34m=== Instructions to Run the Smoke Test ===\033[0m"
+echo -e "\033[1;33m1. Activate the virtual environment:\033[0m"
+echo "   source /tmp/mesoprelease-test/venv-test/bin/activate"
+echo -e "\033[1;33m2. Run the Mesop application:\033[0m"
+echo "   mesop main.py"
+echo -e "\033[1;34m=========================================\033[0m\n"
