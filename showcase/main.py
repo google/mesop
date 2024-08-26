@@ -59,6 +59,7 @@ SECTIONS = [
       Resource(
         title="Mesop App Maker",
         description="Generate apps with Mesop using LLMs",
+        app_url="https://huggingface.co/spaces/richard-to/mesop-app-maker",
         img_url="https://github.com/user-attachments/assets/1a826d44-c87b-4c79-aeaf-29bc8da3b1c0",
         github_url="https://github.com/richard-to/mesop-app-maker",
         github_username="richard-to",
@@ -66,6 +67,7 @@ SECTIONS = [
       Resource(
         title="Mesop Jeopardy",
         description="A simple jeopardy game built using Mesop",
+        app_url="https://huggingface.co/spaces/richard-to/mesop-jeopardy",
         img_url="https://github.com/richard-to/mesop-jeopardy/assets/539889/bc27447d-129f-47ae-b0b1-8f5c546762ed",
         github_url="https://github.com/richard-to/mesop-jeopardy",
         github_username="richard-to",
