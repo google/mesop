@@ -16,12 +16,19 @@ ENV LC_ALL en_US.UTF-8
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US.UTF-8
 
+# Create and activate virtual environment
+RUN python -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+
 # Install dependencies
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 
-# Create non-root user
-RUN groupadd -g 900 mesop && useradd -u 900 -s /bin/bash -g mesop mesop
+# Create non-root user and give write access to /opt/venv
+RUN groupadd -g 900 mesop && \
+    useradd -u 900 -s /bin/bash -g mesop mesop && \
+    chown -R mesop:mesop /opt/venv && chmod -R 777 /opt/venv
+
 USER mesop
 
 # Add app code here
