@@ -26,13 +26,17 @@ _LABEL_INPUT = "Enter your prompt"
 
 _STYLE_APP_CONTAINER = me.Style(
   background=_COLOR_BACKGROUND,
-  display="grid",
-  height="100vh",
-  grid_template_columns="repeat(1, 1fr)",
+  display="flex",
+  flex_direction="column",
+  height="100%",
+  margin=me.Margin.symmetric(vertical=0, horizontal="auto"),
+  width="min(1024px, 100%)",
+  box_shadow=("0 3px 1px -2px #0003, 0 2px 2px #00000024, 0 1px 5px #0000001f"),
+  padding=me.Padding(top=20, left=20, right=20),
 )
 _STYLE_TITLE = me.Style(padding=me.Padding(left=10))
 _STYLE_CHAT_BOX = me.Style(
-  height="100%",
+  flex_grow=1,
   overflow_y="scroll",
   padding=_DEFAULT_PADDING,
   margin=me.Margin(bottom=20),
@@ -55,27 +59,6 @@ _STYLE_CHAT_BUBBLE_NAME = me.Style(
   padding=me.Padding(left=15, right=15, bottom=5),
 )
 _STYLE_CHAT_BUBBLE_PLAINTEXT = me.Style(margin=me.Margin.symmetric(vertical=15))
-
-
-def _make_style_chat_ui_container(has_title: bool) -> me.Style:
-  """Generates styles for chat UI container depending on if there is a title or not.
-
-  Args:
-    has_title: Whether the Chat UI is display a title or not.
-  """
-  return me.Style(
-    display="grid",
-    grid_template_columns="repeat(1, 1fr)",
-    grid_template_rows="1fr 14fr 1fr" if has_title else "5fr 1fr",
-    margin=me.Margin.symmetric(vertical=0, horizontal="auto"),
-    width="min(1024px, 100%)",
-    height="100vh",
-    background=_COLOR_BACKGROUND,
-    box_shadow=(
-      "0 3px 1px -2px #0003, 0 2px 2px #00000024, 0 1px 5px #0000001f"
-    ),
-    padding=me.Padding(top=20, left=20, right=20),
-  )
 
 
 def _make_style_chat_bubble_wrapper(role: Role) -> me.Style:
@@ -217,41 +200,42 @@ def chat(
       on_click=toggle_theme,
     ):
       me.icon("light_mode" if me.theme_brightness() == "dark" else "dark_mode")
-    with me.box(style=_make_style_chat_ui_container(bool(title))):
-      if title:
-        me.text(title, type="headline-5", style=_STYLE_TITLE)
-      with me.box(style=_STYLE_CHAT_BOX):
-        for msg in state.output:
-          with me.box(style=_make_style_chat_bubble_wrapper(msg.role)):
-            if msg.role == _ROLE_ASSISTANT:
-              me.text(bot_user, style=_STYLE_CHAT_BUBBLE_NAME)
-            with me.box(style=_make_chat_bubble_style(msg.role)):
-              if msg.role == _ROLE_USER:
-                me.text(msg.content, style=_STYLE_CHAT_BUBBLE_PLAINTEXT)
-              else:
-                me.markdown(msg.content)
 
-        if state.in_progress:
-          with me.box(key="scroll-to", style=me.Style(height=300)):
-            pass
+    if title:
+      me.text(title, type="headline-5", style=_STYLE_TITLE)
 
-      with me.box(style=_STYLE_CHAT_INPUT_BOX):
-        with me.box(style=me.Style(flex_grow=1)):
-          me.input(
-            label=_LABEL_INPUT,
-            # Workaround: update key to clear input.
-            key=f"input-{len(state.output)}",
-            on_blur=on_blur,
-            on_enter=on_input_enter,
-            style=_STYLE_CHAT_INPUT,
-          )
-        with me.content_button(
-          color="primary",
-          type="flat",
-          disabled=state.in_progress,
-          on_click=on_click_submit,
-          style=_STYLE_CHAT_BUTTON,
-        ):
-          me.icon(
-            _LABEL_BUTTON_IN_PROGRESS if state.in_progress else _LABEL_BUTTON
-          )
+    with me.box(style=_STYLE_CHAT_BOX):
+      for msg in state.output:
+        with me.box(style=_make_style_chat_bubble_wrapper(msg.role)):
+          if msg.role == _ROLE_ASSISTANT:
+            me.text(bot_user, style=_STYLE_CHAT_BUBBLE_NAME)
+          with me.box(style=_make_chat_bubble_style(msg.role)):
+            if msg.role == _ROLE_USER:
+              me.text(msg.content, style=_STYLE_CHAT_BUBBLE_PLAINTEXT)
+            else:
+              me.markdown(msg.content)
+
+      if state.in_progress:
+        with me.box(key="scroll-to", style=me.Style(height=300)):
+          pass
+
+    with me.box(style=_STYLE_CHAT_INPUT_BOX):
+      with me.box(style=me.Style(flex_grow=1)):
+        me.input(
+          label=_LABEL_INPUT,
+          # Workaround: update key to clear input.
+          key=f"input-{len(state.output)}",
+          on_blur=on_blur,
+          on_enter=on_input_enter,
+          style=_STYLE_CHAT_INPUT,
+        )
+      with me.content_button(
+        color="primary",
+        type="flat",
+        disabled=state.in_progress,
+        on_click=on_click_submit,
+        style=_STYLE_CHAT_BUTTON,
+      ):
+        me.icon(
+          _LABEL_BUTTON_IN_PROGRESS if state.in_progress else _LABEL_BUTTON
+        )
