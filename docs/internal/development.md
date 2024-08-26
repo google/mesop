@@ -12,6 +12,10 @@ If [ibazel](https://github.com/bazelbuild/bazel-watcher) breaks, but bazel works
 
 > TIP: If your build mysteriously fails due to an npm-related error, try running `bazel clean --expunge && rm -rf node_modules`. Bazel and Yarn have a cache bug when upgrading npm modules.
 
+### uv
+
+We use [uv](https://github.com/astral-sh/uv). Follow the instructions [here](https://docs.astral.sh/uv/#getting-started) to install uv.
+
 ### Commit hooks
 
 1. Install [pre-commit](https://pre-commit.com/#installation)
