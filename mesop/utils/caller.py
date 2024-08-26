@@ -10,7 +10,9 @@ def get_app_caller_source_code_location() -> pb.SourceCodeLocation | None:
   while current_frame:
     caller_info = inspect.getframeinfo(current_frame)
     filename = caller_info.filename
-
+    # "mesop/mesop" is the file path of the core Mesop framework when running under bazel.
+    # "site-packages" is the file path of the Mesop framework when running under pip CLI.
+    # If the file is neither of those paths, then we assume it is an app file.
     if "mesop/mesop" not in filename and "site-packages" not in filename:
       # Get module from filepath
       splitted_file = filename.split("runfiles/")

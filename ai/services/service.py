@@ -27,6 +27,8 @@ PROMPT_PATH = "../ft/prompts/revise_prompt.txt"
 with open(PROMPT_PATH) as f:
   REVISE_APP_BASE_PROMPT = f.read().strip()
 
+EDIT_HERE_MARKER = " # <--- EDIT HERE"
+
 
 @dataclass
 class InteractionMetadata:
@@ -112,8 +114,8 @@ def apply_patch(original_code: str, patch: str) -> ApplyPatchResult:
     print("[WARN] No diff found:", patch)
     return ApplyPatchResult(True, "WARN: NO_DIFFS_FOUND")
   for original, updated in matches:
-    original = original.strip().replace(" # <--- EDIT HERE", "")
-    updated = updated.strip().replace(" # <--- EDIT HERE", "")
+    original = original.strip().replace(EDIT_HERE_MARKER, "")
+    updated = updated.strip().replace(EDIT_HERE_MARKER, "")
 
     # Replace the original part with the updated part
     new_patched_code = patched_code.replace(original, updated, 1)
@@ -134,7 +136,7 @@ def adjust_mesop_app(code: str, msg: str, line_number: int | None):
   if line_number is not None:
     code_lines = code.splitlines()
     if 1 <= line_number <= len(code_lines):
-      code_lines[line_number - 1] += " # <--- EDIT HERE"
+      code_lines[line_number - 1] += EDIT_HERE_MARKER
     code = "\n".join(code_lines)
 
   formatted_prompt = REVISE_APP_BASE_PROMPT.replace("<APP_CODE>", code).replace(
