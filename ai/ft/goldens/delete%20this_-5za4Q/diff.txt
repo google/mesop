@@ -1,0 +1,9 @@
+<<<<<<< ORIGINAL
+def call_api(input):
+  # Replace this with an actual API call
+  time.sleep(0.5)
+  yield "Example of streaming an output"
+  time.sleep(1)
+  yield "\n\nOutput: " + input
+=======
+>>>>>>> UPDATED
