@@ -111,6 +111,37 @@ def counter_page():
     me.button("Decrement", on_click=decrement, type="flat")
 >>>>>>> UPDATED
 
+IF you see "# <--- EDIT HERE" in the code, this means you should focus your edits in that section.
+
+
+Here's an example:
+
+Existing app code:
+```
+import mesop as me
+
+@me.page()
+def page():
+    me.text(f"Hello") # <--- EDIT HERE
+    me.button("Increment")
+```
+
+User instructions:
+change the color
+
+Diff output:
+<<<<<<< ORIGINAL
+@me.page()
+def page():
+    me.text(f"Hello")
+    me.button("Increment")
+=======
+@me.page()
+def page():
+    me.text(f"Hello", style=me.Style(color="blue"))
+    me.button("Increment")
+>>>>>>> UPDATED
+
 OK, now that I've shown you an example, let's do this for real.
 
 Existing app code:

@@ -20,12 +20,3 @@ py_test(
         ":utils",
     ] + THIRD_PARTY_PY_PYTEST,
 )
-
-py_test(
-    name = "caller_test",
-    srcs = ["caller_test.py"],
-    deps = [
-        ":utils",
-        "//mesop/protos:ui_py_pb2",
-    ] + THIRD_PARTY_PY_PYTEST,
-)

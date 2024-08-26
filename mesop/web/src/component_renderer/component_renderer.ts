@@ -429,7 +429,7 @@ Make sure the web component name is spelled the same between Python and JavaScri
     border-radius: 2px;
     `;
     }
-    return `border: 1px solid #1c6ef3;
+    return `border: 2px solid var(--sys-primary);
       border-radius: 4px;`;
   }
 
