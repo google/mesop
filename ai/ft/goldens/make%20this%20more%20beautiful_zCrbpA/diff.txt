@@ -26,6 +26,6 @@
       me.icon(icon="border_left", style=me.Style(margin=me.Margin(right=8), color=me.theme_var("primary")))
       me.text(
         text="Example with left and right borders",
-        style=me.Style(color=me.theme_var("on-surface"), font_size=16, font_weight="500")
+        style=me.Style(color=me.theme_var("on-surface"), font_size=16, font_weight=500)
       )
 >>>>>>> UPDATED

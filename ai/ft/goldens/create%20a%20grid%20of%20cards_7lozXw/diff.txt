@@ -75,7 +75,7 @@ def card():
     with me.box(
       style=me.Style(
         display="flex",
-        justify_content="flex-end",
+        justify_content="end",
         margin=me.Margin(top=8),
       )
     ):

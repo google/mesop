@@ -9,6 +9,8 @@ import google.generativeai as genai
 from google.generativeai import caching
 from openai import OpenAI
 
+EDIT_HERE_MARKER = " # <--- EDIT HERE"
+
 SYSTEM_INSTRUCTION_PART_1_PATH = "prompts/mesop_overview.txt"
 SYSTEM_INSTRUCTION_PART_2_PATH = "prompts/mini_docs.txt"
 
@@ -96,8 +98,6 @@ class ApplyPatchResult(NamedTuple):
 
 
 def apply_patch(original_code: str, patch: str) -> ApplyPatchResult:
-  # flash does some weird formatting.
-  patch = patch.replace("```diff", "").replace("```", "")
   # Extract the diff content
   diff_pattern = r"<<<<<<< ORIGINAL(.*?)=======\n(.*?)>>>>>>> UPDATED"
   matches = re.findall(diff_pattern, patch, re.DOTALL)
@@ -106,8 +106,8 @@ def apply_patch(original_code: str, patch: str) -> ApplyPatchResult:
     print("[WARN] No diff found:", patch)
     return ApplyPatchResult(True, "WARN: NO_DIFFS_FOUND")
   for original, updated in matches:
-    original = original.strip()
-    updated = updated.strip()
+    original = original.strip().replace(EDIT_HERE_MARKER, "")
+    updated = updated.strip().replace(EDIT_HERE_MARKER, "")
 
     # Replace the original part with the updated part
     new_patched_code = patched_code.replace(original, updated, 1)

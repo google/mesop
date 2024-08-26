@@ -1,14 +1,23 @@
-<<<<<<< ORIGINAL
-@me.page(path="/readme_app")
-def app():
-  me.text("Hello, world!")
-  me.textarea(rows=10, label="Prompt", on_input=on_prompt_input)
+import mesop as me
 
-  me.button("submit", on_click=on_submit)
 
+@me.stateclass
+class State:
+  prompt: str
+  output: str
+
+
+def on_prompt_input(event: me.InputEvent):
   state = me.state(State)
-  me.text(f"Output: {state.output}")
-=======
+  state.prompt = event.value
+
+
+def on_submit(event: me.ClickEvent):
+  state = me.state(State)
+  # state.output = api_call(state.prompt)
+  state.output = "output: " + state.prompt
+
+
 @me.page(path="/readme_app")
 def app():
   with me.box(style=me.Style(padding=me.Padding.all(24), max_width=600, margin=me.Margin.symmetric(horizontal="auto"))):
@@ -27,4 +36,3 @@ def app():
       )):
         me.text("Output:", style=me.Style(font_weight="bold", margin=me.Margin(bottom=8)))
         me.text(state.output)
->>>>>>> UPDATED

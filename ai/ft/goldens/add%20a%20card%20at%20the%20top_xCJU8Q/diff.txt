@@ -32,16 +32,16 @@ def app():
         style=me.Style(
           color=me.theme_var("on-surface"),
           font_size=24,
-          font_weight="600",
+          font_weight=600,
           margin=me.Margin(bottom=8),
-        )
+      )
       )
       me.text(
         text="This is a simple card component created for demonstration purposes.",
         style=me.Style(
           color=me.theme_var("on-surface-variant"),
           font_size=16,
-          font_weight="400",
+          font_weight=400,
         )
       )
 >>>>>>> UPDATED

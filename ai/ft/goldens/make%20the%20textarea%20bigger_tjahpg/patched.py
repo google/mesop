@@ -107,6 +107,7 @@ def chat_input():
       background="white",
       display="flex",
       width="100%",
+      align_items="center",  # Center vertically
       border=me.Border.all(
         me.BorderSide(width=0, style="solid", color="black")
       ),
@@ -122,7 +123,8 @@ def chat_input():
       me.native_textarea(
         value=state.input,
         autosize=True,
-        min_rows=4,
+        min_rows=6,
+        max_rows=10,
         placeholder="Enter your prompt",
         style=me.Style(
           padding=me.Padding(top=16, left=16),

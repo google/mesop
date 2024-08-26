@@ -130,7 +130,7 @@ def grid():
 def dir_row(dir: str):
   parsed_dir = urllib.parse.unquote(dir)
   parts = parsed_dir.split("__")
-  if len(parts) == 2:
+  if len(parts) == 2 and ".py" in parts[1]:
     prompt = parts[0]
     source_file = parts[1]
     root_dir = "./" + get_file_path()

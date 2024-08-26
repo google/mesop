@@ -100,10 +100,18 @@ def create_app(
       # Create a new page with the code to run
       code = base64.urlsafe_b64decode(param)
       code = code.decode("utf-8")
+      # Remove security policy as we will repliace it with ours
+      code = re.sub(
+        r"security_policy=me\.SecurityPolicy\([^)]*\),?\s*",
+        "",
+        code,
+        flags=re.DOTALL,
+      )
       path_match = re.search(r'path="([^"]+)"', code)
       if path_match:
         path = path_match.group(1)
         code = code.replace(f'path="{path}"', f'path="/{new_module.name}"')
+        # Remove security_policy parameter if present
         code = code.replace(
           "@me.page(",
           '@me.page(security_policy=me.SecurityPolicy(allowed_iframe_parents=["localhost:*"]),',
