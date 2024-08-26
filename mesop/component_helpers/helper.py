@@ -24,7 +24,9 @@ from mesop.events import ClickEvent, InputEvent, MesopEvent, WebEvent
 from mesop.exceptions import MesopDeveloperException
 from mesop.key import Key, key_from_proto
 from mesop.runtime import runtime
-from mesop.utils.caller import get_caller_source_code_location
+from mesop.utils.caller import (
+  get_app_caller_source_code_location,
+)
 from mesop.utils.validate import validate
 
 
@@ -141,7 +143,7 @@ def component(
       component = prev_current_node.children.add()
       source_code_location = None
       if runtime().debug_mode:
-        source_code_location = get_caller_source_code_location(levels=2)
+        source_code_location = get_app_caller_source_code_location()
       component.MergeFrom(
         create_component(
           component_name=get_component_name(fn),
@@ -233,7 +235,7 @@ def insert_composite_component(
 ) -> _ComponentWithChildren:
   source_code_location = None
   if runtime().debug_mode:
-    source_code_location = get_caller_source_code_location(levels=7)
+    source_code_location = get_app_caller_source_code_location()
   return _ComponentWithChildren(
     type_name=type_name,
     proto=proto,
@@ -332,7 +334,7 @@ def insert_component(
   """
   source_code_location = None
   if runtime().debug_mode:
-    source_code_location = get_caller_source_code_location(levels=7)
+    source_code_location = get_app_caller_source_code_location()
   runtime().context().current_node().children.append(
     create_component(
       component_name=pb.ComponentName(core_module=True, fn_name=type_name),

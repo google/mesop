@@ -172,6 +172,7 @@ const routes: Routes = [{path: '**', component: Editor}];
 @Injectable()
 class EditorServiceImpl implements EditorService {
   selectionMode: SelectionMode = SelectionMode.DISABLED;
+  onSelectedComponent: ((component: ComponentProto) => void) | undefined;
   constructor(
     private channel: Channel,
     private devToolsSettings: DevToolsSettings,
@@ -188,6 +189,13 @@ class EditorServiceImpl implements EditorService {
 
   setSelectionMode(mode: SelectionMode): void {
     this.selectionMode = mode;
+    if (mode === SelectionMode.SELECTED) {
+      this.onSelectedComponent?.(this.getFocusedComponent()!);
+    }
+  }
+
+  setOnSelectedComponent(callback: (component: ComponentProto) => void) {
+    this.onSelectedComponent = callback;
   }
 
   toggleSelectionMode(): void {
@@ -203,10 +211,6 @@ class EditorServiceImpl implements EditorService {
   }
 
   setFocusedComponent(component: ComponentProto): void {
-    if (!this.devToolsSettings.showDevTools()) {
-      // Do not focus component if devtools isn't open.
-      return;
-    }
     const root = this.channel.getRootComponent();
     if (!root) {
       throw new Error('No root component');

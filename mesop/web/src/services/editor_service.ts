@@ -24,6 +24,8 @@ export class EditorService {
 
   setFocusedComponent(component: ComponentProto): void {}
 
+  setOnSelectedComponent(callback: (component: ComponentProto) => void) {}
+
   getFocusedComponent(): ComponentProto | undefined {
     return DEFAULT_INSTANCE;
   }

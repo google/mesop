@@ -31,6 +31,9 @@ import {
 import {EditorToolbarAutocompleteService} from './editor_toolbar_autocomplete_service';
 import {Overlay} from '@angular/cdk/overlay';
 import {HighlightPipe} from './highlight_pipe';
+import {EditorService, SelectionMode} from '../services/editor_service';
+import {isMac} from '../utils/platform';
+import {Component as ComponentProto} from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 
 interface PromptOption {
   prompt: string;
@@ -50,6 +53,7 @@ interface PromptOption {
     CommonModule,
     CdkDrag,
     MatAutocompleteModule,
+    MatTooltipModule,
     HighlightPipe,
   ],
   providers: [
@@ -72,6 +76,8 @@ export class EditorToolbar implements OnInit {
   autocompleteTrigger!: MatAutocompleteTrigger;
   @ViewChild(MatAutocomplete)
   autocomplete!: MatAutocomplete;
+  @ViewChild('textarea', {static: false}) textarea!: ElementRef;
+  selectedComponent: ComponentProto | undefined;
 
   constructor(
     private editorToolbarService: EditorToolbarService,
@@ -79,9 +85,16 @@ export class EditorToolbar implements OnInit {
     private snackBar: MatSnackBar,
     private errorDialogService: ErrorDialogService,
     private autocompleteService: EditorToolbarAutocompleteService,
+    private editorService: EditorService,
   ) {
     const savedState = localStorage.getItem('isToolbarExpanded');
     this.isToolbarExpanded = savedState === 'true';
+
+    this.editorService.setOnSelectedComponent((component) => {
+      this.selectedComponent = component;
+      // Focus on the textarea
+      this.textarea.nativeElement.focus();
+    });
   }
 
   ngOnInit() {
@@ -90,6 +103,29 @@ export class EditorToolbar implements OnInit {
 
   ngAfterViewInit() {
     this.setupAutocompleteScrolling();
+  }
+
+  getSelectComponentTooltip(): string {
+    if (isMac()) {
+      return 'Select component - ⌘ ⇧ E';
+    }
+    return 'Select component - Ctrl ⇧ E';
+  }
+
+  isSelectingMode(): boolean {
+    return this.editorService.getSelectionMode() === SelectionMode.SELECTING;
+  }
+
+  toggleSelectingMode(): void {
+    switch (this.editorService.getSelectionMode()) {
+      case SelectionMode.DISABLED:
+      case SelectionMode.SELECTED:
+        this.editorService.setSelectionMode(SelectionMode.SELECTING);
+        break;
+      case SelectionMode.SELECTING:
+        this.editorService.setSelectionMode(SelectionMode.DISABLED);
+        break;
+    }
   }
 
   setupAutocompleteScrolling() {
@@ -141,7 +177,10 @@ export class EditorToolbar implements OnInit {
     this.startTimer(startTime);
 
     try {
-      const responsePromise = this.editorToolbarService.sendPrompt(prompt);
+      const responsePromise = this.editorToolbarService.sendPrompt(
+        prompt,
+        this.selectedComponent?.getSourceCodeLocation(),
+      );
       const progressDialogRef = this.dialog.open(
         EditorSendPromptProgressDialog,
         {

@@ -1,6 +1,7 @@
 import {Injectable, NgZone} from '@angular/core';
 import {SSE} from '../utils/sse';
 import {BehaviorSubject, Observable} from 'rxjs';
+import {SourceCodeLocation} from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 
 export interface PromptInteraction extends PromptResponse {
   readonly prompt: string;
@@ -11,6 +12,7 @@ export interface PromptResponse {
   readonly beforeCode: string;
   readonly afterCode: string;
   readonly diff: string;
+  readonly lineNumber: number | undefined;
 }
 
 interface GenerateEndMessage extends PromptResponse {
@@ -40,14 +42,22 @@ export class EditorToolbarService {
     return this.history;
   }
 
-  async sendPrompt(prompt: string): Promise<PromptResponse> {
+  async sendPrompt(
+    prompt: string,
+    sourceCodeLocation?: SourceCodeLocation | undefined,
+  ): Promise<PromptResponse> {
     console.debug('sendPrompt', prompt);
     // Clear the progress subject
     this.generationProgressSubject.next('');
     const path = window.location.pathname;
+    const lineNumber = sourceCodeLocation?.getLine();
     return new Promise((resolve, reject) => {
-      this.eventSource = new SSE('/__editor__/page-generate', {
-        payload: JSON.stringify({prompt, path}),
+      this.eventSource = new SSE('/__editor__/generate', {
+        payload: JSON.stringify({
+          prompt,
+          path,
+          lineNumber,
+        }),
         headers: {
           'Content-Type': 'application/json',
         },
@@ -72,8 +82,9 @@ export class EditorToolbarService {
                 beforeCode,
                 afterCode,
                 diff,
+                lineNumber,
               });
-              resolve({beforeCode, afterCode, diff});
+              resolve({beforeCode, afterCode, diff, lineNumber});
             }
             if (obj.type === 'progress') {
               this.generationProgressSubject.next(
@@ -91,7 +102,7 @@ export class EditorToolbarService {
 
   async commit(code: string) {
     console.debug('commit', prompt);
-    const response = await fetch('/__editor__/page-commit', {
+    const response = await fetch('/__editor__/commit', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -112,6 +123,7 @@ export class EditorToolbarService {
         prompt: interaction.prompt,
         beforeCode: interaction.beforeCode,
         diff: interaction.diff,
+        lineNumber: interaction.lineNumber,
       }),
     });
     await handleError(response);

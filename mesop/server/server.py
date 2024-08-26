@@ -275,7 +275,7 @@ def configure_flask_app(
 
   if not prod_mode:
 
-    @flask_app.route("/__editor__/page-commit", methods=["POST"])
+    @flask_app.route("/__editor__/commit", methods=["POST"])
     def page_commit() -> Response:
       check_editor_access()
 
@@ -330,7 +330,7 @@ def configure_flask_app(
           f"Error making request to AI service: {e!s}", status=500
         )
 
-    @flask_app.route("/__editor__/page-generate", methods=["POST"])
+    @flask_app.route("/__editor__/generate", methods=["POST"])
     def page_generate():
       check_editor_access()
 
@@ -347,6 +347,8 @@ def configure_flask_app(
 
       path = data.get("path")
       page_config = runtime().get_page_config(path=path)
+
+      line_number = data.get("lineNumber")
       assert page_config
       module = inspect.getmodule(page_config.page_fn)
       if module is None:
@@ -360,7 +362,7 @@ def configure_flask_app(
       def generate():
         for event in sse_request(
           AI_SERVICE_BASE_URL + "/adjust-mesop-app",
-          {"prompt": prompt, "code": source_code},
+          {"prompt": prompt, "code": source_code, "lineNumber": line_number},
         ):
           if event.get("type") == "end":
             sse_data = {

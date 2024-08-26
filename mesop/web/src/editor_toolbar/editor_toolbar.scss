@@ -22,6 +22,11 @@
 
 .drag-handle {
   cursor: grab;
+  margin-top: 4px; /* Add a little bit of margin because it's not an icon button */
+}
+
+.selected-inspect-button {
+  color: var(--sys-primary);
 }
 
 .floating-editor-toolbar.hidden {

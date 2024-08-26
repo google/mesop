@@ -3,6 +3,7 @@ import os
 import re
 import secrets
 import urllib.parse
+from dataclasses import asdict, dataclass
 from os import getenv
 from typing import NamedTuple
 
@@ -27,6 +28,11 @@ with open(PROMPT_PATH) as f:
   REVISE_APP_BASE_PROMPT = f.read().strip()
 
 
+@dataclass
+class InteractionMetadata:
+  line_number: int | None
+
+
 @app.route("/save-interaction", methods=["POST"])
 def save_interaction_endpoint() -> Response | dict[str, str]:
   data = request.json
@@ -34,9 +40,15 @@ def save_interaction_endpoint() -> Response | dict[str, str]:
   prompt = data.get("prompt")
   before_code = data.get("beforeCode")
   diff = data.get("diff")
+
   if not prompt or not before_code or not diff:
     return Response("Invalid request", status=400)
 
+  line_number = data.get("lineNumber")
+  if line_number is not None:
+    metadata = InteractionMetadata(line_number=line_number)
+  else:
+    metadata = None
   folder_name = generate_folder_name(prompt)
   base_path = "../ft/goldens"
   folder_path = os.path.join(base_path, folder_name)
@@ -49,6 +61,9 @@ def save_interaction_endpoint() -> Response | dict[str, str]:
     f.write(before_code)
   with open(os.path.join(folder_path, "diff.txt"), "w") as f:
     f.write(diff)
+  if metadata is not None:
+    with open(os.path.join(folder_path, "metadata.json"), "w") as f:
+      json.dump(asdict(metadata), f)
 
   return {"folder": folder_name}
 
@@ -59,12 +74,13 @@ def adjust_mesop_app_endpoint():
   assert data is not None
   code = data.get("code")
   prompt = data.get("prompt")
+  line_number = data.get("lineNumber")
 
   if not code or not prompt:
     return Response("Both 'code' and 'prompt' are required", status=400)
 
   def generate():
-    stream = adjust_mesop_app(code, prompt)
+    stream = adjust_mesop_app(code, prompt, line_number)
     diff = ""
     for chunk in stream:
       if chunk.choices[0].delta.content:
@@ -96,8 +112,8 @@ def apply_patch(original_code: str, patch: str) -> ApplyPatchResult:
     print("[WARN] No diff found:", patch)
     return ApplyPatchResult(True, "WARN: NO_DIFFS_FOUND")
   for original, updated in matches:
-    original = original.strip()
-    updated = updated.strip()
+    original = original.strip().replace(" # <--- EDIT HERE", "")
+    updated = updated.strip().replace(" # <--- EDIT HERE", "")
 
     # Replace the original part with the updated part
     new_patched_code = patched_code.replace(original, updated, 1)
@@ -108,11 +124,23 @@ def apply_patch(original_code: str, patch: str) -> ApplyPatchResult:
   return ApplyPatchResult(False, patched_code)
 
 
-def adjust_mesop_app(code: str, msg: str):
+def adjust_mesop_app(code: str, msg: str, line_number: int | None):
   model = "ft:gpt-4o-mini-2024-07-18:personal::9yoxJtKf"
   client = OpenAI(
     api_key=getenv("OPENAI_API_KEY"),
   )
+
+  # Add sentinel token based on line_number (1-indexed)
+  if line_number is not None:
+    code_lines = code.splitlines()
+    if 1 <= line_number <= len(code_lines):
+      code_lines[line_number - 1] += " # <--- EDIT HERE"
+    code = "\n".join(code_lines)
+
+  formatted_prompt = REVISE_APP_BASE_PROMPT.replace("<APP_CODE>", code).replace(
+    "<APP_CHANGES>", msg
+  )
+
   return client.chat.completions.create(
     model=model,
     max_tokens=10_000,
@@ -123,9 +151,7 @@ def adjust_mesop_app(code: str, msg: str):
       },
       {
         "role": "user",
-        "content": REVISE_APP_BASE_PROMPT.replace("<APP_CODE>", code).replace(
-          "<APP_CHANGES>", msg
-        ),
+        "content": formatted_prompt,
       },
     ],
     stream=True,

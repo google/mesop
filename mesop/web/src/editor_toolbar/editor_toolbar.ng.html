@@ -14,7 +14,18 @@
   <div class="drag-handle" cdkDragHandle>
     <mat-icon>drag_indicator</mat-icon>
   </div>
+
+  <button
+    mat-icon-button
+    (click)="toggleSelectingMode()"
+    [matTooltip]="getSelectComponentTooltip()"
+  >
+    <mat-icon [ngClass]="{'selected-inspect-button': isSelectingMode()}"
+      >frame_inspect</mat-icon
+    >
+  </button>
   <textarea
+    #textarea
     placeholder="Type in the UI change you want..."
     class="floating-editor-toolbar-textarea"
     [(ngModel)]="prompt"
