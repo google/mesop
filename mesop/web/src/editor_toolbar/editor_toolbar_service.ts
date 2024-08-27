@@ -3,6 +3,8 @@ import {SSE} from '../utils/sse';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {SourceCodeLocation} from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 
+const PROMPT_INTERACTIONS_KEY = 'MESOP://PROMPT_INTERACTIONS';
+
 export interface PromptInteraction extends PromptResponse {
   readonly prompt: string;
   readonly path: string;
@@ -30,13 +32,35 @@ type GenerateData = GenerateEndMessage | GenerateProgressMessage;
   providedIn: 'root',
 })
 export class EditorToolbarService {
-  history: PromptInteraction[] = [];
+  private history: PromptInteraction[] = [];
+
   eventSource: SSE | undefined;
   private readonly generationProgressSubject = new BehaviorSubject<string>('');
   readonly generationProgress$: Observable<string> =
     this.generationProgressSubject.asObservable();
 
-  constructor(private readonly ngZone: NgZone) {}
+  constructor(private readonly ngZone: NgZone) {
+    this.loadHistoryFromStorage();
+  }
+
+  private loadHistoryFromStorage() {
+    const storedHistory = sessionStorage.getItem(PROMPT_INTERACTIONS_KEY);
+    if (storedHistory) {
+      this.history = JSON.parse(storedHistory);
+    }
+  }
+
+  private addHistoryEntry(entry: PromptInteraction) {
+    this.history.unshift(entry);
+    this.saveHistoryToStorage();
+  }
+
+  private saveHistoryToStorage() {
+    sessionStorage.setItem(
+      PROMPT_INTERACTIONS_KEY,
+      JSON.stringify(this.history),
+    );
+  }
 
   getHistory(): readonly PromptInteraction[] {
     return this.history;
@@ -76,7 +100,7 @@ export class EditorToolbarService {
               this.eventSource!.close();
               this.eventSource = undefined;
               const {beforeCode, afterCode, diff} = obj;
-              this.history.unshift({
+              this.addHistoryEntry({
                 path,
                 prompt,
                 beforeCode,
