@@ -34,6 +34,7 @@ import {HighlightPipe} from './highlight_pipe';
 import {EditorService, SelectionMode} from '../services/editor_service';
 import {isMac} from '../utils/platform';
 import {Component as ComponentProto} from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 interface PromptOption {
   prompt: string;
@@ -313,6 +314,7 @@ export class EditorToolbar implements OnInit {
     MatButtonModule,
     CommonModule,
     CodeMirrorRawComponent,
+    MatProgressBarModule,
   ],
 })
 class EditorSendPromptProgressDialog {
