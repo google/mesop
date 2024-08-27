@@ -127,9 +127,13 @@ def apply_patch(original_code: str, patch: str) -> ApplyPatchResult:
 
 
 def adjust_mesop_app(code: str, msg: str, line_number: int | None):
-  model = "ft:gpt-4o-mini-2024-07-18:mesop:with-component-prompting:A0dNmNzq"
+  model = "accounts/willchen90-71c40c/models/98f31952c320416b899d0a8336662973"
+  # client = OpenAI(
+  #   api_key=getenv("OPENAI_API_KEY"),
+  # )
   client = OpenAI(
-    api_key=getenv("OPENAI_API_KEY"),
+    base_url="https://api.fireworks.ai/inference/v1",
+    api_key=getenv("FIREWORKS_API_KEY"),
   )
 
   # Add sentinel token based on line_number (1-indexed)

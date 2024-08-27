@@ -1,0 +1,7 @@
+# The ID of the dataset you created above.
+dataset: mesop-dataset-v1
+
+conversation: {}
+
+# The Hugging Face model name of the base model.
+base_model: accounts/fireworks/models/llama-v3p1-8b-instruct
