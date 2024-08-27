@@ -360,27 +360,38 @@ def configure_flask_app(
       print(f"Source code of module {module.__name__}:")
 
       def generate():
-        for event in sse_request(
-          AI_SERVICE_BASE_URL + "/adjust-mesop-app",
-          {"prompt": prompt, "code": source_code, "lineNumber": line_number},
-        ):
-          if event.get("type") == "end":
-            sse_data = {
-              "type": "end",
-              "prompt": prompt,
-              "path": path,
-              "beforeCode": source_code,
-              "afterCode": event["code"],
-              "diff": event["diff"],
-              "message": "Prompt processed successfully",
-            }
-            yield f"data: {json.dumps(sse_data)}\n\n"
-            break
-          elif event.get("type") == "progress":
-            sse_data = {"data": event["data"], "type": "progress"}
-            yield f"data: {json.dumps(sse_data)}\n\n"
-          else:
-            raise Exception(f"Unknown event type: {event}")
+        try:
+          for event in sse_request(
+            AI_SERVICE_BASE_URL + "/adjust-mesop-app",
+            {"prompt": prompt, "code": source_code, "lineNumber": line_number},
+          ):
+            if event.get("type") == "end":
+              sse_data = {
+                "type": "end",
+                "prompt": prompt,
+                "path": path,
+                "beforeCode": source_code,
+                "afterCode": event["code"],
+                "diff": event["diff"],
+                "message": "Prompt processed successfully",
+              }
+              yield f"data: {json.dumps(sse_data)}\n\n"
+              break
+            elif event.get("type") == "progress":
+              sse_data = {"data": event["data"], "type": "progress"}
+              yield f"data: {json.dumps(sse_data)}\n\n"
+            elif event.get("type") == "error":
+              sse_data = {"error": event["error"], "type": "error"}
+              yield f"data: {json.dumps(sse_data)}\n\n"
+              break
+            else:
+              raise Exception(f"Unknown event type: {event}")
+        except Exception as e:
+          sse_data = {
+            "error": "Could not connect to AI service: " + str(e),
+            "type": "error",
+          }
+          yield f"data: {json.dumps(sse_data)}\n\n"
 
       return Response(generate(), content_type="text/event-stream")
 

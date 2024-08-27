@@ -190,18 +190,15 @@ export class EditorToolbar implements OnInit {
 
     const startTime = performance.now();
     this.startTimer(startTime);
-
+    let progressDialogRef;
     try {
       const responsePromise = this.editorToolbarService.sendPrompt(
         prompt,
         this.getSelectedComponent()?.getSourceCodeLocation(),
       );
-      const progressDialogRef = this.dialog.open(
-        EditorSendPromptProgressDialog,
-        {
-          width: '90%',
-        },
-      );
+      progressDialogRef = this.dialog.open(EditorSendPromptProgressDialog, {
+        width: '90%',
+      });
       const response = await responsePromise;
       progressDialogRef.close();
       this.autocompleteTrigger.closePanel();
@@ -218,8 +215,11 @@ export class EditorToolbar implements OnInit {
       });
     } catch (error) {
       console.error('Error:', error);
+      if (progressDialogRef) {
+        progressDialogRef.close();
+      }
       const snackBarRef = this.snackBar.open(
-        'An error occurred while processing your request',
+        'Oops, there was an error',
         'Details',
         {
           duration: 5000,

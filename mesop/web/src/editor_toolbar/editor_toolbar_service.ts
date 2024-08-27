@@ -26,7 +26,15 @@ interface GenerateProgressMessage {
   readonly data: string;
 }
 
-type GenerateData = GenerateEndMessage | GenerateProgressMessage;
+interface GenerateErrorMessage {
+  readonly type: 'error';
+  readonly error: string;
+}
+
+type GenerateData =
+  | GenerateEndMessage
+  | GenerateProgressMessage
+  | GenerateErrorMessage;
 
 @Injectable({
   providedIn: 'root',
@@ -117,6 +125,11 @@ export class EditorToolbarService {
               this.generationProgressSubject.next(
                 this.generationProgressSubject.getValue() + obj.data,
               );
+            }
+            if (obj.type === 'error') {
+              this.eventSource!.close();
+              this.eventSource = undefined;
+              reject(obj.error);
             }
           } catch (e) {
             console.error('sendPrompt eventSource error', e);
