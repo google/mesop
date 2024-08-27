@@ -77,7 +77,6 @@ export class EditorToolbar implements OnInit {
   @ViewChild(MatAutocomplete)
   autocomplete!: MatAutocomplete;
   @ViewChild('textarea', {static: false}) textarea!: ElementRef;
-  selectedComponent: ComponentProto | undefined;
 
   constructor(
     private editorToolbarService: EditorToolbarService,
@@ -90,9 +89,7 @@ export class EditorToolbar implements OnInit {
     const savedState = localStorage.getItem('isToolbarExpanded');
     this.isToolbarExpanded = savedState === 'true';
 
-    this.editorService.setOnSelectedComponent((component) => {
-      this.selectedComponent = component;
-      // Focus on the textarea
+    this.editorService.setOnSelectedComponent(() => {
       this.textarea.nativeElement.focus();
     });
   }
@@ -166,6 +163,13 @@ export class EditorToolbar implements OnInit {
     await this.sendPrompt();
   }
 
+  getSelectedComponent(): ComponentProto | undefined {
+    if (this.editorService.getSelectionMode() === SelectionMode.SELECTED) {
+      return this.editorService.getFocusedComponent();
+    }
+    return undefined;
+  }
+
   async sendPrompt() {
     const prompt = this.prompt;
     this.autocompleteService.addHistoryOption(prompt);
@@ -179,7 +183,7 @@ export class EditorToolbar implements OnInit {
     try {
       const responsePromise = this.editorToolbarService.sendPrompt(
         prompt,
-        this.selectedComponent?.getSourceCodeLocation(),
+        this.getSelectedComponent()?.getSourceCodeLocation(),
       );
       const progressDialogRef = this.dialog.open(
         EditorSendPromptProgressDialog,
