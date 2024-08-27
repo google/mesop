@@ -2,6 +2,7 @@ import {EditorView, basicSetup} from 'codemirror';
 import {python} from '@codemirror/lang-python';
 import {unifiedMergeView} from '@codemirror/merge';
 import {EditorState} from '@codemirror/state';
+import {oneDark} from '@codemirror/theme-one-dark';
 
 import {
   Component,
@@ -31,22 +32,28 @@ export class CodeMirrorDiffComponent {
   }
 
   renderEditor() {
+    const extensions = [
+      basicSetup,
+      python(),
+      EditorView.editable.of(false),
+      EditorView.lineWrapping,
+      unifiedMergeView({
+        original: this.beforeCode,
+        highlightChanges: true,
+        mergeControls: false,
+        gutter: true,
+        collapseUnchanged: {margin: 2},
+      }),
+    ];
+
+    if (document.body.classList.contains('dark-theme')) {
+      extensions.push(oneDark);
+    }
+
     this.view = new EditorView({
       state: EditorState.create({
         doc: this.afterCode,
-        extensions: [
-          basicSetup,
-          python(),
-          EditorView.editable.of(false),
-          EditorView.lineWrapping,
-          unifiedMergeView({
-            original: this.beforeCode,
-            highlightChanges: true,
-            mergeControls: false,
-            gutter: true,
-            collapseUnchanged: {margin: 2},
-          }),
-        ],
+        extensions,
       }),
       parent: this.elementRef.nativeElement,
     });
@@ -72,15 +79,21 @@ export class CodeMirrorRawComponent {
   }
 
   renderEditor() {
+    const extensions = [
+      basicSetup,
+      python(),
+      EditorView.editable.of(false),
+      EditorView.lineWrapping,
+    ];
+
+    if (document.body.classList.contains('dark-theme')) {
+      extensions.push(oneDark);
+    }
+
     this.view = new EditorView({
       state: EditorState.create({
         doc: this.code ?? '',
-        extensions: [
-          basicSetup,
-          python(),
-          EditorView.editable.of(false),
-          EditorView.lineWrapping,
-        ],
+        extensions,
       }),
       parent: this.elementRef.nativeElement,
     });

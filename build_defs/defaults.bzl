@@ -70,6 +70,7 @@ THIRD_PARTY_JS_CODEMIRROR = [
     "@npm//codemirror",
     "@npm//@codemirror/lang-python",
     "@npm//@codemirror/merge",
+    "@npm//@codemirror/theme-one-dark",
 ]
 
 THIRD_PARTY_PY_ABSL_PY = [
