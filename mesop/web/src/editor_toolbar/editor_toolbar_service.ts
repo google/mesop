@@ -71,6 +71,9 @@ export class EditorToolbarService {
     sourceCodeLocation?: SourceCodeLocation | undefined,
   ): Promise<PromptResponse> {
     console.debug('sendPrompt', prompt);
+    if (this.eventSource) {
+      return Promise.reject(new Error('Prompt already in progress'));
+    }
     // Clear the progress subject
     this.generationProgressSubject.next('');
     const path = window.location.pathname;

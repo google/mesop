@@ -26,7 +26,8 @@
   </button>
   <textarea
     #textarea
-    placeholder="Type in the UI change you want..."
+    disabled="{{isLoading}}"
+    placeholder="{{isLoading ? 'Generating...' : 'Type in the UI change you want...' }}"
     class="floating-editor-toolbar-textarea"
     [(ngModel)]="prompt"
     (ngModelChange)="onPromptChange($event)"
@@ -50,9 +51,11 @@
     <span>{{responseTime | number:'1.1-1'}}s</span>
   </div>
   }
-  <button mat-icon-button class="send-button" (click)="sendPrompt()">
+
+  <button mat-icon-button (click)="sendPrompt()" [disabled]="isLoading">
     <mat-icon>send</mat-icon>
   </button>
+
   <button
     mat-icon-button
     (click)="openHistory()"
