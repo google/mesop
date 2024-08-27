@@ -127,7 +127,7 @@ def apply_patch(original_code: str, patch: str) -> ApplyPatchResult:
 
 
 def adjust_mesop_app(code: str, msg: str, line_number: int | None):
-  model = "ft:gpt-4o-mini-2024-07-18:personal::9yoxJtKf"
+  model = "ft:gpt-4o-mini-2024-07-18:mesop:with-component-prompting:A0dNmNzq"
   client = OpenAI(
     api_key=getenv("OPENAI_API_KEY"),
   )

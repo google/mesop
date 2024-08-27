@@ -8,6 +8,8 @@ from typing import Any
 
 from llm_lib import REVISE_APP_BASE_PROMPT, SYSTEM_INSTRUCTION
 
+EDIT_HERE_MARKER = " # <--- EDIT HERE"
+
 
 def process_goldens():
   dataset: list[dict[str, Any]] = []
@@ -18,6 +20,13 @@ def process_goldens():
     if os.path.isdir(dir_path):
       prompt_path = os.path.join(dir_path, "prompt.txt")
       diff_path = os.path.join(dir_path, "diff.txt")
+      line_number: int | None = None
+      meta_path = os.path.join(dir_path, "metadata.json")
+      if os.path.exists(meta_path):
+        with open(meta_path) as meta_file:
+          meta = json.load(meta_file)
+          line_number = meta.get("line_number")
+          print(f"line_number: {line_number}")
 
       with open(prompt_path) as prompt_file:
         prompt = prompt_file.read().strip()
@@ -32,6 +41,17 @@ def process_goldens():
       else:
         code = ""
 
+        # Add sentinel token based on line_number (1-indexed)
+      if line_number is not None:
+        code_lines = code.splitlines()
+        if 1 <= line_number <= len(code_lines):
+          code_lines[line_number - 1] += EDIT_HERE_MARKER
+        code = "\n".join(code_lines)
+
+      formatted_prompt = REVISE_APP_BASE_PROMPT.replace(
+        "<APP_CODE>", code
+      ).replace("<APP_CHANGES>", prompt)
+
       dataset.append(
         {
           "messages": [
@@ -41,9 +61,7 @@ def process_goldens():
             },
             {
               "role": "user",
-              "content": REVISE_APP_BASE_PROMPT.replace(
-                "<APP_CODE>", code
-              ).replace("<APP_CHANGES>", prompt),
+              "content": formatted_prompt,
             },
             {
               "role": "assistant",
