@@ -91,7 +91,8 @@ def adjust_mesop_app_endpoint():
 
     result = apply_patch(code, diff)
     if result.has_error:
-      raise Exception(result.result)
+      yield f"data: {json.dumps({'type': 'error', 'error': result.result})}\n\n"
+      return
 
     yield f"data: {json.dumps({'type': 'end', 'code': result.result, 'diff': diff})}\n\n"
 
@@ -112,7 +113,10 @@ def apply_patch(original_code: str, patch: str) -> ApplyPatchResult:
   patched_code = original_code
   if len(matches) == 0:
     print("[WARN] No diff found:", patch)
-    return ApplyPatchResult(True, "WARN: NO_DIFFS_FOUND")
+    return ApplyPatchResult(
+      True,
+      "[AI-001] Sorry! AI output was mis-formatted. Please try again.",
+    )
   for original, updated in matches:
     original = original.strip().replace(EDIT_HERE_MARKER, "")
     updated = updated.strip().replace(EDIT_HERE_MARKER, "")
@@ -120,7 +124,10 @@ def apply_patch(original_code: str, patch: str) -> ApplyPatchResult:
     # Replace the original part with the updated part
     new_patched_code = patched_code.replace(original, updated, 1)
     if new_patched_code == patched_code:
-      return ApplyPatchResult(True, "WARN: DID_NOT_APPLY_PATCH")
+      return ApplyPatchResult(
+        True,
+        "[AI-002] Sorry! AI output could not be used. Please try again.",
+      )
     patched_code = new_patched_code
 
   return ApplyPatchResult(False, patched_code)
