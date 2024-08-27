@@ -52,7 +52,12 @@
   </div>
   }
 
-  <button mat-icon-button (click)="sendPrompt()" [disabled]="isLoading">
+  <button
+    mat-icon-button
+    (click)="sendPrompt()"
+    [disabled]="isLoading"
+    [matTooltip]="'Generate code'"
+  >
     <mat-icon>send</mat-icon>
   </button>
 

@@ -172,6 +172,16 @@ export class EditorToolbar implements OnInit {
   }
 
   async sendPrompt() {
+    if (this.prompt.length < 4) {
+      this.snackBar.open(
+        'Please enter a prompt at least 4 characters long',
+        'Close',
+        {
+          duration: 5000,
+        },
+      );
+      return;
+    }
     const prompt = this.prompt;
     this.autocompleteService.addHistoryOption(prompt);
     this.prompt = '';
