@@ -6,7 +6,7 @@ import json
 import os
 from typing import Any
 
-from llm_lib import REVISE_APP_BASE_PROMPT, SYSTEM_INSTRUCTION
+from llm_lib import REVISE_APP_BASE_PROMPT, SYSTEM_INSTRUCTION_PART_1
 
 EDIT_HERE_MARKER = " # <--- EDIT HERE"
 
@@ -57,7 +57,7 @@ def process_goldens():
           "messages": [
             {
               "role": "system",
-              "content": SYSTEM_INSTRUCTION,
+              "content": SYSTEM_INSTRUCTION_PART_1,
             },
             {
               "role": "user",
