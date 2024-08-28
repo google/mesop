@@ -21,7 +21,7 @@ with open(SYSTEM_INSTRUCTION_PART_1_PATH) as f:
 with open(SYSTEM_INSTRUCTION_PART_2_PATH) as f:
   SYSTEM_INSTRUCTION_PART_2 = f.read()
 
-SYSTEM_INSTRUCTION = SYSTEM_INSTRUCTION_PART_1 + SYSTEM_INSTRUCTION_PART_2
+SYSTEM_INSTRUCTION = SYSTEM_INSTRUCTION_PART_1
 PROMPT_PATH = "../ft/prompts/revise_prompt.txt"
 
 with open(PROMPT_PATH) as f:
@@ -107,6 +107,8 @@ class ApplyPatchResult(NamedTuple):
 
 
 def apply_patch(original_code: str, patch: str) -> ApplyPatchResult:
+  patch = patch.replace("```python\n", "").replace("\n```", "")
+  return ApplyPatchResult(False, patch)
   # Extract the diff content
   diff_pattern = r"<<<<<<< ORIGINAL(.*?)=======\n(.*?)>>>>>>> UPDATED"
   matches = re.findall(diff_pattern, patch, re.DOTALL)
@@ -134,9 +136,10 @@ def apply_patch(original_code: str, patch: str) -> ApplyPatchResult:
 
 
 def adjust_mesop_app(code: str, msg: str, line_number: int | None):
-  model = "ft:gpt-4o-mini-2024-07-18:mesop:small-prompt:A1472X3c"
+  model = "llama3.1-70b"
   client = OpenAI(
-    api_key=getenv("OPENAI_API_KEY"),
+    base_url="https://api.cerebras.ai/v1",
+    api_key=os.environ.get("CEREBRAS_API_KEY"),
   )
 
   # Add sentinel token based on line_number (1-indexed)

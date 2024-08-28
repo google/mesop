@@ -8,15 +8,49 @@ import mesop as me
   path="/text",
 )
 def text():
-  me.text(text="headline-1: Hello, world!", type="headline-1")
-  me.text(text="headline-2: Hello, world!", type="headline-2")
-  me.text(text="headline-3: Hello, world!", type="headline-3")
-  me.text(text="headline-4: Hello, world!", type="headline-4")
-  me.text(text="headline-5: Hello, world!", type="headline-5")
-  me.text(text="headline-6: Hello, world!", type="headline-6")
-  me.text(text="subtitle-1: Hello, world!", type="subtitle-1")
-  me.text(text="subtitle-2: Hello, world!", type="subtitle-2")
-  me.text(text="body-1: Hello, world!", type="body-1")
-  me.text(text="body-2: Hello, world!", type="body-2")
-  me.text(text="caption: Hello, world!", type="caption")
-  me.text(text="button: Hello, world!", type="button")
+  with me.box(
+    style=me.Style(display="grid", gap=16, padding=me.Padding.all(16))
+  ):
+    with me.box(
+      style=me.Style(
+        padding=me.Padding.all(16),
+        border_radius=8,
+        background=me.theme_var("surface"),
+      )
+    ):
+      me.button("Learn More", type="flat", on_click=learn_more)
+
+    with me.box(
+      style=me.Style(
+        padding=me.Padding.all(16),
+        border_radius=8,
+        background=me.theme_var("surface"),
+      )
+    ):
+      me.text("Grid Item 1", type="headline-5")
+
+    with me.box(
+      style=me.Style(
+        padding=me.Padding.all(16),
+        border_radius=8,
+        background=me.theme_var("surface"),
+      )
+    ):
+      me.text("Grid Item 2", type="headline-5")
+
+    with me.box(
+      style=me.Style(
+        padding=me.Padding.all(16),
+        border_radius=8,
+        background=me.theme_var("surface"),
+      )
+    ):
+      me.text("Grid Item 3", type="headline-5")
+
+
+def learn_more(event: me.ClickEvent):
+  print("Learn more button clicked!")
+
+
+def update_text(event: me.InputEvent):
+  print("Text updated:", event.value)
