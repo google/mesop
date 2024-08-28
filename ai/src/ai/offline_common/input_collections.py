@@ -4,10 +4,14 @@ from dataclasses import dataclass
 @dataclass
 class Input:
   prompt: str
-  source_file: str = None
+  source_file: str | None = None
 
 
 EASY_INPUTS = [
+  Input(
+    prompt="Make it more beautiful",
+    source_file="./inputs/starter_kit.py",
+  ),
   Input(
     prompt="Create an app that summarizes text from an input",
   ),
@@ -19,10 +23,6 @@ EASY_INPUTS = [
   ),
   Input(
     prompt="Create a chat UI",
-  ),
-  Input(
-    prompt="Make it more beautiful",
-    source_file="./inputs/starter_kit.py",
   ),
   Input(
     prompt="Create a row of cards",

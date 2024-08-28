@@ -1,33 +1,15 @@
 import json
 import os
-import re
 import secrets
 import urllib.parse
 from dataclasses import asdict, dataclass
 from os import getenv
-from typing import NamedTuple
 
 from flask import Flask, Response, request, stream_with_context
-from openai import OpenAI
+
+from ai.common.llm_lib import adjust_mesop_app_stream, apply_patch
 
 app = Flask(__name__)
-
-SYSTEM_INSTRUCTION_PART_1_PATH = "../ft/prompts/mesop_overview.txt"
-SYSTEM_INSTRUCTION_PART_2_PATH = "../ft/prompts/mini_docs.txt"
-
-with open(SYSTEM_INSTRUCTION_PART_1_PATH) as f:
-  SYSTEM_INSTRUCTION_PART_1 = f.read()
-
-with open(SYSTEM_INSTRUCTION_PART_2_PATH) as f:
-  SYSTEM_INSTRUCTION_PART_2 = f.read()
-
-SYSTEM_INSTRUCTION = SYSTEM_INSTRUCTION_PART_1 + SYSTEM_INSTRUCTION_PART_2
-PROMPT_PATH = "../ft/prompts/revise_prompt.txt"
-
-with open(PROMPT_PATH) as f:
-  REVISE_APP_BASE_PROMPT = f.read().strip()
-
-EDIT_HERE_MARKER = " # <--- EDIT HERE"
 
 
 @dataclass
@@ -82,7 +64,11 @@ def adjust_mesop_app_endpoint():
     return Response("Both 'code' and 'prompt' are required", status=400)
 
   def generate():
-    stream = adjust_mesop_app(code, prompt, line_number)
+    stream = adjust_mesop_app_stream(
+      code=code,
+      user_input=prompt,
+      line_number=line_number,
+    )
     diff = ""
     for chunk in stream:
       if chunk.choices[0].delta.content:
@@ -98,72 +84,6 @@ def adjust_mesop_app_endpoint():
 
   return Response(
     stream_with_context(generate()), content_type="text/event-stream"
-  )
-
-
-class ApplyPatchResult(NamedTuple):
-  has_error: bool
-  result: str
-
-
-def apply_patch(original_code: str, patch: str) -> ApplyPatchResult:
-  # Extract the diff content
-  diff_pattern = r"<<<<<<< ORIGINAL(.*?)=======\n(.*?)>>>>>>> UPDATED"
-  matches = re.findall(diff_pattern, patch, re.DOTALL)
-  patched_code = original_code
-  if len(matches) == 0:
-    print("[WARN] No diff found:", patch)
-    return ApplyPatchResult(
-      True,
-      "[AI-001] Sorry! AI output was mis-formatted. Please try again.",
-    )
-  for original, updated in matches:
-    original = original.strip().replace(EDIT_HERE_MARKER, "")
-    updated = updated.strip().replace(EDIT_HERE_MARKER, "")
-
-    # Replace the original part with the updated part
-    new_patched_code = patched_code.replace(original, updated, 1)
-    if new_patched_code == patched_code:
-      return ApplyPatchResult(
-        True,
-        "[AI-002] Sorry! AI output could not be used. Please try again.",
-      )
-    patched_code = new_patched_code
-
-  return ApplyPatchResult(False, patched_code)
-
-
-def adjust_mesop_app(code: str, msg: str, line_number: int | None):
-  model = "ft:gpt-4o-mini-2024-07-18:mesop:small-prompt:A1472X3c"
-  client = OpenAI(
-    api_key=getenv("OPENAI_API_KEY"),
-  )
-
-  # Add sentinel token based on line_number (1-indexed)
-  if line_number is not None:
-    code_lines = code.splitlines()
-    if 1 <= line_number <= len(code_lines):
-      code_lines[line_number - 1] += EDIT_HERE_MARKER
-    code = "\n".join(code_lines)
-
-  formatted_prompt = REVISE_APP_BASE_PROMPT.replace("<APP_CODE>", code).replace(
-    "<APP_CHANGES>", msg
-  )
-
-  return client.chat.completions.create(
-    model=model,
-    max_tokens=10_000,
-    messages=[
-      {
-        "role": "system",
-        "content": SYSTEM_INSTRUCTION,
-      },
-      {
-        "role": "user",
-        "content": formatted_prompt,
-      },
-    ],
-    stream=True,
   )
 
 

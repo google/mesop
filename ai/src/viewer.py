@@ -29,12 +29,16 @@ class State:
   error: str
 
 
+GOLDENS_PATH = "../ft/goldens"
+OUTPUTS_PATH = "../outputs"
+
+
 def on_load(e: me.LoadEvent):
   me.set_theme_mode("system")
   state = me.state(State)
   if "golden" in me.query_params:
     state.golden = True
-    file_path = os.path.join("goldens")
+    file_path = GOLDENS_PATH
   else:
     state.model = me.query_params["model"]
     state.run_name = me.query_params["run_name"]
@@ -53,7 +57,7 @@ def on_load(e: me.LoadEvent):
 
 def get_file_path() -> str:
   state = me.state(State)
-  return os.path.join("outputs", state.model, state.run_name)
+  return os.path.join(OUTPUTS_PATH, state.model, state.run_name)
 
 
 @me.page(title="Viewer", on_load=on_load)
@@ -129,17 +133,20 @@ def grid():
 
 def dir_row(dir: str):
   parsed_dir = urllib.parse.unquote(dir)
+  print("***", parsed_dir)
   parts = parsed_dir.split("__")
-  if len(parts) == 2 and ".py" in parts[1]:
+  if "golden" in me.query_params:
+    source_path = os.path.join(GOLDENS_PATH, dir, "source.py")
+    source_file = str(os.path.exists(source_path))
+    with open(os.path.join(GOLDENS_PATH, dir, "prompt.txt")) as f:
+      prompt = f.read()
+    root_dir = GOLDENS_PATH
+
+  else:
     prompt = parts[0]
     source_file = parts[1]
     root_dir = "./" + get_file_path()
-  else:
-    source_path = os.path.join("goldens", dir, "source.py")
-    source_file = str(os.path.exists(source_path))
-    with open(os.path.join("goldens", dir, "prompt.txt")) as f:
-      prompt = f.read()
-    root_dir = "./goldens"
+
   dir_path = os.path.join(root_dir, dir)
 
   error_file_path = os.path.join(root_dir, dir, "error.txt")
