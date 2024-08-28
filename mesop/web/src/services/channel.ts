@@ -200,6 +200,16 @@ export class Channel {
             } else {
               this.rootComponent = rootComponent;
             }
+            const experimentSettings = uiResponse
+              .getRender()!
+              .getExperimentSettings();
+            if (experimentSettings) {
+              this.experimentService.concurrentUpdatesEnabled =
+                experimentSettings.getConcurrentUpdatesEnabled() ?? false;
+              this.experimentService.experimentalEditorToolbarEnabled =
+                experimentSettings.getExperimentalEditorToolbarEnabled() ??
+                false;
+            }
 
             const experimentSettings = uiResponse
               .getRender()!
@@ -280,7 +290,10 @@ export class Channel {
       this.init(this.initParams, request);
     };
     this.logger.log({type: 'UserEventLog', userEvent: userEvent});
-    if (this.status === ChannelStatus.CLOSED) {
+    if (
+      this.status === ChannelStatus.CLOSED ||
+      this.experimentService.concurrentUpdatesEnabled
+    ) {
       initUserEvent();
     } else {
       this.queuedEvents.push(() => {
