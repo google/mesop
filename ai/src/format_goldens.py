@@ -6,7 +6,7 @@ import json
 import os
 from typing import Any
 
-from ai.common.llm_lib import format_messages
+from ai.common.llm_lib import REVISE_APP_BASE_PROMPT, SYSTEM_INSTRUCTION
 
 
 def process_goldens():
@@ -41,13 +41,12 @@ def process_goldens():
 
       dataset.append(
         {
-          "messages": [
-            *format_messages(code, prompt, line_number),
-            {
-              "role": "assistant",
-              "content": diff,
-            },
-          ],
+          "text_input": SYSTEM_INSTRUCTION
+          + "\n\n"
+          + REVISE_APP_BASE_PROMPT.replace("<APP_CODE>", code).replace(
+            "<APP_CHANGES>", prompt
+          ),
+          "output": diff,
         }
       )
 
@@ -59,11 +58,10 @@ if __name__ == "__main__":
   print(f"Processed {len(formatted_dataset)} samples.")
   # create gen dir if it doesn't exist
   os.makedirs("ft/gen", exist_ok=True)
-  full_path = os.path.join("ft/gen/formatted_dataset.jsonl")
+  full_path = os.path.join("ft/gen/formatted_dataset.json")
   # Append each sample as a JSON object on a separate line to a file
   with open(full_path, "w") as f:
-    for sample in formatted_dataset:
-      f.write(json.dumps(sample) + "\n")
+    f.write(json.dumps(formatted_dataset))
 
   # Print absolute path of file
   print(f"File created at: {full_path}")
