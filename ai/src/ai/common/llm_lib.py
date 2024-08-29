@@ -1,7 +1,9 @@
+import os
 import re
 from os import getenv
 from typing import NamedTuple
 
+import google.generativeai as genai
 from openai import OpenAI
 from openai.types.chat import (
   ChatCompletionMessageParam,
@@ -49,6 +51,7 @@ def apply_patch(original_code: str, patch: str) -> ApplyPatchResult:
     # Replace the original part with the updated part
     new_patched_code = patched_code.replace(original, updated, 1)
     if new_patched_code == patched_code:
+      print("[WARN] Diff did not update code:", patch)
       return ApplyPatchResult(
         True,
         "[AI-002] Sorry! AI output could not be used. Please try again.",
@@ -95,14 +98,18 @@ def adjust_mesop_app_stream(
   """
   Returns a stream of the code diff.
   """
-  messages = format_messages(code, user_input, line_number)
-
-  return client.chat.completions.create(
-    model=model,
-    max_tokens=10_000,
-    messages=messages,
+  model = make_gemini_model()
+  response = model.generate_content(
+    REVISE_APP_BASE_PROMPT.replace("<APP_CODE>", code).replace(
+      "<APP_CHANGES>", user_input
+    ),
+    request_options={"timeout": 120},
+    safety_settings=safety_settings,
+    generation_config=generation_config,
     stream=True,
   )
+  for chunk in response:
+    yield chunk.text
 
 
 def adjust_mesop_app_blocking(
@@ -116,6 +123,7 @@ def adjust_mesop_app_blocking(
   """
   Returns the code diff.
   """
+  return adjust_mesop_app_gemini(code, user_input)
   messages = format_messages(code, user_input, line_number)
 
   response = client.chat.completions.create(
@@ -127,3 +135,60 @@ def adjust_mesop_app_blocking(
   content = response.choices[0].message.content
   assert content is not None
   return content
+
+
+generation_config = {
+  "temperature": 1,
+  "top_p": 0.95,
+  "top_k": 64,
+  "max_output_tokens": 32768,
+}
+
+safety_settings = [
+  {
+    "category": "HARM_CATEGORY_HARASSMENT",
+    "threshold": "BLOCK_NONE",
+  },
+  {
+    "category": "HARM_CATEGORY_HATE_SPEECH",
+    "threshold": "BLOCK_NONE",
+  },
+  {
+    "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+    "threshold": "BLOCK_NONE",
+  },
+  {
+    "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+    "threshold": "BLOCK_NONE",
+  },
+]
+
+
+def make_gemini_model() -> genai.GenerativeModel:
+  genai.configure(api_key=os.environ["GEMINI_API_KEY"])
+
+  # cache = get_or_create_cache()
+  # model = genai.GenerativeModel.from_cached_content(cached_content=cache)
+  # return model
+  return genai.GenerativeModel(
+    model_name="models/gemini-1.5-flash-001",
+    system_instruction=SYSTEM_INSTRUCTION,
+    safety_settings=safety_settings,
+    generation_config=generation_config,
+  )
+
+
+def adjust_mesop_app_gemini(code: str, user_input: str) -> str:
+  model = make_gemini_model()
+  response = model.generate_content(
+    REVISE_APP_BASE_PROMPT.replace("<APP_CODE>", code).replace(
+      "<APP_CHANGES>", user_input
+    ),
+    request_options={"timeout": 120},
+    safety_settings=safety_settings,
+    generation_config=generation_config,
+  )
+
+  llm_output = response.text.strip()
+  print("[INFO] LLM output:", llm_output)
+  return llm_output

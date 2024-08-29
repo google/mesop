@@ -71,9 +71,8 @@ def adjust_mesop_app_endpoint():
     )
     diff = ""
     for chunk in stream:
-      if chunk.choices[0].delta.content:
-        diff += chunk.choices[0].delta.content
-        yield f"data: {json.dumps({'type': 'progress', 'data': chunk.choices[0].delta.content})}\n\n"
+      diff += chunk
+      yield f"data: {json.dumps({'type': 'progress', 'data': chunk})}\n\n"
 
     result = apply_patch(code, diff)
     if result.has_error:
