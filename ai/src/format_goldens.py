@@ -24,7 +24,6 @@ def process_goldens():
         with open(meta_path) as meta_file:
           meta = json.load(meta_file)
           line_number = meta.get("line_number")
-          print(f"line_number: {line_number}")
 
       with open(prompt_path) as prompt_file:
         prompt = prompt_file.read().strip()
