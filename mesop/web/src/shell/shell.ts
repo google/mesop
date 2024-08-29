@@ -130,27 +130,31 @@ export class Shell {
           } else if (command.hasScrollIntoView()) {
             // Scroll into view
             const key = command.getScrollIntoView()!.getKey();
-            const targetElements = document.querySelectorAll(
-              `[data-key="${key}"]`,
-            );
-            if (!targetElements.length) {
-              console.error(
-                `Could not scroll to component with key ${key} because no component found`,
+            // Schedule scroll into view to run after the current event loop tick
+            // so that the component has time to render.
+            setTimeout(() => {
+              const targetElements = document.querySelectorAll(
+                `[data-key="${key}"]`,
               );
-              return;
-            }
-            if (targetElements.length > 1) {
-              console.warn(
-                'Found multiple components',
-                targetElements,
-                'to potentially scroll to for key',
-                key,
-                '. This is probably a bug and you should use a unique key identifier.',
-              );
-            }
-            targetElements[0].parentElement!.scrollIntoView({
-              behavior: 'smooth',
-            });
+              if (!targetElements.length) {
+                console.error(
+                  `Could not scroll to component with key ${key} because no component found`,
+                );
+                return;
+              }
+              if (targetElements.length > 1) {
+                console.warn(
+                  'Found multiple components',
+                  targetElements,
+                  'to potentially scroll to for key',
+                  key,
+                  '. This is probably a bug and you should use a unique key identifier.',
+                );
+              }
+              targetElements[0].parentElement!.scrollIntoView({
+                behavior: 'smooth',
+              });
+            }, 0);
           } else if (command.hasFocusComponent()) {
             // Focus on component
             const key = command.getFocusComponent()!.getKey();
