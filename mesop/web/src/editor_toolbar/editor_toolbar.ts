@@ -202,8 +202,11 @@ export class EditorToolbar implements OnInit {
         width: '90%',
       });
       const response = await responsePromise;
+      progressDialogRef.afterClosed().subscribe(() => {
+        this.autocompleteTrigger.closePanel();
+      });
       progressDialogRef.close();
-      this.autocompleteTrigger.closePanel();
+
       const dialogRef = this.dialog.open(EditorPromptResponseDialog, {
         data: {response: response, responseTime: this.responseTime},
         width: '90%',
