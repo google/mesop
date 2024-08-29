@@ -58,7 +58,7 @@ export class EditorToolbarService {
     }
   }
 
-  private addHistoryEntry(entry: PromptInteraction) {
+  addHistoryEntry(entry: PromptInteraction) {
     this.history.unshift(entry);
     this.saveHistoryToStorage();
   }

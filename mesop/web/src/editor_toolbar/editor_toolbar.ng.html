@@ -11,9 +11,6 @@
   </button>
 
   @if (!isToolbarMinimized) {
-  <div class="drag-handle" cdkDragHandle>
-    <mat-icon>drag_indicator</mat-icon>
-  </div>
 
   <button
     mat-icon-button
@@ -27,7 +24,7 @@
   <textarea
     #textarea
     disabled="{{isLoading}}"
-    placeholder="{{isLoading ? 'Generating...' : 'Type in the UI change you want...' }}"
+    placeholder="{{isLoading ? 'Generating...' : 'Type in the UI change... ' + getToolbarShortcutText() }}"
     class="floating-editor-toolbar-textarea"
     [(ngModel)]="prompt"
     (ngModelChange)="onPromptChange($event)"
