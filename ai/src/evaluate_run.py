@@ -36,8 +36,11 @@ def process_directory(directory_path: str):
   if segments[1] == "no_source":
     content = ""
   else:
+    input_source_path = os.path.join(
+      "src/ai/offline_common", urllib.parse.unquote(segments[1])
+    )
     # Read the original content if it's not a "no_source" file
-    with open(urllib.parse.unquote(segments[1])) as f:
+    with open(input_source_path) as f:
       content = f.read()
 
   patch_result = apply_patch(original_code=content, patch=patch)
