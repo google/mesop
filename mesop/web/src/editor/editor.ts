@@ -36,6 +36,7 @@ import {
   DebugErrorDialogService,
   ErrorDialogService,
 } from '../services/error_dialog_service';
+import {ExperimentService} from '../services/experiment_service';
 // Keep the following comment to ensure there's a hook for adding TS imports in the downstream sync.
 // ADD_TS_IMPORT_HERE
 
@@ -80,6 +81,7 @@ class Editor {
     private router: Router,
     private editorService: EditorService,
     private channel: Channel,
+    private experimentService: ExperimentService,
   ) {
     iconRegistry.setDefaultFontSetClass('material-symbols-rounded');
     this.renderer.setAttribute(
@@ -163,7 +165,7 @@ class Editor {
   }
 
   showEditorToolbar(): boolean {
-    return Boolean(window.localStorage.getItem('MESOP://SHOW_EDITOR_TOOLBAR'));
+    return this.experimentService.experimentalEditorToolbarEnabled;
   }
 }
 
