@@ -24,7 +24,8 @@ fi
 virtualenv --python python3 /tmp/mesoprelease-test/venv-test && \
 source /tmp/mesoprelease-test/venv-test/bin/activate && \
 uv pip install --upgrade pip && \
-uv pip install -r mesop/pip_package/requirements.txt --no-binary pydantic && \
+uv pip install -r mesop/pip_package/requirements.txt && \
+uv pip install gunicorn && \
 bazel run //mesop/pip_package:build_pip_package -- /tmp/mesoprelease-test/mesop.tar.gz && \
 cp -r ./scripts/smoketest_app /tmp/mesoprelease-test && \
 # Do "-P" so that it follows the physical path so that

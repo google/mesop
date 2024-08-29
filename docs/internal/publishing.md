@@ -39,8 +39,10 @@ This will start the Mesop dev server and you can test that hot reload works.
 ### Gunicorn integration
 
 ```sh
-pip install gunicorn && gunicorn main:me
+gunicorn main:me
 ```
+
+> Note: `gunicorn` should already be installed by the shell script above.
 
 ## Upload to PyPI
 
