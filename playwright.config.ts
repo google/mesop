@@ -53,7 +53,9 @@ export default defineConfig({
   webServer: {
     command: `MESOP_STATE_SESSION_BACKEND=${
       process.env.MESOP_STATE_SESSION_BACKEND || 'none'
-    } bazel run //mesop/cli -- --path=mesop/mesop/example_index.py --prod`,
+    } bazel run //mesop/cli -- --path=mesop/mesop/example_index.py --prod=${
+      process.env.MESOP_DEBUG_MODE === 'true' ? 'false' : 'true'
+    }`,
     url: 'http://127.0.0.1:32123/',
     reuseExistingServer: !process.env.CI,
   },

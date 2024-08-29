@@ -1,4 +1,5 @@
 import {test, expect} from '@playwright/test';
+import {testInProdOnly} from '../../../tests/e2e/e2e_helpers';
 
 test('test sanitized html', async ({page}) => {
   await page.goto('/components/html/e2e/html_app');
@@ -50,7 +51,7 @@ test('test sandboxed html - origin is null', async ({page}) => {
   ).toBeVisible();
 });
 
-test('sandbox_iframe.html csp', async ({page}) => {
+testInProdOnly('sandbox_iframe.html csp', async ({page}) => {
   const response = await page.goto('/sandbox_iframe.html');
   const csp = response?.headers()['content-security-policy']!;
   expect(csp).toMatchSnapshot('sandbox_iframe.html-csp.txt');

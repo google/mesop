@@ -14,8 +14,10 @@ test('on_load (generator)', async ({page}) => {
 
 test('on_load - navigate triggers on load handler', async ({page}) => {
   await page.goto('/on_load');
-  // Triggers a navigation to /on_load_generator
-  await page.getByRole('button').click();
+
+  await page
+    .getByRole('button', {name: 'navigate to /on_load_generator'})
+    .click();
 
   await assertGeneratorPage(page);
 });

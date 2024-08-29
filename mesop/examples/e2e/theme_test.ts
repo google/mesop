@@ -8,13 +8,13 @@ test('theme', async ({page}) => {
   await expect(page.getByText('Theme: dark')).toBeVisible();
   expect(await page.evaluate(hasDarkTheme)).toBeTruthy();
 
-  await page.locator('button').click();
+  await page.getByRole('button', {name: 'toggle theme'}).click();
 
   // Theme mode is light -> light theme
   await expect(page.getByText('Theme: light')).toBeVisible();
   expect(await page.evaluate(hasDarkTheme)).toBeFalsy();
 
-  await page.locator('button').click();
+  await page.getByRole('button', {name: 'toggle theme'}).click();
 
   // Theme mode is dark -> dark theme
   await expect(page.getByText('Theme: dark')).toBeVisible();

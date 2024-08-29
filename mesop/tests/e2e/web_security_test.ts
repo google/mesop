@@ -1,19 +1,20 @@
 // http://localhost:32123/plot
-import {test, expect} from '@playwright/test';
+import {expect} from '@playwright/test';
+import {testInProdOnly} from './e2e_helpers';
 
-test('csp: default', async ({page}) => {
+testInProdOnly('csp: default', async ({page}) => {
   const response = await page.goto('/');
   const csp = response?.headers()['content-security-policy']!;
   expect(cleanCsp(csp)).toMatchSnapshot('csp.txt');
 });
 
-test('csp: allowed parent iframe origins', async ({page}) => {
+testInProdOnly('csp: allowed parent iframe origins', async ({page}) => {
   const response = await page.goto('/allowed_iframe_parents');
   const csp = response?.headers()['content-security-policy']!;
   expect(cleanCsp(csp)).toMatchSnapshot('csp_allowed_iframe_parents.txt');
 });
 
-test('csp escaping', async ({page}) => {
+testInProdOnly('csp escaping', async ({page}) => {
   const response = await page.goto('/testing/csp_escaping');
   const csp = response?.headers()['content-security-policy']!;
   expect(cleanCsp(csp)).toMatchSnapshot('csp_escaping.txt');
