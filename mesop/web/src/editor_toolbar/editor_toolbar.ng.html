@@ -1,16 +1,16 @@
 <div
   class="floating-editor-toolbar"
-  [ngClass]="{'hidden': !isToolbarExpanded}"
+  [ngClass]="{'hidden': isToolbarMinimized}"
   cdkDrag
   cdkDragBoundary="body"
   (cdkDragEnded)="onDragEnded($event)"
   #toolbar
 >
   <button mat-icon-button class="toggle-button" (click)="toggleToolbar()">
-    <mat-icon>{{ isToolbarExpanded ? 'hide' : 'open_in_full' }}</mat-icon>
+    <mat-icon>{{ isToolbarMinimized ? 'open_in_full' : 'hide' }}</mat-icon>
   </button>
 
-  @if (isToolbarExpanded) {
+  @if (!isToolbarMinimized) {
   <div class="drag-handle" cdkDragHandle>
     <mat-icon>drag_indicator</mat-icon>
   </div>
