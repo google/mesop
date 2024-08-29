@@ -56,7 +56,11 @@ def check_file_is_runnable(file_path: str, file_stats: dict[str, list[str]]):
 def check_file_types(file_path: str, file_stats: dict[str, list[str]]):
   try:
     subprocess.run(
-      ["yarn", "pyright", os.path.join(os.path.dirname(__file__), file_path)],
+      [
+        "yarn",
+        "pyright",
+        file_path,
+      ],
       capture_output=True,
       text=True,
       check=True,

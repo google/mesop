@@ -8,8 +8,12 @@ from functools import wraps
 from typing import Any, Callable
 from urllib.parse import quote
 
-from input_collections import EASY_INPUTS, Input
-from llm_lib import PROMPT_PATH, SYSTEM_INSTRUCTION, adjust_mesop_app
+from ai.common.llm_lib import (
+  PROMPT_PATH,
+  SYSTEM_INSTRUCTION,
+  adjust_mesop_app_blocking,
+)
+from ai.offline_common.input_collections import EASY_INPUTS, Input
 
 
 def parse_arguments():
@@ -68,14 +72,19 @@ def process_input(
   print(f"\nProcessing input {i}/{total}: {input.prompt}")
 
   if input.source_file:
-    print(f"Reading source file: {input.source_file}")
-    with open(input.source_file) as f:
+    full_path = os.path.abspath(
+      os.path.join("src/ai/offline_common", input.source_file)
+    )
+    print(f"Reading source file: {full_path}")
+    with open(full_path) as f:
       code = f.read()
   else:
     print("No source file provided.")
     code = ""
 
-  output = adjust_mesop_app(msg=input.prompt, code=code, model=model)  # type: ignore
+  output = adjust_mesop_app_blocking(
+    user_input=input.prompt, code=code, model=model
+  )
 
   # Create a filename based on the prompt and source_file
   source_file_part = (

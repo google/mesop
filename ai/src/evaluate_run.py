@@ -1,10 +1,13 @@
+import argparse
 import os
+import urllib.parse
 
-from eval_lib import check_file_is_runnable, run_eval
-from llm_lib import apply_patch
+from ai.common.llm_lib import apply_patch
+from ai.offline_common.eval_lib import check_file_is_runnable, run_eval
 
 file_stats: dict[str, list[str]] = {
   "error": [],
+  "success": [],
 }
 
 
@@ -24,10 +27,17 @@ def process_directory(directory_path: str):
   with open(diff_file_path) as f:
     patch = f.read()
 
-  content = ""
-  SOURCE_PY_PATH = os.path.join(directory_path, "source.py")
-  if os.path.exists(SOURCE_PY_PATH):
-    with open(SOURCE_PY_PATH) as f:
+  dirname = os.path.basename(directory_path)
+  segments = dirname.split("__")
+  assert (
+    len(segments) == 2
+  ), f"Expected dirname to have two segments, but got: {dirname}"
+
+  if segments[1] == "no_source":
+    content = ""
+  else:
+    # Read the original content if it's not a "no_source" file
+    with open(urllib.parse.unquote(segments[1])) as f:
       content = f.read()
 
   patch_result = apply_patch(original_code=content, patch=patch)
@@ -43,17 +53,34 @@ def process_directory(directory_path: str):
       f.write(patch_result.result)
 
     print(f"Patched content written to: {output_file}")
-    check_file_is_runnable(output_file, file_stats)
+    check_file_is_runnable(os.path.abspath(output_file), file_stats)
+
+
+def parse_arguments():
+  parser = argparse.ArgumentParser(
+    description="Evaluate patches for Mesop app."
+  )
+  parser.add_argument(
+    "--model", type=str, required=True, help="Specify the model to use"
+  )
+  parser.add_argument(
+    "--run_name", type=str, required=True, help="Specify a name for this run"
+  )
+  return parser.parse_args()
 
 
 def main():
-  input_dir = os.path.join("goldens")
+  args = parse_arguments()
+
+  input_dir = os.path.join("outputs", args.model, args.run_name)
 
   if not os.path.exists(input_dir):
     print(f"Error: Directory not found: {input_dir}")
     return
 
   print(f"Processing files in: {input_dir}")
+  print(f"Using model: {args.model}")
+  print(f"Run name: {args.run_name}")
   run_eval(input_dir, file_stats, process_directory)
 
 

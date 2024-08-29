@@ -1,19 +1,17 @@
 """
-Formats the dataset for the fine-tuning process.
+Formats the golden dataset for the fine-tuning process.
 """
 
 import json
 import os
 from typing import Any
 
-from llm_lib import REVISE_APP_BASE_PROMPT, SYSTEM_INSTRUCTION_PART_1
-
-EDIT_HERE_MARKER = " # <--- EDIT HERE"
+from ai.common.llm_lib import format_messages
 
 
 def process_goldens():
   dataset: list[dict[str, Any]] = []
-  outputs_dir = "goldens"
+  outputs_dir = "ft/goldens"
 
   for dir_name in os.listdir(outputs_dir):
     dir_path = os.path.join(outputs_dir, dir_name)
@@ -41,28 +39,10 @@ def process_goldens():
       else:
         code = ""
 
-        # Add sentinel token based on line_number (1-indexed)
-      if line_number is not None:
-        code_lines = code.splitlines()
-        if 1 <= line_number <= len(code_lines):
-          code_lines[line_number - 1] += EDIT_HERE_MARKER
-        code = "\n".join(code_lines)
-
-      formatted_prompt = REVISE_APP_BASE_PROMPT.replace(
-        "<APP_CODE>", code
-      ).replace("<APP_CHANGES>", prompt)
-
       dataset.append(
         {
           "messages": [
-            {
-              "role": "system",
-              "content": SYSTEM_INSTRUCTION_PART_1,
-            },
-            {
-              "role": "user",
-              "content": formatted_prompt,
-            },
+            *format_messages(code, prompt, line_number),
             {
               "role": "assistant",
               "content": diff,
@@ -78,8 +58,12 @@ if __name__ == "__main__":
   formatted_dataset = process_goldens()
   print(f"Processed {len(formatted_dataset)} samples.")
   # create gen dir if it doesn't exist
-  os.makedirs("./gen", exist_ok=True)
+  os.makedirs("ft/gen", exist_ok=True)
+  full_path = os.path.join("ft/gen/formatted_dataset.jsonl")
   # Append each sample as a JSON object on a separate line to a file
-  with open("./gen/formatted_dataset.jsonl", "w") as f:
+  with open(full_path, "w") as f:
     for sample in formatted_dataset:
       f.write(json.dumps(sample) + "\n")
+
+  # Print absolute path of file
+  print(f"File created at: {full_path}")
