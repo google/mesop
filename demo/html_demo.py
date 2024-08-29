@@ -1,7 +1,12 @@
 import mesop as me
 
 
-@me.page(path="/html_demo")
+@me.page(
+  security_policy=me.SecurityPolicy(
+    allowed_iframe_parents=["https://google.github.io"]
+  ),
+  path="/html_demo",
+)
 def app():
   me.text("Sanitized HTML")
   me.html(
