@@ -30,6 +30,9 @@ EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED = (
   os.environ.get("MESOP_EXPERIMENTAL_EDITOR_TOOLBAR", "false").lower() == "true"
 )
 
+print(
+  "EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED", EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED
+)
 
 LOCALHOSTS = (
   # For IPv4 localhost
@@ -92,6 +95,11 @@ def configure_flask_app(
             f"/{WEB_COMPONENTS_PATH_SEGMENT}{js_module}"
             for js_module in js_modules
           ],
+          experiment_settings=pb.ExperimentSettings(
+            experimental_editor_toolbar_enabled=EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED,
+          )
+          if init_request
+          else None,
         )
       )
       yield serialize(data)

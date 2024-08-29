@@ -19,6 +19,7 @@ import {applyComponentDiff, applyStateDiff} from '../utils/diff';
 import {getViewportSize} from '../utils/viewport_size';
 import {ThemeService} from './theme_service';
 import {getQueryParams} from '../utils/query_params';
+import {ExperimentService} from './experiment_service';
 
 // Pick 500ms as the minimum duration before showing a progress/busy indicator
 // for the channel.
@@ -63,6 +64,7 @@ export class Channel {
     private logger: Logger,
     private title: Title,
     private themeService: ThemeService,
+    private experimentService: ExperimentService,
   ) {
     this.themeService.setOnChangePrefersColorScheme(() => {
       const userEvent = new UserEvent();
@@ -197,6 +199,15 @@ export class Channel {
               this.rootComponent = rootComponentToUpdate;
             } else {
               this.rootComponent = rootComponent;
+            }
+
+            const experimentSettings = uiResponse
+              .getRender()!
+              .getExperimentSettings();
+            if (experimentSettings) {
+              this.experimentService.experimentalEditorToolbarEnabled =
+                experimentSettings.getExperimentalEditorToolbarEnabled() ??
+                false;
             }
 
             this.componentConfigs = uiResponse
