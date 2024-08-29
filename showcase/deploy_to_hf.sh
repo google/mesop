@@ -26,7 +26,7 @@ fi
 DEMO_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cp -R "$DEMO_DIR/" "$DEST_PATH"
 echo "Demo files have been copied to $DEST_PATH"
-cd "$DEST_PATH"
+cd "$DEST_PATH/showcase"
 echo "Changed directory to $DEST_PATH"
 
 git init
