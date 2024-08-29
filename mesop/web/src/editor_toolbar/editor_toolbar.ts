@@ -41,6 +41,8 @@ interface PromptOption {
   icon: string;
 }
 
+const IS_TOOLBAR_MINIMIZED_KEY = 'MESOP://IS_TOOLBAR_MINIMIZED';
+
 @Component({
   selector: 'mesop-editor-toolbar',
   templateUrl: 'editor_toolbar.ng.html',
@@ -70,7 +72,7 @@ export class EditorToolbar implements OnInit {
   responseTime = 0;
   isLoading = false;
   private timerSubscription: Subscription | null = null;
-  isToolbarExpanded = true;
+  isToolbarMinimized = false;
   position: {x: number | null; y: number | null} = {x: null, y: null};
   @ViewChild('toolbar', {static: true}) toolbar!: ElementRef;
   @ViewChild(MatAutocompleteTrigger)
@@ -87,8 +89,8 @@ export class EditorToolbar implements OnInit {
     private autocompleteService: EditorToolbarAutocompleteService,
     private editorService: EditorService,
   ) {
-    const savedState = localStorage.getItem('isToolbarExpanded');
-    this.isToolbarExpanded = savedState === 'true';
+    const savedState = localStorage.getItem(IS_TOOLBAR_MINIMIZED_KEY);
+    this.isToolbarMinimized = savedState === 'true';
 
     this.editorService.setOnSelectedComponent(() => {
       this.textarea.nativeElement.focus();
@@ -142,15 +144,15 @@ export class EditorToolbar implements OnInit {
   }
 
   toggleToolbar() {
-    this.isToolbarExpanded = !this.isToolbarExpanded;
+    this.isToolbarMinimized = !this.isToolbarMinimized;
     localStorage.setItem(
-      'isToolbarExpanded',
-      this.isToolbarExpanded.toString(),
+      IS_TOOLBAR_MINIMIZED_KEY,
+      this.isToolbarMinimized.toString(),
     );
-    if (!this.isToolbarExpanded) {
+    if (this.isToolbarMinimized) {
       this.position = {x: null, y: null};
     }
-    if (this.isToolbarExpanded) {
+    if (!this.isToolbarMinimized) {
       this.loadSavedPosition();
     }
   }
