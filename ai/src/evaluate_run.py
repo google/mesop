@@ -36,9 +36,14 @@ def process_directory(directory_path: str):
   if segments[1] == "no_source":
     content = ""
   else:
+    input_source_path = os.path.join(
+      "src/ai/offline_common", urllib.parse.unquote(segments[1])
+    )
+    print("input_source_path", input_source_path)
     # Read the original content if it's not a "no_source" file
-    with open(urllib.parse.unquote(segments[1])) as f:
+    with open(input_source_path) as f:
       content = f.read()
+      print("content", content)
 
   patch_result = apply_patch(original_code=content, patch=patch)
 
@@ -49,6 +54,7 @@ def process_directory(directory_path: str):
     file_stats["error"].append(diff_file_path)
   else:
     output_file = os.path.join(directory_path, "patched.py")
+    print(f"Writing patched content to: {output_file}")
     with open(output_file, "w") as f:
       f.write(patch_result.result)
 

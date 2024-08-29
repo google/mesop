@@ -83,7 +83,8 @@ def process_input(
     code = ""
 
   output = adjust_mesop_app_blocking(
-    user_input=input.prompt, code=code, model=model
+    user_input=input.prompt,
+    code=code,  # , model=model
   )
 
   # Create a filename based on the prompt and source_file

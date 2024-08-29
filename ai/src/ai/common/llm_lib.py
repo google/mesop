@@ -58,9 +58,12 @@ def apply_patch(original_code: str, patch: str) -> ApplyPatchResult:
   return ApplyPatchResult(False, patched_code)
 
 
-DEFAULT_MODEL = "ft:gpt-4o-mini-2024-07-18:mesop:small-prompt:A1472X3c"
+DEFAULT_MODEL = (
+  "accounts/willchen90-71c40c/models/048359cf9302472f9345c11301f70a41"
+)
 DEFAULT_CLIENT = OpenAI(
-  api_key=getenv("OPENAI_API_KEY"),
+  base_url="https://api.fireworks.ai/inference/v1",
+  api_key=getenv("FIREWORKS_API_KEY"),
 )
 
 
