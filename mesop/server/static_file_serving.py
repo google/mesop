@@ -257,15 +257,11 @@ def configure_static_file_serving(
       if livereload_origin:
         csp["connect-src"] = f"'self' {livereload_origin}"
 
-    if request.path == "/sandbox_iframe.html":
-      # Set a minimal CSP to not restrict Mesop app developers.
-      # Need frame-ancestors to ensure other sites do not iframe
-      # this page and exploit it.
-      csp_subset = OrderedDict({"frame-ancestors": csp["frame-ancestors"]})
-      response.headers["Content-Security-Policy"] = "; ".join(
-        [key + " " + value for key, value in csp_subset.items()]
-      )
-    else:
+    # sandbox_iframe.html is an exception: we do not set a CSP on it
+    # because it needs to be able to execute arbitrary code within
+    # the sandboxed iframe and setting a CSP would be inherited by
+    # the iframe since it's using srcdoc.
+    if request.path != "/sandbox_iframe.html":
       # Set Content-Security-Policy header to restrict resource loading
       # Based on https://angular.io/guide/security#content-security-policy
       response.headers["Content-Security-Policy"] = "; ".join(

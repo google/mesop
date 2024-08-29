@@ -52,6 +52,6 @@ test('test sandboxed html - origin is null', async ({page}) => {
 
 test('sandbox_iframe.html csp', async ({page}) => {
   const response = await page.goto('/sandbox_iframe.html');
-  const csp = response?.headers()['content-security-policy']!;
-  expect(csp).toMatchSnapshot('sandbox_iframe.html-csp.txt');
+  const csp = response?.headers()['content-security-policy'];
+  expect(csp).toBeUndefined();
 });
