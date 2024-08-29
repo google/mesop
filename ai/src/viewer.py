@@ -133,7 +133,6 @@ def grid():
 
 def dir_row(dir: str):
   parsed_dir = urllib.parse.unquote(dir)
-  print("***", parsed_dir)
   parts = parsed_dir.split("__")
   if "golden" in me.query_params:
     source_path = os.path.join(GOLDENS_PATH, dir, "source.py")
