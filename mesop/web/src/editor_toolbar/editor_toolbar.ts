@@ -1,4 +1,11 @@
-import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  Inject,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {CdkDrag, CdkDragEnd} from '@angular/cdk/drag-drop';
 import {MatButtonModule} from '@angular/material/button';
@@ -112,6 +119,27 @@ export class EditorToolbar implements OnInit {
     return 'Select component - Ctrl ⇧ E';
   }
 
+  @HostListener('window:keydown', ['$event'])
+  handleKeyDown(event: KeyboardEvent) {
+    // Hotkey for focusing on editor toolbar textarea
+    //
+    // Binds:
+    // cmd + k (MacOs)
+    // ctrl + k (Other platforms)
+    if (event.key === 'k' && (isMac() ? event.metaKey : event.ctrlKey)) {
+      this.textarea.nativeElement.focus();
+      event.preventDefault();
+      return;
+    }
+  }
+
+  getToolbarShortcutText(): string {
+    if (isMac()) {
+      return '⌘ K';
+    }
+    return 'Ctrl K';
+  }
+
   isSelectingMode(): boolean {
     return this.editorService.getSelectionMode() === SelectionMode.SELECTING;
   }
@@ -202,8 +230,11 @@ export class EditorToolbar implements OnInit {
         width: '90%',
       });
       const response = await responsePromise;
+      progressDialogRef.afterClosed().subscribe(() => {
+        this.autocompleteTrigger.closePanel();
+      });
       progressDialogRef.close();
-      this.autocompleteTrigger.closePanel();
+
       const dialogRef = this.dialog.open(EditorPromptResponseDialog, {
         data: {response: response, responseTime: this.responseTime},
         width: '90%',
@@ -250,6 +281,15 @@ export class EditorToolbar implements OnInit {
       if (Number.isInteger(result)) {
         const interaction = this.editorToolbarService.getHistory()[result];
         this.editorToolbarService.commit(interaction.beforeCode);
+        this.editorToolbarService.addHistoryEntry({
+          prompt: `Revert: ${interaction.prompt}`,
+          path: interaction.path,
+          // Swap before and after code to represent the revert
+          beforeCode: interaction.afterCode,
+          afterCode: interaction.beforeCode,
+          diff: '<revert>',
+          lineNumber: undefined,
+        });
       }
     });
   }

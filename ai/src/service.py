@@ -34,7 +34,7 @@ def save_interaction_endpoint() -> Response | dict[str, str]:
   else:
     metadata = None
   folder_name = generate_folder_name(prompt)
-  base_path = "../ft/goldens"
+  base_path = "ft/goldens"
   folder_path = os.path.join(base_path, folder_name)
 
   os.makedirs(folder_path, exist_ok=True)
@@ -88,6 +88,9 @@ def adjust_mesop_app_endpoint():
 
 
 def generate_folder_name(prompt: str) -> str:
+  prompt = prompt.replace(
+    " ", "_"
+  )  # Replace spaces with underscores to avoid %20
   # Generate a unique 4-character suffix to avoid naming collisions
   suffix = secrets.token_urlsafe(4)
   cleaned_prompt = urllib.parse.quote(prompt)[:50]

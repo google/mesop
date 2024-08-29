@@ -49,7 +49,7 @@
     color: var(--sys-on-surface-variant);
   }
   height: 30px;
-  width: min(80vw, 480px);
+  width: max(min(60vw, 480px), 180px);
   outline: none;
   resize: none;
   overflow: hidden;

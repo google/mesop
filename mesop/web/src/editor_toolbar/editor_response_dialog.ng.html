@@ -1,4 +1,4 @@
-<h3 mat-dialog-title>Mesop Editor Response</h3>
+<h3 mat-dialog-title>Review generated code</h3>
 <mat-dialog-content class="mat-typography">
   <mesop-code-mirror-diff
     [beforeCode]="data.response.beforeCode"
@@ -6,6 +6,6 @@
   />
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button mat-button [mat-dialog-close]="true">OK</button>
-  <button mat-button [mat-dialog-close]="false" cdkFocusInitial>Cancel</button>
+  <button mat-button [mat-dialog-close]="false">Cancel</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Apply</button>
 </mat-dialog-actions>
