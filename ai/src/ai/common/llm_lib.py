@@ -1,4 +1,3 @@
-import os
 import re
 from os import getenv
 from typing import NamedTuple
@@ -35,6 +34,7 @@ class ApplyPatchResult(NamedTuple):
 
 def apply_patch(original_code: str, patch: str) -> ApplyPatchResult:
   # Extract the diff content
+  patch = patch.replace("```", "")
   diff_pattern = r"<<<<<<< ORIGINAL(.*?)=======\n(.*?)>>>>>>> UPDATED"
   matches = re.findall(diff_pattern, patch, re.DOTALL)
   patched_code = original_code
@@ -100,7 +100,9 @@ def adjust_mesop_app_stream(
   """
   model = make_gemini_model()
   response = model.generate_content(
-    REVISE_APP_BASE_PROMPT.replace("<APP_CODE>", code).replace(
+    SYSTEM_INSTRUCTION
+    + "\n\n"
+    + REVISE_APP_BASE_PROMPT.replace("<APP_CODE>", code).replace(
       "<APP_CHANGES>", user_input
     ),
     request_options={"timeout": 120},
@@ -165,14 +167,14 @@ safety_settings = [
 
 
 def make_gemini_model() -> genai.GenerativeModel:
-  genai.configure(api_key=os.environ["GEMINI_API_KEY"])
+  # genai.configure(api_key=os.environ["GEMINI_API_KEY"])
 
   # cache = get_or_create_cache()
   # model = genai.GenerativeModel.from_cached_content(cached_content=cache)
   # return model
   return genai.GenerativeModel(
-    model_name="models/gemini-1.5-flash-001",
-    system_instruction=SYSTEM_INSTRUCTION,
+    model_name="tunedModels/mesopft-863tiqxd7xcr",
+    # system_instruction=SYSTEM_INSTRUCTION,
     safety_settings=safety_settings,
     generation_config=generation_config,
   )
@@ -181,7 +183,9 @@ def make_gemini_model() -> genai.GenerativeModel:
 def adjust_mesop_app_gemini(code: str, user_input: str) -> str:
   model = make_gemini_model()
   response = model.generate_content(
-    REVISE_APP_BASE_PROMPT.replace("<APP_CODE>", code).replace(
+    SYSTEM_INSTRUCTION
+    + "\n\n"
+    + REVISE_APP_BASE_PROMPT.replace("<APP_CODE>", code).replace(
       "<APP_CHANGES>", user_input
     ),
     request_options={"timeout": 120},
