@@ -23,6 +23,7 @@ firebase.initializeApp(firebaseConfig);
 const uiConfig = {
   // TODO: change this to your Mesop page path.
   signInSuccessUrl: '/web_component/firebase_auth/firebase_auth_app',
+  signInFlow: 'popup',
   signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID],
   // tosUrl and privacyPolicyUrl accept either url string or a callback
   // function.

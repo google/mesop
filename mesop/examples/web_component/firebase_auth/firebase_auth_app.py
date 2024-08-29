@@ -43,13 +43,13 @@ class State:
 
 
 def on_auth_changed(e: mel.WebEvent):
-  print("AUTH", e.value)
   firebaseAuthToken = e.value
   if not firebaseAuthToken:
     me.state(State).email = ""
     return
 
   decoded_token = auth.verify_id_token(firebaseAuthToken)
-  if decoded_token["email"] != "allowlisted.user@gmail.com":
-    raise me.MesopUserException("Invalid user: " + decoded_token["email"])
+  # You can do an allowlist if needed.
+  # if decoded_token["email"] != "allowlisted.user@gmail.com":
+  #   raise me.MesopUserException("Invalid user: " + decoded_token["email"])
   me.state(State).email = decoded_token["email"]
