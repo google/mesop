@@ -1,6 +1,6 @@
 # AI package
 
-This contains all the AI-related code for Mesop. `ai/` is structured as an independent package and should have no dependencies on other parts of the codebase, nor dependendents from other parts of the codebase.
+This contains all the AI-related code for Mesop. `ai/` is structured as an independent package and should have no dependencies on other parts of the codebase, nor dependents from other parts of the codebase.
 
 All the commands should be run from the `ai/` directory.
 
