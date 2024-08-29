@@ -650,6 +650,8 @@ def to_style_proto(s: Style) -> pb.Style:
 def _map_font_weight(fw: int | str | None) -> str:
   if fw is None:
     return ""
+  if fw == "medium":
+    return "500"
   return str(fw)
 
 
