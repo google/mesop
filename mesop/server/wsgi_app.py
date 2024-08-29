@@ -51,7 +51,10 @@ def create_app(
 
 def create_wsgi_app(*, debug_mode: bool = False):
   """
-  Creates a WSGI app that can be used to run Mesop in a WSGI server.
+  Creates a WSGI app that can be used to run Mesop in a WSGI server like gunicorn.
+
+  Args:
+    debug_mode: If True, enables debug mode for the Mesop app.
   """
   _app = None
 
