@@ -405,7 +405,7 @@ class Style:
     ]
     | None
   ) = None
-  flex: str | None = None
+  flex: int | str | None = None
   flex_basis: str | None = None
   flex_direction: (
     Literal[
@@ -426,6 +426,7 @@ class Style:
     Literal[
       "bold",
       "normal",
+      "medium",
       100,
       200,
       300,
@@ -579,7 +580,7 @@ def to_style_proto(s: Style) -> pb.Style:
     columns=_int_str(s.columns),
     cursor=s.cursor,
     display=s.display,
-    flex=s.flex,
+    flex=_int_str(s.flex),
     flex_basis=s.flex_basis,
     flex_direction=s.flex_direction,
     flex_grow=s.flex_grow,
@@ -649,6 +650,8 @@ def to_style_proto(s: Style) -> pb.Style:
 def _map_font_weight(fw: int | str | None) -> str:
   if fw is None:
     return ""
+  if fw == "medium":
+    return "500"
   return str(fw)
 
 
