@@ -93,7 +93,7 @@ def page():
                 me.icon(icon="edit_note")
 
       if state.in_progress:
-        with me.box(key="scroll-to", style=me.Style(height=300)):
+        with me.box(key="scroll-to", style=me.Style(height=250)):
           pass
     with me.box(style=_STYLE_CHAT_INPUT_BOX):
       with me.box(style=me.Style(flex_grow=1)):
@@ -187,10 +187,7 @@ def on_click_submit_chat_msg(e: me.ClickEvent | me.InputEnterEvent):
     output = []
   output.append(ChatMessage(role=_ROLE_USER, content=input))
   state.in_progress = True
-  yield
-
   me.scroll_into_view(key="scroll-to")
-  time.sleep(0.15)
   yield
 
   start_time = time.time()
@@ -240,6 +237,7 @@ def respond_to_chat(input: str, history: list[ChatMessage]):
     "Habitant morbi tristique senectus et netus et malesuada.",
   ]
   for line in random.sample(lines, random.randint(3, len(lines) - 1)):
+    time.sleep(0.25)
     yield line + " "
 
 
