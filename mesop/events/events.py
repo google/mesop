@@ -13,9 +13,10 @@ class ClickEvent(MesopEvent):
 
   Attributes:
       key (str): key of the component that emitted this event.
+      is_target (bool): Whether the clicked target contains the event handler.
   """
 
-  pass
+  is_target: bool
 
 
 @dataclass(kw_only=True)
