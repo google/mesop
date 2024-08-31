@@ -34,6 +34,7 @@ import density as density
 import dialog as dialog
 import divider as divider
 import embed as embed
+import fancy_chat as fancy_chat
 import feedback as feedback
 import grid_table as grid_table
 import headers as headers
@@ -89,6 +90,7 @@ FIRST_SECTIONS = [
   Section(
     name="Use cases",
     examples=[
+      Example(name="fancy_chat"),
       Example(name="llm_rewriter"),
       Example(name="llm_playground"),
       Example(name="markdown_editor"),
