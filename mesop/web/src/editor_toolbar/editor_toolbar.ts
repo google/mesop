@@ -414,7 +414,7 @@ class EditorPromptResponseDialog {
         display: flex;
         flex-direction: column;
         gap: 12px;
-        max-height: 80vh;
+        max-height: 65vh;
         overflow-y: auto;
       }
       .prompt-item {
@@ -429,7 +429,7 @@ class EditorPromptResponseDialog {
       }
       .code-display {
         flex: 1;
-        max-height: 80vh;
+        max-height: 65vh;
         overflow-y: auto;
       }
       .save-interaction-button {
