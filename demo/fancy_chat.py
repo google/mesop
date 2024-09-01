@@ -68,7 +68,14 @@ def on_load(e: me.LoadEvent):
   me.set_theme_mode("system")
 
 
-@me.page(path="/fancy_chat", on_load=on_load)
+@me.page(
+  security_policy=me.SecurityPolicy(
+    allowed_iframe_parents=["https://google.github.io"]
+  ),
+  title="Fancy Mesop Demo Chat",
+  path="/fancy_chat",
+  on_load=on_load,
+)
 def page():
   state = me.state(State)
 
