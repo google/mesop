@@ -196,10 +196,7 @@ def chat(
       output = []
     output.append(ChatMessage(role=_ROLE_USER, content=input))
     state.in_progress = True
-    yield
-
     me.scroll_into_view(key="scroll-to")
-    time.sleep(0.15)
     yield
 
     start_time = time.time()
@@ -247,7 +244,7 @@ def chat(
               me.markdown(msg.content)
 
       if state.in_progress:
-        with me.box(key="scroll-to", style=me.Style(height=300)):
+        with me.box(key="scroll-to", style=me.Style(height=250)):
           pass
 
     with me.box(style=_STYLE_CHAT_INPUT_BOX):
