@@ -13,7 +13,7 @@ class ClickEvent(MesopEvent):
 
   Attributes:
       key (str): key of the component that emitted this event.
-      is_target (bool): Whether the clicked target contains the event handler.
+      is_target (bool): Whether the clicked target is the component which attached the event handler.
   """
 
   is_target: bool
