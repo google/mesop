@@ -1,5 +1,7 @@
 """Simple dialog that looks similar to Angular Component Dialog."""
 
+from typing import Callable
+
 import mesop as me
 
 
@@ -17,7 +19,10 @@ class State:
 def app():
   state = me.state(State)
 
-  with dialog(state.is_open):
+  with dialog(
+    is_open=state.is_open,
+    on_click_background=on_click_close_background,
+  ):
     me.text("Delete File", type="headline-5")
     with me.box():
       me.text(text="Would you like to delete cat.jpeg?")
@@ -31,6 +36,12 @@ def app():
     )
 
 
+def on_click_close_background(e: me.ClickEvent):
+  state = me.state(State)
+  if e.is_target:
+    state.is_open = False
+
+
 def on_click_close_dialog(e: me.ClickEvent):
   state = me.state(State)
   state.is_open = False
@@ -42,18 +53,15 @@ def on_click_dialog_open(e: me.ClickEvent):
 
 
 @me.content_component
-def dialog(is_open: bool):
+def dialog(*, is_open: bool, on_click_background: Callable | None = None):
   """Renders a dialog component.
 
   The design of the dialog borrows from the Angular component dialog. So basically
   rounded corners and some box shadow.
 
-  One current drawback is that it's not possible to close the dialog
-  by clicking on the overlay background. This is due to
-  https://github.com/google/mesop/issues/268.
-
   Args:
     is_open: Whether the dialog is visible or not.
+    on_click_background: Event handler for when background is clicked
   """
   with me.box(
     style=me.Style(
@@ -67,14 +75,15 @@ def dialog(is_open: bool):
       position="fixed",
       width="100%",
       z_index=1000,
-    )
+    ),
   ):
     with me.box(
+      on_click=on_click_background,
       style=me.Style(
         place_items="center",
         display="grid",
         height="100vh",
-      )
+      ),
     ):
       with me.box(
         style=me.Style(

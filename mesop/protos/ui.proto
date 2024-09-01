@@ -24,7 +24,7 @@ message QueryParam {
     repeated string values = 2;
 }
 
-// Next ID: 16
+// Next ID: 17
 message UserEvent {
     optional States states = 1;
 
@@ -46,6 +46,7 @@ message UserEvent {
         ResizeEvent resize = 10;
         bytes bytes_value = 9;
         ChangePrefersColorScheme change_prefers_color_scheme = 14;
+        ClickEvent click = 16;
     }
 
     optional string state_token = 12;
@@ -76,6 +77,11 @@ message ArgPathSegment {
         string keyword_argument = 1;
         int32 list_index = 2;
     }
+}
+
+// Click event parameters
+message ClickEvent {
+    optional bool is_target = 1;
 }
 
 // This is a user-triggered navigation (e.g. go back/forwards) or a hot reload event.

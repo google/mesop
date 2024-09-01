@@ -11,6 +11,7 @@ import {
 } from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {
+  ClickEvent,
   Component as ComponentProto,
   UserEvent,
   WebComponentType,
@@ -414,6 +415,9 @@ Make sure the web component name is spelled the same between Python and JavaScri
     const userEvent = new UserEvent();
     userEvent.setHandlerId(this._boxType.getOnClickHandlerId()!);
     userEvent.setKey(this.component.getKey());
+    const click = new ClickEvent();
+    click.setIsTarget(event.target === event.currentTarget);
+    userEvent.setClick(click);
     this.channel.dispatch(userEvent);
   }
 

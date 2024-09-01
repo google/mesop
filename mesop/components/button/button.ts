@@ -1,6 +1,7 @@
 import {MatButtonModule} from '@angular/material/button';
 import {Component, Input} from '@angular/core';
 import {
+  ClickEvent,
   UserEvent,
   Key,
   Type,
@@ -37,6 +38,9 @@ export class ButtonComponent {
     const userEvent = new UserEvent();
     userEvent.setHandlerId(this.config().getOnClickHandlerId()!);
     userEvent.setKey(this.key);
+    const click = new ClickEvent();
+    click.setIsTarget(event.target === event.currentTarget);
+    userEvent.setClick(click);
     this.channel.dispatch(userEvent);
   }
 

@@ -1,4 +1,7 @@
 from mesop.examples.testing import (
+  click_is_target as click_is_target,
+)
+from mesop.examples.testing import (
   complex_layout as complex_layout,
 )
 from mesop.examples.testing import (

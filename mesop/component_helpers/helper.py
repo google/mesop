@@ -470,8 +470,10 @@ runtime().register_event_mapper(
   ClickEvent,
   lambda userEvent, key: ClickEvent(
     key=key.key,
+    is_target=userEvent.click.is_target,
   ),
 )
+
 
 runtime().register_event_mapper(
   InputEvent,
