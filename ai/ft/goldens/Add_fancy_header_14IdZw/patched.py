@@ -24,7 +24,7 @@ class State:
   in_progress: bool
 
 
-@me.page()
+@me.page(path="/ai")
 def page():
   state = me.state(State)
   with me.box(
@@ -37,6 +37,35 @@ def page():
       padding=me.Padding.all(15),
     )
   ):
+    # Fancy header
+    with me.box(
+      style=me.Style(
+        background=me.theme_var("primary"),
+        padding=me.Padding.all(16),
+        border_radius=8,
+        margin=me.Margin(bottom=20),
+        display="flex",
+        align_items="center",
+      )
+    ):
+      me.icon("chat", style=me.Style(color=me.theme_var("on-primary"), font_size=24))
+      me.text(
+        "AI Chatbot",
+        style=me.Style(
+          color=me.theme_var("on-primary"),
+          font_size=24,
+          font_weight="bold",
+          margin=me.Margin(left=12),
+        ),
+      )
+      me.text(
+        "Talk to our intelligent assistant",
+        style=me.Style(
+          color=me.theme_var("on-primary"),
+          font_size=16,
+          margin=me.Margin(left=12),
+        ),
+      )
     # This contains the chat messages that have been recorded. This takes 50fr.
     # This section can be replaced with other types of chat messages.
 
@@ -115,7 +144,7 @@ def page():
           on_blur=on_chat_input,
           autosize=True,
           min_rows=4,
-          placeholder="Subtle chat input",
+          placeholder="Enter your prompt",
           style=me.Style(
             color=me.theme_var("on-surface-variant"),
             padding=me.Padding(top=16, left=16),
