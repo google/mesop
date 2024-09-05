@@ -43,3 +43,48 @@ test('test input on_blur works', async ({page}) => {
     page.getByText('input_value_when_button_clicked: second_textarea'),
   ).toBeVisible();
 });
+
+test('test textarea shortcuts', async ({page}) => {
+  await page.goto('/components/input/e2e/textarea_shortcut_app');
+  await page.getByLabel('Textarea').fill('hi');
+  await page.keyboard.press('Enter');
+  await expect(await page.getByText('Submitted: hi')).toBeVisible();
+
+  await page.keyboard.down('Shift');
+  await page.keyboard.press('Enter');
+  await page.keyboard.up('Shift');
+  await expect(await page.getByText('Submitted: hi')).toBeVisible();
+
+  await page.getByLabel('Textarea').pressSequentially('hi');
+  await page.keyboard.press('Enter');
+  await expect(await page.getByText('Submitted: hi hi').textContent()).toEqual(
+    'Submitted: hi\nhi',
+  );
+
+  await page.keyboard.down('Meta');
+  await page.keyboard.press('s');
+  await page.keyboard.up('Meta');
+  await expect(
+    await page.getByText(
+      "Shortcut: Shortcut(key='s', shift=False, ctrl=False, alt=False, meta=True)",
+    ),
+  ).toBeVisible();
+
+  await page.keyboard.down('Control');
+  await page.keyboard.down('Alt');
+  await page.keyboard.press('Enter');
+  await page.keyboard.up('Control');
+  await page.keyboard.up('Alt');
+  await expect(
+    await page.getByText(
+      "Shortcut: Shortcut(key='Enter', shift=False, ctrl=True, alt=True, meta=False)",
+    ),
+  ).toBeVisible();
+
+  await page.keyboard.press('Escape');
+  await expect(
+    await page.getByText(
+      "Shortcut: Shortcut(key='Escape', shift=False, ctrl=False, alt=False, meta=False)",
+    ),
+  ).toBeVisible();
+});

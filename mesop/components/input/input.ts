@@ -5,7 +5,9 @@ import {
   UserEvent,
   Key,
   Type,
+  Shortcut,
   Style,
+  TextareaShortcutEvent,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 import {InputType} from 'mesop/mesop/components/input/input_jspb_proto_pb/mesop/components/input/input_pb';
 import {Channel} from '../../web/src/services/channel';
@@ -111,6 +113,7 @@ export class InputComponent {
   }
 
   onKeyDown(event: Event): void {
+    const keyboardEvent = event as KeyboardEvent;
     // The isComposing field tells us if we are using an input method editor (IME) which
     // will display a menu of characters that can't be represented on a standard QWERTY
     // keyboard. The user can select from this menu by pressing "enter" or clicking the
@@ -132,10 +135,41 @@ export class InputComponent {
     //
     // In order to work around this issue, we need to count expectedIsComposingCount
     // equals false twice on Safari rather than just once.
-    if ((event as KeyboardEvent).isComposing) {
+    if (keyboardEvent.isComposing) {
       this.isComposingCount = 0;
     } else if (this.isComposingCount < this.expectedIsComposingCount) {
       this.isComposingCount += 1;
+    }
+
+    // Handle keyboard shortcut events (textareas only)
+    for (const shortcutHandler of this._config.getOnShortcutHandlerList()) {
+      if (
+        keyboardEvent.key === shortcutHandler.getShortcut()!.getKey() &&
+        keyboardEvent.altKey === shortcutHandler.getShortcut()!.getAlt() &&
+        keyboardEvent.ctrlKey === shortcutHandler.getShortcut()!.getCtrl() &&
+        keyboardEvent.shiftKey === shortcutHandler.getShortcut()!.getShift() &&
+        keyboardEvent.metaKey === shortcutHandler.getShortcut()!.getMeta()
+      ) {
+        // Prevent default behavior for cases where we want to override browser level
+        // commands, such as Cmd+S.
+        keyboardEvent.preventDefault();
+
+        const userEvent = new UserEvent();
+        userEvent.setHandlerId(shortcutHandler.getHandlerId()!);
+        const shortcut = new Shortcut();
+        shortcut.setKey(shortcutHandler.getShortcut()!.getKey()!);
+        shortcut.setAlt(shortcutHandler.getShortcut()!.getAlt()!);
+        shortcut.setCtrl(shortcutHandler.getShortcut()!.getCtrl()!);
+        shortcut.setShift(shortcutHandler.getShortcut()!.getShift()!);
+        shortcut.setMeta(shortcutHandler.getShortcut()!.getMeta()!);
+        const shortcutEvent = new TextareaShortcutEvent();
+        shortcutEvent.setShortcut(shortcut);
+        shortcutEvent.setStringValue((event.target as HTMLInputElement).value);
+        userEvent.setTextareaShortcut(shortcutEvent);
+        userEvent.setKey(this.key);
+        this.channel.dispatch(userEvent);
+        break;
+      }
     }
   }
 

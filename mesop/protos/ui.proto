@@ -24,7 +24,7 @@ message QueryParam {
     repeated string values = 2;
 }
 
-// Next ID: 17
+// Next ID: 18
 message UserEvent {
     optional States states = 1;
 
@@ -47,6 +47,7 @@ message UserEvent {
         bytes bytes_value = 9;
         ChangePrefersColorScheme change_prefers_color_scheme = 14;
         ClickEvent click = 16;
+        TextareaShortcutEvent textarea_shortcut = 17;
     }
 
     optional string state_token = 12;
@@ -83,6 +84,23 @@ message ArgPathSegment {
 message ClickEvent {
     optional bool is_target = 1;
 }
+
+// Shortcut event for textareas.
+message TextareaShortcutEvent {
+  optional Shortcut shortcut = 1;
+  optional string string_value = 2;
+}
+
+// Shortcut key combination based on KeyboardEvent naming.
+// https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/KeyboardEvent
+message Shortcut {
+  optional string key = 1;
+  optional bool shift = 2;
+  optional bool ctrl = 3;
+  optional bool alt = 4;
+  optional bool meta = 5;
+}
+
 
 // This is a user-triggered navigation (e.g. go back/forwards) or a hot reload event.
 message NavigationEvent{

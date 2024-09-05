@@ -40,6 +40,47 @@ register_event_mapper(
 )
 
 
+@dataclass(kw_only=True, frozen=True)
+class Shortcut:
+  """Represents a keyboard shortcut combination."""
+
+  key: str
+  shift: bool = False
+  ctrl: bool = False
+  alt: bool = False
+  meta: bool = False
+
+
+@dataclass(kw_only=True)
+class TextareaShortcutEvent(MesopEvent):
+  """Represents a shortcut keyboard event on a textarea component.
+
+  Attributes:
+    value: Input value.
+    shortcut: Key combination pressed.
+    key (str): key of the component that emitted this event.
+  """
+
+  shortcut: Shortcut
+  value: str
+
+
+register_event_mapper(
+  TextareaShortcutEvent,
+  lambda event, key: TextareaShortcutEvent(
+    key=key.key,
+    value=event.textarea_shortcut.string_value,
+    shortcut=Shortcut(
+      shift=event.textarea_shortcut.shortcut.shift,
+      ctrl=event.textarea_shortcut.shortcut.ctrl,
+      alt=event.textarea_shortcut.shortcut.alt,
+      meta=event.textarea_shortcut.shortcut.meta,
+      key=event.textarea_shortcut.shortcut.key,
+    ),
+  ),
+)
+
+
 @dataclass(kw_only=True)
 class InputBlurEvent(MesopEvent):
   """Represents an inpur blur event (when a user loses focus of an input).
@@ -83,6 +124,8 @@ def textarea(
   float_label: Literal["always", "auto"] = "auto",
   subscript_sizing: Literal["fixed", "dynamic"] = "fixed",
   hint_label: str = "",
+  shortcuts: dict[Shortcut, Callable[[TextareaShortcutEvent], Any]]
+  | None = None,
   key: str | None = None,
 ):
   """Creates a Textarea component.
@@ -107,6 +150,7 @@ def textarea(
     float_label: Whether the label should always float or float as the user types.
     subscript_sizing: Whether the form field should reserve space for one line of hint/error text (default) or to have the spacing grow from 0px as needed based on the size of the hint/error content. Note that when using dynamic sizing, layout shifts will occur when hint/error text changes.
     hint_label: Text for the form field hint.
+    shortcuts: Shortcut events to listen for.
     key: The component [key](../components/index.md#component-key).
   """
 
@@ -138,6 +182,7 @@ def textarea(
       on_input_handler_id=register_event_handler(on_input, event=InputEvent)
       if on_input
       else "",
+      on_shortcut_handler=_to_on_shortcut_handler(shortcuts),
     ),
     style=style,
   )
@@ -250,6 +295,8 @@ def native_textarea(
   placeholder: str = "",
   value: str = "",
   readonly: bool = False,
+  shortcuts: dict[Shortcut, Callable[[TextareaShortcutEvent], Any]]
+  | None = None,
   key: str | None = None,
 ):
   """Creates a browser native Textarea component. Intended for advanced use cases with maximum UI control.
@@ -265,6 +312,7 @@ def native_textarea(
     placeholder: Placeholder value
     value: Initial value.
     readonly: Whether the element is readonly.
+    shortcuts: Shortcut events to listen for.
     key: The component [key](../components/index.md#component-key).
   """
 
@@ -287,6 +335,30 @@ def native_textarea(
       on_input_handler_id=register_event_handler(on_input, event=InputEvent)
       if on_input
       else "",
+      on_shortcut_handler=_to_on_shortcut_handler(shortcuts),
     ),
     style=style,
   )
+
+
+def _to_on_shortcut_handler(
+  shortcuts: dict[Shortcut, Callable[[TextareaShortcutEvent], Any]] | None,
+) -> list[input_pb.ShortcutHandler]:
+  if not shortcuts:
+    return []
+
+  return [
+    input_pb.ShortcutHandler(
+      shortcut=input_pb.Shortcut(
+        key=shortcut.key,
+        shift=shortcut.shift,
+        ctrl=shortcut.ctrl,
+        alt=shortcut.alt,
+        meta=shortcut.meta,
+      ),
+      handler_id=register_event_handler(
+        event_handler, event=TextareaShortcutEvent
+      ),
+    )
+    for shortcut, event_handler in shortcuts.items()
+  ]
