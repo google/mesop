@@ -1,3 +1,4 @@
+from copy import deepcopy
 from dataclasses import dataclass
 from typing import Any, Callable, Generator, Type, TypeVar, cast
 
@@ -122,6 +123,9 @@ Try one of the following paths:
 
   def get_page_config(self, *, path: str) -> PageConfig | None:
     return self._path_to_page_config.get(path)
+
+  def get_path_to_page_configs(self) -> dict[str, PageConfig]:
+    return deepcopy(self._path_to_page_config)
 
   def register_handler(self, handler_id: str, handler: Handler) -> None:
     self._handlers[handler_id] = handler
