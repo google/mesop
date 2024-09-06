@@ -56,8 +56,8 @@ def app():
       value=s.input,
       on_blur=on_blur,
       shortcuts={
-        me.Shortcut(key="Enter"): on_submit,
-        me.Shortcut(shift=True, key="Enter"): on_newline,
+        me.Shortcut(key="enter"): on_submit,
+        me.Shortcut(shift=True, key="ENTER"): on_newline,
         me.Shortcut(shift=True, meta=True, key="Enter"): on_clear,
       },
     )

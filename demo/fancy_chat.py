@@ -558,10 +558,14 @@ def on_submit_chat_msg(e: me.TextareaShortcutEvent):
   state = me.state(State)
   state.input = e.value
   yield
-  yield from on_click_submit_chat_msg(me.ClickEvent(key=e.key, is_target=False))
+  yield from _submit_chat_msg()
 
 
 def on_click_submit_chat_msg(e: me.ClickEvent):
+  yield from _submit_chat_msg()
+
+
+def _submit_chat_msg():
   """Handles submitting a chat message."""
   state = me.state(State)
   if state.in_progress or not state.input:

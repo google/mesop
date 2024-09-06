@@ -32,11 +32,11 @@ def app():
       label="Textarea",
       value=s.input,
       shortcuts={
-        me.Shortcut(key="Enter"): on_submit,
-        me.Shortcut(shift=True, key="Enter"): on_newline,
+        me.Shortcut(key="enter"): on_submit,
+        me.Shortcut(shift=True, key="ENTER"): on_newline,
         me.Shortcut(ctrl=True, alt=True, key="Enter"): on_shortcut,
-        me.Shortcut(meta=True, key="s"): on_shortcut,
-        me.Shortcut(key="Escape"): on_shortcut,
+        me.Shortcut(meta=True, key="S"): on_shortcut,
+        me.Shortcut(key="escape"): on_shortcut,
       },
     )
 
@@ -46,11 +46,11 @@ def app():
       autosize=True,
       min_rows=5,
       shortcuts={
-        me.Shortcut(key="Enter"): on_submit,
-        me.Shortcut(shift=True, key="Enter"): on_newline,
+        me.Shortcut(key="enter"): on_submit,
+        me.Shortcut(shift=True, key="ENTER"): on_newline,
         me.Shortcut(ctrl=True, alt=True, key="Enter"): on_shortcut,
-        me.Shortcut(meta=True, key="s"): on_shortcut,
-        me.Shortcut(key="Escape"): on_shortcut,
+        me.Shortcut(meta=True, key="S"): on_shortcut,
+        me.Shortcut(key="escape"): on_shortcut,
       },
     )
 

@@ -144,7 +144,8 @@ export class InputComponent {
     // Handle keyboard shortcut events (textareas only)
     for (const shortcutHandler of this._config.getOnShortcutHandlerList()) {
       if (
-        keyboardEvent.key === shortcutHandler.getShortcut()!.getKey() &&
+        keyboardEvent.key.toLowerCase() ===
+          shortcutHandler.getShortcut()!.getKey()!.toLowerCase() &&
         keyboardEvent.altKey === shortcutHandler.getShortcut()!.getAlt() &&
         keyboardEvent.ctrlKey === shortcutHandler.getShortcut()!.getCtrl() &&
         keyboardEvent.shiftKey === shortcutHandler.getShortcut()!.getShift() &&

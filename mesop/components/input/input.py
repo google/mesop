@@ -42,7 +42,11 @@ register_event_mapper(
 
 @dataclass(kw_only=True, frozen=True)
 class Shortcut:
-  """Represents a keyboard shortcut combination."""
+  """Represents a keyboard shortcut combination.
+
+  Key values are compared case-insensitively. For a list of possible key values, see
+  https://developer.mozilla.org/en-US/docs/Web/API/UI_Events/Keyboard_event_key_values.
+  """
 
   key: str
   shift: bool = False
