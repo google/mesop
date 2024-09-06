@@ -65,6 +65,13 @@ SECTIONS = [
         github_username="richard-to",
       ),
       Resource(
+        title="Multimodal Embeddings Retail Search",
+        description="Using multimodal embeddings to search retail product images and titles",
+        img_url="https://github.com/user-attachments/assets/ece910c7-5c2c-4d27-ab6a-0febc7affb12",
+        github_url="https://github.com/mandieq/retail_embeddings",
+        github_username="mandieq",
+      ),
+      Resource(
         title="Mesop Jeopardy",
         description="A simple jeopardy game built using Mesop",
         app_url="https://huggingface.co/spaces/richard-to/mesop-jeopardy",
