@@ -22,6 +22,17 @@ EASY_INPUTS = [
     prompt="Create an accordion",
   ),
   Input(
+    prompt="Create a counter that increments by one",
+  ),
+  Input(
+    prompt="Add a decrement button",
+    source_file="./inputs/counter.py",
+  ),
+  Input(
+    prompt="Swap the increment and decrement buttons",
+    source_file="./inputs/counter_two_buttons.py",
+  ),
+  Input(
     prompt="Create a chat UI",
   ),
   Input(
