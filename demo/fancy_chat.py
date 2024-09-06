@@ -349,6 +349,9 @@ def chat_input():
         key="chat_input",
         min_rows=4,
         on_blur=on_chat_input,
+        shortcuts={
+          me.Shortcut(shift=True, key="Enter"): on_submit_chat_msg,
+        },
         placeholder="Enter your prompt",
         style=me.Style(
           background=me.theme_var("surface-container")
@@ -458,6 +461,7 @@ def on_click_example_user_query(e: me.ClickEvent):
   state = me.state(State)
   _, example_index = e.key.split("-")
   state.input = _EXAMPLE_USER_QUERIES[int(example_index)]
+  me.focus_component(key="chat_input")
 
 
 def on_click_thumb_up(e: me.ClickEvent):
@@ -550,7 +554,18 @@ def on_click_regenerate(e: me.ClickEvent):
   yield
 
 
+def on_submit_chat_msg(e: me.TextareaShortcutEvent):
+  state = me.state(State)
+  state.input = e.value
+  yield
+  yield from _submit_chat_msg()
+
+
 def on_click_submit_chat_msg(e: me.ClickEvent):
+  yield from _submit_chat_msg()
+
+
+def _submit_chat_msg():
   """Handles submitting a chat message."""
   state = me.state(State)
   if state.in_progress or not state.input:

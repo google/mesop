@@ -3,7 +3,7 @@ syntax = "proto2";
 
 package mesop.components.input;
 
-// Next id: 26
+// Next id: 27
 message InputType {
   optional bool disabled = 1;
   optional string id = 2;
@@ -27,7 +27,21 @@ message InputType {
   optional bool autosize = 20;
   optional int32 min_rows = 21;
   optional int32 max_rows = 22;
+  repeated ShortcutHandler on_shortcut_handler = 26;
   // Not exposed as public API.
   optional bool is_textarea = 19;
   optional bool is_native_textarea = 23;
+}
+
+message ShortcutHandler {
+  optional Shortcut shortcut = 1;
+  optional string handler_id = 2;
+}
+
+message Shortcut {
+  optional string key = 1;
+  optional bool shift = 2;
+  optional bool ctrl = 3;
+  optional bool alt = 4;
+  optional bool meta = 5;
 }
