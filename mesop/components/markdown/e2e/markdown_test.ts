@@ -15,14 +15,41 @@ test('renders table markup', async ({page}) => {
   ).toHaveCount(2);
 
   await expect(
-    page.locator(
-      `//table/tbody/tr/td[contains(text(), "Content Cell") and @class="foo"]`,
-    ),
-  ).toHaveCount(2);
+    page.locator(`//table/tbody/tr/td[contains(text(), "Content Cell")]`),
+  ).toHaveCount(4);
+});
 
-  await expect(
-    page.locator(
-      `//table/tbody/tr/td[contains(text(), "Content Cell") and @class="bar"]`,
-    ),
-  ).toHaveCount(2);
+test('renders code copy', async ({browser}) => {
+  // Need permission to read clipboard
+  const context = await browser.newContext();
+  await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+
+  const page = await context.newPage();
+  await page.goto('/components/markdown/e2e/markdown_app');
+
+  // Can copy text
+  await page.locator('.code-block').nth(0).hover();
+  await page.locator('//button').nth(1).click();
+  let clipboardContent = await page.evaluate(async () => {
+    return await navigator.clipboard.readText();
+  });
+  expect(clipboardContent).toBe('hello');
+
+  // Can copy text if there are multiple code blocks
+  await page.locator('.code-block').nth(1).hover();
+  await page.locator('//button').nth(2).click();
+  clipboardContent = await page.evaluate(async () => {
+    return await navigator.clipboard.readText();
+  });
+  expect(clipboardContent).toContain('print("Hello, World 1!")');
+
+  // Can copy text if markdown is updated
+  await page.getByText('Updated markdown').click();
+  await page.waitForTimeout(1000);
+  await page.locator('.code-block').nth(0).hover();
+  await page.locator('//button').nth(1).click();
+  clipboardContent = await page.evaluate(async () => {
+    return await navigator.clipboard.readText();
+  });
+  expect(clipboardContent).toContain('print("Hello, World 3!")');
 });

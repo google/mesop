@@ -476,6 +476,7 @@ def demo_code(code_arg: str):
       border=me.Border(
         left=BORDER_SIDE,
       ),
+      background=me.theme_var("surface-container-low"),
     )
   ):
     with me.box(
@@ -484,6 +485,7 @@ def demo_code(code_arg: str):
         justify_content="space-between",
         align_items="center",
         border=me.Border(bottom=BORDER_SIDE),
+        background=me.theme_var("background"),
       )
     ):
       me.text(
@@ -498,7 +500,7 @@ def demo_code(code_arg: str):
     # Use four backticks for code fence to avoid conflicts with backticks being used
     # within the displayed code.
     me.markdown(
-      f"""````
+      f"""````python
 {code_arg}
 ````
               """,
@@ -507,11 +509,9 @@ def demo_code(code_arg: str):
           right=BORDER_SIDE,
         ),
         font_size=13,
-        padding=me.Padding.all(12),
         height="calc(100vh - 106px)",
         overflow_y="auto",
         width="100%",
-        background=me.theme_var("background"),
       ),
     )
 

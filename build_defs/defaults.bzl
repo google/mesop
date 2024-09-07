@@ -73,6 +73,14 @@ THIRD_PARTY_JS_CODEMIRROR = [
     "@npm//@codemirror/theme-one-dark",
 ]
 
+THIRD_PARTY_JS_HIGHLIGHTJS = [
+    "@npm//highlight.js",
+]
+
+THIRD_PARTY_JS_MARKED = [
+    "@npm//marked",
+]
+
 THIRD_PARTY_PY_ABSL_PY = [
     requirement("absl-py"),
 ]
@@ -89,16 +97,8 @@ THIRD_PARTY_PY_MATPLOTLIB = [
     requirement("matplotlib"),
 ]
 
-THIRD_PARTY_PY_MARKDOWN = [
-    requirement("markdown"),
-]
-
 THIRD_PARTY_PY_PYDANTIC = [
     requirement("pydantic"),
-]
-
-THIRD_PARTY_PY_PYGMENTS = [
-    requirement("pygments"),
 ]
 
 THIRD_PARTY_PY_PYTEST = [

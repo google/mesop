@@ -7,4 +7,4 @@ def code(code: str = "", *, language: str = "python"):
   """
   Creates a code component which displays code with syntax highlighting.
   """
-  markdown("``` " + language + "\n" + code + "\n" + "```")
+  markdown("```" + language + "\n" + code + "\n" + "```")

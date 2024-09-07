@@ -2,10 +2,8 @@ flask
 absl-py
 deepdiff==6.*
 msgpack
-markdown
 protobuf
 pydantic
-pygments
 python-dotenv
 
 # Optional (lazily-loaded) deps:

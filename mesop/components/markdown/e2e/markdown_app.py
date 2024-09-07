@@ -15,7 +15,7 @@ Syntax 1:
 
 ```python
 def foo():
-  print("Hello, World!")
+  print("Hello, World 1!")
 
 foo()
 ```
@@ -24,7 +24,7 @@ Syntax 2:
 
 ``` python
 def foo():
-  print("Hello, World!")
+  print("Hello, World 2!")
 
 foo()
 ```
@@ -69,22 +69,55 @@ foo()
 ## Links
 [Google](https://www.google.com/)
 
-## Code
+## Inline Code
 Inline `code`
 
 ## Table
 
 First Header  | Second Header
 ------------- | -------------
-Content Cell { .foo }  | Content Cell { .foo }
-Content Cell { .bar } | Content Cell { .bar }
+Content Cell  | Content Cell
+Content Cell  | Content Cell
 """
+
+
+UPDATED_MARKDOWN = """
+Testing code blocks get rerendered.
+
+Python code block:
+
+Syntax 1:
+
+```python
+def foo():
+  print("Hello, World 3!")
+
+foo()
+```
+
+Syntax 2:
+
+``` python
+def foo():
+  print("Hello, World 4!")
+
+foo()
+```
+
+"""
+
+
+@me.stateclass
+class State:
+  markdown: str = SAMPLE_MARKDOWN
 
 
 @me.page(path="/components/markdown/e2e/markdown_app")
 def app():
+  state = me.state(State)
+  me.button(label="Updated markdown", on_click=on_click)
   me.markdown(
-    text=SAMPLE_MARKDOWN,
+    text=state.markdown,
     style=me.Style(
       margin=me.Margin.all(4),
       border=me.Border.all(
@@ -92,3 +125,8 @@ def app():
       ),
     ),
   )
+
+
+def on_click(e: me.ClickEvent):
+  state = me.state(State)
+  state.markdown = UPDATED_MARKDOWN
