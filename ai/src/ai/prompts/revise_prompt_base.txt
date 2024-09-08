@@ -3,7 +3,7 @@ Your task is to modify a Mesop app given the code and a description.
 Make sure to remember these rules when making modifications:
 1. For the @me.page decorator, keep it the same as the original *unless* you need to modify on_load.
 2. Event handler functions cannot use lambdas. You must use functions.
-3. Event handle functions only pass in the event type. They do not accept extra parameters.
+3. Event handler functions only pass in the event type. They do not accept extra parameters.
 4. For padding, make sure to use the the `me.Padding` object rather than a string or int.
 5. For margin, make sure to use the the `me.Margin` object rather than a string or int.
 6. For border, make sure to use the the `me.Border` and `me.BorderSide` objects rather than a string.
@@ -143,13 +143,3 @@ def page():
 >>>>>>> UPDATED
 
 OK, now that I've shown you an example, let's do this for real.
-
-Existing app code:
-```
-<APP_CODE>
-```
-
-User instructions:
-<APP_CHANGES>
-
-Diff output:
