@@ -58,10 +58,9 @@ test('test textarea shortcuts', async ({page}) => {
 
   await textbox.pressSequentially('hi');
   await page.keyboard.press('Enter');
-  await page.waitForTimeout(2000);
-  // Extend timeout a bit due to flakiness.
-  await expect(await page.getByText('Submitted: hi hi')).toBeVisible();
-
+  await expect(async () => {
+    await expect(await page.getByText('Submitted: hi hi')).toBeVisible();
+  }).toPass({timeout: 5000});
   await page.keyboard.down('Meta');
   await page.keyboard.press('s');
   await page.keyboard.up('Meta');
