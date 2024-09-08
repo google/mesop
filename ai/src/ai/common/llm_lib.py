@@ -82,6 +82,16 @@ class MessageFormatter:
     ]
 
 
+def MakeDefaultSystemInstruction():
+  return read_file("src/ai/prompts/mesop_overview.txt")
+
+
+def MakeDefaultPrompt():
+  base_prompt = read_file("src/ai/prompts/revise_prompt_base.txt")
+  prompt = read_file("src/ai/prompts/revise_prompt_shorter.txt")
+  return base_prompt + "\n\n" + prompt
+
+
 def MakeDefaultMessageFormatter():
   system_instructions = read_file("src/ai/prompts/mesop_overview.txt")
   base_prompt = read_file("src/ai/prompts/revise_prompt_base.txt")

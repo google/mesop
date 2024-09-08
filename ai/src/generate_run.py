@@ -2,18 +2,20 @@ import argparse
 import json
 import multiprocessing
 import os
-import shutil
 import time
 from functools import wraps
 from typing import Any, Callable
 from urllib.parse import quote
 
 from ai.common.llm_lib import (
-  PROMPT_PATH,
-  SYSTEM_INSTRUCTION,
+  MakeDefaultPrompt,
+  MakeDefaultSystemInstruction,
   adjust_mesop_app_blocking,
 )
 from ai.offline_common.input_collections import EASY_INPUTS, Input
+
+SYSTEM_INSTRUCTION = MakeDefaultSystemInstruction()
+PROMPT = MakeDefaultPrompt()
 
 
 def parse_arguments():
@@ -113,10 +115,9 @@ def main():
   output_dir = os.path.join("outputs", args.model, args.run_name)
   os.makedirs(output_dir, exist_ok=False)
 
-  # Copy PROMPT_PATH file
-  prompt_dest = os.path.join(output_dir, os.path.basename(PROMPT_PATH))
-  shutil.copy2(PROMPT_PATH, prompt_dest)
-  print(f"Copied {PROMPT_PATH} to {prompt_dest}")
+  # Write system instructions
+  with open(os.path.join(output_dir, "prompt.txt"), "w") as f:
+    f.write(PROMPT)
 
   # Write system instructions
   with open(os.path.join(output_dir, "system_instructions.txt"), "w") as f:
