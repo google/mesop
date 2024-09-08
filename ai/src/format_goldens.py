@@ -3,6 +3,7 @@ Formats the golden dataset for the fine-tuning process.
 """
 
 import argparse
+import csv
 import json
 import os
 from datetime import datetime
@@ -17,7 +18,9 @@ from ai.common.llm_lib import (
 FINE_TUNING_CUTOFF = datetime(2024, 8, 2, 0, 0)
 
 
-def process_goldens(skip_fine_tuned_goldens: bool = False):
+def process_goldens(
+  skip_fine_tuned_goldens: bool = False, gemini_format: bool = False
+):
   dataset: list[dict[str, Any]] = []
   outputs_dir = "ft/goldens"
 
@@ -31,7 +34,7 @@ def process_goldens(skip_fine_tuned_goldens: bool = False):
 
       _, timestamp = os.path.basename(dir_path).rsplit("_", 1)
       creation_date = datetime.strptime(timestamp, "%Y%m%d%H%M")
-      print(creation_date)
+
       if skip_fine_tuned_goldens and creation_date < FINE_TUNING_CUTOFF:
         continue
 
@@ -54,7 +57,7 @@ def process_goldens(skip_fine_tuned_goldens: bool = False):
       else:
         code = ""
 
-      if skip_fine_tuned_goldens:
+      if skip_fine_tuned_goldens or gemini_format:
         formatter = MakeMessageFormatterShorterUserMsg()
       else:
         formatter = MakeDefaultMessageFormatter()
@@ -81,22 +84,46 @@ if __name__ == "__main__":
     action="store_true",
     help="Generates a formatted dataset with goldens that have not been fine tuned.",
   )
+  parser.add_argument(
+    "--gemini_format",
+    action="store_true",
+    help="Generates a Gemini formatted dataset.",
+  )
   args = parser.parse_args()
 
-  formatted_dataset = process_goldens(args.skip_fine_tuned_goldens)
+  formatted_dataset = process_goldens(
+    args.skip_fine_tuned_goldens, args.gemini_format
+  )
   print(f"Processed {len(formatted_dataset)} samples.")
   # create gen dir if it doesn't exist
   os.makedirs("ft/gen", exist_ok=True)
 
   if args.skip_fine_tuned_goldens:
-    full_path = os.path.join("ft/gen/formatted_dataset_for_prompting.jsonl")
+    if args.gemini_format:
+      full_path = os.path.join(
+        "ft/gen/gemini_formatted_dataset_for_prompting.csv"
+      )
+    else:
+      full_path = os.path.join("ft/gen/formatted_dataset_for_prompting.jsonl")
   else:
-    full_path = os.path.join("ft/gen/formatted_dataset.jsonl")
+    if args.gemini_format:
+      full_path = os.path.join("ft/gen/gemini_formatted_dataset.csv")
+    else:
+      full_path = os.path.join("ft/gen/formatted_dataset.jsonl")
 
-  # Append each sample as a JSON object on a separate line to a file
-  with open(full_path, "w") as f:
-    for sample in formatted_dataset:
-      f.write(json.dumps(sample) + "\n")
+  if args.gemini_format:
+    with open(full_path, "w") as f:
+      writer = csv.writer(f)
+      writer.writerow(["input:", "output:"])
+      for sample in formatted_dataset:
+        writer.writerow(
+          [sample["messages"][1]["content"], sample["messages"][2]["content"]]
+        )
+  else:
+    # Append each sample as a JSON object on a separate line to a file
+    with open(full_path, "w") as f:
+      for sample in formatted_dataset:
+        f.write(json.dumps(sample) + "\n")
 
   # Print absolute path of file
   print(f"File created at: {full_path}")
