@@ -301,27 +301,32 @@ mesop-markdown {
     position: relative;
   }
 
-  .code-block button {
+  .code-block a.code-copy {
     display: none;
   }
-  .code-block:hover button {
+
+  .code-block:hover a.code-copy {
     border: none;
     border-radius: 50%;
-    background: transparent;
-    display: block;
+    display: inline-block;
     color: var(--sys-on-surface);
     height: 40px;
     position: absolute;
+    text-align: center;
     right: 10px;
     width: 40px;
   }
 
-  .code-block:hover button:hover {
+  .code-block:hover a.code-copy span {
+    margin-top: 8px;
+  }
+
+  .code-block:hover a.code-copy:hover {
     background: var(--sys-surface-container-highest);
     cursor: pointer;
   }
 
-  .code-block:hover button:active {
+  .code-block:hover a.code-copy:active {
     background: transparent;
     cursor: pointer;
   }

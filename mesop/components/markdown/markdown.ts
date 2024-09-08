@@ -4,10 +4,9 @@ import {
   Input,
   ElementRef,
   Renderer2,
-  SecurityContext,
 } from '@angular/core';
-import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
-import {marked} from 'marked';
+import {SafeHtml} from '@angular/platform-browser';
+import {marked} from '../../web/third_party/marked';
 import hljs from 'highlight.js';
 import {
   Key,
@@ -34,7 +33,6 @@ export class MarkdownComponent {
 
   constructor(
     readonly changeDetectorRef: ChangeDetectorRef,
-    private sanitizer: DomSanitizer,
     private renderer: Renderer2,
     private el: ElementRef,
   ) {}
@@ -61,45 +59,29 @@ export class MarkdownComponent {
       const highlighted = hljs.highlight(text, {language}).value;
       this._codeBlocks.push(text);
       index += 1;
-      // We use a <div class="code-${index}"></div> as a placeholder since Angular does
-      // not allow buttons during HTML sanitization.
-      return `<div class="code-block"><div class="code-${index}"></div><pre><code class="hljs ${language}">${highlighted}</code></pre></div>`;
+      // We use an "a" tag since the button tag gets filtered out.
+      // Also, we use a class tag since data attributes and ids will get filtered out.
+      return `<div class="code-block"><a class="code-copy-${index} code-copy"><span role="img" class="mat-icon notranslate material-symbols-rounded mat-icon-no-color code-copy-${index} code-copy" aria-hidden="true" data-mat-icon-type="font">content_copy</span></a><pre><code class="hljs ${language}">${highlighted}</code></pre></div>`;
     };
 
     // Use the custom renderer in Marked.js
     marked.use({renderer});
 
-    const output = await marked(this._config!.getText()!, {gfm: true});
-
-    // Sanitize the generated HTML from MarkedJS first.
-    const html = this.sanitizer.sanitize(SecurityContext.HTML, output) || '';
-    // Now update the placeholder div with our button once we know the output is
-    // sanitized.
-    this.htmlOutput = this.sanitizer.bypassSecurityTrustHtml(
-      (html as string).replace(
-        /<div class="code-(\d+)"><\/div>/g,
-        '<button data-index="$1"><span role="img" class="mat-icon notranslate material-symbols-rounded mat-icon-no-color" aria-hidden="true" data-mat-icon-type="font">content_copy</span></button>',
-      ),
-    );
-    // Need a small delay for the output to render before the click event handlers are
-    // added.
-    setTimeout(() => {
-      this.addClickListener();
-    }, 100);
-  }
-
-  addClickListener(): void {
-    const buttons = this.el.nativeElement.querySelectorAll('button');
-    // Use Renderer2 to safely bind a click event to the button
-    for (const button of buttons) {
-      this.renderer.listen(button, 'click', (e: Event) => {
-        const target = e.currentTarget as HTMLElement;
-        const dataText = target.getAttribute('data-index');
-        if (dataText !== null) {
-          navigator.clipboard.writeText(this._codeBlocks[parseInt(dataText)]);
+    this.htmlOutput = await marked.parse(this._config!.getText()!, {gfm: true});
+    this.renderer.listen(this.el.nativeElement, 'click', (e: Event) => {
+      const target = e.target as HTMLElement;
+      if (target.classList.contains('code-copy')) {
+        for (let i = 0; i < target.classList.length; i++) {
+          const className = target.classList[i];
+          if (className.startsWith('code-copy-')) {
+            const parts = className.split('-');
+            const index = parseInt(parts[parts.length - 1]);
+            navigator.clipboard.writeText(this._codeBlocks[index]);
+            break;
+          }
         }
-      });
-    }
+      }
+    });
   }
 
   config(): MarkdownType {
