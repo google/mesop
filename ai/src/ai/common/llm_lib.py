@@ -1,27 +1,15 @@
+import json
 import re
 from os import getenv
 from typing import NamedTuple
 
+from dotenv import load_dotenv
 from openai import OpenAI
 from openai.types.chat import (
   ChatCompletionMessageParam,
 )
 
-SYSTEM_INSTRUCTION_PART_1_PATH = "src/ai/prompts/mesop_overview.txt"
-# SYSTEM_INSTRUCTION_PART_2_PATH = "src/ai/prompts/mini_docs.txt"
-
-with open(SYSTEM_INSTRUCTION_PART_1_PATH) as f:
-  SYSTEM_INSTRUCTION_PART_1 = f.read()
-
-# with open(SYSTEM_INSTRUCTION_PART_2_PATH) as f:
-#   SYSTEM_INSTRUCTION_PART_2 = f.read()
-
-# Intentionally skip the more extensive system instruction with docs for now.
-SYSTEM_INSTRUCTION = SYSTEM_INSTRUCTION_PART_1  # + SYSTEM_INSTRUCTION_PART_2
-PROMPT_PATH = "src/ai/prompts/revise_prompt.txt"
-
-with open(PROMPT_PATH) as f:
-  REVISE_APP_BASE_PROMPT = f.read().strip()
+load_dotenv()
 
 EDIT_HERE_MARKER = " # <--- EDIT HERE"
 
@@ -29,6 +17,11 @@ EDIT_HERE_MARKER = " # <--- EDIT HERE"
 class ApplyPatchResult(NamedTuple):
   has_error: bool
   result: str
+
+
+def read_file(filepath: str) -> str:
+  with open(filepath) as f:
+    return f.read().strip()
 
 
 def apply_patch(original_code: str, patch: str) -> ApplyPatchResult:
@@ -64,24 +57,87 @@ DEFAULT_CLIENT = OpenAI(
 )
 
 
+class MessageFormatter:
+  def __init__(self, system_instruction: str, revise_app_prompt: str):
+    self.system_instruction = system_instruction
+    self.revise_app_prompt = revise_app_prompt
+
+  def format_messages(
+    self, code: str, user_input: str, line_number: int | None
+  ) -> list[ChatCompletionMessageParam]:
+    # Add sentinel token based on line_number (1-indexed)
+    if line_number is not None:
+      code_lines = code.splitlines()
+      if 1 <= line_number <= len(code_lines):
+        code_lines[line_number - 1] += EDIT_HERE_MARKER
+      code = "\n".join(code_lines)
+
+    formatted_prompt = self.revise_app_prompt.replace(
+      "<APP_CODE>", code
+    ).replace("<APP_CHANGES>", user_input)
+
+    return [
+      {"role": "system", "content": self.system_instruction},
+      {"role": "user", "content": formatted_prompt},
+    ]
+
+
+def MakeDefaultMessageFormatter():
+  system_instructions = read_file("src/ai/prompts/mesop_overview.txt")
+  base_prompt = read_file("src/ai/prompts/revise_prompt_base.txt")
+  prompt = read_file("src/ai/prompts/revise_prompt_shorter.txt")
+  return MessageFormatter(system_instructions, base_prompt + "\n\n" + prompt)
+
+
+def MakeMessageFormatterShorterUserMsg():
+  """Formats user messages with a shorter prompt.
+
+  We use a shorter prompt since we will be including goldens that
+  have not been fine-tuned yet. This allows us to test new training
+  data without having to fine tune all the time.
+
+  Instead the main user instruction prompt will be bundled with user
+  instructions instead.
+  """
+  system_instructions = read_file("src/ai/prompts/mesop_overview.txt")
+  revise_instructions = read_file("src/ai/prompts/revise_prompt_base.txt")
+  prompt = read_file("src/ai/prompts/revise_prompt_shorter.txt")
+  return MessageFormatter(
+    system_instructions + "\n\n" + revise_instructions, prompt
+  )
+
+
+def load_unused_goldens():
+  goldens_path = "ft/gen/formatted_dataset_for_prompting.jsonl"
+  new_goldens = []
+  num_rows = 0
+  try:
+    with open(goldens_path) as f:
+      for row in f:
+        num_rows += 1
+        messages = json.loads(row)["messages"]
+        new_goldens.append(messages[1])
+        new_goldens.append(messages[2])
+    new_goldens.pop(0)  # Remove the redundant system instruction
+    print(f"Adding {num_rows} additional examples to prompt.")
+  except FileNotFoundError as e:
+    print(e)
+
+  return new_goldens
+
+
+if getenv("MESOP_AI_INCLUDE_NEW_GOLDENS"):
+  message_formatter = MakeMessageFormatterShorterUserMsg()
+  goldens_path = load_unused_goldens()
+else:
+  message_formatter = MakeDefaultMessageFormatter()
+  goldens_path = []
+
+
 def format_messages(
   code: str, user_input: str, line_number: int | None
 ) -> list[ChatCompletionMessageParam]:
-  # Add sentinel token based on line_number (1-indexed)
-  if line_number is not None:
-    code_lines = code.splitlines()
-    if 1 <= line_number <= len(code_lines):
-      code_lines[line_number - 1] += EDIT_HERE_MARKER
-    code = "\n".join(code_lines)
-
-  formatted_prompt = REVISE_APP_BASE_PROMPT.replace("<APP_CODE>", code).replace(
-    "<APP_CHANGES>", user_input
-  )
-
-  return [
-    {"role": "system", "content": SYSTEM_INSTRUCTION},
-    {"role": "user", "content": formatted_prompt},
-  ]
+  return message_formatter.format_messages(code, user_input, line_number)
 
 
 def adjust_mesop_app_stream(
@@ -97,9 +153,12 @@ def adjust_mesop_app_stream(
   """
   messages = format_messages(code, user_input, line_number)
 
+  if goldens_path:
+    messages = [messages[0], *goldens_path, messages[1]]
+
   return client.chat.completions.create(
     model=model,
-    max_tokens=10_000,
+    max_tokens=16_384,
     messages=messages,
     stream=True,
   )
@@ -117,10 +176,12 @@ def adjust_mesop_app_blocking(
   Returns the code diff.
   """
   messages = format_messages(code, user_input, line_number)
+  if goldens_path:
+    messages = [messages[0], *goldens_path, messages[1]]
 
   response = client.chat.completions.create(
     model=model,
-    max_tokens=10_000,
+    max_tokens=16_384,
     messages=messages,
     stream=False,
   )

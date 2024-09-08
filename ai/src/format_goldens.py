@@ -2,14 +2,22 @@
 Formats the golden dataset for the fine-tuning process.
 """
 
+import argparse
 import json
 import os
+from datetime import datetime
 from typing import Any
 
-from ai.common.llm_lib import format_messages
+from ai.common.llm_lib import (
+  MakeDefaultMessageFormatter,
+  MakeMessageFormatterShorterUserMsg,
+)
+
+# TODO: Allow this to be configurable
+FINE_TUNING_CUTOFF = datetime(2024, 8, 2, 0, 0)
 
 
-def process_goldens():
+def process_goldens(skip_fine_tuned_goldens: bool = False):
   dataset: list[dict[str, Any]] = []
   outputs_dir = "ft/goldens"
 
@@ -20,6 +28,13 @@ def process_goldens():
       diff_path = os.path.join(dir_path, "diff.txt")
       line_number: int | None = None
       meta_path = os.path.join(dir_path, "metadata.json")
+
+      _, timestamp = os.path.basename(dir_path).rsplit("_", 1)
+      creation_date = datetime.strptime(timestamp, "%Y%m%d%H%M")
+      print(creation_date)
+      if skip_fine_tuned_goldens and creation_date < FINE_TUNING_CUTOFF:
+        continue
+
       if os.path.exists(meta_path):
         with open(meta_path) as meta_file:
           meta = json.load(meta_file)
@@ -39,10 +54,15 @@ def process_goldens():
       else:
         code = ""
 
+      if skip_fine_tuned_goldens:
+        formatter = MakeMessageFormatterShorterUserMsg()
+      else:
+        formatter = MakeDefaultMessageFormatter()
+
       dataset.append(
         {
           "messages": [
-            *format_messages(code, prompt, line_number),
+            *formatter.format_messages(code, prompt, line_number),
             {
               "role": "assistant",
               "content": diff,
@@ -55,11 +75,24 @@ def process_goldens():
 
 
 if __name__ == "__main__":
-  formatted_dataset = process_goldens()
+  parser = argparse.ArgumentParser()
+  parser.add_argument(
+    "--skip_fine_tuned_goldens",
+    action="store_true",
+    help="Generates a formatted dataset with goldens that have not been fine tuned.",
+  )
+  args = parser.parse_args()
+
+  formatted_dataset = process_goldens(args.skip_fine_tuned_goldens)
   print(f"Processed {len(formatted_dataset)} samples.")
   # create gen dir if it doesn't exist
   os.makedirs("ft/gen", exist_ok=True)
-  full_path = os.path.join("ft/gen/formatted_dataset.jsonl")
+
+  if args.skip_fine_tuned_goldens:
+    full_path = os.path.join("ft/gen/formatted_dataset_for_prompting.jsonl")
+  else:
+    full_path = os.path.join("ft/gen/formatted_dataset.jsonl")
+
   # Append each sample as a JSON object on a separate line to a file
   with open(full_path, "w") as f:
     for sample in formatted_dataset:
