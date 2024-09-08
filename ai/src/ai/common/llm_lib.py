@@ -4,10 +4,11 @@ from os import getenv
 from typing import NamedTuple
 
 from dotenv import load_dotenv
-from openai import OpenAI
 from openai.types.chat import (
   ChatCompletionMessageParam,
 )
+
+from ai.common.llm_client import GeminClient, LlmClient, OpenAIClient
 
 load_dotenv()
 
@@ -52,9 +53,8 @@ def apply_patch(original_code: str, patch: str) -> ApplyPatchResult:
 
 
 DEFAULT_MODEL = "ft:gpt-4o-mini-2024-07-18:mesop:small-prompt:A1472X3c"
-DEFAULT_CLIENT = OpenAI(
-  api_key=getenv("OPENAI_API_KEY"),
-)
+DEFAULT_CLIENT = OpenAIClient()
+GEMINI_CLIENT = GeminClient()
 
 
 class MessageFormatter:
@@ -117,8 +117,11 @@ def MakeMessageFormatterShorterUserMsg():
   )
 
 
-def load_unused_goldens():
-  goldens_path = "ft/gen/formatted_dataset_for_prompting.jsonl"
+def load_unused_goldens(all: bool = False):
+  if all:
+    goldens_path = "ft/gen/formatted_dataset.jsonl"
+  else:
+    goldens_path = "ft/gen/formatted_dataset_for_prompting.jsonl"
   new_goldens = []
   num_rows = 0
   try:
@@ -138,10 +141,12 @@ def load_unused_goldens():
 
 if getenv("MESOP_AI_INCLUDE_NEW_GOLDENS"):
   message_formatter = MakeMessageFormatterShorterUserMsg()
-  goldens_path = load_unused_goldens()
+  goldens = load_unused_goldens()
+  all_goldens = load_unused_goldens(all=True)
 else:
   message_formatter = MakeDefaultMessageFormatter()
-  goldens_path = []
+  goldens = []
+  all_goldens = []
 
 
 def format_messages(
@@ -155,22 +160,20 @@ def adjust_mesop_app_stream(
   code: str,
   user_input: str,
   line_number: int | None,
-  client: OpenAI = DEFAULT_CLIENT,
+  client: LlmClient | None = None,
   model: str = DEFAULT_MODEL,
 ):
   """
   Returns a stream of the code diff.
   """
+  if not client:
+    client = GEMINI_CLIENT if "gemini" in model else DEFAULT_CLIENT
   messages = format_messages(code, user_input, line_number)
-
-  if goldens_path:
-    messages = [messages[0], *goldens_path, messages[1]]
-
-  return client.chat.completions.create(
+  messages = _include_goldens(messages, model)
+  return client.generate_content_stream(
     model=model,
     max_tokens=16_384,
     messages=messages,
-    stream=True,
   )
 
 
@@ -179,22 +182,33 @@ def adjust_mesop_app_blocking(
   code: str,
   user_input: str,
   line_number: int | None = None,
-  client: OpenAI = DEFAULT_CLIENT,
+  client: LlmClient | None = None,
   model: str = DEFAULT_MODEL,
 ) -> str:
   """
   Returns the code diff.
   """
+  if not client:
+    client = GEMINI_CLIENT if "gemini" in model else DEFAULT_CLIENT
   messages = format_messages(code, user_input, line_number)
-  if goldens_path:
-    messages = [messages[0], *goldens_path, messages[1]]
-
-  response = client.chat.completions.create(
+  messages = _include_goldens(messages, model)
+  return client.generate_content_blocking(
     model=model,
     max_tokens=16_384,
     messages=messages,
-    stream=False,
   )
-  content = response.choices[0].message.content
-  assert content is not None
-  return content
+
+
+def _include_goldens(
+  messages: list[ChatCompletionMessageParam], model: str
+) -> list[ChatCompletionMessageParam]:
+  examples = []
+  if all_goldens and "gemini" in model:
+    examples = all_goldens
+  elif goldens:
+    examples = goldens
+
+  if examples:
+    messages = [messages[0], *examples, messages[1]]
+
+  return messages
