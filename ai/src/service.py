@@ -3,6 +3,7 @@ import os
 import secrets
 import urllib.parse
 from dataclasses import asdict, dataclass
+from datetime import datetime
 from os import getenv
 
 from flask import Flask, Response, request, stream_with_context
@@ -93,8 +94,12 @@ def generate_folder_name(prompt: str) -> str:
   )  # Replace spaces with underscores to avoid %20
   # Generate a unique 4-character suffix to avoid naming collisions
   suffix = secrets.token_urlsafe(4)
+  # Generate timestamp to help with determining which goldens have been added to the
+  # finetuned models.
+  timestamp = datetime.now().strftime("%Y%m%d%H%M")
   cleaned_prompt = urllib.parse.quote(prompt)[:50]
-  return f"{cleaned_prompt}_{suffix}"
+
+  return f"{cleaned_prompt}_{suffix}_{timestamp}"
 
 
 if __name__ == "__main__":
