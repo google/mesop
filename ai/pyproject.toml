@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.10"
-dependencies = ["flask>=3.0.3", "openai>=1.42.0"]
+dependencies = ["flask>=3.0.3", "openai>=1.42.0", "google-generativeai>=0.7.2", "python-dotenv>=1.0.1"]
 
 [build-system]
 requires = ["hatchling"]
