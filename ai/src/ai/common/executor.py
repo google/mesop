@@ -1,6 +1,7 @@
 from os import getenv
-from typing import Iterator
+from typing import Iterable, Iterator
 
+import google.generativeai as genai
 from openai import OpenAI
 from openai.types.chat import (
   ChatCompletionMessageParam,
@@ -16,9 +17,14 @@ from ai.common.prompt_fragment import PromptFragment, prompt_fragment_store
 
 
 class ProviderExecutor:
-  def __init__(self, model_name: str, prompt_fragments: list[PromptFragment]):
+  def __init__(
+    self,
+    model_name: str,
+    prompt_fragments: list[PromptFragment],
+    temperature: float,
+  ):
     self.model_name = model_name
-
+    self.temperature = temperature
     self.prompt_fragments = [
       PromptFragment(
         id=pf.id,
@@ -57,8 +63,13 @@ class ProviderExecutor:
 
 
 class OpenaiExecutor(ProviderExecutor):
-  def __init__(self, model_name: str, prompt_fragments: list[PromptFragment]):
-    super().__init__(model_name, prompt_fragments)
+  def __init__(
+    self,
+    model_name: str,
+    prompt_fragments: list[PromptFragment],
+    temperature: float,
+  ):
+    super().__init__(model_name, prompt_fragments, temperature)
     self.client = OpenAI(
       api_key=getenv("OPENAI_API_KEY"),
     )
@@ -68,6 +79,7 @@ class OpenaiExecutor(ProviderExecutor):
       model=self.model_name,
       max_tokens=10_000,
       messages=self.format_messages(input),
+      temperature=self.temperature,
     )
     return response.choices[0].message.content or ""
 
@@ -77,14 +89,78 @@ class OpenaiExecutor(ProviderExecutor):
       max_tokens=10_000,
       messages=self.format_messages(input),
       stream=True,
+      temperature=self.temperature,
     )
     for chunk in stream:
       content = chunk.choices[0].delta.content
       yield content or ""
 
 
+class FireworksExecutor(OpenaiExecutor):
+  def __init__(
+    self,
+    model_name: str,
+    prompt_fragments: list[PromptFragment],
+    temperature: float,
+  ):
+    super().__init__(model_name, prompt_fragments, temperature)
+    self.client = OpenAI(
+      base_url="https://api.fireworks.ai/inference/v1",
+      api_key=getenv("FIREWORKS_API_KEY"),
+    )
+
+
+class GeminiExecutor(ProviderExecutor):
+  def __init__(
+    self,
+    model_name: str,
+    prompt_fragments: list[PromptFragment],
+    temperature: float,
+  ):
+    super().__init__(model_name, prompt_fragments, temperature)
+    genai.configure(api_key=getenv("GOOGLE_API_KEY"))  # type: ignore
+
+  def execute_stream(self, input: ExampleInput) -> Iterator[str]:
+    contents = self._format_gemini_messages(self.format_messages(input))
+    client = self._make_client()
+    for response in client.generate_content(contents, stream=True):  # type: ignore
+      yield response.text
+
+  def execute(self, input: ExampleInput):
+    contents = self._format_gemini_messages(self.format_messages(input))
+    client = self._make_client()
+    return client.generate_content(contents).text  # type: ignore
+
+  def _make_client(self) -> genai.GenerativeModel:
+    return genai.GenerativeModel(
+      model_name=self.model_name,
+      generation_config={
+        "temperature": self.temperature,
+        "top_p": 0.95,
+        "top_k": 64,
+        "max_output_tokens": 10_000,
+        "response_mime_type": "text/plain",
+      },  # type: ignore
+    )
+
+  def _format_gemini_messages(
+    self, messages: Iterable[ChatCompletionMessageParam]
+  ) -> Iterable[str]:
+    contents: list[str] = []
+    for message in messages:
+      if message["role"] == "system":
+        contents.append(message["content"])  # type: ignore
+      elif message["role"] == "user":
+        contents.append("input: " + str(message["content"]))
+      elif message["role"] == "assistant" and "content" in message:
+        contents.append("output: " + str(message["content"]))
+    return contents
+
+
 provider_executors: dict[str, type[ProviderExecutor]] = {
   "openai": OpenaiExecutor,
+  "fireworks": FireworksExecutor,
+  "gemini": GeminiExecutor,
 }
 
 
@@ -101,7 +177,9 @@ class ProducerExecutor:
     provider_executor_type = provider_executors.get(model.provider)
     if provider_executor_type is None:
       raise ValueError(f"Provider {model.provider} not supported")
-    provider_executor = provider_executor_type(model.name, prompt_fragments)
+    provider_executor = provider_executor_type(
+      model.name, prompt_fragments, temperature=self.producer.temperature
+    )
     return provider_executor
 
   def execute(self, input: ExampleInput):
