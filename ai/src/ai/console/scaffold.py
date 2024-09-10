@@ -48,12 +48,14 @@ def page_scaffold(current_path: str = "", title: str = "Mesop AI Console"):
           background=me.theme_var("background"),
           flex_grow=1,
           padding=me.Padding(
-            left=32,
-            right=32,
-            top=32,
+            left=16,
+            right=16,
+            top=16,
           ),
           border_radius=16,
           overflow_y="auto",
+          display="flex",
+          flex_direction="column",
         )
       ):
         me.slot()

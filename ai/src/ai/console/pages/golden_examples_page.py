@@ -11,19 +11,34 @@ def on_load(e: me.LoadEvent):
 def golden_examples_page():
   with page_scaffold(current_path="/golden-examples", title="golden Examples"):
     examples = store.get_all()
-    with me.box(style=me.Style(padding=me.Padding(bottom=16))):
+    with me.box(
+      style=me.Style(
+        padding=me.Padding(bottom=16),
+        display="flex",
+        justify_content="space-between",
+      )
+    ):
       me.button(
         "Add golden Example",
         on_click=lambda e: me.navigate("/golden-examples/add"),
         type="flat",
         color="accent",
       )
+      with me.tooltip(message="Create a golden dataset for fine-tuning"):
+        me.button(
+          "Create golden dataset",
+          on_click=lambda e: me.navigate("/create-golden-dataset"),
+          type="flat",
+          color="accent",
+        )
     with me.box(
       style=me.Style(
         display="grid",
-        grid_template_columns="repeat(4, 1fr)",
-        gap=16,
+        grid_template_columns="200px 1fr 48px 48px",
+        gap=12,
         align_items="center",
+        overflow_y="auto",
+        height="100%",
       )
     ):
       # Header
@@ -34,7 +49,7 @@ def golden_examples_page():
       # Body
       for example in examples:
         me.button(
-          example.id,
+          example.id[0:20] + "..." if len(example.id) > 20 else example.id,
           on_click=lambda e: me.navigate(
             "/golden-examples/edit", query_params={"id": e.key}
           ),

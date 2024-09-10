@@ -24,6 +24,8 @@ NEW_GOLDENS_DIR = os.path.join(
 def migrate_goldens():
   for filename in os.listdir(OLD_GOLDENS_DIR):
     old_dir_path = os.path.join(OLD_GOLDENS_DIR, filename)
+    if not os.path.isdir(old_dir_path):
+      continue
     with open(os.path.join(old_dir_path, "diff.txt")) as f:
       diff = f.read()
     with open(os.path.join(old_dir_path, "prompt.txt")) as f:

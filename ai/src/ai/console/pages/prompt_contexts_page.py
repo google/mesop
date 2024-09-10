@@ -18,7 +18,7 @@ def prompt_contexts_page():
     with me.box(
       style=me.Style(
         display="grid",
-        grid_template_columns="repeat(2, 1fr)",
+        grid_template_columns="400px 400px",
         gap=16,
         align_items="center",
       )
@@ -34,9 +34,9 @@ def prompt_contexts_page():
             "/prompt-contexts/edit", query_params={"id": e.key}
           ),
           key=prompt_context.id,
-          style=me.Style(font_size=16),
+          style=me.Style(font_size=16, flex_wrap="wrap", word_wrap="anywhere"),
         )
-        with me.box(style=me.Style(display="flex", flex_direction="row")):
+        with me.box(style=me.Style(display="flex-wrap", flex_direction="row")):
           for fragment_id in prompt_context.fragment_ids:
             me.button(
               fragment_id,
