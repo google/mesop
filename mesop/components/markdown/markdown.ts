@@ -56,7 +56,7 @@ export class MarkdownComponent {
     renderer.code = ({text, lang}) => {
       const language =
         lang !== undefined && hljs.getLanguage(lang) ? lang : 'plaintext';
-      const highlighted = hljs.highlight(text, {language}).value;
+      const highlighted = hljs.highlight(language, text, true).value;
       this._codeBlocks.push(text);
       index += 1;
       // We use an "a" tag since the button tag gets filtered out.
@@ -65,7 +65,7 @@ export class MarkdownComponent {
     };
 
     // Use the custom renderer in Marked.js
-    marked.use({renderer});
+    marked.setOptions({renderer});
 
     this.htmlOutput = await marked.parse(this._config!.getText()!, {gfm: true});
     this.renderer.listen(this.el.nativeElement, 'click', (e: Event) => {
