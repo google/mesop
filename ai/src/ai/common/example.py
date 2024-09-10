@@ -1,3 +1,12 @@
+"""
+An example is a single input/output pair.
+    - Examples are used for fine-tuning a model (i.e. golden example) or running an eval (i.e. expected example).
+    - There are two types of examples:
+        - **Golden Example**: A golden example is an example that is used to create a golden dataset.
+        - **Expected Example**: An expected example is an example that is used to evaluate a producer.
+        Internally, once an expected example has been run through an eval, we create an **evaluated example**, but you don't need to create this manually in the UI.
+"""
+
 import os
 import shutil
 from typing import Generic, Literal, TypeVar

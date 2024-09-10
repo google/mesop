@@ -18,15 +18,11 @@ class EntityStore(Generic[T]):
     self.directory_path = get_data_path(dirname)
 
   def get(self, id: str) -> T:
-    for filename in os.listdir(self.directory_path):
-      if filename.endswith(".json"):
-        file_path = os.path.join(self.directory_path, filename)
-        with open(file_path) as f:
-          entity_json = f.read()
-        entity = self.entity_type.model_validate_json(entity_json)
-        if entity.id == id:  # type: ignore
-          return entity
-    raise ValueError(f"{self.entity_type.__name__} with id {id} not found")
+    file_path = os.path.join(self.directory_path, f"{id}.json")
+    with open(file_path) as f:
+      entity_json = f.read()
+    entity = self.entity_type.model_validate_json(entity_json)
+    return entity
 
   def get_all(self) -> list[T]:
     entities: list[T] = []
