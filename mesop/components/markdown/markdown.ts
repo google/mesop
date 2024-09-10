@@ -55,8 +55,10 @@ export class MarkdownComponent {
     let index = -1;
     renderer.code = ({text, lang}) => {
       const language =
-        lang !== undefined && hljs.getLanguage(lang) ? lang : 'plaintext';
-      const highlighted = hljs.highlight(language, text, true).value;
+        lang !== undefined && hljs.getLanguage(lang) ? lang : '';
+      const highlighted = (language === '') ?
+          hljs.highlightAuto(text).value :
+          hljs.highlight(language, text, true).value;
       this._codeBlocks.push(text);
       index += 1;
       // We use an "a" tag since the button tag gets filtered out.
