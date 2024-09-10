@@ -6,7 +6,7 @@ import {
   Renderer2,
 } from '@angular/core';
 import {SafeHtml} from '@angular/platform-browser';
-import {marked} from '../../web/third_party/marked';
+import {marked} from '../../web/external/marked';
 import hljs from 'highlight.js';
 import {
   Key,
