@@ -3,11 +3,11 @@ import base64
 import requests
 
 import mesop as me
-from ai.common.eval import (
+from ai.console.scaffold import page_scaffold
+from ai.offline_common.eval import (
   SANDBOX_URL,
   get_eval_example,
 )
-from ai.console.scaffold import page_scaffold
 
 
 def on_load(e: me.LoadEvent):
@@ -38,8 +38,6 @@ class State:
 @me.page(title="Mesop AI Console - Eval", path="/eval-item", on_load=on_load)
 def eval_item_page():
   state = me.state(State)
-  # eval = store.get(me.query_params["eval-id"])
-  # examples = get_eval_examples(eval.id)
   example = get_eval_example(
     me.query_params["eval-id"], me.query_params["example-id"]
   )
@@ -77,11 +75,7 @@ def eval_item_page():
         ):
           me.text("ID", style=me.Style(font_weight="bold"))
           me.text(example.expected.id)
-          # with me.box(
-          #   style=me.Style(display="flex", flex_direction="row", gap=8)
-          # ):
-          #   me.button("Code")
-          #   me.button("Raw output")
+
           me.text("Results", style=me.Style(font_weight="bold"))
           for result in example.outputs[0].expect_results:
             with me.box(
@@ -89,7 +83,7 @@ def eval_item_page():
             ):
               me.text(result.name)
               me.text(str(result.score))
-            # me.code(result.message or "", language="")
+
             me.text(
               result.message,
               style=me.Style(font_family="monospace", white_space="pre"),

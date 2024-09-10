@@ -42,7 +42,6 @@ class EntityStore(Generic[T]):
   def save(self, entity: T, overwrite: bool = False):
     id = entity.id  # type: ignore
     entity_path = os.path.join(self.directory_path, f"{id}.json")
-    # if overwrite is false and the entity already exists, raise an error
     if not overwrite and os.path.exists(entity_path):
       raise ValueError(
         f"{self.entity_type.__name__} with id {id} already exists"

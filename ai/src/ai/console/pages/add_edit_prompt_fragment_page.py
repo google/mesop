@@ -17,8 +17,6 @@ from ai.console.pages.add_edit_page_helper import (
 
 def get_autocomplete_options():
   options: list[me.AutocompleteOption] = []
-
-  # Add options from data/prompt_contents directory
   prompt_contents_dir = os.path.join(
     os.path.dirname(__file__), "..", "..", "..", "..", "data", "prompt_contents"
   )
@@ -56,7 +54,8 @@ def form():
     label="Content value",
     on_blur=lambda e: update_state(e.key, e.value),
     key="content_value",
-    # TODO: support  <EXAMPLE:$EXAMPLE_ID>
+    # TODO: potentially support golden example variables
+    # for more powerful few-shot prompting, e.g. <EXAMPLE:$EXAMPLE_ID>
     hint_label="Variables: <APP_CHANGES> <USER_INPUT>",
     style=me.Style(width="min(100%)"),
   )
@@ -72,7 +71,6 @@ def form():
   me.checkbox(
     checked=bool(get_field_value("chain_of_thought")),
     label="Chain of thought",
-    key="chain_of_thought",
     on_change=lambda e: update_state("chain_of_thought", e.checked),
   )
 

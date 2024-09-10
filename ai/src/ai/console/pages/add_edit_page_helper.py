@@ -30,17 +30,20 @@ def form_field(field: str, description: str, type: str | None = None):
 
 
 def update_state(key: str, value: Any):
-  print("update_state", key, value)
   state = me.state(State)
   state.entity[key] = value
 
 
 def get_field_value(field_name: str):
   state = me.state(State)
-  # Sometimes the field is set with dot notation.
+  # We do some hacky-ish logic to support both dot notation and nested dicts.
+
+  # When the field is set in the current page, we set it with dot notation.
   if field_name in state.entity:
     return state.entity[field_name] or ""
 
+  # Otherwise, if we loaded the entity from the store (i.e. filesystem),
+  # we access it as a nested dict.
   keys = field_name.split(".")
   value = state.entity
   for key in keys:

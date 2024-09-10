@@ -15,15 +15,6 @@ from ai.common.prompt_context import prompt_context_store
 from ai.common.prompt_fragment import PromptFragment, prompt_fragment_store
 
 
-def get_content_value(pf: PromptFragment) -> str | None:
-  if pf.content_value is not None:
-    return pf.content_value
-  if pf.content_path is not None:
-    with open(get_data_path(pf.content_path.replace("//", ""))) as f:
-      return f.read()
-  return None
-
-
 class ProviderExecutor:
   def __init__(self, model_name: str, prompt_fragments: list[PromptFragment]):
     self.model_name = model_name
@@ -126,3 +117,12 @@ class ProducerExecutor:
       return ApplyPatchResult(True, output)
     else:
       raise ValueError(f"Unknown output format: {self.producer.output_format}")
+
+
+def get_content_value(pf: PromptFragment) -> str | None:
+  if pf.content_value is not None:
+    return pf.content_value
+  if pf.content_path is not None:
+    with open(get_data_path(pf.content_path.replace("//", ""))) as f:
+      return f.read()
+  return None

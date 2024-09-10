@@ -1,6 +1,6 @@
 import mesop as me
-from ai.common.eval import eval_store as store
 from ai.console.scaffold import page_scaffold
+from ai.offline_common.eval import eval_store as store
 
 
 def on_load(e: me.LoadEvent):

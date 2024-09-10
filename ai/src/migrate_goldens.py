@@ -13,13 +13,6 @@ NEW_GOLDENS_DIR = os.path.join(
   os.path.dirname(__file__), "..", "data", "golden_examples"
 )
 
-# old golden dir structure:
-# diff.txt
-# prompt.txt
-# source.py
-# patched.py
-# metadata.json "line_number": 123
-
 
 def migrate_goldens():
   for filename in os.listdir(OLD_GOLDENS_DIR):

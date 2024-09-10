@@ -27,6 +27,8 @@ def expected_examples_page():
         grid_template_columns="repeat(4, 1fr)",
         gap=16,
         align_items="center",
+        overflow_y="auto",
+        height="100%",
       )
     ):
       # Header

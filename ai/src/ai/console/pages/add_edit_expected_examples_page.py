@@ -42,9 +42,6 @@ def form():
     on_change=lambda e: update_state("expect_type_checkable", e.checked),
   )
 
-  # expect_executable: bool = True
-  # expect_type_checkable: bool = True
-
 
 create_add_edit_page(
   store=store,

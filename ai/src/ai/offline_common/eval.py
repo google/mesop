@@ -26,8 +26,8 @@ SANDBOX_URL = "http://localhost:8080"
 class EvalOutcome(BaseModel):
   examples_run: int
   examples_succeeded: int
-  score: float
-  max_score: float
+  score: float  # sum of scores across expect_results in examples
+  max_score: float  # potential max score across expect_results in examples
 
 
 class Eval(BaseModel):
@@ -38,10 +38,6 @@ class Eval(BaseModel):
 
 
 eval_store = EntityStore(Eval, dirname="evals")
-
-
-def run_eval(eval: Eval):
-  EvalRunner(eval).run()
 
 
 def get_eval_example(eval_id: str, example_id: str) -> EvaluatedExample:
@@ -127,7 +123,7 @@ class EvalRunner:
 
     evaluated_example_output = EvaluatedExampleOutput(
       time_spent_secs=time_elapsed,
-      tokens=int(len(output) / 4),  # very rough estimate
+      tokens=int(len(output) / 4),  # rough estimate
       output=ExampleOutput(
         output_type=self.producer_executor.producer.output_format,
       ),

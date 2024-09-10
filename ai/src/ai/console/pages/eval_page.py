@@ -1,7 +1,7 @@
 import mesop as me
-from ai.common.eval import EvalRunner, get_eval_examples
-from ai.common.eval import eval_store as store
 from ai.console.scaffold import page_scaffold
+from ai.offline_common.eval import EvalRunner, get_eval_examples
+from ai.offline_common.eval import eval_store as store
 
 
 def on_load(e: me.LoadEvent):
@@ -49,9 +49,6 @@ def eval_page():
           color="accent",
         )
 
-    # for example in examples:
-
-    # evals = store.get_all()
     if eval.state == "complete":
       with me.box(
         style=me.Style(

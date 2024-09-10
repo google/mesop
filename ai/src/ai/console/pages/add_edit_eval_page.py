@@ -2,18 +2,18 @@ import datetime
 from typing import Any
 
 import mesop as me
-from ai.common.eval import (
-  Eval,
-)
-from ai.common.eval import (
-  eval_store as store,
-)
 from ai.common.producer import producer_store
 from ai.console.pages.add_edit_page_helper import (
   create_add_edit_page,
   form_field,
   get_field_value,
   update_state,
+)
+from ai.offline_common.eval import (
+  Eval,
+)
+from ai.offline_common.eval import (
+  eval_store as store,
 )
 
 
@@ -32,7 +32,7 @@ def form():
     value=get_field_value("producer_id"),
     label="Producer id",
     options=get_producer_ids(),
-    style=me.Style(width="min(100%, 360px)"),
+    style=me.Style(width="100%"),
     on_selection_change=lambda e: update_state("producer_id", e.value),
   )
 

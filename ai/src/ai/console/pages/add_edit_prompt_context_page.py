@@ -26,7 +26,6 @@ def update_fragment_id(e: me.SelectSelectionChangeEvent, index: int):
 
 def delete_fragment_id(e: me.ClickEvent, index: int):
   fragment_ids = get_field_value("fragment_ids")
-  # remove the element at index
   fragment_ids.pop(index)
   update_state("fragment_ids", fragment_ids)
 

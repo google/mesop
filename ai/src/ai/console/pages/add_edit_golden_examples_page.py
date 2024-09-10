@@ -4,7 +4,6 @@ import requests
 
 import mesop as me
 from ai.common.diff import apply_patch
-from ai.common.eval import SANDBOX_URL
 from ai.common.example import (
   GoldenExample,
 )
@@ -17,10 +16,7 @@ from ai.console.pages.add_edit_page_helper import (
   get_field_value,
   update_state,
 )
-
-# output_code: str
-# raw_output: str
-# output_type: Literal["full", "diff"]
+from ai.offline_common.eval import SANDBOX_URL
 
 
 @me.stateclass
@@ -99,21 +95,21 @@ def form():
     value=get_field_value("output.output_code"),  # type: ignore
     appearance="outline",
     label="Generated output code (read-only)",
-    # on_blur=lambda e: update_state(e.key, e.value),
-    # key="output.output_code",
     hint_label=f"Output code path: data/expected_examples/{get_field_value('id')}/output.py",
     style=me.Style(width="100%"),
-    # key=get_field_value("output.output_code"),
   )
 
 
 def update_raw_output(e: me.InputBlurEvent):
   update_state(e.key, e.value)
-  if get_field_value("output.output_type") == "full":
+  output_type = get_field_value("output.output_type")
+  if output_type == "full":
     update_state("output.output_code", e.value)
-  else:
+  elif output_type == "diff":
     result = apply_patch(get_field_value("input.input_code"), e.value)
     update_state("output.output_code", result.result)
+  else:
+    raise ValueError(f"Unknown output type: {output_type}")
 
 
 create_add_edit_page(
