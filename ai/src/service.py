@@ -8,7 +8,10 @@ from os import getenv
 
 from flask import Flask, Response, request, stream_with_context
 
-from ai.common.llm_lib import adjust_mesop_app_stream, apply_patch
+from ai.common.example import ExampleInput
+from ai.common.executor import (
+  ProducerExecutor,
+)
 
 app = Flask(__name__)
 
@@ -53,6 +56,9 @@ def save_interaction_endpoint() -> Response | dict[str, str]:
   return {"folder": folder_name}
 
 
+DEFAULT_PRODUCER_ID = "openai-gpt4o-mini-ft-2024-08-default"
+
+
 @app.route("/adjust-mesop-app", methods=["POST"])
 def adjust_mesop_app_endpoint():
   data = request.json
@@ -65,23 +71,24 @@ def adjust_mesop_app_endpoint():
     return Response("Both 'code' and 'prompt' are required", status=400)
 
   def generate():
-    stream = adjust_mesop_app_stream(
-      code=code,
-      user_input=prompt,
-      line_number=line_number,
+    executor = ProducerExecutor(DEFAULT_PRODUCER_ID)
+    stream = executor.execute_stream(
+      ExampleInput(
+        input_code=code, prompt=prompt, line_number_target=line_number
+      )
     )
-    diff = ""
-    for chunk in stream:
-      if chunk:
-        diff += chunk
-        yield f"data: {json.dumps({'type': 'progress', 'data': chunk})}\n\n"
 
-    result = apply_patch(code, diff)
+    acc = ""
+    for chunk in stream:
+      acc += chunk
+      yield f"data: {json.dumps({'type': 'progress', 'data': chunk})}\n\n"
+
+    result = executor.transform_output(input_code=code, output=acc)
     if result.has_error:
       yield f"data: {json.dumps({'type': 'error', 'error': result.result})}\n\n"
       return
 
-    yield f"data: {json.dumps({'type': 'end', 'code': result.result, 'diff': diff})}\n\n"
+    yield f"data: {json.dumps({'type': 'end', 'code': result.result, 'diff': acc})}\n\n"
 
   return Response(
     stream_with_context(generate()), content_type="text/event-stream"

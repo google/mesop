@@ -9,6 +9,24 @@ All the commands should be run from the `ai/` directory.
 - All entry-points are in `src/*.py` - this includes the AI service and scripts.
 - `src/common` contains code that's shared between offline scripts and the online service.
 
+## AI Console
+
+**Setup**:
+
+```sh
+git clone git@hf.co:datasets/wwwillchen/mesop-data data
+```
+
+**Running**:
+
+Inside `ai/src/`, run the following command:
+
+```sh
+mesop console.py --port=32124
+```
+
+> Note: you can run this on a separate port to avoid conflicting with the main Mesop development app.
+
 ## Scripts
 
 These are scripts used to generate and process data for offline evaluation.

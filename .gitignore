@@ -6,6 +6,9 @@ __pycache__
 
 *.log
 
+# This is a git submodule
+/ai/data/
+
 # Do not save generated files
 /ai/ft/outputs/
 /ai/outputs/

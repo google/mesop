@@ -1,3 +1,7 @@
 [submodule "third_party/angular_components"]
 	path = third_party/angular_components
 	url = https://github.com/angular/components.git
+
+[submodule "ai/data"]
+	path = ai/data
+	url = git@hf.co:datasets/wwwillchen/mesop-data
