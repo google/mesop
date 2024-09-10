@@ -1,0 +1,54 @@
+import os
+from typing import Generic, TypeVar
+
+from pydantic import BaseModel
+
+T = TypeVar("T", bound=BaseModel)
+
+
+def get_data_path(dirname: str) -> str:
+  return os.path.join(
+    os.path.dirname(__file__), "..", "..", "..", "data", dirname
+  )
+
+
+class EntityStore(Generic[T]):
+  def __init__(self, entity_type: type[T], *, dirname: str):
+    self.entity_type = entity_type
+    self.directory_path = get_data_path(dirname)
+
+  def get(self, id: str) -> T:
+    for filename in os.listdir(self.directory_path):
+      if filename.endswith(".json"):
+        file_path = os.path.join(self.directory_path, filename)
+        with open(file_path) as f:
+          entity_json = f.read()
+        entity = self.entity_type.model_validate_json(entity_json)
+        if entity.id == id:  # type: ignore
+          return entity
+    raise ValueError(f"{self.entity_type.__name__} with id {id} not found")
+
+  def get_all(self) -> list[T]:
+    entities: list[T] = []
+    for filename in os.listdir(self.directory_path):
+      if filename.endswith(".json"):
+        file_path = os.path.join(self.directory_path, filename)
+        with open(file_path) as f:
+          entity_json = f.read()
+        entities.append(self.entity_type.model_validate_json(entity_json))
+    entities.sort(key=lambda x: x.id, reverse=True)
+    return entities
+
+  def save(self, entity: T, overwrite: bool = False):
+    id = entity.id  # type: ignore
+    entity_path = os.path.join(self.directory_path, f"{id}.json")
+    # if overwrite is false and the entity already exists, raise an error
+    if not overwrite and os.path.exists(entity_path):
+      raise ValueError(
+        f"{self.entity_type.__name__} with id {id} already exists"
+      )
+    with open(entity_path, "w") as f:
+      f.write(entity.model_dump_json(indent=4))
+
+  def delete(self, entity_id: str):
+    os.remove(os.path.join(self.directory_path, f"{entity_id}.json"))

@@ -1,3 +1,11 @@
+# Notes
+
+**Setup**:
+
+```sh
+git clone git@hf.co:datasets/wwwillchen/mesop-data data
+```
+
 # AI package
 
 This contains all the AI-related code for Mesop. `ai/` is structured as an independent package and should have no dependencies on other parts of the codebase, nor dependents from other parts of the codebase.
