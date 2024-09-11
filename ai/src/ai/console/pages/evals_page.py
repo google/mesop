@@ -11,12 +11,22 @@ def on_load(e: me.LoadEvent):
 def evals_page():
   with page_scaffold(current_path="/evals", title="Evals"):
     evals = store.get_all()
+    with me.box(style=me.Style(padding=me.Padding(bottom=16))):
+      me.button(
+        "Create eval",
+        on_click=lambda e: me.navigate("/evals/add"),
+        type="flat",
+        color="accent",
+      )
+
     with me.box(
       style=me.Style(
         display="grid",
         grid_template_columns="repeat(2, 1fr)",
         gap=16,
         align_items="center",
+        height="100%",
+        overflow_y="auto",
       )
     ):
       # Header
@@ -38,11 +48,3 @@ def evals_page():
           key=eval.producer_id,
           style=me.Style(font_size=16),
         )
-
-    with me.box(style=me.Style(padding=me.Padding(top=32))):
-      me.button(
-        "Create eval",
-        on_click=lambda e: me.navigate("/evals/add"),
-        type="flat",
-        color="accent",
-      )

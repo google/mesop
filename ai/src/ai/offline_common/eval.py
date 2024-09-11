@@ -48,8 +48,9 @@ def get_eval_example(eval_id: str, example_id: str) -> EvaluatedExample:
     evaluated_example = EvaluatedExample.model_validate_json(f.read())
   with open(os.path.join(eval_path, example_id, "output.txt")) as f:
     evaluated_example.outputs[0].output.raw_output = f.read()
-  with open(os.path.join(eval_path, example_id, "patched.py")) as f:
-    evaluated_example.outputs[0].output.output_code = f.read()
+  if os.path.exists(os.path.join(eval_path, example_id, "patched.py")):
+    with open(os.path.join(eval_path, example_id, "patched.py")) as f:
+      evaluated_example.outputs[0].output.output_code = f.read()
   return evaluated_example
 
 
