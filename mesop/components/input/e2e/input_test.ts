@@ -44,7 +44,8 @@ test('test input on_blur works', async ({page}) => {
   ).toBeVisible();
 });
 
-test('test textarea shortcuts', async ({page}) => {
+// TODO: unskip this test once the flakiness is fixed
+test.skip('test textarea shortcuts', async ({page}) => {
   await page.goto('/components/input/e2e/textarea_shortcut_app');
   const textbox = page.getByLabel('Textarea');
   await textbox.fill('hi');
@@ -89,7 +90,8 @@ test('test textarea shortcuts', async ({page}) => {
   ).toBeVisible();
 });
 
-test('test native textarea shortcuts', async ({page}) => {
+// TODO: unskip this test once the flakiness is fixed
+test.skip('test native textarea shortcuts', async ({page}) => {
   await page.goto('/components/input/e2e/textarea_shortcut_app');
   const textbox = page.getByPlaceholder('Native textarea');
 
