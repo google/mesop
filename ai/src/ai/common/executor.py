@@ -47,15 +47,31 @@ class ProviderExecutor:
         code_lines[input.line_number_target - 1] += EDIT_HERE_MARKER
       code = "\n".join(code_lines)
 
-    return [
-      {
-        "role": pf.role,
-        "content": pf.content_value.replace("<APP_CODE>", code).replace(  # type: ignore
-          "<APP_CHANGES>", input.prompt
-        ),
-      }
-      for pf in self.prompt_fragments
-    ]
+    messages = []
+    current_role = None
+    current_content = []
+
+    for pf in self.prompt_fragments:
+      content = pf.content_value.replace("<APP_CODE>", code).replace(
+        "<APP_CHANGES>", input.prompt
+      )
+
+      if pf.role == current_role:
+        current_content.append(content)
+      else:
+        if current_role is not None:
+          messages.append(
+            {"role": current_role, "content": "\n".join(current_content)}
+          )
+        current_role = pf.role
+        current_content = [content]
+
+    if current_role is not None:
+      messages.append(
+        {"role": current_role, "content": "\n".join(current_content)}
+      )
+
+    return messages
 
   def execute(self, input: ExampleInput) -> str: ...
 
