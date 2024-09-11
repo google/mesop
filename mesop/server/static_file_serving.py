@@ -96,8 +96,19 @@ def configure_static_file_serving(
     serving_path = (
       get_runfile_location(path)
       if has_runfiles()
-      else os.path.join(os.getcwd(), path)
+      else safe_join(os.getcwd(), path)
     )
+
+    file_name = os.path.basename(path)
+    file_extension = os.path.splitext(file_name)[1].lower()
+    allowed_extensions = {".js", ".css"}
+    if file_extension not in allowed_extensions:
+      raise MesopException(
+        f"Unexpected file type: {file_extension}. Only {', '.join(allowed_extensions)} files are allowed."
+      )
+
+    if not serving_path:
+      raise MesopException("Unexpected request to " + path)
     return send_file_compressed(
       serving_path,
       disable_gzip_cache=disable_gzip_cache,

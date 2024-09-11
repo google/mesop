@@ -1,8 +1,12 @@
 # Web Security
 
-Mesop by default configures its apps to follow a set of web security best practices.
+## Static file serving
 
-## How
+Mesop allows serving JS and CSS files located within the Mesop app's file subtree to support [web components](../web-components/index.md).
+
+**Security Warning:** Do not place any sensitive or confidential JS and CSS files in your Mesop project directory. These files may be inadvertently exposed and served by the Mesop web server, potentially compromising your application's security.
+
+## JavaScript Security
 
 At a high-level, Mesop is built on top of Angular which provides [built-in security protections](https://angular.io/guide/security) and Mesop configures a strict [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP).
 

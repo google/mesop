@@ -7,7 +7,10 @@ package(
 py_library(
     name = "web_component",
     srcs = glob(["*.py"]),
-    data = glob(["*.js"]),
+    data = glob([
+        "*.js",
+        "*.css",
+    ]),
     deps = [
         "//mesop",
         "//mesop/examples/web_component/async_action",
