@@ -15,7 +15,6 @@ def app():
     me.autocomplete(
       label="Select state",
       options=_make_autocomplete_options(),
-      require_selection=True,
       on_selection_change=on_value_change,
       on_enter=on_value_change,
       on_input=on_input,

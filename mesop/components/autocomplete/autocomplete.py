@@ -44,11 +44,6 @@ class AutocompleteOptionGroup:
 class AutocompleteEnterEvent(MesopEvent):
   """Represents an "Enter" keyboard event on an autocomplete component.
 
-  This will return the raw value if `require_selection` is False.
-
-  If `require_selection` is True, then only a valid selection will be returned. An empty
-  string will be return if not valid selection has been made.
-
   Attributes:
     value: Input/selected value.
     key (str): key of the component that emitted this event.
@@ -99,7 +94,6 @@ def autocomplete(
   appearance: Literal["fill", "outline"] = "fill",
   disabled: bool = False,
   placeholder: str = "",
-  require_selection: bool = False,
   value: str = "",
   readonly: bool = False,
   hide_required_marker: bool = False,
