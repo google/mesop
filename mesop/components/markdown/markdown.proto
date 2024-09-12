@@ -3,5 +3,5 @@ syntax = "proto2";
 package mesop.components.markdown;
 
 message MarkdownType {
-    optional string html = 1;
+    optional string text = 1;
 }

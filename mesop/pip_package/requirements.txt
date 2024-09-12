@@ -1,10 +1,8 @@
 absl-py
 deepdiff==6.*
 flask
-markdown
 msgpack
 protobuf
 pydantic
-pygments
 python-dotenv
 watchdog # used by mesop CLI for hot reloading
