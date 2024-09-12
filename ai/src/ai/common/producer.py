@@ -9,7 +9,9 @@ class Producer(BaseModel):
   id: str
   mesop_model_id: str  # using model_id has a conflict with Pydantic
   prompt_context_id: str
-  output_format: Literal["full", "diff"]
+  # diff - uses the git-style conflict resolution marker
+  # udiff - uses the unified diff format
+  output_format: Literal["full", "diff", "udiff"]
   temperature: float = 0.8
 
 

@@ -1,3 +1,4 @@
+import difflib
 import re
 from typing import NamedTuple
 
@@ -34,3 +35,17 @@ def apply_patch(original_code: str, patch: str) -> ApplyPatchResult:
     patched_code = new_patched_code
 
   return ApplyPatchResult(False, patched_code)
+
+
+def apply_udiff(original_code: str, udiff: str) -> ApplyPatchResult:
+  lines = original_code.splitlines(keepends=True)
+  try:
+    patched_lines = list(difflib.unified_diff(lines, lines, n=0, lineterm=""))
+    patched_lines = difflib.restore(patched_lines, 2)
+    patched_code = "".join(patched_lines)
+    return ApplyPatchResult(False, patched_code)
+  except Exception as e:
+    return ApplyPatchResult(True, f"[AI-003] Error applying udiff: {e!s}")
+
+
+# ... existing code ...
