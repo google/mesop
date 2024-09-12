@@ -77,10 +77,6 @@ THIRD_PARTY_JS_HIGHLIGHTJS = [
     "@npm//highlight.js",
 ]
 
-THIRD_PARTY_JS_MARKED = [
-    "@npm//marked",
-]
-
 THIRD_PARTY_PY_ABSL_PY = [
     requirement("absl-py"),
 ]

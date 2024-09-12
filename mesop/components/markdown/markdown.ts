@@ -5,7 +5,6 @@ import {
   ElementRef,
   Renderer2,
 } from '@angular/core';
-import {SafeHtml} from '@angular/platform-browser';
 import {marked} from '../../web/external/marked';
 import hljs from 'highlight.js';
 import {
@@ -26,7 +25,7 @@ export class MarkdownComponent {
   @Input() key!: Key;
   @Input() style!: Style;
 
-  htmlOutput: SafeHtml = '';
+  htmlOutput = '';
 
   private _codeBlocks: string[] = [];
   private _config!: MarkdownType;
@@ -54,11 +53,11 @@ export class MarkdownComponent {
     // the raw code to look up on click.
     let index = -1;
     renderer.code = ({text, lang}) => {
-      const language =
-        lang !== undefined && hljs.getLanguage(lang) ? lang : '';
-      const highlighted = (language === '') ?
-          hljs.highlightAuto(text).value :
-          hljs.highlight(language, text, true).value;
+      const language = lang !== undefined && hljs.getLanguage(lang) ? lang : '';
+      const highlighted =
+        language === ''
+          ? hljs.highlightAuto(text).value
+          : hljs.highlight(language, text, true).value;
       this._codeBlocks.push(text);
       index += 1;
       // We use an "a" tag since the button tag gets filtered out.

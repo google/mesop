@@ -5,7 +5,7 @@ img-src 'self' data: https: http:
 media-src 'self' data: https:
 style-src 'self' 'unsafe-inline' fonts.googleapis.com http://google.com/stylesheets%2C1%3B2
 script-src 'self' 'nonce-{{NONCE}}' http://google.com/allowed_script_srcs/1%2C1%3B2 http://google.com/allowed_script_srcs/2%2C1%3B2
-trusted-types angular angular#unsafe-bypass lit-html
+trusted-types angular angular#unsafe-bypass lit-html highlight.js
 require-trusted-types-for 'script'
 report-uri /__csp__
 connect-src 'self' http://google.com/allowed_connect_srcs/1%2C1%3B2 http://google.com/allowed_connect_srcs/2%2C1%3B2
