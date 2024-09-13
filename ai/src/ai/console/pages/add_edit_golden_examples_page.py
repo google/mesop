@@ -70,7 +70,7 @@ def form():
   form_field(
     "input.line_number_target", "Input: line number target", type="number"
   )
-  me.select(
+  me.select(  # update
     value=get_field_value("output.output_type"),  # type: ignore
     options=[
       me.SelectOption(label="Full", value="full"),

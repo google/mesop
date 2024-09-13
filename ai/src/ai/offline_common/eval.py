@@ -27,7 +27,6 @@ class EvalOutcome(BaseModel):
   examples_run: int
   examples_succeeded: int
   score: float  # sum of scores across expect_results in examples
-  # max_score: float  # potential max score across expect_results in examples
 
 
 class Eval(BaseModel):

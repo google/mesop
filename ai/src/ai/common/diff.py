@@ -41,7 +41,6 @@ def apply_udiff(original_text: str, udiff: str) -> ApplyPatchResult:
   # Check if the udiff contains code blocks
   if "```" in udiff:
     udiff = extract_code_blocks(udiff)
-    print("udiff***\n", udiff)
   lines = original_text.splitlines()
   # Remove extra newline after hunk header which causes an issue
   udiff = udiff.replace("@@\n\n", "@@\n")
@@ -106,36 +105,15 @@ def normalize_udiff_lines(lines: list[str]) -> list[str]:
 
 
 def apply_hunk(lines: list[str], hunk_lines: list[str]) -> list[str]:
-  # sections = split_hunk_into_sections(hunk_lines)
-
-  # for section in sections:
+  # Currently we don't use context_after, but we could use it in the future
+  # to be more precise if find_context has multiple matches.
   context_before, changes, context_after = process_section(hunk_lines)
   start = find_context(lines, context_before)
-  if start == -1:
-    raise ValueError(
-      "Could not find context in original text", "\n".join(context_before)
-    )
-
-  # if context_after:
-  #   end = find_context(lines[start + len(context_before) :], context_after)
-  #   if end == -1:
-  #     raise ValueError(
-  #       "Could not find ending context in original text",
-  #       "\n".join(context_after),
-  #     )
-  #   end += start + len(context_before)
-  # else:
   end = (
     start
     + len(context_before)
     + sum(1 for line in changes if line.startswith("-"))
   )
-  print("context_before")
-  print("\n".join(context_before))
-  print("changes")
-  print("\n".join(changes))
-  print("context_after")
-  print("\n".join(context_after))
 
   result = lines[:start]
   result.extend(context_before)
@@ -144,51 +122,10 @@ def apply_hunk(lines: list[str], hunk_lines: list[str]) -> list[str]:
     if change.startswith("+") or change.startswith(" "):
       result.append(change[1:])
 
-  count = 0
-  for change in changes:
-    if change.startswith(" "):
-      count += 1
-  # result.extend(context_after)
-
-  print("end", end)
-  print("count", count)
-  print("EXTEND")
-  print(lines[end + count :])
-  result.extend(lines[end + count :])
-
-  lines = result
-
-  return lines
-
-
-def split_hunk_into_sections(hunk_lines: list[str]) -> list[list[str]]:
-  sections = []
-  current_section = []
-
-  for line in hunk_lines:
-    if line == "":
-      current_section.append(line)
-    if (
-      line.startswith(" ")
-      and not current_section
-      or line.startswith(("-", "+"))
-    ):
-      current_section.append(line)
-    elif line.startswith(" ") and current_section:
-      if any(l.startswith(("-", "+")) for l in current_section):  # noqa: E741
-        sections.append(current_section)
-        current_section = [line]
-      else:
-        current_section.append(line)
-
-  if current_section:
-    sections.append(current_section)
-  print("sections")
-  for section in sections:
-    print("section")
-    print("\n".join(section))
-    print("---")
-  return sections
+  result.extend(
+    lines[end + sum(1 for change in changes if change.startswith(" ")) :]
+  )
+  return result
 
 
 def process_section(section):
@@ -207,19 +144,12 @@ def process_section(section):
     elif line.startswith(" "):
       if in_changes:
         changes.append(line)
-        # context_after.append(line[1:])
       else:
         context_before.append(line[1:])
     elif line.startswith("-") or line.startswith("+"):
       changes.append(line)
       in_changes = True
-  print("***PROCESS SECTION***")
-  print("context_before")
-  print("\n".join(context_before))
-  print("changes")
-  print("\n".join(changes))
-  print("context_after")
-  print("\n".join(context_after))
+
   return context_before, changes, context_after
 
 
@@ -227,7 +157,8 @@ def find_context(lines: list[str], context: list[str]) -> int:
   if not context:
     return 0
 
-  # Try different indentation levels
+  # Try different indentation levels because the LLM sometimes
+  # messes up the indentation.
   for indent in range(-4, 4, 1):
     indented_context = [" " * indent + line for line in context]
     context_str = "\n".join(indented_context)
@@ -240,40 +171,23 @@ def find_context(lines: list[str], context: list[str]) -> int:
       context.extend(indented_context)
       return text[:index].count("\n")
 
-  # If no match found, print debug information and return -1
-  print(
-    "Could not find context in original text",
-    "\ncontext_str",
-    "\n".join(context),
-    "\nlines",
-    "\n".join(lines),
+  raise ValueError(
+    "Could not find context in original text\n"
+    "context:\n" + "\n".join(context) + "\noriginal:\n" + "\n".join(lines)
   )
-  return -1
 
 
 def extract_code_blocks(text: str) -> str:
   """
   Extracts and concatenates the content of all code blocks from the given text.
-
-  Args:
-  text (str): The input text that may contain code blocks.
-
-  Returns:
-  str: A string containing only the content of the code blocks, joined with newlines.
   """
-  # Find all code blocks in the text
   code_blocks = re.findall(r"```(?:\w+)?\n(.*?)```", text, re.DOTALL)
-
-  # Join the content of all code blocks
   return "\n".join(code_blocks)
 
 
-def create_udiff(source: str, patched: str) -> str:
-  """
-  Creates a unified diff between the source and patched code.
-  """
+def create_udiff(*, source: str, patched: str) -> str:
   diff_lines = list(
-    # Need more than 3 lines, otherwise we will get false matches.
+    # Have 5 lines of context, otherwise we will get incorrect matches.
     difflib.unified_diff(source.splitlines(), patched.splitlines(), n=5)
   )[2:]
 

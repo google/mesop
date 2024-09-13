@@ -28,6 +28,4 @@ def create_golden_dataset(*, producer_id: str, dataset_name: str) -> str:
       )
       f.write(json.dumps({"messages": messages}) + "\n")
     print("created golden dataset", golden_dataset_path)
-    # producer = producer_store.get(producer_id)
-    # print("create_golden_dataset", producer)
-    # return "not yet implemented"
+    return golden_dataset_path

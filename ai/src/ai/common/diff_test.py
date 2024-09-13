@@ -1,3 +1,10 @@
+"""
+Note: this test doesn't run on GitHub actions.
+
+You must run this manually:
+$ uv run src/ai/common/diff_test.py
+"""
+
 import difflib
 
 import pytest

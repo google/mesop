@@ -38,12 +38,6 @@ def create_golden_dataset_page():
       label="Dataset name",
       on_blur=on_dataset_name_blur,
     )
-    # me.select(
-    #   label="Prompt Context",
-    #   options=get_prompt_context_options(),
-    #   style=me.Style(width="min(100%, 360px)"),
-    #   on_selection_change=select_prompt_context,
-    # )
     me.autocomplete(
       label="Producer id",
       options=get_producer_ids(),
@@ -70,6 +64,7 @@ def create_golden_dataset_page():
         color="accent",
       )
     if state.dataset_path:
+      me.text("Created golden dataset at the following path:")
       me.text(state.dataset_path)
 
 
