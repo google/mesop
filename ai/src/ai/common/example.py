@@ -11,7 +11,9 @@ import os
 import shutil
 from typing import Generic, Literal, TypeVar
 
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, field_validator, model_validator
+
+from ai.common.model_validators import is_required_str
 
 
 class ExampleInput(BaseModel):
@@ -19,12 +21,10 @@ class ExampleInput(BaseModel):
   input_code: str | None = None
   line_number_target: int | None = None
 
-  @field_validator("prompt")
+  @field_validator("prompt", mode="after")
   @classmethod
   def is_required(cls, v):
-    if v == "":
-      raise ValueError("Field is required.")
-    return v
+    return is_required_str(v)
 
   @field_validator("line_number_target", mode="before")
   @classmethod
@@ -34,12 +34,11 @@ class ExampleInput(BaseModel):
       return None
     return v
 
-  @field_validator("line_number_target", mode="after")
-  @classmethod
-  def line_number_greater_than_0(cls, v: int | None) -> int | None:
-    if isinstance(v, int) and v < 1:
+  @model_validator(mode="after")
+  def is_valid_line_number(self):
+    if isinstance(self.line_number_target, int) and self.line_number_target < 1:
       raise ValueError("Line number must be greater than 0.")
-    return v
+    return self
 
 
 class BaseExample(BaseModel):
