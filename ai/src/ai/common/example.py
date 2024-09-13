@@ -11,13 +11,43 @@ import os
 import shutil
 from typing import Generic, Literal, TypeVar
 
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator, model_validator
+
+from ai.common.model_validators import is_required_str
 
 
 class ExampleInput(BaseModel):
   prompt: str
   input_code: str | None = None
   line_number_target: int | None = None
+
+  @field_validator("prompt", mode="after")
+  @classmethod
+  def is_required(cls, v):
+    return is_required_str(v)
+
+  @field_validator("line_number_target", mode="before")
+  @classmethod
+  # Intentionally leave out annotations since the input value may be ambiguous.
+  def convert_empty_string_to_none(cls, v):
+    if isinstance(v, str) and v == "":
+      return None
+    return v
+
+  @model_validator(mode="after")
+  def is_valid_line_number(self):
+    if isinstance(self.line_number_target, int):
+      if self.line_number_target < 1:
+        raise ValueError("Line number must be greater than 0.")
+      # There are times when the input_code is None because it has not been loaded from
+      # file yet. So we only validate if the line number exceeds its target if the
+      # input_code is populated.
+      if self.input_code and self.line_number_target > len(
+        self.input_code.split("\n")
+      ):
+        raise ValueError("Line number exceeds lines in input code.")
+
+    return self
 
 
 class BaseExample(BaseModel):
