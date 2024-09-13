@@ -89,7 +89,7 @@ def eval_item_page():
               style=me.Style(font_family="monospace", white_space="pre"),
             )
 
-          me.text("Code code")
+          me.text("Output code")
           me.markdown(
             "```\n" + (example.outputs[0].output.output_code or "") + "\n```",
             style=me.Style(font_size=14),

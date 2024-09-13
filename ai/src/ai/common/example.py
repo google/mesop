@@ -14,7 +14,6 @@ from typing import Generic, Literal, TypeVar
 from pydantic import BaseModel, field_validator, model_validator
 
 from ai.common.model_validators import is_required_str
-
 from ai.common.output_format import OutputFormat
 
 
