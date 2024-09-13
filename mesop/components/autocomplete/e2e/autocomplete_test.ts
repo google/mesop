@@ -2,6 +2,10 @@ import {test, expect} from '@playwright/test';
 
 test('Autocomplete Alaska', async ({page}) => {
   await page.goto('/components/autocomplete/e2e/autocomplete_app');
+  await expect(await page.locator('//input').inputValue()).toEqual(
+    'California',
+  );
+
   // Filter to A
   await page.locator('//input').fill('A');
   await expect(page.getByRole('option', {name: 'Arizona'})).toBeAttached();
