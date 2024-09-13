@@ -1,4 +1,5 @@
 import mesop as me
+from ai.common.producer import producer_store
 from ai.common.prompt_context import prompt_context_store
 from ai.console.scaffold import page_scaffold
 from ai.offline_common.golden_dataset import create_golden_dataset
@@ -17,14 +18,9 @@ def get_prompt_context_options():
 
 @me.stateclass
 class State:
-  prompt_context_id: str
+  producer_id: str
   dataset_name: str
   dataset_path: str
-
-
-def select_prompt_context(e: me.SelectSelectionChangeEvent):
-  state = me.state(State)
-  state.prompt_context_id = e.value
 
 
 def on_dataset_name_blur(e: me.InputBlurEvent):
@@ -42,11 +38,11 @@ def create_golden_dataset_page():
       label="Dataset name",
       on_blur=on_dataset_name_blur,
     )
-    me.select(
-      label="Prompt Context",
-      options=get_prompt_context_options(),
-      style=me.Style(width="min(100%, 360px)"),
-      on_selection_change=select_prompt_context,
+    me.autocomplete(
+      label="Producer id",
+      options=get_producer_ids(),
+      style=me.Style(width="100%"),
+      on_selection_change=select_producer_id,
     )
     with me.box(
       style=me.Style(
@@ -68,14 +64,30 @@ def create_golden_dataset_page():
         color="accent",
       )
     if state.dataset_path:
+      me.text("Created golden dataset at the following path:")
       me.text(state.dataset_path)
+
+
+def select_producer_id(e: me.AutocompleteSelectionChangeEvent):
+  state = me.state(State)
+  state.producer_id = e.value
 
 
 def create_dataset(e: me.ClickEvent):
   state = me.state(State)
-  prompt_context_id = state.prompt_context_id
+  producer_id = state.producer_id
   dataset_name = state.dataset_name
-  prompt_context = prompt_context_store.get(prompt_context_id)
-  dataset_path = create_golden_dataset(prompt_context, dataset_name)
+  dataset_path = create_golden_dataset(
+    producer_id=producer_id, dataset_name=dataset_name
+  )
   state.dataset_path = dataset_path
   print("dataset_path", dataset_path)
+
+
+def get_producer_ids():
+  options: list[me.AutocompleteOption] = []
+
+  for producer in producer_store.get_all():
+    options.append(me.AutocompleteOption(label=producer.id, value=producer.id))
+
+  return options

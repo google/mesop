@@ -35,6 +35,7 @@ def form():
     style=me.Style(width="100%"),
     on_selection_change=lambda e: update_state("producer_id", e.value),
   )
+  form_field("seed", "Seed (optional)", type="number")
 
 
 def create_default_eval() -> dict[str, Any]:
