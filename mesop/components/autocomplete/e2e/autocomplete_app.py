@@ -4,7 +4,7 @@ import mesop as me
 @me.stateclass
 class State:
   raw_value: str
-  selected_value: str
+  selected_value: str = "California"
 
 
 @me.page(path="/components/autocomplete/e2e/autocomplete_app")
@@ -14,6 +14,7 @@ def app():
   with me.box(style=me.Style(margin=me.Margin.all(15))):
     me.autocomplete(
       label="Select state",
+      value=state.selected_value,
       options=_make_autocomplete_options(),
       on_selection_change=on_value_change,
       on_enter=on_value_change,

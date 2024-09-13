@@ -43,6 +43,7 @@ export class AutocompleteComponent implements OnInit {
   @Input() key!: Key;
   @Input() style!: Style;
   private _config!: AutocompleteType;
+  private _lastValue = '';
   filteredOptions: Observable<readonly AutocompleteOptionSet[]> =
     new Observable<readonly AutocompleteOptionSet[]>();
   private inputSubject = new Subject<Event>();
@@ -75,6 +76,11 @@ export class AutocompleteComponent implements OnInit {
     this._config = AutocompleteType.deserializeBinary(
       this.type.getValue() as unknown as Uint8Array,
     );
+    // Set the autocomplete value. But only update if the "initial" value changes.
+    if (this._config.getValue()! !== this._lastValue) {
+      this._lastValue = this._config.getValue()!;
+      this.autocompleteControl.setValue(this._lastValue);
+    }
   }
 
   config(): AutocompleteType {
