@@ -1,5 +1,6 @@
 import mesop as me
 from ai.console.scaffold import page_scaffold
+from ai.console.utils import calculate_eval_score
 from ai.offline_common.eval import EvalRunner, get_eval_examples
 from ai.offline_common.eval import eval_store as store
 
@@ -11,6 +12,11 @@ def on_load(e: me.LoadEvent):
 def run_eval(e: me.ClickEvent):
   eval = store.get(me.query_params["id"])
   EvalRunner(eval).run()
+
+
+def delete_eval(e: me.ClickEvent):
+  store.delete(me.query_params["id"])
+  me.navigate("/evals")
 
 
 @me.page(title="Mesop AI Console - Eval", path="/eval", on_load=on_load)
@@ -35,12 +41,17 @@ def eval_page():
       if eval.eval_outcome:
         me.text("Score", style=me.Style(font_weight="bold"))
         with me.tooltip(
-          message=f"Score: {eval.eval_outcome.score} / Max score: {eval.eval_outcome.max_score}"
+          message=f"Score: {eval.eval_outcome.score} / Max score: {eval.eval_outcome.examples_run * 3}"
         ):
-          me.text(
-            f"{eval.eval_outcome.score / eval.eval_outcome.max_score * 100:.0f}% "
-          )
-    with me.box(style=me.Style(padding=me.Padding(top=32))):
+          me.text(calculate_eval_score(eval.eval_outcome))
+    with me.box(
+      style=me.Style(
+        display="flex",
+        flex_direction="row",
+        justify_content="space-between",
+        padding=me.Padding.symmetric(vertical=16),
+      )
+    ):
       if eval.state == "pending":
         me.button(
           "Run eval",
@@ -48,6 +59,13 @@ def eval_page():
           type="flat",
           color="accent",
         )
+
+      me.button(
+        "Delete eval",
+        on_click=delete_eval,
+        type="flat",
+        color="warn",
+      )
 
     if eval.state == "complete":
       with me.box(

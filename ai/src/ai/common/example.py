@@ -15,6 +15,8 @@ from pydantic import BaseModel, field_validator, model_validator
 
 from ai.common.model_validators import is_required_str
 
+from ai.common.output_format import OutputFormat
+
 
 class ExampleInput(BaseModel):
   prompt: str
@@ -58,7 +60,8 @@ class BaseExample(BaseModel):
 class ExampleOutput(BaseModel):
   output_code: str | None = None
   raw_output: str | None = None
-  output_type: Literal["full", "diff"] = "diff"
+  output_type: OutputFormat = "diff"
+  udiff_output: str | None = None
 
 
 class ExpectedExample(BaseExample):
@@ -118,6 +121,10 @@ class ExampleStore(Generic[T]):
       if os.path.exists(raw_output_path):
         with open(raw_output_path) as f:
           entity.output.raw_output = f.read()
+      udiff_output_path = os.path.join(dir_path, "udiff.txt")
+      if os.path.exists(udiff_output_path):
+        with open(udiff_output_path) as f:
+          entity.output.udiff_output = f.read()
     return entity
 
   def get_all(self) -> list[T]:

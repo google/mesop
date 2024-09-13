@@ -27,12 +27,14 @@ class EvalOutcome(BaseModel):
   examples_run: int
   examples_succeeded: int
   score: float  # sum of scores across expect_results in examples
-  max_score: float  # potential max score across expect_results in examples
+  # max_score: float  # potential max score across expect_results in examples
 
 
 class Eval(BaseModel):
   id: str
   producer_id: str
+  # use a seed to make the eval deterministic and enable caching.
+  seed: int = 0
   state: Literal["pending", "running", "complete", "failed"] = "pending"
   eval_outcome: EvalOutcome | None = None
 
@@ -60,8 +62,10 @@ def get_eval_examples(eval_id: str) -> list[EvaluatedExample]:
     return []
   examples: list[EvaluatedExample] = []
   for file in os.listdir(eval_path):
-    with open(os.path.join(eval_path, file, "evaluated_example.json")) as f:
-      examples.append(EvaluatedExample.model_validate_json(f.read()))
+    json_path = os.path.join(eval_path, file, "evaluated_example.json")
+    if os.path.exists(json_path):
+      with open(json_path) as f:
+        examples.append(EvaluatedExample.model_validate_json(f.read()))
   return examples
 
 
@@ -75,9 +79,7 @@ class EvalRunner:
     os.makedirs(self.eval_path, exist_ok=True)
 
     examples = expected_example_store.get_all()
-    eval_outcome = EvalOutcome(
-      examples_run=0, examples_succeeded=0, score=0, max_score=0
-    )
+    eval_outcome = EvalOutcome(examples_run=0, examples_succeeded=0, score=0)
 
     try:
       with ThreadPoolExecutor() as executor:
@@ -90,7 +92,6 @@ class EvalRunner:
           eval_outcome.examples_run += 1
           for result in evaluated_example.outputs[0].expect_results:
             eval_outcome.score += result.score
-            eval_outcome.max_score += 1
           if all(
             result.score == 1
             for result in evaluated_example.outputs[0].expect_results
@@ -116,7 +117,7 @@ class EvalRunner:
     os.makedirs(example_path)
 
     start_time = time.time()
-    output = self.producer_executor.execute(example.input)
+    output = self.producer_executor.execute(example.input, seed=self.eval.seed)
     end_time = time.time()
     time_elapsed = end_time - start_time
     with open(os.path.join(example_path, "output.txt"), "w") as f:

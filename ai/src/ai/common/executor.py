@@ -1,3 +1,5 @@
+import os
+from hashlib import md5
 from os import getenv
 from typing import Iterable, Iterator
 
@@ -7,7 +9,12 @@ from openai.types.chat import (
   ChatCompletionMessageParam,
 )
 
-from ai.common.diff import EDIT_HERE_MARKER, ApplyPatchResult, apply_patch
+from ai.common.diff import (
+  EDIT_HERE_MARKER,
+  ApplyPatchResult,
+  apply_patch,
+  apply_udiff,
+)
 from ai.common.entity_store import get_data_path
 from ai.common.example import ExampleInput
 from ai.common.model import model_store
@@ -73,7 +80,7 @@ class ProviderExecutor:
 
     return messages
 
-  def execute(self, input: ExampleInput) -> str: ...
+  def execute(self, input: ExampleInput, seed: int | None = None) -> str: ...
 
   def execute_stream(self, input: ExampleInput) -> Iterator[str]: ...
 
@@ -90,12 +97,13 @@ class OpenaiExecutor(ProviderExecutor):
       api_key=getenv("OPENAI_API_KEY"),
     )
 
-  def execute(self, input: ExampleInput) -> str:
+  def execute(self, input: ExampleInput, seed: int | None = None) -> str:
     response = self.client.chat.completions.create(
       model=self.model_name,
       max_tokens=10_000,
       messages=self.format_messages(input),
       temperature=self.temperature,
+      seed=seed,
     )
     return response.choices[0].message.content or ""
 
@@ -125,6 +133,16 @@ class FireworksExecutor(OpenaiExecutor):
       api_key=getenv("FIREWORKS_API_KEY"),
     )
 
+  def execute(self, input: ExampleInput, seed: int | None = None) -> str:
+    # Fireworks doesn't support seeding, so we ignore it.
+    response = self.client.chat.completions.create(
+      model=self.model_name,
+      max_tokens=10_000,
+      messages=self.format_messages(input),
+      temperature=self.temperature,
+    )
+    return response.choices[0].message.content or ""
+
 
 class GeminiExecutor(ProviderExecutor):
   def __init__(
@@ -142,7 +160,9 @@ class GeminiExecutor(ProviderExecutor):
     for response in client.generate_content(contents, stream=True):  # type: ignore
       yield response.text
 
-  def execute(self, input: ExampleInput):
+  def execute(self, input: ExampleInput, seed: int | None = None):
+    # Gemini doesn't support seeding, so we ignore it.
+    # https://github.com/GoogleCloudPlatform/generative-ai/issues/289
     contents = self._format_gemini_messages(self.format_messages(input))
     client = self._make_client()
     return client.generate_content(contents).text  # type: ignore
@@ -198,8 +218,30 @@ class ProducerExecutor:
     )
     return provider_executor
 
-  def execute(self, input: ExampleInput):
-    return self.get_provider_executor().execute(input)
+  def execute(self, input: ExampleInput, seed: int | None = None):
+    provider_executor = self.get_provider_executor()
+    if seed is None:
+      return provider_executor.execute(input, seed=seed)
+
+    # Create a unique cache key
+    cache_key = md5(
+      f"{self.producer}:{provider_executor.format_messages(input)}:{seed}".encode()
+    ).hexdigest()
+    cache_dir = os.path.join(get_data_path(".cache"))
+    cache_file = os.path.join(cache_dir, cache_key)
+
+    # Check if cached result exists
+    if os.path.exists(cache_file):
+      with open(cache_file) as f:
+        return f.read()
+
+    # Execute and cache the result
+    output = provider_executor.execute(input, seed=seed)
+    os.makedirs(cache_dir, exist_ok=True)
+    with open(cache_file, "w") as f:
+      f.write(output)
+
+    return output
 
   def execute_stream(self, input: ExampleInput):
     return self.get_provider_executor().execute_stream(input)
@@ -207,6 +249,8 @@ class ProducerExecutor:
   def transform_output(self, input_code: str, output: str):
     if self.producer.output_format == "diff":
       return apply_patch(input_code, output)
+    elif self.producer.output_format == "udiff":
+      return apply_udiff(input_code, output)
     elif self.producer.output_format == "full":
       return ApplyPatchResult(True, output)
     else:

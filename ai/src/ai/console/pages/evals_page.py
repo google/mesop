@@ -1,5 +1,6 @@
 import mesop as me
 from ai.console.scaffold import page_scaffold
+from ai.console.utils import calculate_eval_score
 from ai.offline_common.eval import eval_store as store
 
 
@@ -22,7 +23,7 @@ def evals_page():
     with me.box(
       style=me.Style(
         display="grid",
-        grid_template_columns="repeat(2, 1fr)",
+        grid_template_columns="1fr 1fr 96px 96px 96px",
         gap=16,
         align_items="center",
         height="100%",
@@ -32,6 +33,9 @@ def evals_page():
       # Header
       me.text("ID", style=me.Style(font_weight="bold"))
       me.text("Name", style=me.Style(font_weight="bold"))
+      me.text("State", style=me.Style(font_weight="bold"))
+      me.text("Score", style=me.Style(font_weight="bold"))
+      me.text("Examples Succeeded / Run", style=me.Style(font_weight="bold"))
       # Body
       for eval in evals:
         me.button(
@@ -48,3 +52,12 @@ def evals_page():
           key=eval.producer_id,
           style=me.Style(font_size=16),
         )
+        me.text(eval.state)
+        if eval.eval_outcome:
+          me.text(calculate_eval_score(eval.eval_outcome))
+          me.text(
+            f"{eval.eval_outcome.examples_succeeded} / {eval.eval_outcome.examples_run}"
+          )
+        else:
+          me.text("N/A")
+          me.text("N/A")

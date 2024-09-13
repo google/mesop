@@ -1,3 +1,5 @@
+from typing import get_args, get_type_hints
+
 import mesop as me
 from ai.common.model import model_store
 from ai.common.producer import (
@@ -13,6 +15,10 @@ from ai.console.pages.add_edit_page_helper import (
   get_field_value,
   update_state,
 )
+
+producer_type_hints = get_type_hints(Producer)
+output_format_type = producer_type_hints["output_format"]
+output_format_options = list(get_args(output_format_type))
 
 
 def get_model_ids():
@@ -56,8 +62,8 @@ def form():
     value=get_field_value("output_format"),
     label="Output format",
     options=[
-      me.SelectOption(label="Full", value="full"),
-      me.SelectOption(label="Diff", value="diff"),
+      me.SelectOption(label=option.capitalize(), value=option)
+      for option in output_format_options
     ],
     on_selection_change=lambda e: update_state("output_format", e.value),
     style=me.Style(width="min(100%, 360px)"),

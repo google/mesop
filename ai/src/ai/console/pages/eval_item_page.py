@@ -89,17 +89,27 @@ def eval_item_page():
               style=me.Style(font_family="monospace", white_space="pre"),
             )
 
-          me.text("Code")
+          me.text("Code code")
           me.markdown(
             "```\n" + (example.outputs[0].output.output_code or "") + "\n```",
             style=me.Style(font_size=14),
           )
           me.divider()
-          me.text("Raw output")
+          me.text("Raw output (diff)")
+          raw_output = example.outputs[0].output.raw_output or ""
+          prefix = "" if raw_output.startswith("```") else "```\n"
+          suffix = "" if raw_output.endswith("```") else "\n```"
           me.markdown(
-            "```\n" + (example.outputs[0].output.raw_output or "") + "\n```",
+            prefix + raw_output + suffix,
             style=me.Style(font_size=14),
           )
+          me.divider()
+          me.text("Input code")
+          me.markdown(
+            "```\n" + (example.expected.input.input_code or "") + "\n```",
+            style=me.Style(font_size=14),
+          )
+
         with me.box(
           style=me.Style(display="flex", flex_direction="column", gap=8)
         ):
