@@ -36,8 +36,17 @@ class ExampleInput(BaseModel):
 
   @model_validator(mode="after")
   def is_valid_line_number(self):
-    if isinstance(self.line_number_target, int) and self.line_number_target < 1:
-      raise ValueError("Line number must be greater than 0.")
+    if isinstance(self.line_number_target, int):
+      if self.line_number_target < 1:
+        raise ValueError("Line number must be greater than 0.")
+      # There are times when the input_code is None because it has not been loaded from
+      # file yet. So we only validate if the line number exceeds its target if the
+      # input_code is populated.
+      if self.input_code and self.line_number_target > len(
+        self.input_code.split("\n")
+      ):
+        raise ValueError("Line number exceeds lines in input code.")
+
     return self
 
 
