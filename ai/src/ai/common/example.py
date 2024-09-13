@@ -19,6 +19,13 @@ class ExampleInput(BaseModel):
   input_code: str | None = None
   line_number_target: int | None = None
 
+  @field_validator("prompt")
+  @classmethod
+  def is_required(cls, v):
+    if v == "":
+      raise ValueError("Field is required.")
+    return v
+
   @field_validator("line_number_target", mode="before")
   @classmethod
   # Intentionally leave out annotations since the input value may be ambiguous.
@@ -31,7 +38,7 @@ class ExampleInput(BaseModel):
   @classmethod
   def line_number_greater_than_0(cls, v: int | None) -> int | None:
     if isinstance(v, int) and v < 1:
-      raise ValueError("Line number must be greater than 0")
+      raise ValueError("Line number must be greater than 0.")
     return v
 
 
