@@ -11,13 +11,28 @@ import os
 import shutil
 from typing import Generic, Literal, TypeVar
 
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 
 
 class ExampleInput(BaseModel):
   prompt: str
   input_code: str | None = None
   line_number_target: int | None = None
+
+  @field_validator("line_number_target", mode="before")
+  @classmethod
+  # Intentionally leave out annotations since the input value may be ambiguous.
+  def convert_empty_string_to_none(cls, v):
+    if isinstance(v, str) and v == "":
+      return None
+    return v
+
+  @field_validator("line_number_target", mode="after")
+  @classmethod
+  def line_number_greater_than_0(cls, v: int | None) -> int | None:
+    if isinstance(v, int) and v < 1:
+      raise ValueError("Line number must be greater than 0")
+    return v
 
 
 class BaseExample(BaseModel):
