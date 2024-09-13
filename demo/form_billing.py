@@ -212,7 +212,7 @@ def on_click(e: me.ClickEvent):
 
   # Replace with real validation logic.
   errors = {}
-  for key, value in asdict(state).items():
+  for key, value in asdict(state).items():  # type: ignore
     if key == "error":
       continue
     if not value:
