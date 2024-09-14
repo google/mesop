@@ -1,12 +1,11 @@
 from typing import Literal
 
-from pydantic import BaseModel, model_validator
+from pydantic import model_validator
 
-from ai.common.entity_store import EntityStore
+from ai.common.entity_store import BaseEntity, EntityStore
 
 
-class PromptFragment(BaseModel):
-  id: str
+class PromptFragment(BaseEntity):
   content_value: str | None = None
   content_path: str | None = None
   role: Literal["user", "assistant", "system"]

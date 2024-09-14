@@ -13,7 +13,10 @@ from typing import Generic, Literal, TypeVar
 
 from pydantic import BaseModel, field_validator, model_validator
 
-from ai.common.model_validators import is_required_str
+from ai.common.model_validators import (
+  convert_empty_string_to_none,
+  is_required_str,
+)
 from ai.common.output_format import OutputFormat
 
 
@@ -30,10 +33,8 @@ class ExampleInput(BaseModel):
   @field_validator("line_number_target", mode="before")
   @classmethod
   # Intentionally leave out annotations since the input value may be ambiguous.
-  def convert_empty_string_to_none(cls, v):
-    if isinstance(v, str) and v == "":
-      return None
-    return v
+  def empty_string_to_none(cls, v):
+    return convert_empty_string_to_none(v)
 
   @model_validator(mode="after")
   def is_valid_line_number(self):
@@ -55,12 +56,23 @@ class BaseExample(BaseModel):
   id: str
   input: ExampleInput
 
+  @field_validator("id", mode="after")
+  @classmethod
+  def is_required(cls, v):
+    return is_required_str(v)
+
 
 class ExampleOutput(BaseModel):
   output_code: str | None = None
   raw_output: str | None = None
   output_type: OutputFormat = "diff"
   udiff_output: str | None = None
+
+  @field_validator("output_code", "raw_output", "udiff_output", mode="before")
+  @classmethod
+  # Intentionally leave out annotations since the input value may be ambiguous.
+  def empty_string_to_none(cls, v):
+    return convert_empty_string_to_none(v)
 
 
 class ExpectedExample(BaseExample):
@@ -72,6 +84,20 @@ class ExpectResult(BaseModel):
   name: Literal["executable", "type_checkable", "patchable"]
   score: int  # 0 or 1
   message: str | None = None
+
+  @field_validator("score", mode="after")
+  @classmethod
+  # Intentionally leave out annotations since the input value may be ambiguous.
+  def is_valid_score(cls, v: int) -> int:
+    if v not in {0, 1}:
+      raise ValueError("Score must be 0 or 1.")
+    return v
+
+  @field_validator("message", mode="before")
+  @classmethod
+  # Intentionally leave out annotations since the input value may be ambiguous.
+  def empty_string_to_none(cls, v):
+    return convert_empty_string_to_none(v)
 
 
 class EvaluatedExampleOutput(BaseModel):

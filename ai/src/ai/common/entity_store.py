@@ -1,7 +1,9 @@
 import os
 from typing import Generic, TypeVar
 
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
+
+from ai.common.model_validators import is_required_str
 
 T = TypeVar("T", bound=BaseModel)
 
@@ -10,6 +12,15 @@ def get_data_path(dirname: str) -> str:
   return os.path.join(
     os.path.dirname(__file__), "..", "..", "..", "data", dirname
   )
+
+
+class BaseEntity(BaseModel):
+  id: str
+
+  @field_validator("id", mode="after")
+  @classmethod
+  def id_required(cls, v):
+    return is_required_str(v)
 
 
 class EntityStore(Generic[T]):
