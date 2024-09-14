@@ -15,6 +15,13 @@ def on_load(e: me.LoadEvent):
 def prompt_contexts_page():
   with page_scaffold(current_path="/prompt-contexts", title="Prompt Contexts"):
     prompt_contexts = prompt_context_store.get_all()
+    with me.box(style=me.Style(padding=me.Padding(bottom=16))):
+      me.button(
+        "Add Prompt Context",
+        on_click=lambda e: me.navigate("/prompt-contexts/add"),
+        type="flat",
+        color="accent",
+      )
     with me.box(
       style=me.Style(
         display="grid",
@@ -46,10 +53,3 @@ def prompt_contexts_page():
               key=fragment_id,
               style=me.Style(font_size=16),
             )
-    with me.box(style=me.Style(padding=me.Padding(top=32))):
-      me.button(
-        "Add Prompt Context",
-        on_click=lambda e: me.navigate("/prompt-contexts/add"),
-        type="flat",
-        color="accent",
-      )

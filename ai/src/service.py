@@ -1,14 +1,18 @@
 import json
-import os
 import secrets
 import urllib.parse
-from dataclasses import asdict, dataclass
+from dataclasses import dataclass
 from datetime import datetime
 from os import getenv
 
 from flask import Flask, Response, request, stream_with_context
 
-from ai.common.example import ExampleInput
+from ai.common.example import (
+  ExampleInput,
+  ExampleOutput,
+  GoldenExample,
+  golden_example_store,
+)
 from ai.common.executor import (
   ProducerExecutor,
 )
@@ -27,36 +31,30 @@ def save_interaction_endpoint() -> Response | dict[str, str]:
   assert data is not None
   prompt = data.get("prompt")
   before_code = data.get("beforeCode")
+  after_code = data.get("afterCode")
   diff = data.get("diff")
 
   if not prompt or not before_code or not diff:
     return Response("Invalid request", status=400)
 
   line_number = data.get("lineNumber")
-  if line_number is not None:
-    metadata = InteractionMetadata(line_number=line_number)
-  else:
-    metadata = None
+
   folder_name = generate_folder_name(prompt)
-  base_path = "ft/goldens"
-  folder_path = os.path.join(base_path, folder_name)
-
-  os.makedirs(folder_path, exist_ok=True)
-
-  with open(os.path.join(folder_path, "prompt.txt"), "w") as f:
-    f.write(prompt)
-  with open(os.path.join(folder_path, "source.py"), "w") as f:
-    f.write(before_code)
-  with open(os.path.join(folder_path, "diff.txt"), "w") as f:
-    f.write(diff)
-  if metadata is not None:
-    with open(os.path.join(folder_path, "metadata.json"), "w") as f:
-      json.dump(asdict(metadata), f)
+  golden_example = GoldenExample(
+    id=folder_name,
+    input=ExampleInput(
+      prompt=prompt, input_code=before_code, line_number_target=line_number
+    ),
+    output=ExampleOutput(
+      output_code=after_code, raw_output=diff, output_type="udiff"
+    ),
+  )
+  golden_example_store.save(golden_example)
 
   return {"folder": folder_name}
 
 
-DEFAULT_PRODUCER_ID = "openai-gpt4o-mini-ft-2024-08-default"
+DEFAULT_PRODUCER_ID = "gpt4o-mini-udiff-ft"
 
 
 @app.route("/adjust-mesop-app", methods=["POST"])

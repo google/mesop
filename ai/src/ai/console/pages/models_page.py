@@ -10,6 +10,13 @@ def on_load(e: me.LoadEvent):
 @me.page(title="Mesop AI Console - Models", path="/models", on_load=on_load)
 def models_page():
   with page_scaffold(current_path="/models", title="Models"):
+    with me.box(style=me.Style(padding=me.Padding(bottom=16))):
+      me.button(
+        "Add Model",
+        on_click=lambda e: me.navigate("/models/add"),
+        type="flat",
+        color="accent",
+      )
     models = store.get_all()
     with me.box(
       style=me.Style(
@@ -35,10 +42,3 @@ def models_page():
         )
         me.text(model.name)
         me.text(model.provider)
-    with me.box(style=me.Style(padding=me.Padding(top=32))):
-      me.button(
-        "Add Model",
-        on_click=lambda e: me.navigate("/models/add"),
-        type="flat",
-        color="accent",
-      )

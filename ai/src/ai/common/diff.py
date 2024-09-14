@@ -38,6 +38,9 @@ def apply_patch(original_code: str, patch: str) -> ApplyPatchResult:
 
 
 def apply_udiff(original_text: str, udiff: str) -> ApplyPatchResult:
+  # Remove the edit markers.
+  original_text = original_text.replace(EDIT_HERE_MARKER, "")
+  udiff = udiff.replace(EDIT_HERE_MARKER, "")
   # Check if the udiff contains code blocks
   if "```" in udiff:
     udiff = extract_code_blocks(udiff)
@@ -86,6 +89,8 @@ def apply_udiff(original_text: str, udiff: str) -> ApplyPatchResult:
       True,
       "[AI-001] No changes were applied. Please try again.",
     )
+  if original_text.endswith("\n"):
+    patched_code = patched_code.rstrip() + "\n"
   return ApplyPatchResult(False, patched_code)
 
 

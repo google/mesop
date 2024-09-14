@@ -26,8 +26,7 @@ def evals_page():
         grid_template_columns="1fr 1fr 96px 96px 96px",
         gap=16,
         align_items="center",
-        height="100%",
-        overflow_y="auto",
+        padding=me.Padding(bottom=12),
       )
     ):
       # Header
@@ -36,6 +35,16 @@ def evals_page():
       me.text("State", style=me.Style(font_weight="bold"))
       me.text("Score", style=me.Style(font_weight="bold"))
       me.text("Examples Succeeded / Run", style=me.Style(font_weight="bold"))
+    with me.box(
+      style=me.Style(
+        display="grid",
+        grid_template_columns="1fr 1fr 96px 96px 96px",
+        gap=16,
+        align_items="center",
+        height="100%",
+        overflow_y="auto",
+      )
+    ):
       # Body
       for eval in evals:
         me.button(

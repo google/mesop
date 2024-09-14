@@ -16,6 +16,13 @@ def prompt_fragments_page():
   with page_scaffold(
     current_path="/prompt-fragments", title="Prompt Fragments"
   ):
+    with me.box(style=me.Style(padding=me.Padding(bottom=16))):
+      me.button(
+        "Add Prompt Fragment",
+        on_click=lambda e: me.navigate("/prompt-fragments/add"),
+        type="flat",
+        color="accent",
+      )
     prompt_fragments = prompt_fragment_store.get_all()
     with me.box(
       style=me.Style(
@@ -48,10 +55,3 @@ def prompt_fragments_page():
 
         me.text(prompt_fragment.role)
         me.text(str(prompt_fragment.chain_of_thought))
-    with me.box(style=me.Style(padding=me.Padding(top=32))):
-      me.button(
-        "Add Prompt Fragment",
-        on_click=lambda e: me.navigate("/prompt-fragments/add"),
-        type="flat",
-        color="accent",
-      )

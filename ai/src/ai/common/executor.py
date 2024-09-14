@@ -144,6 +144,20 @@ class FireworksExecutor(OpenaiExecutor):
     return response.choices[0].message.content or ""
 
 
+class TogetherExecutor(OpenaiExecutor):
+  def __init__(
+    self,
+    model_name: str,
+    prompt_fragments: list[PromptFragment],
+    temperature: float,
+  ):
+    super().__init__(model_name, prompt_fragments, temperature)
+    self.client = OpenAI(
+      base_url="https://api.together.xyz/v1",
+      api_key=getenv("TOGETHER_API_KEY"),
+    )
+
+
 class GeminiExecutor(ProviderExecutor):
   def __init__(
     self,
@@ -196,6 +210,7 @@ class GeminiExecutor(ProviderExecutor):
 provider_executors: dict[str, type[ProviderExecutor]] = {
   "openai": OpenaiExecutor,
   "fireworks": FireworksExecutor,
+  "together": TogetherExecutor,
   "gemini": GeminiExecutor,
 }
 
