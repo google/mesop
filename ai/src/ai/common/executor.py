@@ -53,7 +53,7 @@ class ProviderExecutor:
       if 1 <= input.line_number_target <= len(code_lines):
         code_lines[input.line_number_target - 1] += EDIT_HERE_MARKER
       code = "\n".join(code_lines)
-    print("Code", code)
+
     messages = []
     current_role = None
     current_content = []

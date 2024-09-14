@@ -36,37 +36,15 @@ def create_golden_dataset(*, producer_id: str, dataset_name: str) -> str:
 
 
 def convert_openai_format_to_llama3_format(input_file: str, output_file: str):
-  with open(output_file, "w") as out_f:
-    with open(input_file) as in_f:
-      for line in in_f:
-        # Parse each line as a separate JSON object
-        data = json.loads(line.strip())
+  with open(input_file) as in_f, open(output_file, "w") as out_f:
+    for line in in_f:
+      data = json.loads(line.strip())
+      output = "<|begin_of_text|>"
 
-        # Extract messages
-        messages = data["messages"]
+      for message in data["messages"]:
+        role, content = message["role"], message["content"]
+        output += (
+          f"<|start_header_id|>{role}<|end_header_id|> {content}<|eot_id|>"
+        )
 
-        # Convert to llama 3 format
-        output = "<|begin_of_text|>"
-        for message in messages:
-          role = message["role"]
-          content = message["content"]
-
-          if role == "system":
-            output += (
-              f"<|start_header_id|>system<|end_header_id|> {content}<|eot_id|>"
-            )
-          elif role == "user":
-            output += (
-              f"<|start_header_id|>user<|end_header_id|> {content}<|eot_id|>"
-            )
-          elif role == "assistant":
-            output += f"<|start_header_id|>assistant<|end_header_id|> {content}<|eot_id|>"
-
-        # Wrap the output in the required JSON format and write to file
-        final_output = json.dumps({"text": output})
-        out_f.write(final_output + "\n")
-
-
-# input_file = "messagesFormatDataset.jsonl"
-# output_file = "Llama3FormattedDataset.jsonl"
-# convert_format(input_file, output_file)
+      out_f.write(json.dumps({"text": output}) + "\n")
