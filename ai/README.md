@@ -119,3 +119,15 @@ The common package contains the code that is shared between multiple Python bina
 ## Docbot
 
 Docbot is a standalone app that creates a RAG-chatbot for the Mesop docs.
+
+## Fine-tuning
+
+### Together
+
+> Pre-requisite: install together CLI: `pip install --upgrade together`
+
+1. [Upload dataset](https://docs.together.ai/reference/files)
+
+```sh
+together files upload data/golden_datasets/udiff-2024-09-13_llama3.jsonl
+```

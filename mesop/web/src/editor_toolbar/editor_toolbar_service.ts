@@ -162,6 +162,7 @@ export class EditorToolbarService {
       body: JSON.stringify({
         prompt: interaction.prompt,
         beforeCode: interaction.beforeCode,
+        afterCode: interaction.afterCode,
         diff: interaction.diff,
         lineNumber: interaction.lineNumber,
       }),
