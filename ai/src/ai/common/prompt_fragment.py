@@ -1,8 +1,9 @@
 from typing import Literal
 
-from pydantic import BaseModel, model_validator
+from pydantic import BaseModel, field_validator, model_validator
 
 from ai.common.entity_store import EntityStore
+from ai.common.model_validators import is_required_str
 
 
 class PromptFragment(BaseModel):
@@ -11,6 +12,11 @@ class PromptFragment(BaseModel):
   content_path: str | None = None
   role: Literal["user", "assistant", "system"]
   chain_of_thought: bool = False
+
+  @field_validator("id", mode="after")
+  @classmethod
+  def is_required(cls, v):
+    return is_required_str(v)
 
   @model_validator(mode="after")
   def check_content_value_or_path(self):

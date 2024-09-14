@@ -1,6 +1,7 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 
 from ai.common.entity_store import EntityStore
+from ai.common.model_validators import is_required_str
 
 
 class Model(BaseModel):
@@ -12,6 +13,11 @@ class Model(BaseModel):
   id: str
   name: str
   provider: str
+
+  @field_validator("id", "name", "provider", mode="after")
+  @classmethod
+  def is_required(cls, v):
+    return is_required_str(v)
 
 
 model_store = EntityStore(Model, dirname="models")
