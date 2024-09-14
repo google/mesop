@@ -14,6 +14,14 @@ def on_load(e: me.LoadEvent):
 def producers_page():
   with page_scaffold(current_path="/producers", title="Producers"):
     producers = store.get_all()
+    with me.box(style=me.Style(padding=me.Padding(bottom=16))):
+      me.button(
+        "Add Producer",
+        on_click=lambda e: me.navigate("/producers/add"),
+        type="flat",
+        color="accent",
+      )
+
     with me.box(
       style=me.Style(
         display="grid",
@@ -28,6 +36,15 @@ def producers_page():
       me.text("Prompt Context", style=me.Style(font_weight="bold"))
       me.text("Output Format", style=me.Style(font_weight="bold"))
       me.text("Temp", style=me.Style(font_weight="bold"))
+    with me.box(
+      style=me.Style(
+        display="grid",
+        grid_template_columns="repeat(3, 1fr) 64px 64px",
+        gap=16,
+        align_items="center",
+        overflow_y="auto",
+      )
+    ):
       # Body
       for producer in producers:
         me.button(
@@ -57,10 +74,3 @@ def producers_page():
           )
         me.text(producer.output_format)
         me.text(str(producer.temperature))
-    with me.box(style=me.Style(padding=me.Padding(top=32))):
-      me.button(
-        "Add Producer",
-        on_click=lambda e: me.navigate("/producers/add"),
-        type="flat",
-        color="accent",
-      )

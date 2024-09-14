@@ -9,6 +9,7 @@ An example is a single input/output pair.
 
 import os
 import shutil
+from datetime import datetime
 from typing import Generic, Literal, TypeVar
 
 from pydantic import BaseModel, field_validator, model_validator
@@ -54,6 +55,8 @@ class ExampleInput(BaseModel):
 class BaseExample(BaseModel):
   id: str
   input: ExampleInput
+  created_at: datetime = None
+  updated_at: datetime = None
 
 
 class ExampleOutput(BaseModel):
@@ -135,6 +138,12 @@ class ExampleStore(Generic[T]):
   def save(self, entity: T, overwrite: bool = False):
     id = entity.id
     dir_path = os.path.join(self.directory_path, id)
+
+    # Update timestamps
+    current_time = datetime.utcnow()
+    if entity.created_at is None:
+      entity.created_at = current_time
+    entity.updated_at = current_time
 
     if not overwrite:
       if os.path.exists(dir_path):
