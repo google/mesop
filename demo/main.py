@@ -36,6 +36,8 @@ import divider as divider
 import embed as embed
 import fancy_chat as fancy_chat
 import feedback as feedback
+import form_billing as form_billing
+import form_profile as form_profile
 import grid_table as grid_table
 import headers as headers
 import html_demo as html_demo
@@ -104,6 +106,8 @@ FIRST_SECTIONS = [
       Example(name="headers"),
       Example(name="snackbar"),
       Example(name="chat_inputs"),
+      Example(name="form_billing"),
+      Example(name="form_profile"),
     ],
   ),
   Section(
