@@ -1,20 +1,19 @@
-from pydantic import BaseModel, field_validator
+from pydantic import field_validator
 
-from ai.common.entity_store import EntityStore
+from ai.common.entity_store import BaseEntity, EntityStore
 from ai.common.model_validators import is_required_str
 from ai.common.output_format import OutputFormat
 
 _TEMPERATURE_DEFAULT = 0.8
 
 
-class Producer(BaseModel):
-  id: str
+class Producer(BaseEntity):
   mesop_model_id: str  # using model_id has a conflict with Pydantic
   prompt_context_id: str
   output_format: OutputFormat = "diff"
   temperature: float = _TEMPERATURE_DEFAULT
 
-  @field_validator("id", "mesop_model_id", "prompt_context_id", mode="after")
+  @field_validator("mesop_model_id", "prompt_context_id", mode="after")
   @classmethod
   def is_required(cls, v):
     return is_required_str(v)

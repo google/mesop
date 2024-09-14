@@ -1,22 +1,15 @@
 from typing import Literal
 
-from pydantic import BaseModel, field_validator, model_validator
+from pydantic import model_validator
 
-from ai.common.entity_store import EntityStore
-from ai.common.model_validators import is_required_str
+from ai.common.entity_store import BaseEntity, EntityStore
 
 
-class PromptFragment(BaseModel):
-  id: str
+class PromptFragment(BaseEntity):
   content_value: str | None = None
   content_path: str | None = None
   role: Literal["user", "assistant", "system"]
   chain_of_thought: bool = False
-
-  @field_validator("id", mode="after")
-  @classmethod
-  def is_required(cls, v):
-    return is_required_str(v)
 
   @model_validator(mode="after")
   def check_content_value_or_path(self):
