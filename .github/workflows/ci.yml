@@ -41,7 +41,7 @@ jobs:
         # NOTE: bazel test //... doesn't work (due to node_modules)
         run: bazel test //mesop/...
       - name: Run playwright test (prod mode)
-        run: yarn playwright test
+        run: PLAYWRIGHT_HTML_OUTPUT_DIR=playwright-report-prod-mode yarn playwright test
       - uses: actions/upload-artifact@a8a3f3ad30e3422c9c7b888a15615d19a852ae32 # v3.1.3
         if: always()
         with:
@@ -49,7 +49,7 @@ jobs:
           path: playwright-report-prod-mode/
           retention-days: 30
       - name: Run playwright test (debug/editor mode)
-        run: MESOP_DEBUG_MODE=true yarn playwright test
+        run: MESOP_DEBUG_MODE=true PLAYWRIGHT_HTML_OUTPUT_DIR=playwright-report-debug-mode yarn playwright test
       - uses: actions/upload-artifact@a8a3f3ad30e3422c9c7b888a15615d19a852ae32 # v3.1.3
         if: always()
         with:
@@ -57,15 +57,23 @@ jobs:
           path: playwright-report-debug-mode/
           retention-days: 30
       - name: Run playwright test (concurrency)
-        run: yarn playwright test mesop/tests/e2e/concurrency/state_test.ts --repeat-each=48 --workers=16
+        run: PLAYWRIGHT_HTML_OUTPUT_DIR=playwright-report-concurrency yarn playwright test mesop/tests/e2e/concurrency/state_test.ts --repeat-each=48 --workers=16
       - uses: actions/upload-artifact@a8a3f3ad30e3422c9c7b888a15615d19a852ae32 # v3.1.3
         if: always()
         with:
           name: playwright-report-concurrency
           path: playwright-report-concurrency/
           retention-days: 30
+      - name: Run playwright test with concurrent updates enabled
+        run: MESOP_CONCURRENT_UPDATES_ENABLED=true PLAYWRIGHT_HTML_OUTPUT_DIR=playwright-report-with-concurrent-updates-enabled yarn playwright test
+      - uses: actions/upload-artifact@a8a3f3ad30e3422c9c7b888a15615d19a852ae32 # v3.1.3
+        if: always()
+        with:
+          name: playwright-report-with-concurrent-updates-enabled
+          path: playwright-report-with-concurrent-updates-enabled/
+          retention-days: 30
       - name: Run playwright test with memory state session
-        run: MESOP_STATE_SESSION_BACKEND=memory yarn playwright test
+        run: MESOP_STATE_SESSION_BACKEND=memory PLAYWRIGHT_HTML_OUTPUT_DIR=playwright-report-with-memory-state-session yarn playwright test
       - uses: actions/upload-artifact@a8a3f3ad30e3422c9c7b888a15615d19a852ae32 # v3.1.3
         if: always()
         with:

@@ -26,9 +26,16 @@ AI_SERVICE_BASE_URL = os.environ.get(
   "MESOP_AI_SERVICE_BASE_URL", "http://localhost:43234"
 )
 
+MESOP_CONCURRENT_UPDATES_ENABLED = (
+  os.environ.get("MESOP_CONCURRENT_UPDATES_ENABLED", "false").lower() == "true"
+)
+
 EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED = (
   os.environ.get("MESOP_EXPERIMENTAL_EDITOR_TOOLBAR", "false").lower() == "true"
 )
+
+if MESOP_CONCURRENT_UPDATES_ENABLED:
+  print("Experiment enabled: MESOP_CONCURRENT_UPDATES_ENABLED")
 
 if EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED:
   print("Experiment enabled: EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED")
@@ -95,6 +102,7 @@ def configure_flask_app(
             for js_module in js_modules
           ],
           experiment_settings=pb.ExperimentSettings(
+            concurrent_updates_enabled=MESOP_CONCURRENT_UPDATES_ENABLED,
             experimental_editor_toolbar_enabled=EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED,
           )
           if init_request
