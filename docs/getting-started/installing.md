@@ -64,6 +64,17 @@ Once you've activated the virtual environment, you will see ".venv" at the start
 pip install mesop
 ```
 
+## Upgrading
+
+To upgrade Mesop, run the following command:
+
+```sh
+pip install --upgrade mesop
+```
+
+If you are using `requirements.txt` or `pyproject.toml` to manage your dependency versions, then you should update those.
+
+
 ## Next steps
 
 Follow the quickstart guide to learn how to create and run a Mesop app:
