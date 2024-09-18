@@ -1,3 +1,4 @@
+import {DatepickerComponent} from '../../../components/datepicker/datepicker';
 import {AutocompleteComponent} from '../../../components/autocomplete/autocomplete';
 import {LinkComponent} from '../../../components/link/link';
 import {HtmlComponent} from '../../../components/html/html';
@@ -56,6 +57,7 @@ export class UserDefinedComponent implements BaseComponent {
 }
 
 export const typeToComponent = {
+  'datepicker': DatepickerComponent,
   'autocomplete': AutocompleteComponent,
   'link': LinkComponent,
   'html': HtmlComponent,

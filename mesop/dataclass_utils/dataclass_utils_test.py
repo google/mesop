@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import date, datetime
 
 import numpy as np
 import pandas as pd
@@ -29,7 +29,10 @@ class B:
 class A:
   b: B = field(default_factory=B)
   list_b: list[B] = field(default_factory=list)
-  dates: list[datetime] = field(default_factory=lambda: [datetime(1974, 1, 1)])
+  datetimes: list[datetime] = field(
+    default_factory=lambda: [datetime(1974, 1, 1)]
+  )
+  dates: list[date] = field(default_factory=lambda: [date(1974, 1, 1)])
   strs: list[str] = field(default_factory=list)
   str_dict: dict[str, str] = field(default_factory=dict)
 
@@ -54,9 +57,13 @@ JSON_STR = """{"b": {"c": {"val": "<init>"}},
   {"c": {"val": "1"}},
   {"c": {"val": "2"}}
 ],
-"dates": [
+"datetimes": [
   {"__datetime.datetime__": "1972-01-01T02:00:30"},
   {"__datetime.datetime__": "2024-06-12T05:01:30"}
+],
+"dates": [
+  {"__datetime.date__": "1972-01-01"},
+  {"__datetime.date__": "2024-06-12"}
 ],
 "strs": ["a", "b"]}"""
 
@@ -134,7 +141,7 @@ def test_serialize_dataclass():
   val = serialize_dataclass(A())
   assert (
     val
-    == """{"b": {"c": {"val": "<init>"}}, "list_b": [], "dates": [{"__datetime.datetime__": "1974-01-01T00:00:00"}], "strs": [], "str_dict": {}}"""
+    == """{"b": {"c": {"val": "<init>"}}, "list_b": [], "datetimes": [{"__datetime.datetime__": "1974-01-01T00:00:00"}], "dates": [{"__datetime.date__": "1974-01-01"}], "strs": [], "str_dict": {}}"""
   )
 
 
@@ -211,9 +218,13 @@ def test_update_dataclass_from_json_nested_dataclass():
 
   a = A()
   update_dataclass_from_json(a, JSON_STR)
-  assert a.dates == [
+  assert a.datetimes == [
     datetime(1972, 1, 1, 2, 0, 30),
     datetime(2024, 6, 12, 5, 1, 30),
+  ]
+  assert a.dates == [
+    date(1972, 1, 1),
+    date(2024, 6, 12),
   ]
   assert a.b.c.val == "<init>"
 

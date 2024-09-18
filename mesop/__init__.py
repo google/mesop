@@ -70,6 +70,16 @@ from mesop.components.checkbox.checkbox import (
   content_checkbox as content_checkbox,
 )
 from mesop.components.code.code import code as code
+from mesop.components.datepicker.datepicker import (
+  DatePickerChangeEvent as DatePickerChangeEvent,
+)
+from mesop.components.datepicker.datepicker import (
+  DateRangePickerChangeEvent as DateRangePickerChangeEvent,
+)
+from mesop.components.datepicker.datepicker import date_picker as date_picker
+from mesop.components.datepicker.datepicker import (
+  date_range_picker as date_range_picker,
+)
 from mesop.components.divider.divider import divider as divider
 from mesop.components.embed.embed import embed as embed
 from mesop.components.html.html import html as html

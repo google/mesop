@@ -61,6 +61,8 @@ nav:
           - Autocomplete: components/autocomplete.md
           - Button: components/button.md
           - Checkbox: components/checkbox.md
+          - Date picker: components/date_picker.md
+          - Date range picker: components/date_range_picker.md
           - Input: components/input.md
           - Textarea: components/textarea.md
           - Radio: components/radio.md

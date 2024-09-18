@@ -1,0 +1,63 @@
+@if(config().getIsDateRange()) {
+<mat-form-field
+  [hideRequiredMarker]="config().getHideRequiredMarker()!"
+  [color]="getColor()"
+  [floatLabel]="getFloatLabel()"
+  [appearance]="getAppearance()"
+  [subscriptSizing]="getSubscriptSizing()"
+  [style]="getStyle()"
+>
+  <mat-label *ngIf="config().getLabel()">{{config().getLabel()}}</mat-label>
+  <mat-date-range-input
+    [formGroup]="dateRange"
+    [rangePicker]="picker"
+    [required]="config().getRequired()!"
+    [disabled]="config().getDisabled()!"
+  >
+    <input
+      matStartDate
+      formControlName="start"
+      [readonly]="config().getReadonly()!"
+      [placeholder]="config().getPlaceholder1()!"
+      (dateChange)="onDateRangeChange($event)"
+    />
+    <input
+      matEndDate
+      formControlName="end"
+      [readonly]="config().getReadonly()!"
+      [placeholder]="config().getPlaceholder2()!"
+      (dateChange)="onDateRangeChange($event)"
+    />
+  </mat-date-range-input>
+  <mat-hint *ngIf="config().getHintLabel()">
+    {{ config().getHintLabel() }}
+  </mat-hint>
+  <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+  <mat-date-range-picker #picker></mat-date-range-picker>
+</mat-form-field>
+} @else {
+<mat-form-field
+  [hideRequiredMarker]="config().getHideRequiredMarker()"
+  [color]="getColor()"
+  [floatLabel]="getFloatLabel()"
+  [appearance]="getAppearance()"
+  [subscriptSizing]="getSubscriptSizing()"
+  [style]="getStyle()"
+  ><mat-label *ngIf="config().getLabel()">{{config().getLabel()}}</mat-label>
+  <input
+    matInput
+    [matDatepicker]="dp"
+    [disabled]="config().getDisabled()!"
+    [placeholder]="config().getPlaceholder1()!"
+    [required]="config().getRequired()!"
+    [formControl]="date"
+    [readonly]="config().getReadonly()!"
+    (dateChange)="onDateChange($event)"
+  />
+  <mat-hint *ngIf="config().getHintLabel()">
+    {{ config().getHintLabel() }}
+  </mat-hint>
+  <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
+  <mat-datepicker #dp></mat-datepicker>
+</mat-form-field>
+}

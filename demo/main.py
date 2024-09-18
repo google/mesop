@@ -30,6 +30,8 @@ import chat as chat
 import chat_inputs as chat_inputs
 import checkbox as checkbox
 import code_demo as code_demo  # cannot call it code due to python library naming conflict
+import date_picker as date_picker
+import date_range_picker as date_range_picker
 import density as density
 import dialog as dialog
 import divider as divider
@@ -155,6 +157,8 @@ COMPONENTS_SECTIONS = [
       Example(name="autocomplete"),
       Example(name="button"),
       Example(name="checkbox"),
+      Example(name="date_picker"),
+      Example(name="date_range_picker"),
       Example(name="input"),
       Example(name="textarea"),
       Example(name="radio"),

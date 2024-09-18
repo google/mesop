@@ -2,7 +2,7 @@
 import base64
 import json
 from dataclasses import Field, asdict, dataclass, field, is_dataclass
-from datetime import datetime
+from datetime import date, datetime
 from io import StringIO
 from typing import Any, Type, TypeVar, cast, get_origin, get_type_hints
 
@@ -14,6 +14,7 @@ from mesop.components.uploader.uploaded_file import UploadedFile
 from mesop.exceptions import MesopDeveloperException, MesopException
 
 _PANDAS_OBJECT_KEY = "__pandas.DataFrame__"
+_DATE_OBJECT_KEY = "__datetime.date__"
 _DATETIME_OBJECT_KEY = "__datetime.datetime__"
 _BYTES_OBJECT_KEY = "__python.bytes__"
 _SET_OBJECT_KEY = "__python.set__"
@@ -190,6 +191,9 @@ class MesopJSONEncoder(json.JSONEncoder):
     if isinstance(obj, datetime):
       return {_DATETIME_OBJECT_KEY: obj.isoformat()}
 
+    if isinstance(obj, date):
+      return {_DATE_OBJECT_KEY: obj.isoformat()}
+
     if isinstance(obj, bytes):
       return {_BYTES_OBJECT_KEY: base64.b64encode(obj).decode("utf-8")}
 
@@ -223,6 +227,9 @@ def decode_mesop_json_state_hook(dct):
 
   if _DATETIME_OBJECT_KEY in dct:
     return datetime.fromisoformat(dct[_DATETIME_OBJECT_KEY])
+
+  if _DATE_OBJECT_KEY in dct:
+    return date.fromisoformat(dct[_DATE_OBJECT_KEY])
 
   if _BYTES_OBJECT_KEY in dct:
     return base64.b64decode(dct[_BYTES_OBJECT_KEY])

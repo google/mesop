@@ -24,7 +24,7 @@ message QueryParam {
     repeated string values = 2;
 }
 
-// Next ID: 18
+// Next ID: 19
 message UserEvent {
     optional States states = 1;
 
@@ -48,6 +48,7 @@ message UserEvent {
         ChangePrefersColorScheme change_prefers_color_scheme = 14;
         ClickEvent click = 16;
         TextareaShortcutEvent textarea_shortcut = 17;
+        DateRangePickerEvent date_range_picker_event = 18;
     }
 
     optional string state_token = 12;
@@ -101,6 +102,10 @@ message Shortcut {
   optional bool meta = 5;
 }
 
+message DateRangePickerEvent {
+  optional string start_date = 1;
+  optional string end_date = 2;
+}
 
 // This is a user-triggered navigation (e.g. go back/forwards) or a hot reload event.
 message NavigationEvent{
