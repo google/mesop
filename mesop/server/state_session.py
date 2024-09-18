@@ -1,5 +1,6 @@
 import logging
 import os
+import threading
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any, Protocol
@@ -12,6 +13,8 @@ from mesop.dataclass_utils import (
 )
 from mesop.exceptions import MesopException
 from mesop.server.config import Config, app_config
+
+mutex = threading.Lock()
 
 States = dict[type[Any], object]
 
@@ -72,6 +75,7 @@ class MemoryStateSessionBackend(StateSessionBackend):
 
   def __init__(self):
     self.cache = {}
+    self.last_checked_sessions = datetime(1900, 1, 1)
 
   def restore(self, token: str, states: States):
     if token not in self.cache:
@@ -89,15 +93,37 @@ class MemoryStateSessionBackend(StateSessionBackend):
   def clear_stale_sessions(self):
     stale_keys = set()
 
+    # Avoid trying to clear sessions with every request to avoid unnecessary processing.
     current_time = _current_datetime()
-    for key, (timestamp, _) in self.cache.items():
+    if (
+      self.last_checked_sessions + timedelta(minutes=self._SESSION_TTL_MINUTES)
+      > current_time
+    ):
+      return
+
+    self.last_checked_sessions = current_time
+
+    # Add a mutex in the case where a cache item may be removed while looping through
+    # the cache. Limit scope of the lock by just getting the cache keys.
+    with mutex:
+      cache_keys = list(self.cache)
+
+    for key in cache_keys:
+      timestamp, _ = self.cache.get(key, (None, None))
       if (
-        timestamp + timedelta(minutes=self._SESSION_TTL_MINUTES) < current_time
+        timestamp
+        and timestamp + timedelta(minutes=self._SESSION_TTL_MINUTES)
+        < current_time
       ):
         stale_keys.add(key)
 
     for key in stale_keys:
-      del self.cache[key]
+      try:
+        del self.cache[key]
+      except KeyError:
+        logging.warning(
+          f"Tried to delete non-existent memory cache entry {key}."
+        )
 
 
 class FileStateSessionBackend(StateSessionBackend):
