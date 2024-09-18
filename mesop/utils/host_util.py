@@ -1,7 +1,11 @@
 import socket
 
 
-def get_default_host() -> str:
+def get_local_host() -> str:
+  return "localhost"
+
+
+def get_public_host() -> str:
   """
   Returns the default host (which is externally accessible)
   based on the availability of IPv6.
