@@ -192,10 +192,10 @@
     ora "5.4.1"
     rxjs "7.8.1"
 
-"@angular/animations@^18.0.0":
-  version "18.0.0"
-  resolved "https://registry.yarnpkg.com/@angular/animations/-/animations-18.0.0.tgz#e7945444c6cb38377a0f121c5434969d56e66bbc"
-  integrity sha512-An/IqDBCyWZXVC23+jRKdmvJB/b4P1BVljZxGxF+CiocNd/xvVVeBYuuxzp3vhhVobyO8A9iD12itPudLOpt2Q==
+"@angular/animations@^18.2.1":
+  version "18.2.4"
+  resolved "https://registry.yarnpkg.com/@angular/animations/-/animations-18.2.4.tgz#a6d0b3ec11f8dfedd3d3282c8ca30565666a3362"
+  integrity sha512-ajjXpLD+SyxbHnmhj2ZvYpXneviOjcBgU9L2UX4OVS0jVWxCNHLhJrcMqtqFHA6U5fPnhPNR9cmnt6tmqri0rA==
   dependencies:
     tslib "^2.3.0"
 
@@ -322,10 +322,10 @@
     vite "5.2.10"
     watchpack "2.4.1"
 
-"@angular/cdk@^18.0.0":
-  version "18.0.0"
-  resolved "https://registry.yarnpkg.com/@angular/cdk/-/cdk-18.0.0.tgz#6358f553d54969b18a2efa9305e1aa08449d6021"
-  integrity sha512-V0i1SAiT2PTNyugBW0E4fev8G/4XP5FdyX2YD6oc5sNyt3GFcoDNHcz+oEne8+aYVnQ3Ax9Zutq/SQincDHIbw==
+"@angular/cdk@^18.2.1":
+  version "18.2.4"
+  resolved "https://registry.yarnpkg.com/@angular/cdk/-/cdk-18.2.4.tgz#a9f75a5ef4a8c0bfcc2ee4afba5b5e2c04a0371d"
+  integrity sha512-o+TuxZDqStfkviEkCR05pVyP6R2RIruEs/45Cms76hlsIheMoxRaxir/yrHdh4tZESJJhcO/EVE+aymNIRWAfg==
   dependencies:
     tslib "^2.3.0"
   optionalDependencies:
@@ -354,10 +354,10 @@
     symbol-observable "4.0.0"
     yargs "17.7.2"
 
-"@angular/common@^18.0.0":
-  version "18.0.0"
-  resolved "https://registry.yarnpkg.com/@angular/common/-/common-18.0.0.tgz#7c9cf7bcc12b69c3350be788e628d281d4ddbca2"
-  integrity sha512-s43ZcOhXTUlkdOPMiMtr4Pz1qKIS8nClXhaahY0JBQZYGsOSn7NR42SoEeB8/ixktfY60s3SLhizXTKMAYtOTA==
+"@angular/common@^18.2.1":
+  version "18.2.4"
+  resolved "https://registry.yarnpkg.com/@angular/common/-/common-18.2.4.tgz#24a672708aace65b0269d67671f12766dcfe07b2"
+  integrity sha512-flUaKhdr8KvtjH0cLC6Rrjirt8GsiFlrmZLZplr784O3Gkei2VBBNFoopgmlEzbVGPiIG5QlFZH9yvah6JPQZw==
   dependencies:
     tslib "^2.3.0"
 
@@ -375,10 +375,10 @@
     tslib "^2.3.0"
     yargs "^17.2.1"
 
-"@angular/compiler@^18.0.0":
-  version "18.0.0"
-  resolved "https://registry.yarnpkg.com/@angular/compiler/-/compiler-18.0.0.tgz#79d230a5390c1b1238410c3ac17447a0c5a48486"
-  integrity sha512-KbyjUfpdVE8+6fiHqo4PgVrGppYUhlU1JVAj6dqeUug9lQ5HBcANfiZ7p8CA2lU3gvIZ1cj+ZDKA1NEB1wvvtQ==
+"@angular/compiler@^18.2.1":
+  version "18.2.4"
+  resolved "https://registry.yarnpkg.com/@angular/compiler/-/compiler-18.2.4.tgz#fe8b50b33e81824f989dc11d065e57a534fa5659"
+  integrity sha512-o3ngFr1Bjt7cKOu4DSZJGCUF9YPTxJee97wFon2eNFj6FFNTmnGwAvsnJjHBMmk90fmZLC2/HpPdhYz7WprMZQ==
   dependencies:
     tslib "^2.3.0"
 
@@ -389,24 +389,24 @@
   dependencies:
     tslib "^2.3.0"
 
-"@angular/core@^18.0.0":
-  version "18.0.0"
-  resolved "https://registry.yarnpkg.com/@angular/core/-/core-18.0.0.tgz#30c29763d86128131ae7c767769c09523224d350"
-  integrity sha512-tpR7HIY4MJuM9ETpG15IvBr1wsI8Cyec3ZxYFe/27FKHARvxDbqIrT9QevmC6lxg1NdfD990G2XphYML1EyJ8g==
+"@angular/core@^18.2.1":
+  version "18.2.4"
+  resolved "https://registry.yarnpkg.com/@angular/core/-/core-18.2.4.tgz#2430a4136364b38ef37cdc0d0be49a8253d9ed7d"
+  integrity sha512-ulYmYpI/ZVQ5BL38rBy4DS/9wgGWmVD9Uo6tcrLqCzt1G1G2nKwseZv009536pHfk6dj2HdPSkpcerhWh57DWw==
   dependencies:
     tslib "^2.3.0"
 
-"@angular/elements@^18.0.3":
-  version "18.0.3"
-  resolved "https://registry.yarnpkg.com/@angular/elements/-/elements-18.0.3.tgz#e9aa429af76be6b7e045c57d3e4362ece5b38a91"
-  integrity sha512-lJoQKFm1rVaYyiXUO7boT0jq2oXv3b+ighpnJcFqviQ14/pEi19LaUvGAqM3xzKwj4sTEhWlVlftIy1C9Iqvyw==
+"@angular/elements@^18.2.1":
+  version "18.2.4"
+  resolved "https://registry.yarnpkg.com/@angular/elements/-/elements-18.2.4.tgz#602a9ae7eba53d402611fe5fe978c5e00526efdb"
+  integrity sha512-LQMbo8JAF4naE123ywOWXEa4N6KyDRDCBJwzO12mwxMHwd2ltv54gM8aIqBLD10BlFWCoF9ncycqQirEWYoeJQ==
   dependencies:
     tslib "^2.3.0"
 
-"@angular/forms@^18.0.0":
-  version "18.0.0"
-  resolved "https://registry.yarnpkg.com/@angular/forms/-/forms-18.0.0.tgz#ca142054fea9af9d90d3c69ccd43dbe9da3a256a"
-  integrity sha512-Q+4WExdgALP7VJ5lKSYmpz8CtAFZI4f3n09JhExIZoPTLD/mqOJcxxO7wTc9lXG4jKSE8BlfgK2txKz1cQvrEQ==
+"@angular/forms@^18.2.1":
+  version "18.2.4"
+  resolved "https://registry.yarnpkg.com/@angular/forms/-/forms-18.2.4.tgz#4c44d6dae20bd27e4067dc515e89ba72eaaf1b72"
+  integrity sha512-rlLhReauUz6jhLCEkGabLqqF6xLaTfvxafuj2ojzcqoKGSZcXDIM/UOSoWX756B8NtrpsuglpGBZjZlsrAZGsg==
   dependencies:
     tslib "^2.3.0"
 
@@ -420,114 +420,18 @@
     fast-glob "3.3.2"
     yargs "^17.2.1"
 
-"@angular/material-experimental@^18.0.0":
-  version "18.0.0"
-  resolved "https://registry.yarnpkg.com/@angular/material-experimental/-/material-experimental-18.0.0.tgz#2f7029697a9ae4360fd5d6c87a0bcee4caac4d70"
-  integrity sha512-5JFMKHXanX5bDBRNr7iLWG6DwjUzrWs3pf8Qg0pJIfGGFdU1UHtgFkSE/h1rob4opUbPI0pOGW3v/N81MnyDiw==
+"@angular/material-experimental@^18.2.1":
+  version "18.2.4"
+  resolved "https://registry.yarnpkg.com/@angular/material-experimental/-/material-experimental-18.2.4.tgz#3a04a0b62843362c04a8b224c0b7b8580b4c92b3"
+  integrity sha512-fh04PzzpGZ0ifR6YlTUespz9/Z68YAwb9ROZB9MNz78G9oknfqHXCUP6INsWecm3TLbwpyraLHQu/nXtAMcVUA==
   dependencies:
-    "@material/animation" "15.0.0-canary.7f224ddd4.0"
-    "@material/auto-init" "15.0.0-canary.7f224ddd4.0"
-    "@material/banner" "15.0.0-canary.7f224ddd4.0"
-    "@material/base" "15.0.0-canary.7f224ddd4.0"
-    "@material/button" "15.0.0-canary.7f224ddd4.0"
-    "@material/card" "15.0.0-canary.7f224ddd4.0"
-    "@material/checkbox" "15.0.0-canary.7f224ddd4.0"
-    "@material/chips" "15.0.0-canary.7f224ddd4.0"
-    "@material/circular-progress" "15.0.0-canary.7f224ddd4.0"
-    "@material/data-table" "15.0.0-canary.7f224ddd4.0"
-    "@material/density" "15.0.0-canary.7f224ddd4.0"
-    "@material/dialog" "15.0.0-canary.7f224ddd4.0"
-    "@material/dom" "15.0.0-canary.7f224ddd4.0"
-    "@material/drawer" "15.0.0-canary.7f224ddd4.0"
-    "@material/elevation" "15.0.0-canary.7f224ddd4.0"
-    "@material/fab" "15.0.0-canary.7f224ddd4.0"
-    "@material/feature-targeting" "15.0.0-canary.7f224ddd4.0"
-    "@material/floating-label" "15.0.0-canary.7f224ddd4.0"
-    "@material/form-field" "15.0.0-canary.7f224ddd4.0"
-    "@material/icon-button" "15.0.0-canary.7f224ddd4.0"
-    "@material/image-list" "15.0.0-canary.7f224ddd4.0"
-    "@material/layout-grid" "15.0.0-canary.7f224ddd4.0"
-    "@material/line-ripple" "15.0.0-canary.7f224ddd4.0"
-    "@material/linear-progress" "15.0.0-canary.7f224ddd4.0"
-    "@material/list" "15.0.0-canary.7f224ddd4.0"
-    "@material/menu" "15.0.0-canary.7f224ddd4.0"
-    "@material/menu-surface" "15.0.0-canary.7f224ddd4.0"
-    "@material/notched-outline" "15.0.0-canary.7f224ddd4.0"
-    "@material/radio" "15.0.0-canary.7f224ddd4.0"
-    "@material/ripple" "15.0.0-canary.7f224ddd4.0"
-    "@material/rtl" "15.0.0-canary.7f224ddd4.0"
-    "@material/segmented-button" "15.0.0-canary.7f224ddd4.0"
-    "@material/select" "15.0.0-canary.7f224ddd4.0"
-    "@material/shape" "15.0.0-canary.7f224ddd4.0"
-    "@material/slider" "15.0.0-canary.7f224ddd4.0"
-    "@material/snackbar" "15.0.0-canary.7f224ddd4.0"
-    "@material/switch" "15.0.0-canary.7f224ddd4.0"
-    "@material/tab" "15.0.0-canary.7f224ddd4.0"
-    "@material/tab-bar" "15.0.0-canary.7f224ddd4.0"
-    "@material/tab-indicator" "15.0.0-canary.7f224ddd4.0"
-    "@material/tab-scroller" "15.0.0-canary.7f224ddd4.0"
-    "@material/textfield" "15.0.0-canary.7f224ddd4.0"
-    "@material/theme" "15.0.0-canary.7f224ddd4.0"
-    "@material/tokens" "15.0.0-canary.7f224ddd4.0"
-    "@material/tooltip" "15.0.0-canary.7f224ddd4.0"
-    "@material/top-app-bar" "15.0.0-canary.7f224ddd4.0"
-    "@material/touch-target" "15.0.0-canary.7f224ddd4.0"
-    "@material/typography" "15.0.0-canary.7f224ddd4.0"
     tslib "^2.3.0"
 
-"@angular/material@^18.0.0":
-  version "18.0.0"
-  resolved "https://registry.yarnpkg.com/@angular/material/-/material-18.0.0.tgz#8e235d6fd263381b2b3319447cb1efbb0221543a"
-  integrity sha512-4WfMcr4cX3cF7dKz+cXf9YIvhWOJGTP24rbMF5C6eC5K20IK6zgA//Qn0VSTwZkm54Tu9C7kF+CfNLeLy6i5uQ==
+"@angular/material@^18.2.1":
+  version "18.2.4"
+  resolved "https://registry.yarnpkg.com/@angular/material/-/material-18.2.4.tgz#5a25a0a2b5ea15b0ff92747b869c58847272da1b"
+  integrity sha512-F09145mI/EAHY9ngdnQTo3pFRmUoU/50i6cmddtL4cse0WidatoodQr0gZCksxhmpJgRy5mTcjh/LU2hShOgcA==
   dependencies:
-    "@material/animation" "15.0.0-canary.7f224ddd4.0"
-    "@material/auto-init" "15.0.0-canary.7f224ddd4.0"
-    "@material/banner" "15.0.0-canary.7f224ddd4.0"
-    "@material/base" "15.0.0-canary.7f224ddd4.0"
-    "@material/button" "15.0.0-canary.7f224ddd4.0"
-    "@material/card" "15.0.0-canary.7f224ddd4.0"
-    "@material/checkbox" "15.0.0-canary.7f224ddd4.0"
-    "@material/chips" "15.0.0-canary.7f224ddd4.0"
-    "@material/circular-progress" "15.0.0-canary.7f224ddd4.0"
-    "@material/data-table" "15.0.0-canary.7f224ddd4.0"
-    "@material/density" "15.0.0-canary.7f224ddd4.0"
-    "@material/dialog" "15.0.0-canary.7f224ddd4.0"
-    "@material/dom" "15.0.0-canary.7f224ddd4.0"
-    "@material/drawer" "15.0.0-canary.7f224ddd4.0"
-    "@material/elevation" "15.0.0-canary.7f224ddd4.0"
-    "@material/fab" "15.0.0-canary.7f224ddd4.0"
-    "@material/feature-targeting" "15.0.0-canary.7f224ddd4.0"
-    "@material/floating-label" "15.0.0-canary.7f224ddd4.0"
-    "@material/form-field" "15.0.0-canary.7f224ddd4.0"
-    "@material/icon-button" "15.0.0-canary.7f224ddd4.0"
-    "@material/image-list" "15.0.0-canary.7f224ddd4.0"
-    "@material/layout-grid" "15.0.0-canary.7f224ddd4.0"
-    "@material/line-ripple" "15.0.0-canary.7f224ddd4.0"
-    "@material/linear-progress" "15.0.0-canary.7f224ddd4.0"
-    "@material/list" "15.0.0-canary.7f224ddd4.0"
-    "@material/menu" "15.0.0-canary.7f224ddd4.0"
-    "@material/menu-surface" "15.0.0-canary.7f224ddd4.0"
-    "@material/notched-outline" "15.0.0-canary.7f224ddd4.0"
-    "@material/radio" "15.0.0-canary.7f224ddd4.0"
-    "@material/ripple" "15.0.0-canary.7f224ddd4.0"
-    "@material/rtl" "15.0.0-canary.7f224ddd4.0"
-    "@material/segmented-button" "15.0.0-canary.7f224ddd4.0"
-    "@material/select" "15.0.0-canary.7f224ddd4.0"
-    "@material/shape" "15.0.0-canary.7f224ddd4.0"
-    "@material/slider" "15.0.0-canary.7f224ddd4.0"
-    "@material/snackbar" "15.0.0-canary.7f224ddd4.0"
-    "@material/switch" "15.0.0-canary.7f224ddd4.0"
-    "@material/tab" "15.0.0-canary.7f224ddd4.0"
-    "@material/tab-bar" "15.0.0-canary.7f224ddd4.0"
-    "@material/tab-indicator" "15.0.0-canary.7f224ddd4.0"
-    "@material/tab-scroller" "15.0.0-canary.7f224ddd4.0"
-    "@material/textfield" "15.0.0-canary.7f224ddd4.0"
-    "@material/theme" "15.0.0-canary.7f224ddd4.0"
-    "@material/tokens" "15.0.0-canary.7f224ddd4.0"
-    "@material/tooltip" "15.0.0-canary.7f224ddd4.0"
-    "@material/top-app-bar" "15.0.0-canary.7f224ddd4.0"
-    "@material/touch-target" "15.0.0-canary.7f224ddd4.0"
-    "@material/typography" "15.0.0-canary.7f224ddd4.0"
     tslib "^2.3.0"
 
 "@angular/ng-dev@https://github.com/angular/dev-infra-private-ng-dev-builds.git#36946be4df61f6549ae3829c026022e47674eae2":
@@ -544,10 +448,10 @@
   dependencies:
     tslib "^2.3.0"
 
-"@angular/platform-browser@^18.0.0":
-  version "18.0.0"
-  resolved "https://registry.yarnpkg.com/@angular/platform-browser/-/platform-browser-18.0.0.tgz#841870304fd4635d5c1b31ef835efde4e494bee0"
-  integrity sha512-fOqXQn15H33xGTGgNBUwXAg5KRpqcdsVfipFBuD1GMbjMLQAx/AagxsBavRiq3mKEdHZyQ+hI4mvaKQWOPKUOQ==
+"@angular/platform-browser@^18.2.1":
+  version "18.2.4"
+  resolved "https://registry.yarnpkg.com/@angular/platform-browser/-/platform-browser-18.2.4.tgz#06a6494af1f8422097a92272bab5dc1bc2b2c68a"
+  integrity sha512-ddzq5MyPvFyTv0kUe8U9fbhE1nZtLYBCFKDqICrzHXiVRAdqLv6qtE5PtbURrdspSy1u/YEGV4LdkNJK3UgnZQ==
   dependencies:
     tslib "^2.3.0"
 
@@ -4467,10 +4371,10 @@
     "@types/minimatch" "*"
     "@types/node" "*"
 
-"@types/google.maps@^3.54.10":
-  version "3.55.8"
-  resolved "https://registry.yarnpkg.com/@types/google.maps/-/google.maps-3.55.8.tgz#5149d6fc388f89643da3ed909c1933e5f8945076"
-  integrity sha512-aSyvlCRXzF9Jtjqq4zmA24sczKZ0QWJnn4zRrkufCoohHulS6LCf4KsF22eAlnHBuVYwEhQoMXIufUS7kXF5uA==
+"@types/google.maps@^3.55.12":
+  version "3.58.0"
+  resolved "https://registry.yarnpkg.com/@types/google.maps/-/google.maps-3.58.0.tgz#98de7bc271cc9edf81dbe8c317fc9ce130b99311"
+  integrity sha512-rZPrbNHoGxeY70uuQYFLGQqcz5mLd3pZy0u286GSugvN7PLFsHNRF2wN2QXtUgNiC33IC0LX+MD3LGAC3wN7Eg==
 
 "@types/http-cache-semantics@*":
   version "4.0.1"
@@ -4872,10 +4776,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/youtube@^0.0.46":
-  version "0.0.46"
-  resolved "https://registry.yarnpkg.com/@types/youtube/-/youtube-0.0.46.tgz#925afdf741f35279114da7c58c98013868a949f5"
-  integrity sha512-Yf1Y4bDj/QIn8v+zdy0l7+OW6s1uoUvzVn5cGqPNCsL4iUW4gYUlIdQIRtH9NOHVgwZNLbVeeRDEn6N4RMq6Nw==
+"@types/youtube@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@types/youtube/-/youtube-0.1.0.tgz#0e116bd0a8ddb93daf1372fb5e07f576cf9fe5cc"
+  integrity sha512-Pg33m3X2mFgdmhtvzOlAfUfgOa3341N3/2JCrVY/mXVxb4hagcqqEG6w4vGCfB64StQNWHSj/T8Eotb1Rko/FQ==
 
 "@typescript-eslint/types@4.33.0":
   version "4.33.0"
@@ -15607,7 +15511,16 @@ string-argv@~0.3.1:
   resolved "https://registry.yarnpkg.com/string-argv/-/string-argv-0.3.2.tgz#2b6d0ef24b656274d957d54e0a4bbf6153dc02b6"
   integrity sha512-aqD2Q0144Z+/RqG52NeHEkZauTAUWJO8c6yTftGJKO3Tja5tUgIfmIl6kExvhtxSDP7fXB6DvzkfMpCd/F3G+Q==
 
-"string-width-cjs@npm:string-width@^4.2.0", "string-width@^1.0.2 || 2 || 3 || 4", string-width@^4.0.0, string-width@^4.1.0, string-width@^4.2.0, string-width@^4.2.2, string-width@^4.2.3:
+"string-width-cjs@npm:string-width@^4.2.0":
+  version "4.2.3"
+  resolved "https://registry.yarnpkg.com/string-width/-/string-width-4.2.3.tgz#269c7117d27b05ad2e536830a8ec895ef9c6d010"
+  integrity sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==
+  dependencies:
+    emoji-regex "^8.0.0"
+    is-fullwidth-code-point "^3.0.0"
+    strip-ansi "^6.0.1"
+
+"string-width@^1.0.2 || 2 || 3 || 4", string-width@^4.0.0, string-width@^4.1.0, string-width@^4.2.0, string-width@^4.2.2, string-width@^4.2.3:
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/string-width/-/string-width-4.2.3.tgz#269c7117d27b05ad2e536830a8ec895ef9c6d010"
   integrity sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==
@@ -15659,7 +15572,7 @@ stringify-object@^3.2.1:
     is-obj "^1.0.1"
     is-regexp "^1.0.0"
 
-"strip-ansi-cjs@npm:strip-ansi@^6.0.1", strip-ansi@^6.0.0, strip-ansi@^6.0.1:
+"strip-ansi-cjs@npm:strip-ansi@^6.0.1":
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/strip-ansi/-/strip-ansi-6.0.1.tgz#9e26c63d30f53443e9489495b2105d37b67a85d9"
   integrity sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==
@@ -15672,6 +15585,13 @@ strip-ansi@^3.0.0:
   integrity sha512-VhumSSbBqDTP8p2ZLKj40UjBCV4+v8bUSEpUb4KjRgWk9pbqGF4REFj6KEagidb2f/M6AzC0EmFyDNGaw9OCzg==
   dependencies:
     ansi-regex "^2.0.0"
+
+strip-ansi@^6.0.0, strip-ansi@^6.0.1:
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/strip-ansi/-/strip-ansi-6.0.1.tgz#9e26c63d30f53443e9489495b2105d37b67a85d9"
+  integrity sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==
+  dependencies:
+    ansi-regex "^5.0.1"
 
 strip-ansi@^7.0.1:
   version "7.0.1"
@@ -17100,7 +17020,7 @@ wordwrap@^1.0.0:
   resolved "https://registry.yarnpkg.com/wordwrap/-/wordwrap-1.0.0.tgz#27584810891456a4171c8d0226441ade90cbcaeb"
   integrity sha1-J1hIEIkUVqQXHI0CJkQa3pDLyus=
 
-"wrap-ansi-cjs@npm:wrap-ansi@^7.0.0", wrap-ansi@^7.0.0:
+"wrap-ansi-cjs@npm:wrap-ansi@^7.0.0":
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/wrap-ansi/-/wrap-ansi-7.0.0.tgz#67e145cff510a6a6984bdf1152911d69d2eb9e43"
   integrity sha512-YVGIj2kamLSTxw6NsZjoBxfSwsn0ycdesmc4p+Q21c5zPuZ1pl+NfxVdxPtdHvmNVOQ6XSYG4AUtyt/Fi7D16Q==
@@ -17113,6 +17033,15 @@ wrap-ansi@^6.0.1, wrap-ansi@^6.2.0:
   version "6.2.0"
   resolved "https://registry.yarnpkg.com/wrap-ansi/-/wrap-ansi-6.2.0.tgz#e9393ba07102e6c91a3b221478f0257cd2856e53"
   integrity sha512-r6lPcBGxZXlIcymEu7InxDMhdW0KDxpLgoFLcguasxCaJ/SOIZwINatK9KY/tf+ZrlywOKU0UDj3ATXUBfxJXA==
+  dependencies:
+    ansi-styles "^4.0.0"
+    string-width "^4.1.0"
+    strip-ansi "^6.0.0"
+
+wrap-ansi@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/wrap-ansi/-/wrap-ansi-7.0.0.tgz#67e145cff510a6a6984bdf1152911d69d2eb9e43"
+  integrity sha512-YVGIj2kamLSTxw6NsZjoBxfSwsn0ycdesmc4p+Q21c5zPuZ1pl+NfxVdxPtdHvmNVOQ6XSYG4AUtyt/Fi7D16Q==
   dependencies:
     ansi-styles "^4.0.0"
     string-width "^4.1.0"
