@@ -79,6 +79,10 @@ mesop main.py
 
 Learn more in [Getting Started](https://google.github.io/mesop/getting-started/installing/).
 
+## Reporting a security issue
+
+If you identify a security vulnerability with Mesop, please file a [GitHub security issue](https://github.com/google/mesop/security/advisories/new) and we will promptly respond to it.
+
 ## Disclaimer
 
 _This is not an officially supported Google product._
