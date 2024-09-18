@@ -211,15 +211,6 @@ export class Channel {
                 false;
             }
 
-            const experimentSettings = uiResponse
-              .getRender()!
-              .getExperimentSettings();
-            if (experimentSettings) {
-              this.experimentService.experimentalEditorToolbarEnabled =
-                experimentSettings.getExperimentalEditorToolbarEnabled() ??
-                false;
-            }
-
             this.componentConfigs = uiResponse
               .getRender()!
               .getComponentConfigsList();
@@ -290,15 +281,32 @@ export class Channel {
       this.init(this.initParams, request);
     };
     this.logger.log({type: 'UserEventLog', userEvent: userEvent});
-    if (
-      this.status === ChannelStatus.CLOSED ||
-      this.experimentService.concurrentUpdatesEnabled
-    ) {
+
+    if (this.status === ChannelStatus.CLOSED) {
       initUserEvent();
     } else {
-      this.queuedEvents.push(() => {
-        initUserEvent();
-      });
+      this.queuedEvents.push(initUserEvent);
+      if (this.experimentService.concurrentUpdatesEnabled) {
+        // We will wait 1 second to see if the server will respond with a new state.
+        // This addresses common use cases where a user may
+        // type in a text input and then click a button and
+        // they would expect the updated text input state to be
+        // included in the click button event.
+        setTimeout(() => {
+          const initUserEventIndex = this.queuedEvents.findIndex(
+            (event) => event === initUserEvent,
+          );
+          // The initUserEvent may have already been removed off the queue
+          // if the response came back from the server already.
+          if (initUserEventIndex !== -1) {
+            const initUserEvent = this.queuedEvents.splice(
+              initUserEventIndex,
+              1,
+            )[0];
+            initUserEvent();
+          }
+        }, 1000);
+      }
     }
   }
 

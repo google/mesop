@@ -6,6 +6,12 @@ Mesop is configured at the application level using environment variables.
 
 ## Configuration values
 
+### MESOP_CONCURRENT_UPDATES_ENABLED
+
+Allows concurrent updates to state in the same session. If this is not updated, then updates are queued and processed sequentially.
+
+By default, this is not enabled. You can enable this by setting it to `true`.
+
 ### MESOP_STATE_SESSION_BACKEND
 
 Sets the backend to use for caching state data server-side. This makes it so state does
