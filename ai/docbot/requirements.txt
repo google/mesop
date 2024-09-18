@@ -372,3 +372,4 @@ wrapt==1.16.0
     #   llama-index-core
 yarl==1.9.4
     # via aiohttp
+zipp>=3.19.1 # not directly required, pinned by Snyk to avoid a vulnerability
