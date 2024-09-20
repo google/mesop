@@ -72,6 +72,7 @@ class MemoryStateSessionBackend(StateSessionBackend):
 
   def __init__(self):
     self.cache = {}
+    self.last_checked_sessions = datetime(1900, 1, 1)
 
   def restore(self, token: str, states: States):
     if token not in self.cache:
@@ -89,15 +90,36 @@ class MemoryStateSessionBackend(StateSessionBackend):
   def clear_stale_sessions(self):
     stale_keys = set()
 
+    # Avoid trying to clear sessions with every request to avoid unnecessary processing.
     current_time = _current_datetime()
-    for key, (timestamp, _) in self.cache.items():
+    if (
+      self.last_checked_sessions + timedelta(minutes=self._SESSION_TTL_MINUTES)
+      > current_time
+    ):
+      return
+
+    self.last_checked_sessions = current_time
+
+    # Copy cache keys first to avoid possibility of the keys being removed
+    # while processing stale keys.
+    cache_keys = list(self.cache)
+
+    for key in cache_keys:
+      timestamp, _ = self.cache.get(key, (None, None))
       if (
-        timestamp + timedelta(minutes=self._SESSION_TTL_MINUTES) < current_time
+        timestamp
+        and timestamp + timedelta(minutes=self._SESSION_TTL_MINUTES)
+        < current_time
       ):
         stale_keys.add(key)
 
     for key in stale_keys:
-      del self.cache[key]
+      try:
+        del self.cache[key]
+      except KeyError:
+        logging.warning(
+          f"Tried to delete non-existent memory cache entry {key}."
+        )
 
 
 class FileStateSessionBackend(StateSessionBackend):
