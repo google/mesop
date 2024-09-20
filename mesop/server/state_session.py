@@ -1,6 +1,5 @@
 import logging
 import os
-import threading
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any, Protocol
@@ -13,8 +12,6 @@ from mesop.dataclass_utils import (
 )
 from mesop.exceptions import MesopException
 from mesop.server.config import Config, app_config
-
-mutex = threading.Lock()
 
 States = dict[type[Any], object]
 
@@ -103,10 +100,9 @@ class MemoryStateSessionBackend(StateSessionBackend):
 
     self.last_checked_sessions = current_time
 
-    # Add a mutex in the case where a cache item may be removed while looping through
-    # the cache. Limit scope of the lock by just getting the cache keys.
-    with mutex:
-      cache_keys = list(self.cache)
+    # Copy cache keys first to avoid possibility of the keys being removed
+    # while processing stale keys.
+    cache_keys = list(self.cache)
 
     for key in cache_keys:
       timestamp, _ = self.cache.get(key, (None, None))
