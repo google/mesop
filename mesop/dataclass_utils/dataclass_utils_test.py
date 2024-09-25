@@ -195,7 +195,6 @@ def test_serialize_pydantic_model():
   serialized_dataclass = serialize_dataclass(
     WithPydanticModel(data=PydanticModel(name="Hello", counter=1))
   )
-  print("SERIALIZED", serialized_dataclass, type(serialized_dataclass))
   assert (
     serialized_dataclass
     == """{"data": {"__pydantic.BaseModel__": {"json": "{\\"name\\":\\"Hello\\",\\"counter\\":1}", "module": "dataclass_utils.dataclass_utils_test", "qualname": "PydanticModel"}}}"""

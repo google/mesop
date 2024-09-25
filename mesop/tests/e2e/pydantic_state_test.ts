@@ -9,6 +9,6 @@ test('pydantic state is serialized and deserialized properly', async ({
   await expect(page.getByText('Counter: 0')).toBeVisible();
   await page.getByRole('button', {name: 'Increment Counter'}).click();
   await expect(page.getByText('Counter: 1')).toBeVisible();
-  // await page.getByRole('button', {name: 'Increment Counter'}).click();
-  // await expect(page.getByText('Counter: 2')).toBeVisible();
+  await page.getByRole('button', {name: 'Increment Counter'}).click();
+  await expect(page.getByText('Counter: 2')).toBeVisible();
 });
