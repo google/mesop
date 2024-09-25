@@ -19,7 +19,7 @@ _DATE_FORMAT = "%Y-%m-%d"
 class DatePickerChangeEvent(MesopEvent):
   """Represents a date picker change event.
 
-  This event will only fire if a valid date was specified.
+  This event will only fire if a valid date is specified.
 
   Attributes:
       date: Date value
@@ -42,7 +42,7 @@ register_event_mapper(
 class DateRangePickerChangeEvent(MesopEvent):
   """Represents a date range picker change event.
 
-  This event will only fire if start and ends dates are valid dates.
+  This event will only fire if start and end dates are valid dates.
 
   Attributes:
       start_date: Start date
@@ -86,10 +86,10 @@ def date_picker(
   """Creates a date picker component.
 
   Args:
-    label: Label for datepicker input.
+    label: Label for date picker input.
     on_change: Fires when a valid date value has been specified through Calendar date selection or user input blur.
     appearance: The form field appearance style.
-    style: Style for datepicker input.
+    style: Style for date picker input.
     disabled: Whether it's disabled.
     placeholder: Placeholder value.
     required: Whether it's required.
@@ -153,10 +153,10 @@ def date_range_picker(
   """Creates a date range picker component.
 
   Args:
-    label: Label for datepicker input.
+    label: Label for date range picker input.
     on_change: Fires when valid date values for both start/end have been specified through Calendar date selection or user input blur.
     appearance: The form field appearance style.
-    style: Style for datepicker input.
+    style: Style for date range picker input.
     disabled: Whether it's disabled.
     placeholder_start_date: Start date placeholder value.
     placeholder_end_date: End date placeholder value.
