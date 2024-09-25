@@ -1,4 +1,4 @@
-load("//build_defs:defaults.bzl", "THIRD_PARTY_PY_DEEPDIFF", "THIRD_PARTY_PY_PANDAS", "THIRD_PARTY_PY_PYTEST", "py_library", "py_test")
+load("//build_defs:defaults.bzl", "THIRD_PARTY_PY_DEEPDIFF", "THIRD_PARTY_PY_PANDAS", "THIRD_PARTY_PY_PYDANTIC", "THIRD_PARTY_PY_PYTEST", "py_library", "py_test")
 
 package(
     default_visibility = ["//build_defs:mesop_internal"],
@@ -13,7 +13,7 @@ py_library(
     deps = [
         "//mesop/components/uploader:uploaded_file",
         "//mesop/exceptions",
-    ] + THIRD_PARTY_PY_DEEPDIFF,
+    ] + THIRD_PARTY_PY_DEEPDIFF + THIRD_PARTY_PY_PYDANTIC,
 )
 
 py_test(

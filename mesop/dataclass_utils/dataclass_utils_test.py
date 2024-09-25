@@ -4,6 +4,7 @@ from datetime import datetime
 import numpy as np
 import pandas as pd
 import pytest
+from pydantic import BaseModel
 
 import mesop.protos.ui_pb2 as pb
 from mesop.components.uploader.uploaded_file import UploadedFile
@@ -47,6 +48,16 @@ class WithBytes:
 @dataclass
 class WithUploadedFile:
   data: UploadedFile = field(default_factory=UploadedFile)
+
+
+class PydanticModel(BaseModel):
+  name: str = "World"
+  counter: int = 0
+
+
+@dataclass
+class WithPydanticModel:
+  data: PydanticModel = field(default_factory=PydanticModel)
 
 
 JSON_STR = """{"b": {"c": {"val": "<init>"}},
@@ -177,6 +188,17 @@ def test_serialize_uploaded_file():
   assert (
     serialized_dataclass
     == '{"data": {"__mesop.UploadedFile__": {"contents": "ZGF0YQ==", "name": "file.png", "size": 10, "mime_type": "image/png"}}}'
+  )
+
+
+def test_serialize_pydantic_model():
+  serialized_dataclass = serialize_dataclass(
+    WithPydanticModel(data=PydanticModel(name="Hello", counter=1))
+  )
+  print("SERIALIZED", serialized_dataclass, type(serialized_dataclass))
+  assert (
+    serialized_dataclass
+    == """{"data": {"__pydantic.BaseModel__": {"json": "{\\"name\\":\\"Hello\\",\\"counter\\":1}", "module": "dataclass_utils.dataclass_utils_test", "qualname": "PydanticModel"}}}"""
   )
 
 
