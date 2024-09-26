@@ -388,7 +388,7 @@ describe('applyStateDiff functionality', () => {
     const diff = JSON.stringify([
       {
         path: ['data'],
-        action: 'mesop_uploaded_file_changed',
+        action: 'mesop_equality_changed',
         value: {
           '__mesop.UploadedFile__': {
             'contents': 'data',

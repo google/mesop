@@ -9,17 +9,19 @@ from typing import Any, Type, TypeVar, cast, get_origin, get_type_hints
 from deepdiff import DeepDiff, Delta
 from deepdiff.operator import BaseOperator
 from deepdiff.path import parse_path
+from pydantic import BaseModel
 
 from mesop.components.uploader.uploaded_file import UploadedFile
 from mesop.exceptions import MesopDeveloperException, MesopException
 
 _PANDAS_OBJECT_KEY = "__pandas.DataFrame__"
+_PYDANTIC_OBJECT_KEY = "__pydantic.BaseModel__"
 _DATETIME_OBJECT_KEY = "__datetime.datetime__"
 _BYTES_OBJECT_KEY = "__python.bytes__"
 _SET_OBJECT_KEY = "__python.set__"
 _UPLOADED_FILE_OBJECT_KEY = "__mesop.UploadedFile__"
 _DIFF_ACTION_DATA_FRAME_CHANGED = "data_frame_changed"
-_DIFF_ACTION_UPLOADED_FILE_CHANGED = "mesop_uploaded_file_changed"
+_DIFF_ACTION_EQUALITY_CHANGED = "mesop_equality_changed"
 
 C = TypeVar("C")
 
@@ -35,6 +37,8 @@ def _check_has_pandas():
 
 
 _has_pandas = _check_has_pandas()
+
+pydantic_model_cache = {}
 
 
 def dataclass_with_defaults(cls: Type[C]) -> Type[C]:
@@ -64,6 +68,14 @@ def dataclass_with_defaults(cls: Type[C]) -> Type[C]:
 
   annotations = get_type_hints(cls)
   for name, type_hint in annotations.items():
+    if (
+      isinstance(type_hint, type)
+      and has_parent(type_hint)
+      and issubclass(type_hint, BaseModel)
+    ):
+      pydantic_model_cache[(type_hint.__module__, type_hint.__qualname__)] = (
+        type_hint
+      )
     if name not in cls.__dict__:  # Skip if default already set
       if type_hint == int:
         setattr(cls, name, field(default=0))
@@ -187,6 +199,15 @@ class MesopJSONEncoder(json.JSONEncoder):
         }
       }
 
+    if isinstance(obj, BaseModel):
+      return {
+        _PYDANTIC_OBJECT_KEY: {
+          "json": obj.model_dump_json(),
+          "module": obj.__class__.__module__,
+          "qualname": obj.__class__.__qualname__,
+        }
+      }
+
     if isinstance(obj, datetime):
       return {_DATETIME_OBJECT_KEY: obj.isoformat()}
 
@@ -220,6 +241,18 @@ def decode_mesop_json_state_hook(dct):
 
     if _PANDAS_OBJECT_KEY in dct:
       return pd.read_json(StringIO(dct[_PANDAS_OBJECT_KEY]), orient="table")
+
+  if _PYDANTIC_OBJECT_KEY in dct:
+    cache_key = (
+      dct[_PYDANTIC_OBJECT_KEY]["module"],
+      dct[_PYDANTIC_OBJECT_KEY]["qualname"],
+    )
+    if cache_key not in pydantic_model_cache:
+      raise MesopException(
+        f"Tried to deserialize Pydantic model, but it's not in the cache: {cache_key}"
+      )
+    model_class = pydantic_model_cache[cache_key]
+    return model_class.model_validate_json(dct[_PYDANTIC_OBJECT_KEY]["json"])
 
   if _DATETIME_OBJECT_KEY in dct:
     return datetime.fromisoformat(dct[_DATETIME_OBJECT_KEY])
@@ -269,25 +302,22 @@ class DataFrameOperator(BaseOperator):
     return True
 
 
-class UploadedFileOperator(BaseOperator):
-  """Custom operator to detect changes in UploadedFile class.
+class EqualityOperator(BaseOperator):
+  """Custom operator to detect changes with direct equality.
 
   DeepDiff does not diff the UploadedFile class correctly, so we will just use a normal
   equality check, rather than diffing further into the io.BytesIO parent class.
-
-  This class could probably be made more generic to handle other classes where we want
-  to diff using equality checks.
   """
 
   def match(self, level) -> bool:
-    return isinstance(level.t1, UploadedFile) and isinstance(
-      level.t2, UploadedFile
+    return isinstance(level.t1, (UploadedFile, BaseModel)) and isinstance(
+      level.t2, (UploadedFile, BaseModel)
     )
 
   def give_up_diffing(self, level, diff_instance) -> bool:
     if level.t1 != level.t2:
       diff_instance.custom_report_result(
-        _DIFF_ACTION_UPLOADED_FILE_CHANGED, level, {"value": level.t2}
+        _DIFF_ACTION_EQUALITY_CHANGED, level, {"value": level.t2}
       )
     return True
 
@@ -306,7 +336,7 @@ def diff_state(state1: Any, state2: Any) -> str:
     raise MesopException("Tried to diff state which was not a dataclass")
 
   custom_actions = []
-  custom_operators = [UploadedFileOperator()]
+  custom_operators = [EqualityOperator()]
   # Only use the `DataFrameOperator` if pandas exists.
   if _has_pandas:
     differences = DeepDiff(
@@ -328,15 +358,15 @@ def diff_state(state1: Any, state2: Any) -> str:
   else:
     differences = DeepDiff(state1, state2, custom_operators=custom_operators)
 
-  # Manually format UploadedFile diffs to flat dict format.
-  if _DIFF_ACTION_UPLOADED_FILE_CHANGED in differences:
+  # Manually format diffs to flat dict format.
+  if _DIFF_ACTION_EQUALITY_CHANGED in differences:
     custom_actions = [
       {
         "path": parse_path(path),
-        "action": _DIFF_ACTION_UPLOADED_FILE_CHANGED,
+        "action": _DIFF_ACTION_EQUALITY_CHANGED,
         **diff,
       }
-      for path, diff in differences[_DIFF_ACTION_UPLOADED_FILE_CHANGED].items()
+      for path, diff in differences[_DIFF_ACTION_EQUALITY_CHANGED].items()
     ]
 
   # Handle the set case which will have a modified path after being JSON encoded.

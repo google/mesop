@@ -78,7 +78,7 @@ export function applyComponentDiff(component: Component, diff: ComponentDiff) {
 const STATE_DIFF_VALUES_CHANGED = 'values_changed';
 const STATE_DIFF_TYPE_CHANGES = 'type_changes';
 const STATE_DIFF_DATA_FRAME_CHANGED = 'data_frame_changed';
-const STATE_DIFF_UPLOADED_FILE_CHANGED = 'mesop_uploaded_file_changed';
+const STATE_DIFF_EQUALITY_CHANGED = 'mesop_equality_changed';
 const STATE_DIFF_ITERABLE_ITEM_REMOVED = 'iterable_item_removed';
 const STATE_DIFF_ITERABLE_ITEM_ADDED = 'iterable_item_added';
 const STATE_DIFF_SET_ITEM_REMOVED = 'set_item_removed';
@@ -118,7 +118,7 @@ export function applyStateDiff(stateJson: string, diffJson: string): string {
       row.action === STATE_DIFF_VALUES_CHANGED ||
       row.action === STATE_DIFF_TYPE_CHANGES ||
       row.action === STATE_DIFF_DATA_FRAME_CHANGED ||
-      row.action === STATE_DIFF_UPLOADED_FILE_CHANGED
+      row.action === STATE_DIFF_EQUALITY_CHANGED
     ) {
       updateValue(root, row.path, row.value);
     } else if (row.action === STATE_DIFF_DICT_ITEM_ADDED) {
