@@ -66,6 +66,7 @@ class PydanticModel(BaseModel):
   )
   optional_value: str | None = None
   union_value: str | int = 0
+  tuple_value: tuple[str, int] = ("a", 1)
 
 
 @dataclass_with_defaults
@@ -236,6 +237,14 @@ def test_serialize_deserialize_pydantic_model_set_optional_value():
 def test_serialize_deserialize_pydantic_model_set_union_value():
   state = WithPydanticModel()
   state.data.union_value = "union_value"
+  new_state = WithPydanticModel()
+  update_dataclass_from_json(new_state, serialize_dataclass(state))
+  assert new_state == state
+
+
+def test_serialize_deserialize_pydantic_model_set_tuple_value():
+  state = WithPydanticModel()
+  state.data.tuple_value = ("tuple_value", 1)
   new_state = WithPydanticModel()
   update_dataclass_from_json(new_state, serialize_dataclass(state))
   assert new_state == state
