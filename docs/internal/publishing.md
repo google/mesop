@@ -10,7 +10,7 @@ Update [`mesop/version.py`](https://github.com/google/mesop/blob/main/mesop/vers
 
 You want to first create an RC (release candidate) to ensure that it works.
 
-For example, if the current version is: `0.7.0`, then you should increment the version to `0.8.0rc0` which will create an RC, which is treated as a [pre-release by PyPI](https://packaging.python.org/en/latest/specifications/version-specifiers/#pre-releases).
+For example, if the current version is: `0.7.0`, then you should increment the version to `0.8.0rc1` which will create an RC, which is treated as a [pre-release by PyPI](https://packaging.python.org/en/latest/specifications/version-specifiers/#pre-releases).
 
 ## Install locally
 
@@ -28,7 +28,7 @@ This will build the Mesop pip package and install it locally so you can test it.
 
 ### Dev CLI
 
-The above shell script will run the following command:
+The above shell script will tell you to run the following command:
 
 ```sh
 mesop main.py
@@ -67,7 +67,7 @@ Because Colab installs from PyPI, you will need to test the RC on Colab after up
 Open our [Mesop Colab notebook](https://colab.research.google.com/github/google/mesop/blob/main/notebooks/mesop_colab_getting_started.ipynb). You will need to explicitly pip install the RC version as pip will _not_ automatically install a pre-release version, even if it's the newest version. So change the first cell to something like:
 
 ```sh
- !pip install mesop==0.X.Yrc0
+ !pip install mesop==0.X.Yrc1
 ```
 
 > Tip: sometimes it takes a minute for the PyPI registry to be updated after upload, so just try again.
@@ -76,11 +76,11 @@ Then, run all the cells and make sure it works. Usually if something breaks in C
 
 ## Change the version from RC to regular release
 
-If you find an issue, then redo the above steps and create another RC candidate: `0.8.0rc0` -> `0.8.0rc1`.
+If you find an issue, then redo the above steps and create another RC candidate: `0.8.0rc1` -> `0.8.0rc2`.
 
 If all the testing looks good, then you can update [`mesop/version.py`](https://github.com/google/mesop/blob/main/mesop/version.py) and change the version from RC to a regular release, for example:
 
-`0.8.0rc0` -> `0.8.0`
+`0.8.0rc1` -> `0.8.0`
 
 Re-do the steps above to build, test and upload it to PyPI.
 
