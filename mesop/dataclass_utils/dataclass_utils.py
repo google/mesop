@@ -68,6 +68,14 @@ def dataclass_with_defaults(cls: Type[C]) -> Type[C]:
 
   annotations = get_type_hints(cls)
   for name, type_hint in annotations.items():
+    if (
+      isinstance(type_hint, type)
+      and has_parent(type_hint)
+      and issubclass(type_hint, BaseModel)
+    ):
+      pydantic_model_cache[(type_hint.__module__, type_hint.__qualname__)] = (
+        type_hint
+      )
     if name not in cls.__dict__:  # Skip if default already set
       if type_hint == int:
         setattr(cls, name, field(default=0))
@@ -83,10 +91,6 @@ def dataclass_with_defaults(cls: Type[C]) -> Type[C]:
         setattr(cls, name, field(default_factory=dict))
       elif isinstance(type_hint, type):
         if has_parent(type_hint):
-          if issubclass(type_hint, BaseModel):
-            pydantic_model_cache[
-              (type_hint.__module__, type_hint.__qualname__)
-            ] = type_hint
           # If this isn't a simple class (i.e. it inherits from another class)
           # then we will preserve its semantics (not try to set default values
           # because it's not a dataclass) and instantiate it with each new instance

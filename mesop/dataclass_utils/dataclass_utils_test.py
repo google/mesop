@@ -50,14 +50,32 @@ class WithUploadedFile:
   data: UploadedFile = field(default_factory=UploadedFile)
 
 
+class NestedPydanticModel(BaseModel):
+  default_value: str = "default"
+  no_default_value: str
+
+
 class PydanticModel(BaseModel):
   name: str = "World"
   counter: int = 0
+  list_models: list[NestedPydanticModel] = field(default_factory=lambda: [])
+  nested: NestedPydanticModel = field(
+    default_factory=lambda: NestedPydanticModel(
+      no_default_value="<no_default_factory>"
+    )
+  )
+  optional_value: str | None = None
+  union_value: str | int = 0
 
 
-@dataclass
+@dataclass_with_defaults
 class WithPydanticModel:
-  data: PydanticModel = field(default_factory=PydanticModel)
+  data: PydanticModel
+
+
+@dataclass_with_defaults
+class WithPydanticModelDefaultFactory:
+  default_factory: PydanticModel = field(default_factory=PydanticModel)
 
 
 JSON_STR = """{"b": {"c": {"val": "<init>"}},
@@ -191,14 +209,48 @@ def test_serialize_uploaded_file():
   )
 
 
-def test_serialize_pydantic_model():
-  serialized_dataclass = serialize_dataclass(
-    WithPydanticModel(data=PydanticModel(name="Hello", counter=1))
+def test_serialize_deserialize_pydantic_model():
+  state = WithPydanticModel()
+  state.data.name = "Hello"
+  state.data.counter = 1
+  state.data.nested = NestedPydanticModel(no_default_value="no_default")
+  state.data.list_models.append(
+    NestedPydanticModel(no_default_value="no_default_list_model_val_1")
   )
-  assert (
-    serialized_dataclass
-    == """{"data": {"__pydantic.BaseModel__": {"json": "{\\"name\\":\\"Hello\\",\\"counter\\":1}", "module": "dataclass_utils.dataclass_utils_test", "qualname": "PydanticModel"}}}"""
+  state.data.list_models.append(
+    NestedPydanticModel(no_default_value="no_default_list_model_val_2")
   )
+  new_state = WithPydanticModel()
+  update_dataclass_from_json(new_state, serialize_dataclass(state))
+  assert new_state == state
+
+
+def test_serialize_deserialize_pydantic_model_set_optional_value():
+  state = WithPydanticModel()
+  state.data.optional_value = "optional"
+  new_state = WithPydanticModel()
+  update_dataclass_from_json(new_state, serialize_dataclass(state))
+  assert new_state == state
+
+
+def test_serialize_deserialize_pydantic_model_set_union_value():
+  state = WithPydanticModel()
+  state.data.union_value = "union_value"
+  new_state = WithPydanticModel()
+  update_dataclass_from_json(new_state, serialize_dataclass(state))
+  assert new_state == state
+
+
+def test_serialize_deserialize_pydantic_model_default_factory():
+  state = WithPydanticModelDefaultFactory()
+  state.default_factory.name = "Hello"
+  state.default_factory.counter = 1
+  state.default_factory.nested = NestedPydanticModel(
+    no_default_value="no_default"
+  )
+  new_state = WithPydanticModelDefaultFactory()
+  update_dataclass_from_json(new_state, serialize_dataclass(state))
+  assert new_state == state
 
 
 @pytest.mark.parametrize(
