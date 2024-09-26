@@ -8,7 +8,12 @@ class State:
   slider_value: float = 50.0
 
 
+def load(e: me.LoadEvent):
+  me.set_theme_mode("system")
+
+
 @me.page(
+  on_load=load,
   security_policy=me.SecurityPolicy(
     allowed_iframe_parents=["https://google.github.io"]
   ),
@@ -16,9 +21,16 @@ class State:
 )
 def app():
   state = me.state(State)
-  with me.box(style=me.Style(display="flex", flex_direction="column")):
+  with me.box(
+    style=me.Style(
+      display="flex", flex_direction="column", margin=me.Margin.all(15)
+    )
+  ):
     me.input(
-      label="Slider value", value=state.initial_input_value, on_input=on_input
+      label="Slider value",
+      appearance="outline",
+      value=state.initial_input_value,
+      on_input=on_input,
     )
     me.slider(on_value_change=on_value_change, value=state.initial_slider_value)
     me.text(text=f"Value: {me.state(State).slider_value}")

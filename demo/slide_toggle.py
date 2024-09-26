@@ -11,13 +11,19 @@ def on_change(event: me.SlideToggleChangeEvent):
   s.toggled = not s.toggled
 
 
+def load(e: me.LoadEvent):
+  me.set_theme_mode("system")
+
+
 @me.page(
+  on_load=load,
   security_policy=me.SecurityPolicy(
     allowed_iframe_parents=["https://google.github.io"]
   ),
   path="/slide_toggle",
 )
 def app():
-  me.slide_toggle(label="Slide toggle", on_change=on_change)
-  s = me.state(State)
-  me.text(text=f"Toggled: {s.toggled}")
+  with me.box(style=me.Style(margin=me.Margin.all(15))):
+    me.slide_toggle(label="Slide toggle", on_change=on_change)
+    s = me.state(State)
+    me.text(text=f"Toggled: {s.toggled}")
