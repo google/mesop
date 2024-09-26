@@ -24,7 +24,12 @@ class State:
   show_preview: bool = True
 
 
+def load(e: me.LoadEvent):
+  me.set_theme_mode("system")
+
+
 @me.page(
+  on_load=load,
   security_policy=me.SecurityPolicy(
     allowed_iframe_parents=["https://google.github.io"]
   ),
@@ -124,12 +129,14 @@ def on_text_input(e: me.InputEvent):
 
 # STYLES
 
-_BACKGROUND_COLOR = "#fafafa"
-_FONT_COLOR = "#555"
-_NOTE_ROW_FONT_COLOR = "#777"
+_BACKGROUND_COLOR = me.theme_var("surface-container-lowest")
+_FONT_COLOR = me.theme_var("on-surface-variant")
+_NOTE_ROW_FONT_COLOR = me.theme_var("on-surface")
 _NOTE_ROW_FONT_SIZE = "14px"
-_SELECTED_ROW_BACKGROUND_COLOR = "#dee3eb"
-_DEFAULT_BORDER_STYLE = me.BorderSide(width=1, style="solid", color="#bbb")
+_SELECTED_ROW_BACKGROUND_COLOR = me.theme_var("surface-variant")
+_DEFAULT_BORDER_STYLE = me.BorderSide(
+  width=1, style="solid", color=me.theme_var("outline-variant")
+)
 
 
 def _style_container(show_preview: bool = True) -> me.Style:

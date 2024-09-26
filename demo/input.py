@@ -11,7 +11,12 @@ def on_blur(e: me.InputBlurEvent):
   state.input = e.value
 
 
+def load(e: me.LoadEvent):
+  me.set_theme_mode("system")
+
+
 @me.page(
+  on_load=load,
   security_policy=me.SecurityPolicy(
     allowed_iframe_parents=["https://google.github.io"]
   ),

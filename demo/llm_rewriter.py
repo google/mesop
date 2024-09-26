@@ -29,7 +29,12 @@ class State:
   modal_open: bool
 
 
+def load(e: me.LoadEvent):
+  me.set_theme_mode("light")
+
+
 @me.page(
+  on_load=load,
   security_policy=me.SecurityPolicy(
     allowed_iframe_parents=["https://google.github.io"]
   ),
@@ -253,14 +258,14 @@ _BOT_USER_DEFAULT = "mesop-bot"
 
 # Styles
 
-_COLOR_BACKGROUND = "#fff"
-_COLOR_CHAT_BUBBLE_YOU = "#f2f2f2"
-_COLOR_CHAT_BUBBLE_BOT = "#ebf3ff"
-_COLOR_CHAT_BUUBBLE_EDITED = "#f2ebff"
+_COLOR_BACKGROUND = me.theme_var("background")
+_COLOR_CHAT_BUBBLE_YOU = me.theme_var("surface-container-low")
+_COLOR_CHAT_BUBBLE_BOT = me.theme_var("secondary-container")
+_COLOR_CHAT_BUUBBLE_EDITED = me.theme_var("tertiary-container")
 
 _DEFAULT_PADDING = me.Padding.all(20)
 _DEFAULT_BORDER_SIDE = me.BorderSide(
-  width="1px", style="solid", color="#ececec"
+  width="1px", style="solid", color=me.theme_var("secondary-fixed")
 )
 
 _LABEL_BUTTON = "send"
@@ -306,7 +311,7 @@ _STYLE_CHAT_BUBBLE_NAME = me.Style(
 _STYLE_CHAT_BUBBLE_PLAINTEXT = me.Style(margin=me.Margin.symmetric(vertical=15))
 
 _STYLE_MODAL_CONTAINER = me.Style(
-  background="#fff",
+  background=me.theme_var("surface-container"),
   margin=me.Margin.symmetric(vertical="0", horizontal="auto"),
   width="min(1024px, 100%)",
   box_sizing="content-box",
@@ -322,7 +327,9 @@ _STYLE_PREVIEW_CONTAINER = me.Style(
   grid_template_columns="repeat(2, 1fr)",
 )
 
-_STYLE_PREVIEW_ORIGINAL = me.Style(color="#777", padding=_DEFAULT_PADDING)
+_STYLE_PREVIEW_ORIGINAL = me.Style(
+  color=me.theme_var("on-surface"), padding=_DEFAULT_PADDING
+)
 
 _STYLE_PREVIEW_REWRITE = me.Style(
   background=_COLOR_CHAT_BUUBBLE_EDITED, padding=_DEFAULT_PADDING

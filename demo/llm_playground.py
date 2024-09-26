@@ -35,7 +35,12 @@ class State:
   clear_sequence_count: int = 0
 
 
+def load(e: me.LoadEvent):
+  me.set_theme_mode("system")
+
+
 @me.page(
+  on_load=load,
   security_policy=me.SecurityPolicy(
     allowed_iframe_parents=["https://google.github.io"]
   ),
@@ -491,7 +496,7 @@ def _make_modal_background_style(modal_open: bool) -> me.Style:
 
 _DEFAULT_PADDING = me.Padding.all(15)
 _DEFAULT_BORDER = me.Border.all(
-  me.BorderSide(color="#e0e0e0", width=1, style="solid")
+  me.BorderSide(color=me.theme_var("outline-variant"), width=1, style="solid")
 )
 
 _STYLE_INPUT_WIDTH = me.Style(width="100%")
@@ -536,7 +541,7 @@ _STYLE_CONFIG_HEADER = me.Style(
 _STYLE_STOP_SEQUENCE_CHIP = me.Style(margin=me.Margin.all(3))
 
 _STYLE_MODAL_CONTAINER = me.Style(
-  background="#fff",
+  background=me.theme_var("surface-container-high"),
   margin=me.Margin.symmetric(vertical="0", horizontal="auto"),
   width="min(1024px, 100%)",
   box_sizing="content-box",
@@ -550,6 +555,4 @@ _STYLE_MODAL_CONTENT = me.Style(margin=me.Margin.all(30))
 _STYLE_CODE_BOX = me.Style(
   font_size=13,
   margin=me.Margin.symmetric(vertical=10, horizontal=0),
-  padding=me.Padding.all(10),
-  border=me.Border.all(me.BorderSide(color="#e0e0e0", width=1, style="solid")),
 )
