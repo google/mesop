@@ -3,6 +3,7 @@ import inspect
 import json
 import os
 import secrets
+import sys
 import time
 import urllib.parse as urlparse
 from typing import Any, Generator, Sequence
@@ -40,6 +41,7 @@ if MESOP_CONCURRENT_UPDATES_ENABLED:
 if EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED:
   print("Experiment enabled: EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED")
 
+
 LOCALHOSTS = (
   # For IPv4 localhost
   "127.0.0.1",
@@ -48,6 +50,8 @@ LOCALHOSTS = (
 )
 
 STREAM_END = "data: <stream_end>\n\n"
+
+DEFAULT_ASSETS_URL_PATH = "/assets"
 
 
 def is_processing_request():
@@ -60,7 +64,15 @@ _requests_in_flight = 0
 def configure_flask_app(
   *, prod_mode: bool = True, exceptions_to_propagate: Sequence[type] = ()
 ) -> Flask:
-  flask_app = Flask(__name__)
+  static_assets_folder = get_static_assets_folder()
+  if static_assets_folder:
+    flask_app = Flask(
+      __name__,
+      static_folder=static_assets_folder,
+      static_url_path=DEFAULT_ASSETS_URL_PATH,
+    )
+  else:
+    flask_app = Flask(__name__)
 
   def render_loop(
     path: str,
@@ -513,3 +525,16 @@ def sse_request(
         if decoded_line.startswith(SSE_DATA_PREFIX):
           event_data = json.loads(decoded_line[len(SSE_DATA_PREFIX) :])
           yield event_data
+
+
+def get_static_assets_folder() -> str | None:
+  folder = os.environ.get("MESOP_STATIC_ASSETS_FOLDER", "")
+  if not folder:
+    return None
+
+  if not os.path.isabs(folder):
+    folder = os.path.join(
+      os.path.dirname(os.path.abspath(sys.argv[0])),
+      folder,
+    )
+  return folder
