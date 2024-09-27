@@ -14,6 +14,7 @@ from mesop.events import ClickEvent
 def box(
   *,
   style: Style | None = None,
+  classes: str = "",
   on_click: Callable[[ClickEvent], Any] | None = None,
   key: str | None = None,
 ) -> Any:
@@ -21,6 +22,7 @@ def box(
 
   Args:
     style: Style to apply to component. Follows [HTML Element inline style API](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/style).
+    classes: CSS classes
     on_click: The callback function that is called when the box is clicked.
       It receives a ClickEvent as its only argument.
     key: The component [key](../components/index.md#component-key).
@@ -35,6 +37,7 @@ def box(
       on_click_handler_id=register_event_handler(on_click, event=ClickEvent)
       if on_click
       else "",
+      classes=classes if isinstance(classes, list) else classes.split(" "),
     ),
     style=style,
   )

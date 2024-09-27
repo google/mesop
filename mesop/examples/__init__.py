@@ -6,6 +6,7 @@ from mesop.examples import async_await as async_await
 from mesop.examples import (
   boilerplate_free_event_handlers as boilerplate_free_event_handlers,
 )
+from mesop.examples import bootstrap as bootstrap
 from mesop.examples import box as box
 from mesop.examples import buttons as buttons
 from mesop.examples import checkbox_and_radio as checkbox_and_radio
@@ -45,6 +46,7 @@ from mesop.examples import (
 )
 from mesop.examples import starter_kit as starter_kit
 from mesop.examples import sxs as sxs
+from mesop.examples import tailwind as tailwind
 from mesop.examples import testing as testing
 from mesop.examples import viewport_size as viewport_size
 from mesop.examples import web_component as web_component

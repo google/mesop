@@ -288,6 +288,10 @@ export class ComponentRenderer {
 
   computeStyles() {
     this.elementRef.nativeElement.style = this.getStyle();
+    const classes = this.getClasses();
+    if (classes) {
+      this.elementRef.nativeElement.classList = classes;
+    }
   }
 
   createComponentRef() {
@@ -371,6 +375,12 @@ Make sure the web component name is spelled the same between Python and JavaScri
   //////////////
   // Box-specific implementation:
   //////////////
+  getClasses(): string {
+    if (this._boxType) {
+      return this._boxType.getClassesList().join(' ');
+    }
+    return '';
+  }
 
   getStyle(): string {
     if (!this._boxType) {
@@ -395,10 +405,7 @@ Make sure the web component name is spelled the same between Python and JavaScri
       return '';
     }
 
-    // `display: block` because box should have "div"-like semantics.
-    // Custom elements like Angular component tags are treated as inline by default.
-    let style = 'display: block;';
-
+    let style = '';
     if (this.component.getStyle()) {
       style += formatStyle(this.component.getStyle()!);
     }
