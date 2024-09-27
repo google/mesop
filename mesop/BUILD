@@ -20,6 +20,7 @@ py_library(
     deps = [
         ":version",
         # REF(//scripts/scaffold_component.py):insert_component_import
+        "//mesop/components/date_range_picker:py",
         "//mesop/components/datepicker:py",
         "//mesop/components/autocomplete:py",
         "//mesop/components/link:py",

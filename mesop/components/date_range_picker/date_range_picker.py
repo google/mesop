@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from datetime import date, datetime
 from typing import Any, Callable, Literal
 
-import mesop.components.datepicker.datepicker_pb2 as datepicker_pb
+import mesop.components.date_range_picker.date_range_picker_pb2 as date_range_picker_pb
 from mesop.component_helpers import (
   Style,
   insert_component,
@@ -16,39 +16,44 @@ _DATE_FORMAT = "%Y-%m-%d"
 
 
 @dataclass(kw_only=True)
-class DatePickerChangeEvent(MesopEvent):
-  """Represents a date picker change event.
+class DateRangePickerChangeEvent(MesopEvent):
+  """Represents a date range picker change event.
 
-  This event will only fire if a valid date is specified.
+  This event will only fire if start and end dates are valid dates.
 
   Attributes:
-      date: Date value
+      start_date: Start date
+      end_date: End date
       key (str): key of the component that emitted this event.
   """
 
-  date: date
+  start_date: date
+  end_date: date
 
 
 register_event_mapper(
-  DatePickerChangeEvent,
-  lambda userEvent, key: DatePickerChangeEvent(
-    date=_try_make_date(userEvent.string_value),
+  DateRangePickerChangeEvent,
+  lambda userEvent, key: DateRangePickerChangeEvent(
+    start_date=_try_make_date(userEvent.date_range_picker_event.start_date),
+    end_date=_try_make_date(userEvent.date_range_picker_event.end_date),
     key=key.key,
   ),
 )
 
 
 @register_native_component
-def date_picker(
+def date_range_picker(
   *,
   label: str = "",
-  on_change: Callable[[DatePickerChangeEvent], Any] | None = None,
+  on_change: Callable[[DateRangePickerChangeEvent], Any] | None = None,
   appearance: Literal["fill", "outline"] = "fill",
   style: Style | None = None,
   disabled: bool = False,
-  placeholder: str = "",
+  placeholder_start_date: str = "",
+  placeholder_end_date: str = "",
   required: bool = False,
-  value: date | None = None,
+  start_date: date | None = None,
+  end_date: date | None = None,
   readonly: bool = False,
   hide_required_marker: bool = False,
   color: Literal["primary", "accent", "warn"] = "primary",
@@ -57,17 +62,19 @@ def date_picker(
   hint_label: str = "",
   key: str | None = None,
 ):
-  """Creates a date picker component.
+  """Creates a date range picker component.
 
   Args:
-    label: Label for date picker input.
-    on_change: Fires when a valid date value has been specified through Calendar date selection or user input blur.
+    label: Label for date range picker input.
+    on_change: Fires when valid date values for both start/end have been specified through Calendar date selection or user input blur.
     appearance: The form field appearance style.
-    style: Style for date picker input.
+    style: Style for date range picker input.
     disabled: Whether it's disabled.
-    placeholder: Placeholder value.
+    placeholder_start_date: Start date placeholder value.
+    placeholder_end_date: End date placeholder value.
     required: Whether it's required.
-    value: Initial value.
+    start_date: Start date initial value.
+    end_date: End date initial value.
     readonly: Whether the element is readonly.
     hide_required_marker: Whether the required marker should be hidden.
     color: The color palette for the form field.
@@ -79,10 +86,12 @@ def date_picker(
 
   insert_component(
     key=key,
-    type_name="datepicker",
-    proto=datepicker_pb.DatePickerType(
-      value=_try_make_date_str(value),
-      placeholder=placeholder,
+    type_name="date_range_picker",
+    proto=date_range_picker_pb.DateRangePickerType(
+      start_date=_try_make_date_str(start_date),
+      end_date=_try_make_date_str(end_date),
+      placeholder_start_date=placeholder_start_date,
+      placeholder_end_date=placeholder_end_date,
       disabled=disabled,
       required=required,
       readonly=readonly,
@@ -94,7 +103,7 @@ def date_picker(
       hint_label=hint_label,
       label=label,
       on_change_handler_id=register_event_handler(
-        on_change, event=DatePickerChangeEvent
+        on_change, event=DateRangePickerChangeEvent
       )
       if on_change
       else "",

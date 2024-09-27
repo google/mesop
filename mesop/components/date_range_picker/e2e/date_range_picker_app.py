@@ -14,7 +14,7 @@ class State:
   )
 
 
-@me.page(path="/date_range_picker")
+@me.page(path="/components/date_range_picker/e2e/datepicker_app")
 def app():
   state = me.state(State)
   with me.box(
@@ -28,8 +28,8 @@ def app():
     me.date_range_picker(
       label="Date Range",
       disabled=False,
-      placeholder_start_date="9/1/2024",
-      placeholder_end_date="10/1/2024",
+      placeholder_start_date="9/12/2024",
+      placeholder_end_date="10/12/2024",
       required=True,
       start_date=state.picked_start_date,
       end_date=state.picked_end_date,

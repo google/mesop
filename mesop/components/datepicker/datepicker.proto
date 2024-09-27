@@ -2,10 +2,10 @@ syntax = "proto2";
 
 package mesop.components.datepicker;
 
-// Next ID: 17
-message DatepickerType {
-  optional string value1 = 1;
-  optional string placeholder1 = 2;
+// Next ID: 14
+message DatePickerType {
+  optional string value = 1;
+  optional string placeholder = 2;
   optional bool disabled = 3;
   optional bool required = 4;
   optional bool readonly = 5;
@@ -17,9 +17,4 @@ message DatepickerType {
   optional string hint_label = 11;
   optional string label = 12;
   optional string on_change_handler_id = 13;
-  // Used for date range picker only.
-  optional string placeholder2 = 14;
-  optional string value2 = 15;
-  // Not exposed as public API.
-  optional bool is_date_range = 16;
 }
