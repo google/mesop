@@ -9,7 +9,11 @@ class State:
   picked_date: date | None = field(default_factory=lambda: date(2024, 10, 1))
 
 
-@me.page(path="/date_picker")
+def on_load(e: me.LoadEvent):
+  me.set_theme_mode("system")
+
+
+@me.page(path="/date_picker", on_load=on_load)
 def app():
   state = me.state(State)
   with me.box(
