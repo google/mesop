@@ -37,7 +37,7 @@ test('end date input', async ({page}) => {
 test('date range picker', async ({page}) => {
   await page.goto('/components/date_range_picker/e2e/date_range_picker_app');
 
-  await page.locator('//button').click();
+  await page.getByLabel('Open calendar').click();
   await page.locator('//button/span[text()=" 15 "]').click();
 
   // Unchanged until end date is selected.

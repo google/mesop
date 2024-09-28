@@ -16,7 +16,7 @@ test('date picker', async ({page}) => {
   await expect(page.getByText('Selected date: 2024-09-10')).toBeVisible();
 
   // Pick date from calendar
-  await page.locator('//button').click();
+  await page.getByLabel('Open calendar').click();
   await page.locator('//button/span[text()=" 15 "]').click();
   await expect(page.getByText('Selected date: 2024-09-15')).toBeVisible();
 });
