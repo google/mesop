@@ -15,6 +15,8 @@ py_library(
     deps = [
         "//demo",
         # REF(//scripts/scaffold_component.py):insert_component_e2e_import
+        "//mesop/components/date_range_picker/e2e",
+        "//mesop/components/datepicker/e2e",
         "//mesop/components/autocomplete/e2e",
         "//mesop/components/link/e2e",
         "//mesop/components/html/e2e",

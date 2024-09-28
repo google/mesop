@@ -1,0 +1,36 @@
+<mat-form-field
+  [hideRequiredMarker]="config().getHideRequiredMarker()!"
+  [color]="getColor()"
+  [floatLabel]="getFloatLabel()"
+  [appearance]="getAppearance()"
+  [subscriptSizing]="getSubscriptSizing()"
+  [style]="getStyle()"
+>
+  <mat-label *ngIf="config().getLabel()">{{config().getLabel()}}</mat-label>
+  <mat-date-range-input
+    [formGroup]="dateRange"
+    [rangePicker]="dp"
+    [required]="config().getRequired()!"
+    [disabled]="config().getDisabled()!"
+  >
+    <input
+      matStartDate
+      formControlName="start"
+      [readonly]="config().getReadonly()!"
+      [placeholder]="config().getPlaceholderStartDate()!"
+      (dateChange)="onChange($event)"
+    />
+    <input
+      matEndDate
+      formControlName="end"
+      [readonly]="config().getReadonly()!"
+      [placeholder]="config().getPlaceholderEndDate()!"
+      (dateChange)="onChange($event)"
+    />
+  </mat-date-range-input>
+  <mat-hint *ngIf="config().getHintLabel()">
+    {{ config().getHintLabel() }}
+  </mat-hint>
+  <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
+  <mat-date-range-picker #dp></mat-date-range-picker>
+</mat-form-field>

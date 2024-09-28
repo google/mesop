@@ -1,0 +1,22 @@
+syntax = "proto2";
+
+package mesop.components.date_range_picker;
+
+// Next ID: 16
+message DateRangePickerType {
+  optional string start_date = 1;
+  optional string end_date = 2;
+  optional string placeholder_start_date = 3;
+  optional string placeholder_end_date = 4;
+  optional bool disabled = 5;
+  optional bool required = 6;
+  optional bool readonly = 7;
+  optional bool hide_required_marker = 8;
+  optional string color = 9;
+  optional string float_label = 10;
+  optional string appearance = 11;
+  optional string subscript_sizing = 12;
+  optional string hint_label = 13;
+  optional string label = 14;
+  optional string on_change_handler_id = 15;
+}

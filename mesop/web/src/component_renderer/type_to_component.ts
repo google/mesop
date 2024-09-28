@@ -1,3 +1,5 @@
+import {DateRangePickerComponent} from '../../../components/date_range_picker/date_range_picker';
+import {DatepickerComponent} from '../../../components/datepicker/datepicker';
 import {AutocompleteComponent} from '../../../components/autocomplete/autocomplete';
 import {LinkComponent} from '../../../components/link/link';
 import {HtmlComponent} from '../../../components/html/html';
@@ -56,6 +58,8 @@ export class UserDefinedComponent implements BaseComponent {
 }
 
 export const typeToComponent = {
+  'date_range_picker': DateRangePickerComponent,
+  'datepicker': DatepickerComponent,
   'autocomplete': AutocompleteComponent,
   'link': LinkComponent,
   'html': HtmlComponent,
