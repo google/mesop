@@ -5,6 +5,7 @@ from typing import Optional
 
 import pandas as pd
 import pytest
+from pydantic import BaseModel
 
 from mesop.components.uploader.uploaded_file import UploadedFile
 from mesop.dataclass_utils.dataclass_utils import diff_state
@@ -409,13 +410,40 @@ def test_diff_uploaded_file():
   assert json.loads(diff_state(s1, s2)) == [
     {
       "path": ["data"],
-      "action": "mesop_uploaded_file_changed",
+      "action": "mesop_equality_changed",
       "value": {
         "__mesop.UploadedFile__": {
           "contents": "ZGF0YQ==",
           "name": "file.png",
           "size": 10,
           "mime_type": "image/png",
+        },
+      },
+    }
+  ]
+
+
+def test_diff_pydantic_model():
+  class PydanticModel(BaseModel):
+    name: str = "World"
+    counter: int = 0
+
+  @dataclass
+  class C:
+    data: PydanticModel
+
+  s1 = C(data=PydanticModel())
+  s2 = C(data=PydanticModel(name="Hello", counter=1))
+
+  assert json.loads(diff_state(s1, s2)) == [
+    {
+      "path": ["data"],
+      "action": "mesop_equality_changed",
+      "value": {
+        "__pydantic.BaseModel__": {
+          "json": '{"name":"Hello","counter":1}',
+          "module": "dataclass_utils.diff_state_test",
+          "qualname": "test_diff_pydantic_model.<locals>.PydanticModel",
         },
       },
     }

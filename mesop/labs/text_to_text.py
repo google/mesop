@@ -84,13 +84,13 @@ def text_to_text(
 
   with me.box(
     style=me.Style(
-      background="#f0f4f8",
+      background=me.theme_var("surface-container-low"),
       height="100%",
     )
   ):
     with me.box(
       style=me.Style(
-        background="#f0f4f8",
+        background=me.theme_var("surface-container-low"),
         padding=me.Padding(top=24, left=24, right=24, bottom=24),
         display="flex",
         flex_direction="column",
@@ -110,7 +110,14 @@ def text_to_text(
       ):
         box_style = me.Style(
           flex_basis="max(480px, calc(50% - 48px))",
-          background="#fff",
+          background=me.theme_var("surface-container-lowest"),
+          border=me.Border.all(
+            me.BorderSide(
+              width=1,
+              style="solid" if me.theme_brightness() == "dark" else "none",
+              color=me.theme_var("outline"),
+            )
+          ),
           border_radius=12,
           box_shadow="0 3px 1px -2px #0003, 0 2px 2px #00000024, 0 1px 5px #0000001f",
           padding=me.Padding(top=16, left=16, right=16, bottom=16),
@@ -126,6 +133,7 @@ def text_to_text(
             rows=5,
             autosize=True,
             max_rows=15,
+            appearance="outline",
             style=me.Style(width="100%"),
           )
           me.box(style=me.Style(height=12))
