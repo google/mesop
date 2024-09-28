@@ -135,6 +135,7 @@ def input_field(
       label=label,
       value=value,
       appearance="outline",
+      color="warn" if key in state.errors else "primary",
       style=me.Style(width=width),
       type=input_type,
       on_blur=on_blur,
