@@ -13,5 +13,5 @@ and is based on the [Angular Material datapicker component](https://material.ang
 
 ## API
 
-::: mesop.components.datepicker.datepicker.date_range_picker
-::: mesop.components.datepicker.datepicker.DateRangePickerChangeEvent
+::: mesop.components.date_range_picker.date_range_picker.date_range_picker
+::: mesop.components.date_range_picker.date_range_picker.DateRangePickerChangeEvent
