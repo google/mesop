@@ -2,7 +2,15 @@ import collections.abc
 import inspect
 from dataclasses import is_dataclass
 from types import NoneType
-from typing import Any, Callable, ItemsView, Literal, Sequence
+from typing import (
+  Any,
+  Callable,
+  ItemsView,
+  Literal,
+  Sequence,
+  get_args,
+  get_origin,
+)
 
 import mesop.protos.ui_pb2 as pb
 from mesop.exceptions import MesopInternalException
@@ -79,6 +87,14 @@ def get_fields(
         and args[0] is float
         and args[1] is str
         and args[2] is NoneType
+      )
+      or (
+        # special case, for list[str]|str (used for box classes), use str
+        args
+        and len(args) == 2
+        and get_origin(args[0]) is list
+        and get_args(args[0]) == (str,)
+        and args[1] is str
       )
     ):
       field_type = pb.FieldType(string_type=pb.StringType())

@@ -260,6 +260,12 @@ body {
   }
 }
 
+// The box component has div-like semantics, so make it `display: block` by default.
+// Custom elements like Angular component tags are treated as inline by default.
+component-renderer {
+  display: block;
+}
+
 mesop-markdown {
   h1,
   h2,
