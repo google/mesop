@@ -176,6 +176,8 @@ export class ComponentRenderer {
       this._boxType = BoxType.deserializeBinary(
         this.component.getType()!.getValue() as unknown as Uint8Array,
       );
+      // Used for determinine which component-renderer elements are not boxes.
+      this.elementRef.nativeElement.setAttribute('mesop-box', 'true');
     }
 
     this.computeStyles();
