@@ -15,6 +15,7 @@ def box(
   *,
   style: Style | None = None,
   on_click: Callable[[ClickEvent], Any] | None = None,
+  classes: list[str] | str = "",
   key: str | None = None,
 ) -> Any:
   """Creates a box component.
@@ -23,6 +24,7 @@ def box(
     style: Style to apply to component. Follows [HTML Element inline style API](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/style).
     on_click: The callback function that is called when the box is clicked.
       It receives a ClickEvent as its only argument.
+    classes: CSS classes.
     key: The component [key](../components/index.md#component-key).
 
   Returns:
@@ -35,6 +37,7 @@ def box(
       on_click_handler_id=register_event_handler(on_click, event=ClickEvent)
       if on_click
       else "",
+      classes=classes if isinstance(classes, list) else classes.split(" "),
     ),
     style=style,
   )

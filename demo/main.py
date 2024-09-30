@@ -24,6 +24,7 @@ import audio as audio
 import autocomplete as autocomplete
 import badge as badge
 import basic_animation as basic_animation
+import bootstrap as bootstrap
 import box as box
 import button as button
 import chat as chat
@@ -123,6 +124,12 @@ FIRST_SECTIONS = [
     examples=[
       Example(name="basic_animation"),
       Example(name="feedback"),
+    ],
+  ),
+  Section(
+    name="Integrations",
+    examples=[
+      Example(name="bootstrap"),
     ],
   ),
 ]
