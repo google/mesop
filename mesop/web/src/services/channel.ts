@@ -60,6 +60,9 @@ export class Channel {
   private hotReloadBackoffCounter = 0;
   private hotReloadCounter = 0;
 
+  // Client-side state
+  private overridedTitle = '';
+
   constructor(
     private logger: Logger,
     private title: Title,
@@ -180,7 +183,9 @@ export class Channel {
             for (const command of uiResponse.getRender()!.getCommandsList()) {
               onCommand(command);
             }
-            const title = uiResponse.getRender()!.getTitle();
+
+            const title =
+              this.overridedTitle || uiResponse.getRender()!.getTitle();
             if (title) {
               this.title.setTitle(title);
             }
@@ -339,6 +344,14 @@ export class Channel {
     const delay = 2 ** this.hotReloadBackoffCounter * 100;
     this.hotReloadBackoffCounter++;
     return delay;
+  }
+
+  resetOverridedTitle() {
+    this.overridedTitle = '';
+  }
+
+  setOverridedTitle(newTitle: string) {
+    this.overridedTitle = newTitle;
   }
 
   hotReload() {

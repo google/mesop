@@ -7,6 +7,9 @@ from mesop.colab.colab_show import colab_show as colab_show
 from mesop.commands.focus_component import focus_component as focus_component
 from mesop.commands.navigate import navigate as navigate
 from mesop.commands.scroll_into_view import scroll_into_view as scroll_into_view
+from mesop.commands.update_page_title import (
+  update_page_title as update_page_title,
+)
 from mesop.component_helpers import (
   Border as Border,
 )

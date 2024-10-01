@@ -126,6 +126,7 @@ export class Shell {
               window.location.href = url;
             } else {
               this.router.navigateByUrl(command.getNavigate()!.getUrl()!);
+              this.channel.resetOverridedTitle();
             }
           } else if (command.hasScrollIntoView()) {
             // Scroll into view
@@ -155,6 +156,10 @@ export class Shell {
                 behavior: 'smooth',
               });
             }, 0);
+          } else if (command.hasUpdatePageTitle()) {
+            this.channel.setOverridedTitle(
+              command.getUpdatePageTitle()!.getTitle() || '',
+            );
           } else if (command.hasFocusComponent()) {
             // Focus on component
             const key = command.getFocusComponent()!.getKey();
