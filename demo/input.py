@@ -23,6 +23,7 @@ def load(e: me.LoadEvent):
   path="/input",
 )
 def app():
-  s = me.state(State)
-  me.input(label="Basic input", on_blur=on_blur)
-  me.text(text=s.input)
+  with me.box(style=me.Style(margin=me.Margin.all(15))):
+    s = me.state(State)
+    me.input(label="Basic input", on_blur=on_blur)
+    me.text(text=s.input)
