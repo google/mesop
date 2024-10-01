@@ -1,7 +1,7 @@
 import {test, expect} from '@playwright/test';
 
 test('date picker', async ({page}) => {
-  await page.goto('1');
+  await page.goto('/components/datepicker/e2e/datepicker_app');
 
   // Enter valid date
   await page.locator('//input').click();
