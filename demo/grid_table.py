@@ -57,7 +57,12 @@ class State:
   theme: str = "light"
 
 
+def load(e: me.LoadEvent):
+  me.set_theme_mode("system")
+
+
 @me.page(
+  on_load=load,
   security_policy=me.SecurityPolicy(
     allowed_iframe_parents=["https://google.github.io"]
   ),
@@ -108,17 +113,15 @@ def app():
       ),
       sort_column=state.sort_column,
       sort_direction=state.sort_direction,
-      theme=GridTableThemeLight(striped=True)
-      if state.theme == "light"
-      else GridTableThemeDark(striped=True),
+      theme=GridTableThemeDefault(striped=True),
     )
 
     # Used for demonstrating "table button" click example.
     if state.string_output:
       with me.box(
         style=me.Style(
-          background="#ececec",
-          color="#333",
+          background=me.theme_var("surface-container-high"),
+          color=me.theme_var("on-surface"),
           margin=me.Margin(top=20),
           padding=me.Padding.all(15),
         )
@@ -222,14 +225,16 @@ class GridTableTheme(Protocol):
     return me.Style()
 
 
-class GridTableThemeDark(GridTableTheme):
-  _HEADER_BG: str = "#28313e"
-  _CELL_BG: str = "#141d2c"
-  _CELL_BG_ALT: str = "#02060c"
-  _COLOR: str = "#fff"
+class GridTableThemeDefault(GridTableTheme):
+  """This default theme utilizes Mesop's built in dark mode to toggle between dark/light themes."""
+
+  _HEADER_BG: str = me.theme_var("surface-container-highest")
+  _CELL_BG: str = me.theme_var("surface-container-low")
+  _CELL_BG_ALT: str = me.theme_var("surface-container-lowest")
+  _COLOR: str = me.theme_var("on-surface-variant")
   _PADDING: me.Padding = me.Padding.all(10)
   _BORDER: me.Border = me.Border.all(
-    me.BorderSide(width=1, style="solid", color="rgba(255, 255, 255, 0.16)")
+    me.BorderSide(width=1, style="solid", color=me.theme_var("outline-variant"))
   )
 
   def __init__(self, striped: bool = False):
@@ -246,9 +251,9 @@ class GridTableThemeDark(GridTableTheme):
 
   def sort_icon(self, current_column: str, sort_column: str) -> me.Style:
     return me.Style(
-      color="rgba(255, 255, 255, .8)"
+      color=me.theme_var("outline")
       if sort_column == current_column
-      else "rgba(255, 255, 255, .4)",
+      else me.theme_var("outline-variant"),
       # Hack to make the icon align correctly. Will break if user changes the
       # font size with custom styles.
       height=16,
@@ -270,61 +275,6 @@ class GridTableThemeDark(GridTableTheme):
       color=self._COLOR,
       padding=self._PADDING,
       border=self._BORDER,
-    )
-
-
-class GridTableThemeLight(GridTableTheme):
-  _HEADER_BG: str = "#fff"
-  _CELL_BG: str = "#fff"
-  _CELL_BG_ALT: str = "#f6f6f6"
-  _COLOR: str = "#000"
-  _PADDING: me.Padding = me.Padding.all(10)
-  _HEADER_BORDER: me.Border = me.Border(
-    bottom=me.BorderSide(width=1, style="solid", color="#b2b2b2")
-  )
-  _CELL_BORDER: me.Border = me.Border(
-    bottom=me.BorderSide(width=1, style="solid", color="#d9d9d9")
-  )
-
-  def __init__(self, striped: bool = False):
-    self.striped = striped
-
-  def header(self, sortable: bool = False) -> me.Style:
-    return me.Style(
-      background=self._HEADER_BG,
-      color=self._COLOR,
-      cursor="pointer" if sortable else "default",
-      font_weight="bold",
-      padding=self._PADDING,
-      border=self._HEADER_BORDER,
-    )
-
-  def sort_icon(self, current_column: str, sort_column: str) -> me.Style:
-    return me.Style(
-      color="rgba(0, 0, 0, .8)"
-      if sort_column == current_column
-      else "rgba(0, 0, 0, .4)",
-      # Hack to make the icon align correctly. Will break if user changes the
-      # font size with custom styles.
-      height=18,
-    )
-
-  def cell(self, cell_meta: GridTableCellMeta) -> me.Style:
-    return me.Style(
-      background=self._CELL_BG_ALT
-      if self.striped and cell_meta.row_index % 2
-      else self._CELL_BG,
-      color=self._COLOR,
-      padding=self._PADDING,
-      border=self._CELL_BORDER,
-    )
-
-  def expander(self, df_row_index: int) -> me.Style:
-    return me.Style(
-      background=self._CELL_BG,
-      color=self._COLOR,
-      padding=self._PADDING,
-      border=self._CELL_BORDER,
     )
 
 
@@ -357,6 +307,7 @@ def on_theme_changed(e: me.SelectSelectionChangeEvent):
   """Changes the theme of the grid table"""
   state = me.state(State)
   state.theme = e.value
+  me.set_theme_mode(state.theme)  # type: ignore
 
 
 def on_filter_by_strings(e: me.InputBlurEvent | me.InputEnterEvent):
@@ -432,12 +383,14 @@ def strings_component(meta: GridTableCellMeta):
     on_click=on_click_strings,
     style=me.Style(
       border_radius=3,
-      background="#334053",
+      background=me.theme_var("primary-container"),
       border=me.Border.all(
-        me.BorderSide(width=1, style="solid", color="rgba(255, 255, 255, 0.16)")
+        me.BorderSide(
+          width=1, style="solid", color=me.theme_var("primary-fixed-dim")
+        )
       ),
       font_weight="bold",
-      color="#fff",
+      color=me.theme_var("on-primary-container"),
     ),
   )
 
@@ -506,7 +459,7 @@ def grid_table(
       grid_template_columns=f"repeat({len(data.columns)}, 1fr)",
     )
   ):
-    _theme: GridTableTheme = GridTableThemeLight()
+    _theme: GridTableTheme = GridTableThemeDefault()
     if theme:
       _theme = theme
 
