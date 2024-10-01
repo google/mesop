@@ -22,7 +22,7 @@ TODOs:
 
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import Any, Callable, Literal, Protocol
+from typing import Any, Callable, Literal
 
 import pandas as pd
 
@@ -113,7 +113,7 @@ def app():
       ),
       sort_column=state.sort_column,
       sort_direction=state.sort_direction,
-      theme=GridTableThemeDefault(striped=True),
+      theme=GridTableTheme(striped=True),
     )
 
     # Used for demonstrating "table button" click example.
@@ -209,23 +209,7 @@ class GridTableCellMeta:
   value: Any
 
 
-class GridTableTheme(Protocol):
-  """Interface for theming the grid table"""
-
-  def header(self, sortable: bool = False) -> me.Style:
-    return me.Style()
-
-  def sort_icon(self, current_column: str, sort_column: str) -> me.Style:
-    return me.Style()
-
-  def cell(self, cell_meta: GridTableCellMeta) -> me.Style:
-    return me.Style()
-
-  def expander(self, df_row_index: int) -> me.Style:
-    return me.Style()
-
-
-class GridTableThemeDefault(GridTableTheme):
+class GridTableTheme:
   """This default theme utilizes Mesop's built in dark mode to toggle between dark/light themes."""
 
   _HEADER_BG: str = me.theme_var("surface-container-highest")
@@ -459,7 +443,7 @@ def grid_table(
       grid_template_columns=f"repeat({len(data.columns)}, 1fr)",
     )
   ):
-    _theme: GridTableTheme = GridTableThemeDefault()
+    _theme: GridTableTheme = GridTableTheme()
     if theme:
       _theme = theme
 
