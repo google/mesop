@@ -1,15 +1,21 @@
-import {test, expect} from '@playwright/test';
+import {Page, test, expect} from '@playwright/test';
+
+const expectTitleUpdate = async (page: Page, title: string) => {
+  return await expect(async () => {
+    expect(await page.title()).toEqual(title);
+  }).toPass({timeout: 5000});
+};
 
 test.describe('Update page title', () => {
   test('title updates', async ({page}) => {
     await page.goto('/update_page_title/page1');
 
     await page.getByText('update title').click();
-    await expect(await page.title()).toBe('Update title page 1');
+    await expectTitleUpdate(page, 'Update title page 1');
 
     // Title should stay the same even though state is updated.
     await page.getByText('title does not change if clicked').click();
-    await expect(await page.title()).toBe('Update title page 1');
+    await expectTitleUpdate(page, 'Update title page 1');
   });
 
   test.describe('navigation with separate yields', () => {
@@ -25,7 +31,7 @@ test.describe('Update page title', () => {
       await expect(page).toHaveURL(
         'http://127.0.0.1:32123/update_page_title/page2',
       );
-      await expect(await page.title()).toBe('Mesop: /update_page_title/page2');
+      await expectTitleUpdate(page, 'Mesop: /update_page_title/page2');
     });
 
     test('title change after navigate uses custom page title', async ({
@@ -39,7 +45,7 @@ test.describe('Update page title', () => {
       await expect(page).toHaveURL(
         'http://127.0.0.1:32123/update_page_title/page2',
       );
-      await expect(await page.title()).toBe('Update Page 2');
+      await expectTitleUpdate(page, 'Update Page 2');
     });
   });
 
@@ -56,7 +62,7 @@ test.describe('Update page title', () => {
       await expect(page).toHaveURL(
         'http://127.0.0.1:32123/update_page_title/page2',
       );
-      await expect(await page.title()).toBe('Mesop: /update_page_title/page2');
+      await expectTitleUpdate(page, 'Mesop: /update_page_title/page2');
     });
 
     test('title change after navigate uses custom page title', async ({
@@ -73,7 +79,7 @@ test.describe('Update page title', () => {
       await expect(page).toHaveURL(
         'http://127.0.0.1:32123/update_page_title/page2',
       );
-      await expect(await page.title()).toBe('Update Page 2');
+      await expectTitleUpdate(page, 'Update Page 2');
     });
   });
 
@@ -90,7 +96,7 @@ test.describe('Update page title', () => {
       await expect(page).toHaveURL(
         'http://127.0.0.1:32123/update_page_title/page3',
       );
-      await expect(await page.title()).toBe('Mesop: /update_page_title/page3');
+      await expectTitleUpdate(page, 'Mesop: /update_page_title/page3');
     });
 
     test('title change after navigate uses custom page title', async ({
@@ -107,7 +113,7 @@ test.describe('Update page title', () => {
       await expect(page).toHaveURL(
         'http://127.0.0.1:32123/update_page_title/page3',
       );
-      await expect(await page.title()).toBe('Update Page 3');
+      await expectTitleUpdate(page, 'Update Page 3');
     });
   });
 });
