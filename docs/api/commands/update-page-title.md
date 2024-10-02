@@ -1,6 +1,6 @@
 # Update page title
 
-If you want to update the page title, you can use `me.update_page title` which will
+If you want to update the page title, you can use `me.update_page_title` which will
 update the page title displayed on the browser tab.
 
 This change does not persist if you navigate to a new page. The title will be
