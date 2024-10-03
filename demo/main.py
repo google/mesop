@@ -27,6 +27,7 @@ import basic_animation as basic_animation
 import bootstrap as bootstrap
 import box as box
 import button as button
+import button_toggle as button_toggle
 import chat as chat
 import chat_inputs as chat_inputs
 import checkbox as checkbox
@@ -163,6 +164,7 @@ COMPONENTS_SECTIONS = [
     examples=[
       Example(name="autocomplete"),
       Example(name="button"),
+      Example(name="button_toggle"),
       Example(name="checkbox"),
       Example(name="date_picker"),
       Example(name="date_range_picker"),

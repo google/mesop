@@ -21,6 +21,7 @@ _CDK_ENTRY_POINTS = [
 
 _MATERIAL_ENTRY_POINTS = [
     "autocomplete",
+    "button-toggle",
     "datepicker",
     "dialog",
     "menu",

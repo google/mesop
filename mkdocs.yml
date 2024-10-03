@@ -60,6 +60,7 @@ nav:
       - Form controls:
           - Autocomplete: components/autocomplete.md
           - Button: components/button.md
+          - Button toggle: components/button_toggle.md
           - Checkbox: components/checkbox.md
           - Date picker: components/date_picker.md
           - Date range picker: components/date_range_picker.md
