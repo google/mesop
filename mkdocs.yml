@@ -95,6 +95,7 @@ nav:
       - Commands:
           - Scroll into view: api/commands/scroll-into-view.md
           - Focus component: api/commands/focus-component.md
+          - Set page title: api/commands/set-page-title.md
       - Config: api/config.md
   - FAQ:
       - FAQ: faq.md

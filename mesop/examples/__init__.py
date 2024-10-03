@@ -43,6 +43,10 @@ from mesop.examples import scroll_into_view as scroll_into_view
 from mesop.examples import (
   scroll_into_view_deferred as scroll_into_view_deferred,
 )
+from mesop.examples import set_page_title as set_page_title
+from mesop.examples import (
+  set_page_title_with_navigate as set_page_title_with_navigate,
+)
 from mesop.examples import starter_kit as starter_kit
 from mesop.examples import sxs as sxs
 from mesop.examples import tailwind as tailwind

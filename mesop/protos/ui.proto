@@ -192,6 +192,7 @@ message UpdateStateEvent {
     optional string state_token = 4;
 }
 
+// Next ID: 8
 message Command {
     oneof command {
         NavigateCommand navigate = 1;
@@ -200,6 +201,7 @@ message Command {
         SetThemeMode set_theme_mode = 3;
         SetThemeDensity set_theme_density = 4;
         FocusComponentCommand focus_component = 5;
+        SetPageTitle set_page_title = 7;
     }
 }
 
@@ -223,6 +225,11 @@ message FocusComponentCommand {
     // Key of the component to focus on
     optional string key = 1;
 }
+
+message SetPageTitle {
+    optional string title = 1;
+}
+
 
 enum ThemeMode {
     THEME_MODE_SYSTEM = 0;
