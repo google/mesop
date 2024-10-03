@@ -79,7 +79,7 @@ def page2():
 @me.page(path="/set_page_title/page3")
 def page3():
   with me.box(style=me.Style(margin=me.Margin.all(15))):
-    me.text("page2")
+    me.text("page3")
 
 
 def set_title(e: me.ClickEvent):
