@@ -65,5 +65,7 @@ def app():
         me.Shortcut(shift=True, key="ENTER"): on_newline,
         me.Shortcut(shift=True, meta=True, key="Enter"): on_clear,
       },
+      appearance="outline",
+      style=me.Style(width="100%"),
     )
     me.text(text=s.output)

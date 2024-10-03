@@ -1,11 +1,11 @@
-<mat-form-field [style]="getStyle()">
+<mat-form-field [style]="getStyle()" [appearance]="getAppearance()">
   <mat-label>{{config().getLabel()}}</mat-label>
   <mat-select
-    [disabled]="config().getDisabled()"
+    [(ngModel)]="selectedOptions"
+    [disabled]="config().getDisabled()!"
     [disableRipple]="config().getDisableRipple()"
     [tabIndex]="config().getTabIndex()"
     [placeholder]="config().getPlaceholder()!"
-    [value]="config().getValue()"
     (openedChange)="onSelectOpenedChangeEvent($event)"
     (selectionChange)="onSelectSelectionChangeEvent($event)"
     [multiple]="config().getMultiple()"

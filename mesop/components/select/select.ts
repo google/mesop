@@ -12,11 +12,12 @@ import {
 } from 'mesop/mesop/components/select/select_jspb_proto_pb/mesop/components/select/select_pb';
 import {Channel} from '../../web/src/services/channel';
 import {formatStyle} from '../../web/src/utils/styles';
+import {FormsModule} from '@angular/forms';
 
 @Component({
   templateUrl: 'select.ng.html',
   standalone: true,
-  imports: [MatSelectModule],
+  imports: [MatSelectModule, FormsModule],
 })
 export class SelectComponent {
   @Input({required: true}) type!: Type;
@@ -24,12 +25,25 @@ export class SelectComponent {
   @Input() style!: Style;
   private _config!: SelectType;
 
+  selectedOptions: string[] = [];
+  private initialSelectOptions: string[] = [];
+
   constructor(private readonly channel: Channel) {}
 
   ngOnChanges() {
     this._config = SelectType.deserializeBinary(
       this.type.getValue() as unknown as Uint8Array,
     );
+
+    // In order to preserve backwards compatibility, only update values if the incoming
+    // values change.
+    //
+    // This is to preserve the existing behavior where the value property is never set.
+    const values = this._config.getValueList();
+    if (this.initialSelectOptions !== values) {
+      this.initialSelectOptions = values;
+      this.selectedOptions = values;
+    }
   }
 
   config(): SelectType {
@@ -66,5 +80,9 @@ export class SelectComponent {
 
   getStyle(): string {
     return formatStyle(this.style);
+  }
+
+  getAppearance(): 'fill' | 'outline' {
+    return this.config().getAppearance() as 'fill' | 'outline';
   }
 }

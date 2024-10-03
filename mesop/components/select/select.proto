@@ -7,13 +7,15 @@ message SelectChangeEvent {
     repeated string values = 1;
 }
 
+// Next ID: 20
 message SelectType {
   optional bool disabled = 2;
   optional bool disable_ripple = 3;
   optional bool multiple = 18;
   optional double tab_index = 4;
+  optional string appearance = 19;
   optional string placeholder = 6;
-  optional string value = 9;
+  repeated string value = 9;
   optional string on_select_opened_change_event_handler_id = 14;
   optional string on_select_selection_change_event_handler_id = 15;
 

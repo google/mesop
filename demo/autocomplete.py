@@ -29,6 +29,7 @@ def app():
       on_selection_change=on_value_change,
       on_enter=on_value_change,
       on_input=on_input,
+      appearance="outline",
     )
 
     if state.selected_value:
