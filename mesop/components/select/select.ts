@@ -41,7 +41,7 @@ export class SelectComponent {
     // This is to preserve the existing behavior that allows the component to behave
     // reasonably even if the value property is set/updated.
     const values = this._config.getValueList();
-    if (this.initialSelectOptions !== values) {
+    if (this._checkInitialValuesChanged(values)) {
       this.initialSelectOptions = values;
       this.selectedOptions = values;
     }
@@ -85,5 +85,12 @@ export class SelectComponent {
 
   getAppearance(): 'fill' | 'outline' {
     return this.config().getAppearance() as 'fill' | 'outline';
+  }
+
+  private _checkInitialValuesChanged(values: string[]): boolean {
+    return (
+      JSON.stringify(this.initialSelectOptions.sort()) ===
+      JSON.stringify(values.sort)
+    );
   }
 }
