@@ -89,8 +89,8 @@ export class SelectComponent {
 
   private _checkInitialValuesChanged(values: string[]): boolean {
     return (
-      JSON.stringify(this.initialSelectOptions.sort()) ===
-      JSON.stringify(values.sort)
+      JSON.stringify(this.initialSelectOptions.sort()) !==
+      JSON.stringify(values.sort())
     );
   }
 }

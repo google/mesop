@@ -18,7 +18,6 @@ def on_selection_change(e: me.SelectSelectionChangeEvent):
 @me.page(path="/components/select/e2e/select_app_multiple")
 def app():
   state = me.state(State)
-  me.text(text="Select")
   me.select(
     label="Select",
     value=state.selected_values,
