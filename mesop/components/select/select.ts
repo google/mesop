@@ -38,7 +38,8 @@ export class SelectComponent {
     // In order to preserve backwards compatibility, only update values if the incoming
     // values change.
     //
-    // This is to preserve the existing behavior where the value property is never set.
+    // This is to preserve the existing behavior that allows the component to behave
+    // reasonably even if the value property is set/updated.
     const values = this._config.getValueList();
     if (this.initialSelectOptions !== values) {
       this.initialSelectOptions = values;
