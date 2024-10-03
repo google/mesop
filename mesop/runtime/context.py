@@ -124,9 +124,9 @@ class Context:
       pb.Command(focus_component=pb.FocusComponentCommand(key=key))
     )
 
-  def update_page_title(self, title: str) -> None:
+  def set_page_title(self, title: str) -> None:
     self._commands.append(
-      pb.Command(update_page_title=pb.UpdatePageTitleCommand(title=title))
+      pb.Command(set_page_title=pb.SetPageTitle(title=title))
     )
 
   def set_theme_density(self, density: int) -> None:

@@ -201,7 +201,7 @@ message Command {
         SetThemeMode set_theme_mode = 3;
         SetThemeDensity set_theme_density = 4;
         FocusComponentCommand focus_component = 5;
-        UpdatePageTitleCommand update_page_title = 7;
+        SetPageTitle set_page_title = 7;
     }
 }
 
@@ -226,7 +226,7 @@ message FocusComponentCommand {
     optional string key = 1;
 }
 
-message UpdatePageTitleCommand {
+message SetPageTitle {
     optional string title = 1;
 }
 

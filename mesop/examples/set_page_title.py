@@ -2,7 +2,7 @@ import mesop as me
 
 
 def on_blur(e: me.InputBlurEvent):
-  me.update_page_title(e.value)
+  me.set_page_title(e.value)
 
 
 def load(e: me.LoadEvent):
@@ -14,7 +14,7 @@ def load(e: me.LoadEvent):
   security_policy=me.SecurityPolicy(
     allowed_iframe_parents=["https://google.github.io"]
   ),
-  path="/update_page_title",
+  path="/set_page_title",
 )
 def app():
   with me.box(style=me.Style(margin=me.Margin.all(15))):

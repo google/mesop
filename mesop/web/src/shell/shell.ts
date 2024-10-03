@@ -156,9 +156,9 @@ export class Shell {
                 behavior: 'smooth',
               });
             }, 0);
-          } else if (command.hasUpdatePageTitle()) {
+          } else if (command.hasSetPageTitle()) {
             this.channel.setOverridedTitle(
-              command.getUpdatePageTitle()!.getTitle() || '',
+              command.getSetPageTitle()!.getTitle() || '',
             );
           } else if (command.hasFocusComponent()) {
             // Focus on component

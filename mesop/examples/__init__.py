@@ -43,14 +43,14 @@ from mesop.examples import scroll_into_view as scroll_into_view
 from mesop.examples import (
   scroll_into_view_deferred as scroll_into_view_deferred,
 )
+from mesop.examples import set_page_title as set_page_title
+from mesop.examples import (
+  set_page_title_with_navigate as set_page_title_with_navigate,
+)
 from mesop.examples import starter_kit as starter_kit
 from mesop.examples import sxs as sxs
 from mesop.examples import tailwind as tailwind
 from mesop.examples import testing as testing
-from mesop.examples import update_page_title as update_page_title
-from mesop.examples import (
-  update_page_title_with_navigate as update_page_title_with_navigate,
-)
 from mesop.examples import viewport_size as viewport_size
 from mesop.examples import web_component as web_component
 # Do not import error_state_missing_init_prop because it cause all examples to fail.
