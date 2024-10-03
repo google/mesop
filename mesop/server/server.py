@@ -5,7 +5,7 @@ import os
 import secrets
 import time
 import urllib.parse as urlparse
-from typing import Any, Generator, Sequence
+from typing import Any, Generator, Iterable, Sequence
 from urllib import request as urllib_request
 from urllib.error import URLError
 
@@ -268,10 +268,7 @@ def configure_flask_app(
     ui_request = pb.UiRequest()
     ui_request.ParseFromString(base64.urlsafe_b64decode(data))
 
-    response = Response(
-      stream_with_context(generate_data(ui_request)),
-      content_type="text/event-stream",
-    )
+    response = make_sse_response(stream_with_context(generate_data(ui_request)))
     return response
 
   @flask_app.before_request
@@ -408,7 +405,7 @@ def configure_flask_app(
           }
           yield f"data: {json.dumps(sse_data)}\n\n"
 
-      return Response(generate(), content_type="text/event-stream")
+      return make_sse_response(generate())
 
     @flask_app.route("/__hot-reload__")
     def hot_reload() -> Response:
@@ -513,3 +510,16 @@ def sse_request(
         if decoded_line.startswith(SSE_DATA_PREFIX):
           event_data = json.loads(decoded_line[len(SSE_DATA_PREFIX) :])
           yield event_data
+
+
+def make_sse_response(
+  response: Iterable[bytes] | bytes | Iterable[str] | str | None = None,
+):
+  return Response(
+    response,
+    content_type="text/event-stream",
+    # "X-Accel-Buffering" impacts SSE responses due to response buffering (i.e.
+    # individual events may get batched together instead of being sent right away).
+    # See https://nginx.org/en/docs/http/ngx_http_proxy_module.html
+    headers={"X-Accel-Buffering": "no"},
+  )
