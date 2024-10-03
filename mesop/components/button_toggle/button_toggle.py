@@ -58,7 +58,7 @@ class ButtonToggleButton:
 @register_native_component
 def button_toggle(
   *,
-  values: list[str] | None = None,
+  value: list[str] | str = "",
   buttons: Iterable[ButtonToggleButton],
   on_change: Callable[[ButtonToggleChangeEvent], Any] | None = None,
   multiple: bool = False,
@@ -72,7 +72,7 @@ def button_toggle(
   This function creates a button toggle.
 
   Args:
-    values: Selected values of the button toggle.
+    value: Selected values of the button toggle.
     buttons: List of button toggles.
     on_change: Event emitted when the group's value changes.
     multiple: Whether multiple button toggles can be selected.
@@ -86,7 +86,7 @@ def button_toggle(
     key=key,
     type_name="button_toggle",
     proto=button_toggle_pb.ButtonToggleType(
-      values=values or [],
+      value=_format_value_field_proto(value),
       buttons=[
         button_toggle_pb.ButtonToggleButton(
           label=button.label,
@@ -106,3 +106,13 @@ def button_toggle(
     ),
     style=style,
   )
+
+
+def _format_value_field_proto(value: list[str] | str):
+  if not value:
+    return []
+
+  if isinstance(value, list):
+    return value
+
+  return [value]

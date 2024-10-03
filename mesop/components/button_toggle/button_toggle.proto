@@ -3,7 +3,7 @@ syntax = "proto2";
 package mesop.components.button_toggle;
 
 message ButtonToggleType {
-    repeated string values = 1;
+    repeated string value = 1;
     repeated ButtonToggleButton buttons = 2;
     optional bool multiple = 3;
     optional bool disabled = 4;

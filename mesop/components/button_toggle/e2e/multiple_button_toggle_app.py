@@ -14,13 +14,15 @@ def load(e: me.LoadEvent):
   me.set_theme_mode("system")
 
 
-@me.page(on_load=load, path="/components/button_toggle/e2e/button_toggle_app")
+@me.page(
+  on_load=load, path="/components/button_toggle/e2e/multiple_button_toggle_app"
+)
 def app():
   state = me.state(State)
 
   with me.box(style=me.Style(margin=me.Margin.all(15))):
     me.button_toggle(
-      values=state.selected_values,
+      value=state.selected_values,
       buttons=[
         me.ButtonToggleButton(label="Bold", value="bold"),
         me.ButtonToggleButton(label="Italic", value="italic"),

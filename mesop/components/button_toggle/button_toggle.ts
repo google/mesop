@@ -57,7 +57,7 @@ export class ButtonToggleComponent {
   }
 
   isChecked(value: string): boolean {
-    return this.config().getValuesList().includes(value);
+    return this.config().getValueList().includes(value);
   }
 
   getStyle(): string {

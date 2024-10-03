@@ -1,26 +1,24 @@
-from dataclasses import field
-
 import mesop as me
 
 
 @me.stateclass
 class State:
-  selected_values: list[str] = field(
-    default_factory=lambda: ["bold", "underline"]
-  )
+  selected_value: str = "bold"
 
 
 def load(e: me.LoadEvent):
   me.set_theme_mode("system")
 
 
-@me.page(on_load=load, path="/button_toggle")
+@me.page(
+  on_load=load, path="/components/button_toggle/e2e/disabled_button_toggle_app"
+)
 def app():
   state = me.state(State)
 
   with me.box(style=me.Style(margin=me.Margin.all(15))):
     me.button_toggle(
-      value=state.selected_values,
+      value=state.selected_value,
       buttons=[
         me.ButtonToggleButton(label="Bold", value="bold"),
         me.ButtonToggleButton(label="Italic", value="italic"),
@@ -34,9 +32,9 @@ def app():
       style=me.Style(margin=me.Margin(bottom=20)),
     )
 
-    me.text("Select buttons: " + " ".join(state.selected_values))
+    me.text("Select button: " + " ".join(state.selected_value))
 
 
 def on_change(e: me.ButtonToggleChangeEvent):
   state = me.state(State)
-  state.selected_values = e.values
+  state.selected_value = e.value
