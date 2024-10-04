@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Any, Callable, Iterable
+from typing import Any, Callable, Iterable, Literal
 
 import mesop.components.select.select_pb2 as select_pb
 from mesop.component_helpers import (
@@ -90,7 +90,8 @@ def select(
   disable_ripple: bool = False,
   tab_index: int = 0,
   placeholder: str = "",
-  value: str = "",
+  appearance: Literal["fill", "outline"] = "fill",
+  value: list[str] | str = "",
   style: Style | None = None,
   multiple: bool = False,
 ):
@@ -105,10 +106,12 @@ def select(
     multiple: Whether multiple selections are allowed.
     tab_index: Tab index of the select.
     placeholder: Placeholder to be shown if no value has been selected.
-    value: Value of the select control.
+    appearance: The form field appearance style.
+    values: Value(s) of the select control.
     style: Style.
     key: The component [key](../components/index.md#component-key).
   """
+
   insert_component(
     key=key,
     type_name="select",
@@ -124,7 +127,8 @@ def select(
       multiple=multiple,
       tab_index=tab_index,
       placeholder=placeholder,
-      value=value,
+      appearance=appearance,
+      value=_format_value_field_proto(value),
       on_select_opened_change_event_handler_id=register_event_handler(
         on_opened_change, event=SelectOpenedChangeEvent
       )
@@ -137,3 +141,13 @@ def select(
       else "",
     ),
   )
+
+
+def _format_value_field_proto(value: str | list[str]):
+  if not value:
+    return []
+
+  if isinstance(value, list):
+    return value
+
+  return [value]

@@ -25,5 +25,5 @@ def load(e: me.LoadEvent):
 def app():
   with me.box(style=me.Style(margin=me.Margin.all(15))):
     s = me.state(State)
-    me.input(label="Basic input", on_blur=on_blur)
+    me.input(label="Basic input", appearance="outline", on_blur=on_blur)
     me.text(text=s.input)

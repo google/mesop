@@ -16,10 +16,13 @@ test('multiple selection', async ({page}) => {
   await page.getByLabel('Select').click();
 
   await page.getByRole('option', {name: 'label 2'}).click();
-  await expect(page.getByText('Selected values: value2')).toBeAttached();
+  await expect(
+    page.getByText('Selected values: value1, value2, value3'),
+  ).toBeAttached();
 
   await page.getByRole('option', {name: 'label 1'}).click();
+
   await expect(
-    page.getByText('Selected values: value1, value2'),
+    page.getByText('Selected values: value2, value3'),
   ).toBeAttached();
 });
