@@ -107,7 +107,7 @@ def select(
     tab_index: Tab index of the select.
     placeholder: Placeholder to be shown if no value has been selected.
     appearance: The form field appearance style.
-    values: Value(s) of the select control.
+    value: Value(s) of the select control.
     style: Style.
     key: The component [key](../components/index.md#component-key).
   """
