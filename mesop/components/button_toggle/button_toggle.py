@@ -63,8 +63,7 @@ def button_toggle(
   on_change: Callable[[ButtonToggleChangeEvent], Any] | None = None,
   multiple: bool = False,
   disabled: bool = False,
-  hide_multiple_selection_indicator: bool = False,
-  hide_single_selection_indicator: bool = False,
+  hide_selection_indicator: bool = False,
   style: Style | None = None,
   key: str | None = None,
 ):
@@ -77,8 +76,7 @@ def button_toggle(
     on_change: Event emitted when the group's value changes.
     multiple: Whether multiple button toggles can be selected.
     disabled: Whether multiple button toggle group is disabled.
-    hide_multiple_selection_indicator: Whether checkmark indicator for multiple-selection button toggle groups is hidden.
-    hide_single_selection_indicator: Whether checkmark indicator for single-selection button toggle groups is hidden.
+    hide_selection_indicator: Whether checkmark indicator for button toggle groups is hidden.
     style: Style for the component.
     key: The component [key](../components/index.md#component-key).
   """
@@ -96,8 +94,7 @@ def button_toggle(
       ],
       multiple=multiple,
       disabled=disabled,
-      hide_multiple_selection_indicator=hide_multiple_selection_indicator,
-      hide_single_selection_indicator=hide_single_selection_indicator,
+      hide_selection_indicator=hide_selection_indicator,
       on_change_event_handler_id=register_event_handler(
         on_change, event=ButtonToggleChangeEvent
       )

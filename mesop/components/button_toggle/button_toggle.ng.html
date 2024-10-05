@@ -1,7 +1,7 @@
 <mat-button-toggle-group
   [style]="getStyle()"
-  [hideMultipleSelectionIndicator]="config().getHideMultipleSelectionIndicator()"
-  [hideSingleSelectionIndicator]="config().getHideSingleSelectionIndicator()"
+  [hideMultipleSelectionIndicator]="config().getHideSelectionIndicator()"
+  [hideSingleSelectionIndicator]="config().getHideSelectionIndicator()"
   [multiple]="config().getMultiple()"
   (change)="onChangeEvent($event)"
 >

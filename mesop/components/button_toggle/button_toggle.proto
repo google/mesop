@@ -7,9 +7,8 @@ message ButtonToggleType {
     repeated ButtonToggleButton buttons = 2;
     optional bool multiple = 3;
     optional bool disabled = 4;
-    optional bool hide_multiple_selection_indicator = 5;
-    optional bool hide_single_selection_indicator = 6;
-    optional string on_change_event_handler_id = 7;
+    optional bool hide_selection_indicator = 5;
+    optional string on_change_event_handler_id = 6;
 
 
 }
