@@ -1,3 +1,4 @@
+import {ButtonToggleComponent} from '../../../components/button_toggle/button_toggle';
 import {DateRangePickerComponent} from '../../../components/date_range_picker/date_range_picker';
 import {DatepickerComponent} from '../../../components/datepicker/datepicker';
 import {AutocompleteComponent} from '../../../components/autocomplete/autocomplete';
@@ -58,6 +59,7 @@ export class UserDefinedComponent implements BaseComponent {
 }
 
 export const typeToComponent = {
+  'button_toggle': ButtonToggleComponent,
   'date_range_picker': DateRangePickerComponent,
   'datepicker': DatepickerComponent,
   'autocomplete': AutocompleteComponent,

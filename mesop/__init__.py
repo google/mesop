@@ -60,6 +60,15 @@ from mesop.components.button.button import (
 from mesop.components.button.button import (
   content_button as content_button,
 )
+from mesop.components.button_toggle.button_toggle import (
+  ButtonToggleButton as ButtonToggleButton,
+)
+from mesop.components.button_toggle.button_toggle import (
+  ButtonToggleChangeEvent as ButtonToggleChangeEvent,
+)
+from mesop.components.button_toggle.button_toggle import (
+  button_toggle as button_toggle,
+)
 from mesop.components.checkbox.checkbox import (
   CheckboxChangeEvent as CheckboxChangeEvent,
 )

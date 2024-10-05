@@ -1,0 +1,18 @@
+<mat-button-toggle-group
+  [style]="getStyle()"
+  [hideMultipleSelectionIndicator]="config().getHideSelectionIndicator()"
+  [hideSingleSelectionIndicator]="config().getHideSelectionIndicator()"
+  [multiple]="config().getMultiple()"
+  (change)="onChangeEvent($event)"
+>
+  @for(option of config().getButtonsList(); track index; let index = $index) {
+  <mat-button-toggle
+    [aria-label]="config().getButtonsList()[index].getLabel()!"
+    [value]="config().getButtonsList()[index].getValue()"
+    [checked]="isChecked(config().getButtonsList()[index].getValue()!)"
+    [disabled]="config().getDisabled()"
+  >
+    {{config().getButtonsList()[index].getLabel()}}
+  </mat-button-toggle>
+  }
+</mat-button-toggle-group>

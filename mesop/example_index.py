@@ -33,4 +33,5 @@ import mesop.components.link.e2e as link_e2e
 import mesop.components.autocomplete.e2e as autocomplete_e2e
 import mesop.components.datepicker.e2e as datepicker_e2e
 import mesop.components.date_range_picker.e2e as date_range_picker_e2e
+import mesop.components.button_toggle.e2e as button_toggle_e2e
 # REF(//scripts/scaffold_component.py):insert_component_e2e_import_export

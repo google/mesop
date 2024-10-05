@@ -1,0 +1,24 @@
+syntax = "proto2";
+
+package mesop.components.button_toggle;
+
+message ButtonToggleType {
+    repeated string value = 1;
+    repeated ButtonToggleButton buttons = 2;
+    optional bool multiple = 3;
+    optional bool disabled = 4;
+    optional bool hide_selection_indicator = 5;
+    optional string on_change_event_handler_id = 6;
+
+
+}
+
+message ButtonToggleButton {
+  optional string label = 1;
+  optional string value = 2;
+}
+
+
+message ButtonToggleChangeEvent {
+    repeated string values = 1;
+}
