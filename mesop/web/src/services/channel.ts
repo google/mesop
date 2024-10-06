@@ -367,8 +367,9 @@ export class Channel {
     const userEvent = new UserEvent();
     userEvent.setStates(this.states);
     const navigationEvent = new NavigationEvent();
-    userEvent.setViewportSize(getViewportSize());
     userEvent.setNavigation(navigationEvent);
+    userEvent.setViewportSize(getViewportSize());
+    userEvent.setThemeSettings(this.themeService.getThemeSettings());
     userEvent.setQueryParamsList(getQueryParams());
     request.setUserEvent(userEvent);
     this.init(this.initParams, request);
