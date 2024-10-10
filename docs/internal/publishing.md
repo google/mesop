@@ -4,6 +4,14 @@ Follow these instructions for releasing a new version of Mesop publicly via PyPI
 
 If you haven't done this before, follow the [first-time setup](#first-time-upload-setup).
 
+## Check main branch
+
+Before, cutting a release, you'll want to check two things:
+
+1. The `main` branch should be healthy (e.g. latest commit is green).
+2. Check the snyk dashboard to review security issues: https://app.snyk.io/org/wwwillchen/project/756c376f-d2e7-44f8-9c20-e4062fdf543f
+  - It only runs weekly so you need to click "Retest now". If there's any High security issues for a core Mesop file (e.g. anything in `mesop/*`), then you should address it before publishing a release.
+
 ## Update version to RC
 
 Update [`mesop/version.py`](https://github.com/google/mesop/blob/main/mesop/version.py) by incrementing the version number. We follow semver.
