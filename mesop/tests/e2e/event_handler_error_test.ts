@@ -8,7 +8,7 @@ test('event handler error message is shown', async ({page}) => {
   await expect(
     page.getByText('Error in on_click.', {exact: true}),
   ).toBeVisible();
-  await page.locator('button').filter({hasText: 'close'}).click();
+  await page.locator('button').filter({hasText: 'OK'}).click();
 
   // Generator event handler
   await page
@@ -17,14 +17,14 @@ test('event handler error message is shown', async ({page}) => {
   await expect(
     page.getByText('Error in on_click_generator.', {exact: true}),
   ).toBeVisible();
-  await page.locator('button').filter({hasText: 'close'}).click();
+  await page.locator('button').filter({hasText: 'OK'}).click();
 
   // Yield from event handler
   await page.getByRole('button', {name: 'Yield from event handler'}).click();
   await expect(
     page.getByText('Error in a_generator.', {exact: true}),
   ).toBeVisible();
-  await page.locator('button').filter({hasText: 'close'}).click();
+  await page.locator('button').filter({hasText: 'OK'}).click();
 
   // Async generator event handler
   await page
@@ -33,5 +33,5 @@ test('event handler error message is shown', async ({page}) => {
   await expect(
     page.getByText('Error in on_click_async_generator.', {exact: true}),
   ).toBeVisible();
-  await page.locator('button').filter({hasText: 'close'}).click();
+  await page.locator('button').filter({hasText: 'OK'}).click();
 });

@@ -30,7 +30,7 @@ import {bootstrapApplication} from '@angular/platform-browser';
 import {MatIconModule, MatIconRegistry} from '@angular/material/icon';
 import {EditorService} from '../services/editor_service';
 import {MatSidenavModule} from '@angular/material/sidenav';
-import {ErrorBox} from '../error/error_box';
+import {ErrorBox, ServerErrorBoxDialogComponent} from '../error/error_box';
 import {GlobalErrorHandlerService} from '../services/global_error_handler';
 import {getViewportSize} from '../utils/viewport_size';
 import {createCustomElement} from '@angular/elements';
@@ -42,6 +42,7 @@ import {
   ErrorDialogService,
   ProdErrorDialogService,
 } from '../services/error_dialog_service';
+import {MatDialog} from '@angular/material/dialog';
 // Keep the following comment to ensure there's a hook for adding TS imports in the downstream sync.
 // ADD_TS_IMPORT_HERE
 
@@ -62,7 +63,6 @@ import {
 })
 export class Shell {
   rootComponent!: ComponentProto;
-  error: ServerError | undefined;
   componentConfigs: readonly ComponentConfig[] = [];
   private resizeSubject = new Subject<void>();
 
@@ -74,12 +74,13 @@ export class Shell {
     private router: Router,
     errorHandler: ErrorHandler,
     private themeService: ThemeService,
+    private dialog: MatDialog,
   ) {
     iconRegistry.setDefaultFontSetClass('material-symbols-rounded');
     (errorHandler as GlobalErrorHandlerService).setOnError((error) => {
       const errorProto = new ServerError();
       errorProto.setException(`JS Error: ${error.toString()}`);
-      this.error = errorProto;
+      this.openServerErrorDialog(errorProto);
     });
     this.resizeSubject
       .pipe(debounceTime(500))
@@ -97,11 +98,6 @@ export class Shell {
       {
         zone: this.zone,
         onRender: async (rootComponent, componentConfigs, jsModules) => {
-          // Make sure we clear the error *before* the async work, otherwise
-          // we can hit a weird race condition where the error is cleared
-          // right away before the user sees the error box.
-          this.error = undefined;
-
           // Import all JS modules concurrently
           await Promise.all(
             jsModules.map((modulePath) =>
@@ -232,11 +228,19 @@ export class Shell {
           }
         },
         onError: (error) => {
-          this.error = error;
+          this.openServerErrorDialog(error);
         },
       },
       request,
     );
+  }
+
+  openServerErrorDialog(error: ServerError) {
+    this.dialog.closeAll();
+    this.dialog.open(ServerErrorBoxDialogComponent, {
+      width: 'min(90vw, max(60vw, 600px))',
+      data: {error: error},
+    });
   }
 
   /** Listen to browser navigation events (go back/forward). */
