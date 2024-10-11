@@ -37,7 +37,7 @@ register_event_mapper(
 def sidenav(
   *,
   opened: bool = True,
-  disable_close: bool = False,
+  disable_close: bool = True,
   position: Literal["start", "end"] = "start",
   on_opened_changed: Callable[[SidenavOpenedChangedEvent], Any] | None = None,
   style: Style | None = None,
