@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Inject, Input} from '@angular/core';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {
   ServerError,
@@ -10,6 +10,8 @@ import {ComponentRenderer} from '../component_renderer/component_renderer';
 import {Channel} from '../services/channel';
 import {marked} from '../../external/marked';
 import {MatIconModule} from '@angular/material/icon';
+import {MAT_DIALOG_DATA, MatDialogModule} from '@angular/material/dialog';
+import {MatButtonModule} from '@angular/material/button';
 
 @Component({
   selector: 'mesop-error-box',
@@ -21,23 +23,16 @@ import {MatIconModule} from '@angular/material/icon';
     ComponentRenderer,
     MatProgressBarModule,
     MatIconModule,
+    MatDialogModule,
+    MatButtonModule,
   ],
   providers: [Channel],
 })
 export class ErrorBox {
   _showFullTraceback = false;
   _lastAppFrame: StackFrame | undefined;
-  _hiddenErrors: Set<ServerError> = new Set();
   @Input({required: true}) error!: ServerError;
   markdownHTML = '';
-
-  isHidden(error: ServerError): boolean {
-    return this._hiddenErrors.has(error);
-  }
-
-  hideError(error: ServerError): void {
-    this._hiddenErrors.add(error);
-  }
 
   async ngOnChanges() {
     this.markdownHTML = (
@@ -77,4 +72,21 @@ export class ErrorBox {
   isLastAppCode(frame: StackFrame): boolean {
     return frame === this._lastAppFrame;
   }
+}
+
+@Component({
+  selector: 'mesop-server-error-dialog',
+  template: ` <mesop-error-box [error]="data.error"></mesop-error-box> `,
+  styles: `
+    :host {
+      display: block;
+      max-height: 80vh;
+      background-color: #ffe5e5;
+    }
+  `,
+  standalone: true,
+  imports: [MatDialogModule, MatButtonModule, ErrorBox],
+})
+export class ServerErrorBoxDialogComponent {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: {error: ServerError}) {}
 }

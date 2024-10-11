@@ -1,8 +1,5 @@
-<div *ngIf="error && !isHidden(error)" class="error">
+<div class="error">
   <div class="exception">
-    <button mat-icon-button class="close-button" (click)="hideError(error)">
-      <mat-icon>close</mat-icon>
-    </button>
     <div class="error-box-markdown" [innerHTML]="markdownHTML"></div>
   </div>
   <div *ngIf="error.hasTraceback()">
@@ -37,3 +34,14 @@
     >
   </div>
 </div>
+<mat-dialog-actions align="end">
+  <button
+    mat-button
+    class="ok-button"
+    color="warn"
+    [mat-dialog-close]="true"
+    cdkFocusInitial
+  >
+    OK
+  </button>
+</mat-dialog-actions>
