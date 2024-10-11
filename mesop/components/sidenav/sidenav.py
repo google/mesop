@@ -14,10 +14,10 @@ from mesop.events import MesopEvent
 
 @dataclass(kw_only=True)
 class SidenavOpenedChangedEvent(MesopEvent):
-  """Event representing the opened state change of the select component.
+  """Event representing the opened state change of the sidenav component.
 
   Attributes:
-      opened: A boolean indicating whether the select component is opened (True) or closed (False).
+      opened: A boolean indicating whether the sidenav component is opened (True) or closed (False).
       key (str): key of the component that emitted this event.
   """
 
