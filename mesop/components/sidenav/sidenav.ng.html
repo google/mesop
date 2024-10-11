@@ -1,7 +1,10 @@
 <mat-sidenav
   [style]="getStyle()"
   [opened]="config().getOpened()"
+  [disableClose]="config().getDisableClose()"
   [fixedInViewport]="true"
+  [position]="getPosition()"
+  (openedChange)="onOpenedChange($event)"
 >
   <ng-content></ng-content>
 </mat-sidenav>

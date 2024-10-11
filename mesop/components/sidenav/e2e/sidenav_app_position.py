@@ -18,11 +18,12 @@ def opened_changed(e: me.SidenavOpenedChangedEvent):
   s.sidenav_open = e.opened
 
 
-@me.page(path="/components/sidenav/e2e/sidenav_app")
+@me.page(path="/components/sidenav/e2e/sidenav_app_position")
 def app():
   state = me.state(State)
   with me.sidenav(
     opened=state.sidenav_open,
+    position="end",
     on_opened_changed=opened_changed,
     style=me.Style(
       border_radius=0,
