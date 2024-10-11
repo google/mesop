@@ -34,6 +34,12 @@ EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED = (
   os.environ.get("MESOP_EXPERIMENTAL_EDITOR_TOOLBAR", "false").lower() == "true"
 )
 
+MESOP_SHOW_USER_UNREDACTED_ERRORS = (
+  os.environ.get("MESOP_SHOW_USER_UNREDACTED_ERRORS", "false").lower() == "true"
+)
+
+print("MESOP_SHOW_USER_UNREDACTED_ERRORS", MESOP_SHOW_USER_UNREDACTED_ERRORS)
+
 if MESOP_CONCURRENT_UPDATES_ENABLED:
   print("Experiment enabled: MESOP_CONCURRENT_UPDATES_ENABLED")
 
@@ -119,7 +125,7 @@ def configure_flask_app(
       )
 
   def yield_errors(error: pb.ServerError) -> Generator[str, None, None]:
-    if not runtime().debug_mode:
+    if not runtime().debug_mode and not MESOP_SHOW_USER_UNREDACTED_ERRORS:
       error.ClearField("traceback")
       # Redact developer errors
       if "Mesop Internal Error:" in error.exception:
