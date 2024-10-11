@@ -3,9 +3,9 @@ import {test, expect} from '@playwright/test';
 test.describe('Sidenav component', () => {
   test('open/close sidenav', async ({page}) => {
     await page.goto('/components/sidenav/e2e/sidenav_app');
-    await (await page.getByRole('button')).click();
+    await (await page.locator('button').filter({hasText: 'menu'})).click();
     await expect(await page.getByText('Inside sidenav')).toBeVisible();
-    await (await page.getByRole('button')).click();
+    await (await page.locator('button').filter({hasText: 'menu'})).click();
     await expect(await page.getByText('Inside sidenav')).toBeHidden();
   });
 
@@ -13,7 +13,7 @@ test.describe('Sidenav component', () => {
     await page.goto('/components/sidenav/e2e/sidenav_app');
     const mainContent = await page.getByText('Main content');
     const startLocation = await mainContent.boundingBox();
-    await (await page.getByRole('button')).click();
+    await (await page.locator('button').filter({hasText: 'menu'})).click();
     await expect(await page.getByText('Inside sidenav')).toBeVisible();
     const midLocation = await mainContent.boundingBox();
     // Main content should be pushed over to the left when sidenav is opened.
@@ -31,7 +31,7 @@ test.describe('Sidenav component', () => {
     page,
   }) => {
     await page.goto('/components/sidenav/e2e/sidenav_app_no_esc');
-    await (await page.getByRole('button')).click();
+    await (await page.locator('button').filter({hasText: 'menu'})).click();
     await expect(await page.getByText('Inside sidenav')).toBeVisible();
     await page.getByText('Inside sidenav').click();
     await page.keyboard.press('Escape');
@@ -40,7 +40,7 @@ test.describe('Sidenav component', () => {
 
   test('show sidenav on the right side', async ({page}) => {
     await page.goto('/components/sidenav/e2e/sidenav_app_position');
-    await (await page.getByRole('button')).click();
+    await (await page.locator('button').filter({hasText: 'menu'})).click();
     const sidenav = await page.getByText('Inside sidenav');
     await expect(sidenav).toBeVisible();
     const sidenavLocation = await sidenav.boundingBox();
