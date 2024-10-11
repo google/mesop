@@ -33,6 +33,7 @@ def app():
   state = me.state(State)
   with me.sidenav(
     opened=state.sidenav_open,
+    disable_close=False,
     on_opened_changed=opened_changed,
     style=me.Style(
       border_radius=0,

@@ -24,6 +24,7 @@ def app():
   with me.sidenav(
     opened=state.sidenav_open,
     position="end",
+    disable_close=False,
     on_opened_changed=opened_changed,
     style=me.Style(
       border_radius=0,
