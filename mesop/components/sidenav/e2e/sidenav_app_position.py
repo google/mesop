@@ -18,21 +18,12 @@ def opened_changed(e: me.SidenavOpenedChangedEvent):
   s.sidenav_open = e.opened
 
 
-def load(e: me.LoadEvent):
-  me.set_theme_mode("system")
-
-
-@me.page(
-  on_load=load,
-  security_policy=me.SecurityPolicy(
-    allowed_iframe_parents=["https://google.github.io"]
-  ),
-  path="/sidenav",
-)
+@me.page(path="/components/sidenav/e2e/sidenav_app_position")
 def app():
   state = me.state(State)
   with me.sidenav(
     opened=state.sidenav_open,
+    position="end",
     disable_close=False,
     on_opened_changed=opened_changed,
     style=me.Style(

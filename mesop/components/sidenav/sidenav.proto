@@ -4,4 +4,7 @@ package mesop.components.sidenav;
 
 message SidenavType {
     optional bool opened = 1;
+    optional bool disable_close = 2;
+    optional string position = 3;
+    optional string on_opened_changed_event_handler_id = 4;
 }
