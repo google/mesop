@@ -50,13 +50,6 @@ LOCALHOSTS = (
 STREAM_END = "data: <stream_end>\n\n"
 
 
-def is_processing_request():
-  return _requests_in_flight > 0
-
-
-_requests_in_flight = 0
-
-
 def configure_flask_app(
   *, prod_mode: bool = True, exceptions_to_propagate: Sequence[type] = ()
 ) -> Flask:
@@ -270,16 +263,6 @@ def configure_flask_app(
 
     response = make_sse_response(stream_with_context(generate_data(ui_request)))
     return response
-
-  @flask_app.before_request
-  def before_request():
-    global _requests_in_flight
-    _requests_in_flight += 1
-
-  @flask_app.teardown_request
-  def teardown(error=None):
-    global _requests_in_flight
-    _requests_in_flight -= 1
 
   @flask_app.teardown_request
   def teardown_clear_stale_state_sessions(error=None):
