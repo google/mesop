@@ -153,7 +153,15 @@ def main(argv: Sequence[str]):
     log_startup(port=port())
     logging.getLogger("werkzeug").setLevel(logging.WARN)
 
-  flask_app.run(host=get_public_host(), port=port(), use_reloader=False)
+  # flask_app.run(host=get_public_host(), port=port(), use_reloader=False)
+  socketio = flask_app.socketio  # type: ignore
+  socketio.run(
+    flask_app,
+    host=get_public_host(),
+    port=port(),
+    use_reloader=False,
+    allow_unsafe_werkzeug=True,
+  )
 
 
 if __name__ == "__main__":
