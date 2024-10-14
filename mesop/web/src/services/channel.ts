@@ -43,11 +43,6 @@ export enum ChannelStatus {
   CLOSED = 'CLOSED',
 }
 
-export enum ConnectionType {
-  SSE = 'SSE',
-  WEBSOCKET = 'WEBSOCKET',
-}
-
 @Injectable({
   providedIn: 'root',
 })
@@ -56,7 +51,7 @@ export class Channel {
   private isWaiting = false;
   private isWaitingTimeout: number | undefined;
   private eventSource!: SSE;
-  private socket!: Socket;
+  private socket: Socket | undefined;
   private initParams!: InitParams;
   private states: States = new States();
   private stateToken = '';
@@ -66,7 +61,6 @@ export class Channel {
   private queuedEvents: (() => void)[] = [];
   private hotReloadBackoffCounter = 0;
   private hotReloadCounter = 0;
-  private connectionType: ConnectionType = ConnectionType.SSE; // Default to SSE
 
   // Client-side state
   private overridedTitle = '';
@@ -97,6 +91,13 @@ export class Channel {
    * triggered by a user that's been taking a while.
    */
   isBusy(): boolean {
+    if (this.experimentService.websocketsEnabled) {
+      // When WebSockets are enabled, we disable the busy indicator
+      // because it's possible for the server to push new data
+      // at any point. Apps should use their own loading indicators
+      // instead.
+      return false;
+    }
     return this.isWaiting && !this.isHotReloading();
   }
 
@@ -108,28 +109,16 @@ export class Channel {
     return this.componentConfigs;
   }
 
-  /**
-   * Initialize the channel with the given parameters and UI request.
-   * Supports both SSE and WebSocket connections based on the `useWebSocket` flag.
-   * @param initParams Initialization parameters.
-   * @param request Initial UI request.
-   * @param useWebSocket Whether to use WebSocket for the connection.
-   */
-  init(initParams: InitParams, request: UiRequest, useWebSocket = true) {
-    this.connectionType = useWebSocket
-      ? ConnectionType.WEBSOCKET
-      : ConnectionType.SSE;
+  init(initParams: InitParams, request: UiRequest) {
+    console.debug('sending UI request', request);
 
-    if (this.connectionType === ConnectionType.SSE) {
-      this.initSSE(initParams, request);
-    } else {
+    if (this.experimentService.websocketsEnabled) {
       this.initWebSocket(initParams, request);
+    } else {
+      this.initSSE(initParams, request);
     }
   }
 
-  /**
-   * Initialize Server-Sent Events (SSE) connection.
-   */
   private initSSE(initParams: InitParams, request: UiRequest) {
     this.eventSource = new SSE('/__ui__', {
       payload: generatePayloadString(request),
@@ -145,6 +134,7 @@ export class Channel {
     this.initParams = initParams;
 
     this.eventSource.addEventListener('message', (e) => {
+      // Looks like Angular has a bug where it's not intercepting EventSource onmessage.
       zone.run(() => {
         const data = (e as any).data;
         if (data === '<stream_end>') {
@@ -164,15 +154,13 @@ export class Channel {
         const array = toUint8Array(atob(data));
         const uiResponse = UiResponse.deserializeBinary(array);
         console.debug('Server event (SSE): ', uiResponse.toObject());
-        this.handleUiResponse(uiResponse, onRender, onError, onCommand);
-      });
-    });
-
-    this.eventSource.addEventListener('error', (e) => {
-      zone.run(() => {
-        console.error('SSE connection error:', e);
-        this.status = ChannelStatus.CLOSED;
-        this.eventSource.close();
+        this.handleUiResponse(
+          request,
+          uiResponse,
+          onRender,
+          onError,
+          onCommand,
+        );
       });
     });
   }
@@ -181,10 +169,15 @@ export class Channel {
    * Initialize WebSocket connection using Socket.IO.
    */
   private initWebSocket(initParams: InitParams, request: UiRequest) {
+    if (this.socket) {
+      this.status = ChannelStatus.OPEN;
+      const payload = generatePayloadString(request);
+      this.socket.emit('message', payload);
+      return;
+    }
     this.socket = io('/__ui__', {
       transports: ['websocket'],
-      reconnectionAttempts: 5, // Adjust as needed
-      // You can pass additional options here
+      reconnectionAttempts: 3,
     });
 
     this.status = ChannelStatus.OPEN;
@@ -200,17 +193,16 @@ export class Channel {
     this.socket.on('connect', () => {
       // Send the initial UiRequest upon connection
       const payload = generatePayloadString(request);
-      this.socket.emit('message', payload);
+      this.socket!.emit('message', payload);
     });
 
     this.socket.on('response', (data: any) => {
+      const prefix = 'data: ';
+      const payloadData = (data.data.slice(prefix.length) as string).trimEnd();
       zone.run(() => {
-        if (data === '<stream_end>') {
-          this.socket.disconnect();
-          this.status = ChannelStatus.CLOSED;
-          clearTimeout(this.isWaitingTimeout);
-          this.isWaiting = false;
+        if (payloadData === '<stream_end>') {
           this._isHotReloading = false;
+          this.status = ChannelStatus.CLOSED;
           this.logger.log({type: 'StreamEnd'});
           if (this.queuedEvents.length) {
             const queuedEvent = this.queuedEvents.shift()!;
@@ -218,17 +210,23 @@ export class Channel {
           }
           return;
         }
-        const prefix = 'data: ';
 
-        const array = toUint8Array(atob(data.data.slice(prefix.length)));
+        const array = toUint8Array(atob(payloadData));
         const uiResponse = UiResponse.deserializeBinary(array);
         console.debug('Server event (WebSocket): ', uiResponse.toObject());
-        this.handleUiResponse(uiResponse, onRender, onError, onCommand);
+        this.handleUiResponse(
+          request,
+          uiResponse,
+          onRender,
+          onError,
+          onCommand,
+        );
       });
     });
 
     this.socket.on('error', (error: any) => {
       zone.run(() => {
+        this.socket = undefined;
         console.error('WebSocket error:', error);
         this.status = ChannelStatus.CLOSED;
       });
@@ -236,9 +234,8 @@ export class Channel {
 
     this.socket.on('disconnect', (reason: string) => {
       zone.run(() => {
+        this.socket = undefined;
         this.status = ChannelStatus.CLOSED;
-        clearTimeout(this.isWaitingTimeout);
-        this.isWaiting = false;
         this._isHotReloading = false;
       });
     });
@@ -248,6 +245,7 @@ export class Channel {
    * Handle UiResponse from the server.
    */
   private handleUiResponse(
+    request: UiRequest,
     uiResponse: UiResponse,
     onRender: InitParams['onRender'],
     onError: InitParams['onError'],
@@ -318,6 +316,8 @@ export class Channel {
           .getRender()!
           .getExperimentSettings();
         if (experimentSettings) {
+          this.experimentService.websocketsEnabled =
+            experimentSettings.getWebsocketsEnabled() ?? false;
           this.experimentService.concurrentUpdatesEnabled =
             experimentSettings.getConcurrentUpdatesEnabled() ?? false;
           this.experimentService.experimentalEditorToolbarEnabled =
@@ -348,22 +348,13 @@ export class Channel {
             console.warn(
               'Token not found in state session backend. Retrying user event.',
             );
-            // Assuming you have access to the original request here
-            // If not, you might need to store it elsewhere
-            const request = new UiRequest();
-            const userEvent = new UserEvent();
-            userEvent.clearStateToken();
-            userEvent.setStates(this.states);
-            request.setUserEvent(userEvent);
-            this.init(
-              this.initParams,
-              request,
-              this.connectionType === ConnectionType.WEBSOCKET,
-            );
+            request.getUserEvent()!.clearStateToken();
+            request.getUserEvent()!.setStates(this.states);
+            this.init(this.initParams, request);
           });
         } else {
           onError(uiResponse.getError()!);
-          console.log('error', uiResponse.getError());
+          console.error('error', uiResponse.getError());
         }
         break;
       case UiResponse.TypeCase.TYPE_NOT_SET:
@@ -371,10 +362,6 @@ export class Channel {
     }
   }
 
-  /**
-   * Dispatch a user event to the server.
-   * Supports both SSE and WebSocket based on the current connection type.
-   */
   dispatch(userEvent: UserEvent) {
     // Every user event should have an event handler,
     // except for the ones below:
@@ -402,14 +389,9 @@ export class Channel {
 
       const request = new UiRequest();
       request.setUserEvent(userEvent);
-      this.init(
-        this.initParams,
-        request,
-        this.connectionType === ConnectionType.WEBSOCKET,
-      );
+      this.init(this.initParams, request);
     };
     this.logger.log({type: 'UserEventLog', userEvent: userEvent});
-
     if (this.status === ChannelStatus.CLOSED) {
       initUserEvent();
     } else {
@@ -433,14 +415,11 @@ export class Channel {
             )[0];
             initUserEvent();
           }
-        }, 1000);
+        }, 500);
       }
     }
   }
 
-  /**
-   * Check for hot reload by polling the server.
-   */
   checkForHotReload() {
     const pollHotReloadEndpoint = async () => {
       try {
@@ -480,9 +459,6 @@ export class Channel {
     this.overridedTitle = newTitle;
   }
 
-  /**
-   * Trigger a hot reload by sending a navigation event to the server.
-   */
   hotReload() {
     // Only hot reload if there's no request in-flight.
     // Most likely the in-flight request will receive the updated UI.
@@ -501,17 +477,10 @@ export class Channel {
     userEvent.setThemeSettings(this.themeService.getThemeSettings());
     userEvent.setQueryParamsList(getQueryParams());
     request.setUserEvent(userEvent);
-    this.init(
-      this.initParams,
-      request,
-      this.connectionType === ConnectionType.WEBSOCKET,
-    );
+    this.init(this.initParams, request);
   }
 }
 
-/**
- * Generate a URL-safe base64 payload string from the UiRequest.
- */
 function generatePayloadString(request: UiRequest): string {
   request.setPath(window.location.pathname);
   const array = request.serializeBinary();
@@ -522,9 +491,6 @@ function generatePayloadString(request: UiRequest): string {
   return byteString;
 }
 
-/**
- * Convert a Uint8Array to a string.
- */
 function fromUint8Array(array: Uint8Array): string {
   // Chunk this to avoid RangeError: Maximum call stack size exceeded
   let result = '';
@@ -538,9 +504,6 @@ function fromUint8Array(array: Uint8Array): string {
   return result;
 }
 
-/**
- * Convert a string to a Uint8Array.
- */
 function toUint8Array(byteString: string): Uint8Array {
   const byteArray = new Uint8Array(byteString.length);
   for (let i = 0; i < byteString.length; i++) {

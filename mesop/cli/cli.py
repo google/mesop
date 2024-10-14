@@ -22,6 +22,7 @@ from mesop.server.constants import EDITOR_PACKAGE_PATH, PROD_PACKAGE_PATH
 from mesop.server.flags import port
 from mesop.server.logging import log_startup
 from mesop.server.server import configure_flask_app
+from mesop.server.server_utils import MESOP_WEBSOCKETS_ENABLED
 from mesop.server.static_file_serving import configure_static_file_serving
 from mesop.utils.host_util import get_public_host
 from mesop.utils.runfiles import get_runfile_location
@@ -153,15 +154,17 @@ def main(argv: Sequence[str]):
     log_startup(port=port())
     logging.getLogger("werkzeug").setLevel(logging.WARN)
 
-  # flask_app.run(host=get_public_host(), port=port(), use_reloader=False)
-  socketio = flask_app.socketio  # type: ignore
-  socketio.run(
-    flask_app,
-    host=get_public_host(),
-    port=port(),
-    use_reloader=False,
-    allow_unsafe_werkzeug=True,
-  )
+  if MESOP_WEBSOCKETS_ENABLED:
+    socketio = flask_app.socketio  # type: ignore
+    socketio.run(
+      flask_app,
+      host=get_public_host(),
+      port=port(),
+      use_reloader=False,
+      allow_unsafe_werkzeug=True,
+    )
+  else:
+    flask_app.run(host=get_public_host(), port=port(), use_reloader=False)
 
 
 if __name__ == "__main__":

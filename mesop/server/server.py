@@ -14,6 +14,7 @@ from mesop.server.server_debug_routes import configure_debug_routes
 from mesop.server.server_utils import (
   EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED,
   MESOP_CONCURRENT_UPDATES_ENABLED,
+  MESOP_WEBSOCKETS_ENABLED,
   STREAM_END,
   create_update_state_event,
   is_same_site,
@@ -73,6 +74,7 @@ def configure_flask_app(
             for js_module in js_modules
           ],
           experiment_settings=pb.ExperimentSettings(
+            websockets_enabled=MESOP_WEBSOCKETS_ENABLED,
             concurrent_updates_enabled=MESOP_CONCURRENT_UPDATES_ENABLED,
             experimental_editor_toolbar_enabled=EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED,
           )
@@ -286,12 +288,9 @@ def configure_flask_app(
         # Generate the response data
         generator = generate_data(ui_request)
         for data_chunk in generator:
+          emit("response", {"data": data_chunk})
           if data_chunk == STREAM_END:
             break
-          emit("response", {"data": data_chunk})
-
-        # Optionally, signal the end of the stream
-        emit("end", {"message": "Stream ended"})
 
       except Exception as e:
         error_response = pb.ServerError(

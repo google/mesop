@@ -179,6 +179,7 @@ message RenderEvent {
 message ExperimentSettings {
     optional bool experimental_editor_toolbar_enabled = 1;
     optional bool concurrent_updates_enabled = 2;
+    optional bool websockets_enabled = 3;
 }
 
 // UI response event for updating state.
