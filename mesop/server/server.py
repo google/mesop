@@ -250,68 +250,25 @@ def configure_flask_app(
 
   if not prod_mode:
     configure_debug_routes(flask_app)
-    ### WebSocket Event Handlers ###
+
   if is_websockets_enabled:
     from flask_socketio import SocketIO, emit
 
-    socketio = SocketIO(
-      # TODO: DISABLE CORS!!
-      flask_app,
-      cors_allowed_origins="*",
-    )  # Adjust CORS as needed
-
-    # @socketio.on("connect", namespace="/__ui__")
-    # def handle_connect():
-    #   # Handle new WebSocket connection
-    #   print("Client connected via WebSocket")
-    #   emit("response", {"message": "Connected to /__ui__ WebSocket"})
-
-    # @socketio.on("disconnect", namespace="/__ui__")
-    # def handle_disconnect():
-    #   # Handle WebSocket disconnection
-    #   print("Client disconnected from WebSocket")
+    socketio = SocketIO(flask_app)
 
     @socketio.on("message", namespace="/__ui__")
     def handle_message(message):
-      """
-      Handle incoming messages from the client via WebSocket.
-      Expecting messages to be serialized UiRequest.
-      """
-      try:
-        if not message:
-          emit("error", {"error": "Missing request payload"})
-          return
+      if not message:
+        emit("error", {"error": "Missing request payload"})
+        return
 
-        ui_request = pb.UiRequest()
-        ui_request.ParseFromString(base64.urlsafe_b64decode(message))
+      ui_request = pb.UiRequest()
+      ui_request.ParseFromString(base64.urlsafe_b64decode(message))
 
-        # Generate the response data
-        generator = generate_data(ui_request)
-        for data_chunk in generator:
-          emit("response", {"data": data_chunk})
-          if data_chunk == STREAM_END:
-            break
+      generator = generate_data(ui_request)
+      for data_chunk in generator:
+        emit("response", {"data": data_chunk})
 
-      except Exception as e:
-        error_response = pb.ServerError(
-          exception=str(e), traceback=format_traceback()
-        )
-        if not runtime().debug_mode:
-          error_response.ClearField("traceback")
-          if "Mesop Internal Error:" in error_response.exception:
-            error_response.exception = (
-              "Sorry, there was an internal error with Mesop."
-            )
-          if "Mesop Developer Error:" in error_response.exception:
-            error_response.exception = (
-              "Sorry, there was an error. Please contact the developer."
-            )
-        ui_response = pb.UiResponse(error=error_response)
-        emit("error", {"error": serialize(ui_response)})
-
-    ### End of WebSocket Event Handlers ###
-
-    # Replace the default Flask run method with SocketIO's run method
-    flask_app.socketio = socketio
+    flask_app.socketio = socketio  # type: ignore
 
   return flask_app

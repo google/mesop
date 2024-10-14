@@ -154,13 +154,7 @@ export class Channel {
         const array = toUint8Array(atob(data));
         const uiResponse = UiResponse.deserializeBinary(array);
         console.debug('Server event (SSE): ', uiResponse.toObject());
-        this.handleUiResponse(
-          request,
-          uiResponse,
-          onRender,
-          onError,
-          onCommand,
-        );
+        this.handleUiResponse(request, uiResponse, initParams);
       });
     });
   }
@@ -214,13 +208,7 @@ export class Channel {
         const array = toUint8Array(atob(payloadData));
         const uiResponse = UiResponse.deserializeBinary(array);
         console.debug('Server event (WebSocket): ', uiResponse.toObject());
-        this.handleUiResponse(
-          request,
-          uiResponse,
-          onRender,
-          onError,
-          onCommand,
-        );
+        this.handleUiResponse(request, uiResponse, initParams);
       });
     });
 
@@ -235,8 +223,8 @@ export class Channel {
     this.socket.on('disconnect', (reason: string) => {
       zone.run(() => {
         this.socket = undefined;
+        console.error('WebSocket disconnected:', reason);
         this.status = ChannelStatus.CLOSED;
-        this._isHotReloading = false;
       });
     });
   }
@@ -247,10 +235,9 @@ export class Channel {
   private handleUiResponse(
     request: UiRequest,
     uiResponse: UiResponse,
-    onRender: InitParams['onRender'],
-    onError: InitParams['onError'],
-    onCommand: InitParams['onCommand'],
+    initParams: InitParams,
   ) {
+    const {onRender, onError, onCommand} = initParams;
     switch (uiResponse.getTypeCase()) {
       case UiResponse.TypeCase.UPDATE_STATE_EVENT: {
         this.stateToken = uiResponse.getUpdateStateEvent()!.getStateToken()!;
@@ -392,6 +379,7 @@ export class Channel {
       this.init(this.initParams, request);
     };
     this.logger.log({type: 'UserEventLog', userEvent: userEvent});
+
     if (this.status === ChannelStatus.CLOSED) {
       initUserEvent();
     } else {
