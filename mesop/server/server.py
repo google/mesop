@@ -24,13 +24,11 @@ from mesop.server.server_utils import (
 from mesop.utils.url_utils import remove_url_query_param
 from mesop.warn import warn
 
+UI_PATH = "/__ui__"
+
 
 def configure_flask_app(
-  *,
-  prod_mode: bool = True,
-  exceptions_to_propagate: Sequence[type] = (),
-  # TODO: plumb this from an env var
-  is_websockets_enabled=True,
+  *, prod_mode: bool = True, exceptions_to_propagate: Sequence[type] = ()
 ) -> Flask:
   flask_app = Flask(__name__)
 
@@ -224,7 +222,7 @@ def configure_flask_app(
         error=pb.ServerError(exception=str(e), traceback=format_traceback())
       )
 
-  @flask_app.route("/__ui__", methods=["POST"])
+  @flask_app.route(UI_PATH, methods=["POST"])
   def ui_stream() -> Response:
     # Prevent CSRF by checking the request site matches the site
     # of the URL root (where the Flask app is being served from)
@@ -234,7 +232,7 @@ def configure_flask_app(
     if not runtime().debug_mode and not is_same_site(
       request.headers.get("Origin"), request.url_root
     ):
-      abort(403, "Rejecting cross-site POST request to /__ui__")
+      abort(403, "Rejecting cross-site POST request to " + UI_PATH)
     data = request.data
     if not data:
       raise Exception("Missing request payload")
@@ -251,12 +249,12 @@ def configure_flask_app(
   if not prod_mode:
     configure_debug_routes(flask_app)
 
-  if is_websockets_enabled:
+  if MESOP_WEBSOCKETS_ENABLED:
     from flask_socketio import SocketIO, emit
 
     socketio = SocketIO(flask_app)
 
-    @socketio.on("message", namespace="/__ui__")
+    @socketio.on("message", namespace=UI_PATH)
     def handle_message(message):
       if not message:
         emit("error", {"error": "Missing request payload"})

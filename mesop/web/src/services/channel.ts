@@ -20,7 +20,9 @@ import {getViewportSize} from '../utils/viewport_size';
 import {ThemeService} from './theme_service';
 import {getQueryParams} from '../utils/query_params';
 import {ExperimentService} from './experiment_service';
-import {io, Socket} from 'socket.io-client'; // Import Socket.IO client
+import {io, Socket} from 'socket.io-client';
+
+const STREAM_END = '<stream_end>';
 
 // Pick 500ms as the minimum duration before showing a progress/busy indicator
 // for the channel.
@@ -137,17 +139,14 @@ export class Channel {
       // Looks like Angular has a bug where it's not intercepting EventSource onmessage.
       zone.run(() => {
         const data = (e as any).data;
-        if (data === '<stream_end>') {
+        if (data === STREAM_END) {
           this.eventSource.close();
           this.status = ChannelStatus.CLOSED;
           clearTimeout(this.isWaitingTimeout);
           this.isWaiting = false;
           this._isHotReloading = false;
           this.logger.log({type: 'StreamEnd'});
-          if (this.queuedEvents.length) {
-            const queuedEvent = this.queuedEvents.shift()!;
-            queuedEvent();
-          }
+          this.dequeueEvent();
           return;
         }
 
@@ -159,9 +158,6 @@ export class Channel {
     });
   }
 
-  /**
-   * Initialize WebSocket connection using Socket.IO.
-   */
   private initWebSocket(initParams: InitParams, request: UiRequest) {
     if (this.socket) {
       this.status = ChannelStatus.OPEN;
@@ -194,14 +190,11 @@ export class Channel {
       const prefix = 'data: ';
       const payloadData = (data.data.slice(prefix.length) as string).trimEnd();
       zone.run(() => {
-        if (payloadData === '<stream_end>') {
+        if (payloadData === STREAM_END) {
           this._isHotReloading = false;
           this.status = ChannelStatus.CLOSED;
           this.logger.log({type: 'StreamEnd'});
-          if (this.queuedEvents.length) {
-            const queuedEvent = this.queuedEvents.shift()!;
-            queuedEvent();
-          }
+          this.dequeueEvent();
           return;
         }
 
@@ -229,9 +222,6 @@ export class Channel {
     });
   }
 
-  /**
-   * Handle UiResponse from the server.
-   */
   private handleUiResponse(
     request: UiRequest,
     uiResponse: UiResponse,
@@ -405,6 +395,13 @@ export class Channel {
           }
         }, 500);
       }
+    }
+  }
+
+  private dequeueEvent() {
+    if (this.queuedEvents.length) {
+      const queuedEvent = this.queuedEvents.shift()!;
+      queuedEvent();
     }
   }
 

@@ -31,7 +31,10 @@ class App:
         use_reloader=False,
         allow_unsafe_werkzeug=True,
       )
-    self._flask_app.run(host=get_local_host(), port=port(), use_reloader=False)
+    else:
+      self._flask_app.run(
+        host=get_local_host(), port=port(), use_reloader=False
+      )
 
 
 def create_app(
