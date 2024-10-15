@@ -6,6 +6,7 @@ import mesop as me
 @me.stateclass
 class State:
   file: me.UploadedFile
+  upload_count: int = 0
 
 
 @me.page(path="/components/uploader/e2e/uploader_app")
@@ -26,6 +27,7 @@ def app():
         me.text(f"File name: {state.file.name}")
         me.text(f"File size: {state.file.size}")
         me.text(f"File type: {state.file.mime_type}")
+        me.text(f"Upload count: {state.upload_count}")
 
       with me.box(style=me.Style(margin=me.Margin.all(10))):
         me.image(src=_convert_contents_data_url(state.file))
@@ -34,6 +36,7 @@ def app():
 def handle_upload(event: me.UploadEvent):
   state = me.state(State)
   state.file = event.file
+  state.upload_count += 1
 
 
 def _convert_contents_data_url(file: me.UploadedFile) -> str:

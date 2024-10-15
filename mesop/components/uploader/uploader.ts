@@ -67,6 +67,9 @@ export class UploaderComponent {
     userEvent.setKey(this.key);
     userEvent.setBytesValue(uploadEvent.serializeBinary());
     this.channel.dispatch(userEvent);
+
+    // Reset the uploaded file, so that the same file path can be reselected.
+    target.value = '';
   }
 
   getStyle(): string {
