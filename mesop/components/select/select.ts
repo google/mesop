@@ -25,8 +25,8 @@ export class SelectComponent {
   @Input() style!: Style;
   private _config!: SelectType;
 
-  selectedOptions: string[] = [];
-  private initialSelectOptions: string[] = [];
+  selectedOptions: readonly string[] = [];
+  private initialSelectOptions: readonly string[] = [];
 
   constructor(private readonly channel: Channel) {}
 
@@ -87,10 +87,10 @@ export class SelectComponent {
     return this.config().getAppearance() as 'fill' | 'outline';
   }
 
-  private _checkInitialValuesChanged(values: string[]): boolean {
+  private _checkInitialValuesChanged(values: readonly string[]): boolean {
     return (
-      JSON.stringify(this.initialSelectOptions.sort()) !==
-      JSON.stringify(values.sort())
+      JSON.stringify(this.initialSelectOptions.slice().sort()) !==
+      JSON.stringify(values.slice().sort())
     );
   }
 }
