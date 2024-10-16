@@ -12,6 +12,9 @@ from mesop.examples import checkbox_and_radio as checkbox_and_radio
 from mesop.examples import composite as composite
 from mesop.examples import concurrency_state as concurrency_state
 from mesop.examples import concurrent_updates as concurrent_updates
+from mesop.examples import (
+  concurrent_updates_websockets as concurrent_updates_websockets,
+)
 from mesop.examples import custom_font as custom_font
 from mesop.examples import dict_state as dict_state
 from mesop.examples import docs as docs

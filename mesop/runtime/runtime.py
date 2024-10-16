@@ -2,13 +2,14 @@ from copy import deepcopy
 from dataclasses import dataclass
 from typing import Any, Callable, Generator, Type, TypeVar, cast
 
-from flask import g
+from flask import g, request
 
 import mesop.protos.ui_pb2 as pb
 from mesop.events import LoadEvent, MesopEvent
 from mesop.exceptions import MesopDeveloperException, MesopUserException
 from mesop.key import Key
 from mesop.security.security_policy import SecurityPolicy
+from mesop.server.server_utils import MESOP_WEBSOCKETS_ENABLED
 from mesop.utils.backoff import exponential_backoff
 
 from .context import Context
@@ -54,8 +55,13 @@ class Runtime:
     self._state_classes: list[type[Any]] = []
     self._loading_errors: list[pb.ServerError] = []
     self._has_served_traffic = False
+    self._contexts = {}
 
   def context(self) -> Context:
+    if MESOP_WEBSOCKETS_ENABLED and hasattr(request, "sid"):
+      if request.sid not in self._contexts:
+        self._contexts[request.sid] = self.create_context()
+      return self._contexts[request.sid]
     if "_mesop_context" not in g:
       g._mesop_context = self.create_context()
     return g._mesop_context

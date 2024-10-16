@@ -19,3 +19,13 @@ export const testInConcurrentUpdatesEnabledOnly = base.extend({
     await use(page);
   },
 });
+
+export const testInWebSocketsEnabledOnly = base.extend({
+  // Skip this test if MESOP_WEBSOCKETS_ENABLED is not 'true'
+  page: async ({page}, use) => {
+    if (process.env.MESOP_WEBSOCKETS_ENABLED !== 'true') {
+      base.skip(true, 'Skipping test in websockets disabled mode');
+    }
+    await use(page);
+  },
+});
