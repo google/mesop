@@ -6,4 +6,5 @@ import {Injectable} from '@angular/core';
 export class ExperimentService {
   concurrentUpdatesEnabled = false;
   experimentalEditorToolbarEnabled = false;
+  websocketsEnabled = false;
 }

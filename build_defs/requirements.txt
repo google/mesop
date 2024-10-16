@@ -8,6 +8,8 @@ python-dotenv
 
 # Optional (lazily-loaded) deps:
 sqlalchemy
+flask-socketio
+
 # greenlet is needed for SQL Alchemy depending on the architecture, but because of how
 # Bazel works using requirements_lock.txt, it does seem to able to install the
 # architecture specific requirements (in this case caught on Github CI).

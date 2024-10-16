@@ -4,6 +4,7 @@ load(
     "THIRD_PARTY_PY_DOTENV",
     "THIRD_PARTY_PY_FIREBASE_ADMIN",
     "THIRD_PARTY_PY_FLASK",
+    "THIRD_PARTY_PY_FLASK_SOCKETIO",
     "THIRD_PARTY_PY_GREENLET",
     "THIRD_PARTY_PY_MSGPACK",
     "THIRD_PARTY_PY_PYTEST",
@@ -37,16 +38,18 @@ py_library(
                "//mesop/utils",
                "//mesop/warn",
            ] + THIRD_PARTY_PY_ABSL_PY +
-           THIRD_PARTY_PY_FLASK,
+           THIRD_PARTY_PY_FLASK +
+           THIRD_PARTY_PY_FLASK_SOCKETIO,
 )
 
 py_library(
     name = "state_sessions",
     srcs = STATE_SESSIONS_SRCS,
     deps = [
-        "//mesop/dataclass_utils",
-        "//mesop/exceptions",
-    ] + THIRD_PARTY_PY_MSGPACK + THIRD_PARTY_PY_DOTENV,
+               "//mesop/dataclass_utils",
+               "//mesop/exceptions",
+           ] + THIRD_PARTY_PY_MSGPACK +
+           THIRD_PARTY_PY_DOTENV,
 )
 
 py_test(

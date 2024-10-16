@@ -23,5 +23,6 @@
     "bazel-out/**": true,
     "bazel-mesop/**": true
   },
-  "python.analysis.extraPaths": ["./bazel-bin"]
+  "python.analysis.extraPaths": ["./bazel-bin"],
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

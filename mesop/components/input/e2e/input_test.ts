@@ -19,6 +19,7 @@ test('test input on_blur works', async ({page}) => {
   // Fill in input and then click button and make sure values match
   await page.getByLabel('Input').click();
   await page.getByLabel('Input').fill('abc');
+  await page.getByLabel('Input').blur();
   await page.getByRole('button', {name: 'button'}).click();
   await expect(page.getByText('Input: abc')).toBeVisible();
   await expect(
@@ -28,6 +29,7 @@ test('test input on_blur works', async ({page}) => {
   // Same with textarea:
   await page.getByLabel('Regular textarea').click();
   await page.getByLabel('Regular textarea').fill('123');
+  await page.getByLabel('Regular textarea').blur();
   await page.getByRole('button', {name: 'button'}).click();
   await expect(page.getByText('Input: 123')).toBeVisible();
   await expect(
@@ -37,6 +39,7 @@ test('test input on_blur works', async ({page}) => {
   // Same with native textarea:
   await page.getByRole('textbox').nth(2).click();
   await page.getByRole('textbox').nth(2).fill('second_textarea');
+  await page.getByRole('textbox').nth(2).blur();
   await page.getByRole('button', {name: 'button'}).click();
   await expect(page.getByText('Input: second_textarea')).toBeVisible();
   await expect(

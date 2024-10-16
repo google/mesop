@@ -20,6 +20,9 @@ import {getViewportSize} from '../utils/viewport_size';
 import {ThemeService} from './theme_service';
 import {getQueryParams} from '../utils/query_params';
 import {ExperimentService} from './experiment_service';
+import {io, Socket} from 'socket.io-client';
+
+const STREAM_END = '<stream_end>';
 
 // Pick 500ms as the minimum duration before showing a progress/busy indicator
 // for the channel.
@@ -50,6 +53,7 @@ export class Channel {
   private isWaiting = false;
   private isWaitingTimeout: number | undefined;
   private eventSource!: SSE;
+  private socket: Socket | undefined;
   private initParams!: InitParams;
   private states: States = new States();
   private stateToken = '';
@@ -86,8 +90,16 @@ export class Channel {
 
   /**
    * Return true if the channel has been doing work
-   * triggered by a user that's been taking a while. */
+   * triggered by a user that's been taking a while.
+   */
   isBusy(): boolean {
+    if (this.experimentService.websocketsEnabled) {
+      // When WebSockets are enabled, we disable the busy indicator
+      // because it's possible for the server to push new data
+      // at any point. Apps should use their own loading indicators
+      // instead.
+      return false;
+    }
     return this.isWaiting && !this.isHotReloading();
   }
 
@@ -100,6 +112,16 @@ export class Channel {
   }
 
   init(initParams: InitParams, request: UiRequest) {
+    console.debug('sending UI request', request);
+
+    if (this.experimentService.websocketsEnabled) {
+      this.initWebSocket(initParams, request);
+    } else {
+      this.initSSE(initParams, request);
+    }
+  }
+
+  private initSSE(initParams: InitParams, request: UiRequest) {
     this.eventSource = new SSE('/__ui__', {
       payload: generatePayloadString(request),
     });
@@ -117,143 +139,204 @@ export class Channel {
       // Looks like Angular has a bug where it's not intercepting EventSource onmessage.
       zone.run(() => {
         const data = (e as any).data;
-        if (data === '<stream_end>') {
+        if (data === STREAM_END) {
           this.eventSource.close();
           this.status = ChannelStatus.CLOSED;
           clearTimeout(this.isWaitingTimeout);
           this.isWaiting = false;
           this._isHotReloading = false;
           this.logger.log({type: 'StreamEnd'});
-          if (this.queuedEvents.length) {
-            const queuedEvent = this.queuedEvents.shift()!;
-            queuedEvent();
-          }
+          this.dequeueEvent();
           return;
         }
 
         const array = toUint8Array(atob(data));
         const uiResponse = UiResponse.deserializeBinary(array);
-        console.debug('Server event: ', uiResponse.toObject());
-        switch (uiResponse.getTypeCase()) {
-          case UiResponse.TypeCase.UPDATE_STATE_EVENT: {
-            this.stateToken = uiResponse
-              .getUpdateStateEvent()!
-              .getStateToken()!;
-            switch (uiResponse.getUpdateStateEvent()!.getTypeCase()) {
-              case UpdateStateEvent.TypeCase.FULL_STATES: {
-                this.states = uiResponse
-                  .getUpdateStateEvent()!
-                  .getFullStates()!;
-                break;
-              }
-              case UpdateStateEvent.TypeCase.DIFF_STATES: {
-                const states = uiResponse
-                  .getUpdateStateEvent()!
-                  .getDiffStates()!;
-
-                const numDiffStates = states.getStatesList().length;
-                const numStates = this.states.getStatesList().length;
-
-                if (numDiffStates !== numStates) {
-                  throw Error(
-                    `Number of diffs (${numDiffStates}) doesn't equal the number of states (${numStates}))`,
-                  );
-                }
-
-                // `this.states` should be populated at this point since the first update
-                // from the server should be the full state.
-                for (let i = 0; i < numDiffStates; ++i) {
-                  const state = applyStateDiff(
-                    this.states.getStatesList()[i].getData() as string,
-                    states.getStatesList()[i].getData() as string,
-                  );
-                  this.states.getStatesList()[i].setData(state);
-                }
-                break;
-              }
-              case UpdateStateEvent.TypeCase.TYPE_NOT_SET:
-                throw new Error('No state event data set');
-            }
-            break;
-          }
-          case UiResponse.TypeCase.RENDER: {
-            const rootComponent = uiResponse.getRender()!.getRootComponent()!;
-            const componentDiff = uiResponse.getRender()!.getComponentDiff()!;
-
-            for (const command of uiResponse.getRender()!.getCommandsList()) {
-              onCommand(command);
-            }
-
-            const title =
-              this.overridedTitle || uiResponse.getRender()!.getTitle();
-            if (title) {
-              this.title.setTitle(title);
-            }
-
-            if (
-              componentDiff !== undefined &&
-              this.rootComponent !== undefined
-            ) {
-              // Angular does not update the UI if we apply the diff on the root
-              // component instance which is why we create copy of the root component
-              // first.
-              const rootComponentToUpdate = ComponentProto.deserializeBinary(
-                this.rootComponent.serializeBinary(),
-              );
-              applyComponentDiff(rootComponentToUpdate, componentDiff);
-              this.rootComponent = rootComponentToUpdate;
-            } else {
-              this.rootComponent = rootComponent;
-            }
-            const experimentSettings = uiResponse
-              .getRender()!
-              .getExperimentSettings();
-            if (experimentSettings) {
-              this.experimentService.concurrentUpdatesEnabled =
-                experimentSettings.getConcurrentUpdatesEnabled() ?? false;
-              this.experimentService.experimentalEditorToolbarEnabled =
-                experimentSettings.getExperimentalEditorToolbarEnabled() ??
-                false;
-            }
-
-            this.componentConfigs = uiResponse
-              .getRender()!
-              .getComponentConfigsList();
-            onRender(
-              this.rootComponent,
-              this.componentConfigs,
-              uiResponse.getRender()!.getJsModulesList(),
-            );
-            this.logger.log({
-              type: 'RenderLog',
-              states: this.states,
-              rootComponent: this.rootComponent,
-            });
-            break;
-          }
-          case UiResponse.TypeCase.ERROR:
-            if (
-              uiResponse.getError()?.getException() ===
-              'Token not found in state session backend.'
-            ) {
-              this.queuedEvents.unshift(() => {
-                console.warn(
-                  'Token not found in state session backend. Retrying user event.',
-                );
-                request.getUserEvent()!.clearStateToken();
-                request.getUserEvent()!.setStates(this.states);
-                this.init(this.initParams, request);
-              });
-            } else {
-              onError(uiResponse.getError()!);
-              console.log('error', uiResponse.getError());
-            }
-            break;
-          case UiResponse.TypeCase.TYPE_NOT_SET:
-            throw new Error(`Unhandled case for server event: ${uiResponse}`);
-        }
+        console.debug('Server event (SSE): ', uiResponse.toObject());
+        this.handleUiResponse(request, uiResponse, initParams);
       });
     });
+  }
+
+  private initWebSocket(initParams: InitParams, request: UiRequest) {
+    if (this.socket) {
+      this.status = ChannelStatus.OPEN;
+      const payload = generatePayloadString(request);
+      this.socket.emit('message', payload);
+      return;
+    }
+    this.socket = io('/__ui__', {
+      transports: ['websocket'],
+      reconnectionAttempts: 3,
+    });
+
+    this.status = ChannelStatus.OPEN;
+    this.isWaitingTimeout = setTimeout(() => {
+      this.isWaiting = true;
+    }, WAIT_TIMEOUT_MS);
+
+    this.logger.log({type: 'StreamStart'});
+
+    const {zone, onRender, onError, onCommand} = initParams;
+    this.initParams = initParams;
+
+    this.socket.on('connect', () => {
+      // Send the initial UiRequest upon connection
+      const payload = generatePayloadString(request);
+      this.socket!.emit('message', payload);
+    });
+
+    this.socket.on('response', (data: any) => {
+      const prefix = 'data: ';
+      const payloadData = (data.data.slice(prefix.length) as string).trimEnd();
+      zone.run(() => {
+        if (payloadData === STREAM_END) {
+          this._isHotReloading = false;
+          this.status = ChannelStatus.CLOSED;
+          this.logger.log({type: 'StreamEnd'});
+          this.dequeueEvent();
+          return;
+        }
+
+        const array = toUint8Array(atob(payloadData));
+        const uiResponse = UiResponse.deserializeBinary(array);
+        console.debug('Server event (WebSocket): ', uiResponse.toObject());
+        this.handleUiResponse(request, uiResponse, initParams);
+      });
+    });
+
+    this.socket.on('error', (error: any) => {
+      zone.run(() => {
+        this.socket = undefined;
+        console.error('WebSocket error:', error);
+        this.status = ChannelStatus.CLOSED;
+      });
+    });
+
+    this.socket.on('disconnect', (reason: string) => {
+      zone.run(() => {
+        this.socket = undefined;
+        console.error('WebSocket disconnected:', reason);
+        this.status = ChannelStatus.CLOSED;
+      });
+    });
+  }
+
+  private handleUiResponse(
+    request: UiRequest,
+    uiResponse: UiResponse,
+    initParams: InitParams,
+  ) {
+    const {onRender, onError, onCommand} = initParams;
+    switch (uiResponse.getTypeCase()) {
+      case UiResponse.TypeCase.UPDATE_STATE_EVENT: {
+        this.stateToken = uiResponse.getUpdateStateEvent()!.getStateToken()!;
+        switch (uiResponse.getUpdateStateEvent()!.getTypeCase()) {
+          case UpdateStateEvent.TypeCase.FULL_STATES: {
+            this.states = uiResponse.getUpdateStateEvent()!.getFullStates()!;
+            break;
+          }
+          case UpdateStateEvent.TypeCase.DIFF_STATES: {
+            const states = uiResponse.getUpdateStateEvent()!.getDiffStates()!;
+
+            const numDiffStates = states.getStatesList().length;
+            const numStates = this.states.getStatesList().length;
+
+            if (numDiffStates !== numStates) {
+              throw Error(
+                `Number of diffs (${numDiffStates}) doesn't equal the number of states (${numStates}))`,
+              );
+            }
+
+            // `this.states` should be populated at this point since the first update
+            // from the server should be the full state.
+            for (let i = 0; i < numDiffStates; ++i) {
+              const state = applyStateDiff(
+                this.states.getStatesList()[i].getData() as string,
+                states.getStatesList()[i].getData() as string,
+              );
+              this.states.getStatesList()[i].setData(state);
+            }
+            break;
+          }
+          case UpdateStateEvent.TypeCase.TYPE_NOT_SET:
+            throw new Error('No state event data set');
+        }
+        break;
+      }
+      case UiResponse.TypeCase.RENDER: {
+        const rootComponent = uiResponse.getRender()!.getRootComponent()!;
+        const componentDiff = uiResponse.getRender()!.getComponentDiff()!;
+
+        for (const command of uiResponse.getRender()!.getCommandsList()) {
+          onCommand(command);
+        }
+
+        const title = this.overridedTitle || uiResponse.getRender()!.getTitle();
+        if (title) {
+          this.title.setTitle(title);
+        }
+
+        if (componentDiff !== undefined && this.rootComponent !== undefined) {
+          // Angular does not update the UI if we apply the diff on the root
+          // component instance which is why we create copy of the root component
+          // first.
+          const rootComponentToUpdate = ComponentProto.deserializeBinary(
+            this.rootComponent.serializeBinary(),
+          );
+          applyComponentDiff(rootComponentToUpdate, componentDiff);
+          this.rootComponent = rootComponentToUpdate;
+        } else {
+          this.rootComponent = rootComponent;
+        }
+        const experimentSettings = uiResponse
+          .getRender()!
+          .getExperimentSettings();
+        if (experimentSettings) {
+          this.experimentService.websocketsEnabled =
+            experimentSettings.getWebsocketsEnabled() ?? false;
+          this.experimentService.concurrentUpdatesEnabled =
+            experimentSettings.getConcurrentUpdatesEnabled() ?? false;
+          this.experimentService.experimentalEditorToolbarEnabled =
+            experimentSettings.getExperimentalEditorToolbarEnabled() ?? false;
+        }
+
+        this.componentConfigs = uiResponse
+          .getRender()!
+          .getComponentConfigsList();
+        onRender(
+          this.rootComponent,
+          this.componentConfigs,
+          uiResponse.getRender()!.getJsModulesList(),
+        );
+        this.logger.log({
+          type: 'RenderLog',
+          states: this.states,
+          rootComponent: this.rootComponent,
+        });
+        break;
+      }
+      case UiResponse.TypeCase.ERROR:
+        if (
+          uiResponse.getError()?.getException() ===
+          'Token not found in state session backend.'
+        ) {
+          this.queuedEvents.unshift(() => {
+            console.warn(
+              'Token not found in state session backend. Retrying user event.',
+            );
+            request.getUserEvent()!.clearStateToken();
+            request.getUserEvent()!.setStates(this.states);
+            this.init(this.initParams, request);
+          });
+        } else {
+          onError(uiResponse.getError()!);
+          console.error('error', uiResponse.getError());
+        }
+        break;
+      case UiResponse.TypeCase.TYPE_NOT_SET:
+        throw new Error(`Unhandled case for server event: ${uiResponse}`);
+    }
   }
 
   dispatch(userEvent: UserEvent) {
@@ -310,8 +393,15 @@ export class Channel {
             )[0];
             initUserEvent();
           }
-        }, 1000);
+        }, 500);
       }
+    }
+  }
+
+  private dequeueEvent() {
+    if (this.queuedEvents.length) {
+      const queuedEvent = this.queuedEvents.shift()!;
+      queuedEvent();
     }
   }
 

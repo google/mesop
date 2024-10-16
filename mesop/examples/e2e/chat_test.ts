@@ -8,6 +8,7 @@ test('Chat UI can send messages and display responses', async ({page}) => {
 
   // Test that we can send a message.
   await page.locator('//input').fill('Lorem ipsum');
+  await page.locator('//input').blur();
   // Need to wait for the input state to be saved before clicking.
   await page.waitForTimeout(2000);
   await page.getByRole('button').filter({hasText: 'send'}).click();
