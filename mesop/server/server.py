@@ -38,6 +38,7 @@ def configure_flask_app(
     init_request: bool = False,
   ) -> Generator[str, None, None]:
     try:
+      runtime().context().acquire_lock()
       runtime().run_path(path=path, trace_mode=trace_mode)
       page_config = runtime().get_page_config(path=path)
       title = page_config.title if page_config else "Unknown path"
@@ -88,6 +89,8 @@ def configure_flask_app(
       yield from yield_errors(
         error=pb.ServerError(exception=str(e), traceback=format_traceback())
       )
+    finally:
+      runtime().context().release_lock()
 
   def yield_errors(error: pb.ServerError) -> Generator[str, None, None]:
     if not runtime().debug_mode:
