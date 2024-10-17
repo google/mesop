@@ -49,7 +49,6 @@ from mesop.examples import (
 )
 from mesop.examples import starter_kit as starter_kit
 from mesop.examples import sxs as sxs
-from mesop.examples import tailwind as tailwind
 from mesop.examples import testing as testing
 from mesop.examples import viewport_size as viewport_size
 from mesop.examples import web_component as web_component

@@ -1,7 +1,9 @@
 import base64
+import os
 from typing import Generator, Sequence
 
 from flask import Flask, Response, abort, request, stream_with_context
+from werkzeug.security import safe_join
 
 import mesop.protos.ui_pb2 as pb
 from mesop.component_helpers import diff_component
@@ -9,6 +11,7 @@ from mesop.editor.component_configs import get_component_configs
 from mesop.events import LoadEvent
 from mesop.exceptions import format_traceback
 from mesop.runtime import runtime
+from mesop.server.config import app_config
 from mesop.server.constants import WEB_COMPONENTS_PATH_SEGMENT
 from mesop.server.server_debug_routes import configure_debug_routes
 from mesop.server.server_utils import (
@@ -30,7 +33,17 @@ UI_PATH = "/__ui__"
 def configure_flask_app(
   *, prod_mode: bool = True, exceptions_to_propagate: Sequence[type] = ()
 ) -> Flask:
-  flask_app = Flask(__name__)
+  static_assets_folder = get_static_folder()
+  print(static_assets_folder)
+  if static_assets_folder:
+    print(static_assets_folder, app_config.static_url_path)
+    flask_app = Flask(
+      __name__,
+      static_folder=static_assets_folder,
+      static_url_path=app_config.static_url_path,
+    )
+  else:
+    flask_app = Flask(__name__)
 
   def render_loop(
     path: str,
@@ -270,3 +283,9 @@ def configure_flask_app(
     flask_app.socketio = socketio  # type: ignore
 
   return flask_app
+
+
+def get_static_folder() -> str | None:
+  if not app_config.static_folder:
+    return None
+  return safe_join(os.getcwd(), app_config.static_folder)
