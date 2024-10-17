@@ -31,8 +31,8 @@ def web_component(*, path: str, skip_validation: bool = False):
     os.path.dirname(os.path.abspath(caller_module_file))
   )
   full_path = os.path.normpath(os.path.join(caller_module_dir, path))
-  if not full_path.startswith("/"):
-    full_path = "/" + full_path
+  if not full_path.startswith(os.sep):
+    full_path = os.sep + full_path
   js_module_path = full_path
 
   def component_wrapper(fn: C) -> C:
