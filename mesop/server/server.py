@@ -34,9 +34,7 @@ def configure_flask_app(
   *, prod_mode: bool = True, exceptions_to_propagate: Sequence[type] = ()
 ) -> Flask:
   static_assets_folder = get_static_folder()
-  print(static_assets_folder)
   if static_assets_folder:
-    print(static_assets_folder, app_config.static_url_path)
     flask_app = Flask(
       __name__,
       static_folder=static_assets_folder,
