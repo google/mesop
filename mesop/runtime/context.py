@@ -11,6 +11,7 @@ from mesop.dataclass_utils import (
   serialize_dataclass,
   update_dataclass_from_json,
 )
+from mesop.env.env import MESOP_WEBSOCKETS_ENABLED
 from mesop.exceptions import (
   MesopDeveloperException,
   MesopException,
@@ -43,18 +44,22 @@ class Context:
     self._theme_settings: pb.ThemeSettings | None = None
     self._js_modules: set[str] = set()
     self._query_params: dict[str, list[str]] = {}
-
-    self._lock = threading.Lock()
+    if MESOP_WEBSOCKETS_ENABLED:
+      self._lock = threading.Lock()
 
   def acquire_lock(self) -> None:
     # No-op if websockets is not enabled because
-    # theoretically we don't need to lock.
-    self._lock.acquire()
+    # there shouldn't be concurrent updates to the same
+    # context instance.
+    if MESOP_WEBSOCKETS_ENABLED:
+      self._lock.acquire()
 
   def release_lock(self) -> None:
     # No-op if websockets is not enabled because
-    # theoretically we don't need to lock.
-    self._lock.release()
+    # there shouldn't be concurrent updates to the same
+    # context instance.
+    if MESOP_WEBSOCKETS_ENABLED:
+      self._lock.release()
 
   def register_js_module(self, js_module_path: str) -> None:
     self._js_modules.add(js_module_path)
