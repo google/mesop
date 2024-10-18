@@ -15,7 +15,6 @@ from mesop.exceptions import (
   MesopDeveloperException,
   MesopException,
 )
-from mesop.server.server_utils import MESOP_WEBSOCKETS_ENABLED
 from mesop.server.state_session import state_session
 
 T = TypeVar("T")
@@ -44,20 +43,18 @@ class Context:
     self._theme_settings: pb.ThemeSettings | None = None
     self._js_modules: set[str] = set()
     self._query_params: dict[str, list[str]] = {}
-    if MESOP_WEBSOCKETS_ENABLED:
-      self._lock = threading.Lock()
+
+    self._lock = threading.Lock()
 
   def acquire_lock(self) -> None:
     # No-op if websockets is not enabled because
     # theoretically we don't need to lock.
-    if MESOP_WEBSOCKETS_ENABLED:
-      self._lock.acquire()
+    self._lock.acquire()
 
   def release_lock(self) -> None:
     # No-op if websockets is not enabled because
     # theoretically we don't need to lock.
-    if MESOP_WEBSOCKETS_ENABLED:
-      self._lock.release()
+    self._lock.release()
 
   def register_js_module(self, js_module_path: str) -> None:
     self._js_modules.add(js_module_path)
