@@ -63,6 +63,7 @@ import slide_toggle as slide_toggle
 import slider as slider
 import snackbar as snackbar
 import table as table
+import tailwind as tailwind
 import text as text
 import text_to_image as text_to_image
 import text_to_text as text_to_text
@@ -131,6 +132,7 @@ FIRST_SECTIONS = [
     name="Integrations",
     examples=[
       Example(name="bootstrap"),
+      Example(name="tailwind"),
     ],
   ),
 ]

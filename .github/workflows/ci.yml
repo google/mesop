@@ -88,6 +88,14 @@ jobs:
           name: playwright-report-with-memory-state-session
           path: playwright-report-with-memory-state-session/
           retention-days: 30
+      - name: Run playwright test with static folder
+        run: MESOP_STATIC_FOLDER=mesop/static PLAYWRIGHT_HTML_OUTPUT_DIR=playwright-report-with-static-folder yarn playwright test mesop/tests/e2e/static_folder_test.ts
+      - uses: actions/upload-artifact@a8a3f3ad30e3422c9c7b888a15615d19a852ae32 # v3.1.3
+        if: always()
+        with:
+          name: playwright-report-with-static-folder
+          path: playwright-report-with-static-folder/
+          retention-days: 30
   # Deploy docs
   deploy-docs:
     # Only deploy docs if we're pushing to main (see on.push.branches)

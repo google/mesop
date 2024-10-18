@@ -55,6 +55,8 @@ export default defineConfig({
       process.env.MESOP_CONCURRENT_UPDATES_ENABLED || 'false'
     } MESOP_STATE_SESSION_BACKEND=${
       process.env.MESOP_STATE_SESSION_BACKEND || 'none'
+    } MESOP_STATIC_FOLDER=${
+      process.env.MESOP_STATIC_FOLDER || ''
     } bazel run //mesop/cli -- --path=mesop/mesop/example_index.py --prod=${
       process.env.MESOP_DEBUG_MODE === 'true' ? 'false' : 'true'
     }`,
