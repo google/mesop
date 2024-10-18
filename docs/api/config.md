@@ -6,6 +6,28 @@ Mesop is configured at the application level using environment variables.
 
 ## Configuration values
 
+### MESOP_STATIC_FOLDER
+
+Allows access to static files from the Mesop server.
+
+The specified folder path must be relative to the Mesop app root directory.
+
+By default, this feature is not enabled.
+
+**Default:** `''`
+
+### MESOP_STATIC_URL_PATH
+
+This is the base URL path from which files for your specified static folder will be
+made viewable.
+
+The static URL path is only recognized if `MESOP_STATIC_FOLDER` is set.
+
+For example, given `MESOP_STATIC_FOLDER=static` and `MESOP_STATIC_URL_PATH=/assets`, the
+file `static/js/script.js` can be viewable from the URL path `/assets/js/script.js`.
+
+**Default:** `/static`
+
 ### MESOP_CONCURRENT_UPDATES_ENABLED
 
 Allows concurrent updates to state in the same session. If this is not updated, then updates are queued and processed sequentially.
