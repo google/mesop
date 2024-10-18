@@ -4,12 +4,12 @@ from typing import Any, Callable
 from absl import flags
 from flask import Flask
 
+from mesop.env.env import MESOP_WEBSOCKETS_ENABLED
 from mesop.runtime import enable_debug_mode
 from mesop.server.constants import EDITOR_PACKAGE_PATH, PROD_PACKAGE_PATH
 from mesop.server.flags import port
 from mesop.server.logging import log_startup
 from mesop.server.server import configure_flask_app
-from mesop.server.server_utils import MESOP_WEBSOCKETS_ENABLED
 from mesop.server.static_file_serving import configure_static_file_serving
 from mesop.utils.host_util import get_local_host
 

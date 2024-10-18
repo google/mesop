@@ -12,6 +12,14 @@ Allows concurrent updates to state in the same session. If this is not updated, 
 
 By default, this is not enabled. You can enable this by setting it to `true`.
 
+### MESOP_WEB_SOCKETS_ENABLED
+
+!!! warning "Experimental feature"
+
+    This is an experimental feature and is subject to breaking change. Please follow [https://github.com/google/mesop/issues/1028](https://github.com/google/mesop/issues/1028) for updates.
+
+This uses WebSockets instead of HTTP Server-Sent Events (SSE) as the transport protocol for UI updates. If you set this environment variable to `true`, then [`MESOP_CONCURRENT_UPDATES_ENABLED`](#MESOP_CONCURRENT_UPDATES_ENABLED) will automatically be enabled as well.
+
 ### MESOP_STATE_SESSION_BACKEND
 
 Sets the backend to use for caching state data server-side. This makes it so state does
