@@ -33,15 +33,11 @@ UI_PATH = "/__ui__"
 def configure_flask_app(
   *, prod_mode: bool = True, exceptions_to_propagate: Sequence[type] = ()
 ) -> Flask:
-  static_assets_folder = get_static_folder()
-  if static_assets_folder:
-    flask_app = Flask(
-      __name__,
-      static_folder=static_assets_folder,
-      static_url_path=app_config.static_url_path,
-    )
-  else:
-    flask_app = Flask(__name__)
+  flask_app = Flask(
+    __name__,
+    static_folder=get_static_folder(),
+    static_url_path=get_static_url_path(),
+  )
 
   def render_loop(
     path: str,
@@ -287,3 +283,9 @@ def get_static_folder() -> str | None:
   if not app_config.static_folder:
     return None
   return safe_join(os.getcwd(), app_config.static_folder)
+
+
+def get_static_url_path() -> str | None:
+  if not app_config.static_folder:
+    return None
+  return app_config.static_url_path
