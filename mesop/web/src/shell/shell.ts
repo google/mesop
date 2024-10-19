@@ -240,6 +240,7 @@ export class Shell {
     this.dialog.open(ServerErrorBoxDialogComponent, {
       width: 'min(90vw, max(60vw, 600px))',
       data: {error: error},
+      autoFocus: 'dialog',
     });
   }
 
