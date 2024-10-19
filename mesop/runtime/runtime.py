@@ -11,6 +11,7 @@ from mesop.exceptions import MesopDeveloperException, MesopUserException
 from mesop.key import Key
 from mesop.security.security_policy import SecurityPolicy
 from mesop.utils.backoff import exponential_backoff
+from mesop.warn import warn
 
 from .context import Context
 
@@ -67,6 +68,12 @@ class Runtime:
     if "_mesop_context" not in g:
       g._mesop_context = self.create_context()
     return g._mesop_context
+
+  def delete_context(self, sid: str) -> None:
+    if sid in self._contexts:
+      del self._contexts[sid]
+    else:
+      warn(f"Tried to delete context with sid={sid} that doesn't exist.")
 
   def create_context(self) -> Context:
     # If running in prod mode, *always* enable the has served traffic safety check.

@@ -259,6 +259,17 @@ def configure_flask_app(
 
     socketio = SocketIO(flask_app)
 
+    @socketio.on_error(namespace=UI_PATH)
+    def error_handler_chat(e):
+      print("WebSocket error", e)
+      sid = request.sid  # type: ignore
+      runtime().delete_context(sid)
+
+    @socketio.on("disconnect", namespace=UI_PATH)
+    def handle_disconnect():
+      sid = request.sid  # type: ignore
+      runtime().delete_context(sid)
+
     @socketio.on("message", namespace=UI_PATH)
     def handle_message(message):
       if not message:
