@@ -16,5 +16,6 @@ py_library(
         "//mesop/security",
         "//mesop/server:state_sessions",
         "//mesop/utils",
+        "//mesop/warn",
     ] + THIRD_PARTY_PY_FLASK,
 )
