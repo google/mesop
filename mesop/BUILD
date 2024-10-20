@@ -15,7 +15,10 @@ py_library(
     srcs = [
         "__init__.py",
     ],
-    data = glob([".env"]),
+    data = glob([
+        ".env",
+        "static/**/*",
+    ]),
     visibility = ["//build_defs:mesop_users"],
     deps = [
         ":version",
