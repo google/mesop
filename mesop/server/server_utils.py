@@ -1,6 +1,5 @@
 import base64
 import json
-import os
 import secrets
 import urllib.parse as urlparse
 from typing import Any, Generator, Iterable
@@ -9,34 +8,9 @@ from urllib import request as urllib_request
 from flask import Response, abort, request
 
 import mesop.protos.ui_pb2 as pb
+from mesop.env.env import EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED
 from mesop.runtime import runtime
 from mesop.server.config import app_config
-
-AI_SERVICE_BASE_URL = os.environ.get(
-  "MESOP_AI_SERVICE_BASE_URL", "http://localhost:43234"
-)
-
-MESOP_WEBSOCKETS_ENABLED = (
-  os.environ.get("MESOP_WEBSOCKETS_ENABLED", "false").lower() == "true"
-)
-
-MESOP_CONCURRENT_UPDATES_ENABLED = (
-  os.environ.get("MESOP_CONCURRENT_UPDATES_ENABLED", "false").lower() == "true"
-)
-
-if MESOP_WEBSOCKETS_ENABLED:
-  print("Experiment enabled: MESOP_WEBSOCKETS_ENABLED")
-  print("Auto-enabling MESOP_CONCURRENT_UPDATES_ENABLED")
-  MESOP_CONCURRENT_UPDATES_ENABLED = True
-elif MESOP_CONCURRENT_UPDATES_ENABLED:
-  print("Experiment enabled: MESOP_CONCURRENT_UPDATES_ENABLED")
-
-EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED = (
-  os.environ.get("MESOP_EXPERIMENTAL_EDITOR_TOOLBAR", "false").lower() == "true"
-)
-
-if EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED:
-  print("Experiment enabled: EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED")
 
 LOCALHOSTS = (
   # For IPv4 localhost

@@ -11,6 +11,7 @@ from mesop.cli.execute_module import (
   execute_module,
   get_module_name_from_runfile_path,
 )
+from mesop.env.env import MESOP_WEBSOCKETS_ENABLED
 from mesop.exceptions import format_traceback
 from mesop.runtime import (
   enable_debug_mode,
@@ -22,7 +23,6 @@ from mesop.server.constants import EDITOR_PACKAGE_PATH, PROD_PACKAGE_PATH
 from mesop.server.flags import port
 from mesop.server.logging import log_startup
 from mesop.server.server import configure_flask_app
-from mesop.server.server_utils import MESOP_WEBSOCKETS_ENABLED
 from mesop.server.static_file_serving import configure_static_file_serving
 from mesop.utils.host_util import get_public_host
 from mesop.utils.runfiles import get_runfile_location
