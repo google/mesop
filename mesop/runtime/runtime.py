@@ -59,21 +59,22 @@ class Runtime:
     self._contexts = {}
 
   def context(self) -> Context:
-    if MESOP_WEBSOCKETS_ENABLED and hasattr(request, "sid"):
-      # flask-socketio adds sid (session id) to the request object.
-      sid = request.sid  # type: ignore
-      if sid not in self._contexts:
-        self._contexts[sid] = self.create_context()
-      return self._contexts[sid]
+    if MESOP_WEBSOCKETS_ENABLED and hasattr(request, "websocket_session_id"):
+      websocket_session_id = request.websocket_session_id  # type: ignore
+      if websocket_session_id not in self._contexts:
+        self._contexts[websocket_session_id] = self.create_context()
+      return self._contexts[websocket_session_id]
     if "_mesop_context" not in g:
       g._mesop_context = self.create_context()
     return g._mesop_context
 
-  def delete_context(self, sid: str) -> None:
-    if sid in self._contexts:
-      del self._contexts[sid]
+  def delete_context(self, websocket_session_id: str) -> None:
+    if websocket_session_id in self._contexts:
+      del self._contexts[websocket_session_id]
     else:
-      warn(f"Tried to delete context with sid={sid} that doesn't exist.")
+      warn(
+        f"Tried to delete context with websocket_session_id={websocket_session_id} that doesn't exist."
+      )
 
   def create_context(self) -> Context:
     # If running in prod mode, *always* enable the has served traffic safety check.

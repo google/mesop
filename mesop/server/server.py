@@ -1,4 +1,5 @@
 import base64
+import uuid
 from typing import Generator, Sequence
 
 from flask import Flask, Response, abort, request, stream_with_context
@@ -255,34 +256,31 @@ def configure_flask_app(
     configure_debug_routes(flask_app)
 
   if MESOP_WEBSOCKETS_ENABLED:
-    from flask_socketio import SocketIO, emit
+    from flask_sock import Sock
 
-    socketio = SocketIO(flask_app)
+    sock = Sock(flask_app)
 
-    @socketio.on_error(namespace=UI_PATH)
-    def handle_error(e):
-      print("WebSocket error", e)
-      sid = request.sid  # type: ignore
-      runtime().delete_context(sid)
+    @sock.route(UI_PATH)
+    def handle_websocket(ws):
+      session_id = str(uuid.uuid4())
+      request.websocket_session_id = session_id  # type: ignore
+      try:
+        while True:
+          message = ws.receive()
+          if not message:
+            continue
 
-    @socketio.on("disconnect", namespace=UI_PATH)
-    def handle_disconnect():
-      sid = request.sid  # type: ignore
-      runtime().delete_context(sid)
+          ui_request = pb.UiRequest()
+          ui_request.ParseFromString(base64.urlsafe_b64decode(message))
 
-    @socketio.on("message", namespace=UI_PATH)
-    def handle_message(message):
-      if not message:
-        emit("error", {"error": "Missing request payload"})
-        return
-
-      ui_request = pb.UiRequest()
-      ui_request.ParseFromString(base64.urlsafe_b64decode(message))
-
-      generator = generate_data(ui_request)
-      for data_chunk in generator:
-        emit("response", {"data": data_chunk})
-
-    flask_app.socketio = socketio  # type: ignore
+          for data_chunk in generate_data(ui_request):
+            ws.send(data_chunk)
+      except Exception as e:
+        print("WebSocket error:", e)
+      finally:
+        # Clean up context when connection closes
+        if hasattr(request, "websocket_session_id"):
+          websocket_session_id = request.websocket_session_id  # type: ignore
+          runtime().delete_context(websocket_session_id)
 
   return flask_app

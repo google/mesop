@@ -4,7 +4,6 @@ from typing import Any, Callable
 from absl import flags
 from flask import Flask
 
-from mesop.env.env import MESOP_WEBSOCKETS_ENABLED
 from mesop.runtime import enable_debug_mode
 from mesop.server.constants import EDITOR_PACKAGE_PATH, PROD_PACKAGE_PATH
 from mesop.server.flags import port
@@ -22,19 +21,8 @@ class App:
 
   def run(self):
     log_startup(port=port())
-    if MESOP_WEBSOCKETS_ENABLED:
-      socketio = self._flask_app.socketio  # type: ignore
-      socketio.run(
-        self._flask_app,
-        host=get_local_host(),
-        port=port(),
-        use_reloader=False,
-        allow_unsafe_werkzeug=True,
-      )
-    else:
-      self._flask_app.run(
-        host=get_local_host(), port=port(), use_reloader=False
-      )
+
+    self._flask_app.run(host=get_local_host(), port=port(), use_reloader=False)
 
 
 def create_app(

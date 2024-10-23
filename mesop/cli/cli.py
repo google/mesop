@@ -11,7 +11,6 @@ from mesop.cli.execute_module import (
   execute_module,
   get_module_name_from_runfile_path,
 )
-from mesop.env.env import MESOP_WEBSOCKETS_ENABLED
 from mesop.exceptions import format_traceback
 from mesop.runtime import (
   enable_debug_mode,
@@ -154,17 +153,7 @@ def main(argv: Sequence[str]):
     log_startup(port=port())
     logging.getLogger("werkzeug").setLevel(logging.WARN)
 
-  if MESOP_WEBSOCKETS_ENABLED:
-    socketio = flask_app.socketio  # type: ignore
-    socketio.run(
-      flask_app,
-      host=get_public_host(),
-      port=port(),
-      use_reloader=False,
-      allow_unsafe_werkzeug=True,
-    )
-  else:
-    flask_app.run(host=get_public_host(), port=port(), use_reloader=False)
+  flask_app.run(host=get_public_host(), port=port(), use_reloader=False)
 
 
 if __name__ == "__main__":
