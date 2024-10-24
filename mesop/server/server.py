@@ -1,6 +1,6 @@
 import base64
+import secrets
 import threading
-import uuid
 from typing import Generator, Sequence
 
 from flask import (
@@ -282,7 +282,7 @@ def configure_flask_app(
           ws.send(data_chunk)
 
       # Generate a unique session ID for the WebSocket connection
-      session_id = str(uuid.uuid4())
+      session_id = secrets.token_urlsafe(32)
       request.websocket_session_id = session_id  # type: ignore
 
       try:
