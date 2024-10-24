@@ -281,8 +281,25 @@ def configure_flask_app(
 
 def get_static_folder() -> str | None:
   if not app_config.static_folder:
+    print("Static folder disabled.")
     return None
-  return safe_join(os.getcwd(), app_config.static_folder)
+
+  if app_config.static_folder.startswith("/"):
+    print(
+      "Static folder disabled. Static folder cannot be an absolute path: {app_config.static_folder}"
+    )
+    return None
+
+  static_folder_path = safe_join(os.getcwd(), app_config.static_folder)
+
+  if static_folder_path:
+    print(f"Static folder enabled: {static_folder_path}")
+  else:
+    print(
+      f"Static folder disabled. Invalid static folder specified: {app_config.static_folder}"
+    )
+
+  return static_folder_path
 
 
 def get_static_url_path() -> str | None:

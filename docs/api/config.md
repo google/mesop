@@ -8,13 +8,36 @@ Mesop is configured at the application level using environment variables.
 
 ### MESOP_STATIC_FOLDER
 
+> **NOTE:** By default, this feature is not enabled, but in an upcoming release, the
+default will be `static`.
+
 Allows access to static files from the Mesop server.
 
-The specified folder path must be relative to the Mesop app root directory.
+It is important to know that the specified folder path is relative to the current
+working directory where the Mesop command is run. Absolute paths are not allowed.
 
-By default, this feature is not enabled.
+Example:
 
-**Default:** `''`
+In this case, the current working directory is `/srv`, which means Mesop will make
+`/srv/static` the static folder.
+
+```bash
+cd /srv
+MESOP_STATIC_FOLDER=static mesop app/main.py
+```
+
+Here are some examples of valid paths. Let's assume a current working directory `/srv/`
+
+- `static` becomes `/srv/static`
+- `static/` becomes `/srv/static`
+- `static/assets` becomes `/srv/static/assets`
+- `./static` becomes `/srv/static`
+- `./static/` becomes `/srv/static`
+- `./static/assets` becomes `/srv/static/assets`
+- `.` becomes `/srv/static/.`
+    - *Period is the name of the folder*
+- `./` becomes `/srv/static/.`
+    - *Period is the name of the folder*
 
 ### MESOP_STATIC_URL_PATH
 

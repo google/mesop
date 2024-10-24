@@ -3,26 +3,40 @@
 Mesop allows you to specify a folder for storing static assets that will be served by
 the Mesop server.
 
+This feature provides a simple way to serving images, CSS stylesheets, and other files
+without having to rely on CDNs, external servers, or mounting Mesop onto FastAPI/Flask.
+
 ## Enable a static folder
 
 This feature can be enabled using environment variables.
 
 - [MESOP_STATIC_FOLDER](../api/config.md#mesop_static_folder)
-- [MESOP_STATIC_URL_PATH](../api/config.md#mesop_static_folder)
+- [MESOP_STATIC_URL_PATH](../api/config.md#mesop_static_url_path)
 
-Full description of these two settings can be found on the [config page](../api/config.md).
+Full descriptions of these two settings can be found on the [config page](../api/config.md).
 
 ### Enabling a static folder named "assets"
 
 This will make the files in the `assets` directory accessible from the Mesop server
 at `/static`.
 
-Mesop will look for the `assets` directory relative to your application directory.
+Mesop will look for the `assets` directory relative to your current working directory.
+In this case, `/some/path/mesop-app/assets`.
 
 ```bash
+cd /some/path/mesop-app
 MESOP_STATIC_FOLDER=assets mesop main.py
 ```
 
+Here is another example:
+
+Mesop will look for the `assets` directory relative to your current working directory.
+In this case, `/some/path/assets`.
+
+```bash
+cd /some/path
+MESOP_STATIC_FOLDER=assets mesop mesop-app/main.py
+```
 ### Enabling a static folder named "assets" and URL path of /assets
 
 This will make the files in the `assets` directory accessible from the Mesop server
@@ -34,8 +48,8 @@ MESOP_STATIC_FOLDER=assets MESOP_STATIC_URL_PATH=/assets mesop main.py
 
 ### Using a .env file
 
-You can also specify the environment variables in a `.env` file at the root of your
-application directory.
+You can also specify the environment variables in a `.env` file. This file should be
+placed in the same directory as the `main.py` file.
 
 ``` title=".env"
 MESOP_STATIC_FOLDER=assets
@@ -48,11 +62,11 @@ Then you can run the Mesop command like this:
 mesop main.py
 ```
 
-### Example use cases
+## Example use cases
 
 Here are a couple examples that use the static assets feature.
 
-## Add a logo
+### Add a logo
 
 This example shows you how to load an image to use as a logo for your app.
 
@@ -72,7 +86,7 @@ def foo():
   me.image(src="/static/logo.png")
 ```
 
-## Load a Tailwind stylesheet
+### Load a Tailwind stylesheet
 
 This example shows you how to use [Tailwind CSS](https://tailwindcss.com/) with Mesop.
 
@@ -97,8 +111,8 @@ def foo():
 ```
 
 Tailwind is able to extract the CSS properties from your Mesop main.py file. This does
-not work for all cases. If you have dynamic properties, then you may need to maintain
-a safelist as well.
+not work for all cases. If you are dynamically generating CSS properties using string concatenation/formatting, then Tailwind may not be able to determine which properties
+to include. In that case, you may need to manually add these classes to the safelist.
 
 ```js title="tailwind.config.js"
 /** @type {import('tailwindcss').Config} */
