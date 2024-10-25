@@ -20,7 +20,6 @@ import {getViewportSize} from '../utils/viewport_size';
 import {ThemeService} from './theme_service';
 import {getQueryParams} from '../utils/query_params';
 import {ExperimentService} from './experiment_service';
-import {io, Socket} from 'socket.io-client';
 
 const STREAM_END = '<stream_end>';
 
@@ -53,7 +52,9 @@ export class Channel {
   private isWaiting = false;
   private isWaitingTimeout: number | undefined;
   private eventSource!: SSE;
-  private socket: Socket | undefined;
+  private webSocket: WebSocket | undefined;
+  private wsReconnectAttempts = 0;
+  private wsMaxReconnectAttempts = 3;
   private initParams!: InitParams;
   private states: States = new States();
   private stateToken = '';
@@ -159,17 +160,17 @@ export class Channel {
   }
 
   private initWebSocket(initParams: InitParams, request: UiRequest) {
-    if (this.socket) {
+    if (this.webSocket?.readyState === WebSocket.OPEN) {
       this.status = ChannelStatus.OPEN;
       const payload = generatePayloadString(request);
-      this.socket.emit('message', payload);
+      this.webSocket.send(payload);
       return;
     }
-    this.socket = io('/__ui__', {
-      transports: ['websocket'],
-      reconnectionAttempts: 3,
-    });
 
+    const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const wsUrl = `${wsProtocol}//${window.location.host}/__ui__`;
+
+    this.webSocket = new WebSocket(wsUrl);
     this.status = ChannelStatus.OPEN;
     this.isWaitingTimeout = setTimeout(() => {
       this.isWaiting = true;
@@ -177,19 +178,23 @@ export class Channel {
 
     this.logger.log({type: 'StreamStart'});
 
-    const {zone, onRender, onError, onCommand} = initParams;
+    const {zone} = initParams;
     this.initParams = initParams;
 
-    this.socket.on('connect', () => {
+    this.webSocket.onopen = () => {
       // Send the initial UiRequest upon connection
       const payload = generatePayloadString(request);
-      this.socket!.emit('message', payload);
-    });
+      this.webSocket!.send(payload);
+      this.wsReconnectAttempts = 0;
+    };
 
-    this.socket.on('response', (data: any) => {
-      const prefix = 'data: ';
-      const payloadData = (data.data.slice(prefix.length) as string).trimEnd();
+    this.webSocket.onmessage = (event) => {
       zone.run(() => {
+        const prefix = 'data: ';
+        const payloadData = (
+          event.data.slice(prefix.length) as string
+        ).trimEnd();
+
         if (payloadData === STREAM_END) {
           this._isHotReloading = false;
           this.status = ChannelStatus.CLOSED;
@@ -203,23 +208,33 @@ export class Channel {
         console.debug('Server event (WebSocket): ', uiResponse.toObject());
         this.handleUiResponse(request, uiResponse, initParams);
       });
-    });
+    };
 
-    this.socket.on('error', (error: any) => {
+    this.webSocket.onerror = (error) => {
       zone.run(() => {
-        this.socket = undefined;
         console.error('WebSocket error:', error);
         this.status = ChannelStatus.CLOSED;
       });
-    });
+    };
 
-    this.socket.on('disconnect', (reason: string) => {
+    this.webSocket.onclose = (event) => {
       zone.run(() => {
-        this.socket = undefined;
-        console.error('WebSocket disconnected:', reason);
+        console.error('WebSocket closed:', event.reason);
         this.status = ChannelStatus.CLOSED;
+
+        // Attempt to reconnect if we haven't exceeded max attempts
+        if (this.wsReconnectAttempts < this.wsMaxReconnectAttempts) {
+          this.wsReconnectAttempts++;
+          const backoffDelay = Math.min(
+            1000 * 2 ** this.wsReconnectAttempts,
+            5000,
+          );
+          setTimeout(() => {
+            this.initWebSocket(initParams, request);
+          }, backoffDelay);
+        }
       });
-    });
+    };
   }
 
   private handleUiResponse(

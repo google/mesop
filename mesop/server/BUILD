@@ -4,7 +4,7 @@ load(
     "THIRD_PARTY_PY_DOTENV",
     "THIRD_PARTY_PY_FIREBASE_ADMIN",
     "THIRD_PARTY_PY_FLASK",
-    "THIRD_PARTY_PY_FLASK_SOCKETIO",
+    "THIRD_PARTY_PY_FLASK_SOCK",
     "THIRD_PARTY_PY_GREENLET",
     "THIRD_PARTY_PY_MSGPACK",
     "THIRD_PARTY_PY_PYTEST",
@@ -40,7 +40,7 @@ py_library(
                "//mesop/warn",
            ] + THIRD_PARTY_PY_ABSL_PY +
            THIRD_PARTY_PY_FLASK +
-           THIRD_PARTY_PY_FLASK_SOCKETIO,
+           THIRD_PARTY_PY_FLASK_SOCK,
 )
 
 py_library(
