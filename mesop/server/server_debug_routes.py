@@ -6,9 +6,9 @@ from urllib.error import URLError
 
 from flask import Flask, Response, request
 
+from mesop.env.env import AI_SERVICE_BASE_URL
 from mesop.runtime import runtime
 from mesop.server.server_utils import (
-  AI_SERVICE_BASE_URL,
   check_editor_access,
   make_sse_response,
   sse_request,

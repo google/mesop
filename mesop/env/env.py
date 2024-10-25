@@ -1,0 +1,27 @@
+import os
+
+AI_SERVICE_BASE_URL = os.environ.get(
+  "MESOP_AI_SERVICE_BASE_URL", "http://localhost:43234"
+)
+
+MESOP_WEBSOCKETS_ENABLED = (
+  os.environ.get("MESOP_WEBSOCKETS_ENABLED", "false").lower() == "true"
+)
+
+MESOP_CONCURRENT_UPDATES_ENABLED = (
+  os.environ.get("MESOP_CONCURRENT_UPDATES_ENABLED", "false").lower() == "true"
+)
+
+if MESOP_WEBSOCKETS_ENABLED:
+  print("Experiment enabled: MESOP_WEBSOCKETS_ENABLED")
+  print("Auto-enabling MESOP_CONCURRENT_UPDATES_ENABLED")
+  MESOP_CONCURRENT_UPDATES_ENABLED = True
+elif MESOP_CONCURRENT_UPDATES_ENABLED:
+  print("Experiment enabled: MESOP_CONCURRENT_UPDATES_ENABLED")
+
+EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED = (
+  os.environ.get("MESOP_EXPERIMENTAL_EDITOR_TOOLBAR", "false").lower() == "true"
+)
+
+if EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED:
+  print("Experiment enabled: EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED")

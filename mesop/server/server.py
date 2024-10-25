@@ -1,13 +1,26 @@
 import base64
 import os
+import secrets
+import threading
 from typing import Generator, Sequence
 
-from flask import Flask, Response, abort, request, stream_with_context
-from werkzeug.security import safe_join
+from flask import (
+  Flask,
+  Response,
+  abort,
+  copy_current_request_context,
+  request,
+  stream_with_context,
+)
 
 import mesop.protos.ui_pb2 as pb
 from mesop.component_helpers import diff_component
 from mesop.editor.component_configs import get_component_configs
+from mesop.env.env import (
+  EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED,
+  MESOP_CONCURRENT_UPDATES_ENABLED,
+  MESOP_WEBSOCKETS_ENABLED,
+)
 from mesop.events import LoadEvent
 from mesop.exceptions import format_traceback
 from mesop.runtime import runtime
@@ -15,9 +28,6 @@ from mesop.server.config import app_config
 from mesop.server.constants import WEB_COMPONENTS_PATH_SEGMENT
 from mesop.server.server_debug_routes import configure_debug_routes
 from mesop.server.server_utils import (
-  EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED,
-  MESOP_CONCURRENT_UPDATES_ENABLED,
-  MESOP_WEBSOCKETS_ENABLED,
   STREAM_END,
   create_update_state_event,
   is_same_site,
@@ -45,6 +55,7 @@ def configure_flask_app(
     init_request: bool = False,
   ) -> Generator[str, None, None]:
     try:
+      runtime().context().acquire_lock()
       runtime().run_path(path=path, trace_mode=trace_mode)
       page_config = runtime().get_page_config(path=path)
       title = page_config.title if page_config else "Unknown path"
@@ -95,6 +106,8 @@ def configure_flask_app(
       yield from yield_errors(
         error=pb.ServerError(exception=str(e), traceback=format_traceback())
       )
+    finally:
+      runtime().context().release_lock()
 
   def yield_errors(error: pb.ServerError) -> Generator[str, None, None]:
     if not runtime().debug_mode:
@@ -148,7 +161,8 @@ def configure_flask_app(
             yield from render_loop(path=ui_request.path, init_request=True)
         else:
           yield from render_loop(path=ui_request.path, init_request=True)
-        yield create_update_state_event()
+        if not MESOP_WEBSOCKETS_ENABLED:
+          yield create_update_state_event()
         yield STREAM_END
       elif ui_request.HasField("user_event"):
         event = ui_request.user_event
@@ -156,10 +170,11 @@ def configure_flask_app(
         runtime().context().set_viewport_size(event.viewport_size)
         runtime().context().initialize_query_params(event.query_params)
 
-        if event.states.states:
-          runtime().context().update_state(event.states)
-        else:
-          runtime().context().restore_state_from_session(event.state_token)
+        if not MESOP_WEBSOCKETS_ENABLED:
+          if event.states.states:
+            runtime().context().update_state(event.states)
+          else:
+            runtime().context().restore_state_from_session(event.state_token)
 
         for _ in render_loop(path=ui_request.path, trace_mode=True):
           pass
@@ -217,7 +232,8 @@ def configure_flask_app(
           yield from render_loop(path=path)
           runtime().context().set_previous_node_from_current_node()
           runtime().context().reset_current_node()
-        yield create_update_state_event(diff=True)
+        if not MESOP_WEBSOCKETS_ENABLED:
+          yield create_update_state_event(diff=True)
         yield STREAM_END
       else:
         raise Exception(f"Unknown request type: {ui_request}")
@@ -257,24 +273,52 @@ def configure_flask_app(
     configure_debug_routes(flask_app)
 
   if MESOP_WEBSOCKETS_ENABLED:
-    from flask_socketio import SocketIO, emit
+    from flask_sock import Sock
+    from simple_websocket import Server
 
-    socketio = SocketIO(flask_app)
+    sock = Sock(flask_app)
 
-    @socketio.on("message", namespace=UI_PATH)
-    def handle_message(message):
-      if not message:
-        emit("error", {"error": "Missing request payload"})
-        return
+    @sock.route(UI_PATH)
+    def handle_websocket(ws: Server):
+      @copy_current_request_context
+      def ws_generate_data(ws, ui_request):
+        for data_chunk in generate_data(ui_request):
+          if not ws.connected:
+            break
+          ws.send(data_chunk)
 
-      ui_request = pb.UiRequest()
-      ui_request.ParseFromString(base64.urlsafe_b64decode(message))
+      # Generate a unique session ID for the WebSocket connection
+      session_id = secrets.token_urlsafe(32)
+      request.websocket_session_id = session_id  # type: ignore
 
-      generator = generate_data(ui_request)
-      for data_chunk in generator:
-        emit("response", {"data": data_chunk})
+      try:
+        while True:
+          message = ws.receive()
+          if not message:
+            continue  # Ignore empty messages
 
-    flask_app.socketio = socketio  # type: ignore
+          ui_request = pb.UiRequest()
+          try:
+            decoded_message = base64.urlsafe_b64decode(message)
+            ui_request.ParseFromString(decoded_message)
+          except Exception as parse_error:
+            print("Failed to parse message:", parse_error)
+            continue  # Skip processing this message
+
+          # Start a new thread so we can handle multiple
+          # concurrent updates for the same websocket connection.
+          thread = threading.Thread(
+            target=ws_generate_data, args=(ws, ui_request), daemon=True
+          )
+          thread.start()
+
+      except Exception as e:
+        print("WebSocket error:", e)
+      finally:
+        # Clean up context when connection closes
+        if hasattr(request, "websocket_session_id"):
+          websocket_session_id = request.websocket_session_id  # type: ignore
+          runtime().delete_context(websocket_session_id)
 
   return flask_app
 

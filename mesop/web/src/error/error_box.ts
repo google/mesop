@@ -82,6 +82,7 @@ export class ErrorBox {
       display: block;
       max-height: 80vh;
       background-color: #ffe5e5;
+      overflow: auto;
     }
   `,
   standalone: true,

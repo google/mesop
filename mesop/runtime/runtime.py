@@ -2,14 +2,16 @@ from copy import deepcopy
 from dataclasses import dataclass
 from typing import Any, Callable, Generator, Type, TypeVar, cast
 
-from flask import g
+from flask import g, request
 
 import mesop.protos.ui_pb2 as pb
+from mesop.env.env import MESOP_WEBSOCKETS_ENABLED
 from mesop.events import LoadEvent, MesopEvent
 from mesop.exceptions import MesopDeveloperException, MesopUserException
 from mesop.key import Key
 from mesop.security.security_policy import SecurityPolicy
 from mesop.utils.backoff import exponential_backoff
+from mesop.warn import warn
 
 from .context import Context
 
@@ -54,11 +56,25 @@ class Runtime:
     self._state_classes: list[type[Any]] = []
     self._loading_errors: list[pb.ServerError] = []
     self._has_served_traffic = False
+    self._contexts = {}
 
   def context(self) -> Context:
+    if MESOP_WEBSOCKETS_ENABLED and hasattr(request, "websocket_session_id"):
+      websocket_session_id = request.websocket_session_id  # type: ignore
+      if websocket_session_id not in self._contexts:
+        self._contexts[websocket_session_id] = self.create_context()
+      return self._contexts[websocket_session_id]
     if "_mesop_context" not in g:
       g._mesop_context = self.create_context()
     return g._mesop_context
+
+  def delete_context(self, websocket_session_id: str) -> None:
+    if websocket_session_id in self._contexts:
+      del self._contexts[websocket_session_id]
+    else:
+      warn(
+        f"Tried to delete context with websocket_session_id={websocket_session_id} that doesn't exist."
+      )
 
   def create_context(self) -> Context:
     # If running in prod mode, *always* enable the has served traffic safety check.
