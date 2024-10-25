@@ -284,7 +284,7 @@ def get_static_folder() -> str | None:
     print("Static folder disabled.")
     return None
 
-  if app_config.static_folder.startswith("/"):
+  if os.path.isabs(app_config.static_folder):
     print(
       "Static folder disabled. Static folder cannot be an absolute path: {app_config.static_folder}"
     )
