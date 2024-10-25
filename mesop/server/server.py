@@ -12,6 +12,7 @@ from flask import (
   request,
   stream_with_context,
 )
+from werkzeug.security import safe_join
 
 import mesop.protos.ui_pb2 as pb
 from mesop.component_helpers import diff_component

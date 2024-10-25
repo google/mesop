@@ -26,7 +26,8 @@ cd /srv
 MESOP_STATIC_FOLDER=static mesop app/main.py
 ```
 
-Here are some examples of valid paths. Let's assume a current working directory `/srv/`
+Here are some examples of valid paths. Let's assume the current working directory is
+`/srv/`
 
 - `static` becomes `/srv/static`
 - `static/` becomes `/srv/static`

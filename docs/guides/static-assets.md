@@ -40,7 +40,7 @@ MESOP_STATIC_FOLDER=assets mesop mesop-app/main.py
 ### Enabling a static folder named "assets" and URL path of /assets
 
 This will make the files in the `assets` directory accessible from the Mesop server
-at `/assets`.
+at `/assets`. For example: `https://example.com/assets`.
 
 ```bash
 MESOP_STATIC_FOLDER=assets MESOP_STATIC_URL_PATH=/assets mesop main.py
