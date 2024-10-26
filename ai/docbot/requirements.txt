@@ -28,7 +28,7 @@ bm25s==0.1.10
     # via llama-index-retrievers-bm25
 cachetools==5.5.0
     # via google-auth
-certifi==2024.7.4
+certifi==2024.8.30
     # via
     #   httpcore
     #   httpx
@@ -203,7 +203,7 @@ markupsafe==2.1.5
     #   werkzeug
 marshmallow==3.22.0
     # via dataclasses-json
-mesop==0.12.2
+mesop==0.12.4
     # via docbot (pyproject.toml)
 msgpack==1.0.8
     # via mesop
