@@ -1,4 +1,5 @@
 import base64
+import os
 import secrets
 import threading
 from typing import Generator, Sequence
@@ -11,6 +12,7 @@ from flask import (
   request,
   stream_with_context,
 )
+from werkzeug.security import safe_join
 
 import mesop.protos.ui_pb2 as pb
 from mesop.component_helpers import diff_component
@@ -21,8 +23,9 @@ from mesop.env.env import (
   MESOP_WEBSOCKETS_ENABLED,
 )
 from mesop.events import LoadEvent
-from mesop.exceptions import format_traceback
+from mesop.exceptions import MesopDeveloperException, format_traceback
 from mesop.runtime import runtime
+from mesop.server.config import app_config
 from mesop.server.constants import WEB_COMPONENTS_PATH_SEGMENT
 from mesop.server.server_debug_routes import configure_debug_routes
 from mesop.server.server_utils import (
@@ -41,7 +44,11 @@ UI_PATH = "/__ui__"
 def configure_flask_app(
   *, prod_mode: bool = True, exceptions_to_propagate: Sequence[type] = ()
 ) -> Flask:
-  flask_app = Flask(__name__)
+  flask_app = Flask(
+    __name__,
+    static_folder=get_static_folder(),
+    static_url_path=get_static_url_path(),
+  )
 
   def render_loop(
     path: str,
@@ -315,3 +322,40 @@ def configure_flask_app(
           runtime().delete_context(websocket_session_id)
 
   return flask_app
+
+
+def get_static_folder() -> str | None:
+  static_folder_name = app_config.static_folder.strip()
+  if not static_folder_name:
+    print("Static folder disabled.")
+    return None
+
+  if static_folder_name in {
+    ".",
+    "..",
+    "." + os.path.sep,
+    ".." + os.path.sep,
+  }:
+    raise MesopDeveloperException(
+      "Static folder cannot be . or ..: {static_folder_name}"
+    )
+  if os.path.isabs(static_folder_name):
+    raise MesopDeveloperException(
+      "Static folder cannot be an absolute path: static_folder_name}"
+    )
+
+  static_folder_path = safe_join(os.getcwd(), static_folder_name)
+
+  if not static_folder_path:
+    raise MesopDeveloperException(
+      "Invalid static folder specified: {static_folder_name}"
+    )
+
+  print(f"Static folder enabled: {static_folder_path}")
+  return static_folder_path
+
+
+def get_static_url_path() -> str | None:
+  if not app_config.static_folder:
+    return None
+  return app_config.static_url_path

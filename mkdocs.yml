@@ -25,6 +25,7 @@ nav:
           - Multi-Pages: guides/multi-pages.md
           - Auth: guides/auth.md
           - Theming: guides/theming.md
+          - Static assets: guides/static-assets.md
           - Server integration: guides/server-integration.md
       - Development:
           - Debugging: guides/debugging.md

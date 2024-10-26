@@ -6,6 +6,56 @@ Mesop is configured at the application level using environment variables.
 
 ## Configuration values
 
+### MESOP_STATIC_FOLDER
+
+> **NOTE:** By default, this feature is not enabled, but in an upcoming release, the
+default will be `static`.
+
+Allows access to static files from the Mesop server.
+
+It is important to know that the specified folder path is relative to the current
+working directory where the Mesop command is run. Absolute paths are not allowed.
+
+Example:
+
+In this case, the current working directory is `/srv`, which means Mesop will make
+`/srv/static` the static folder.
+
+```bash
+cd /srv
+MESOP_STATIC_FOLDER=static mesop app/main.py
+```
+
+Here are some examples of valid paths. Let's assume the current working directory is
+`/srv/`
+
+- `static` becomes `/srv/static`
+- `static/` becomes `/srv/static`
+- `static/assets` becomes `/srv/static/assets`
+- `./static` becomes `/srv/static`
+- `./static/` becomes `/srv/static`
+- `./static/assets` becomes `/srv/static/assets`
+
+Invalid paths will raise `MesopDeveloperException`. Here are some examples:
+
+- Absolute paths (e.g. `/absolute/path`)
+- `.`
+- `./`
+- `..`
+- `../`
+
+### MESOP_STATIC_URL_PATH
+
+This is the base URL path from which files for your specified static folder will be
+made viewable.
+
+The static URL path is only recognized if `MESOP_STATIC_FOLDER` is set.
+
+For example, given `MESOP_STATIC_FOLDER=static` and `MESOP_STATIC_URL_PATH=/assets`, the
+file `static/js/script.js` can be viewable from the URL path `/assets/js/script.js`.
+
+**Default:** `/static`
+
 ### MESOP_STATE_SESSION_BACKEND
 
 Sets the backend to use for caching state data server-side. This makes it so state does

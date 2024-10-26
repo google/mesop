@@ -24,6 +24,8 @@ class Config(BaseModel):
   state_session_backend_firestore_collection: str = "mesop_state_sessions"
   state_session_backend_sql_connection_uri: str = ""
   state_session_backend_sql_table: str = "mesop_state_sessions"
+  static_folder: str = ""
+  static_url_path: str = "/static"
 
   @property
   def state_session_enabled(self):
@@ -47,6 +49,8 @@ def CreateConfigFromEnv() -> Config:
     state_session_backend_sql_table=os.getenv(
       "MESOP_STATE_SESSION_BACKEND_SQL_TABLE",
     ),
+    static_folder=os.getenv("MESOP_STATIC_FOLDER"),
+    static_url_path=os.getenv("MESOP_STATIC_URL_PATH"),
   )
 
   return Config(
