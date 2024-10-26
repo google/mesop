@@ -23,7 +23,7 @@ from mesop.env.env import (
   MESOP_WEBSOCKETS_ENABLED,
 )
 from mesop.events import LoadEvent
-from mesop.exceptions import format_traceback
+from mesop.exceptions import MesopDeveloperException, format_traceback
 from mesop.runtime import runtime
 from mesop.server.config import app_config
 from mesop.server.constants import WEB_COMPONENTS_PATH_SEGMENT
@@ -325,25 +325,33 @@ def configure_flask_app(
 
 
 def get_static_folder() -> str | None:
-  if not app_config.static_folder:
+  static_folder_name = app_config.static_folder.strip()
+  if not static_folder_name:
     print("Static folder disabled.")
     return None
 
-  if os.path.isabs(app_config.static_folder):
-    print(
-      "Static folder disabled. Static folder cannot be an absolute path: {app_config.static_folder}"
+  if static_folder_name in {
+    ".",
+    "..",
+    "." + os.path.sep,
+    ".." + os.path.sep,
+  }:
+    raise MesopDeveloperException(
+      "Static folder cannot be . or ..: {static_folder_name}"
     )
-    return None
-
-  static_folder_path = safe_join(os.getcwd(), app_config.static_folder)
-
-  if static_folder_path:
-    print(f"Static folder enabled: {static_folder_path}")
-  else:
-    print(
-      f"Static folder disabled. Invalid static folder specified: {app_config.static_folder}"
+  if os.path.isabs(static_folder_name):
+    raise MesopDeveloperException(
+      "Static folder cannot be an absolute path: static_folder_name}"
     )
 
+  static_folder_path = safe_join(os.getcwd(), static_folder_name)
+
+  if not static_folder_path:
+    raise MesopDeveloperException(
+      "Invalid static folder specified: {static_folder_name}"
+    )
+
+  print(f"Static folder enabled: {static_folder_path}")
   return static_folder_path
 
 

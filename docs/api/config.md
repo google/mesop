@@ -35,10 +35,14 @@ Here are some examples of valid paths. Let's assume the current working director
 - `./static` becomes `/srv/static`
 - `./static/` becomes `/srv/static`
 - `./static/assets` becomes `/srv/static/assets`
-- `.` becomes `/srv/static/.`
-    - *Period is the name of the folder*
-- `./` becomes `/srv/static/.`
-    - *Period is the name of the folder*
+
+Invalid paths will raise `MesopDeveloperException`. Here are some examples:
+
+- Absolute paths (e.g. `/absolute/path`)
+- `.`
+- `./`
+- `..`
+- `../`
 
 ### MESOP_STATIC_URL_PATH
 
