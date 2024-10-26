@@ -4,6 +4,10 @@ AI_SERVICE_BASE_URL = os.environ.get(
   "MESOP_AI_SERVICE_BASE_URL", "http://localhost:43234"
 )
 
+MESOP_STATIC_FILES_BASE_PATH = os.environ.get(
+  "MESOP_STATIC_FILES_BASE_PATH", ""
+)
+
 MESOP_WEBSOCKETS_ENABLED = (
   os.environ.get("MESOP_WEBSOCKETS_ENABLED", "false").lower() == "true"
 )

@@ -12,6 +12,7 @@ from urllib.parse import urlparse
 from flask import Flask, Response, g, make_response, request, send_file
 from werkzeug.security import safe_join
 
+from mesop.env.env import MESOP_STATIC_FILES_BASE_PATH
 from mesop.exceptions import MesopException
 from mesop.runtime import runtime
 from mesop.server.constants import WEB_COMPONENTS_PATH_SEGMENT
@@ -102,6 +103,9 @@ def configure_static_file_serving(
       if has_runfiles()
       else safe_join(os.getcwd(), path)
     )
+
+    if MESOP_STATIC_FILES_BASE_PATH:
+      serving_path = safe_join(MESOP_STATIC_FILES_BASE_PATH, path)
 
     file_name = os.path.basename(path)
     file_extension = os.path.splitext(file_name)[1].lower()
