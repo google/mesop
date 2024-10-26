@@ -252,9 +252,9 @@ By default, this is not enabled. You can enable this by setting it to `true`.
 
 This uses WebSockets instead of HTTP Server-Sent Events (SSE) as the transport protocol for UI updates. If you set this environment variable to `true`, then [`MESOP_CONCURRENT_UPDATES_ENABLED`](#MESOP_CONCURRENT_UPDATES_ENABLED) will automatically be enabled as well.
 
-### MESOP_STATIC_FILES_BASE_PATH
+### MESOP_APP_BASE_PATH
 
-This is the base path for serving static files. This is rarely needed because the default of using os.getcwd() is usually sufficient.
+This is the base path used to resolve other paths, particularly for serving static files. This is rarely needed because the default of using the current working directory is usually sufficient.
 
 ## Usage Examples
 
