@@ -1,14 +1,17 @@
 import base64
 import json
+import os
 import secrets
 import urllib.parse as urlparse
 from typing import Any, Generator, Iterable
 from urllib import request as urllib_request
 
 from flask import Response, abort, request
+from werkzeug.security import safe_join
 
 import mesop.protos.ui_pb2 as pb
 from mesop.env.env import EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED
+from mesop.exceptions import MesopDeveloperException
 from mesop.runtime import runtime
 from mesop.server.config import app_config
 
@@ -124,3 +127,63 @@ def make_sse_response(
     # See https://nginx.org/en/docs/http/ngx_http_proxy_module.html
     headers={"X-Accel-Buffering": "no"},
   )
+
+
+def get_static_folder() -> str | None:
+  static_folder_name = app_config.static_folder.strip()
+  if not static_folder_name:
+    return None
+
+  if static_folder_name in {
+    ".",
+    "..",
+    "." + os.path.sep,
+    ".." + os.path.sep,
+  }:
+    raise MesopDeveloperException(
+      "Static folder cannot be . or ..: {static_folder_name}"
+    )
+  if os.path.isabs(static_folder_name):
+    raise MesopDeveloperException(
+      "Static folder cannot be an absolute path: static_folder_name}"
+    )
+
+  static_folder_path = safe_join(os.getcwd(), static_folder_name)
+
+  if not static_folder_path:
+    raise MesopDeveloperException(
+      "Invalid static folder specified: {static_folder_name}"
+    )
+
+  return static_folder_path
+
+
+def get_static_url_path() -> str | None:
+  if not app_config.static_folder:
+    return None
+
+  static_url_path = app_config.static_url_path.strip()
+  if not static_url_path.startswith("/"):
+    raise MesopDeveloperException(
+      "Invalid static url path. It must start with a slash: {static_folder_name}"
+    )
+
+  if not static_url_path.endswith("/"):
+    static_url_path += "/"
+
+  return static_url_path
+
+
+def get_favicon() -> str | None:
+  default_favicon_path = "./favicon.ico"
+
+  static_folder = get_static_folder()
+  static_url_path = get_static_url_path()
+  if not static_folder or not static_url_path:
+    return default_favicon_path
+
+  favicon_path = safe_join(static_folder, "favicon.ico")
+  if not favicon_path or not os.path.isfile(favicon_path):
+    return default_favicon_path
+
+  return static_url_path + "favicon.ico"

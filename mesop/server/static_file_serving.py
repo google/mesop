@@ -15,6 +15,7 @@ from werkzeug.security import safe_join
 from mesop.exceptions import MesopException
 from mesop.runtime import runtime
 from mesop.server.constants import WEB_COMPONENTS_PATH_SEGMENT
+from mesop.server.server_utils import get_favicon
 from mesop.utils import terminal_colors as tc
 from mesop.utils.runfiles import get_runfile_location, has_runfiles
 from mesop.utils.url_utils import sanitize_url_for_csp
@@ -58,7 +59,10 @@ def configure_static_file_serving(
         lines[i] = (
           f'<script src="{livereload_script_url}" nonce={g.csp_nonce}></script>\n'
         )
-
+      if line.strip() == "<!-- Inject favicon -->":
+        lines[i] = (
+          f'<link rel="shortcut icon" href="{get_favicon()}" type="image/x-icon" />\n'
+        )
       if (
         page_config
         and page_config.stylesheets
