@@ -364,7 +364,7 @@ urllib3==2.2.2
     # via requests
 watchdog==4.0.2
     # via mesop
-werkzeug==3.0.4
+werkzeug==3.0.6
     # via flask
 wrapt==1.16.0
     # via
