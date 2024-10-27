@@ -89,7 +89,7 @@ def foo():
 
 ### Use a custom favicon
 
-This example shows you how to use a custom favicon in your
+This example shows you how to use a custom favicon in your Mesop app.
 
 Let's assume you have a directory like this:
 
