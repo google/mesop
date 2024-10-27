@@ -47,8 +47,6 @@ def configure_flask_app(
   static_url_path = get_static_url_path()
   if static_folder and static_url_path:
     print(f"Static folder enabled: {static_folder}")
-  else:
-    print("Static folder disabled.")
 
   flask_app = Flask(
     __name__,
