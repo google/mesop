@@ -65,7 +65,7 @@ export class Channel {
   private hotReloadBackoffCounter = 0;
   private hotReloadCounter = 0;
   private commandQueue: Command[] = [];
-  private isProcessingCommands = false;
+  private commandQueuePromise: Promise<void> | undefined;
 
   // Client-side state
   private overridedTitle = '';
@@ -358,18 +358,21 @@ export class Channel {
   private async processCommandQueue(
     onCommand: (command: Command) => Promise<void>,
   ) {
-    if (this.isProcessingCommands) {
-      return;
+    if (this.commandQueuePromise) {
+      return this.commandQueuePromise;
     }
-
-    this.isProcessingCommands = true;
+    let resolveHandle!: () => void;
+    this.commandQueuePromise = new Promise((resolve) => {
+      resolveHandle = resolve;
+    });
     try {
       while (this.commandQueue.length > 0) {
         const command = this.commandQueue.shift()!;
         await onCommand(command);
       }
     } finally {
-      this.isProcessingCommands = false;
+      this.commandQueuePromise = undefined;
+      resolveHandle();
     }
   }
 
