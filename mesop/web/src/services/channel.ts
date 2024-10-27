@@ -36,7 +36,7 @@ interface InitParams {
     jsModules: readonly string[],
   ) => void;
   onError: (error: ServerError) => void;
-  onCommand: (command: Command) => void;
+  onCommand: (command: Command) => Promise<void>;
 }
 
 export enum ChannelStatus {
@@ -237,7 +237,7 @@ export class Channel {
     };
   }
 
-  private handleUiResponse(
+  private async handleUiResponse(
     request: UiRequest,
     uiResponse: UiResponse,
     initParams: InitParams,
@@ -284,7 +284,7 @@ export class Channel {
         const componentDiff = uiResponse.getRender()!.getComponentDiff()!;
 
         for (const command of uiResponse.getRender()!.getCommandsList()) {
-          onCommand(command);
+          await onCommand(command);
         }
 
         const title = this.overridedTitle || uiResponse.getRender()!.getTitle();

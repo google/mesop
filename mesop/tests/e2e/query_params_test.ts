@@ -8,6 +8,20 @@ test('query_param: on_load hook', async ({page}) => {
   await expect(page).toHaveURL(/\?on_load=loaded$/);
 });
 
+test('query_param: navigate then on_load hook', async ({page}) => {
+  await page.goto('/examples/query_params/page_2');
+  await page
+    .getByRole('button', {
+      name: 'Navigate page 3',
+      exact: true,
+    })
+    .click();
+  expect(await page.getByText('query_params(page_3)=').textContent()).toEqual(
+    `query_params(page_3)={'on_load_page_3': ['loaded']}`,
+  );
+  await expect(page).toHaveURL(/page_3\?on_load_page_3=loaded$/);
+});
+
 test('query_param: load with query param in URL', async ({page}) => {
   await page.goto('/examples/query_params?a=1');
   expect(await page.getByText('query_params={').textContent()).toEqual(
@@ -87,15 +101,18 @@ test('query_param: increment query param ', async ({page}) => {
   await expect(
     page.getByText(`query_params={'on_load': ['loaded'], 'counter': ['1']}`),
   ).toBeVisible();
-  await expect(page).toHaveURL(/\?on_load=loaded&counter=1/);
-
+  let url = new URL(page.url());
+  expect(url.searchParams.get('on_load')).toBe('loaded');
+  expect(url.searchParams.get('counter')).toBe('1');
   await page
     .getByRole('button', {name: 'increment query param directly'})
     .click();
   await expect(
     page.getByText(`query_params={'on_load': ['loaded'], 'counter': ['2']}`),
   ).toBeVisible();
-  await expect(page).toHaveURL(/\?on_load=loaded&counter=2/);
+  url = new URL(page.url());
+  expect(url.searchParams.get('on_load')).toBe('loaded');
+  expect(url.searchParams.get('counter')).toBe('2');
 
   await page
     .getByRole('button', {name: 'increment query param by navigate'})
@@ -103,7 +120,9 @@ test('query_param: increment query param ', async ({page}) => {
   await expect(
     page.getByText(`query_params={'on_load': ['loaded'], 'counter': ['3']}`),
   ).toBeVisible();
-  await expect(page).toHaveURL(/\?on_load=loaded&counter=3/);
+  url = new URL(page.url());
+  expect(url.searchParams.get('on_load')).toBe('loaded');
+  expect(url.searchParams.get('counter')).toBe('3');
 });
 
 test('query_param: delete all query params ', async ({page}) => {
