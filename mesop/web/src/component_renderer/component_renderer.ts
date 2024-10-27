@@ -221,8 +221,9 @@ export class ComponentRenderer {
   }
 
   private updateCustomElementChildren() {
-    const existingChildren = Array.from(
-      this.customElement!.querySelectorAll(COMPONENT_RENDERER_ELEMENT_NAME),
+    const existingChildren = Array.from(this.customElement!.children).filter(
+      (child) =>
+        child.tagName === COMPONENT_RENDERER_ELEMENT_NAME.toUpperCase(),
     );
     const newChildren = this.component.getChildrenList();
 

@@ -18,6 +18,7 @@ py_library(
         "//mesop/examples/web_component/complex_props",
         "//mesop/examples/web_component/copy_to_clipboard",
         "//mesop/examples/web_component/custom_font_csp_repro",
+        "//mesop/examples/web_component/dynamic_slot",
         "//mesop/examples/web_component/firebase_auth",
         "//mesop/examples/web_component/hotkeys",
         "//mesop/examples/web_component/markedjs",
