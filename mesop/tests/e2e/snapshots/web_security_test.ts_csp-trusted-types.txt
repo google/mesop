@@ -1,0 +1,11 @@
+default-src 'self'
+font-src fonts.gstatic.com data:
+frame-src *
+img-src 'self' data: https: http:
+media-src 'self' data: https:
+style-src 'self' 'unsafe-inline' fonts.googleapis.com
+script-src 'self' 'nonce-{{NONCE}}'
+trusted-types angular angular#unsafe-bypass lit-html highlight.js ttpolicy1 ttpolicy2
+require-trusted-types-for 'script'
+report-uri /__csp__
+frame-ancestors 'self'

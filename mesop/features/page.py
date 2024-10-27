@@ -36,7 +36,6 @@ def page(
 
     # Note: this will be replaced downstream, so do not inline/rename.
     default_stylesheets = []
-
     runtime().register_page(
       path=path,
       page_config=PageConfig(

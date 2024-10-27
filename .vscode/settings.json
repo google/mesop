@@ -24,5 +24,8 @@
     "bazel-mesop/**": true
   },
   "python.analysis.extraPaths": ["./bazel-bin"],
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "python.testing.pytestArgs": ["."],
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestEnabled": true
 }

@@ -18,6 +18,10 @@ import mesop as me
       "http://google.com/allowed_script_srcs/1,1;2?q=a",
       "http://google.com/allowed_script_srcs/2,1;2?q=a",
     ],
+    allowed_worker_srcs=[
+      "http://google.com/allowed_worker_srcs/1,1;2?q=a",
+      "http://google.com/allowed_worker_srcs/2,1;2?q=a",
+    ],
   ),
 )
 def page():
