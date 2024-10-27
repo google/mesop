@@ -1,5 +1,7 @@
 from dataclasses import dataclass, field
 
+from mesop.exceptions import MesopDeveloperException
+
 
 @dataclass(kw_only=True)
 class SecurityPolicy:
@@ -23,3 +25,9 @@ class SecurityPolicy:
   allowed_worker_srcs: list[str] = field(default_factory=list)
   allowed_trusted_types: list[str] = field(default_factory=list)
   dangerously_disable_trusted_types: bool = False
+
+  def __post_init__(self):
+    if self.dangerously_disable_trusted_types and self.allowed_trusted_types:
+      raise MesopDeveloperException(
+        "Cannot disable trusted types and configure allow trusted types on SecurityPolicy at the same time. Set either allowed_trusted_types or dangerously_disable_trusted_types SecurityPolicy parameter."
+      )

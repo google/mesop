@@ -2,7 +2,6 @@ from copy import deepcopy
 from functools import wraps
 from typing import Callable
 
-from mesop.exceptions import MesopDeveloperException
 from mesop.runtime import OnLoadHandler, PageConfig, runtime
 from mesop.security.security_policy import SecurityPolicy
 
@@ -37,14 +36,6 @@ def page(
 
     # Note: this will be replaced downstream, so do not inline/rename.
     default_stylesheets = []
-    if security_policy is not None:  # noqa: SIM102
-      if (
-        security_policy.dangerously_disable_trusted_types
-        and security_policy.allowed_trusted_types
-      ):
-        raise MesopDeveloperException(
-          "Cannot disable trusted types and configure allow trusted types on SecurityPolicy at the same time. Set either allowed_trusted_types or dangerously_disable_trusted_types SecurityPolicy parameter."
-        )
     runtime().register_page(
       path=path,
       page_config=PageConfig(
