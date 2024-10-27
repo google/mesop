@@ -44,7 +44,8 @@ def configure_flask_app(
   *, prod_mode: bool = True, exceptions_to_propagate: Sequence[type] = ()
 ) -> Flask:
   static_folder = get_static_folder()
-  if static_folder:
+  static_url_path = get_static_url_path()
+  if static_folder and static_url_path:
     print(f"Static folder enabled: {static_folder}")
   else:
     print("Static folder disabled.")
@@ -52,7 +53,7 @@ def configure_flask_app(
   flask_app = Flask(
     __name__,
     static_folder=static_folder,
-    static_url_path=get_static_url_path(),
+    static_url_path=static_url_path,
   )
 
   def render_loop(
