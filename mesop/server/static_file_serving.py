@@ -245,7 +245,7 @@ def configure_static_file_serving(
         ]
       )
     if security_policy and security_policy.allowed_worker_srcs:
-      csp["worker-src"] = " ".join(
+      csp["worker-src"] = "'self' " + " ".join(
         [
           sanitize_url_for_csp(url)
           for url in security_policy.allowed_worker_srcs
