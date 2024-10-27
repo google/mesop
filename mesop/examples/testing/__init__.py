@@ -11,6 +11,9 @@ from mesop.examples.testing import (
   csp_escaping as csp_escaping,
 )
 from mesop.examples.testing import (
+  csp_trusted_types as csp_trusted_types,
+)
+from mesop.examples.testing import (
   error_register_page_too_late as error_register_page_too_late,
 )
 from mesop.examples.testing import (

@@ -244,6 +244,17 @@ def configure_static_file_serving(
           for url in security_policy.allowed_script_srcs
         ]
       )
+    if security_policy and security_policy.allowed_worker_srcs:
+      csp["worker-src"] = " ".join(
+        [
+          sanitize_url_for_csp(url)
+          for url in security_policy.allowed_worker_srcs
+        ]
+      )
+    if security_policy and security_policy.allowed_trusted_types:
+      csp["trusted-types"] += " " + " ".join(
+        security_policy.allowed_trusted_types
+      )
     if security_policy and security_policy.dangerously_disable_trusted_types:
       del csp["trusted-types"]
       del csp["require-trusted-types-for"]
