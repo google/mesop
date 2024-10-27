@@ -3,8 +3,9 @@
 Mesop allows you to specify a folder for storing static assets that will be served by
 the Mesop server.
 
-This feature provides a simple way to serving images, CSS stylesheets, and other files
-without having to rely on CDNs, external servers, or mounting Mesop onto FastAPI/Flask.
+This feature provides a simple way to serving images, favicons, CSS stylesheets, and
+other files without having to rely on CDNs, external servers, or mounting Mesop onto
+FastAPI/Flask.
 
 ## Enable a static folder
 
@@ -85,6 +86,20 @@ import mesop as me
 def foo():
   me.image(src="/static/logo.png")
 ```
+
+### Use a custom favicon
+
+This example shows you how to use a custom favicon in your Mesop app.
+
+Let's assume you have a directory like this:
+
+- static/favicon.ico
+- main.py
+- requirements.txt
+
+If you have a static folder enabled, Mesop will look for a `favicon.ico` file in your
+static folder. If the file exists, Mesop will use your custom favicon instead of the
+default Mesop favicon.
 
 ### Load a Tailwind stylesheet
 
