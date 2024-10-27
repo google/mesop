@@ -29,3 +29,4 @@ mkdocstrings[python]
 firebase-admin
 matplotlib
 pandas
+werkzeug>=3.0.6 # not directly required, pinned by Snyk to avoid a vulnerability
