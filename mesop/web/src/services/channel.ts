@@ -64,6 +64,8 @@ export class Channel {
   private queuedEvents: (() => void)[] = [];
   private hotReloadBackoffCounter = 0;
   private hotReloadCounter = 0;
+  private commandQueue: Command[] = [];
+  private isProcessingCommands = false;
 
   // Client-side state
   private overridedTitle = '';
@@ -283,9 +285,8 @@ export class Channel {
         const rootComponent = uiResponse.getRender()!.getRootComponent()!;
         const componentDiff = uiResponse.getRender()!.getComponentDiff()!;
 
-        for (const command of uiResponse.getRender()!.getCommandsList()) {
-          await onCommand(command);
-        }
+        this.commandQueue.push(...uiResponse.getRender()!.getCommandsList());
+        await this.processCommandQueue(onCommand);
 
         const title = this.overridedTitle || uiResponse.getRender()!.getTitle();
         if (title) {
@@ -351,6 +352,24 @@ export class Channel {
         break;
       case UiResponse.TypeCase.TYPE_NOT_SET:
         throw new Error(`Unhandled case for server event: ${uiResponse}`);
+    }
+  }
+
+  private async processCommandQueue(
+    onCommand: (command: Command) => Promise<void>,
+  ) {
+    if (this.isProcessingCommands) {
+      return;
+    }
+
+    this.isProcessingCommands = true;
+    try {
+      while (this.commandQueue.length > 0) {
+        const command = this.commandQueue.shift()!;
+        await onCommand(command);
+      }
+    } finally {
+      this.isProcessingCommands = false;
     }
   }
 
