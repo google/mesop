@@ -223,6 +223,8 @@ export class ComponentRenderer {
   private updateCustomElementChildren() {
     const existingChildren = Array.from(this.customElement!.children).filter(
       (child) =>
+        // tagName is uppercased in HTML.
+        // See: https://developer.mozilla.org/docs/Web/API/Element/tagName
         child.tagName === COMPONENT_RENDERER_ELEMENT_NAME.toUpperCase(),
     );
     const newChildren = this.component.getChildrenList();
