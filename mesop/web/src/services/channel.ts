@@ -36,7 +36,7 @@ interface InitParams {
     jsModules: readonly string[],
   ) => void;
   onError: (error: ServerError) => void;
-  onCommand: (command: Command) => void;
+  onCommand: (command: Command) => Promise<void>;
 }
 
 export enum ChannelStatus {
@@ -64,6 +64,8 @@ export class Channel {
   private queuedEvents: (() => void)[] = [];
   private hotReloadBackoffCounter = 0;
   private hotReloadCounter = 0;
+  private commandQueue: Command[] = [];
+  private commandQueuePromise: Promise<void> | undefined;
 
   // Client-side state
   private overridedTitle = '';
@@ -237,7 +239,7 @@ export class Channel {
     };
   }
 
-  private handleUiResponse(
+  private async handleUiResponse(
     request: UiRequest,
     uiResponse: UiResponse,
     initParams: InitParams,
@@ -283,9 +285,8 @@ export class Channel {
         const rootComponent = uiResponse.getRender()!.getRootComponent()!;
         const componentDiff = uiResponse.getRender()!.getComponentDiff()!;
 
-        for (const command of uiResponse.getRender()!.getCommandsList()) {
-          onCommand(command);
-        }
+        this.commandQueue.push(...uiResponse.getRender()!.getCommandsList());
+        await this.processCommandQueue(onCommand);
 
         const title = this.overridedTitle || uiResponse.getRender()!.getTitle();
         if (title) {
@@ -351,6 +352,27 @@ export class Channel {
         break;
       case UiResponse.TypeCase.TYPE_NOT_SET:
         throw new Error(`Unhandled case for server event: ${uiResponse}`);
+    }
+  }
+
+  private async processCommandQueue(
+    onCommand: (command: Command) => Promise<void>,
+  ) {
+    if (this.commandQueuePromise) {
+      return this.commandQueuePromise;
+    }
+    let resolveHandle!: () => void;
+    this.commandQueuePromise = new Promise((resolve) => {
+      resolveHandle = resolve;
+    });
+    try {
+      while (this.commandQueue.length > 0) {
+        const command = this.commandQueue.shift()!;
+        await onCommand(command);
+      }
+    } finally {
+      this.commandQueuePromise = undefined;
+      resolveHandle();
     }
   }
 

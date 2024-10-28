@@ -115,13 +115,13 @@ export class Shell {
             this.componentConfigs = componentConfigs;
           }
         },
-        onCommand: (command) => {
+        onCommand: async (command) => {
           if (command.hasNavigate()) {
             const url = command.getNavigate()!.getUrl()!;
             if (url.startsWith('http://') || url.startsWith('https://')) {
               window.location.href = url;
             } else {
-              this.router.navigateByUrl(command.getNavigate()!.getUrl()!);
+              await this.router.navigateByUrl(command.getNavigate()!.getUrl()!);
               this.channel.resetOverridedTitle();
             }
           } else if (command.hasScrollIntoView()) {

@@ -105,7 +105,21 @@ def increment_by_navigate(e: me.ClickEvent):
 def page_2():
   me.text(f"query_params(page_2)={me.query_params}")
   me.button("Navigate back", on_click=navigate_back)
+  me.button("Navigate page 3", on_click=navigate_page_3)
+
+
+def on_load_page_3(e: me.LoadEvent):
+  me.query_params["on_load_page_3"] = "loaded"
+
+
+@me.page(path="/examples/query_params/page_3", on_load=on_load_page_3)
+def page_3():
+  me.text(f"query_params(page_3)={me.query_params}")
 
 
 def navigate_back(e: me.ClickEvent):
   me.navigate("/examples/query_params", query_params=me.query_params)
+
+
+def navigate_page_3(e: me.ClickEvent):
+  me.navigate("/examples/query_params/page_3")
