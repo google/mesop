@@ -14885,10 +14885,10 @@ send@^0.18.0:
     range-parser "~1.2.1"
     statuses "2.0.1"
 
-send@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/send/-/send-1.0.0.tgz#5730c3f3a78186a67b1c1095611763e04e709c05"
-  integrity sha512-iNjhr+MLlsha/HBB39iZQhbyaZQRdcA041yMn/wn18VxghMsfkIdELRVCtGk9G4Adq0Fd7oQpus6LHbkNnHG4w==
+send@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/send/-/send-1.1.0.tgz#4efe6ff3bb2139b0e5b2648d8b18d4dec48fc9c5"
+  integrity sha512-v67WcEouB5GxbTWL/4NeToqcZiAWEq90N888fczVArY8A79J0L4FD7vj5hm3eUMua5EpoQ59wa/oovY6TLvRUA==
   dependencies:
     debug "^4.3.5"
     destroy "^1.2.0"

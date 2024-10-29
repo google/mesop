@@ -217,7 +217,7 @@
     "sass": "^1.68.0",
     "selenium-webdriver": "^3.6.0",
     "semver": "^7.6.0",
-    "send": "^1.0.0",
+    "send": "^1.1.0",
     "shelljs": "^0.8.5",
     "stylelint": "^14.14.0",
     "terser": "5.28.1",
