@@ -292,7 +292,6 @@ def configure_flask_app(
 
     @sock.route(UI_PATH)
     def handle_websocket(ws: Server):
-      @copy_current_request_context
       def ws_generate_data(ws, ui_request):
         for data_chunk in generate_data(ui_request):
           if not ws.connected:
@@ -319,8 +318,13 @@ def configure_flask_app(
 
           # Start a new thread so we can handle multiple
           # concurrent updates for the same websocket connection.
+          #
+          # Note: we do copy_current_request_context at the callsite
+          # to ensure that the request context is copied over for each new thread.
           thread = threading.Thread(
-            target=ws_generate_data, args=(ws, ui_request), daemon=True
+            target=copy_current_request_context(ws_generate_data),
+            args=(ws, ui_request),
+            daemon=True,
           )
           thread.start()
 
