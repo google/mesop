@@ -53,7 +53,7 @@ def uploader(
   accepted_file_types: Sequence[str] | None = None,
   key: str | None = None,
   on_upload: Callable[[UploadEvent], Any] | None = None,
-  type: Literal["raised", "flat", "stroked", "icon"] | None = None,
+  type: Literal["raised", "flat", "stroked"] | None = None,
   color: Literal["primary", "accent", "warn"] | None = None,
   disable_ripple: bool = False,
   disabled: bool = False,

@@ -2,7 +2,7 @@ import {test, expect} from '@playwright/test';
 import path from 'path';
 
 test('test upload file', async ({page}) => {
-  await page.goto('/components/uploader/e2e/uploader_app');
+  await page.goto('/components/uploader/e2e/content_uploader_app');
   const fileChooserPromise = page.waitForEvent('filechooser');
 
   await page.getByText('Upload Image').click();
@@ -20,7 +20,9 @@ test('test upload file', async ({page}) => {
   ).toHaveCount(1);
 
   // Check that we can re-upload the same file.
-  await page.getByText('Upload Image').click();
+  // Also check that the icon in the button is being rendered in the composite
+  // uploader component.
+  await page.locator('//*[@role="img" and text()=" upload"]').click();
   const fileChooser2 = await fileChooserPromise;
   await fileChooser2.setFiles(path.join(__dirname, 'mesop_robot.jpeg'));
   await expect(page.getByText('File name: mesop_robot.jpeg')).toHaveCount(1);
