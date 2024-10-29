@@ -68,7 +68,14 @@ def configure_flask_app(
       root_component = runtime().context().current_node()
       previous_root_component = runtime().context().previous_node()
       component_diff = None
-      if not trace_mode and previous_root_component:
+      if (
+        # Disable component diffing with MESOP_WEBSOCKETS_ENABLED
+        # to avoid a race condition where the previous component tree may
+        # have been constructed by a concurrent event.
+        not MESOP_WEBSOCKETS_ENABLED
+        and not trace_mode
+        and previous_root_component
+      ):
         component_diff = diff_component(previous_root_component, root_component)
         root_component = None
       commands = runtime().context().commands()
