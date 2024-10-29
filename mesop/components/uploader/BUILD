@@ -8,7 +8,10 @@ package(
 mesop_component(
     name = "uploader",
     assets = [":uploader.css"],
-    py_deps = [":uploaded_file"],
+    py_deps = [
+        ":uploaded_file",
+        "//mesop/components/text:py",
+    ],
 )
 
 sass_binary(

@@ -179,6 +179,9 @@ from mesop.components.uploader.uploader import (
 from mesop.components.uploader.uploader import (
   UploadEvent as UploadEvent,
 )
+from mesop.components.uploader.uploader import (
+  content_uploader as content_uploader,
+)
 from mesop.components.uploader.uploader import uploader as uploader
 from mesop.components.video.video import video as video
 from mesop.dataclass_utils import dataclass_with_defaults
