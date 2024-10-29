@@ -22,7 +22,7 @@ test('test upload file', async ({page}) => {
   // Check that we can re-upload the same file.
   // Also check that the icon in the button is being rendered in the composite
   // uploader component.
-  await page.locator('//mat-icon').click();
+  await page.locator('//*[@role="img"]').click();
   const fileChooser2 = await fileChooserPromise;
   await fileChooser2.setFiles(path.join(__dirname, 'mesop_robot.jpeg'));
   await expect(page.getByText('File name: mesop_robot.jpeg')).toHaveCount(1);
