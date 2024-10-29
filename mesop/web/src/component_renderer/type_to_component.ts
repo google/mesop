@@ -65,7 +65,7 @@ export const typeToComponent = {
   'autocomplete': AutocompleteComponent,
   'link': LinkComponent,
   'html': HtmlComponent,
-  'uploader': UploaderComponent,
+  'content_uploader': UploaderComponent,
   'embed': EmbedComponent,
   'table': TableComponent,
   'sidenav': SidenavComponent,

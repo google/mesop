@@ -13,14 +13,16 @@ class State:
 def app():
   state = me.state(State)
   with me.box(style=me.Style(padding=me.Padding.all(15))):
-    me.uploader(
-      label="Upload Image",
+    with me.content_uploader(
       accepted_file_types=["image/jpeg", "image/png"],
       on_upload=handle_upload,
       type="flat",
       color="primary",
       style=me.Style(font_weight="bold"),
-    )
+    ):
+      with me.box(style=me.Style(display="flex", gap=5)):
+        me.icon("upload")
+        me.text("Upload Image", style=me.Style(line_height="25px"))
 
     if state.file.size:
       with me.box(style=me.Style(margin=me.Margin.all(10))):

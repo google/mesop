@@ -14,5 +14,6 @@ matches the look of Angular Material Components.
 ## API
 
 ::: mesop.components.uploader.uploader.uploader
+::: mesop.components.uploader.uploader.content_uploader
 ::: mesop.components.uploader.uploader.UploadEvent
 ::: mesop.components.uploader.uploader.UploadedFile

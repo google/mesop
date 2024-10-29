@@ -14,7 +14,7 @@
     [style]="getStyle()"
     (click)="fileUpload.click()"
   >
-    {{ config().getLabel() }}
+    <ng-content></ng-content>
   </button>
 
   } @if(config().getTypeIndex() === 1) {
@@ -26,7 +26,7 @@
     [style]="getStyle()"
     (click)="fileUpload.click()"
   >
-    {{ config().getLabel() }}
+    <ng-content></ng-content>
   </button>
 
   } @if(config().getTypeIndex() === 2) {
@@ -38,7 +38,7 @@
     [style]="getStyle()"
     (click)="fileUpload.click()"
   >
-    {{ config().getLabel() }}
+    <ng-content></ng-content>
   </button>
 
   } @if(config().getTypeIndex() === 3) {
@@ -50,7 +50,19 @@
     [style]="getStyle()"
     (click)="fileUpload.click()"
   >
-    {{ config().getLabel() }}
+    <ng-content></ng-content>
+  </button>
+
+  } @if(config().getTypeIndex() === 4) {
+  <button
+    mat-icon-button
+    [color]="config().getColor()"
+    [disableRipple]="config().getDisableRipple()"
+    [disabled]="config().getDisabled()"
+    [style]="getStyle()"
+    (click)="fileUpload.click()"
+  >
+    <ng-content></ng-content>
   </button>
 
   }
