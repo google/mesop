@@ -24,8 +24,8 @@ export class SelectComponent {
   @Input() key!: Key;
   @Input() style!: Style;
   private _config!: SelectType;
-
-  selectedOptions: readonly string[] = [];
+  // In single select mode, the ngModel is a string and not an array.
+  selectedOptions: readonly string[] | string = [];
   private initialSelectOptions: readonly string[] = [];
 
   constructor(private readonly channel: Channel) {}
@@ -42,8 +42,13 @@ export class SelectComponent {
     // reasonably even if the value property is set/updated.
     const values = this._config.getValueList();
     if (this._checkInitialValuesChanged(values)) {
-      this.initialSelectOptions = values;
-      this.selectedOptions = values;
+      if (this._config.getMultiple()) {
+        this.initialSelectOptions = values;
+        this.selectedOptions = values;
+      } else {
+        this.initialSelectOptions = values;
+        this.selectedOptions = values.length > 0 ? values[0] : '';
+      }
     }
   }
 
@@ -87,10 +92,13 @@ export class SelectComponent {
     return this.config().getAppearance() as 'fill' | 'outline';
   }
 
-  private _checkInitialValuesChanged(values: readonly string[]): boolean {
+  private _checkInitialValuesChanged(
+    values: readonly string[] | string,
+  ): boolean {
+    const valuesOptions = typeof values === 'string' ? [values] : values;
     return (
       JSON.stringify(this.initialSelectOptions.slice().sort()) !==
-      JSON.stringify(values.slice().sort())
+      JSON.stringify(valuesOptions.slice().sort())
     );
   }
 }
