@@ -19,7 +19,7 @@ def card_header(
   This function creates a card_header.
 
   This component is meant to be used with the `card` component. It is used for the
-  headera card.
+  header of a card.
 
   This component is a optional. It is mainly used as a convenience for consistent
   formatting with the card component.
