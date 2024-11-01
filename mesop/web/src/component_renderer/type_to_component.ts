@@ -1,3 +1,7 @@
+import {CardHeaderComponent} from '../../../components/card_header/card_header';
+import {CardActionsComponent} from '../../../components/card_actions/card_actions';
+import {CardContentComponent} from '../../../components/card_content/card_content';
+import {CardComponent} from '../../../components/card/card';
 import {ButtonToggleComponent} from '../../../components/button_toggle/button_toggle';
 import {DateRangePickerComponent} from '../../../components/date_range_picker/date_range_picker';
 import {DatepickerComponent} from '../../../components/datepicker/datepicker';
@@ -59,6 +63,10 @@ export class UserDefinedComponent implements BaseComponent {
 }
 
 export const typeToComponent = {
+  'card_header': CardHeaderComponent,
+  'card_actions': CardActionsComponent,
+  'card_content': CardContentComponent,
+  'card': CardComponent,
   'button_toggle': ButtonToggleComponent,
   'date_range_picker': DateRangePickerComponent,
   'datepicker': DatepickerComponent,

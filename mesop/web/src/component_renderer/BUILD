@@ -17,6 +17,10 @@ ng_module(
     ]) + ["component_renderer.css"],
     deps = [
         # REF(//scripts/scaffold_component.py):insert_component_import
+        "//mesop/components/card_header:ng",
+        "//mesop/components/card_actions:ng",
+        "//mesop/components/card_content:ng",
+        "//mesop/components/card:ng",
         "//mesop/components/button_toggle:ng",
         "//mesop/components/date_range_picker:ng",
         "//mesop/components/datepicker:ng",

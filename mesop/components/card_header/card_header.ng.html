@@ -1,0 +1,28 @@
+@if (config().getImage() && config().getImageType() !== 'avatar') {
+<mat-card-header>
+  <mat-card-title-group>
+    <mat-card-title>{{config().getTitle()}}</mat-card-title>
+    @if (config().getSubtitle()) {
+    <mat-card-subtitle>{{config().getSubtitle()}}</mat-card-subtitle>
+    } @if (config().getImageType() === 'small') {
+    <img [src]="config().getImage()" mat-card-sm-image />
+    } @if (config().getImageType() === 'medium') {
+    <img [src]="config().getImage()" mat-card-md-image />
+    } @if (config().getImageType() === 'large') {
+    <img [src]="config().getImage()" mat-card-lg-image />
+    } @if (config().getImageType() === 'extra-large') {
+    <img [src]="config().getImage()" mat-card-xl-image />
+    }
+  </mat-card-title-group>
+</mat-card-header>
+} @else {
+<mat-card-header>
+  @if (config().getImage()) {
+  <img mat-card-avatar [src]="config().getImage()" />
+  }
+  <mat-card-title>{{config().getTitle()}}</mat-card-title>
+  @if (config().getSubtitle()) {
+  <mat-card-subtitle>{{config().getSubtitle()}}</mat-card-subtitle>
+  }
+</mat-card-header>
+}
