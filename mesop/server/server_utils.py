@@ -10,7 +10,7 @@ from flask import Response, abort, request
 from werkzeug.security import safe_join
 
 import mesop.protos.ui_pb2 as pb
-from mesop.env.env import EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED
+from mesop.env.env import EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED, get_app_base_path
 from mesop.exceptions import MesopDeveloperException
 from mesop.runtime import runtime
 from mesop.server.config import app_config
@@ -148,7 +148,7 @@ def get_static_folder() -> str | None:
       "Static folder cannot be an absolute path: static_folder_name}"
     )
 
-  static_folder_path = safe_join(os.getcwd(), static_folder_name)
+  static_folder_path = safe_join(get_app_base_path(), static_folder_name)
 
   if not static_folder_path:
     raise MesopDeveloperException(

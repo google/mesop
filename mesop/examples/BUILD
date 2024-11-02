@@ -47,6 +47,7 @@ py_library(
         "//mesop/components/text/e2e",
         "//mesop/examples/web_component",
         "//mesop/examples/docs",
+        "//mesop/examples/app_base",
         "//mesop/examples/integrations",
         "//mesop/examples/shared",
         "//mesop/examples/starter_kit",
