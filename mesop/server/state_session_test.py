@@ -3,7 +3,7 @@ from collections import defaultdict
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from pathlib import Path
-from typing import Iterable, Optional
+from typing import Iterable
 from unittest.mock import patch
 
 import pytest
@@ -361,7 +361,7 @@ class FakeFirestoreCollectionReference(CollectionReference):
   def __init__(self):
     self.docs = defaultdict(lambda: FakeFirestoreDocumentReference())
 
-  def document(self, document_id: Optional[str] = None) -> DocumentReference:
+  def document(self, document_id: str | None = None) -> DocumentReference:
     return self.docs[document_id]
 
 

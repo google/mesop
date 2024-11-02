@@ -1,7 +1,6 @@
 import json
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta, timezone
-from typing import Optional
 
 import pandas as pd
 import pytest
@@ -27,7 +26,7 @@ def test_diff_primitives():
     val2: int = 1
     val3: float = 1.1
     val4: bool = True
-    val5: Optional[bool] = True
+    val5: bool | None = True
 
   s1 = C()
   s2 = C(val1="VAL1", val2=2, val3=1.2, val4=False, val5=None)
