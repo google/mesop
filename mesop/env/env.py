@@ -1,3 +1,4 @@
+import logging
 import os
 
 from mesop.exceptions import MesopDeveloperException
@@ -33,16 +34,10 @@ MESOP_CONCURRENT_UPDATES_ENABLED = (
   os.environ.get("MESOP_CONCURRENT_UPDATES_ENABLED", "false").lower() == "true"
 )
 
-if MESOP_WEBSOCKETS_ENABLED:
-  print("Experiment enabled: MESOP_WEBSOCKETS_ENABLED")
-  print("Auto-enabling MESOP_CONCURRENT_UPDATES_ENABLED")
-  MESOP_CONCURRENT_UPDATES_ENABLED = True
-elif MESOP_CONCURRENT_UPDATES_ENABLED:
-  print("Experiment enabled: MESOP_CONCURRENT_UPDATES_ENABLED")
 
 EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED = (
   os.environ.get("MESOP_EXPERIMENTAL_EDITOR_TOOLBAR", "false").lower() == "true"
 )
 
 if EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED:
-  print("Experiment enabled: EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED")
+  logging.info("Experiment enabled: EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED")
