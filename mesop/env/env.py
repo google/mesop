@@ -12,6 +12,10 @@ if MESOP_APP_BASE_PATH:
     raise MesopDeveloperException(
       f"MESOP_APP_BASE_PATH must be an absolute path, but got {MESOP_APP_BASE_PATH} instead."
     )
+  if not os.path.isdir(MESOP_APP_BASE_PATH):
+    raise MesopDeveloperException(
+      f"MESOP_APP_BASE_PATH is not a valid directory: {MESOP_APP_BASE_PATH}"
+    )
   print(f"MESOP_APP_BASE_PATH set to {MESOP_APP_BASE_PATH}")
 
 
