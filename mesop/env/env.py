@@ -1,10 +1,18 @@
 import os
 
+from mesop.exceptions import MesopDeveloperException
+
 AI_SERVICE_BASE_URL = os.environ.get(
   "MESOP_AI_SERVICE_BASE_URL", "http://localhost:43234"
 )
 
 MESOP_APP_BASE_PATH = os.environ.get("MESOP_APP_BASE_PATH", "")
+if MESOP_APP_BASE_PATH:
+  if not os.path.isabs(MESOP_APP_BASE_PATH):
+    raise MesopDeveloperException(
+      f"MESOP_APP_BASE_PATH must be an absolute path, but got {MESOP_APP_BASE_PATH} instead."
+    )
+  print(f"MESOP_APP_BASE_PATH set to {MESOP_APP_BASE_PATH}")
 
 
 def get_app_base_path() -> str:
