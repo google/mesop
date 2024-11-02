@@ -6,6 +6,13 @@ AI_SERVICE_BASE_URL = os.environ.get(
 
 MESOP_APP_BASE_PATH = os.environ.get("MESOP_APP_BASE_PATH", "")
 
+
+def get_app_base_path() -> str:
+  if not MESOP_APP_BASE_PATH:
+    return os.getcwd()
+  return MESOP_APP_BASE_PATH
+
+
 MESOP_WEBSOCKETS_ENABLED = (
   os.environ.get("MESOP_WEBSOCKETS_ENABLED", "false").lower() == "true"
 )
