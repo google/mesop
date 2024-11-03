@@ -24,6 +24,7 @@ test.describe('Card', () => {
           el.classList.contains('mat-mdc-card-actions-align-end'),
         ),
     ).toBeTruthy();
-    expect(await page.getByRole('button')).toHaveCount(2);
+    expect(await page.getByText('Add to cart')).toHaveCount(1);
+    expect(await page.getByText('Buy')).toHaveCount(1);
   });
 });
