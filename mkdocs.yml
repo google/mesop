@@ -74,6 +74,7 @@ nav:
           - Uploader: components/uploader.md
       - Visual:
           - Badge: components/badge.md
+          - Card: components/card.md
           - Divider: components/divider.md
           - Icon: components/icon.md
           - Progress bar: components/progress-bar.md
