@@ -34,6 +34,7 @@ from mesop.component_helpers.helper import (
 from mesop.component_helpers.helper import (
   slot as slot,
 )
+from mesop.components.accordion.accordion import accordion as accordion
 from mesop.components.audio.audio import audio as audio
 from mesop.components.autocomplete.autocomplete import (
   AutocompleteEnterEvent as AutocompleteEnterEvent,
@@ -94,6 +95,12 @@ from mesop.components.datepicker.datepicker import (
 from mesop.components.datepicker.datepicker import date_picker as date_picker
 from mesop.components.divider.divider import divider as divider
 from mesop.components.embed.embed import embed as embed
+from mesop.components.expansion_panel.expansion_panel import (
+  ExpansionPanelToggleEvent as ExpansionPanelToggleEvent,
+)
+from mesop.components.expansion_panel.expansion_panel import (
+  expansion_panel as expansion_panel,
+)
 from mesop.components.html.html import html as html
 from mesop.components.icon.icon import icon as icon
 from mesop.components.image.image import image as image

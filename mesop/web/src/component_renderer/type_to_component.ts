@@ -1,3 +1,5 @@
+import {AccordionComponent} from '../../../components/accordion/accordion';
+import {ExpansionPanelComponent} from '../../../components/expansion_panel/expansion_panel';
 import {ButtonToggleComponent} from '../../../components/button_toggle/button_toggle';
 import {DateRangePickerComponent} from '../../../components/date_range_picker/date_range_picker';
 import {DatepickerComponent} from '../../../components/datepicker/datepicker';
@@ -59,6 +61,8 @@ export class UserDefinedComponent implements BaseComponent {
 }
 
 export const typeToComponent = {
+  'accordion': AccordionComponent,
+  'expansion_panel': ExpansionPanelComponent,
   'button_toggle': ButtonToggleComponent,
   'date_range_picker': DateRangePickerComponent,
   'datepicker': DatepickerComponent,

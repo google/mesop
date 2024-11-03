@@ -1,0 +1,13 @@
+syntax = "proto2";
+
+package mesop.components.expansion_panel;
+
+message ExpansionPanelType {
+    optional string title = 1;
+    optional string description = 2;
+    optional string icon = 3;
+    optional bool disabled = 4;
+    optional string expanded = 5;
+    optional bool hide_toggle = 6;
+    optional string on_toggle_handler_id = 7;
+}
