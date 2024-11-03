@@ -13,6 +13,6 @@ Card is based on the [Angular Material card component](https://material.angular.
 ## API
 
 ::: mesop.components.card.card.card
-::: mesop.components.card_content.card_content.card_header
+::: mesop.components.card_header.card_header.card_header
 ::: mesop.components.card_content.card_content.card_content
 ::: mesop.components.card_actions.card_actions.card_actions
