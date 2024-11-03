@@ -46,7 +46,7 @@ def expansion_panel(
   key: str | None = None,
 ):
   """
-  This function creates a expansion_panel.
+  This function creates an expansion_panel.
 
   Args:
       title: Title of the panel.

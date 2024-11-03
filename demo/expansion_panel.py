@@ -14,7 +14,7 @@ class State:
 
 
 def load(e: me.LoadEvent):
-  me.set_theme_mode("light")
+  me.set_theme_mode("system")
 
 
 @me.page(
