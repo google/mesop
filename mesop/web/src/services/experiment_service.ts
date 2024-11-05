@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 
 interface ExperimentSettings {
-  websocketsEnabled: boolean;
-  concurrentUpdatesEnabled: boolean;
-  experimentalEditorToolbarEnabled: boolean;
+  readonly websocketsEnabled: boolean;
+  readonly concurrentUpdatesEnabled: boolean;
+  readonly experimentalEditorToolbarEnabled: boolean;
 }
 
 @Injectable({
@@ -13,7 +13,6 @@ export class ExperimentService {
   private readonly settings: ExperimentSettings;
 
   constructor() {
-    // Get experiment settings from window object
     const windowSettings = (window as any).__MESOP_EXPERIMENTS__;
     this.settings = windowSettings ?? {
       websocketsEnabled: false,
