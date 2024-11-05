@@ -81,7 +81,6 @@ def configure_static_file_serving(
             for stylesheet in page_config.stylesheets
           ]
         )
-      # Insert experiment settings before the closing </head> tag
       if (
         line.strip() == "<!-- Inject experiment settings script (if needed) -->"
       ):
