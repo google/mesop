@@ -29,8 +29,8 @@ def card_header(
       subtitle: Optional subtitle
       image: Optional image
       image_type: Display style for the image. Avatar will display as a circular image
-        to the left of the title/subtitle. Small/medium/large/extra-large will display
-        a right-aligned image of the specified size.
+          to the left of the title/subtitle. Small/medium/large/extra-large will display
+          a right-aligned image of the specified size.
   """
   insert_component(
     key=key,
