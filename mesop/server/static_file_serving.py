@@ -1,5 +1,6 @@
 import gzip
 import io
+import json
 import mimetypes
 import os
 import re
@@ -12,7 +13,12 @@ from urllib.parse import urlparse
 from flask import Flask, Response, g, make_response, request, send_file
 from werkzeug.security import safe_join
 
-from mesop.env.env import get_app_base_path
+from mesop.env.env import (
+  EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED,
+  MESOP_CONCURRENT_UPDATES_ENABLED,
+  MESOP_WEBSOCKETS_ENABLED,
+  get_app_base_path,
+)
 from mesop.exceptions import MesopException
 from mesop.runtime import runtime
 from mesop.server.constants import WEB_COMPONENTS_PATH_SEGMENT
@@ -75,6 +81,20 @@ def configure_static_file_serving(
             for stylesheet in page_config.stylesheets
           ]
         )
+      # Insert experiment settings before the closing </head> tag
+      if (
+        line.strip() == "<!-- Inject experiment settings script (if needed) -->"
+      ):
+        experiment_settings = {
+          "websocketsEnabled": MESOP_WEBSOCKETS_ENABLED,
+          "concurrentUpdatesEnabled": MESOP_CONCURRENT_UPDATES_ENABLED,
+          "experimentalEditorToolbarEnabled": EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED,
+        }
+        lines[i] = f"""
+          <script nonce="{g.csp_nonce}">
+            window.__MESOP_EXPERIMENTS__ = {json.dumps(experiment_settings)};
+          </script>
+        """
 
     # Create a BytesIO object from the modified lines
     modified_file_content = "".join(lines)

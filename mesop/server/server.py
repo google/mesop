@@ -16,8 +16,6 @@ import mesop.protos.ui_pb2 as pb
 from mesop.component_helpers import diff_component
 from mesop.editor.component_configs import get_component_configs
 from mesop.env.env import (
-  EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED,
-  MESOP_CONCURRENT_UPDATES_ENABLED,
   MESOP_WEBSOCKETS_ENABLED,
 )
 from mesop.events import LoadEvent
@@ -101,13 +99,6 @@ def configure_flask_app(
             f"/{WEB_COMPONENTS_PATH_SEGMENT}{js_module}"
             for js_module in js_modules
           ],
-          experiment_settings=pb.ExperimentSettings(
-            websockets_enabled=MESOP_WEBSOCKETS_ENABLED,
-            concurrent_updates_enabled=MESOP_CONCURRENT_UPDATES_ENABLED,
-            experimental_editor_toolbar_enabled=EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED,
-          )
-          if init_request
-          else None,
         )
       )
       yield serialize(data)

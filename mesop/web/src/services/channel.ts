@@ -305,17 +305,6 @@ export class Channel {
         } else {
           this.rootComponent = rootComponent;
         }
-        const experimentSettings = uiResponse
-          .getRender()!
-          .getExperimentSettings();
-        if (experimentSettings) {
-          this.experimentService.websocketsEnabled =
-            experimentSettings.getWebsocketsEnabled() ?? false;
-          this.experimentService.concurrentUpdatesEnabled =
-            experimentSettings.getConcurrentUpdatesEnabled() ?? false;
-          this.experimentService.experimentalEditorToolbarEnabled =
-            experimentSettings.getExperimentalEditorToolbarEnabled() ?? false;
-        }
 
         this.componentConfigs = uiResponse
           .getRender()!
