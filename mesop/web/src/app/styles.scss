@@ -277,6 +277,45 @@ mat-sidenav-content > component-renderer:first-child {
   display: inline;
 }
 
+// We need to add custom mat-accordion styles since the expansion panels are wrapped
+// by component-renderer which messes up some of the built-in Angular Material styles
+// for the accordion.
+.mat-accordion {
+  component-renderer .mat-expansion-panel:first-of-type,
+  component-renderer .mat-expansion-panel:last-of-type {
+    border-radius: 0;
+  }
+
+  component-renderer:first-of-type .mat-expansion-panel {
+    border-top-right-radius: var(--mat-expansion-container-shape);
+    border-top-left-radius: var(--mat-expansion-container-shape);
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  component-renderer:last-of-type .mat-expansion-panel {
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+    border-bottom-right-radius: var(--mat-expansion-container-shape);
+    border-bottom-left-radius: var(--mat-expansion-container-shape);
+  }
+
+  component-renderer:first-of-type .mat-expansion-panel.mat-expanded {
+    margin-top: 0;
+    border-radius: var(--mat-expansion-container-shape);
+  }
+
+  component-renderer:last-of-type .mat-expansion-panel.mat-expanded {
+    margin-bottom: 0;
+    border-radius: var(--mat-expansion-container-shape);
+  }
+
+  component-renderer .mat-expansion-panel.mat-expanded {
+    margin: 16px 0;
+    border-radius: var(--mat-expansion-container-shape);
+  }
+}
+
 mesop-markdown {
   h1,
   h2,

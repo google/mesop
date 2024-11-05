@@ -1,0 +1,18 @@
+<mat-expansion-panel
+  [disabled]="config().getDisabled()"
+  [expanded]="expanded()"
+  [hideToggle]="config().getHideToggle()"
+  (opened)="onPanelOpened()"
+  (closed)="onPanelClosed()"
+  [style]="getStyle()"
+>
+  <mat-expansion-panel-header>
+    <mat-panel-title>{{config().getTitle()}}</mat-panel-title>
+    <mat-panel-description>
+      {{config().getDescription()}} @if (config().getIcon()) {
+      <mat-icon>{{config().getIcon()}}</mat-icon>
+      }
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+  <ng-content></ng-content>
+</mat-expansion-panel>

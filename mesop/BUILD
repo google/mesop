@@ -23,6 +23,8 @@ py_library(
     deps = [
         ":version",
         # REF(//scripts/scaffold_component.py):insert_component_import
+        "//mesop/components/accordion:py",
+        "//mesop/components/expansion_panel:py",
         "//mesop/components/card_header:py",
         "//mesop/components/card_actions:py",
         "//mesop/components/card_content:py",

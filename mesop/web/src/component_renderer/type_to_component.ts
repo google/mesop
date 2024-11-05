@@ -1,3 +1,5 @@
+import {AccordionComponent} from '../../../components/accordion/accordion';
+import {ExpansionPanelComponent} from '../../../components/expansion_panel/expansion_panel';
 import {CardHeaderComponent} from '../../../components/card_header/card_header';
 import {CardActionsComponent} from '../../../components/card_actions/card_actions';
 import {CardContentComponent} from '../../../components/card_content/card_content';
@@ -63,6 +65,8 @@ export class UserDefinedComponent implements BaseComponent {
 }
 
 export const typeToComponent = {
+  'accordion': AccordionComponent,
+  'expansion_panel': ExpansionPanelComponent,
   'card_header': CardHeaderComponent,
   'card_actions': CardActionsComponent,
   'card_content': CardContentComponent,

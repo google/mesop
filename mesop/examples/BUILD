@@ -15,6 +15,7 @@ py_library(
     deps = [
         "//demo",
         # REF(//scripts/scaffold_component.py):insert_component_e2e_import
+        "//mesop/components/expansion_panel/e2e",
         "//mesop/components/card/e2e",
         "//mesop/components/button_toggle/e2e",
         "//mesop/components/date_range_picker/e2e",

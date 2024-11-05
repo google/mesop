@@ -17,6 +17,8 @@ ng_module(
     ]) + ["component_renderer.css"],
     deps = [
         # REF(//scripts/scaffold_component.py):insert_component_import
+        "//mesop/components/accordion:ng",
+        "//mesop/components/expansion_panel:ng",
         "//mesop/components/card_header:ng",
         "//mesop/components/card_actions:ng",
         "//mesop/components/card_content:ng",

@@ -39,6 +39,7 @@ import density as density
 import dialog as dialog
 import divider as divider
 import embed as embed
+import expansion_panel as expansion_panel
 import fancy_chat as fancy_chat
 import feedback as feedback
 import form_billing as form_billing
@@ -186,6 +187,7 @@ COMPONENTS_SECTIONS = [
       Example(name="badge"),
       Example(name="card"),
       Example(name="divider"),
+      Example(name="expansion_panel"),
       Example(name="icon"),
       Example(name="progress_bar"),
       Example(name="progress_spinner"),

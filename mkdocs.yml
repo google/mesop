@@ -76,6 +76,7 @@ nav:
           - Badge: components/badge.md
           - Card: components/card.md
           - Divider: components/divider.md
+          - Expansion panel: components/expansion-panel.md
           - Icon: components/icon.md
           - Progress bar: components/progress-bar.md
           - Progress spinner: components/progress-spinner.md
