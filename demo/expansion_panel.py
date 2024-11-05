@@ -148,7 +148,7 @@ def on_accordion_toggle(e: me.ExpansionPanelToggleEvent):
 
 
 def on_multi_accordion_toggle(e: me.ExpansionPanelToggleEvent):
-  """Implements accordion behavior where only multiple panels can be open at a time"""
+  """Implements accordion behavior where multiple panels can be open at a time"""
   state = me.state(State)
   state.multi_accordion[e.key] = e.opened
 
