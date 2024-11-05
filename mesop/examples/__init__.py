@@ -2,6 +2,7 @@ from demo import main as main
 from mesop.examples import (
   allowed_iframe_parents as allowed_iframe_parents,
 )
+from mesop.examples import app_base as app_base
 from mesop.examples import async_await as async_await
 from mesop.examples import (
   boilerplate_free_event_handlers as boilerplate_free_event_handlers,

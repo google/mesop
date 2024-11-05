@@ -1,0 +1,7 @@
+syntax = "proto2";
+
+package mesop.components.card_content;
+
+message CardContentType {
+
+}

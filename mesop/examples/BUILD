@@ -16,6 +16,7 @@ py_library(
         "//demo",
         # REF(//scripts/scaffold_component.py):insert_component_e2e_import
         "//mesop/components/expansion_panel/e2e",
+        "//mesop/components/card/e2e",
         "//mesop/components/button_toggle/e2e",
         "//mesop/components/date_range_picker/e2e",
         "//mesop/components/datepicker/e2e",
@@ -48,6 +49,7 @@ py_library(
         "//mesop/components/text/e2e",
         "//mesop/examples/web_component",
         "//mesop/examples/docs",
+        "//mesop/examples/app_base",
         "//mesop/examples/integrations",
         "//mesop/examples/shared",
         "//mesop/examples/starter_kit",

@@ -25,6 +25,10 @@ py_library(
         # REF(//scripts/scaffold_component.py):insert_component_import
         "//mesop/components/accordion:py",
         "//mesop/components/expansion_panel:py",
+        "//mesop/components/card_header:py",
+        "//mesop/components/card_actions:py",
+        "//mesop/components/card_content:py",
+        "//mesop/components/card:py",
         "//mesop/components/button_toggle:py",
         "//mesop/components/date_range_picker:py",
         "//mesop/components/datepicker:py",

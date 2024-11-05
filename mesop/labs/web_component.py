@@ -3,6 +3,7 @@ import os
 from functools import wraps
 from typing import Any, Callable, TypeVar, cast
 
+from mesop.env.env import get_app_base_path
 from mesop.runtime import runtime
 from mesop.utils.validate import validate
 
@@ -54,4 +55,4 @@ def format_filename(filename: str) -> str:
     return filename.split(".runfiles", 1)[1]
   else:
     # Handle pip CLI case
-    return os.path.relpath(filename, os.getcwd())
+    return os.path.relpath(filename, get_app_base_path())

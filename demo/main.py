@@ -28,6 +28,7 @@ import bootstrap as bootstrap
 import box as box
 import button as button
 import button_toggle as button_toggle
+import card as card
 import chat as chat
 import chat_inputs as chat_inputs
 import checkbox as checkbox
@@ -184,6 +185,7 @@ COMPONENTS_SECTIONS = [
     name="Visual",
     examples=[
       Example(name="badge"),
+      Example(name="card"),
       Example(name="divider"),
       Example(name="expansion_panel"),
       Example(name="icon"),
