@@ -56,21 +56,21 @@ class Runtime:
     self._state_classes: list[type[Any]] = []
     self._loading_errors: list[pb.ServerError] = []
     self._has_served_traffic = False
-    self._contexts = {}
+    self.websocket_contexts = {}
 
   def context(self) -> Context:
     if MESOP_WEBSOCKETS_ENABLED and hasattr(request, "websocket_session_id"):
       websocket_session_id = request.websocket_session_id  # type: ignore
-      if websocket_session_id not in self._contexts:
-        self._contexts[websocket_session_id] = self.create_context()
-      return self._contexts[websocket_session_id]
+      if websocket_session_id not in self.websocket_contexts:
+        self.websocket_contexts[websocket_session_id] = self.create_context()
+      return self.websocket_contexts[websocket_session_id]
     if "_mesop_context" not in g:
       g._mesop_context = self.create_context()
     return g._mesop_context
 
   def delete_context(self, websocket_session_id: str) -> None:
-    if websocket_session_id in self._contexts:
-      del self._contexts[websocket_session_id]
+    if websocket_session_id in self.websocket_contexts:
+      del self.websocket_contexts[websocket_session_id]
     else:
       warn(
         f"Tried to delete context with websocket_session_id={websocket_session_id} that doesn't exist."
@@ -202,6 +202,7 @@ def reset_runtime(without_hot_reload: bool = False):
   _runtime.debug_mode = old_runtime.debug_mode
   _runtime.component_fns = old_runtime.component_fns
   _runtime.event_mappers = old_runtime.event_mappers
+  _runtime.websocket_contexts = old_runtime.websocket_contexts
 
 
 def enable_debug_mode():
