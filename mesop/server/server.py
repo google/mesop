@@ -51,6 +51,9 @@ def configure_flask_app(
   if env.EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED:
     logger.info("Experiment enabled: EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED")
 
+  if env.MESOP_APP_BASE_PATH:
+    logger.info(f"MESOP_APP_BASE_PATH set to {env.MESOP_APP_BASE_PATH}")
+
   static_folder = get_static_folder()
   static_url_path = get_static_url_path()
   if static_folder and static_url_path:

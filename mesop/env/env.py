@@ -17,7 +17,6 @@ if MESOP_APP_BASE_PATH:
     raise MesopDeveloperException(
       f"MESOP_APP_BASE_PATH is not a valid directory: {MESOP_APP_BASE_PATH}"
     )
-  print(f"MESOP_APP_BASE_PATH set to {MESOP_APP_BASE_PATH}")
 
 
 def get_app_base_path() -> str:
