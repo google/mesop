@@ -19,6 +19,7 @@ from mesop.editor.component_configs import get_component_configs
 from mesop.env.env import (
   EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED,
   MESOP_APP_BASE_PATH,
+  MESOP_CONCURRENT_UPDATES_ENABLED,
   MESOP_WEBSOCKETS_ENABLED,
 )
 from mesop.events import LoadEvent
@@ -46,11 +47,10 @@ logger = logging.getLogger(__name__)
 def configure_flask_app(
   *, prod_mode: bool = True, exceptions_to_propagate: Sequence[type] = ()
 ) -> Flask:
-  global MESOP_CONCURRENT_UPDATES_ENABLED
   if MESOP_WEBSOCKETS_ENABLED:
-    logger.info("Experiment enabled: MESOP_WEBSOCKETS_ENABLED")
-    logger.info("Auto-enabling MESOP_CONCURRENT_UPDATES_ENABLED")
-    MESOP_CONCURRENT_UPDATES_ENABLED = True
+    logger.info(
+      "Experiment enabled: MESOP_WEBSOCKETS_ENABLED (auto-enables MESOP_CONCURRENT_UPDATES_ENABLED)"
+    )
   elif MESOP_CONCURRENT_UPDATES_ENABLED:
     logger.info("Experiment enabled: MESOP_CONCURRENT_UPDATES_ENABLED")
   if EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED:
