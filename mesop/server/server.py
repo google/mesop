@@ -16,7 +16,11 @@ from flask import (
 import mesop.protos.ui_pb2 as pb
 from mesop.component_helpers import diff_component
 from mesop.editor.component_configs import get_component_configs
-from mesop.env import env
+from mesop.env.env import (
+  EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED,
+  MESOP_APP_BASE_PATH,
+  MESOP_WEBSOCKETS_ENABLED,
+)
 from mesop.events import LoadEvent
 from mesop.exceptions import format_traceback
 from mesop.runtime import runtime
@@ -42,17 +46,18 @@ logger = logging.getLogger(__name__)
 def configure_flask_app(
   *, prod_mode: bool = True, exceptions_to_propagate: Sequence[type] = ()
 ) -> Flask:
-  if env.MESOP_WEBSOCKETS_ENABLED:
+  global MESOP_CONCURRENT_UPDATES_ENABLED
+  if MESOP_WEBSOCKETS_ENABLED:
     logger.info("Experiment enabled: MESOP_WEBSOCKETS_ENABLED")
     logger.info("Auto-enabling MESOP_CONCURRENT_UPDATES_ENABLED")
-    env.MESOP_CONCURRENT_UPDATES_ENABLED = True
-  elif env.MESOP_CONCURRENT_UPDATES_ENABLED:
+    MESOP_CONCURRENT_UPDATES_ENABLED = True
+  elif MESOP_CONCURRENT_UPDATES_ENABLED:
     logger.info("Experiment enabled: MESOP_CONCURRENT_UPDATES_ENABLED")
-  if env.EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED:
+  if EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED:
     logger.info("Experiment enabled: EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED")
 
-  if env.MESOP_APP_BASE_PATH:
-    logger.info(f"MESOP_APP_BASE_PATH set to {env.MESOP_APP_BASE_PATH}")
+  if MESOP_APP_BASE_PATH:
+    logger.info(f"MESOP_APP_BASE_PATH set to {MESOP_APP_BASE_PATH}")
 
   static_folder = get_static_folder()
   static_url_path = get_static_url_path()
@@ -82,7 +87,7 @@ def configure_flask_app(
         # Disable component diffing with MESOP_WEBSOCKETS_ENABLED
         # to avoid a race condition where the previous component tree may
         # have been constructed by a concurrent event.
-        not env.MESOP_WEBSOCKETS_ENABLED
+        not MESOP_WEBSOCKETS_ENABLED
         and not trace_mode
         and previous_root_component
       ):
@@ -176,7 +181,7 @@ def configure_flask_app(
             yield from render_loop(path=ui_request.path, init_request=True)
         else:
           yield from render_loop(path=ui_request.path, init_request=True)
-        if not env.MESOP_WEBSOCKETS_ENABLED:
+        if not MESOP_WEBSOCKETS_ENABLED:
           yield create_update_state_event()
         yield STREAM_END
       elif ui_request.HasField("user_event"):
@@ -185,7 +190,7 @@ def configure_flask_app(
         runtime().context().set_viewport_size(event.viewport_size)
         runtime().context().initialize_query_params(event.query_params)
 
-        if not env.MESOP_WEBSOCKETS_ENABLED:
+        if not MESOP_WEBSOCKETS_ENABLED:
           if event.states.states:
             runtime().context().update_state(event.states)
           else:
@@ -247,7 +252,7 @@ def configure_flask_app(
           yield from render_loop(path=path)
           runtime().context().set_previous_node_from_current_node()
           runtime().context().reset_current_node()
-        if not env.MESOP_WEBSOCKETS_ENABLED:
+        if not MESOP_WEBSOCKETS_ENABLED:
           yield create_update_state_event(diff=True)
         yield STREAM_END
       else:
@@ -287,7 +292,7 @@ def configure_flask_app(
   if not prod_mode:
     configure_debug_routes(flask_app)
 
-  if env.MESOP_WEBSOCKETS_ENABLED:
+  if MESOP_WEBSOCKETS_ENABLED:
     from flask_sock import Sock
     from simple_websocket import Server
 
