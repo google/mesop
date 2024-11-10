@@ -153,6 +153,24 @@ test('query_param: navigate to another page with query params', async ({
   expect(new URL(page.url()).search).toEqual('?on_load=loaded');
 });
 
+test('query_param: back nav preserves query params', async ({page}) => {
+  await page.goto('/examples/query_params');
+  await page
+    .getByRole('button', {name: 'navigate to page 2 without query params'})
+    .click();
+
+  // Make sure navigation to page 2 has completed
+  await expect(page.getByText('query_params(page_2)={}')).toBeVisible();
+  // Navigate back to page 1
+  await page.goBack();
+
+  // Assert the query params are preserved.
+  await expect(
+    page.getByText(`query_params={'on_load': ['loaded']}`),
+  ).toBeVisible();
+  expect(new URL(page.url()).search).toEqual('?on_load=loaded');
+});
+
 test('query_param: navigate to another page with dict', async ({page}) => {
   await page.goto('/examples/query_params');
   await page

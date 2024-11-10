@@ -3,9 +3,6 @@ from typing import Sequence
 from mesop.features.query_params import (
   QueryParams,
 )
-from mesop.features.query_params import (
-  query_params as me_query_params,
-)
 from mesop.runtime import runtime
 from mesop.utils.url_utils import remove_url_query_param
 from mesop.warn import warn
@@ -35,5 +32,5 @@ def navigate(
 
   # Clear the query params because the query params will
   # either be replaced with the new query_params or emptied (in server.py).
-  me_query_params.clear()
+  runtime().context().query_params().clear()
   runtime().context().navigate(cleaned_url, query_params)
