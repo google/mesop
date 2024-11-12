@@ -8,6 +8,9 @@ from mesop.examples import (
   boilerplate_free_event_handlers as boilerplate_free_event_handlers,
 )
 from mesop.examples import box as box
+from mesop.examples import (
+  browser_navigation_on_load as browser_navigation_on_load,
+)
 from mesop.examples import buttons as buttons
 from mesop.examples import checkbox_and_radio as checkbox_and_radio
 from mesop.examples import composite as composite
@@ -34,7 +37,6 @@ from mesop.examples import integrations as integrations
 from mesop.examples import many_checkboxes as many_checkboxes
 from mesop.examples import navigate_absolute as navigate_absolute
 from mesop.examples import navigate_advanced as navigate_advanced
-from mesop.examples import navigation_on_load as navigation_on_load
 from mesop.examples import nested as nested
 from mesop.examples import on_load as on_load
 from mesop.examples import on_load_generator as on_load_generator

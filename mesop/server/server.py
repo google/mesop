@@ -202,7 +202,7 @@ def configure_flask_app(
             page_config and page_config.on_load and not has_run_navigate_on_load
           ):
             has_run_navigate_on_load = True
-            run_page_load(path=path)
+            yield from run_page_load(path=path)
 
         result = runtime().context().run_event_handler(ui_request.user_event)
         for _ in result:
@@ -232,7 +232,7 @@ def configure_flask_app(
                 and not has_run_navigate_on_load
               ):
                 has_run_navigate_on_load = True
-                run_page_load(path=path)
+                yield from run_page_load(path=path)
 
           yield from render_loop(path=path)
           runtime().context().set_previous_node_from_current_node()
