@@ -1,4 +1,5 @@
 import base64
+import logging
 import secrets
 import threading
 from typing import Generator, Sequence
@@ -16,6 +17,9 @@ import mesop.protos.ui_pb2 as pb
 from mesop.component_helpers import diff_component
 from mesop.editor.component_configs import get_component_configs
 from mesop.env.env import (
+  EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED,
+  MESOP_APP_BASE_PATH,
+  MESOP_CONCURRENT_UPDATES_ENABLED,
   MESOP_WEBSOCKETS_ENABLED,
 )
 from mesop.events import LoadEvent
@@ -37,15 +41,28 @@ from mesop.warn import warn
 
 UI_PATH = "/__ui__"
 
+logger = logging.getLogger(__name__)
+
 
 def configure_flask_app(
   *, prod_mode: bool = True, exceptions_to_propagate: Sequence[type] = ()
 ) -> Flask:
+  if MESOP_WEBSOCKETS_ENABLED:
+    logger.info(
+      "Experiment enabled: MESOP_WEBSOCKETS_ENABLED (auto-enables MESOP_CONCURRENT_UPDATES_ENABLED)"
+    )
+  elif MESOP_CONCURRENT_UPDATES_ENABLED:
+    logger.info("Experiment enabled: MESOP_CONCURRENT_UPDATES_ENABLED")
+  if EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED:
+    logger.info("Experiment enabled: EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED")
+
+  if MESOP_APP_BASE_PATH:
+    logger.info(f"MESOP_APP_BASE_PATH set to {MESOP_APP_BASE_PATH}")
+
   static_folder = get_static_folder()
   static_url_path = get_static_url_path()
   if static_folder and static_url_path:
-    print(f"Static folder enabled: {static_folder}")
-
+    logger.info(f"Static folder enabled: {static_folder}")
   flask_app = Flask(
     __name__,
     static_folder=static_folder,
@@ -103,7 +120,7 @@ def configure_flask_app(
       )
       yield serialize(data)
     except Exception as e:
-      print(e)
+      logging.error(e)
       if e in exceptions_to_propagate:
         raise e
       yield from yield_errors(
@@ -304,7 +321,7 @@ def configure_flask_app(
             decoded_message = base64.urlsafe_b64decode(message)
             ui_request.ParseFromString(decoded_message)
           except Exception as parse_error:
-            print("Failed to parse message:", parse_error)
+            logging.error("Failed to parse message: %s", parse_error)
             continue  # Skip processing this message
 
           # Start a new thread so we can handle multiple
@@ -320,7 +337,7 @@ def configure_flask_app(
           thread.start()
 
       except Exception as e:
-        print("WebSocket error:", e)
+        logging.error("WebSocket error: %s", e)
       finally:
         # Clean up context when connection closes
         if hasattr(request, "websocket_session_id"):
