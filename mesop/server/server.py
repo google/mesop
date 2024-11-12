@@ -193,9 +193,18 @@ def configure_flask_app(
           runtime().context().reset_previous_node()
         runtime().context().reset_current_node()
 
-        result = runtime().context().run_event_handler(ui_request.user_event)
         path = ui_request.path
         has_run_navigate_on_load = False
+
+        if ui_request.user_event.HasField("navigation"):
+          page_config = runtime().get_page_config(path=path)
+          if (
+            page_config and page_config.on_load and not has_run_navigate_on_load
+          ):
+            has_run_navigate_on_load = True
+            run_page_load(path=path)
+
+        result = runtime().context().run_event_handler(ui_request.user_event)
         for _ in result:
           navigate_commands = [
             command
@@ -223,14 +232,7 @@ def configure_flask_app(
                 and not has_run_navigate_on_load
               ):
                 has_run_navigate_on_load = True
-                result = page_config.on_load(LoadEvent(path=path))
-                # on_load is a generator function then we need to iterate through
-                # the generator object.
-                if result:
-                  for _ in result:
-                    yield from render_loop(path=path, init_request=True)
-                    runtime().context().set_previous_node_from_current_node()
-                    runtime().context().reset_current_node()
+                run_page_load(path=path)
 
           yield from render_loop(path=path)
           runtime().context().set_previous_node_from_current_node()
@@ -247,6 +249,18 @@ def configure_flask_app(
       yield from yield_errors(
         error=pb.ServerError(exception=str(e), traceback=format_traceback())
       )
+
+  def run_page_load(*, path: str):
+    page_config = runtime().get_page_config(path=path)
+    assert page_config and page_config.on_load
+    result = page_config.on_load(LoadEvent(path=path))
+    # on_load is a generator function then we need to iterate through
+    # the generator object.
+    if result:
+      for _ in result:
+        yield from render_loop(path=path, init_request=True)
+        runtime().context().set_previous_node_from_current_node()
+        runtime().context().reset_current_node()
 
   @flask_app.route(UI_PATH, methods=["POST"])
   def ui_stream() -> Response:

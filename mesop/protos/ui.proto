@@ -24,7 +24,7 @@ message QueryParam {
     repeated string values = 2;
 }
 
-// Next ID: 19
+// Next ID: 20
 message UserEvent {
     optional States states = 1;
 
@@ -43,6 +43,7 @@ message UserEvent {
         double double_value = 7;
         int32 int_value = 8;
         NavigationEvent navigation = 6;
+        HotReloadEvent hot_reload = 19;
         ResizeEvent resize = 10;
         bytes bytes_value = 9;
         ChangePrefersColorScheme change_prefers_color_scheme = 14;
@@ -107,8 +108,12 @@ message DateRangePickerEvent {
   optional string end_date = 2;
 }
 
-// This is a user-triggered navigation (e.g. go back/forwards) or a hot reload event.
+// This is a user-triggered navigation (e.g. go back/forwards).
 message NavigationEvent{
+}
+
+// Fired when a hot reload is triggered.
+message HotReloadEvent {
 }
 
 // Fired whenever a user resizes the viewport/browser.

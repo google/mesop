@@ -7,10 +7,10 @@ import {
   UserEvent,
   Component as ComponentProto,
   UiResponse,
-  NavigationEvent,
   ComponentConfig,
   Command,
   ChangePrefersColorScheme,
+  HotReloadEvent,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
 import {Logger} from '../dev_tools/services/logger';
 import {Title} from '@angular/platform-browser';
@@ -482,8 +482,7 @@ export class Channel {
     const request = new UiRequest();
     const userEvent = new UserEvent();
     userEvent.setStates(this.states);
-    const navigationEvent = new NavigationEvent();
-    userEvent.setNavigation(navigationEvent);
+    userEvent.setHotReload(new HotReloadEvent());
     userEvent.setViewportSize(getViewportSize());
     userEvent.setThemeSettings(this.themeService.getThemeSettings());
     userEvent.setQueryParamsList(getQueryParams());
