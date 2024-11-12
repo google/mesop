@@ -1,4 +1,3 @@
-import logging
 import os
 
 from mesop.exceptions import MesopDeveloperException
@@ -40,6 +39,3 @@ if MESOP_WEBSOCKETS_ENABLED:
 EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED = (
   os.environ.get("MESOP_EXPERIMENTAL_EDITOR_TOOLBAR", "false").lower() == "true"
 )
-
-if EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED:
-  logging.info("Experiment enabled: EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED")

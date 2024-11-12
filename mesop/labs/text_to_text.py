@@ -2,6 +2,7 @@ import types
 from typing import Callable, Generator, Literal, cast
 
 import mesop as me
+from mesop.warn import warn
 
 
 @me.stateclass
@@ -30,9 +31,7 @@ def text_io(
                   - "append": Concatenates each new piece of text to the existing output.
                   - "replace": Replaces the existing output with each new piece of text.
   """
-  print(
-    "\033[93m[warning]\033[0m text_io is deprecated, use text_to_text instead"
-  )
+  warn("text_io is deprecated, use text_to_text instead")
   text_to_text(transform=transform, title=title, transform_mode=transform_mode)
 
 
