@@ -280,6 +280,7 @@ Did you forget to decorate your state class `{state.__name__}` with @stateclass?
   ) -> Generator[None, None, None]:
     if (
       event.HasField("navigation")
+      or event.HasField("hot_reload")
       or event.HasField("resize")
       or event.HasField("change_prefers_color_scheme")
     ):
