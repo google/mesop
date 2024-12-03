@@ -76,7 +76,7 @@ def configure_flask_app(
   ) -> Generator[str, None, None]:
     try:
       runtime().context().acquire_lock()
-      runtime().run_path(path=path, trace_mode=trace_mode)
+      runtime().run_path(path=path)
       page_config = runtime().get_page_config(path=path)
       title = page_config.title if page_config else "Unknown path"
 
@@ -196,8 +196,12 @@ def configure_flask_app(
           else:
             runtime().context().restore_state_from_session(event.state_token)
 
-        for _ in render_loop(path=ui_request.path, trace_mode=True):
-          pass
+        # In websockets mode, we don't need to do a trace render loop because
+        # the context instance is long-lived and contains all the registered
+        # event handlers from the last render loop.
+        if not MESOP_WEBSOCKETS_ENABLED:
+          for _ in render_loop(path=ui_request.path, trace_mode=True):
+            pass
         if ui_request.user_event.handler_id:
           runtime().context().set_previous_node_from_current_node()
         else:

@@ -108,9 +108,7 @@ class Runtime:
         lambda: not self.is_hot_reload_in_progress, initial_delay=0.100
       )
 
-  def run_path(self, path: str, trace_mode: bool = False) -> None:
-    self.context().set_trace_mode(trace_mode)
-
+  def run_path(self, path: str) -> None:
     if path not in self._path_to_page_config:
       paths = list(self._path_to_page_config.keys())
       if not paths:
