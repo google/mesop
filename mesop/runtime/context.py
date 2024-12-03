@@ -35,7 +35,6 @@ class Context:
     self._states: dict[type[Any], object] = states
     # Previous states is used for performing state diffs.
     self._previous_states: dict[type[Any], object] = copy.deepcopy(states)
-    self._trace_mode = False
     self._handlers: dict[str, Handler] = {}
     self._commands: list[pb.Command] = []
     self._node_slot: pb.Component | None = None
@@ -191,11 +190,7 @@ class Context:
     return self._viewport_size
 
   def register_event_handler(self, fn_id: str, handler: Handler) -> None:
-    if self._trace_mode:
-      self._handlers[fn_id] = handler
-
-  def set_trace_mode(self, trace_mode: bool) -> None:
-    self._trace_mode = trace_mode
+    self._handlers[fn_id] = handler
 
   def current_node(self) -> pb.Component:
     return self._current_node
