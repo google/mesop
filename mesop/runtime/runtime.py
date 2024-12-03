@@ -9,11 +9,10 @@ from mesop.env.env import MESOP_WEBSOCKETS_ENABLED
 from mesop.events import LoadEvent, MesopEvent
 from mesop.exceptions import MesopDeveloperException, MesopUserException
 from mesop.key import Key
+from mesop.runtime.context import Context
 from mesop.security.security_policy import SecurityPolicy
 from mesop.utils.backoff import exponential_backoff
 from mesop.warn import warn
-
-from .context import Context
 
 Handler = Callable[[Any], None | Generator[None, None, None]]
 newline = "\n"
