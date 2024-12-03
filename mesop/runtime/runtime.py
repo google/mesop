@@ -51,7 +51,6 @@ class Runtime:
     self.hot_reload_counter = 0
     self._path_to_page_config: dict[str, PageConfig] = {}
     self.component_fns: set[Callable[..., Any]] = set()
-    self._handlers: dict[str, Handler] = {}
     self.event_mappers: dict[Type[Any], Callable[[pb.UserEvent, Key], Any]] = {}
     self._state_classes: list[type[Any]] = []
     self._loading_errors: list[pb.ServerError] = []
@@ -96,9 +95,7 @@ class Runtime:
       for state_class in self._state_classes:
         states[state_class] = state_class()
 
-    return Context(
-      get_handler=self.get_handler, states=cast(dict[Any, Any], states)
-    )
+    return Context(states=cast(dict[Any, Any], states))
 
   def wait_for_hot_reload(self):
     # If hot reload is in-progress, the path may not be registered yet because the client reload
@@ -140,12 +137,6 @@ Try one of the following paths:
 
   def get_path_to_page_configs(self) -> dict[str, PageConfig]:
     return deepcopy(self._path_to_page_config)
-
-  def register_handler(self, handler_id: str, handler: Handler) -> None:
-    self._handlers[handler_id] = handler
-
-  def get_handler(self, handler_id: str) -> Handler | None:
-    return self._handlers[handler_id]
 
   def register_state_class(self, state_class: Any) -> None:
     self._state_classes.append(state_class)

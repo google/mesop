@@ -7,7 +7,7 @@ from mesop.runtime.context import Context
 
 
 def test_query_params_iter():
-  context = Context(get_handler=lambda x: None, states={})
+  context = Context(states={})
   context._query_params = {
     "key1": ["k1value1", "k1value2"],
     "key2": ["value2"],
@@ -22,7 +22,7 @@ def test_query_params_iter():
 
 
 def test_query_params_len():
-  context = Context(get_handler=lambda x: None, states={})
+  context = Context(states={})
   context._query_params = {
     "key1": ["value1"],
     "key2": ["value2"],
@@ -33,7 +33,7 @@ def test_query_params_len():
 
 
 def test_query_params_str():
-  context = Context(get_handler=lambda x: None, states={})
+  context = Context(states={})
   context._query_params = {
     "key1": ["value1"],
     "key2": ["value2"],
@@ -44,7 +44,7 @@ def test_query_params_str():
 
 
 def test_query_params_getitem():
-  context = Context(get_handler=lambda x: None, states={})
+  context = Context(states={})
   context._query_params = {
     "key1": ["value1"],
     "key2": ["value2", "value3"],
@@ -60,7 +60,7 @@ def test_query_params_getitem():
 
 
 def test_query_params_get_all():
-  context = Context(get_handler=lambda x: None, states={})
+  context = Context(states={})
   context._query_params = {
     "key1": ["value1"],
     "key2": ["value2", "value3"],
@@ -73,7 +73,7 @@ def test_query_params_get_all():
 
 
 def test_query_params_delitem():
-  context = Context(get_handler=lambda x: None, states={})
+  context = Context(states={})
   context._query_params = {"key1": ["value"]}
   query_params = QueryParams(lambda: context)
 
@@ -82,7 +82,7 @@ def test_query_params_delitem():
 
 
 def test_query_params_setitem():
-  context = Context(get_handler=lambda x: None, states={})
+  context = Context(states={})
   query_params = QueryParams(lambda: context)
 
   query_params["key1"] = "value1"
