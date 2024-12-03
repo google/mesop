@@ -26,10 +26,8 @@ Handler = Callable[[Any], Generator[None, None, None] | None]
 class Context:
   def __init__(
     self,
-    get_handler: Callable[[str], Handler | None],
     states: dict[type[Any], object],
   ) -> None:
-    self._get_handler = get_handler
     self._current_node = pb.Component()
     self._previous_node: pb.Component | None = None
     self._states: dict[type[Any], object] = states
