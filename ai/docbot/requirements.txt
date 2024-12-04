@@ -370,5 +370,3 @@ wrapt==1.16.0
     # via
     #   deprecated
     #   llama-index-core
-yarl==1.9.4
-    # via aiohttp
