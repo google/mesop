@@ -233,8 +233,8 @@ def configure_static_file_serving(
         # Mesop app developers should be able to iframe other sites.
         "frame-src": "*",
         # Mesop app developers should be able to load images and media from various origins.
-        "img-src": "'self' data: https: http:",
-        "media-src": "'self' data: https:",
+        "img-src": "'self' data: https: http: blob:",
+        "media-src": "'self' data: https: blob:",
         # Need 'unsafe-inline' because we apply inline styles for our components.
         # This is also used by Angular for animations:
         # https://github.com/angular/angular/pull/55260
