@@ -176,7 +176,6 @@ jobs:
           path: .cache
           restore-keys: |
             showcase-
-      - run: pip install -r ai/docbot/requirements.txt
       - run: |
           git config user.name github-actions[bot]
           git config user.email github-actions[bot]@users.noreply.github.com
