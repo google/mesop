@@ -8,11 +8,13 @@
 >
   <mat-expansion-panel-header>
     <mat-panel-title>{{config().getTitle()}}</mat-panel-title>
+    @if (config().getDescription()) {
     <mat-panel-description>
       {{config().getDescription()}} @if (config().getIcon()) {
       <mat-icon>{{config().getIcon()}}</mat-icon>
       }
     </mat-panel-description>
+    }
   </mat-expansion-panel-header>
   <ng-content></ng-content>
 </mat-expansion-panel>

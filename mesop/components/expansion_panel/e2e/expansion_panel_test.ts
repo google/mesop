@@ -23,7 +23,7 @@ test.describe('Expansion Panel', () => {
       await page
         .locator('[aria-disabled="false"] span.mat-content-hide-toggle')
         .textContent(),
-    ).toContain('Cantalope title');
+    ).toContain('Cantalope (no description)');
   });
 });
 

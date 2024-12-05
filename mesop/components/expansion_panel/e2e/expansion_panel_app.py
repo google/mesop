@@ -38,8 +38,7 @@ def app():
       me.text("Pineapple content.")
 
     with me.expansion_panel(
-      title="Cantalope title",
-      description="Type of fruit",
+      title="Cantalope (no description)",
       hide_toggle=True,
     ):
       me.text("Cantalope content.")
