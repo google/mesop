@@ -1,8 +1,8 @@
 default-src 'self'
 font-src fonts.gstatic.com data:
 frame-src *
-img-src 'self' data: https: http:
-media-src 'self' data: https:
+img-src 'self' data: https: http: blob:
+media-src 'self' data: https: blob:
 style-src 'self' 'unsafe-inline' fonts.googleapis.com
 script-src 'self' 'nonce-{{NONCE}}'
 trusted-types angular angular#unsafe-bypass lit-html highlight.js ttpolicy1 ttpolicy2
