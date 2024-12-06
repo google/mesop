@@ -1,10 +1,12 @@
 import {
   ApplicationRef,
+  ChangeDetectionStrategy,
   Component,
   ComponentRef,
   ElementRef,
   HostListener,
   Input,
+  SimpleChanges,
   TemplateRef,
   ViewChild,
   ViewContainerRef,
@@ -59,6 +61,7 @@ const WEB_COMPONENT_PREFIX = '<web>';
     MatDividerModule,
     MatTooltipModule,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ComponentRenderer {
   @ViewChild('childrenTemplate', {static: true})
@@ -69,7 +72,7 @@ export class ComponentRenderer {
 
   @ViewChild('editorOverlay') editorOverlay!: TemplateRef<any>;
 
-  @Input() component!: ComponentProto;
+  @Input('component') component!: ComponentProto;
   private _boxType: BoxType | undefined;
   private _componentRef!: ComponentRef<BaseComponent>;
   isEditorMode: boolean;
@@ -159,7 +162,14 @@ export class ComponentRenderer {
     }
   }
 
-  ngOnChanges() {
+  ngOnChanges(changes: SimpleChanges) {
+    // Note: this isn't a safe check necessarily.
+    if (
+      changes['component'].previousValue?.toString() ===
+      changes['component'].currentValue?.toString()
+    ) {
+      return;
+    }
     if (this.customElement) {
       // Update the custom element properties and events
       this.updateCustomElement(this.customElement);
