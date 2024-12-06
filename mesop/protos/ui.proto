@@ -174,9 +174,6 @@ message RenderEvent {
     repeated Command commands = 4;
 
     repeated string js_modules = 6;
-
-    // Only sent in editor mode:
-    repeated ComponentConfig component_configs = 5;
 }
 
 
@@ -345,6 +342,18 @@ message Type {
     optional int32 type_index = 7;
 }
 
+message ComponentName {
+    oneof module_id {
+        // Python module path, e.g. "mesop.labs.layout"
+        string module_path = 1;
+        // If the component belongs to Mesop
+        // (e.g. used with `import mesop as me`), then set to true.
+        bool core_module = 2;
+    }
+    // The Python function name (e.g. `text`).
+    optional string fn_name = 3;
+}
+
 message WebComponentType {
     optional string properties_json = 1;
     optional string events_json = 2;
@@ -462,77 +471,4 @@ message BorderSide {
     optional string width = 1;
     optional string color = 2;
     optional string style = 3;
-}
-
-message ComponentConfig {
-    optional ComponentName component_name = 1;
-    optional string category = 2;
-    repeated EditorField fields = 3;
-    optional bool accepts_child = 4;
-}
-
-message ComponentName {
-    oneof module_id {
-        // Python module path, e.g. "mesop.labs.layout"
-        string module_path = 1;
-        // If the component belongs to Mesop
-        // (e.g. used with `import mesop as me`), then set to true.
-        bool core_module = 2;
-    }
-    // The Python function name (e.g. `text`).
-    optional string fn_name = 3;
-}
-
-message EditorField {
-    optional string name = 1;
-    optional FieldType type = 2;
-}
-
-message FieldType {
-    oneof type {
-        BoolType bool_type = 1;
-        IntType int_type = 2;
-        FloatType float_type = 3;
-        StringType string_type = 4;
-        LiteralType literal_type = 5;
-        ListType list_type = 6;
-        StructType struct_type = 7;
-    }
-}
-
-message BoolType {
-    optional bool default_value = 1;
-}
-
-message StructType {
-    // Name of the Python class (usually a dataclass)
-    optional string struct_name = 2;
-    repeated EditorField fields = 1;
-}
-
-message IntType {
-    optional int32 default_value = 1;
-}
-
-message FloatType {
-    optional double default_value = 1;
-}
-
-message StringType {
-    optional string default_value = 1;
-}
-
-message LiteralType {
-    repeated LiteralElement literals = 1; // note: defaults to first element
-}
-
-message LiteralElement {
-    oneof literal {
-        string string_literal = 1;
-        int32 int_literal = 2;
-    }
-}
-
-message ListType {
-    optional FieldType type = 1;
 }

@@ -12,7 +12,6 @@ import {
   ServerError,
   Component as ComponentProto,
   UserEvent,
-  ComponentConfig,
   NavigationEvent,
   ResizeEvent,
   UiRequest,
@@ -28,7 +27,6 @@ import {Channel} from '../services/channel';
 import {provideAnimations} from '@angular/platform-browser/animations';
 import {bootstrapApplication} from '@angular/platform-browser';
 import {MatIconModule, MatIconRegistry} from '@angular/material/icon';
-import {EditorService} from '../services/editor_service';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {ErrorBox, ServerErrorBoxDialogComponent} from '../error/error_box';
 import {GlobalErrorHandlerService} from '../services/global_error_handler';
@@ -63,7 +61,6 @@ import {MatDialog} from '@angular/material/dialog';
 })
 export class Shell {
   rootComponent!: ComponentProto;
-  componentConfigs: readonly ComponentConfig[] = [];
   private resizeSubject = new Subject<void>();
 
   constructor(
@@ -97,7 +94,7 @@ export class Shell {
     this.channel.init(
       {
         zone: this.zone,
-        onRender: async (rootComponent, componentConfigs, jsModules) => {
+        onRender: async (rootComponent, jsModules) => {
           // Import all JS modules concurrently
           await Promise.all(
             jsModules.map((modulePath) =>
@@ -109,11 +106,6 @@ export class Shell {
             console.debug('All JS modules imported');
           });
           this.rootComponent = rootComponent;
-          // Component configs are only sent for the first response.
-          // For subsequent reponses, use the component configs previously
-          if (componentConfigs.length) {
-            this.componentConfigs = componentConfigs;
-          }
         },
         onCommand: async (command) => {
           if (command.hasNavigate()) {
@@ -283,7 +275,6 @@ export async function bootstrapApp() {
     providers: [
       provideAnimations(),
       provideRouter(routes),
-      EditorService,
       {provide: ErrorDialogService, useClass: ProdErrorDialogService},
     ],
   });

@@ -24,19 +24,7 @@ import {
   typeToComponent,
 } from './type_to_component';
 import {Channel} from '../services/channel';
-import {EditorService, SelectionMode} from '../services/editor_service';
-import {
-  Overlay,
-  OverlayConfig,
-  OverlayModule,
-  OverlayRef,
-} from '@angular/cdk/overlay';
-import {MatButtonModule} from '@angular/material/button';
-import {MatIconModule} from '@angular/material/icon';
-import {MatDividerModule} from '@angular/material/divider';
 import {formatStyle} from '../utils/styles';
-import {MatTooltipModule} from '@angular/material/tooltip';
-import {TemplatePortal} from '@angular/cdk/portal';
 import {jsonParse} from '../utils/strict_types';
 import {MESOP_EVENT_NAME, MesopEvent} from './mesop_event';
 import {ErrorDialogService} from '../services/error_dialog_service';
@@ -50,15 +38,7 @@ const WEB_COMPONENT_PREFIX = '<web>';
   templateUrl: 'component_renderer.ng.html',
   styleUrl: 'component_renderer.css',
   standalone: true,
-  imports: [
-    CommonModule,
-    ComponentLoader,
-    OverlayModule,
-    MatButtonModule,
-    MatIconModule,
-    MatDividerModule,
-    MatTooltipModule,
-  ],
+  imports: [CommonModule, ComponentLoader],
 })
 export class ComponentRenderer {
   @ViewChild('childrenTemplate', {static: true})
@@ -67,60 +47,23 @@ export class ComponentRenderer {
   @ViewChild('insertion', {read: ViewContainerRef, static: true})
   insertionRef!: ViewContainerRef;
 
-  @ViewChild('editorOverlay') editorOverlay!: TemplateRef<any>;
-
   @Input() component!: ComponentProto;
   private _boxType: BoxType | undefined;
   private _componentRef!: ComponentRef<BaseComponent>;
-  isEditorMode: boolean;
-  isEditorOverlayOpen = false;
-  overlayRef?: OverlayRef;
   customElement: HTMLElement | undefined;
 
   constructor(
     private channel: Channel,
     private applicationRef: ApplicationRef,
-    private editorService: EditorService,
     private elementRef: ElementRef,
-    private overlay: Overlay,
-    private viewContainerRef: ViewContainerRef,
     private errorDialogService: ErrorDialogService,
-  ) {
-    this.isEditorMode = this.editorService.isEditorMode();
-  }
-
-  ngAfterViewInit() {
-    if (this.isEditorMode) {
-      (this.elementRef.nativeElement as HTMLElement).addEventListener(
-        'mouseover',
-        this.onEditorHover,
-        {capture: true},
-      );
-      (this.elementRef.nativeElement as HTMLElement).addEventListener(
-        'click',
-        this.onEditorClick,
-        {capture: true},
-      );
-    }
-  }
+  ) {}
 
   ngOnDestroy() {
     if (this.customElement) {
       this.customElement.removeEventListener(
         MESOP_EVENT_NAME,
         this.dispatchCustomUserEvent,
-      );
-    }
-    if (this.isEditorMode) {
-      (this.elementRef.nativeElement as HTMLElement).removeEventListener(
-        'mouseover',
-        this.onEditorHover,
-        {capture: true},
-      );
-      (this.elementRef.nativeElement as HTMLElement).removeEventListener(
-        'click',
-        this.onEditorClick,
-        {capture: true},
       );
     }
   }
@@ -251,46 +194,6 @@ export class ComponentRenderer {
     }
   }
 
-  ngDoCheck() {
-    // Only need to re-compute styles in editor mode to properly
-    // show focused component highlight.
-    if (this.isEditorMode) {
-      this.computeStyles();
-      this.renderOverlay();
-    }
-  }
-
-  renderOverlay() {
-    if (this.isEditorFocusedComponent()) {
-      if (this.overlayRef) return;
-      const overlayConfig = new OverlayConfig({
-        positionStrategy: this.overlay
-          .position()
-          .flexibleConnectedTo(this.viewContainerRef.element)
-          .withPositions([
-            {
-              originX: 'start',
-              originY: 'bottom',
-              overlayX: 'start',
-              overlayY: 'top',
-            },
-          ]),
-      });
-
-      this.overlayRef = this.overlay.create(overlayConfig);
-      const portal = new TemplatePortal(
-        this.editorOverlay,
-        this.viewContainerRef,
-      );
-      this.overlayRef.attach(portal);
-    } else {
-      if (this.overlayRef) {
-        this.overlayRef.detach();
-        this.overlayRef = undefined;
-      }
-    }
-  }
-
   computeStyles() {
     this.elementRef.nativeElement.style = this.getStyle();
     const classes = this.getClasses();
@@ -383,24 +286,6 @@ Make sure the web component name is spelled the same between Python and JavaScri
 
   getStyle(): string {
     if (!this._boxType) {
-      if (this.isEditorFocusedComponent()) {
-        let display = 'inline-block';
-        const name = this.component.getType()?.getName();
-        // Might be root component which doesn't have a name.
-        if (!name) {
-          return '';
-        }
-        // Preserve existing display semantics.
-        if (
-          name.getCoreModule() &&
-          ['divider', 'text', 'markdown', 'progress_bar'].includes(
-            name.getFnName()!,
-          )
-        ) {
-          display = 'block';
-        }
-        return `display: ${display}; ${this.getFocusedStyle()}`;
-      }
       return '';
     }
 
@@ -409,9 +294,7 @@ Make sure the web component name is spelled the same between Python and JavaScri
     if (this.component.getStyle()) {
       style += formatStyle(this.component.getStyle()!);
     }
-    return (
-      style + (this.isEditorFocusedComponent() ? this.getFocusedStyle() : '')
-    );
+    return style;
   }
 
   getClasses(): string {
@@ -433,55 +316,6 @@ Make sure the web component name is spelled the same between Python and JavaScri
     click.setIsTarget(event.target === event.currentTarget);
     userEvent.setClick(click);
     this.channel.dispatch(userEvent);
-  }
-
-  //////////////
-  // Editor-specific implementation:
-  //////////////
-
-  getFocusedStyle(): string {
-    if (this.editorService.getSelectionMode() === SelectionMode.SELECTING) {
-      return `
-    background: rgb(119 166 245);
-    opacity: 0.7;
-    border-radius: 2px;
-    `;
-    }
-    return `border: 2px solid var(--sys-primary);
-      border-radius: 4px;`;
-  }
-
-  onEditorHover = () => {
-    if (this.editorService.getSelectionMode() === SelectionMode.SELECTING) {
-      this.editorService.setFocusedComponent(this.component);
-    }
-  };
-
-  onEditorClick = () => {
-    if (this.editorService.getSelectionMode() === SelectionMode.SELECTING) {
-      this.editorService.setSelectionMode(SelectionMode.SELECTED);
-    }
-  };
-
-  isEditorFocusedComponent() {
-    return this.editorService.getFocusedComponent() === this.component;
-  }
-
-  getSelectionMode(): SelectionMode {
-    return this.editorService.getSelectionMode();
-  }
-
-  SelectionMode = SelectionMode;
-
-  getComponentName(): string {
-    return this.type()?.getName()?.getFnName() ?? '[root]';
-  }
-
-  shouldShowOverlay(): boolean {
-    return (
-      this.isEditorFocusedComponent() &&
-      this.getSelectionMode() === SelectionMode.SELECTING
-    );
   }
 }
 

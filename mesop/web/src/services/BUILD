@@ -11,7 +11,6 @@ ng_module(
     ]),
     deps = [
         "//mesop/protos:ui_jspb_proto",
-        "//mesop/web/src/dev_tools/services",
         "//mesop/web/src/utils",
     ] + ANGULAR_CORE_DEPS + ANGULAR_MATERIAL_TS_DEPS,
 )

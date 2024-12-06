@@ -32,7 +32,6 @@ py_library(
     ),
     deps = [
                "//mesop/component_helpers",
-               "//mesop/editor",
                "//mesop/env",
                "//mesop/events",
                "//mesop/protos:ui_py_pb2",

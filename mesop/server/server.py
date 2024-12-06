@@ -15,7 +15,6 @@ from flask import (
 
 import mesop.protos.ui_pb2 as pb
 from mesop.component_helpers import diff_component
-from mesop.editor.component_configs import get_component_configs
 from mesop.env.env import (
   EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED,
   MESOP_APP_BASE_PATH,
@@ -108,9 +107,6 @@ def configure_flask_app(
           root_component=root_component,
           component_diff=component_diff,
           commands=commands,
-          component_configs=None
-          if prod_mode or not init_request
-          else get_component_configs(),
           title=title,
           js_modules=[
             f"/{WEB_COMPONENTS_PATH_SEGMENT}{js_module}"
