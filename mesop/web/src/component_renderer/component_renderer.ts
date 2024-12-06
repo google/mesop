@@ -24,12 +24,7 @@ import {
   typeToComponent,
 } from './type_to_component';
 import {Channel} from '../services/channel';
-import {Overlay, OverlayModule, OverlayRef} from '@angular/cdk/overlay';
-import {MatButtonModule} from '@angular/material/button';
-import {MatIconModule} from '@angular/material/icon';
-import {MatDividerModule} from '@angular/material/divider';
 import {formatStyle} from '../utils/styles';
-import {MatTooltipModule} from '@angular/material/tooltip';
 import {jsonParse} from '../utils/strict_types';
 import {MESOP_EVENT_NAME, MesopEvent} from './mesop_event';
 import {ErrorDialogService} from '../services/error_dialog_service';
@@ -43,15 +38,7 @@ const WEB_COMPONENT_PREFIX = '<web>';
   templateUrl: 'component_renderer.ng.html',
   styleUrl: 'component_renderer.css',
   standalone: true,
-  imports: [
-    CommonModule,
-    ComponentLoader,
-    OverlayModule,
-    MatButtonModule,
-    MatIconModule,
-    MatDividerModule,
-    MatTooltipModule,
-  ],
+  imports: [CommonModule, ComponentLoader],
 })
 export class ComponentRenderer {
   @ViewChild('childrenTemplate', {static: true})
@@ -60,21 +47,15 @@ export class ComponentRenderer {
   @ViewChild('insertion', {read: ViewContainerRef, static: true})
   insertionRef!: ViewContainerRef;
 
-  @ViewChild('editorOverlay') editorOverlay!: TemplateRef<any>;
-
   @Input() component!: ComponentProto;
   private _boxType: BoxType | undefined;
   private _componentRef!: ComponentRef<BaseComponent>;
-  isEditorOverlayOpen = false;
-  overlayRef?: OverlayRef;
   customElement: HTMLElement | undefined;
 
   constructor(
     private channel: Channel,
     private applicationRef: ApplicationRef,
     private elementRef: ElementRef,
-    private overlay: Overlay,
-    private viewContainerRef: ViewContainerRef,
     private errorDialogService: ErrorDialogService,
   ) {}
 
