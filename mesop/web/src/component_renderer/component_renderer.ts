@@ -67,9 +67,6 @@ export class ComponentRenderer {
         MESOP_EVENT_NAME,
         this.dispatchCustomUserEvent,
       );
-      if (this.customElement.parentNode) {
-        this.customElement.parentNode.removeChild(this.customElement);
-      }
     }
     if (this.projectedViewRef) {
       this.applicationRef.detachView(this.projectedViewRef);
@@ -217,10 +214,10 @@ export class ComponentRenderer {
     if (this.component.getChildrenList().length) {
       this.projectedViewRef = this.childrenTemplate.createEmbeddedView(this);
       // Need to attach view or it doesn't render.
-      // View automatically detaches when it is destroyed.
-      // Template will destroy each ViewRef when it is destroyed.
-      const index = this.component.getType()?.getTypeIndex() ?? 0;
+      // ApplicationRef will automatically detach the view
+      // when the view ref is destroyed.
       this.applicationRef.attachView(this.projectedViewRef);
+      const index = this.component.getType()?.getTypeIndex() ?? 0;
       const projectableNodes = [];
       projectableNodes[index] = this.projectedViewRef.rootNodes;
       options = {
