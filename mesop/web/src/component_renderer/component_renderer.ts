@@ -69,7 +69,6 @@ export class ComponentRenderer {
       );
     }
     if (this.projectedViewRef) {
-      this.applicationRef.detachView(this.projectedViewRef);
       this.projectedViewRef.destroy();
     }
   }
