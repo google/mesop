@@ -1,8 +1,0 @@
-<mat-progress-bar mode="indeterminate"></mat-progress-bar>
-<h3 mat-dialog-title>Generating code...</h3>
-<mat-dialog-content class="progress-code">
-  <mesop-code-mirror-raw [code]="progress$ | async"></mesop-code-mirror-raw>
-</mat-dialog-content>
-<mat-dialog-actions>
-  <button mat-button [mat-dialog-close]="true">OK</button>
-</mat-dialog-actions>

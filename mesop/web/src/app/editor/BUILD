@@ -17,7 +17,7 @@ ng_module(
         "*.ts",
     ]),
     deps = [
-        "//mesop/web/src/editor",
+        "//mesop/web/src/shell",
     ] + ANGULAR_CORE_DEPS,
 )
 
