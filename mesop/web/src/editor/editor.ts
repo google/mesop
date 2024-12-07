@@ -42,7 +42,6 @@ export async function bootstrapApp() {
     providers: [
       provideAnimations(),
       provideRouter(routes),
-      {provide: HotReloadWatcher, useClass: DefaultHotReloadWatcher},
       {provide: ErrorDialogService, useClass: DebugErrorDialogService},
     ],
   });
