@@ -1,6 +1,3 @@
-// Keep the following comment to ensure there's a hook for adding TS imports in the downstream sync.
-// ADD_TS_IMPORT_HERE
-
 import {Component} from '@angular/core';
 import {
   DefaultHotReloadWatcher,
@@ -14,6 +11,8 @@ import {
   ErrorDialogService,
 } from '../services/error_dialog_service';
 import {Shell, registerComponentRendererElement} from '../shell/shell';
+// Keep the following comment to ensure there's a hook for adding TS imports in the downstream sync.
+// ADD_TS_IMPORT_HERE
 
 @Component({
   selector: 'mesop-editor',
