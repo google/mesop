@@ -3,6 +3,7 @@ import {
   Component,
   ComponentRef,
   ElementRef,
+  EmbeddedViewRef,
   HostListener,
   Input,
   TemplateRef,
@@ -51,6 +52,7 @@ export class ComponentRenderer {
   private _boxType: BoxType | undefined;
   private _componentRef!: ComponentRef<BaseComponent>;
   customElement: HTMLElement | undefined;
+  projectedViewRef: EmbeddedViewRef<ComponentRenderer> | undefined;
 
   constructor(
     private channel: Channel,
@@ -65,6 +67,9 @@ export class ComponentRenderer {
         MESOP_EVENT_NAME,
         this.dispatchCustomUserEvent,
       );
+    }
+    if (this.projectedViewRef) {
+      this.projectedViewRef.destroy();
     }
   }
 
@@ -206,14 +211,14 @@ export class ComponentRenderer {
     const typeName = this.component.getType()?.getName()!;
     let options = {};
     if (this.component.getChildrenList().length) {
-      const projectedViewRef = this.childrenTemplate.createEmbeddedView(this);
+      this.projectedViewRef = this.childrenTemplate.createEmbeddedView(this);
       // Need to attach view or it doesn't render.
-      // View automatically detaches when it is destroyed.
-      // Template will destroy each ViewRef when it is destroyed.
+      // ApplicationRef will automatically detach the view
+      // when the view ref is destroyed.
+      this.applicationRef.attachView(this.projectedViewRef);
       const index = this.component.getType()?.getTypeIndex() ?? 0;
-      this.applicationRef.attachView(projectedViewRef);
       const projectableNodes = [];
-      projectableNodes[index] = projectedViewRef.rootNodes;
+      projectableNodes[index] = this.projectedViewRef.rootNodes;
       options = {
         projectableNodes,
       };
