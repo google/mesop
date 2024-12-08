@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, HostListener} from '@angular/core';
 import {
   DefaultHotReloadWatcher,
   HotReloadWatcher,
@@ -67,14 +67,4 @@ export async function bootstrapApp() {
     ],
   });
   registerComponentRendererElement(app);
-}
-function HostListener(
-  arg0: string,
-  arg1: string[],
-): (
-  target: Editor,
-  propertyKey: 'handleKeyDown',
-  descriptor: TypedPropertyDescriptor<(event: KeyboardEvent) => void>,
-) => void | TypedPropertyDescriptor<(event: KeyboardEvent) => void> {
-  throw new Error('Function not implemented.');
 }
