@@ -11,6 +11,8 @@ import {
   ErrorDialogService,
 } from '../services/error_dialog_service';
 import {Shell, registerComponentRendererElement} from '../shell/shell';
+import {isMac} from '../utils/platform';
+import {Channel} from '../services/channel';
 // Keep the following comment to ensure there's a hook for adding TS imports in the downstream sync.
 // ADD_TS_IMPORT_HERE
 
@@ -23,8 +25,27 @@ import {Shell, registerComponentRendererElement} from '../shell/shell';
 })
 class Editor {
   constructor(
+    private readonly channel: Channel,
     private readonly hotReloadWatcher: HotReloadWatcher /* Inject hotReloadWatcher to ensure it's instantiated. */,
   ) {}
+
+  @HostListener('window:keydown', ['$event'])
+  handleKeyDown(event: KeyboardEvent) {
+    // Hotkey for hot reload
+    //
+    // Binds:
+    // cmd + shift + r (MacOs)
+    // ctrl + shift + r (Other platforms)
+    if (
+      event.key === 'r' &&
+      (isMac() ? event.metaKey : event.ctrlKey) &&
+      event.shiftKey
+    ) {
+      this.channel.hotReload();
+      event.preventDefault();
+      return;
+    }
+  }
 }
 
 const routes: Routes = [{path: '**', component: Editor}];
@@ -46,4 +67,14 @@ export async function bootstrapApp() {
     ],
   });
   registerComponentRendererElement(app);
+}
+function HostListener(
+  arg0: string,
+  arg1: string[],
+): (
+  target: Editor,
+  propertyKey: 'handleKeyDown',
+  descriptor: TypedPropertyDescriptor<(event: KeyboardEvent) => void>,
+) => void | TypedPropertyDescriptor<(event: KeyboardEvent) => void> {
+  throw new Error('Function not implemented.');
 }
