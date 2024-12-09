@@ -6,6 +6,7 @@ import {
   EmbeddedViewRef,
   HostListener,
   Input,
+  SimpleChanges,
   TemplateRef,
   ViewChild,
   ViewContainerRef,
@@ -48,7 +49,7 @@ export class ComponentRenderer {
   @ViewChild('insertion', {read: ViewContainerRef, static: true})
   insertionRef!: ViewContainerRef;
 
-  @Input() component!: ComponentProto;
+  @Input('component') component!: ComponentProto;
   private _boxType: BoxType | undefined;
   private _componentRef!: ComponentRef<BaseComponent>;
   customElement: HTMLElement | undefined;
@@ -107,11 +108,42 @@ export class ComponentRenderer {
     }
   }
 
-  ngOnChanges() {
+  ngOnChanges(changes: SimpleChanges) {
+    const prevComp = changes['component']?.previousValue as
+      | ComponentProto
+      | undefined;
+    const currComp = changes['component']?.currentValue as
+      | ComponentProto
+      | undefined;
+
+    // Early return if no current component
+    if (!currComp) {
+      return;
+    }
+
+    // If references are identical, no changes have occurred.
+    if (prevComp === currComp) {
+      return;
+    }
+
+    // If both previous and current values are defined, compare their binary serialization.
+    // This ensures we are comparing the actual data, not just string representations.
+    if (prevComp && currComp) {
+      const prevBytes = prevComp.serializeBinary();
+      const currBytes = currComp.serializeBinary();
+
+      if (
+        prevBytes.length === currBytes.length &&
+        prevBytes.every((byte, index) => byte === currBytes[index])
+      ) {
+        // The protos are identical, so no further action is needed.
+        return;
+      }
+    }
+
     if (this.customElement) {
       // Update the custom element properties and events
       this.updateCustomElement(this.customElement);
-
       // Efficiently update children
       this.updateCustomElementChildren();
       return;
@@ -127,7 +159,6 @@ export class ComponentRenderer {
       // Used for determinine which component-renderer elements are not boxes.
       this.elementRef.nativeElement.setAttribute('mesop-box', 'true');
     }
-
     this.computeStyles();
   }
 
