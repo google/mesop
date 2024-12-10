@@ -30,27 +30,23 @@ Mesop is a Python-based UI framework that allows you to rapidly build web apps l
 
 ## Write your first Mesop app in less than 10 lines of code...
 
-[Demo app](https://google.github.io/mesop/demo/?demo=text_io)
+[Demo app](https://google.github.io/mesop/demo/?demo=text_to_text)
 
 ```python
-import time
-
 import mesop as me
 import mesop.labs as mel
 
 
-@me.page(path="/text_to_text", title="Text I/O Example")
+@me.page(path="/text_to_text", title="Text to Text Example")
 def app():
   mel.text_to_text(
     upper_case_stream,
-    title="Text I/O Example",
+    title="Text to Text Example",
   )
 
 
 def upper_case_stream(s: str):
-  yield s.capitalize()
-  time.sleep(0.5)
-  yield "Done"
+  return "Echo: " + s.capitalize()
 ```
 
 </div>
@@ -81,7 +77,7 @@ Learn more in [Getting Started](https://google.github.io/mesop/getting-started/i
 
 ## Reporting a security issue
 
-If you identify a security vulnerability with Mesop, please file a [GitHub security issue](https://github.com/google/mesop/security/advisories/new) and we will promptly respond to it.
+If you identify a security vulnerability with Mesop, please file a [GitHub security issue](https://github.com/google/mesop/security/policy) and we will promptly respond to it.
 
 ## Disclaimer
 
