@@ -1,7 +1,8 @@
 import hashlib
 import inspect
 import json
-from dataclasses import is_dataclass
+from dataclasses import dataclass, is_dataclass
+from dataclasses import field as dataclass_field
 from enum import Enum
 from functools import lru_cache, partial, wraps
 from typing import (
@@ -14,6 +15,7 @@ from typing import (
   Type,
   TypeVar,
   cast,
+  get_type_hints,
   overload,
 )
 
@@ -26,6 +28,7 @@ from mesop.events import ClickEvent, InputEvent, MesopEvent, WebEvent
 from mesop.exceptions import MesopDeveloperException
 from mesop.key import Key, key_from_proto
 from mesop.runtime import runtime
+from mesop.runtime.context import NodeSlot, NodeTreeState
 from mesop.utils.caller import (
   get_app_caller_source_code_location,
 )
@@ -60,53 +63,234 @@ class _ComponentWithChildren:
     runtime().context().set_current_node(self.prev_current_node)
 
 
-def slot():
+def slot(name: str = ""):
   """
   This function is used when defining a content component to mark a place in the component tree where content
   can be provided by a child component.
+
+  Args:
+    name: A name can be specified for named slots. Multiple named slots in a composite component must use unique names.
   """
-  runtime().context().save_current_node_as_slot()
+  runtime().context().save_current_node_as_slot(name)
 
 
+S = TypeVar("S")
 T = TypeVar("T")
 P = ParamSpec("P")
 
 
-class _UserCompositeComponent(Generic[T]):
-  def __init__(self, fn: Callable[[], T]):
-    self.prev_current_node = runtime().context().current_node()
-    fn()
-    node_slot = runtime().context().node_slot()
-    node_slot_children_count = runtime().context().node_slot_children_count()
-    if not node_slot or node_slot_children_count is None:
+class NamedSlot:
+  def __init__(self, node_tree_state: NodeTreeState, name: str = ""):
+    self.is_accessed = False
+    self.name = name
+    self.node_tree_state = node_tree_state
+
+  def __call__(self):
+    if self.is_accessed:
       raise MesopDeveloperException(
-        "Must configure a child slot when defining a composite component."
+        f"Content for named slot '{self.name}' has already been set."
       )
-    runtime().context().set_current_node(node_slot)
-    # Temporarily remove children that are after the slot
-    self.after_children = node_slot.children[node_slot_children_count:]
-    for child in self.after_children:
-      node_slot.children.remove(child)
+    self.is_accessed = True
+    return DetachedNodeTreeStateContext(self.node_tree_state)
+
+
+def slotclass(cls: type[S]) -> type[S]:
+  """Restricted dataclass that enforces that all fields are NamedSlot type."""
+  for attr, expected_type in get_type_hints(cls).items():
+    if expected_type is not NamedSlot:
+      raise MesopDeveloperException(
+        f"Slotclass field '{attr}` must be of type 'me.NamedSlot'"
+      )
+  return dataclass(kw_only=True)(cls)
+
+
+@slotclass
+class UnnamedSlot:
+  pass
+
+
+@dataclass(kw_only=True)
+class SlotMetadata:
+  """Metadata for slot.
+
+  Attributes:
+    node_slot: Position of the slot.
+    node_tree_state: Detached node tree state for this slot.
+  """
+
+  node_slot: NodeSlot
+  node_tree_state: NodeTreeState = dataclass_field(
+    default_factory=NodeTreeState
+  )
+
+
+class DetachedNodeTreeStateContext:
+  """Context helper for tracing a component sub tree with detached node state.
+
+  This is needed for processing the sub trees of multiple slots within
+  a composite component.
+  """
+
+  def __init__(self, node_tree_state: NodeTreeState):
+    self.prev_node_tree_state = runtime().context().get_node_tree_state()
+    runtime().context().set_node_tree_state(node_tree_state)
 
   def __enter__(self):
     pass
 
+  def __exit__(self, exc_type, exc_val, exc_tb):
+    runtime().context().set_node_tree_state(self.prev_node_tree_state)
+
+
+class _UserCompositeComponent(Generic[S]):
+  def __init__(self, fn: Callable[[], Any], named_slots_cls: type[S]):
+    self.prev_current_node = runtime().context().current_node()
+    node_tree_state = runtime().context().get_node_tree_state()
+    self.prev_node_tree_state = node_tree_state
+    # Add a null slot which acts as a bookmark for slots added by this composite
+    # component.
+    node_tree_state.add_null_slot()
+    fn()
+
+    self.unnamed_slot = None
+    self.named_slots = {}
+
+    if named_slots_cls is UnnamedSlot:
+      if len(node_tree_state.node_slots()) != 1:
+        raise MesopDeveloperException(
+          "Must configure one child slot when defining a content component with unnamed slots."
+        )
+      if node_tree_state.node_slots()[0].name:
+        raise MesopDeveloperException(
+          "Named slots are not allowed when defining a content component with unnamed slots."
+        )
+      self.unnamed_slot = SlotMetadata(
+        node_slot=node_tree_state.node_slots()[0]
+      )
+      DetachedNodeTreeStateContext(self.unnamed_slot.node_tree_state)
+    else:
+      self.named_slots = {
+        node_slot.name: SlotMetadata(node_slot=node_slot)
+        for node_slot in node_tree_state.node_slots()
+      }
+
+      if len(self.named_slots) != len(node_tree_state.node_slots()):
+        raise MesopDeveloperException(
+          "Multiple slots of the same name encountered. The names must be unique within the content component."
+        )
+
+    self.slot_context = named_slots_cls(
+      **{
+        named_slot: NamedSlot(
+          slot_metadata.node_tree_state, slot_metadata.node_slot.name
+        )
+        for named_slot, slot_metadata in self.named_slots.items()
+      }
+    )
+
+  def __enter__(self) -> S:
+    return self.slot_context
+
   def __exit__(self, exc_type, exc_val, exc_tb):  # type: ignore
-    # Re-add the children temporarily removed in __init__
-    for child in self.after_children:
-      insert = runtime().context().current_node().children.add()
-      insert.MergeFrom(child)
+    if self.unnamed_slot:
+      self._insert_slot_content(self.unnamed_slot)
+
+    # Need to insert named slots in reversed order to preserve the correct insertion
+    # indexes. Insertion order is preserved in dicts in 3.7+
+    for slot_name in reversed(self.named_slots):
+      if not getattr(self.slot_context, slot_name).is_accessed:
+        raise MesopDeveloperException(
+          f"Content for named slot '{slot_name}' was not set."
+        )
+      self._insert_slot_content(self.named_slots[slot_name])
+
+    # Reset node tree back to previous position to continue traversal.
+    runtime().context().set_node_tree_state(self.prev_node_tree_state)
     runtime().context().set_current_node(self.prev_current_node)
+    runtime().context().clear_node_slots_to_first_null_slot()
+
+  def _insert_slot_content(self, slot_metadata: SlotMetadata) -> None:
+    index = slot_metadata.node_slot.insertion_index
+    parent_node = slot_metadata.node_slot.parent_node
+    current_items = list(parent_node.children)
+    current_items[index:index] = (
+      slot_metadata.node_tree_state.current_node().children
+    )
+    del parent_node.children[:]
+    for item in current_items:
+      parent_node.children.add().CopyFrom(item)
+
+
+# Overload when the decorator is called with parens, e.g.
+# @content_component(named_slots=ExampleNamedSlots)
+# def fn():
+@overload
+def content_component(
+  *,
+  named_slots: type[S],
+) -> Callable[[Callable[P, Any]], Callable[P, _UserCompositeComponent[S]]]:
+  pass
+
+
+# Overload when the decorator is called without parens, e.g.
+# @content_component
+# def fn():
+@overload
+def content_component(
+  decorated_fn: Callable[P, Any] | None = None,
+  /,
+) -> Callable[P, _UserCompositeComponent[UnnamedSlot]]:
+  pass
 
 
 def content_component(
-  fn: Callable[P, T],
-) -> Callable[P, _UserCompositeComponent[T]]:
-  @wraps(fn)
-  def wrapper(*args: P.args, **kwargs: P.kwargs) -> _UserCompositeComponent[T]:
-    return _UserCompositeComponent(lambda: fn(*args, **kwargs))
+  decorated_fn: Callable[P, Any] | None = None,
+  /,
+  *,
+  named_slots: type[S] | None = None,
+):
+  def named_content_component_wrapper(
+    fn: Callable[P, Any],
+    /,
+  ) -> Callable[P, _UserCompositeComponent[S]]:
+    @wraps(fn)
+    def wrapper(
+      *args: P.args, **kwargs: P.kwargs
+    ) -> _UserCompositeComponent[S]:
+      if named_slots:
+        return _UserCompositeComponent(
+          lambda: fn(*args, **kwargs), named_slots_cls=named_slots
+        )
+      else:
+        # This exception should never be called since `named_content_component_wrapper`
+        # should only be called with the first overload, which requires the `named_slot`
+        # parameter.
+        raise MesopDeveloperException("No slotclass provided.")
 
-  return wrapper
+    return cast(Callable[P, _UserCompositeComponent[S]], wrapper)
+
+  # Separate function is used for the unnamed case since we need to explicitly pass in
+  # the `UnnamedSlot`. VSCode type checking gets confused when using Unions in
+  # `_UserCompositeComponent` (e.g. def __enter__(self) -> S | UnnamedSlot). It can't
+  # seem to determine when S is used or when UnnamedSlot is used.
+  def content_component_wrapper(
+    fn: Callable[P, Any],
+    /,
+  ) -> Callable[P, _UserCompositeComponent[UnnamedSlot]]:
+    @wraps(fn)
+    def wrapper(
+      *args: P.args, **kwargs: P.kwargs
+    ) -> _UserCompositeComponent[UnnamedSlot]:
+      return _UserCompositeComponent(
+        lambda: fn(*args, **kwargs), named_slots_cls=UnnamedSlot
+      )
+
+    return cast(Callable[P, _UserCompositeComponent[UnnamedSlot]], wrapper)
+
+  if decorated_fn is None:
+    return named_content_component_wrapper
+
+  return content_component_wrapper(decorated_fn)
 
 
 C = TypeVar("C", bound=Callable[..., Any])

@@ -3,6 +3,7 @@ import copy
 import threading
 import types
 import urllib.parse as urlparse
+from dataclasses import dataclass
 from typing import Any, Callable, Generator, Sequence, TypeVar, cast
 
 import mesop.protos.ui_pb2 as pb
@@ -23,20 +24,98 @@ T = TypeVar("T")
 Handler = Callable[[Any], Generator[None, None, None] | None]
 
 
+@dataclass(kw_only=True)
+class NodeSlot:
+  """Metadata for a node slot
+
+  Attributes:
+    name: Used for named slots. Empty for unnamed slots.
+    parent_node: Node that contains the slot
+    insertion_index: Position to insert node. This position is before slots are inserted, so for multiple slots, must be inserted in reverse.
+  """
+
+  name: str
+  parent_node: pb.Component
+  insertion_index: int
+
+
+@dataclass
+class NullSlot:
+  pass
+
+
+class NodeTreeState:
+  """Keeps track of the node tree state during traversal."""
+
+  def __init__(self):
+    self._current_node = pb.Component()
+    self._previous_node: pb.Component | None = None
+    self._node_slots: list[NodeSlot | NullSlot] = []
+
+  def current_node(self) -> pb.Component:
+    return self._current_node
+
+  def previous_node(self) -> pb.Component | None:
+    """Used to track the last/previous state of the component tree before the UI updated.
+
+    This is used for performing component tree diffs.
+    """
+    return self._previous_node
+
+  def save_current_node_as_slot(self, name: str = "") -> None:
+    self._node_slots.append(
+      NodeSlot(
+        name=name,
+        parent_node=self._current_node,
+        insertion_index=len(self._current_node.children),
+      )
+    )
+
+  def add_null_slot(self) -> None:
+    self._node_slots.append(NullSlot())
+
+  def clear_node_slots_to_first_null_slot(self) -> None:
+    null_slot_found = False
+    node_slots = []
+    for node_slot in reversed(self._node_slots):
+      if null_slot_found:
+        node_slots.append(node_slot)
+      if isinstance(node_slot, NullSlot):
+        null_slot_found = True
+    self._node_slots = list(reversed(node_slots))
+
+  def node_slots(self) -> list[NodeSlot]:
+    node_slots = []
+    for node_slot in reversed(self._node_slots):
+      if isinstance(node_slot, NullSlot):
+        break
+      node_slots.append(node_slot)
+    return list(reversed(node_slots))
+
+  def set_current_node(self, node: pb.Component) -> None:
+    self._current_node = node
+
+  def set_previous_node_from_current_node(self) -> None:
+    self._previous_node = self._current_node
+
+  def reset_current_node(self) -> None:
+    self._current_node = pb.Component()
+
+  def reset_previous_node(self) -> None:
+    self._previous_node = None
+
+
 class Context:
   def __init__(
     self,
     states: dict[type[Any], object],
   ) -> None:
-    self._current_node = pb.Component()
-    self._previous_node: pb.Component | None = None
+    self._node_tree_state = NodeTreeState()
     self._states: dict[type[Any], object] = states
     # Previous states is used for performing state diffs.
     self._previous_states: dict[type[Any], object] = copy.deepcopy(states)
     self._handlers: dict[str, Handler] = {}
     self._commands: list[pb.Command] = []
-    self._node_slot: pb.Component | None = None
-    self._node_slot_children_count: int | None = None
     self._viewport_size: pb.ViewportSize | None = None
     self._theme_settings: pb.ThemeSettings | None = None
     self._js_modules: set[str] = set()
@@ -190,37 +269,35 @@ class Context:
   def register_event_handler(self, fn_id: str, handler: Handler) -> None:
     self._handlers[fn_id] = handler
 
+  def get_node_tree_state(self) -> NodeTreeState:
+    return self._node_tree_state
+
+  def set_node_tree_state(self, node_tree_state: NodeTreeState) -> None:
+    self._node_tree_state = node_tree_state
+
   def current_node(self) -> pb.Component:
-    return self._current_node
+    return self._node_tree_state.current_node()
 
   def previous_node(self) -> pb.Component | None:
-    """Used to track the last/previous state of the component tree before the UI updated.
+    return self._node_tree_state.previous_node()
 
-    This is used for performing component tree diffs.
-    """
-    return self._previous_node
+  def save_current_node_as_slot(self, name: str = "") -> None:
+    self._node_tree_state.save_current_node_as_slot(name)
 
-  def save_current_node_as_slot(self) -> None:
-    self._node_slot = self._current_node
-    self._node_slot_children_count = len(self._current_node.children)
-
-  def node_slot(self) -> pb.Component | None:
-    return self._node_slot
-
-  def node_slot_children_count(self) -> int | None:
-    return self._node_slot_children_count
+  def clear_node_slots_to_first_null_slot(self) -> None:
+    self._node_tree_state.clear_node_slots_to_first_null_slot()
 
   def set_current_node(self, node: pb.Component) -> None:
-    self._current_node = node
+    self._node_tree_state.set_current_node(node)
 
   def set_previous_node_from_current_node(self) -> None:
-    self._previous_node = self._current_node
+    self._node_tree_state.set_previous_node_from_current_node()
 
   def reset_current_node(self) -> None:
-    self._current_node = pb.Component()
+    self._node_tree_state.reset_current_node()
 
   def reset_previous_node(self) -> None:
-    self._previous_node = None
+    self._node_tree_state.reset_previous_node()
 
   def state(self, state: type[T]) -> T:
     if state not in self._states:

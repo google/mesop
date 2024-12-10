@@ -48,7 +48,7 @@ def scaffold(url: str):
       me.slot()
 ```
 
-Now other components can re-use this scaffold component:
+Now other components can re-use this `scaffold` component:
 
 ```python
 def page1():
@@ -57,6 +57,95 @@ def page1():
 ```
 
 This is similar to Angular's [Content Projection](https://angular.io/guide/content-projection).
+
+### Advanced content component usage
+
+#### Multi-slot projection
+
+Mesop supports multi-slot projection using named slots.
+
+Here is an example:
+
+```python
+@me.slotclass
+class LayoutSlots:
+  header: me.NamedSlot
+  content: me.NamedSlot
+  footer: me.NamedSlot
+
+@me.content_component(named_slots=LayoutSlots)
+def layout():
+  with me.box(style=me.Style(background="black")):
+    me.slot("header")
+  with me.box(style=me.Style(background="white")):
+    me.slot("content")
+  with me.box(style=me.Style(background="black")):
+    me.slot("footer")
+```
+
+Now other components can re-use this `layout` component:
+
+```python
+def page1():
+  with layout() as c:
+    with c.header():
+      me.text("Header")
+    with c.content():
+      me.text("Content")
+    with c.footer():
+      me.text("Footer")
+```
+
+#### Composed content components
+
+Content components can also use other content components, but you need to be careful since
+slot rendering cannot be deferred to the parent component.
+
+???+ failure "Slot rendering cannot be deferred by setting another slot."
+
+    ```python
+    @me.content_component
+    def inner():
+        me.slot()
+
+    @me.content_component
+    def outer():
+      with inner():
+        me.slot()
+    ```
+
+???+ success "Content components can use content components so long as the slots get rendered by the parent content component."
+
+    ```python
+    @me.content_component
+    def header(background_color: str):
+      with me.box(style=me.Style(background=background_color)):
+        me.slot()
+
+
+    @me.content_component
+    def footer(background_color: str):
+      with me.box(style=me.Style(background=background_color)):
+        me.slot()
+
+
+    @me.content_component()
+    def content_layout():
+      with header(background_color="black"):
+        me.text("Header")
+      with me.box(style=me.Style(background="white")):
+        me.slot()
+      with footer(background_color="red")
+        me.text("Footer")
+    ```
+
+    Now other components can re-use this `content_layout` component:
+
+    ```python
+    def page1():
+      with content_layout():
+        me.text("Content")
+    ```
 
 ## Component Key
 
