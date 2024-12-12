@@ -93,7 +93,7 @@ class _UserCompositeComponent:
     runtime().context().set_current_node(self.prev_current_node)
 
 
-def content_component(fn: Callable[..., Any]):
+def content_component(fn):
   @wraps(fn)
   def wrapper(*args: Any, **kwargs: Any):
     return _UserCompositeComponent(lambda: fn(*args, **kwargs))
