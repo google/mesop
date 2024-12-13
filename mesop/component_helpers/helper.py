@@ -8,7 +8,9 @@ from typing import (
   Any,
   Callable,
   Generator,
+  Generic,
   KeysView,
+  ParamSpec,
   Type,
   TypeVar,
   cast,
@@ -66,8 +68,12 @@ def slot():
   runtime().context().save_current_node_as_slot()
 
 
-class _UserCompositeComponent:
-  def __init__(self, fn: Callable[..., Any]):
+T = TypeVar("T")
+P = ParamSpec("P")
+
+
+class _UserCompositeComponent(Generic[T]):
+  def __init__(self, fn: Callable[[], T]):
     self.prev_current_node = runtime().context().current_node()
     fn()
     node_slot = runtime().context().node_slot()
@@ -93,9 +99,11 @@ class _UserCompositeComponent:
     runtime().context().set_current_node(self.prev_current_node)
 
 
-def content_component(fn):
+def content_component(
+  fn: Callable[P, T],
+) -> Callable[P, _UserCompositeComponent[T]]:
   @wraps(fn)
-  def wrapper(*args: Any, **kwargs: Any):
+  def wrapper(*args: P.args, **kwargs: P.kwargs) -> _UserCompositeComponent[T]:
     return _UserCompositeComponent(lambda: fn(*args, **kwargs))
 
   return wrapper
