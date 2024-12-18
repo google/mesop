@@ -45,7 +45,7 @@ export class DebugErrorDialogService implements ErrorDialogService {
   styles: `
     :host {
       display: block;
-      background: var(--sys-error-container);
+      background: var(--mat-sys-error-container);
       --mdc-dialog-supporting-text-size: 16px;
       --mdc-dialog-supporting-text-line-height: 1.5;
     }

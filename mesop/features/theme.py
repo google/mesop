@@ -105,4 +105,4 @@ def theme_var(var: ThemeVar, /) -> str:
   Args:
       var: The theme variable name. See the [Material Design docs](https://m3.material.io/styles/color/static/baseline#690f18cd-d40f-4158-a358-4cfdb3a32768) for more information about the colors available.
   """
-  return f"var(--sys-{var})"
+  return f"var(--mat-sys-{var})"

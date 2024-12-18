@@ -9,16 +9,16 @@ class CitationComponent extends LitElement {
     a {
       display: block;
       text-decoration: none;
-      color: var(--sys-on-surface);
+      color: var(--mat-sys-on-surface);
     }
 
     .container {
-      background: var(--sys-surface-container-high);
+      background: var(--mat-sys-surface-container-high);
       border-radius: 12px;
     }
 
     .container:hover {
-      background: var(--sys-surface-container-highest);
+      background: var(--mat-sys-surface-container-highest);
     }
   `;
 

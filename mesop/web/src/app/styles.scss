@@ -327,7 +327,7 @@ mesop-markdown {
   }
 
   a {
-    color: var(--sys-primary);
+    color: var(--mat-sys-primary);
   }
 
   p {
@@ -339,7 +339,7 @@ mesop-markdown {
   }
 
   a:visited {
-    color: var(--sys-secondary);
+    color: var(--mat-sys-secondary);
   }
 
   // Make it so wide code examples do not overflow. Instead show a horizontal scrollbar.
@@ -350,7 +350,7 @@ mesop-markdown {
 
   .code-block {
     border-radius: 8px;
-    background: var(--sys-surface-container-low);
+    background: var(--mat-sys-surface-container-low);
     overflow: hidden;
     min-height: 57px; // The copy button gets cut off if there's only one line of text.
     padding: 10px;
@@ -365,7 +365,7 @@ mesop-markdown {
     border: none;
     border-radius: 50%;
     display: inline-block;
-    color: var(--sys-on-surface);
+    color: var(--mat-sys-on-surface);
     height: 40px;
     position: absolute;
     text-align: center;
@@ -378,7 +378,7 @@ mesop-markdown {
   }
 
   .code-block:hover a.code-copy:hover {
-    background: var(--sys-surface-container-highest);
+    background: var(--mat-sys-surface-container-highest);
     cursor: pointer;
   }
 
@@ -391,7 +391,7 @@ mesop-markdown {
   table,
   th,
   td {
-    border: 1px var(--sys-on-surface) solid;
+    border: 1px var(--mat-sys-on-surface) solid;
     border-collapse: collapse;
     padding: 10px;
   }

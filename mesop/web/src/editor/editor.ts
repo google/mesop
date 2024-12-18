@@ -53,7 +53,7 @@ const routes: Routes = [{path: '**', component: Editor}];
 @Component({
   selector: 'mesop-editor-app',
   template: '<router-outlet></router-outlet>',
-  imports: [Editor, RouterOutlet],
+  imports: [RouterOutlet],
   standalone: true,
 })
 class MesopEditorApp {}
