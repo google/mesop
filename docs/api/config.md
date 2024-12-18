@@ -244,7 +244,7 @@ Allows concurrent updates to state in the same session. If this is not updated, 
 
 By default, this is not enabled. You can enable this by setting it to `true`.
 
-### MESOP_WEB_SOCKETS_ENABLED
+### MESOP_WEBSOCKETS_ENABLED
 
 !!! warning "Experimental feature"
 
