@@ -14,7 +14,13 @@ def load(e: me.LoadEvent):
   me.set_theme_mode("system")
 
 
-@me.page(on_load=load, path="/button_toggle")
+@me.page(
+  on_load=load,
+  security_policy=me.SecurityPolicy(
+    allowed_iframe_parents=["https://google.github.io"]
+  ),
+  path="/button_toggle",
+)
 def app():
   state = me.state(State)
 
