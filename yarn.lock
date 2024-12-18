@@ -315,6 +315,39 @@
   optionalDependencies:
     lmdb "3.1.5"
 
+"@angular/build@^19.0.0":
+  version "19.0.5"
+  resolved "https://registry.yarnpkg.com/@angular/build/-/build-19.0.5.tgz#53207f0075021b427135af6dd6921577f88c9d05"
+  integrity sha512-/4msIXebFfDWcsyYGDzcxrhn1G1bWVTVbLYqkDXDVYFTqWRpBA8UtQ6eLM8FrJqrHw9e/1cxkqBNsR0tkDJ9FQ==
+  dependencies:
+    "@ampproject/remapping" "2.3.0"
+    "@angular-devkit/architect" "0.1900.5"
+    "@babel/core" "7.26.0"
+    "@babel/helper-annotate-as-pure" "7.25.9"
+    "@babel/helper-split-export-declaration" "7.24.7"
+    "@babel/plugin-syntax-import-attributes" "7.26.0"
+    "@inquirer/confirm" "5.0.2"
+    "@vitejs/plugin-basic-ssl" "1.1.0"
+    beasties "0.1.0"
+    browserslist "^4.23.0"
+    esbuild "0.24.0"
+    fast-glob "3.3.2"
+    https-proxy-agent "7.0.5"
+    istanbul-lib-instrument "6.0.3"
+    listr2 "8.2.5"
+    magic-string "0.30.12"
+    mrmime "2.0.0"
+    parse5-html-rewriting-stream "7.0.0"
+    picomatch "4.0.2"
+    piscina "4.7.0"
+    rollup "4.26.0"
+    sass "1.80.7"
+    semver "7.6.3"
+    vite "5.4.11"
+    watchpack "2.4.2"
+  optionalDependencies:
+    lmdb "3.1.5"
+
 "@angular/cdk@^19.0.0":
   version "19.0.3"
   resolved "https://registry.yarnpkg.com/@angular/cdk/-/cdk-19.0.3.tgz#d8b0c419a31783c603965065640f4f9b7192605c"
