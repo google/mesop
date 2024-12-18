@@ -71,3 +71,16 @@ You can fix this Trusted Types error by disabling Trusted Types in the security 
     )
 )
 ```
+
+## Colab
+
+### Site level user permissions
+
+Some APIs like [`navigator.mediaDevices.getUserMedia()`](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia) require that users grant permission through a browser prompt. Colab attempts to detect if a code cell requires user permission, but this detection does not work for Mesop apps running in Colab using `me.colab_run()`.
+
+As a workaround, use the IPython `%%javascript` cell magic to trigger a user permission prompt. Once permission is granted, it applies to all cells in the notebook. For example, to request the `microphone` permission, create a new code cell and run the following code:
+
+```
+%%javascript
+navigator.mediaDevices.getUserMedia({audio: true, video: false});
+```
