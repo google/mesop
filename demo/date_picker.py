@@ -13,7 +13,13 @@ def on_load(e: me.LoadEvent):
   me.set_theme_mode("system")
 
 
-@me.page(path="/date_picker", on_load=on_load)
+@me.page(
+  path="/date_picker",
+  security_policy=me.SecurityPolicy(
+    allowed_iframe_parents=["https://google.github.io"]
+  ),
+  on_load=on_load,
+)
 def app():
   state = me.state(State)
   with me.box(
