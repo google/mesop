@@ -139,6 +139,11 @@ $_tertiary: map.merge(map.get($_palettes, tertiary), $_rest);
 
 $primary: $_primary;
 $tertiary: $_tertiary;
+// Use "sys" instead of "mat-sys" because
+// "sys" used to be the default and is still used
+// in downstream angular.
+// https://github.com/angular/components/pull/29908
+$system_variables_prefix: sys;
 
 @function create-theme($density: 0) {
   @return mat.define-theme(
@@ -148,6 +153,7 @@ $tertiary: $_tertiary;
         primary: $_primary,
         tertiary: $_tertiary,
         use-system-variables: true,
+        system-variables-prefix: $system_variables_prefix,
       ),
       density: (
         scale: $density,
@@ -164,6 +170,7 @@ $dark-theme: mat.define-theme(
       primary: $_primary,
       tertiary: $_tertiary,
       use-system-variables: true,
+      system-variables-prefix: $system_variables_prefix,
     ),
   )
 );
@@ -327,7 +334,7 @@ mesop-markdown {
   }
 
   a {
-    color: var(--mat-sys-primary);
+    color: var(--sys-primary);
   }
 
   p {
@@ -339,7 +346,7 @@ mesop-markdown {
   }
 
   a:visited {
-    color: var(--mat-sys-secondary);
+    color: var(--sys-secondary);
   }
 
   // Make it so wide code examples do not overflow. Instead show a horizontal scrollbar.
@@ -350,7 +357,7 @@ mesop-markdown {
 
   .code-block {
     border-radius: 8px;
-    background: var(--mat-sys-surface-container-low);
+    background: var(--sys-surface-container-low);
     overflow: hidden;
     min-height: 57px; // The copy button gets cut off if there's only one line of text.
     padding: 10px;
@@ -365,7 +372,7 @@ mesop-markdown {
     border: none;
     border-radius: 50%;
     display: inline-block;
-    color: var(--mat-sys-on-surface);
+    color: var(--sys-on-surface);
     height: 40px;
     position: absolute;
     text-align: center;
@@ -378,7 +385,7 @@ mesop-markdown {
   }
 
   .code-block:hover a.code-copy:hover {
-    background: var(--mat-sys-surface-container-highest);
+    background: var(--sys-surface-container-highest);
     cursor: pointer;
   }
 
@@ -391,7 +398,7 @@ mesop-markdown {
   table,
   th,
   td {
-    border: 1px var(--mat-sys-on-surface) solid;
+    border: 1px var(--sys-on-surface) solid;
     border-collapse: collapse;
     padding: 10px;
   }
