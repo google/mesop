@@ -51,7 +51,7 @@ test('focus select', async ({page}) => {
   await page.goto('/focus_component');
   await page.locator('//mat-select[@id="mat-select-0"]').click();
   await page.getByRole('option', {name: 'Select'}).click();
-  await expectIsFocused(page, 'mat-select[id="mat-select-2"]');
+  await expectIsFocused(page, 'mat-select[id="mat-select-1"]');
 });
 
 test('focus slider', async ({page}) => {
