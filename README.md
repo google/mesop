@@ -77,7 +77,7 @@ Learn more in [Getting Started](https://google.github.io/mesop/getting-started/i
 
 ## Reporting a security issue
 
-If you identify a security vulnerability with Mesop, please file a [GitHub security issue](https://github.com/google/mesop/security/policy) and we will promptly respond to it.
+If you identify a security vulnerability with Mesop, please file a [GitHub security issue](https://github.com/google/mesop/security/advisories/new) and we will promptly respond to it.
 
 ## Disclaimer
 
