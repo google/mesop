@@ -258,7 +258,7 @@ def karma_web_test_suite(name, **kwargs):
 
     kwargs["tags"] = ["native"] + kwargs.get("tags", [])
     kwargs["browsers"] = [
-        "@npm//@angular/build-tooling/bazel/browsers/chromium:chromium",
+        "@io_bazel_rules_webtesting//browsers:chromium-local",
     ]
 
     # Filter out options which are specific to "karma_web_test" targets. We cannot
