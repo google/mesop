@@ -1,5 +1,6 @@
 # Forked from: https://github.com/angular/components/blob/8ac3ca11add4ae194b2b79169559fb3dbad7e161/tools/BUILD.bazel
 load("@bazel_skylib//rules:common_settings.bzl", "bool_flag")
+load("@io_bazel_rules_webtesting//web:web.bzl", "browser")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -33,4 +34,31 @@ config_setting(
 config_setting(
     name = "stamp",
     values = {"stamp": "true"},
+)
+
+PLATFORM_METADATA = select({
+    "@npm//@angular/build-tooling/bazel/constraints:linux_x64": [
+        "@org_chromium_chromedriver_linux_x64//:metadata",
+        "@org_chromium_chromium_linux_x64//:metadata",
+    ],
+    "@npm//@angular/build-tooling/bazel/constraints:macos_x64": [
+        "@org_chromium_chromedriver_macos_x64//:metadata",
+        "@org_chromium_chromium_macos_x64//:metadata",
+    ],
+    "@npm//@angular/build-tooling/bazel/constraints:macos_arm64": [
+        "@org_chromium_chromedriver_macos_arm64//:metadata",
+        "@org_chromium_chromium_macos_arm64//:metadata",
+    ],
+    "@npm//@angular/build-tooling/bazel/constraints:windows_x64": [
+        "@org_chromium_chromedriver_windows//:metadata",
+        "@org_chromium_chromium_windows//:metadata",
+    ],
+})
+
+browser(
+    name = "chromium",
+    metadata = "chromium.json",
+    deps = PLATFORM_METADATA + [
+        "@io_bazel_rules_webtesting//go/wsl",
+    ],
 )
