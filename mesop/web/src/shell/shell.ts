@@ -28,7 +28,7 @@ import {provideAnimations} from '@angular/platform-browser/animations';
 import {bootstrapApplication} from '@angular/platform-browser';
 import {MatIconModule, MatIconRegistry} from '@angular/material/icon';
 import {MatSidenavModule} from '@angular/material/sidenav';
-import {ErrorBox, ServerErrorBoxDialogComponent} from '../error/error_box';
+import {ServerErrorBoxDialogComponent} from '../error/error_box';
 import {GlobalErrorHandlerService} from '../services/global_error_handler';
 import {getViewportSize} from '../utils/viewport_size';
 import {createCustomElement} from '@angular/elements';
@@ -54,7 +54,6 @@ import {MatDialog} from '@angular/material/dialog';
     MatProgressBarModule,
     MatIconModule,
     MatSidenavModule,
-    ErrorBox,
   ],
   providers: [{provide: ErrorHandler, useClass: GlobalErrorHandlerService}],
   styleUrl: 'shell.css',
@@ -265,7 +264,7 @@ const routes: Routes = [{path: '**', component: Shell}];
 @Component({
   selector: 'mesop-app',
   template: '<router-outlet></router-outlet>',
-  imports: [Shell, RouterOutlet],
+  imports: [RouterOutlet],
   standalone: true,
 })
 class MesopApp {}

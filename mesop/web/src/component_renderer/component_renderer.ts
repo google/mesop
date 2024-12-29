@@ -17,7 +17,6 @@ import {
   UserEvent,
   WebComponentType,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
-import {ComponentLoader} from './component_loader';
 import {BoxType} from 'mesop/mesop/components/box/box_jspb_proto_pb/mesop/components/box/box_pb';
 import {
   BaseComponent,
@@ -39,7 +38,7 @@ const WEB_COMPONENT_PREFIX = '<web>';
   templateUrl: 'component_renderer.ng.html',
   styleUrl: 'component_renderer.css',
   standalone: true,
-  imports: [CommonModule, ComponentLoader],
+  imports: [CommonModule],
 })
 export class ComponentRenderer {
   @ViewChild('childrenTemplate', {static: true})

@@ -17,6 +17,7 @@ _CDK_ENTRY_POINTS = [
     "layout",
     "bidi",
     "portal",
+    "private",
 ]
 
 _MATERIAL_ENTRY_POINTS = [

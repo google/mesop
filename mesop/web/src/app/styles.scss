@@ -139,6 +139,11 @@ $_tertiary: map.merge(map.get($_palettes, tertiary), $_rest);
 
 $primary: $_primary;
 $tertiary: $_tertiary;
+// Use "sys" instead of "mat-sys" because
+// "sys" used to be the default and is still used
+// in downstream angular.
+// https://github.com/angular/components/pull/29908
+$system_variables_prefix: sys;
 
 @function create-theme($density: 0) {
   @return mat.define-theme(
@@ -148,6 +153,7 @@ $tertiary: $_tertiary;
         primary: $_primary,
         tertiary: $_tertiary,
         use-system-variables: true,
+        system-variables-prefix: $system_variables_prefix,
       ),
       density: (
         scale: $density,
@@ -164,6 +170,7 @@ $dark-theme: mat.define-theme(
       primary: $_primary,
       tertiary: $_tertiary,
       use-system-variables: true,
+      system-variables-prefix: $system_variables_prefix,
     ),
   )
 );
