@@ -29,6 +29,7 @@ py_test(
     srcs = ["helper_test.py"],
     deps = [
         ":component_helpers",
+        "//mesop/runtime",
         "//mesop/server",
     ] + THIRD_PARTY_PY_PYTEST,
 )

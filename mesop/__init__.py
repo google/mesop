@@ -26,6 +26,9 @@ from mesop.component_helpers import (
   Style as Style,
 )
 from mesop.component_helpers.helper import (
+  NamedSlot as NamedSlot,
+)
+from mesop.component_helpers.helper import (
   component as component,
 )
 from mesop.component_helpers.helper import (
@@ -33,6 +36,9 @@ from mesop.component_helpers.helper import (
 )
 from mesop.component_helpers.helper import (
   slot as slot,
+)
+from mesop.component_helpers.helper import (
+  slotclass as slotclass,
 )
 from mesop.components.accordion.accordion import accordion as accordion
 from mesop.components.audio.audio import audio as audio
