@@ -129,6 +129,10 @@ def update_dataclass_from_json(instance: Any, json_string: str):
 
 def _recursive_update_dataclass_from_json_obj(instance: Any, json_dict: Any):
   for key, value in json_dict.items():
+    if key.startswith("__") and key.endswith("__"):
+      raise MesopDeveloperException(
+        f"Cannot use dunder property: {key} in stateclass"
+      )
     if hasattr(instance, key):
       attr = getattr(instance, key)
       if isinstance(value, dict):

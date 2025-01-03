@@ -14,6 +14,7 @@ from mesop.dataclass_utils.dataclass_utils import (
   serialize_dataclass,
   update_dataclass_from_json,
 )
+from mesop.exceptions import MesopDeveloperException
 
 
 @dataclass
@@ -591,6 +592,24 @@ def test_has_parent_child_class():
 
   assert has_parent(ChildClass) is True
   assert has_parent(ParentClass) is False
+
+
+def test_globals_pollution():
+  @dataclass
+  class A:
+    val: str
+
+  initial_name = __name__
+  obj = A(val="default")
+  with pytest.raises(MesopDeveloperException) as exc_info:
+    update_dataclass_from_json(
+      obj, '{"__init__": {"__globals__": {"__name__": "polluted"}}}'
+    )
+  assert "Cannot use dunder property: __init__ in stateclass" in str(
+    exc_info.value
+  )
+  # Make sure __name__ has not been modified via the __globals__ pollution attempt
+  assert __name__ == initial_name
 
 
 if __name__ == "__main__":
