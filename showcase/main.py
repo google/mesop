@@ -29,7 +29,7 @@ SECTIONS = [
     resources=[
       Resource(
         title="Mesop Duo Chat",
-        description="Chat with multiple models at once",
+        description="Chat with multiple models at once.",
         github_url="https://github.com/wwwillchen/mesop-duo-chat",
         github_username="wwwillchen",
         app_url="https://huggingface.co/spaces/wwwillchen/mesop-duo-chat",
@@ -57,8 +57,15 @@ SECTIONS = [
     icon="computer",
     resources=[
       Resource(
+        title="Mesop Arena",
+        description="Rate generated images head-to-head. Includes ELO leaderboard and voting history.",
+        img_url="https://raw.githubusercontent.com/ghchinoy/mesop-arena/refs/heads/main/assets/arena_view.png",
+        github_url="https://github.com/ghchinoy/mesop-arena",
+        github_username="ghchinoy",
+      ),
+      Resource(
         title="Mesop App Maker",
-        description="Generate apps with Mesop using LLMs",
+        description="Generate apps with Mesop using LLMs.",
         app_url="https://huggingface.co/spaces/richard-to/mesop-app-maker",
         img_url="https://github.com/user-attachments/assets/1a826d44-c87b-4c79-aeaf-29bc8da3b1c0",
         github_url="https://github.com/richard-to/mesop-app-maker",
@@ -66,14 +73,14 @@ SECTIONS = [
       ),
       Resource(
         title="Multimodal Embeddings Retail Search",
-        description="Using multimodal embeddings to search retail product images and titles",
+        description="Using multimodal embeddings to search retail product images and titles.",
         img_url="https://github.com/user-attachments/assets/ece910c7-5c2c-4d27-ab6a-0febc7affb12",
         github_url="https://github.com/mandieq/retail_embeddings",
         github_username="mandieq",
       ),
       Resource(
         title="Mesop Jeopardy",
-        description="A simple jeopardy game built using Mesop",
+        description="A simple jeopardy game built using Mesop.",
         app_url="https://huggingface.co/spaces/richard-to/mesop-jeopardy",
         img_url="https://github.com/richard-to/mesop-jeopardy/assets/539889/bc27447d-129f-47ae-b0b1-8f5c546762ed",
         github_url="https://github.com/richard-to/mesop-jeopardy",
@@ -87,7 +94,7 @@ SECTIONS = [
     resources=[
       Resource(
         title="Mesop Markmap",
-        description="Mesop web component for the Markmap library",
+        description="Mesop web component for the Markmap library.",
         img_url="https://github.com/user-attachments/assets/6aa40ca3-d98a-42b2-adea-3f49b134445d",
         github_url="https://github.com/lianggecm/mesop_markmap",
         app_url="https://colab.research.google.com/drive/17gXlsXPDeo6hcFl1oOyrZ58FTozviN45?usp=sharing",
@@ -101,7 +108,7 @@ SECTIONS = [
     resources=[
       Resource(
         title="Mesop Getting Started Colab",
-        description="Get started with Mesop in Colab",
+        description="Get started with Mesop in Colab.",
         img_url="https://github.com/user-attachments/assets/37efbe69-ac97-4d26-8fda-d1b7b2b4976a",
         github_url="https://github.com/google/mesop/blob/main/notebooks/mesop_colab_getting_started.ipynb",
         app_url="https://colab.research.google.com/github/google/mesop/blob/main/notebooks/mesop_colab_getting_started.ipynb",
@@ -109,7 +116,7 @@ SECTIONS = [
       ),
       Resource(
         title="Gemma with Mesop Notebook",
-        description="Use Gemma with Mesop in Colab",
+        description="Use Gemma with Mesop in Colab.",
         img_url="https://github.com/user-attachments/assets/a52ebf01-7f24-469b-9ad9-b271fdb19e37",
         github_url="https://github.com/google-gemini/gemma-cookbook/blob/main/Gemma/Integrate_with_Mesop.ipynb",
         app_url="https://colab.research.google.com/github/google-gemini/gemma-cookbook/blob/main/Gemma/Integrate_with_Mesop.ipynb",
@@ -117,7 +124,7 @@ SECTIONS = [
       ),
       Resource(
         title="PaliGemma with Mesop Notebook",
-        description="Use PaliGemma with Mesop in Colab",
+        description="Use PaliGemma with Mesop in Colab.",
         img_url="https://github.com/user-attachments/assets/8cb456a1-f7be-4187-9a3f-f6b48bde73e9",
         github_url="https://github.com/google-gemini/gemma-cookbook/blob/main/PaliGemma/Integrate_PaliGemma_with_Mesop.ipynb",
         app_url="https://colab.research.google.com/github/google-gemini/gemma-cookbook/blob/main/PaliGemma/Integrate_PaliGemma_with_Mesop.ipynb",
@@ -439,7 +446,7 @@ def card(resource: Resource):
             letter_spacing="0.2px",
           ),
         )
-      me.text(resource.description, style=me.Style(height=40))
+      me.text(resource.description, style=me.Style(height=50))
     with me.box(
       style=me.Style(
         display="flex",
