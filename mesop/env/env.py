@@ -1,6 +1,17 @@
 import os
 
+from dotenv import find_dotenv, load_dotenv
+
 from mesop.exceptions import MesopDeveloperException
+
+if os.environ.get("BUILD_WORKSPACE_DIRECTORY"):
+  # If running with Bazel, we look for `mesop/.env` from the root workspace.
+  load_dotenv()
+else:
+  # Try to load .env file for PyPi Mesop build which should be in the user's current
+  # working directory.
+  load_dotenv(find_dotenv(usecwd=True))
+
 
 AI_SERVICE_BASE_URL = os.environ.get(
   "MESOP_AI_SERVICE_BASE_URL", "http://localhost:43234"
