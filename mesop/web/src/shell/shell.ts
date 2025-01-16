@@ -5,6 +5,7 @@ import {
   HostListener,
   NgZone,
   Renderer2,
+  afterRender,
 } from '@angular/core';
 import {Router, RouterOutlet, Routes, provideRouter} from '@angular/router';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
@@ -62,6 +63,8 @@ export class Shell {
   rootComponent!: ComponentProto;
   private resizeSubject = new Subject<void>();
 
+  private commandScrollKey = '';
+
   constructor(
     private zone: NgZone,
     private renderer: Renderer2,
@@ -81,6 +84,10 @@ export class Shell {
     this.resizeSubject
       .pipe(debounceTime(500))
       .subscribe(() => this.onResizeDebounced());
+
+    afterRender(() => {
+      this.maybeExecuteScrollCommand();
+    });
   }
 
   ngOnInit() {
@@ -116,33 +123,10 @@ export class Shell {
               this.channel.resetOverridedTitle();
             }
           } else if (command.hasScrollIntoView()) {
-            // Scroll into view
-            const key = command.getScrollIntoView()!.getKey();
-            // Schedule scroll into view to run after the current event loop tick
-            // so that the component has time to render.
-            setTimeout(() => {
-              const targetElements = document.querySelectorAll(
-                `[data-key="${key}"]`,
-              );
-              if (!targetElements.length) {
-                console.error(
-                  `Could not scroll to component with key ${key} because no component found`,
-                );
-                return;
-              }
-              if (targetElements.length > 1) {
-                console.warn(
-                  'Found multiple components',
-                  targetElements,
-                  'to potentially scroll to for key',
-                  key,
-                  '. This is probably a bug and you should use a unique key identifier.',
-                );
-              }
-              targetElements[0].parentElement!.scrollIntoView({
-                behavior: 'smooth',
-              });
-            }, 0);
+            // Store the scroll key so we can defer execution of scroll command until
+            // after everything is fully rendered. This helps avoid race conditions
+            // with the scroll behavior.
+            this.commandScrollKey = command.getScrollIntoView()!.getKey() || '';
           } else if (command.hasSetPageTitle()) {
             this.channel.setOverridedTitle(
               command.getSetPageTitle()!.getTitle() || '',
@@ -256,6 +240,34 @@ export class Shell {
     const userEvent = new UserEvent();
     userEvent.setResize(new ResizeEvent());
     this.channel.dispatch(userEvent);
+  }
+
+  // Executes the scroll command if a key has been specified.
+  maybeExecuteScrollCommand() {
+    if (this.commandScrollKey) {
+      const targetElements = document.querySelectorAll(
+        `[data-key="${this.commandScrollKey}"]`,
+      );
+      if (!targetElements.length) {
+        console.error(
+          `Could not scroll to component with key ${this.commandScrollKey} because no component found`,
+        );
+        return;
+      }
+      if (targetElements.length > 1) {
+        console.warn(
+          'Found multiple components',
+          targetElements,
+          'to potentially scroll to for key',
+          this.commandScrollKey,
+          '. This is probably a bug and you should use a unique key identifier.',
+        );
+      }
+      targetElements[0].parentElement!.scrollIntoView({
+        behavior: 'smooth',
+      });
+      this.commandScrollKey = '';
+    }
   }
 }
 
