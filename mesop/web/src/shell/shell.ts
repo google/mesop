@@ -245,12 +245,14 @@ export class Shell {
   // Executes the scroll command if a key has been specified.
   maybeExecuteScrollCommand() {
     if (this.commandScrollKey) {
+      const scrollKey = this.commandScrollKey;
+      this.commandScrollKey = '';
       const targetElements = document.querySelectorAll(
-        `[data-key="${this.commandScrollKey}"]`,
+        `[data-key="${scrollKey}"]`,
       );
       if (!targetElements.length) {
         console.error(
-          `Could not scroll to component with key ${this.commandScrollKey} because no component found`,
+          `Could not scroll to component with key ${scrollKey} because no component found`,
         );
         return;
       }
@@ -259,14 +261,13 @@ export class Shell {
           'Found multiple components',
           targetElements,
           'to potentially scroll to for key',
-          this.commandScrollKey,
+          scrollKey,
           '. This is probably a bug and you should use a unique key identifier.',
         );
       }
       targetElements[0].parentElement!.scrollIntoView({
         behavior: 'smooth',
       });
-      this.commandScrollKey = '';
     }
   }
 }
