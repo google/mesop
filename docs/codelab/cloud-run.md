@@ -3,7 +3,7 @@ app to Cloud Run.
 
 Here is a screenshot of the app you will be building.
 
-![Mesop App](https://camo.githubusercontent.com/07730cd0a12aaa6532693829c2ded4190cf7839051b4f985e64d1edaca4c7354/68747470733a2f2f73746f726167652e676f6f676c65617069732e636f6d2f6769746875622d7265706f2f67656e657261746976652d61692f73616d706c652d617070732f6d65736f702d636c6f756472756e2f696d616765706c617967726f756e642e706e67)
+![Mesop App](https://storage.googleapis.com/github-repo/generative-ai/sample-apps/mesop-cloudrun/imageplayground.png)
 
 ## Part 1: Building a Gemini powered Mesop app
 
