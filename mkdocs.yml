@@ -15,6 +15,7 @@ nav:
               - 3 - Managing state & dialogs: codelab/3.md
               - 4 - Integrating AI APIs: codelab/4.md
               - 5 - Wrapping it up: codelab/5.md
+          - Cloud Run Codelab: codelab/cloud-run.md
   - Guides:
       - Fundamentals:
           - State Management: guides/state-management.md
