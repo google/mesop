@@ -102,7 +102,7 @@ jobs:
         if: always()
         with:
           name: playwright-report-with-static-folder
-          path: playwright-report-with-static-folder/
+          path: playwright-report-with-app-base/
           retention-days: 30
   # Deploy docs
   deploy-docs:
