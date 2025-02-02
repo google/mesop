@@ -72,6 +72,7 @@ export class ComponentRenderer {
     if (this.projectedViewRef) {
       this.projectedViewRef.destroy();
     }
+    this.clickListenerRemover?.();
   }
 
   getKey() {
