@@ -4,8 +4,8 @@ import {
   ComponentRef,
   ElementRef,
   EmbeddedViewRef,
-  HostListener,
   Input,
+  Renderer2,
   TemplateRef,
   ViewChild,
   ViewContainerRef,
@@ -52,9 +52,11 @@ export class ComponentRenderer {
   private _componentRef!: ComponentRef<BaseComponent>;
   customElement: HTMLElement | undefined;
   projectedViewRef: EmbeddedViewRef<ComponentRenderer> | undefined;
+  clickListenerRemover: (() => void) | undefined;
 
   constructor(
     private channel: Channel,
+    private renderer: Renderer2,
     private applicationRef: ApplicationRef,
     private elementRef: ElementRef,
     private errorDialogService: ErrorDialogService,
@@ -70,6 +72,7 @@ export class ComponentRenderer {
     if (this.projectedViewRef) {
       this.projectedViewRef.destroy();
     }
+    this.clickListenerRemover?.();
   }
 
   getKey() {
@@ -119,12 +122,26 @@ export class ComponentRenderer {
       this.updateComponentRef();
       return;
     }
+    let hasClickHandler = false;
     if (this.isBoxType()) {
       this._boxType = BoxType.deserializeBinary(
         this.component.getType()!.getValue() as unknown as Uint8Array,
       );
       // Used for determinine which component-renderer elements are not boxes.
       this.elementRef.nativeElement.setAttribute('mesop-box', 'true');
+      hasClickHandler = Boolean(this._boxType.getOnClickHandlerId());
+    }
+
+    if (hasClickHandler) {
+      if (!this.clickListenerRemover) {
+        this.clickListenerRemover = this.renderer.listen(
+          this.elementRef.nativeElement,
+          'click',
+          this.onClick.bind(this),
+        );
+      }
+    } else {
+      this.clickListenerRemover?.();
     }
 
     this.computeStyles();
@@ -308,7 +325,6 @@ Make sure the web component name is spelled the same between Python and JavaScri
     return '';
   }
 
-  @HostListener('click', ['$event'])
   onClick(event: Event) {
     if (!this._boxType) {
       return;
