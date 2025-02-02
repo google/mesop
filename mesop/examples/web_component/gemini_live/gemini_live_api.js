@@ -1,5 +1,3 @@
-// biome-rule-off
-
 /* Forked from: https://github.com/heiko-hotz/gemini-multimodal-live-dev-guide/blob/507f87f99bce15fc0c4513c54d9873118e5aef6c/shared/gemini-live-api.js
 
 /*

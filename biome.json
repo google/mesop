@@ -9,6 +9,7 @@
       "third_party/**",
       "**/external/**",
       "tools/**",
+      "mesop/examples/web_component/gemini_live/gemini_live_api.js",
       "mesop/**/*.json",
       "scripts/**",
       "**/esbuild*",
