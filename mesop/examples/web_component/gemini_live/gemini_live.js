@@ -169,9 +169,8 @@ class GeminiLive extends LitElement {
   render() {
     if (this.enabled) {
       return html`<span @click="${this.stop}"><slot></slot></span>`;
-    } else {
-      return html`<span @click="${this.start}"><slot></slot></span>`;
     }
+    return html`<span @click="${this.start}"><slot></slot></span>`;
   }
 }
 
