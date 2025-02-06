@@ -460,16 +460,16 @@ def insert_web_component(
   if events is None:
     events = dict()
 
-  events = filter_web_events(events)
+  filtered_events = filter_web_events(events)
 
   if properties is None:
     properties = dict()
 
-  check_property_keys_is_safe(events.keys())
+  check_property_keys_is_safe(filtered_events.keys())
   check_property_keys_is_safe(properties.keys())
   event_to_ids: dict[str, str] = {}
-  for event in events:
-    event_handler = events[event]
+  for event in filtered_events:
+    event_handler = filtered_events[event]
     event_to_ids[event] = register_event_handler(event_handler, WebEvent)
   type_proto = pb.WebComponentType(
     properties_json=json.dumps(properties),
