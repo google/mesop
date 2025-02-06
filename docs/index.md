@@ -291,64 +291,93 @@ Mesop streamlines app development with features like hot reload and strong IDE s
         allowfullscreen
       ></iframe>
     </div>
-      <div class="twitter-row">
-        <blockquote class="twitter-tweet">
-          <p lang="en" dir="ltr">
-            is this the thing that will finally save me from ever learning front
-            end?<a href="https://t.co/eDgY0AfG6U">https://t.co/eDgY0AfG6U</a>
-          </p>
-          &mdash; xlr8harder (@xlr8harder)
-          <a
-            href="https://twitter.com/xlr8harder/status/1798673386425786724?ref_src=twsrc%5Etfw"
-            >June 6, 2024</a
-          >
-        </blockquote>
-        <script
-          async
-          src="https://platform.twitter.com/widgets.js"
-          charset="utf-8"
-        ></script>
 
-        <blockquote class="twitter-tweet">
-          <p lang="en" dir="ltr">
-            i hate writing frontend code, but can’t resist a sleek UI. just
-            tried Google’s quietly released Mesop—what a find! no frontend fuss,
-            just python. <br /><br />if you value your sanity and good design,
-            you should def try it. gives a balance between streamlit and
-            gradio<br /><br />mesop docs :…
-            <a href="https://t.co/SmBAH5Leri">pic.twitter.com/SmBAH5Leri</a>
-          </p>
-          &mdash; Sanchay Thalnerkar (@7anchay)
-          <a
-            href="https://twitter.com/7anchay/status/1804890091816644906?ref_src=twsrc%5Etfw"
-            >June 23, 2024</a
-          >
-        </blockquote>
-        <script
-          async
-          src="https://platform.twitter.com/widgets.js"
-          charset="utf-8"
-        ></script>
+    <div class="cloud-run-tutorials">
+      <iframe
+        class="youtube-embed box-shadow"
+        width="560"
+        height="315"
+        src="https://www.youtube.com/embed/KUfPiSUJrwE?si=dkVt0rBOQUMapk5D"
+        title="YouTube video player"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allowfullscreen
+      ></iframe>
 
-        <blockquote class="twitter-tweet">
-          <p lang="en" dir="ltr">
-            New Python-based UI framework in town - have you tried Mesop from
-            Google?<br /><br />I gave it a spin, here&#39;s what I found out:<br /><br />📌
-            Provides a unique approach to building web hashtag#UIs in
-            hashtag#Python with component-based architecture for customized UIs
-            by taking inspiration from…
-          </p>
-          &mdash; Harshit Tyagi (@dswharshit)
-          <a
-            href="https://twitter.com/dswharshit/status/1800557173073691000?ref_src=twsrc%5Etfw"
-            >June 11, 2024</a
-          >
-        </blockquote>
-        <script
-          async
-          src="https://platform.twitter.com/widgets.js"
-          charset="utf-8"
-        ></script>
+      <iframe
+        class="youtube-embed box-shadow"
+        width="560"
+        height="315"
+        src="https://www.youtube.com/embed/s9Ag_YNdl0M?si=aj4RqzS2MmWvxFos"
+        title="YouTube video player"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allowfullscreen
+      ></iframe>
+    </div>
+
+    <div class="twitter-row">
+      <blockquote class="twitter-tweet">
+        <p lang="en" dir="ltr">
+          is this the thing that will finally save me from ever learning front
+          end?<a href="https://t.co/eDgY0AfG6U">https://t.co/eDgY0AfG6U</a>
+        </p>
+        &mdash; xlr8harder (@xlr8harder)
+        <a
+          href="https://twitter.com/xlr8harder/status/1798673386425786724?ref_src=twsrc%5Etfw"
+          >June 6, 2024</a
+        >
+      </blockquote>
+      <script
+        async
+        src="https://platform.twitter.com/widgets.js"
+        charset="utf-8"
+      ></script>
+
+      <blockquote class="twitter-tweet">
+        <p lang="en" dir="ltr">
+          i hate writing frontend code, but can’t resist a sleek UI. just
+          tried Google’s quietly released Mesop—what a find! no frontend fuss,
+          just python. <br /><br />if you value your sanity and good design,
+          you should def try it. gives a balance between streamlit and
+          gradio<br /><br />mesop docs :…
+          <a href="https://t.co/SmBAH5Leri">pic.twitter.com/SmBAH5Leri</a>
+        </p>
+        &mdash; Sanchay Thalnerkar (@7anchay)
+        <a
+          href="https://twitter.com/7anchay/status/1804890091816644906?ref_src=twsrc%5Etfw"
+          >June 23, 2024</a
+        >
+      </blockquote>
+      <script
+        async
+        src="https://platform.twitter.com/widgets.js"
+        charset="utf-8"
+      ></script>
+
+      <blockquote class="twitter-tweet">
+        <p lang="en" dir="ltr">
+          New Python-based UI framework in town - have you tried Mesop from
+          Google?<br /><br />I gave it a spin, here&#39;s what I found out:<br /><br />📌
+          Provides a unique approach to building web hashtag#UIs in
+          hashtag#Python with component-based architecture for customized UIs
+          by taking inspiration from…
+        </p>
+        &mdash; Harshit Tyagi (@dswharshit)
+        <a
+          href="https://twitter.com/dswharshit/status/1800557173073691000?ref_src=twsrc%5Etfw"
+          >June 11, 2024</a
+        >
+      </blockquote>
+      <script
+        async
+        src="https://platform.twitter.com/widgets.js"
+        charset="utf-8"
+      ></script>
+  </div>
+
 </section>
 
 ## Disclaimer
