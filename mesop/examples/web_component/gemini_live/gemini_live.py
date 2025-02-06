@@ -1,7 +1,6 @@
 from typing import Any, Callable
 
 import mesop.labs as mel
-from mesop.examples.web_component.gemini_live.utils import filter_events
 
 _HOST = "generativelanguage.googleapis.com"
 
@@ -44,13 +43,11 @@ def gemini_live(
   """
   return mel.insert_web_component(
     name="gemini-live",
-    events=filter_events(
-      {
-        "startEvent": on_start,
-        "stopEvent": on_stop,
-        "toolCallEvent": on_tool_call,
-      }
-    ),
+    events={
+      "startEvent": on_start,
+      "stopEvent": on_stop,
+      "toolCallEvent": on_tool_call,
+    },
     properties={
       "api_config": api_config,
       "enabled": enabled,

@@ -1,7 +1,6 @@
 from typing import Any, Callable, Literal
 
 import mesop.labs as mel
-from mesop.examples.web_component.gemini_live.utils import filter_events
 
 
 @mel.web_component(path="./video_recorder.js")
@@ -39,12 +38,10 @@ def video_recorder(
   """
   return mel.insert_web_component(
     name="video-recorder",
-    events=filter_events(
-      {
-        "dataEvent": on_data,
-        "stateChangeEvent": on_state_change,
-      }
-    ),
+    events={
+      "dataEvent": on_data,
+      "stateChangeEvent": on_state_change,
+    },
     properties={
       "enabled": enabled,
       "state": state,

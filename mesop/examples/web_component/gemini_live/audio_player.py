@@ -2,7 +2,6 @@ import base64
 from typing import Any, Callable
 
 import mesop.labs as mel
-from mesop.examples.web_component.gemini_live.utils import filter_events
 
 
 @mel.web_component(path="./audio_player.js")
@@ -41,12 +40,10 @@ def audio_player(
   """
   return mel.insert_web_component(
     name="audio-player",
-    events=filter_events(
-      {
-        "playEvent": on_play,
-        "stopEvent": on_stop,
-      }
-    ),
+    events={
+      "playEvent": on_play,
+      "stopEvent": on_stop,
+    },
     properties={
       "enabled": enabled,
       "data": base64.b64encode(data).decode("utf-8"),
