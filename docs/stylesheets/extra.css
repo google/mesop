@@ -567,3 +567,17 @@ a.next-step:hover {
 h3#mesop\.features\.theme\.ThemeVar {
   font-size: 0.8rem;
 }
+
+.cloud-run-tutorials {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+}
+
+@media (max-width: 1200px) {
+  .cloud-run-tutorials {
+    flex-direction: column;
+    justify-items: center;
+    align-items: center;
+  }
+}
