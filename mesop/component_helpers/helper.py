@@ -440,7 +440,7 @@ def insert_composite_component(
 def insert_web_component(
   *,
   name: str,
-  events: dict[str, Callable[[WebEvent], Any]] | None = None,
+  events: dict[str, Callable[[WebEvent], Any] | None] | None = None,
   properties: dict[str, Any] | None = None,
   key: str | None = None,
 ):
@@ -459,13 +459,17 @@ def insert_web_component(
   """
   if events is None:
     events = dict()
+
+  filtered_events = filter_web_events(events)
+
   if properties is None:
     properties = dict()
-  check_property_keys_is_safe(events.keys())
+
+  check_property_keys_is_safe(filtered_events.keys())
   check_property_keys_is_safe(properties.keys())
   event_to_ids: dict[str, str] = {}
-  for event in events:
-    event_handler = events[event]
+  for event in filtered_events:
+    event_handler = filtered_events[event]
     event_to_ids[event] = register_event_handler(event_handler, WebEvent)
   type_proto = pb.WebComponentType(
     properties_json=json.dumps(properties),
@@ -477,6 +481,13 @@ def insert_web_component(
     proto=type_proto,
     key=key,
   )
+
+
+def filter_web_events(
+  events: dict[str, Callable[[WebEvent], Any] | None],
+) -> dict[str, Callable[[WebEvent], Any]]:
+  """Helper function for filtering out web component events that do not have a callback."""
+  return {event: callback for event, callback in events.items() if callback}
 
 
 # Note: the logic here should be kept in sync with
