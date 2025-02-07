@@ -127,7 +127,7 @@ SECTIONS = [
         description="Use Gemma with Mesop in Colab.",
         img_url="https://github.com/user-attachments/assets/a52ebf01-7f24-469b-9ad9-b271fdb19e37",
         github_url="https://github.com/google-gemini/gemma-cookbook/blob/main/Gemma/Integrate_with_Mesop.ipynb",
-        app_url="https://colab.research.google.com/github/google-gemini/gemma-cookbook/blob/main/Gemma/Integrate_with_Mesop.ipynb",
+        app_url="https://colab.research.google.com/github/google-gemini/gemma-cookbook/blob/main/Gemma/[Gemma_2]Using_with_Mesop.ipynb",
         github_username="google-gemini",
       ),
       Resource(
@@ -135,7 +135,7 @@ SECTIONS = [
         description="Use PaliGemma with Mesop in Colab.",
         img_url="https://github.com/user-attachments/assets/8cb456a1-f7be-4187-9a3f-f6b48bde73e9",
         github_url="https://github.com/google-gemini/gemma-cookbook/blob/main/PaliGemma/Integrate_PaliGemma_with_Mesop.ipynb",
-        app_url="https://colab.research.google.com/github/google-gemini/gemma-cookbook/blob/main/PaliGemma/Integrate_PaliGemma_with_Mesop.ipynb",
+        app_url="https://colab.research.google.com/github/google-gemini/gemma-cookbook/blob/main/PaliGemma/[PaliGemma_1]Using_with_Mesop.ipynb",
         github_username="google-gemini",
       ),
     ],
