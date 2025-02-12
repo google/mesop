@@ -1,5 +1,5 @@
 default-src 'self'
-font-src fonts.gstatic.com data:
+font-src 'self' fonts.gstatic.com data:
 frame-src *
 img-src 'self' data: https: http: blob:
 media-src 'self' data: https: blob:
