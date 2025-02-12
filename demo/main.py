@@ -64,6 +64,7 @@ import sidenav as sidenav
 import slide_toggle as slide_toggle
 import slider as slider
 import snackbar as snackbar
+import tab_group as tab_group
 import table as table
 import tailwind as tailwind
 import text as text
@@ -112,6 +113,7 @@ FIRST_SECTIONS = [
       Example(name="grid_table"),
       Example(name="headers"),
       Example(name="snackbar"),
+      Example(name="tab_group"),
       Example(name="chat_inputs"),
       Example(name="form_billing"),
       Example(name="form_profile"),
