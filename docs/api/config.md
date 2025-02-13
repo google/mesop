@@ -230,6 +230,14 @@ parameter specifies which SQL database table that Mesop will write state session
 
 **Default:** `mesop_state_session`
 
+### MESOP_SHOW_UNREDACTED_ERRORS
+
+Mesop, by default, only shows unredacted errors in debug mode.
+
+If you run in prod mode, the errors are redacted (internal errors are given a generic message "Sorry, there was an error. Please contact the developer.") and the tracebacks are not shown.
+
+If you want to show unredacted errors, including in prod mode, set this to `true`. This may be useful if you're deploying a Mesop app internally and want to get error details even in production.
+
 ## Experimental configuration values
 
 These configuration values are experimental and are subject to breaking change, including removal in future releases.
