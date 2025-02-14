@@ -230,7 +230,7 @@ parameter specifies which SQL database table that Mesop will write state session
 
 **Default:** `mesop_state_session`
 
-### MESOP_SHOW_UNREDACTED_ERRORS
+### MESOP_PROD_UNREDACTED_ERRORS
 
 Mesop, by default, only shows unredacted errors in debug mode.
 

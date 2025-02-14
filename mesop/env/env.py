@@ -35,8 +35,8 @@ def get_app_base_path() -> str:
   return MESOP_APP_BASE_PATH
 
 
-MESOP_SHOW_UNREDACTED_ERRORS = (
-  os.environ.get("MESOP_SHOW_UNREDACTED_ERRORS", "false").lower() == "true"
+MESOP_PROD_UNREDACTED_ERRORS = (
+  os.environ.get("MESOP_PROD_UNREDACTED_ERRORS", "false").lower() == "true"
 )
 
 MESOP_WEBSOCKETS_ENABLED = (
