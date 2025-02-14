@@ -19,6 +19,7 @@ from mesop.env.env import (
   EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED,
   MESOP_APP_BASE_PATH,
   MESOP_CONCURRENT_UPDATES_ENABLED,
+  MESOP_PROD_UNREDACTED_ERRORS,
   MESOP_WEBSOCKETS_ENABLED,
 )
 from mesop.events import LoadEvent
@@ -57,6 +58,11 @@ def configure_flask_app(
 
   if MESOP_APP_BASE_PATH:
     logger.info(f"MESOP_APP_BASE_PATH set to {MESOP_APP_BASE_PATH}")
+
+  if MESOP_PROD_UNREDACTED_ERRORS and prod_mode:
+    logger.info(
+      "MESOP_PROD_UNREDACTED_ERRORS is enabled. Showing full error details (including in prod mode)."
+    )
 
   static_folder = get_static_folder()
   static_url_path = get_static_url_path()
@@ -126,7 +132,10 @@ def configure_flask_app(
       runtime().context().release_lock()
 
   def yield_errors(error: pb.ServerError) -> Generator[str, None, None]:
-    if not runtime().debug_mode:
+    should_redact_errors = (
+      not runtime().debug_mode and not MESOP_PROD_UNREDACTED_ERRORS
+    )
+    if should_redact_errors:
       error.ClearField("traceback")
       # Redact developer errors
       if "Mesop Internal Error:" in error.exception:
