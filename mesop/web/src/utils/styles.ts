@@ -270,5 +270,11 @@ export function formatStyle(styleObj: Style): string {
   if (styleObj.getZIndex()) {
     style += `z-index: ${styleObj.getZIndex()};`;
   }
+  if (styleObj.xCoordinate()) {
+    style += `x-coordinate: ${styleObj.xCoordinate()};`;
+  }
+  if (styleObj.yCoordinate()) {
+    style += `y-coordinate: ${styleObj.yCoordinate()};`;
+  }
   return style;
 }
