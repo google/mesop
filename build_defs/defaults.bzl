@@ -132,3 +132,7 @@ THIRD_PARTY_PY_SQLALCHEMY = [
 THIRD_PARTY_PY_GREENLET = [
     requirement("greenlet"),
 ]
+
+THIRD_PARTY_PY_GOOGLE_GENAI = [
+    requirement("google-genai"),
+]

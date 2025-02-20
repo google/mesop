@@ -1,6 +1,12 @@
 from mesop.examples.web_component.async_action import (
   async_action_app as async_action_app,
 )
+from mesop.examples.web_component.chartjs import (
+  chartjs_app as chartjs_app,
+)
+from mesop.examples.web_component.chartjs import (
+  chartjs_chat_app as chartjs_chat_app,
+)
 from mesop.examples.web_component.code_mirror_editor import (
   code_mirror_editor_app as code_mirror_editor_app,
 )

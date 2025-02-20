@@ -14,6 +14,7 @@ py_library(
     deps = [
         "//mesop",
         "//mesop/examples/web_component/async_action",
+        "//mesop/examples/web_component/chartjs",
         "//mesop/examples/web_component/code_mirror_editor",
         "//mesop/examples/web_component/complex_props",
         "//mesop/examples/web_component/copy_to_clipboard",
