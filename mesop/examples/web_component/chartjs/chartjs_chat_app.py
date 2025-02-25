@@ -2,7 +2,7 @@ import json
 import os
 from typing import Callable, Literal
 
-from google import genai
+from google import genai  # type: ignore
 from google.genai import types
 from pydantic import BaseModel
 
