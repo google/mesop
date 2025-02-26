@@ -11,7 +11,9 @@ from typing import Tuple
 
 import mesop as me
 import mesop.labs as mel
-from components.leaflet_map_component import leaflet_map_component  # Assuming components directory
+from mesop.examples.web_component.leaflet.leaflet_map_component import (
+    leaflet_map_component
+)
 
 
 @me.page(
