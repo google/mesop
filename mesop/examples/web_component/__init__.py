@@ -32,6 +32,9 @@ from mesop.examples.web_component.hotkeys import (
 from mesop.examples.web_component.markedjs import (
   markedjs_app as markedjs_app,
 )
+from mesop.examples.web_component.leaflet import (
+  leaflet_app as leaflet_app,
+)
 from mesop.examples.web_component.plotly import (
   plotly_app as plotly_app,
 )
