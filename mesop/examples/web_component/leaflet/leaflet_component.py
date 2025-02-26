@@ -24,9 +24,7 @@ def leaflet_map_component(
         on_click: Callback function when the map is clicked (optional).
         key: Unique key for the component.
     """
-    events = {}
-    if on_click:
-        events["clickEvent"] = on_click
+    events = {"clickEvent": on_click}
 
     properties = {
         "center": center,
