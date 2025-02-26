@@ -1,7 +1,7 @@
 """Proof of concept of a webcomponent wrapper that adds Leaflet map support.
 
 Note: Does not implement full interactions with a map. This is meant as a 
-    proof of concept that others can build upon for additional interactiosn with 
+    proof of concept that others can build upon for additional interactions with 
     a web map.
 """
 # app.py
