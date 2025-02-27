@@ -29,6 +29,9 @@ from mesop.examples.web_component.gemini_live import demo as demo
 from mesop.examples.web_component.hotkeys import (
   hotkeys_app as hotkeys_app,
 )
+from mesop.examples.web_component.leaflet import (
+  leaflet_app as leaflet_app,
+)
 from mesop.examples.web_component.markedjs import (
   markedjs_app as markedjs_app,
 )
