@@ -26,6 +26,9 @@ from mesop.examples.web_component.firebase_auth import (
   firebase_auth_app as firebase_auth_app,
 )
 from mesop.examples.web_component.gemini_live import demo as demo
+from mesop.examples.web_component.google_maps import (
+  google_maps_app as google_maps_app,
+)
 from mesop.examples.web_component.hotkeys import (
   hotkeys_app as hotkeys_app,
 )

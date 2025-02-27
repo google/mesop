@@ -22,6 +22,7 @@ py_library(
         "//mesop/examples/web_component/dynamic_slot",
         "//mesop/examples/web_component/firebase_auth",
         "//mesop/examples/web_component/gemini_live",
+        "//mesop/examples/web_component/google_maps",
         "//mesop/examples/web_component/hotkeys",
         "//mesop/examples/web_component/markedjs",
         "//mesop/examples/web_component/plotly",
