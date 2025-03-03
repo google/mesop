@@ -270,7 +270,8 @@ body {
 // The box component has div-like semantics, so make it `display: block` by default.
 // We use a high-level selector first since this will allow custom CSS selectors
 // to override this style more easily, specifically for flex and grid displays.
-component-renderer {
+component-renderer,
+component-renderer-element {
   display: block;
 }
 
@@ -279,6 +280,7 @@ component-renderer {
 // Since component-renderer encompasses many different types of a components, we
 // need to add a more specific selector to make these inline by default.
 component-renderer:not([mesop-box]),
+component-renderer-element:not([mesop-box]),
 // The first component-renderer object is a box, but it needs to be inline.
 mat-sidenav-content > component-renderer:first-child {
   display: inline;
