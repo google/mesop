@@ -22,11 +22,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Initialize environment
-        uses: angular/dev-infra/github-actions/npm/checkout-and-setup-node@af6d1c371f387efd5703a24739412ea862c3218e
+        uses: angular/dev-infra/github-actions/npm/checkout-and-setup-node@d16848fd2ed19fce59488b540fa26a3353c72ad4
         with:
           cache-node-modules: true
       - name: Setup Bazel
-        uses: angular/dev-infra/github-actions/bazel/setup@af6d1c371f387efd5703a24739412ea862c3218e
+        uses: angular/dev-infra/github-actions/bazel/setup@d16848fd2ed19fce59488b540fa26a3353c72ad4
       - name: Install node modules
         run: yarn install --frozen-lockfile
       - name: Pre-commit hook (requires yarn install)
