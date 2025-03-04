@@ -2,8 +2,6 @@
 
 Follow these instructions for releasing a new version of Mesop publicly via PyPI (e.g. `pip install mesop`).
 
-If you haven't done this before, follow the [first-time setup](#first-time-upload-setup).
-
 ## Check main branch
 
 Before, cutting a release, you'll want to check two things:
