@@ -18,7 +18,7 @@ class Config(BaseModel):
   state_session_backend_firestore_collection: str = "mesop_state_sessions"
   state_session_backend_sql_connection_uri: str = ""
   state_session_backend_sql_table: str = "mesop_state_sessions"
-  static_folder: str = ""
+  static_folder: str = "static"
   static_url_path: str = "/static"
 
   @property
