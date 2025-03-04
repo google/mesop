@@ -120,7 +120,7 @@ jobs:
         with:
           python-version: 3.10.13
       - run: echo "cache_id=$(date --utc '+%V')" >> $GITHUB_ENV
-      - uses: actions/cache@704facf57e6136b1bc63b828d79edcd491f0ee84 # v3.3.2
+      - uses: actions/cache@d4323d4df104b026a6aa633fdb11d772146be0bf # v4.2.2
         with:
           key: mkdocs-material-${{ env.cache_id }}
           path: .cache
@@ -141,7 +141,7 @@ jobs:
         with:
           python-version: 3.10.13
       - run: echo "cache_id=$(date --utc '+%V')" >> $GITHUB_ENV
-      - uses: actions/cache@704facf57e6136b1bc63b828d79edcd491f0ee84 # v3.3.2
+      - uses: actions/cache@d4323d4df104b026a6aa633fdb11d772146be0bf # v4.2.2
         with:
           key: docs-bot-${{ env.cache_id }}
           path: .cache
@@ -170,7 +170,7 @@ jobs:
         with:
           python-version: 3.10.13
       - run: echo "cache_id=$(date --utc '+%V')" >> $GITHUB_ENV
-      - uses: actions/cache@704facf57e6136b1bc63b828d79edcd491f0ee84 # v3.3.2
+      - uses: actions/cache@d4323d4df104b026a6aa633fdb11d772146be0bf # v4.2.2
         with:
           key: showcase-${{ env.cache_id }}
           path: .cache
