@@ -68,7 +68,6 @@ build() (
     sedi="sed -i"
   fi
 
-  command -v virtualenv >/dev/null
   [ -d "${RUNFILES}" ]
 
   cp -LR "${RUNFILES}/mesop/mesop" .
@@ -93,7 +92,7 @@ build() (
 
   chmod -R u+w,go+r .
 
-  virtualenv -q -p python3 venv
+  python3 -m venv venv
   export VIRTUAL_ENV=venv
   export PATH="${PWD}/venv/bin:${PATH}"
   unset PYTHON_HOME
