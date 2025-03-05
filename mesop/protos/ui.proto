@@ -266,6 +266,7 @@ message State {
 message Component {
     optional Key key = 3;
     optional Style style = 5;
+    optional string slot_name = 7;
     // Sent down only in debug mode; used for editor mode.
     optional string style_debug_json = 6;
 

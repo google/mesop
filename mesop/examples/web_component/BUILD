@@ -26,6 +26,7 @@ py_library(
         "//mesop/examples/web_component/hotkeys",
         "//mesop/examples/web_component/leaflet",
         "//mesop/examples/web_component/markedjs",
+        "//mesop/examples/web_component/named_slots",
         "//mesop/examples/web_component/plotly",
         "//mesop/examples/web_component/quickstart",
         "//mesop/examples/web_component/shared_js_module",

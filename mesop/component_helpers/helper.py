@@ -437,49 +437,193 @@ def insert_composite_component(
   )
 
 
+class _WebComponentWithSlots(Generic[S]):
+  def __init__(
+    self,
+    *,
+    type_proto: pb.WebComponentType,
+    key: str | None,
+    name: str,
+    named_slots_cls: type[S],
+  ):
+    """A context manager that creates a <web> component plus named slots."""
+
+    self.type_proto = type_proto
+    self.key = key
+    self.component_name = "<web>" + name
+    self.named_slots_cls = named_slots_cls
+
+    self.prev_node: pb.Component | None = None
+    self.created_component: pb.Component | None = None
+
+    # We will store {slot_name: SlotMetadata}, and then in __enter__
+    # we fill it in, once we know the parent node for sure.
+    self.named_slot_metadata: dict[str, SlotMetadata] = {}
+
+    # The user’s “slots” dataclass instance – we create it in __enter__.
+    self.slots_dataclass_instance: S | None = None
+
+  def __enter__(self) -> S:
+    # Insert the web component now
+    self.prev_node = runtime().context().current_node()
+
+    # Create the node for the <web> component
+    #   (like what insert_composite_component(...) does, but
+    #    we inline it here so we can hold a reference to it.)
+    source_code_location = None
+    if runtime().debug_mode:
+      source_code_location = get_app_caller_source_code_location()
+
+    parent_node = self.prev_node
+    self.created_component = parent_node.children.add()
+    self.created_component.MergeFrom(
+      create_component(
+        component_name=pb.ComponentName(
+          core_module=True, fn_name=self.component_name
+        ),
+        proto=self.type_proto,
+        key=self.key,
+        style=None,
+        source_code_location=source_code_location,
+      )
+    )
+
+    # Now, for each field in named_slots_cls, create a “detached” NodeTreeState.
+    # Then we build a NamedSlot object that, when called, sets the context to that sub‐tree.
+    # We'll store them in self.named_slot_metadata.
+
+    # We also need a separate NodeTreeState for each slot. The easiest approach is:
+    # 1) For each field in the dataclass -> create a NodeTreeState + NamedSlot
+    # 2) Build a "SlotMetadata" that we can splice in at __exit__ time.
+    #    We'll store them in self.named_slot_metadata[slot_name].
+
+    slot_fields = get_type_hints(self.named_slots_cls).keys()
+    for field_name in slot_fields:
+      # Each field in the user’s named slots dataclass is a NamedSlot (enforced by @slotclass).
+      node_tree_state = NodeTreeState()
+      slot_meta = SlotMetadata(
+        node_slot=NodeSlot(
+          parent_node=self.created_component,  # We'll eventually put children here
+          insertion_index=0,  # We'll compute final insertion order in __exit__
+          name=field_name,
+        ),
+        node_tree_state=node_tree_state,
+      )
+      self.named_slot_metadata[field_name] = slot_meta
+
+    # Now build the user’s actual dataclass instance, passing NamedSlot(...) for each field.
+    # The NamedSlot constructor wants (node_tree_state, name).
+    # That object is what the user uses as “s.header()”, etc.
+
+    # Note: We'll preserve the order in slot_fields.  But in Python 3.7+,
+    # get_type_hints should preserve definition order for a standard dataclass.
+    # If not, you could also rely on <dataclass>.__dataclass_fields__.
+
+    slot_kwargs = {}
+    for field_name, slot_meta in self.named_slot_metadata.items():
+      slot_kwargs[field_name] = NamedSlot(
+        node_tree_state=slot_meta.node_tree_state,
+        name=slot_meta.node_slot.name,
+      )
+
+    # Instantiate user’s slot dataclass
+    self.slots_dataclass_instance = self.named_slots_cls(**slot_kwargs)
+
+    # Return the user’s slots dataclass, so they can do `with s.header(): ...`
+    return self.slots_dataclass_instance
+
+  def __exit__(self, exc_type, exc_val, exc_tb):
+    # Now we splice the sub-trees for each named slot into the web component's children.
+
+    # We'll track a running insertion index so the slots appear
+    # in the same order as the dataclass fields (or any order you like).
+    insertion_index = 0
+    for field_name in self.named_slot_metadata:
+      slot_meta = self.named_slot_metadata[field_name]
+      # Splice the children from slot_meta.node_tree_state into the web node
+      slot_children = slot_meta.node_tree_state.current_node().children
+
+      # Convert to a list so we can do insertion easily
+      current_children = list(self.created_component.children)
+      # Insert the new children at insertion_index
+      current_children[insertion_index:insertion_index] = slot_children
+      insertion_index += len(slot_children)
+
+      # Clear out the old children
+      del self.created_component.children[:]
+      # Copy them back
+      for child in current_children:
+        self.created_component.children.add().CopyFrom(child)
+
+    # Switch back to old node context
+    if self.prev_node is not None:
+      runtime().context().set_current_node(self.prev_node)
+
+    # If you need to remove "extra" node slots from the context,
+    # you might do `runtime().context().clear_node_slots_to_first_null_slot()`
+    # or something else. Typically you do that for nested @content_component use.
+
+    self.slots_dataclass_instance = None
+
+
 def insert_web_component(
   *,
   name: str,
   events: dict[str, Callable[[WebEvent], Any] | None] | None = None,
   properties: dict[str, Any] | None = None,
   key: str | None = None,
+  named_slots: type[S] | None = None,
 ):
   """
-  Inserts a web component into the current component tree.
+  Inserts a web component into the current component tree. If 'named_slots' is not
+  provided, it simply inserts and returns None.
 
-  Args:
-    name: The name of the web component. This should match the custom element name defined in JavaScript.
-    events: A dictionary where the key is the event name, which must match a web component property name defined in JavaScript.
-            The value is the event handler (callback) function.
-            Keys must not be "src", "srcdoc", or start with "on" to avoid web security risks.
-    properties: A dictionary where the key is the web component property name that's defined in JavaScript and the value is the
-                 property value which is plumbed to the JavaScript component.
-                 Keys must not be "src", "srcdoc", or start with "on" to avoid web security risks.
-    key: A unique identifier for the web component. Defaults to None.
+  If 'named_slots' is provided, it returns a context-manager object (like a
+  content component), so the user can do:
+
+     with insert_web_component(..., named_slots=MySlots) as slots:
+         with slots.header():
+             ...
+         with slots.body():
+             ...
+
+  Then, once the with-block ends, we finalize the sub-trees.
   """
   if events is None:
-    events = dict()
+    events = {}
+  if properties is None:
+    properties = {}
 
   filtered_events = filter_web_events(events)
-
-  if properties is None:
-    properties = dict()
-
   check_property_keys_is_safe(filtered_events.keys())
   check_property_keys_is_safe(properties.keys())
+
+  # register event handlers
   event_to_ids: dict[str, str] = {}
-  for event in filtered_events:
-    event_handler = filtered_events[event]
-    event_to_ids[event] = register_event_handler(event_handler, WebEvent)
+  for event, handler in filtered_events.items():
+    event_to_ids[event] = register_event_handler(handler, WebEvent)
+
   type_proto = pb.WebComponentType(
     properties_json=json.dumps(properties),
     events_json=json.dumps(event_to_ids),
   )
-  return insert_composite_component(
-    # Prefix with <web> to ensure there's never any overlap with built-in components.
-    type_name="<web>" + name,
-    proto=type_proto,
+
+  # If user didn't provide named_slots, just do immediate insertion
+  if named_slots is None:
+    # This is the original pattern
+    return insert_composite_component(
+      type_name="<web>" + name,
+      proto=type_proto,
+      key=key,
+      style=None,
+    )
+
+  # Otherwise, return our new WebComponentWithSlots manager
+  return _WebComponentWithSlots(
+    type_proto=type_proto,
     key=key,
+    name=name,
+    named_slots_cls=named_slots,
   )
 
 
