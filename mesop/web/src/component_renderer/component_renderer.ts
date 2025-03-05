@@ -205,6 +205,7 @@ export class ComponentRenderer {
           COMPONENT_RENDERER_ELEMENT_NAME,
         );
         (childElement as any)['component'] = child;
+        // child.getKey();
         this.customElement!.appendChild(childElement);
       }
     }
