@@ -8,8 +8,7 @@ Mesop is configured at the application level using environment variables.
 
 ### MESOP_STATIC_FOLDER
 
-> **NOTE:** By default, this feature is not enabled, but in an upcoming release, the
-default will be `static`.
+> **NOTE:** This feature will be enabled by default in the next Mesop release and set to use `static` as the default static folder. You can still set it to another directory or `""` to disable the feature.
 
 Allows access to static files from the Mesop server.
 
