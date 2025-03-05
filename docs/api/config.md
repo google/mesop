@@ -257,7 +257,12 @@ By default, this is not enabled. You can enable this by setting it to `true`.
 
     This is an experimental feature and is subject to breaking change. Please follow [https://github.com/google/mesop/issues/1028](https://github.com/google/mesop/issues/1028) for updates.
 
-This uses WebSockets instead of HTTP Server-Sent Events (SSE) as the transport protocol for UI updates. Enabling this also enables user events to be handled concurrently, which is particularly useful supporting interactivity for long-running event handlers.
+This uses WebSockets instead of HTTP Server-Sent Events (SSE) as the transport protocol for UI updates. Using WebSockets also changes the Mesop server architecture to be stateful (e.g. meaning a server restart or routing to a different server instance means the user will lose state). If you enable this feature, then you should ensure the following:
+
+- Either a single server instance is used *or* you route a particular user to the same server for a given session (i.e. [session affinity](https://cloud.google.com/run/docs/configuring/session-affinity)).
+- Either ensure user state is *not* critical (e.g. it's OK if it's cleared out due to server restart, which could happen at any time on typical cloud infrastructure) or is persisted somewhere (e.g. written to a database).
+
+Enabling this also allows user events to be handled concurrently, which is particularly useful supporting interactivity for long-running event handlers.
 
 By default, this is not enabled. You can enable this by setting it to `true`.
 
