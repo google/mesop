@@ -14,6 +14,9 @@ from mesop.examples.testing import (
   csp_escaping as csp_escaping,
 )
 from mesop.examples.testing import (
+  csp_font_srcs as csp_font_srcs,
+)
+from mesop.examples.testing import (
   csp_trusted_types as csp_trusted_types,
 )
 from mesop.examples.testing import (
