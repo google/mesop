@@ -150,7 +150,6 @@ export class Channel {
           clearTimeout(this.isWaitingTimeout);
           this.isWaiting = false;
           this._isHotReloading = false;
-          // Instead of waiting only on processNextMessage, wait until processing is finished.
           await this.waitForProcessingToFinish();
           this.dequeueEvent();
           return;
@@ -201,7 +200,6 @@ export class Channel {
         if (payloadData === STREAM_END) {
           this._isHotReloading = false;
           this.status = ChannelStatus.CLOSED;
-          // Use the helper method so that dequeue happens after processing is complete.
           await this.waitForProcessingToFinish();
           this.dequeueEvent();
           return;
