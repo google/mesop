@@ -13,5 +13,3 @@ Text to text component allows you to take in user inputted text and return a tra
 ## API
 
 ::: mesop.labs.text_to_text.text_to_text
-
-::: mesop.labs.text_to_text.text_io
