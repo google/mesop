@@ -66,7 +66,6 @@ export class Channel {
   // Client-side state
   private overridedTitle = '';
 
-  // Add new properties for message queue
   private messageQueue: UiResponse[] = [];
   private isProcessingMessage = false;
 
@@ -368,7 +367,6 @@ export class Channel {
       await this.handleUiResponse(request, uiResponse, initParams);
     } finally {
       this.isProcessingMessage = false;
-      // Process next message if any
       if (this.messageQueue.length > 0) {
         await this.processNextMessage(request, initParams);
       }
