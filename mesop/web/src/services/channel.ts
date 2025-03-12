@@ -66,6 +66,10 @@ export class Channel {
   // Client-side state
   private overridedTitle = '';
 
+  // Add new properties for message queue
+  private messageQueue: UiResponse[] = [];
+  private isProcessingMessage = false;
+
   constructor(
     private title: Title,
     private themeService: ThemeService,
@@ -144,7 +148,7 @@ export class Channel {
         const array = toUint8Array(atob(data));
         const uiResponse = UiResponse.deserializeBinary(array);
         console.debug('Server event (SSE): ', uiResponse.toObject());
-        this.handleUiResponse(request, uiResponse, initParams);
+        this.queueMessage(request, uiResponse, initParams);
       });
     });
   }
@@ -193,7 +197,7 @@ export class Channel {
         const array = toUint8Array(atob(payloadData));
         const uiResponse = UiResponse.deserializeBinary(array);
         console.debug('Server event (WebSocket): ', uiResponse.toObject());
-        this.handleUiResponse(request, uiResponse, initParams);
+        this.queueMessage(request, uiResponse, initParams);
       });
     };
 
@@ -338,6 +342,36 @@ export class Channel {
     } finally {
       this.commandQueuePromise = undefined;
       resolveHandle();
+    }
+  }
+
+  private queueMessage(
+    request: UiRequest,
+    uiResponse: UiResponse,
+    initParams: InitParams,
+  ) {
+    // We want to process only one server message at a time, otherwise
+    // you can get race conditions like this:
+    // https://github.com/google/mesop/issues/1231
+    this.messageQueue.push(uiResponse);
+    this.processNextMessage(request, initParams);
+  }
+
+  private async processNextMessage(request: UiRequest, initParams: InitParams) {
+    if (this.isProcessingMessage || this.messageQueue.length === 0) {
+      return;
+    }
+
+    this.isProcessingMessage = true;
+    try {
+      const uiResponse = this.messageQueue.shift()!;
+      await this.handleUiResponse(request, uiResponse, initParams);
+    } finally {
+      this.isProcessingMessage = false;
+      // Process next message if any
+      if (this.messageQueue.length > 0) {
+        await this.processNextMessage(request, initParams);
+      }
     }
   }
 
