@@ -276,7 +276,6 @@ def configure_static_file_serving(
         ]
       )
     if security_policy and security_policy.allowed_font_srcs:
-      print(security_policy.allowed_font_srcs)
       csp["font-src"] += " " + " ".join(
         [sanitize_url_for_csp(url) for url in security_policy.allowed_font_srcs]
       )
