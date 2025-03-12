@@ -72,7 +72,12 @@ export class Channel {
   private overridedTitle = '';
 
   private messageQueue: QueuedMessage[] = [];
-  private isProcessingMessage = false;
+
+  private processingMessageDeferred: {
+    promise: Promise<void>;
+    resolve: () => void;
+    reject: (reason?: any) => void;
+  } | null = null;
 
   constructor(
     private title: Title,
@@ -137,7 +142,7 @@ export class Channel {
 
     this.eventSource.addEventListener('message', (e) => {
       // Looks like Angular has a bug where it's not intercepting EventSource onmessage.
-      zone.run(() => {
+      zone.run(async () => {
         const data = (e as any).data;
         if (data === STREAM_END) {
           this.eventSource.close();
@@ -145,6 +150,8 @@ export class Channel {
           clearTimeout(this.isWaitingTimeout);
           this.isWaiting = false;
           this._isHotReloading = false;
+          // Instead of waiting only on processNextMessage, wait until processing is finished.
+          await this.waitForProcessingToFinish();
           this.dequeueEvent();
           return;
         }
@@ -185,7 +192,7 @@ export class Channel {
     };
 
     this.webSocket.onmessage = (event) => {
-      zone.run(() => {
+      zone.run(async () => {
         const prefix = 'data: ';
         const payloadData = (
           event.data.slice(prefix.length) as string
@@ -194,6 +201,8 @@ export class Channel {
         if (payloadData === STREAM_END) {
           this._isHotReloading = false;
           this.status = ChannelStatus.CLOSED;
+          // Use the helper method so that dequeue happens after processing is complete.
+          await this.waitForProcessingToFinish();
           this.dequeueEvent();
           return;
         }
@@ -349,36 +358,41 @@ export class Channel {
     }
   }
 
-  private queueMessage(request: UiRequest, response: UiResponse) {
-    // We want to process only one message pair at a time, otherwise
-    // you can get race conditions like this:
-    // https://github.com/google/mesop/issues/1231
-    this.messageQueue.push({
-      request,
-      response,
-    });
-    this.processNextMessage();
-  }
-
   private async processNextMessage() {
-    if (this.isProcessingMessage || this.messageQueue.length === 0) {
+    if (this.processingMessageDeferred) {
       return;
     }
 
-    this.isProcessingMessage = true;
-    try {
+    this.processingMessageDeferred = createDeferred();
+
+    while (this.messageQueue.length > 0) {
       const queuedMessage = this.messageQueue.shift()!;
-      await this.handleUiResponse(
-        queuedMessage.request,
-        queuedMessage.response,
-        this.initParams,
-      );
-    } finally {
-      this.isProcessingMessage = false;
-      if (this.messageQueue.length > 0) {
-        await this.processNextMessage();
+      try {
+        await this.handleUiResponse(
+          queuedMessage.request,
+          queuedMessage.response,
+          this.initParams,
+        );
+      } catch (error) {
+        console.error('Error handling UI response:', error);
       }
     }
+
+    // All queued messages processed; resolve the promise and clear it.
+    this.processingMessageDeferred.resolve();
+    this.processingMessageDeferred = null;
+  }
+
+  private async waitForProcessingToFinish(): Promise<void> {
+    if (this.processingMessageDeferred) {
+      return this.processingMessageDeferred.promise;
+    }
+    return;
+  }
+
+  private queueMessage(request: UiRequest, response: UiResponse) {
+    this.messageQueue.push({request, response});
+    this.processNextMessage();
   }
 
   dispatch(userEvent: UserEvent) {
@@ -504,6 +518,20 @@ export class Channel {
     request.setUserEvent(userEvent);
     this.init(this.initParams, request);
   }
+}
+
+function createDeferred<T = void>(): {
+  promise: Promise<T>;
+  resolve: (value: T | PromiseLike<T>) => void;
+  reject: (reason?: any) => void;
+} {
+  let resolve: (value: T | PromiseLike<T>) => void = () => {};
+  let reject: (reason?: any) => void = () => {};
+  const promise = new Promise<T>((res, rej) => {
+    resolve = res;
+    reject = rej;
+  });
+  return {promise, resolve, reject};
 }
 
 function generatePayloadString(request: UiRequest): string {
