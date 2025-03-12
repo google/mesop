@@ -356,6 +356,17 @@ export class Channel {
     }
   }
 
+  private queueMessage(request: UiRequest, response: UiResponse) {
+    // We want to process only one message pair at a time, otherwise
+    // you can get race conditions like this:
+    // https://github.com/google/mesop/issues/1231
+    this.messageQueue.push({
+      request,
+      response,
+    });
+    this.processNextMessage();
+  }
+
   private async processNextMessage() {
     if (this.processingMessageDeferred) {
       return;
@@ -386,11 +397,6 @@ export class Channel {
       return this.processingMessageDeferred.promise;
     }
     return;
-  }
-
-  private queueMessage(request: UiRequest, response: UiResponse) {
-    this.messageQueue.push({request, response});
-    this.processNextMessage();
   }
 
   dispatch(userEvent: UserEvent) {
