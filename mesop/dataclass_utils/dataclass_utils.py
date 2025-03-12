@@ -63,7 +63,7 @@ def dataclass_with_defaults(cls: Type[C]) -> Type[C]:
       except TypeError as exc:
         error_message = (
           f"mutable default {type(classVar)} for field {name} is not allowed: use default_factory for state class {cls.__name__}. "
-          "See: https://google.github.io/mesop/guides/state_management/#use-immutable-default-values"
+          "See: https://google.github.io/mesop/guides/state-management/#use-immutable-default-values"
         )
         raise MesopDeveloperException(error_message) from exc
 
