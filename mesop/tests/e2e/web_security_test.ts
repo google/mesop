@@ -20,6 +20,12 @@ testInProdOnly('csp escaping', async ({page}) => {
   expect(cleanCsp(csp)).toMatchSnapshot('csp_escaping.txt');
 });
 
+testInProdOnly('csp font srcs', async ({page}) => {
+  const response = await page.goto('/testing/csp_font_srcs');
+  const csp = response?.headers()['content-security-policy']!;
+  expect(cleanCsp(csp)).toMatchSnapshot('csp_allowed_font_srcs.txt');
+});
+
 testInProdOnly('csp trusted types', async ({page}) => {
   const response = await page.goto('/testing/csp_trusted_types');
   const csp = response?.headers()['content-security-policy']!;
