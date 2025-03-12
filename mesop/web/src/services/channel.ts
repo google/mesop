@@ -150,7 +150,7 @@ export class Channel {
           clearTimeout(this.isWaitingTimeout);
           this.isWaiting = false;
           this._isHotReloading = false;
-          await this.waitForProcessingToFinish();
+          await this.processMessageQueue();
           this.dequeueEvent();
           return;
         }
@@ -200,7 +200,7 @@ export class Channel {
         if (payloadData === STREAM_END) {
           this._isHotReloading = false;
           this.status = ChannelStatus.CLOSED;
-          await this.waitForProcessingToFinish();
+          await this.processMessageQueue();
           this.dequeueEvent();
           return;
         }
@@ -364,12 +364,12 @@ export class Channel {
       request,
       response,
     });
-    this.processNextMessage();
+    this.processMessageQueue();
   }
 
-  private async processNextMessage() {
+  private async processMessageQueue() {
     if (this.processingMessageDeferred) {
-      return;
+      return this.processingMessageDeferred.promise;
     }
 
     this.processingMessageDeferred = createDeferred();
@@ -390,13 +390,6 @@ export class Channel {
     // All queued messages processed; resolve the promise and clear it.
     this.processingMessageDeferred.resolve();
     this.processingMessageDeferred = null;
-  }
-
-  private async waitForProcessingToFinish(): Promise<void> {
-    if (this.processingMessageDeferred) {
-      return this.processingMessageDeferred.promise;
-    }
-    return;
   }
 
   dispatch(userEvent: UserEvent) {
