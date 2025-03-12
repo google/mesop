@@ -1,15 +1,15 @@
 from typing import Any, Callable, Literal
 
-import mesop.labs as mel
+import mesop as me
 
 
-@mel.web_component(path="./video_recorder.js")
+@me.web_component(path="./video_recorder.js")
 def video_recorder(
   *,
   enabled: bool = False,
   state: Literal["disabled", "initializing", "recording"] = "disabled",
-  on_data: Callable[[mel.WebEvent], Any] | None = None,
-  on_state_change: Callable[[mel.WebEvent], Any] | None = None,
+  on_data: Callable[[me.WebEvent], Any] | None = None,
+  on_state_change: Callable[[me.WebEvent], Any] | None = None,
 ):
   """Records video and streams video to the Mesop server or another web component.
 
@@ -36,7 +36,7 @@ def video_recorder(
     on_state_change: Notifications when webcam state changes. Mainly used for custom
                      button styling.
   """
-  return mel.insert_web_component(
+  return me.insert_web_component(
     name="video-recorder",
     events={
       "dataEvent": on_data,

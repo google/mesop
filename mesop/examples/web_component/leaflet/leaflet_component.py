@@ -1,15 +1,15 @@
 from typing import Any, Callable, Dict, List, Tuple
 
-import mesop.labs as mel
+import mesop as me
 
 
-@mel.web_component(path="./leaflet_component.js")
+@me.web_component(path="./leaflet_component.js")
 def leaflet_map_component(
   *,
   center: Tuple[float, float] = (0.0, 0.0),  # [latitude, longitude]
   zoom: int = 13,
   markers: List[Dict[str, Any]] | None = None,  # List of marker objects
-  on_click: Callable[[mel.WebEvent], Any] | None = None,
+  on_click: Callable[[me.WebEvent], Any] | None = None,
   key: str | None = None,
 ):
   """
@@ -33,7 +33,7 @@ def leaflet_map_component(
     "markers": markers if markers else [],
   }
 
-  return mel.insert_web_component(
+  return me.insert_web_component(
     name="leaflet-map-component",
     key=key,
     events=events,

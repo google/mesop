@@ -1,5 +1,4 @@
 import mesop as me
-import mesop.labs as mel
 from mesop.examples.web_component.code_mirror_editor.code_mirror_editor_component import (
   code_mirror_editor_component,
 )
@@ -67,6 +66,6 @@ def on_reset(e: me.ClickEvent):
   state.code = "# Add your Python code here."
 
 
-def on_editor_blur(e: mel.WebEvent):
+def on_editor_blur(e: me.WebEvent):
   state = me.state(State)
   state.code = e.value["code"]

@@ -35,10 +35,16 @@ from mesop.component_helpers.helper import (
   content_component as content_component,
 )
 from mesop.component_helpers.helper import (
+  insert_web_component as insert_web_component,
+)
+from mesop.component_helpers.helper import (
   slot as slot,
 )
 from mesop.component_helpers.helper import (
   slotclass as slotclass,
+)
+from mesop.component_helpers.web_component import (
+  web_component as web_component,
 )
 from mesop.components.accordion.accordion import accordion as accordion
 from mesop.components.audio.audio import audio as audio
@@ -215,6 +221,7 @@ from mesop.events import (
 from mesop.events import (
   LoadEvent as LoadEvent,
 )
+from mesop.events import WebEvent as WebEvent
 from mesop.exceptions import (
   MesopDeveloperException as MesopDeveloperException,
 )

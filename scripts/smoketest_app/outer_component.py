@@ -1,16 +1,16 @@
 from typing import Any, Callable
 
-import mesop.labs as mel
+import mesop as me
 
 
-@mel.web_component(path="./outer_component.js")
+@me.web_component(path="./outer_component.js")
 def outer_component(
   *,
   value: int,
-  on_increment: Callable[[mel.WebEvent], Any],
+  on_increment: Callable[[me.WebEvent], Any],
   key: str | None = None,
 ):
-  return mel.insert_web_component(
+  return me.insert_web_component(
     name="outer-component",
     key=key,
     events={

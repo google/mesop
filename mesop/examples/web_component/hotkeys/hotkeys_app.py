@@ -12,7 +12,6 @@ Other potential usages:
 """
 
 import mesop as me
-import mesop.labs as mel
 from mesop.examples.web_component.hotkeys.hotkeys_component import (
   HotKey,
   hotkeys_component,
@@ -63,7 +62,7 @@ def on_input(e: me.InputEvent | me.InputEnterEvent):
   state.input = e.value
 
 
-def on_key_press(e: mel.WebEvent):
+def on_key_press(e: me.WebEvent):
   state = me.state(State)
 
   if e.value["action"] == "submit":

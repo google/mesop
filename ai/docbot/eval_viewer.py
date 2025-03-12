@@ -5,7 +5,6 @@ import urllib.parse
 from dataclasses import dataclass, field
 
 import mesop as me
-import mesop.labs as mel
 
 # Get the directory from the environment variable
 EVAL_DIR = os.environ.get("EVAL_DIR")
@@ -139,12 +138,12 @@ def index():
             me.text(item_2.output)
 
 
-@mel.web_component(path="./scrollable.js")
+@me.web_component(path="./scrollable.js")
 def scrollable(
   *,
   key: str | None = None,
 ):
-  return mel.insert_web_component(
+  return me.insert_web_component(
     name="scrollable-component",
     key=key,
   )

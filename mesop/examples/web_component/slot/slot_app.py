@@ -1,7 +1,6 @@
 from pydantic import BaseModel
 
 import mesop as me
-import mesop.labs as mel
 from mesop.examples.web_component.slot.counter_component import (
   counter_component,
 )
@@ -67,11 +66,11 @@ class ChangeValue(BaseModel):
   value: int
 
 
-def on_increment(e: mel.WebEvent):
+def on_increment(e: me.WebEvent):
   increment = ChangeValue(**e.value)
   me.state(State).value = increment.value
 
 
-def on_decrement(e: mel.WebEvent):
+def on_decrement(e: me.WebEvent):
   decrement = ChangeValue(**e.value)
   me.state(State).value = decrement.value

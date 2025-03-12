@@ -2,7 +2,6 @@ import firebase_admin
 from firebase_admin import auth
 
 import mesop as me
-import mesop.labs as mel
 from mesop.examples.web_component.firebase_auth.firebase_auth_component import (
   firebase_auth_component,
 )
@@ -42,7 +41,7 @@ class State:
   email: str
 
 
-def on_auth_changed(e: mel.WebEvent):
+def on_auth_changed(e: me.WebEvent):
   firebaseAuthToken = e.value
   if not firebaseAuthToken:
     me.state(State).email = ""

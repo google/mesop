@@ -1,16 +1,16 @@
 import base64
 from typing import Any, Callable
 
-import mesop.labs as mel
+import mesop as me
 
 
-@mel.web_component(path="./audio_player.js")
+@me.web_component(path="./audio_player.js")
 def audio_player(
   *,
   enabled: bool = False,
   data: bytes = b"",
-  on_play: Callable[[mel.WebEvent], Any] | None = None,
-  on_stop: Callable[[mel.WebEvent], Any] | None = None,
+  on_play: Callable[[me.WebEvent], Any] | None = None,
+  on_stop: Callable[[me.WebEvent], Any] | None = None,
 ):
   """Plays audio streamed from the server or from other web components.
 
@@ -38,7 +38,7 @@ def audio_player(
     on_stop: Event handler for when the stop button is pressed. For this demo, the stop
              button has been removed.
   """
-  return mel.insert_web_component(
+  return me.insert_web_component(
     name="audio-player",
     events={
       "playEvent": on_play,

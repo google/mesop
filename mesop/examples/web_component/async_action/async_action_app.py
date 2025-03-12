@@ -2,7 +2,6 @@ import random
 from dataclasses import field
 
 import mesop as me
-import mesop.labs as mel
 from mesop.examples.web_component.async_action.async_action_component import (
   AsyncAction,
   async_action_component,
@@ -69,12 +68,12 @@ def on_click(e: me.ClickEvent):
   state.boxes[e.key][1] = state.duration
 
 
-def on_started(e: mel.WebEvent):
+def on_started(e: me.WebEvent):
   state = me.state(State)
   state.action = ""
 
 
-def on_finished(e: mel.WebEvent):
+def on_finished(e: me.WebEvent):
   state = me.state(State)
   state.action = ""
   state.boxes[e.value["action"]][0] = False
