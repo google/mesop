@@ -1,7 +1,7 @@
 from dataclasses import asdict, dataclass, field
 from typing import Any, Callable, Literal
 
-import mesop.labs as mel
+import mesop as me
 
 
 @dataclass
@@ -13,14 +13,14 @@ class HotKey:
   )
 
 
-@mel.web_component(path="./hotkeys_component.js")
+@me.web_component(path="./hotkeys_component.js")
 def hotkeys_component(
   *,
   hotkeys: list[HotKey],
-  on_hotkey_press: Callable[[mel.WebEvent], Any],
+  on_hotkey_press: Callable[[me.WebEvent], Any],
   key: str | None = None,
 ):
-  return mel.insert_web_component(
+  return me.insert_web_component(
     name="hotkeys-component",
     key=key,
     events={

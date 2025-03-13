@@ -11,7 +11,6 @@ from typing import Tuple
 from pydantic import BaseModel
 
 import mesop as me
-import mesop.labs as mel
 from mesop.examples.web_component.leaflet.leaflet_component import (
   leaflet_map_component,
 )
@@ -57,7 +56,7 @@ class MapClick(BaseModel):
   latlng: Tuple[float, float]
 
 
-def on_map_click(e: mel.WebEvent):
+def on_map_click(e: me.WebEvent):
   click = MapClick(**e.value)
   me.state(
     State

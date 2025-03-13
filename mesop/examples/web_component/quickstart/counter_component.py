@@ -1,16 +1,16 @@
 from typing import Any, Callable
 
-import mesop.labs as mel
+import mesop as me
 
 
-@mel.web_component(path="./counter_component.js")
+@me.web_component(path="./counter_component.js")
 def counter_component(
   *,
   value: int,
-  on_decrement: Callable[[mel.WebEvent], Any],
+  on_decrement: Callable[[me.WebEvent], Any],
   key: str | None = None,
 ):
-  return mel.insert_web_component(
+  return me.insert_web_component(
     name="quickstart-counter-component",
     key=key,
     events={

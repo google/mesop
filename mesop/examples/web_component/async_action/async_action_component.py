@@ -1,7 +1,7 @@
 from dataclasses import asdict, dataclass
 from typing import Any, Callable
 
-import mesop.labs as mel
+import mesop as me
 
 
 @dataclass
@@ -10,11 +10,11 @@ class AsyncAction:
   duration_seconds: int
 
 
-@mel.web_component(path="./async_action_component.js")
+@me.web_component(path="./async_action_component.js")
 def async_action_component(
   *,
-  on_started: Callable[[mel.WebEvent], Any],
-  on_finished: Callable[[mel.WebEvent], Any],
+  on_started: Callable[[me.WebEvent], Any],
+  on_finished: Callable[[me.WebEvent], Any],
   action: AsyncAction | None = None,
   key: str | None = None,
 ):
@@ -30,7 +30,7 @@ def async_action_component(
   The other benefit of this component is that it works generically (rather than say
   implementing a custom snackbar widget as a web component).
   """
-  return mel.insert_web_component(
+  return me.insert_web_component(
     name="async-action-component",
     key=key,
     events={

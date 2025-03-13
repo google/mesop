@@ -8,7 +8,6 @@ from typing import Generator, Literal
 from docs_index import NodeWithScore, ask, retrieve
 
 import mesop as me
-import mesop.labs as mel
 
 
 def on_load(e: me.LoadEvent):
@@ -503,13 +502,13 @@ def citation_tooltip(citation_number: int):
       )
 
 
-@mel.web_component(path="./citation.js")
+@me.web_component(path="./citation.js")
 def citation_box(
   *,
   url: str,
   key: str | None = None,
 ):
-  return mel.insert_web_component(
+  return me.insert_web_component(
     name="citation-component",
     key=key,
     properties={
@@ -636,7 +635,7 @@ def get_citation_number(
   raise ValueError(f"Citation number {citation_number} not found")
 
 
-@mel.web_component(path="./frame_listener.js")
+@me.web_component(path="./frame_listener.js")
 def frame_listener(
   *,
   key: str | None = None,

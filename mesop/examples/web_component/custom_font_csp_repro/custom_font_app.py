@@ -1,7 +1,6 @@
 from pydantic import BaseModel
 
 import mesop as me
-import mesop.labs as mel
 from mesop.examples.web_component.quickstart.counter_component import (
   counter_component,
 )
@@ -40,7 +39,7 @@ class ChangeValue(BaseModel):
   value: int
 
 
-def on_decrement(e: mel.WebEvent):
+def on_decrement(e: me.WebEvent):
   # Creating a Pydantic model from the JSON value of the WebEvent
   # to enforce type safety.
   decrement = ChangeValue(**e.value)

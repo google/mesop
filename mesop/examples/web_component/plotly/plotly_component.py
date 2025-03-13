@@ -1,6 +1,6 @@
-import mesop.labs as mel
+import mesop as me
 
 
-@mel.web_component(path="./plotly_component.js")
+@me.web_component(path="./plotly_component.js")
 def plotly_component():
-  return mel.insert_web_component(name="plotly-component")
+  return me.insert_web_component(name="plotly-component")

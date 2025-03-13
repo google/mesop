@@ -1,14 +1,14 @@
 from typing import Any, Callable, Literal
 
-import mesop.labs as mel
+import mesop as me
 
 
-@mel.web_component(path="./audio_recorder.js")
+@me.web_component(path="./audio_recorder.js")
 def audio_recorder(
   *,
   state: Literal["disabled", "initializing", "recording"] = "disabled",
-  on_data: Callable[[mel.WebEvent], Any] | None = None,
-  on_state_change: Callable[[mel.WebEvent], Any] | None = None,
+  on_data: Callable[[me.WebEvent], Any] | None = None,
+  on_state_change: Callable[[me.WebEvent], Any] | None = None,
 ):
   """Records audio and streams audio to the Mesop server or other web components.
 
@@ -41,7 +41,7 @@ def audio_recorder(
     on_state_change: Notifications when microphone state changes. Mainly used for custom
                      button styling.
   """
-  return mel.insert_web_component(
+  return me.insert_web_component(
     name="audio-recorder",
     events={
       "dataEvent": on_data,

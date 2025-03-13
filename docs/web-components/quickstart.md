@@ -14,13 +14,13 @@ Let's first take a look at the Python module which defines the interface so that
 --8<-- "mesop/examples/web_component/quickstart/counter_component.py"
 ```
 
-The first part you will notice is the decorator: `@mel.web_component`. This annotates a function as a web component and specifies where the corresponding JavaScript module is located, relative to the location of this Python module.
+The first part you will notice is the decorator: `@me.web_component`. This annotates a function as a web component and specifies where the corresponding JavaScript module is located, relative to the location of this Python module.
 
 We've defined the function parameters just like a regular Python function.
 
 > Tip: We recommend annotating your parameter with types because Mesop will do runtime validation which will catch type issues earlier.
 
-Finally, we call the function `mel.insert_web_component` with the following arguments:
+Finally, we call the function `me.insert_web_component` with the following arguments:
 
 - `name` - This is the web component name and must match the name defined in the JavaScript module.
 - `key` - Like all components, web components accept a key which is a unique identifier. See the [component key docs](../components/index.md#component-key) for more info.

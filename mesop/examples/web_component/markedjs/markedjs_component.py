@@ -1,9 +1,9 @@
-import mesop.labs as mel
+import mesop as me
 
 
-@mel.web_component(path="./markedjs_component.js")
+@me.web_component(path="./markedjs_component.js")
 def markedjs_component(markdown: str):
-  return mel.insert_web_component(
+  return me.insert_web_component(
     name="markedjs-component",
     properties={
       "markdown": markdown,

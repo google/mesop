@@ -1,22 +1,22 @@
 from typing import Any, Callable
 
-import mesop.labs as mel
+import mesop as me
 
 _HOST = "generativelanguage.googleapis.com"
 
 _GEMINI_BIDI_WEBSOCKET_URI = "wss://{host}/ws/google.ai.generativelanguage.v1alpha.GenerativeService.BidiGenerateContent?key={api_key}"
 
 
-@mel.web_component(path="./gemini_live.js")
+@me.web_component(path="./gemini_live.js")
 def gemini_live(
   *,
   api_key: str = "",
   api_config: str = "",
   enabled: bool = False,
   input_prompt: str = "",
-  on_start: Callable[[mel.WebEvent], Any] | None = None,
-  on_stop: Callable[[mel.WebEvent], Any] | None = None,
-  on_tool_call: Callable[[mel.WebEvent], Any] | None = None,
+  on_start: Callable[[me.WebEvent], Any] | None = None,
+  on_stop: Callable[[me.WebEvent], Any] | None = None,
+  on_tool_call: Callable[[me.WebEvent], Any] | None = None,
   tool_call_responses: str = "",
 ):
   """Sets up direct web socket connection to Gemini Live API on the client.
@@ -41,7 +41,7 @@ def gemini_live(
     tool_call_responses: JSON string of custom tool call responses to send back to
                          Gemini Live API.
   """
-  return mel.insert_web_component(
+  return me.insert_web_component(
     name="gemini-live",
     events={
       "startEvent": on_start,

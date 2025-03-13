@@ -1,10 +1,10 @@
 import json
 from typing import Any
 
-import mesop.labs as mel
+import mesop as me
 
 
-@mel.web_component(path="./chartjs_component.js")
+@me.web_component(path="./chartjs_component.js")
 def chartjs_component(config: dict[str, Any]):
   """Creates a Chart.js chart within a Mesop application.
 
@@ -22,6 +22,6 @@ def chartjs_component(config: dict[str, Any]):
   Returns:
     A Mesop web component representing the Chart.js chart.
   """
-  return mel.insert_web_component(
+  return me.insert_web_component(
     name="chartjs-component", properties={"config": json.dumps(config)}
   )

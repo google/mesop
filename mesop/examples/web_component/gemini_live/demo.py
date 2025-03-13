@@ -16,7 +16,6 @@ from dataclasses import field
 from typing import Literal
 
 import mesop as me
-import mesop.labs as mel
 from mesop.examples.web_component.gemini_live.audio_player import audio_player
 from mesop.examples.web_component.gemini_live.audio_recorder import (
   audio_recorder,
@@ -306,17 +305,17 @@ def get_video_recorder_tooltip() -> str:
   return "Webcam disabled"
 
 
-def on_audio_play(e: mel.WebEvent):
+def on_audio_play(e: me.WebEvent):
   """Event for when audio player play button was clicked."""
   me.state(State).audio_player_enabled = True
 
 
-def on_audio_stop(e: mel.WebEvent):
+def on_audio_stop(e: me.WebEvent):
   """Event for when audio player stop button was clicked."""
   me.state(State).audio_player_enabled = False
 
 
-def on_audio_recorder_state_change(e: mel.WebEvent):
+def on_audio_recorder_state_change(e: me.WebEvent):
   """Event for when audio recorder state changes."""
   me.state(State).audio_recorder_state = e.value
 
@@ -327,17 +326,17 @@ def on_click_video_recorder_button(e: me.ClickEvent):
   state.video_recorder_enabled = not state.video_recorder_enabled
 
 
-def on_video_recorder_state_change(e: mel.WebEvent):
+def on_video_recorder_state_change(e: me.WebEvent):
   """Event for when audio recorder state changes."""
   me.state(State).video_recorder_state = e.value
 
 
-def on_gemini_live_started(e: mel.WebEvent):
+def on_gemini_live_started(e: me.WebEvent):
   """Event for when Gemin Live API start button was clicked."""
   me.state(State).gemini_live_enabled = True
 
 
-def on_gemini_live_stopped(e: mel.WebEvent):
+def on_gemini_live_stopped(e: me.WebEvent):
   """Event for when Gemin Live API stop button was clicked."""
   state = me.state(State)
   state.gemini_live_enabled = False
@@ -363,7 +362,7 @@ def click_mystery_box(e: me.ClickEvent):
   me.state(State).input_prompt = "I want to pick the box with the name " + e.key
 
 
-def on_tool_call(e: mel.WebEvent):
+def on_tool_call(e: me.WebEvent):
   """Handle custom tool request calls from Gemini Live API."""
   state = me.state(State)
   tool_calls = json.loads(e.value["toolCalls"])

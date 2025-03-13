@@ -1,16 +1,16 @@
 # google_maps_component.py
 from typing import Any, Callable, Dict, List, Tuple
 
-import mesop.labs as mel
+import mesop as me
 
 
-@mel.web_component(path="./google_maps_component.js")
+@me.web_component(path="./google_maps_component.js")
 def google_maps_component(
   *,
   center: Tuple[float, float] = (0.0, 0.0),  # [latitude, longitude]
   zoom: int = 13,
   markers: List[Dict[str, Any]] | None = None,  # List of marker objects
-  on_click: Callable[[mel.WebEvent], Any] | None = None,
+  on_click: Callable[[me.WebEvent], Any] | None = None,
   key: str | None = None,
 ):
   """
@@ -35,7 +35,7 @@ def google_maps_component(
     else [],  # Ensure markers is always a list (empty if None)
   }
 
-  return mel.insert_web_component(
+  return me.insert_web_component(
     name="google-maps-component",
     key=key,
     events=events,
