@@ -8,4 +8,4 @@ script-src 'self' 'nonce-{{NONCE}}'
 trusted-types angular angular#unsafe-bypass lit-html highlight.js
 require-trusted-types-for 'script'
 report-uri /__csp__
-frame-ancestors 'self' https://google.github.io
+frame-ancestors 'self' https://mesop-dev.github.io

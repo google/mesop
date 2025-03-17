@@ -11,7 +11,7 @@ app_port: 8080
 
 # Mesop demo app
 
-This app demonstrates Mesop's various components and features. Create your own Cloud Run app by following: https://google.github.io/mesop/guides/deployment/
+This app demonstrates Mesop's various components and features. Create your own Cloud Run app by following: https://mesop-dev.github.io/mesop/guides/deployment/
 
 ## Development
 
@@ -59,7 +59,7 @@ This app is deployed to Google Cloud Run.
 gcloud run deploy mesop --source .
 ```
 
-See our Mesop deployment [docs](https://google.github.io/mesop/guides/deployment/#deploy-to-google-cloud-run) for more background.
+See our Mesop deployment [docs](https://mesop-dev.github.io/mesop/guides/deployment/#deploy-to-google-cloud-run) for more background.
 
 ### Deploy to Hugging Face Spaces
 

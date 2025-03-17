@@ -21,7 +21,7 @@ def on_load(e: me.LoadEvent):
 @me.page(
   path="/date_range_picker",
   security_policy=me.SecurityPolicy(
-    allowed_iframe_parents=["https://google.github.io"]
+    allowed_iframe_parents=["https://mesop-dev.github.io"]
   ),
   on_load=on_load,
 )

@@ -4,9 +4,9 @@
 [![PyPI downloads](https://img.shields.io/pypi/dm/mesop)](https://pypi.org/project/mesop/)
 [![Twitter follow](https://img.shields.io/twitter/follow/mesop_dev?style=social&label=follow)](https://twitter.com/mesop_dev)
 
-- If you're interested in learning how to use Mesop, please [read our main docs](https://google.github.io/mesop/).
+- If you're interested in learning how to use Mesop, please [read our main docs](https://mesop-dev.github.io/mesop/).
 
-- If you're interested in contributing to the core Mesop framework, please [read our contributing guide](https://google.github.io/mesop/internal/contributing/).
+- If you're interested in contributing to the core Mesop framework, please [read our contributing guide](https://mesop-dev.github.io/mesop/internal/contributing/).
 
 ### Used at Google for rapid internal app development
 
@@ -30,7 +30,7 @@ Mesop is a Python-based UI framework that allows you to rapidly build web apps l
 
 ## Write your first Mesop app in less than 10 lines of code...
 
-[Demo app](https://google.github.io/mesop/demo/?demo=text_to_text)
+[Demo app](https://mesop-dev.github.io/mesop/demo/?demo=text_to_text)
 
 ```python
 import mesop as me
@@ -73,7 +73,7 @@ pip install mesop
 mesop main.py
 ```
 
-Learn more in [Getting Started](https://google.github.io/mesop/getting-started/installing/).
+Learn more in [Getting Started](https://mesop-dev.github.io/mesop/getting-started/installing/).
 
 ## Reporting a security issue
 

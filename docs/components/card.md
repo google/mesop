@@ -4,7 +4,7 @@ Card is based on the [Angular Material card component](https://material.angular.
 
 ## Examples
 
-<iframe class="component-demo" src="https://google.github.io/mesop/demo/?demo=card" style="height: 200px"></iframe>
+<iframe class="component-demo" src="https://mesop-dev.github.io/mesop/demo/?demo=card" style="height: 200px"></iframe>
 
 ```python
 --8<-- "demo/card.py"

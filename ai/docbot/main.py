@@ -29,7 +29,7 @@ def on_load(e: me.LoadEvent):
     ],
     allowed_iframe_parents=[
       "https://huggingface.co",
-      "https://google.github.io",
+      "https://mesop-dev.github.io",
       "http://localhost:*",
     ],
   ),
@@ -595,7 +595,7 @@ def get_citations(source_nodes: list[NodeWithScore]) -> list[Citation]:
 
   for i, source_node in enumerate(source_nodes):
     url: str = source_node.node.metadata.get("url", "")
-    breadcrumbs = url.split("https://google.github.io/mesop/")[-1].split("/")
+    breadcrumbs = url.split("https://mesop-dev.github.io/mesop/")[-1].split("/")
     title = source_node.node.metadata.get("title", "")
     content_lines = source_node.node.get_content().split("\n")
 

@@ -369,7 +369,7 @@ Code Example:
 ```python
 @me.page(
   security_policy=me.SecurityPolicy(
-    allowed_iframe_parents=["https://google.github.io"]
+    allowed_iframe_parents=["https://mesop-dev.github.io"]
   ),
   path="/audio",
 )
@@ -485,7 +485,7 @@ import mesop as me
 
 @me.page(
   security_policy=me.SecurityPolicy(
-    allowed_iframe_parents=["https://google.github.io"]
+    allowed_iframe_parents=["https://mesop-dev.github.io"]
   ),
   path="/badge",
 )
@@ -626,7 +626,7 @@ def on_update(event: me.CheckboxChangeEvent):
 
 @me.page(
   security_policy=me.SecurityPolicy(
-    allowed_iframe_parents=["https://google.github.io"]
+    allowed_iframe_parents=["https://mesop-dev.github.io"]
   ),
   path="/checkbox",
 )
@@ -692,7 +692,7 @@ Code Example:
 ```python
 @me.page(
   security_policy=me.SecurityPolicy(
-    allowed_iframe_parents=["https://google.github.io"]
+    allowed_iframe_parents=["https://mesop-dev.github.io"]
   ),
   path="/divider",
 )
@@ -727,12 +727,12 @@ import mesop as me
 
 @me.page(
   security_policy=me.SecurityPolicy(
-    allowed_iframe_parents=["https://google.github.io"]
+    allowed_iframe_parents=["https://mesop-dev.github.io"]
   ),
   path="/embed",
 )
 def app():
-  src = "https://google.github.io/mesop/"
+  src = "https://mesop-dev.github.io/mesop/"
   me.text("Embedding: " + src)
   me.embed(
     src=src,
@@ -770,7 +770,7 @@ def app():
   me.html(
     """
 Custom HTML
-<a href="https://google.github.io/mesop/" target="_blank">mesop</a>
+<a href="https://mesop-dev.github.io/mesop/" target="_blank">mesop</a>
 """,
     mode="sanitized",
   )
@@ -806,7 +806,7 @@ Code Example:
 ```python
 @me.page(
   security_policy=me.SecurityPolicy(
-    allowed_iframe_parents=["https://google.github.io"]
+    allowed_iframe_parents=["https://mesop-dev.github.io"]
   ),
   path="/icon",
 )
@@ -946,9 +946,9 @@ link(text: str, url: str, open_in_new_tab: bool = False, style: Style | None = N
 
 Code Example:
 ```python
-me.link(text="Open in same tab", url="https://google.github.io/mesop/")
-me.link(text="Open in new tab", open_in_new_tab=True, url="https://google.github.io/mesop/")
-me.link(text="Styled link", url="https://google.github.io/mesop/", style=me.Style(color="black", text_decoration="none"))
+me.link(text="Open in same tab", url="https://mesop-dev.github.io/mesop/")
+me.link(text="Open in new tab", open_in_new_tab=True, url="https://mesop-dev.github.io/mesop/")
+me.link(text="Styled link", url="https://mesop-dev.github.io/mesop/", style=me.Style(color="black", text_decoration="none"))
 ```
 
 Usage Notes:
@@ -1059,7 +1059,7 @@ import mesop as me
 
 @me.page(
   security_policy=me.SecurityPolicy(
-    allowed_iframe_parents=["https://google.github.io"]
+    allowed_iframe_parents=["https://mesop-dev.github.io"]
   ),
   path="/progress_bar",
 )
@@ -1093,7 +1093,7 @@ Code Example:
 ```python
 @me.page(
   security_policy=me.SecurityPolicy(
-    allowed_iframe_parents=["https://google.github.io"]
+    allowed_iframe_parents=["https://mesop-dev.github.io"]
   ),
   path="/progress_spinner",
 )
@@ -1135,7 +1135,7 @@ def on_change(event: me.RadioChangeEvent):
 
 @me.page(
   security_policy=me.SecurityPolicy(
-    allowed_iframe_parents=["https://google.github.io"]
+    allowed_iframe_parents=["https://mesop-dev.github.io"]
   ),
   path="/radio",
 )
@@ -1188,7 +1188,7 @@ def on_selection_change(e: me.SelectSelectionChangeEvent):
 
 @me.page(
   security_policy=me.SecurityPolicy(
-    allowed_iframe_parents=["https://google.github.io"]
+    allowed_iframe_parents=["https://mesop-dev.github.io"]
   ),
   path="/select_demo",
 )
@@ -1384,7 +1384,7 @@ import mesop.labs as mel
 
 @me.page(
   security_policy=me.SecurityPolicy(
-    allowed_iframe_parents=["https://google.github.io"]
+    allowed_iframe_parents=["https://mesop-dev.github.io"]
   ),
   path="/text_to_image",
   title="Text to Image Example",
@@ -1427,7 +1427,7 @@ import mesop.labs as mel
 
 @me.page(
   security_policy=me.SecurityPolicy(
-    allowed_iframe_parents=["https://google.github.io"]
+    allowed_iframe_parents=["https://mesop-dev.github.io"]
   ),
   path="/text_to_text",
   title="Text to Text Example",
@@ -1574,7 +1574,7 @@ import mesop as me
 
 @me.page(
   security_policy=me.SecurityPolicy(
-    allowed_iframe_parents=["https://google.github.io"]
+    allowed_iframe_parents=["https://mesop-dev.github.io"]
   ),
   path="/tooltip",
 )
@@ -1647,7 +1647,7 @@ Code Example:
 ```python
 @me.page(
   security_policy=me.SecurityPolicy(
-    allowed_iframe_parents=["https://google.github.io"]
+    allowed_iframe_parents=["https://mesop-dev.github.io"]
   ),
   path="/video",
 )

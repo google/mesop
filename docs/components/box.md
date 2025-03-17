@@ -4,7 +4,7 @@ Box is a [content component](../components/index.md#content-components) which ac
 
 ## Examples
 
-<iframe class="component-demo" src="https://google.github.io/mesop/demo/?demo=box" style="height: 160px"></iframe>
+<iframe class="component-demo" src="https://mesop-dev.github.io/mesop/demo/?demo=box" style="height: 160px"></iframe>
 
 ```python
 --8<-- "demo/box.py"

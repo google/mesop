@@ -5,7 +5,7 @@ matches the look of Angular Material Components.
 
 ## Examples
 
-<iframe class="component-demo" src="https://google.github.io/mesop/demo/?demo=uploader" style="height: 200px"></iframe>
+<iframe class="component-demo" src="https://mesop-dev.github.io/mesop/demo/?demo=uploader" style="height: 200px"></iframe>
 
 ```python
 --8<-- "demo/uploader.py"

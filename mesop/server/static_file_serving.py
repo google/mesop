@@ -197,7 +197,7 @@ def configure_static_file_serving(
 {tc.MAGENTA}){tc.RESET}
 
 {tc.YELLOW}For more info:
-{tc.CYAN}https://google.github.io/mesop/web-components/troubleshooting/{tc.RESET}
+{tc.CYAN}https://mesop-dev.github.io/mesop/web-components/troubleshooting/{tc.RESET}
 {tc.YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━{tc.RESET}
 """  # noqa: RUF001
     )

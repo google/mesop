@@ -166,7 +166,7 @@ def app():
 
 For a real-world example of using these types of layouts, check out the Mesop Showcase app:
 
-- [App](https://google.github.io/mesop/showcase/)
+- [App](https://mesop-dev.github.io/mesop/showcase/)
 - [Code](https://github.com/google/mesop/blob/main/showcase/main.py)
 
 To learn more about flexbox layouts (rows and columns), check out:

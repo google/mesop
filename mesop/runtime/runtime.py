@@ -109,7 +109,7 @@ class Runtime:
       paths = list(self._path_to_page_config.keys())
       if not paths:
         raise MesopDeveloperException(
-          """No page has been registered. Read the [page docs](https://google.github.io/mesop/api/page/) to configure a page.
+          """No page has been registered. Read the [page docs](https://mesop-dev.github.io/mesop/api/page/) to configure a page.
 
 If you configured a page, then there was an exception in your code before the page was registered. Check your logs for more details.
           """

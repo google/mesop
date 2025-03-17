@@ -4,7 +4,7 @@ Image is the equivalent of an [`<img>` HTML element](https://developer.mozilla.o
 
 ## Examples
 
-<iframe class="component-demo" src="https://google.github.io/mesop/demo/?demo=image" style="height: 200px"></iframe>
+<iframe class="component-demo" src="https://mesop-dev.github.io/mesop/demo/?demo=image" style="height: 200px"></iframe>
 
 ```python
 --8<-- "demo/image.py"

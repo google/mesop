@@ -199,5 +199,5 @@ def footer():
     )
   ):
     me.html(
-      "Made with <a href='https://google.github.io/mesop/'>Mesop</a>",
+      "Made with <a href='https://mesop-dev.github.io/mesop/'>Mesop</a>",
     )
