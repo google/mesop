@@ -53,7 +53,7 @@ hide:
       Create your AI chat app in minutes
     </div>
     <div class="main-demo-iframe-container">
-      <iframe src="https://google.github.io/mesop/demo/?demo=embed/chat" class="main-demo-iframe box-shadow"></iframe>
+      <iframe src="https://mesop-dev.github.io/mesop/demo/?demo=embed/chat" class="main-demo-iframe box-shadow"></iframe>
       <div class="embed-overlay">
           <button class="open-button" onclick="openDemoGalleryInNewTab()">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -68,7 +68,7 @@ hide:
 
 <script>
 function openDemoGalleryInNewTab() {
-  window.open('https://google.github.io/mesop/demo/', '_blank');
+  window.open('https://mesop-dev.github.io/mesop/demo/', '_blank');
 }
 </script>
 <section class="container">
@@ -206,7 +206,7 @@ def on_image_upload(e: me.UploadEvent):
   <div class="section-body">
 With Mesop, you can build virtually any web-based user interface or application you can imagine. From quick prototypes to enterprise tools, Mesop provides the customizability to bring your ideas to life.
   </div>
-  <iframe src="https://google.github.io/mesop/demo/?demo=embed/chat_inputs" class="chat-inputs-iframe box-shadow"></iframe>
+  <iframe src="https://mesop-dev.github.io/mesop/demo/?demo=embed/chat_inputs" class="chat-inputs-iframe box-shadow"></iframe>
 </section>
 
 <section class="container">

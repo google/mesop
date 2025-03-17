@@ -4,7 +4,7 @@ Icon displays a Material icon/symbol and is based on the [Angular Material icon 
 
 ## Examples
 
-<iframe class="component-demo" src="https://google.github.io/mesop/demo/?demo=icon" style="height: 60px"></iframe>
+<iframe class="component-demo" src="https://mesop-dev.github.io/mesop/demo/?demo=icon" style="height: 60px"></iframe>
 
 ```python
 --8<-- "demo/icon.py"

@@ -70,7 +70,7 @@ def get_meta(file_path: str) -> dict[str, str]:
   docs_index = file_path.index(CONST)
   docs_path = file_path[docs_index + len(CONST) :]
 
-  url = "https://google.github.io/mesop/" + docs_path
+  url = "https://mesop-dev.github.io/mesop/" + docs_path
 
   print(f"URL: {url}")
   return {

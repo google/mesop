@@ -3,7 +3,7 @@ import mesop as me
 
 @me.page(
   security_policy=me.SecurityPolicy(
-    allowed_iframe_parents=["https://google.github.io"]
+    allowed_iframe_parents=["https://mesop-dev.github.io"]
   ),
   stylesheets=[
     "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css",

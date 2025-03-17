@@ -26,7 +26,7 @@ class State:
 
 @me.page(
   security_policy=me.SecurityPolicy(
-    allowed_iframe_parents=["https://google.github.io"]
+    allowed_iframe_parents=["https://mesop-dev.github.io"]
   ),
   path="/markdown_editor",
   title="Markdown Editor",

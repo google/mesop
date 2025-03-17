@@ -32,7 +32,7 @@ def text_io(
                   - "replace": Replaces the existing output with each new piece of text.
   """
   raise MesopDeveloperException(
-    "text_io has been removed. Use text_to_text instead. See: https://google.github.io/mesop/components/text-to-text/"
+    "text_io has been removed. Use text_to_text instead. See: https://mesop-dev.github.io/mesop/components/text-to-text/"
   )
 
 

@@ -419,7 +419,7 @@ import mesop as me
 
 @me.page(
   security_policy=me.SecurityPolicy(
-    allowed_iframe_parents=["https://google.github.io"]
+    allowed_iframe_parents=["https://mesop-dev.github.io"]
   ),
   path="/text",
 )
@@ -467,7 +467,7 @@ import mesop as me
 
 @me.page(
   security_policy=me.SecurityPolicy(
-    allowed_iframe_parents=["https://google.github.io"]
+    allowed_iframe_parents=["https://mesop-dev.github.io"]
   ),
   path="/text",
 )
@@ -507,7 +507,7 @@ import mesop as me
 
 @me.page(
   security_policy=me.SecurityPolicy(
-    allowed_iframe_parents=["https://google.github.io"]
+    allowed_iframe_parents=["https://mesop-dev.github.io"]
   ),
   path="/box",
 )
@@ -603,7 +603,7 @@ import mesop as me
 
 @me.page(
   security_policy=me.SecurityPolicy(
-    allowed_iframe_parents=["https://google.github.io"]
+    allowed_iframe_parents=["https://mesop-dev.github.io"]
   ),
   path="/box",
 )

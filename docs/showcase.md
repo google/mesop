@@ -5,5 +5,5 @@ hide:
   - toc
 ---
 <!-- This uses the production URLs to make the paths work locally and on GitHub -->
-<link rel="stylesheet" href="https://google.github.io/mesop/stylesheets/demo.css">
-<script src="https://google.github.io/mesop/javascript/showcase.js"></script>
+<link rel="stylesheet" href="https://mesop-dev.github.io/mesop/stylesheets/demo.css">
+<script src="https://mesop-dev.github.io/mesop/javascript/showcase.js"></script>

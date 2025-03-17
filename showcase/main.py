@@ -321,7 +321,7 @@ def sidenav():
     ):
       with me.content_button(
         type="icon",
-        on_click=lambda e: me.navigate("https://google.github.io/mesop/"),
+        on_click=lambda e: me.navigate("https://mesop-dev.github.io/mesop/"),
       ):
         with me.box(
           style=me.Style(display="flex", align_items="center", gap=12)
@@ -336,7 +336,9 @@ def sidenav():
           )
       with me.content_button(
         type="icon",
-        on_click=lambda e: me.navigate("https://google.github.io/mesop/demo/"),
+        on_click=lambda e: me.navigate(
+          "https://mesop-dev.github.io/mesop/demo/"
+        ),
       ):
         with me.box(
           style=me.Style(

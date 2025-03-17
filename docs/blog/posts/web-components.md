@@ -8,11 +8,11 @@ I saw this tweet the other day and couldn't help but chuckle:
 
 <blockquote class="twitter-tweet"><p lang="en" dir="ltr">is this the thing that will finally save me from ever learning front end?<a href="https://t.co/eDgY0AfG6U">https://t.co/eDgY0AfG6U</a></p>&mdash; xlr8harder (@xlr8harder) <a href="https://twitter.com/xlr8harder/status/1798673386425786724?ref_src=twsrc%5Etfw">June 6, 2024</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
-At first, I thought of it as joke, but now that Mesop has launched experimental support for [Web Components](https://google.github.io/mesop/web-components/), I think it's plausible that Mesop with Web Components can save you from front-end fatigue.
+At first, I thought of it as joke, but now that Mesop has launched experimental support for [Web Components](https://mesop-dev.github.io/mesop/web-components/), I think it's plausible that Mesop with Web Components can save you from front-end fatigue.
 
 ## What is Mesop?
 
-Before we dive in, let me explain what Mesop is. Mesop is a Python UI framework focused on rapidly building AI apps. You can write a lot of kinds of apps all in Python as you can see from the examples on our [home page](https://google.github.io/mesop/), but when you need to, Mesop provides the flexibility of dropping down into web components so you can  have fine-grained UI control and use existing JS libraries.
+Before we dive in, let me explain what Mesop is. Mesop is a Python UI framework focused on rapidly building AI apps. You can write a lot of kinds of apps all in Python as you can see from the examples on our [home page](https://mesop-dev.github.io/mesop/), but when you need to, Mesop provides the flexibility of dropping down into web components so you can  have fine-grained UI control and use existing JS libraries.
 
 ## Avoid the builds
 
@@ -36,7 +36,7 @@ For years, web components had a reputation of being an immature technology due t
 
 FE developers are so used to the pain and complexity of front-end development that they can forget how steep the learning curve is until someone from another domain tries to build a simple web app, and struggles with just getting the web app up and started.
 
-Mesop app developers are mostly _not_ front-end developers which means that reducing the complexity, especially learning curve, of building custom components is very important. In Mesop, we've designed a smooth pathway where you can [get started](https://google.github.io/mesop/web-components/quickstart/) with a little front-end knowledge and build simple custom components without learning a complex front-end framework.
+Mesop app developers are mostly _not_ front-end developers which means that reducing the complexity, especially learning curve, of building custom components is very important. In Mesop, we've designed a smooth pathway where you can [get started](https://mesop-dev.github.io/mesop/web-components/quickstart/) with a little front-end knowledge and build simple custom components without learning a complex front-end framework.
 
 ## What's next
 

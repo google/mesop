@@ -4,7 +4,7 @@ Slide Toggle allows the user to toggle on and off and is based on the [Angular M
 
 ## Examples
 
-<iframe class="component-demo" src="https://google.github.io/mesop/demo/?demo=slide_toggle" style="height: 100px"></iframe>
+<iframe class="component-demo" src="https://mesop-dev.github.io/mesop/demo/?demo=slide_toggle" style="height: 100px"></iframe>
 
 ```python
 --8<-- "demo/slide_toggle.py"

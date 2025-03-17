@@ -30,17 +30,30 @@ def validate(fn: F) -> F:
         print("e", e)
         component_name = snake_case(e.title)
         raise MesopDeveloperException(
-          f"""from [{component_name}](https://google.github.io/mesop/components/{component_name}/) component:
-  {newline.join([dash + "__"
-                 +  " ".join(str(element) for element in error['loc']) + '__: '
-                 + error['msg'] for error in e.errors()])}"""
+          f"""from [{
+            component_name
+          }](https://mesop-dev.github.io/mesop/components/{
+            component_name
+          }/) component:
+  {
+            newline.join(
+              [
+                dash
+                + "__"
+                + " ".join(str(element) for element in error["loc"])
+                + "__: "
+                + error["msg"]
+                for error in e.errors()
+              ]
+            )
+          }"""
         ) from e
       else:
         # Pyright can't type-check v1 API.
         component_name = snake_case(e.model.__name__)  # type: ignore
         raise MesopDeveloperException(
-          f"""from [{component_name}](https://google.github.io/mesop/components/{component_name}/) component:
-  {newline.join([dash + error['msg'] for error in e.errors()])}"""
+          f"""from [{component_name}](https://mesop-dev.github.io/mesop/components/{component_name}/) component:
+  {newline.join([dash + error["msg"] for error in e.errors()])}"""
         ) from e
 
   return cast(F, wrapper)

@@ -35,7 +35,7 @@ echo "Updating allowed iframe parents to include hugging face spaces site..."
 # Find all .py files and update the allowed_iframe_parents list
 find . -name "*.py" -type f | while read -r file; do
     # Use sed with -i.bak so it woroks on MacOs
-    sed -i.bak 's/allowed_iframe_parents=\["https:\/\/google\.github\.io"\]/allowed_iframe_parents=["https:\/\/google.github.io", "https:\/\/huggingface.co"]/' "$file"
+    sed -i.bak 's/allowed_iframe_parents=\["https:\/\/google\.github\.io"\]/allowed_iframe_parents=["https:\/\/mesop-dev.github.io", "https:\/\/huggingface.co"]/' "$file"
     # Remove the backup file created by sed
     rm "${file}.bak"
 done

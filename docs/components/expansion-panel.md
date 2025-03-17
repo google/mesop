@@ -8,7 +8,7 @@ The expansion panels can also be grouped together to create an accordion.
 
 ## Examples
 
-<iframe class="component-demo" src="https://google.github.io/mesop/demo/?demo=expansion_panel"></iframe>
+<iframe class="component-demo" src="https://mesop-dev.github.io/mesop/demo/?demo=expansion_panel"></iframe>
 
 ```python
 --8<-- "demo/expansion_panel.py"

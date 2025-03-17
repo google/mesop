@@ -2,7 +2,7 @@
 
 This page aims to provide an objective comparison between Mesop and other popular Python-based web application frameworks, specifically Streamlit and Gradio. This is a difficult doc to write but we feel that it's important to explain the differences as this is frequently asked.
 
- While we believe Mesop offers a [unique philosophy for building UIs](https://google.github.io/mesop/blog/2024/05/13/why-mesop/), we strive to be fair and accurate in highlighting the strengths of each framework.
+ While we believe Mesop offers a [unique philosophy for building UIs](https://mesop-dev.github.io/mesop/blog/2024/05/13/why-mesop/), we strive to be fair and accurate in highlighting the strengths of each framework.
 
  Because this is a fast-moving space, some of the information may be out of date. Please file an [issue](https://github.com/google/mesop/issues/new/choose) and let us know what we should fix.
 

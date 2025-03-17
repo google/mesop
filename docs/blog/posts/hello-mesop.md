@@ -4,7 +4,7 @@ date: 2023-12-25
 
 # Hello, Mesop
 
-After working on Mesop for the last two months, I'm excited to finally announce the first version of Mesop, v0.1. This is still early days for Mesop, but it's an important milestone because it represents a minimum viable tool for building UIs in Python. In case you haven't read Mesop's [home page](https://google.github.io/mesop/), Mesop is a Python-based UI framework that allows you to rapidly build web demos. Engineers without frontend experience can build web UIs by writing idiomatic Python code.
+After working on Mesop for the last two months, I'm excited to finally announce the first version of Mesop, v0.1. This is still early days for Mesop, but it's an important milestone because it represents a minimum viable tool for building UIs in Python. In case you haven't read Mesop's [home page](https://mesop-dev.github.io/mesop/), Mesop is a Python-based UI framework that allows you to rapidly build web demos. Engineers without frontend experience can build web UIs by writing idiomatic Python code.
 
 ## Why Mesop?
 

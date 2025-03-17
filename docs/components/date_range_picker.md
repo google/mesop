@@ -5,7 +5,7 @@ and is based on the [Angular Material datapicker component](https://material.ang
 
 ## Examples
 
-<iframe class="component-demo" src="https://google.github.io/mesop/demo/?demo=date_range_picker" style="height: 200px"></iframe>
+<iframe class="component-demo" src="https://mesop-dev.github.io/mesop/demo/?demo=date_range_picker" style="height: 200px"></iframe>
 
 ```python
 --8<-- "demo/date_range_picker.py"

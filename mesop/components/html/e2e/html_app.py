@@ -9,7 +9,7 @@ def app():
   me.html(
     """
 Custom HTML
-<a href="https://google.github.io/mesop/" target="_blank">mesoplink</a>
+<a href="https://mesop-dev.github.io/mesop/" target="_blank">mesoplink</a>
 """,
     mode="sanitized",
   )

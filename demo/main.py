@@ -252,7 +252,7 @@ def load_home_page(e: me.LoadEvent):
 @me.page(
   title="Mesop Demos",
   security_policy=me.SecurityPolicy(
-    allowed_iframe_parents=["https://google.github.io"]
+    allowed_iframe_parents=["https://mesop-dev.github.io"]
   ),
   on_load=load_home_page,
 )
@@ -369,7 +369,7 @@ def create_main_fn(example: Example):
     title="Mesop Demos",
     path="/embed/" + example.name,
     security_policy=me.SecurityPolicy(
-      allowed_iframe_parents=["https://google.github.io"]
+      allowed_iframe_parents=["https://mesop-dev.github.io"]
     ),
   )
   def main():

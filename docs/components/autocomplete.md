@@ -13,7 +13,7 @@ has been left out.
 
 ## Examples
 
-<iframe class="component-demo" src="https://google.github.io/mesop/demo/?demo=autocomplete" style="height: 200px"></iframe>
+<iframe class="component-demo" src="https://mesop-dev.github.io/mesop/demo/?demo=autocomplete" style="height: 200px"></iframe>
 
 ```python
 --8<-- "demo/autocomplete.py"
