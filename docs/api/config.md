@@ -255,7 +255,7 @@ By default, this is not enabled. You can enable this by setting it to `true`.
 
 !!! warning "Experimental feature"
 
-    This is an experimental feature and is subject to breaking change. Please follow [https://github.com/google/mesop/issues/1028](https://github.com/google/mesop/issues/1028) for updates.
+    This is an experimental feature and is subject to breaking change. Please follow [https://github.com/mesop-dev/mesop/issues/1028](https://github.com/mesop-dev/mesop/issues/1028) for updates.
 
 This uses WebSockets instead of HTTP Server-Sent Events (SSE) as the transport protocol for UI updates. Using WebSockets also changes the Mesop server architecture to be stateful (e.g. meaning a server restart or routing to a different server instance means the user will lose state). If you enable this feature, then you should ensure the following:
 

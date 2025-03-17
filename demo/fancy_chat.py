@@ -40,7 +40,7 @@ class State:
   in_progress: bool
   sidebar_expanded: bool = False
   # Need to use dict instead of ChatMessage due to serialization bug.
-  # See: https://github.com/google/mesop/issues/659
+  # See: https://github.com/mesop-dev/mesop/issues/659
   history: list[list[dict]]
 
 

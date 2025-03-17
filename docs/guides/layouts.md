@@ -9,7 +9,7 @@ For most Mesop apps, you will use some combination of these types of layouts:
 
 ## Common layout examples
 
-To interact with the examples below, open the Mesop Layouts Colab: [![Open In Colab](../assets/colab.svg)](https://colab.research.google.com/github/google/mesop/blob/main/notebooks/mesop_layout_colab.ipynb)
+To interact with the examples below, open the Mesop Layouts Colab: [![Open In Colab](../assets/colab.svg)](https://colab.research.google.com/github/mesop-dev/mesop/blob/main/notebooks/mesop_layout_colab.ipynb)
 
 ### Rows and Columns
 
@@ -167,7 +167,7 @@ def app():
 For a real-world example of using these types of layouts, check out the Mesop Showcase app:
 
 - [App](https://mesop-dev.github.io/mesop/showcase/)
-- [Code](https://github.com/google/mesop/blob/main/showcase/main.py)
+- [Code](https://github.com/mesop-dev/mesop/blob/main/showcase/main.py)
 
 To learn more about flexbox layouts (rows and columns), check out:
 

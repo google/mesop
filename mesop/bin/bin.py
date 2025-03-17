@@ -90,7 +90,7 @@ $\u001b[35m mesop {argv[1]}\u001b[0m"""
   # "/path/to" to sys.path.
   #
   # Running `$ mesop /path/to/script.py` should mimic this behavior
-  # so that imports work as expected (e.g. https://github.com/google/mesop/issues/128)
+  # so that imports work as expected (e.g. https://github.com/mesop-dev/mesop/issues/128)
   #
   # Ref:
   # https://docs.python.org/3/library/sys_path_init.html

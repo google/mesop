@@ -23,7 +23,7 @@ const STREAM_END = '<stream_end>';
 
 // Pick 500ms as the minimum duration before showing a progress/busy indicator
 // for the channel.
-// See: https://github.com/google/mesop/issues/365
+// See: https://github.com/mesop-dev/mesop/issues/365
 const WAIT_TIMEOUT_MS = 500;
 
 interface InitParams {
@@ -359,7 +359,7 @@ export class Channel {
   private queueMessage(request: UiRequest, response: UiResponse) {
     // We want to process only one message pair at a time, otherwise
     // you can get race conditions like this:
-    // https://github.com/google/mesop/issues/1231
+    // https://github.com/mesop-dev/mesop/issues/1231
     this.messageQueue.push({
       request,
       response,

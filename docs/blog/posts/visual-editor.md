@@ -8,7 +8,7 @@ date: 2024-01-12
 
 As I began discussing Mesop with friends and colleagues, one thing that has come up is the difficulty of teaching and persuading non-frontend engineers to build UIs, even simple ones. CSS, particularly the rules around layout, can be quite challenging and off-putting.
 
-I've developed a new [visual editor](https://github.com/google/mesop/issues/31) for Mesop that aims to make UI building more approachable for beginners and more productive for experts.
+I've developed a new [visual editor](https://github.com/mesop-dev/mesop/issues/31) for Mesop that aims to make UI building more approachable for beginners and more productive for experts.
 
 ## What?
 

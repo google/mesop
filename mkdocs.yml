@@ -1,6 +1,6 @@
 site_name: Mesop
-repo_url: https://github.com/google/mesop
-repo_name: google/mesop
+repo_url: https://github.com/mesop-dev/mesop
+repo_name: mesop-dev/mesop
 strict: true
 nav:
   - index.md

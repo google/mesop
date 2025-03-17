@@ -8,7 +8,7 @@ Please read [Core Concepts](../getting-started/core-concepts.md) before this as 
 
 Native components are components implemented using Angular/Javascript. Many of these components wrap [Angular Material components](https://material.angular.io/components/). Other components are simple wrappers around DOM elements.
 
-If you have a use case that's not supported by the existing native components, please [file an issue on GitHub](https://github.com/google/mesop/issues/new) to explain your use case. Given our limited bandwidth, we may not be able to build it soon, but in the future, we will enable Mesop developers to build their own custom native components.
+If you have a use case that's not supported by the existing native components, please [file an issue on GitHub](https://github.com/mesop-dev/mesop/issues/new) to explain your use case. Given our limited bandwidth, we may not be able to build it soon, but in the future, we will enable Mesop developers to build their own custom native components.
 
 ### User-defined components
 

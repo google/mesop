@@ -55,7 +55,7 @@ def upper_case_stream(s: str):
 
 ### Colab
 
-You can try [Mesop on Colab](https://colab.research.google.com/github/google/mesop/blob/main/notebooks/mesop_colab_getting_started.ipynb)!
+You can try [Mesop on Colab](https://colab.research.google.com/github/mesop-dev/mesop/blob/main/notebooks/mesop_colab_getting_started.ipynb)!
 
 ### Locally
 
@@ -77,7 +77,7 @@ Learn more in [Getting Started](https://mesop-dev.github.io/mesop/getting-starte
 
 ## Reporting a security issue
 
-If you identify a security vulnerability with Mesop, please file a [GitHub security issue](https://github.com/google/mesop/security/policy) and we will promptly respond to it.
+If you identify a security vulnerability with Mesop, please file a [GitHub security issue](https://github.com/mesop-dev/mesop/security/policy) and we will promptly respond to it.
 
 ## Disclaimer
 

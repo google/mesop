@@ -44,7 +44,7 @@ Mesop provides a range of UI building blocks, from low-level [native components]
 - Low-level components: like [box](../../components/box.md), offer granular control over layout and styling. They empower you to create custom UI elements through flexible layouts like flexbox and grid.
 - High-level components: like [chat](../../components/chat.md), are built from low-level components and provide ready-to-use elements for common use cases, enabling rapid development.
 
-This layered approach makes deep customization possible. This means that if you want to customize the chat component, you can fork the [chat implementation](https://github.com/google/mesop/blob/main/mesop/labs/chat.py) because it's written entirely in Python using Mesop's public APIs.
+This layered approach makes deep customization possible. This means that if you want to customize the chat component, you can fork the [chat implementation](https://github.com/mesop-dev/mesop/blob/main/mesop/labs/chat.py) because it's written entirely in Python using Mesop's public APIs.
 
 ## See Mesop in Action
 
@@ -52,8 +52,8 @@ To demonstrate the range of UIs possible with Mesop, we built a demo gallery to 
 
 <iframe class="immersive-demo" src="https://mesop-dev.github.io/mesop/demo/"></iframe>
 
- The [demo gallery](https://mesop-y677hytkra-uc.a.run.app/) itself is a Mesop app and [implemented](https://github.com/google/mesop/blob/d0b3e286d0dd9de49eb1d5e3bbc1ab84e96a6d08/demo/main.py) in a few hundred lines of Python code. It demonstrates how Mesop can be used to create polished, custom UIs in a maintainable way.
+ The [demo gallery](https://mesop-y677hytkra-uc.a.run.app/) itself is a Mesop app and [implemented](https://github.com/mesop-dev/mesop/blob/d0b3e286d0dd9de49eb1d5e3bbc1ab84e96a6d08/demo/main.py) in a few hundred lines of Python code. It demonstrates how Mesop can be used to create polished, custom UIs in a maintainable way.
 
 ## Try Mesop
 
-If this sounds intriguing, read the [Getting Started guide](../../getting-started/installing.md) and try building your own Mesop app. [Share your feedback and contribute](https://github.com/google/mesop/issues) as we continue developing Mesop.
+If this sounds intriguing, read the [Getting Started guide](../../getting-started/installing.md) and try building your own Mesop app. [Share your feedback and contribute](https://github.com/mesop-dev/mesop/issues) as we continue developing Mesop.

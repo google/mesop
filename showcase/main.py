@@ -118,8 +118,8 @@ SECTIONS = [
         title="Mesop Getting Started Colab",
         description="Get started with Mesop in Colab.",
         img_url="https://github.com/user-attachments/assets/37efbe69-ac97-4d26-8fda-d1b7b2b4976a",
-        github_url="https://github.com/google/mesop/blob/main/notebooks/mesop_colab_getting_started.ipynb",
-        app_url="https://colab.research.google.com/github/google/mesop/blob/main/notebooks/mesop_colab_getting_started.ipynb",
+        github_url="https://github.com/mesop-dev/mesop/blob/main/notebooks/mesop_colab_getting_started.ipynb",
+        app_url="https://colab.research.google.com/github/mesop-dev/mesop/blob/main/notebooks/mesop_colab_getting_started.ipynb",
         github_username="google",
       ),
       Resource(
@@ -271,7 +271,7 @@ def page():
               card(resource)
         with me.box(
           on_click=lambda e: me.navigate(
-            "https://github.com/google/mesop/issues/new/choose"
+            "https://github.com/mesop-dev/mesop/issues/new/choose"
           ),
           style=me.Style(
             cursor="pointer",
@@ -296,7 +296,7 @@ def page():
           )
           me.link(
             text="Submit your showcase",
-            url="https://github.com/google/mesop/issues/new/choose",
+            url="https://github.com/mesop-dev/mesop/issues/new/choose",
             style=me.Style(
               font_size=24,
               color=me.theme_var("on-background"),
@@ -392,7 +392,7 @@ def sidenav():
           padding=me.Padding(top=16),
         ),
         on_click=lambda e: me.navigate(
-          "https://github.com/google/mesop/issues/new/choose"
+          "https://github.com/mesop-dev/mesop/issues/new/choose"
         ),
       ):
         with me.content_button(type="icon"):

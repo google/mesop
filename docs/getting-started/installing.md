@@ -12,7 +12,7 @@ If you're not familiar with setting up a Python environment, follow one of the o
 
 Colab is a free hosted Jupyter notebook product provided by Google.
 
-Try Mesop on Colab: [![Open In Colab](../assets/colab.svg)](https://colab.research.google.com/github/google/mesop/blob/main/notebooks/mesop_colab_getting_started.ipynb)
+Try Mesop on Colab: [![Open In Colab](../assets/colab.svg)](https://colab.research.google.com/github/mesop-dev/mesop/blob/main/notebooks/mesop_colab_getting_started.ipynb)
 
 ## B. Command-line
 

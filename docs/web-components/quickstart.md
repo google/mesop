@@ -80,4 +80,4 @@ Even though this was a toy example, you've learned how to build a web component 
 
 ## Next steps
 
-To learn more, read the [API docs](./api.md) or look at the [examples](https://github.com/google/mesop/tree/main/mesop/examples/web_component/).
+To learn more, read the [API docs](./api.md) or look at the [examples](https://github.com/mesop-dev/mesop/tree/main/mesop/examples/web_component/).

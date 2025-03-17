@@ -459,7 +459,7 @@ def chat(
                     me.text("Is there an issue with this this response?")
                     me.link(
                       text="File an issue",
-                      url="https://github.com/google/mesop/issues/new?assignees=&labels=bug,chatbot&projects=&title=Bad%20chatbot%20response&body="
+                      url="https://github.com/mesop-dev/mesop/issues/new?assignees=&labels=bug,chatbot&projects=&title=Bad%20chatbot%20response&body="
                       + urllib.parse.quote(f"""
 What was the issue with the chatbot response?
 
