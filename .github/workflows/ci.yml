@@ -64,14 +64,6 @@ jobs:
           name: playwright-report-concurrency
           path: playwright-report-concurrency/
           retention-days: 30
-      - name: Run playwright test with concurrent updates enabled
-        run: MESOP_CONCURRENT_UPDATES_ENABLED=true PLAYWRIGHT_HTML_OUTPUT_DIR=playwright-report-with-concurrent-updates-enabled yarn playwright test
-      - uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4.6.0
-        if: always()
-        with:
-          name: playwright-report-with-concurrent-updates-enabled
-          path: playwright-report-with-concurrent-updates-enabled/
-          retention-days: 30
       - name: Run playwright test with websockets enabled
         run: MESOP_WEBSOCKETS_ENABLED=true PLAYWRIGHT_HTML_OUTPUT_DIR=playwright-report-with-websockets-enabled yarn playwright test
       - uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4.6.0

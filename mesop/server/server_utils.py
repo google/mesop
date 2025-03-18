@@ -6,11 +6,11 @@ import urllib.parse as urlparse
 from typing import Any, Generator, Iterable
 from urllib import request as urllib_request
 
-from flask import Response, abort, request
+from flask import Response
 from werkzeug.security import safe_join
 
 import mesop.protos.ui_pb2 as pb
-from mesop.env.env import EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED, get_app_base_path
+from mesop.env.env import get_app_base_path
 from mesop.exceptions import MesopDeveloperException
 from mesop.runtime import runtime
 from mesop.server.config import app_config
@@ -23,18 +23,6 @@ LOCALHOSTS = (
 )
 
 STREAM_END = "data: <stream_end>\n\n"
-
-
-def check_editor_access():
-  if not EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED:
-    abort(403)  # Throws a Forbidden Error
-  # Prevent accidental usages of editor mode outside of
-  # one's local computer
-  if request.remote_addr not in LOCALHOSTS:
-    abort(403)  # Throws a Forbidden Error
-  # Visual editor should only be enabled in debug mode.
-  if not runtime().debug_mode:
-    abort(403)  # Throws a Forbidden Error
 
 
 def serialize(response: pb.UiResponse) -> str:
