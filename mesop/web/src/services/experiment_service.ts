@@ -2,8 +2,6 @@ import {Injectable} from '@angular/core';
 
 interface ExperimentSettings {
   readonly websocketsEnabled: boolean;
-  readonly concurrentUpdatesEnabled: boolean;
-  readonly experimentalEditorToolbarEnabled: boolean;
 }
 
 @Injectable({
