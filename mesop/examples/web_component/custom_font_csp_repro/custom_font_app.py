@@ -8,7 +8,7 @@ from mesop.examples.web_component.quickstart.counter_component import (
 # This is intended to repro a bug where loading stylesheet for a custom
 # font would cause issues with the CSP and prevent web components
 # from loading.
-# https://github.com/google/mesop/issues/549
+# https://github.com/mesop-dev/mesop/issues/549
 
 
 @me.page(

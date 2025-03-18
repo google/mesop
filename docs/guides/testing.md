@@ -66,4 +66,4 @@ As mentioned above, it's very easy to write Playwright tests because you can [ge
 
 We recommend reading [Playwright's docs](https://playwright.dev) which are easy to follow and contain much more information on writing browser tests.
 
-You can also look at Mesop's [own tests](https://github.com/google/mesop/tree/main/mesop/tests/e2e) written with Playwright.
+You can also look at Mesop's [own tests](https://github.com/mesop-dev/mesop/tree/main/mesop/tests/e2e) written with Playwright.

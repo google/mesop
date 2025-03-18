@@ -13,7 +13,7 @@ CPU available.
 
 ## Create Github Codespace
 
-You can create a Github Codespace from the [Mesop Github repository page](https://github.com/google/mesop).
+You can create a Github Codespace from the [Mesop Github repository page](https://github.com/mesop-dev/mesop).
 
 ![Create Github Codespace](../assets/codespaces/create.png)
 

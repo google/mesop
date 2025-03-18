@@ -43,7 +43,7 @@ setup(
   version=VERSION,
   description="Build UIs in Python",
   long_description=get_readme(),
-  url="https://github.com/google/mesop",
+  url="https://github.com/mesop-dev/mesop",
   author="Google Inc.",
   # Contained modules and scripts.
   packages=find_packages(),

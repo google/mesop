@@ -10,4 +10,4 @@ You will need to add an import statement to use labs:
 import mesop.labs as mel
 ```
 
-The [code inside Mesop Labs](https://github.com/google/mesop/tree/main/mesop/labs) is intended to be simple to understand so you can copy and customize it as needed.
+The [code inside Mesop Labs](https://github.com/mesop-dev/mesop/tree/main/mesop/labs) is intended to be simple to understand so you can copy and customize it as needed.

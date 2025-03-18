@@ -1,7 +1,7 @@
 import {test, expect} from '@playwright/test';
 
 // Prevent regressions to:
-// https://github.com/google/mesop/issues/371
+// https://github.com/mesop-dev/mesop/issues/371
 test('navigation - resets DOM component state', async ({page}) => {
   await page.goto('/navigate_advanced/page1');
   await page.getByRole('checkbox').check();

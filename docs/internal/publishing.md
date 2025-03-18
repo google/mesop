@@ -13,7 +13,7 @@ Before, cutting a release, you'll want to check two things:
 
 ## Update version to RC
 
-Update [`mesop/version.py`](https://github.com/google/mesop/blob/main/mesop/version.py) by incrementing the version number. We follow semver.
+Update [`mesop/version.py`](https://github.com/mesop-dev/mesop/blob/main/mesop/version.py) by incrementing the version number. We follow semver.
 
 You want to first create an RC (release candidate) to ensure that it works.
 
@@ -23,7 +23,7 @@ Merge the PR that bumps the version and then go to the next step to publish a Gi
 
 ## Publish GitHub release
 
-After you've submitted the PR which bumps the version and then [publish a GitHub release](https://github.com/google/mesop/releases/new).
+After you've submitted the PR which bumps the version and then [publish a GitHub release](https://github.com/mesop-dev/mesop/releases/new).
 
 1. Click "Choose a tag" and type in the version you just released. This will create a new Git tag.
 1. Click "Generate release notes".
@@ -59,7 +59,7 @@ This will launch Mesop under the Gunicorn server so you can make sure it works a
 
 Because Colab installs from PyPI, you will need to test the RC on Colab after uploading to PyPI.
 
-Open our [Mesop Colab notebook](https://colab.research.google.com/github/google/mesop/blob/main/notebooks/mesop_colab_getting_started.ipynb). You will need to explicitly pip install the RC version as pip will _not_ automatically install a pre-release version, even if it's the newest version. So change the first cell to something like:
+Open our [Mesop Colab notebook](https://colab.research.google.com/github/mesop-dev/mesop/blob/main/notebooks/mesop_colab_getting_started.ipynb). You will need to explicitly pip install the RC version as pip will _not_ automatically install a pre-release version, even if it's the newest version. So change the first cell to something like:
 
 ```sh
  !pip install mesop==0.X.Yrc1
@@ -73,7 +73,7 @@ Then, run all the cells and make sure it works. Usually if something breaks in C
 
 If you find an issue, then redo the above steps and create another RC candidate: `0.8.0rc1` -> `0.8.0rc2`.
 
-If all the testing looks good, then you can update [`mesop/version.py`](https://github.com/google/mesop/blob/main/mesop/version.py) and change the version from RC to a regular release, for example:
+If all the testing looks good, then you can update [`mesop/version.py`](https://github.com/mesop-dev/mesop/blob/main/mesop/version.py) and change the version from RC to a regular release, for example:
 
 `0.8.0rc1` -> `0.8.0`
 

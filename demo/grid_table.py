@@ -359,7 +359,7 @@ def strings_component(meta: GridTableCellMeta):
 
   Note that the behavior is slightly buggy if there is also a cell click event. This
   event will fire, but so will the cell click event. This is due to
-  https://github.com/google/mesop/issues/268.
+  https://github.com/mesop-dev/mesop/issues/268.
   """
   me.button(
     meta.value,

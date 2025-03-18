@@ -90,7 +90,7 @@ test('table cell click event triggered', async ({page}) => {
 });
 
 // TODO: deflake the test
-// https://github.com/google/mesop/issues/207
+// https://github.com/mesop-dev/mesop/issues/207
 test.skip('sticky headers and columns', async ({page}) => {
   await page.goto('/components/table/e2e/table_app');
   await page.setViewportSize({width: 200, height: 200});

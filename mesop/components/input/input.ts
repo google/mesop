@@ -34,7 +34,7 @@ export class InputComponent {
       .pipe(
         // Setting this to a short duration to avoid having the user trigger another event
         // during this debounce time period:
-        // https://github.com/google/mesop/issues/171
+        // https://github.com/mesop-dev/mesop/issues/171
         debounceTime(150),
       )
       .subscribe((event) => this.onInputDebounced(event));

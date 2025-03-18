@@ -29,7 +29,7 @@ from mesop.utils.url_utils import sanitize_url_for_csp
 
 # mimetypes are not always set correctly, thus manually
 # setting the mimetype here.
-# See: https://github.com/google/mesop/issues/441
+# See: https://github.com/mesop-dev/mesop/issues/441
 mimetypes.add_type("application/javascript", ".js")
 
 

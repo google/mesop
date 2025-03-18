@@ -27,12 +27,12 @@ Mesop's current [component library](../../components/box.md) is a solid start bu
 
 **Areas of work:**
 
-- **Complete [Angular Material](https://material.angular.io/components/categories) component coverage.** We support 13+ Angular Material components today, however there's many more that we don't support. Some of it is because I haven't had time to wrap their components, but in other cases (e.g. [sidenav](https://github.com/google/mesop/issues/30)), I'd like to spend more time exploring the design space as it will probably require supporting some kind of multi-slot component API. Getting this API designed correctly, for not just this component but also future components, is important in the long run.
+- **Complete [Angular Material](https://material.angular.io/components/categories) component coverage.** We support 13+ Angular Material components today, however there's many more that we don't support. Some of it is because I haven't had time to wrap their components, but in other cases (e.g. [sidenav](https://github.com/mesop-dev/mesop/issues/30)), I'd like to spend more time exploring the design space as it will probably require supporting some kind of multi-slot component API. Getting this API designed correctly, for not just this component but also future components, is important in the long run.
 
 - **Support more native HTML elements/browser APIs.** Right now, only [Box](../../components/box.md) and [Text](../../components/text.md) are thin wrappers around native HTML elements. However, there are other HTML elements like `<img>`, `<audio>`
  and `<video>` that I'd like to also support. The flip side of supporting these components is enabling a way to allow Mesop end-users to upload these media contents, which there are also native browser APIs for.
 
-- **Custom components.** Some components won't belong in the standard Mesop package because it's either too experimental or too use-case specific. It would be nice to have a complete story for supporting custom components. Today, all of the components use the [component helper](https://github.com/google/mesop/blob/main/mesop/component_helpers/helper.py) API which wraps internal framework details like runtime. However, there still isn't a very good story for loading custom components in the Angular frontend (e.g. ComponentRenderer's [type to component map](https://github.com/google/mesop/blob/main/mesop/web/src/component_renderer/type_to_component.ts)) and testing them.
+- **Custom components.** Some components won't belong in the standard Mesop package because it's either too experimental or too use-case specific. It would be nice to have a complete story for supporting custom components. Today, all of the components use the [component helper](https://github.com/mesop-dev/mesop/blob/main/mesop/component_helpers/helper.py) API which wraps internal framework details like runtime. However, there still isn't a very good story for loading custom components in the Angular frontend (e.g. ComponentRenderer's [type to component map](https://github.com/mesop-dev/mesop/blob/main/mesop/web/src/component_renderer/type_to_component.ts)) and testing them.
 
 
 ### Make it easy to get started with Mesop
@@ -51,7 +51,7 @@ Today Mesop is good for internal apps with relatively un-stringent demands in te
 
 **Areas of work:**
 
-- **Optimize network payload.** Right now the client sends the entire state to the server, and the server responds with the entire state and component tree. For large UIs/apps, this can result in sizable network payloads. We can optimize this by sending deltas as much as possible. For example, the server can send a delta of the state and component tree to the client. In addition, if we use [POST instead of GET](https://github.com/google/mesop/issues/26), we can stop using base-64 encoding which adds a significant overhead on top of Protobuf binary serialization.
+- **Optimize network payload.** Right now the client sends the entire state to the server, and the server responds with the entire state and component tree. For large UIs/apps, this can result in sizable network payloads. We can optimize this by sending deltas as much as possible. For example, the server can send a delta of the state and component tree to the client. In addition, if we use [POST instead of GET](https://github.com/mesop-dev/mesop/issues/26), we can stop using base-64 encoding which adds a significant overhead on top of Protobuf binary serialization.
 
 - **Stateful server.** Even with the above optimizations, we'd essentially preserve the current architecture, but there's some limitations in how much improvements we can make as long as we assume servers are stateless. However, if we allow stateful servers (i.e. long-lived connections between the client and server), we can use things like WebSockets and *always* send deltas bi-directionally, in particular from client to server which isn't possible with a stateless server. The problem with this direction, though, is that it makes deployment more complex as scaling a WebSocket-based server can be hard depending on the cloud infrastructure used. In addition, we'll need to handle new edge cases like authentication and broken WebSockets connections.
 
@@ -63,4 +63,4 @@ There's, of course, even more directions than what I've listed here. For example
 
 ## Interested in contributing?
 
-If any of this excites you, please reach out. The easiest way is to raise a [GitHub issue](https://github.com/google/mesop/issues) and let me know if there's something specific you'd like to contribute.
+If any of this excites you, please reach out. The easiest way is to raise a [GitHub issue](https://github.com/mesop-dev/mesop/issues) and let me know if there's something specific you'd like to contribute.

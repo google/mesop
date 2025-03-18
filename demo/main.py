@@ -585,8 +585,8 @@ def header(demo_name: str | None = None):
           ),
         ):
           me.link(
-            text="google/mesop",
-            url="https://github.com/google/mesop/",
+            text="mesop-dev/mesop",
+            url="https://github.com/mesop-dev/mesop/",
             open_in_new_tab=True,
             style=me.Style(
               font_size=18,
