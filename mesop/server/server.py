@@ -16,9 +16,7 @@ from flask import (
 import mesop.protos.ui_pb2 as pb
 from mesop.component_helpers import diff_component
 from mesop.env.env import (
-  EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED,
   MESOP_APP_BASE_PATH,
-  MESOP_CONCURRENT_UPDATES_ENABLED,
   MESOP_PROD_UNREDACTED_ERRORS,
   MESOP_WEBSOCKETS_ENABLED,
 )
@@ -48,13 +46,7 @@ def configure_flask_app(
   *, prod_mode: bool = True, exceptions_to_propagate: Sequence[type] = ()
 ) -> Flask:
   if MESOP_WEBSOCKETS_ENABLED:
-    logger.info(
-      "Experiment enabled: MESOP_WEBSOCKETS_ENABLED (auto-enables MESOP_CONCURRENT_UPDATES_ENABLED)"
-    )
-  elif MESOP_CONCURRENT_UPDATES_ENABLED:
-    logger.info("Experiment enabled: MESOP_CONCURRENT_UPDATES_ENABLED")
-  if EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED:
-    logger.info("Experiment enabled: EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED")
+    logger.info("Experiment enabled: MESOP_WEBSOCKETS_ENABLED")
 
   if MESOP_APP_BASE_PATH:
     logger.info(f"MESOP_APP_BASE_PATH set to {MESOP_APP_BASE_PATH}")
