@@ -426,8 +426,8 @@ export class Channel {
       initUserEvent();
     } else {
       this.queuedEvents.push(initUserEvent);
-      if (this.experimentService.concurrentUpdatesEnabled) {
-        // We will wait 1 second to see if the server will respond with a new state.
+      if (this.experimentService.websocketsEnabled) {
+        // We will wait a bit to see if the server will respond with a new state.
         // This addresses common use cases where a user may
         // type in a text input and then click a button and
         // they would expect the updated text input state to be

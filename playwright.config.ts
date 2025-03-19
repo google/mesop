@@ -51,9 +51,7 @@ export default defineConfig({
 
   /* Run your local server before starting the tests */
   webServer: {
-    command: `MESOP_CONCURRENT_UPDATES_ENABLED=${
-      process.env.MESOP_CONCURRENT_UPDATES_ENABLED || 'false'
-    } MESOP_STATE_SESSION_BACKEND=${
+    command: `MESOP_STATE_SESSION_BACKEND=${
       process.env.MESOP_STATE_SESSION_BACKEND || 'none'
     } MESOP_STATIC_FOLDER=${
       process.env.MESOP_STATIC_FOLDER || ''

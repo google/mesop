@@ -14,8 +14,6 @@ from flask import Flask, Response, g, make_response, request, send_file
 from werkzeug.security import safe_join
 
 from mesop.env.env import (
-  EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED,
-  MESOP_CONCURRENT_UPDATES_ENABLED,
   MESOP_WEBSOCKETS_ENABLED,
   get_app_base_path,
 )
@@ -86,8 +84,6 @@ def configure_static_file_serving(
       ):
         experiment_settings = {
           "websocketsEnabled": MESOP_WEBSOCKETS_ENABLED,
-          "concurrentUpdatesEnabled": MESOP_CONCURRENT_UPDATES_ENABLED,
-          "experimentalEditorToolbarEnabled": EXPERIMENTAL_EDITOR_TOOLBAR_ENABLED,
         }
         lines[i] = f"""
           <script nonce="{g.csp_nonce}">

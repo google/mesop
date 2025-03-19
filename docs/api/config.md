@@ -245,7 +245,7 @@ These configuration values are experimental and are subject to breaking change, 
 
 !!! danger "Deprecated experimental feature"
 
-      This experimental feature is deprecated and will be removed in an upcoming release. Use `MESOP_WEBSOCKETS_ENABLED` instead.
+      This experimental feature has been removed in Mesop v1. Use `MESOP_WEBSOCKETS_ENABLED` instead.
 
 Allows concurrent updates to state in the same session. If this is not updated, then updates are queued and processed sequentially.
 
