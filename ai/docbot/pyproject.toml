@@ -12,7 +12,7 @@ dependencies = [
     "llama-index-llms-gemini==0.2.0",
     "llama-index-embeddings-google==0.1.6",
     "llama-index-retrievers-bm25==0.2.2",
-    "mesop>=0.12.2",
+    "mesop>=1.0.0",
 ]
 
 # uv required properties:
