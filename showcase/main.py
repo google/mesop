@@ -43,13 +43,6 @@ SECTIONS = [
         github_url="https://github.com/richard-to/mesop-prompt-tuner",
         github_username="richard-to",
       ),
-      Resource(
-        title="Meta Llama Agentic System",
-        description="Agentic components of the Llama Stack APIs. Chat UI in Mesop.",
-        img_url="https://github.com/meta-llama/llama-agentic-system/raw/main/demo.png",
-        github_url="https://github.com/meta-llama/llama-agentic-system",
-        github_username="meta-llama",
-      ),
     ],
   ),
   Section(
