@@ -19,7 +19,8 @@ from flask import Flask, Response, g, make_response, request, send_file
 from werkzeug.security import safe_join
 
 from mesop.env.env import (
-  IS_MESOP_HTTP_CACHING_JS_ENABLED,
+  MESOP_HTTP_CACHE_JS_BUNDLE,
+  MESOP_WEB_COMPONENTS_HTTP_CACHE_KEY,
   MESOP_WEBSOCKETS_ENABLED,
   get_app_base_path,
 )
@@ -55,7 +56,7 @@ def configure_static_file_serving(
     return get_runfile_location(safe_path)
 
   prod_bundle_hash = ""
-  if IS_MESOP_HTTP_CACHING_JS_ENABLED and not runtime().debug_mode:
+  if MESOP_HTTP_CACHE_JS_BUNDLE and not runtime().debug_mode:
     with open(get_path("prod_bundle.js"), "rb") as f:
       prod_bundle_hash = hashlib.md5(f.read()).hexdigest()
 
@@ -95,6 +96,7 @@ def configure_static_file_serving(
       ):
         experiment_settings = {
           "websocketsEnabled": MESOP_WEBSOCKETS_ENABLED,
+          "webComponentsCacheKey": MESOP_WEB_COMPONENTS_HTTP_CACHE_KEY,
         }
         lines[i] = f"""
           <script nonce="{g.csp_nonce}">
@@ -146,6 +148,7 @@ def configure_static_file_serving(
 
     if not serving_path:
       raise MesopException("Unexpected request to " + path)
+
     return send_file_compressed(
       serving_path,
       disable_gzip_cache=disable_gzip_cache,
@@ -339,24 +342,28 @@ def configure_static_file_serving(
     # Recommended by https://web.dev/articles/referrer-best-practices
     response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
 
-    # If "Cache-Control" has already been set, respect them.
+    if (
+      request.path == "/prod_bundle.js"
+      and request.args.get("v") == prod_bundle_hash
+      and not runtime().debug_mode
+      and MESOP_HTTP_CACHE_JS_BUNDLE
+    ):
+      # Cache static assets aggressively in production mode.
+      # The 'immutable' directive suggests the content at this URL will never change.
+      # Works because we version the prod_bundle.js URL with a query parameter.
+      response.headers["Cache-Control"] = "public, max-age=31536000, immutable"
+    if (
+      request.path.startswith(f"/{WEB_COMPONENTS_PATH_SEGMENT}/")
+      and not runtime().debug_mode
+      and MESOP_WEB_COMPONENTS_HTTP_CACHE_KEY
+      and request.args.get("v") == MESOP_WEB_COMPONENTS_HTTP_CACHE_KEY
+    ):
+      response.headers["Cache-Control"] = "public, max-age=31536000, immutable"
     if "Cache-Control" not in response.headers:
-      if (
-        request.path == "/prod_bundle.js"
-        and not runtime().debug_mode
-        and IS_MESOP_HTTP_CACHING_JS_ENABLED
-      ):
-        # Cache static assets aggressively in production mode.
-        # The 'immutable' directive suggests the content at this URL will never change.
-        # Works because we version the prod_bundle.js URL with a query parameter.
-        response.headers["Cache-Control"] = (
-          "public, max-age=31536000, immutable"
-        )
-      else:
-        # Default to no caching
-        # no-store ensures that resources are never cached.
-        # https://web.dev/articles/http-cache#request-headers
-        response.headers["Cache-Control"] = "no-store"
+      # Default to no caching
+      # no-store ensures that resources are never cached.
+      # https://web.dev/articles/http-cache#request-headers
+      response.headers["Cache-Control"] = "no-store"
 
     return response
 

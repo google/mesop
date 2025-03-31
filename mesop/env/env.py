@@ -38,6 +38,10 @@ MESOP_WEBSOCKETS_ENABLED = (
   os.environ.get("MESOP_WEBSOCKETS_ENABLED", "false").lower() == "true"
 )
 
-IS_MESOP_HTTP_CACHING_JS_ENABLED = (
-  os.environ.get("MESOP_HTTP_CACHING", "false").lower() == "js"
+MESOP_HTTP_CACHE_JS_BUNDLE = (
+  os.environ.get("MESOP_HTTP_CACHE_JS_BUNDLE", "false").lower() == "true"
+)
+
+MESOP_WEB_COMPONENTS_HTTP_CACHE_KEY = os.environ.get(
+  "MESOP_WEB_COMPONENTS_HTTP_CACHE_KEY", None
 )

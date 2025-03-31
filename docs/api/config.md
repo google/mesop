@@ -270,6 +270,18 @@ By default, this is not enabled. You can enable this by setting it to `true`.
 
 This is the base path used to resolve other paths, particularly for serving static files. Must be an absolute path. This is rarely needed because the default of using the current working directory is usually sufficient.
 
+### MESOP_HTTP_CACHE_JS_BUNDLE
+
+Enables HTTP caching for the main JS bundle (i.e. prod_bundle.js) served by Mesop. This minimizes unnecessary HTTP requests for the JS bundle.
+
+Note: this does *not* cache other JS files like web components, which are configured separately (see below).
+
+### MESOP_WEB_COMPONENTS_HTTP_CACHE_KEY
+
+Enables HTTP caching for the web component entry point modules.
+
+Note: this does *not* cache JS files imported by the web component entry modules.
+
 ## Usage Examples
 
 ### One-liner
