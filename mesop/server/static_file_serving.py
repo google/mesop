@@ -8,10 +8,6 @@ import re
 import secrets
 from collections import OrderedDict
 from io import BytesIO
-
-# Import hashlib to generate a stable version based on some input if needed,
-# but for simplicity, we'll use a random ID per server start.
-# import hashlib
 from typing import Any, Callable
 from urllib.parse import urlparse
 
@@ -103,12 +99,11 @@ def configure_static_file_serving(
             window.__MESOP_EXPERIMENTS__ = {json.dumps(experiment_settings)};
           </script>
         """
-      if '<script src="prod_bundle.js"' in line:
+      if '<script src="prod_bundle.js"' in line and prod_bundle_hash:
         lines[i] = lines[i].replace(
           '<script src="prod_bundle.js"',
           f'<script src="prod_bundle.js?v={prod_bundle_hash}"',
         )
-        print("replaced line", lines[i])
 
     # Create a BytesIO object from the modified lines
     modified_file_content = "".join(lines)
@@ -148,7 +143,6 @@ def configure_static_file_serving(
 
     if not serving_path:
       raise MesopException("Unexpected request to " + path)
-
     return send_file_compressed(
       serving_path,
       disable_gzip_cache=disable_gzip_cache,
@@ -348,9 +342,6 @@ def configure_static_file_serving(
       and not runtime().debug_mode
       and MESOP_HTTP_CACHE_JS_BUNDLE
     ):
-      # Cache static assets aggressively in production mode.
-      # The 'immutable' directive suggests the content at this URL will never change.
-      # Works because we version the prod_bundle.js URL with a query parameter.
       response.headers["Cache-Control"] = "public, max-age=31536000, immutable"
     if (
       request.path.startswith(f"/{WEB_COMPONENTS_PATH_SEGMENT}/")
@@ -360,7 +351,6 @@ def configure_static_file_serving(
     ):
       response.headers["Cache-Control"] = "public, max-age=31536000, immutable"
     if "Cache-Control" not in response.headers:
-      # Default to no caching
       # no-store ensures that resources are never cached.
       # https://web.dev/articles/http-cache#request-headers
       response.headers["Cache-Control"] = "no-store"
