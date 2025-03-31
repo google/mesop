@@ -37,3 +37,7 @@ MESOP_PROD_UNREDACTED_ERRORS = (
 MESOP_WEBSOCKETS_ENABLED = (
   os.environ.get("MESOP_WEBSOCKETS_ENABLED", "false").lower() == "true"
 )
+
+IS_MESOP_HTTP_CACHING_JS_ENABLED = (
+  os.environ.get("MESOP_HTTP_CACHING", "false").lower() == "js"
+)
