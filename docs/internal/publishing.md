@@ -40,7 +40,7 @@ After you've submitted the PR which bumps the version and then [publish a GitHub
 Run the following command but replace `1.0.0` with the version that you just published:
 
 ```sh
-cd scripts/smoketest_app/ && uvx mesop==1.0.0 main.py
+cd scripts/smoketest_app/ && uvx --refresh mesop==1.0.0 main.py
 ```
 
 This will start the Mesop dev server and you can test that hot reload works. Double-check that the version shown is the version that you just released.
@@ -50,7 +50,7 @@ This will start the Mesop dev server and you can test that hot reload works. Dou
 Run the following command but replace `1.0.0` with the version that you just published:
 
 ```sh
-cd scripts/smoketest_app/ && uvx --with mesop==1.0.0 gunicorn@latest main:me
+cd scripts/smoketest_app/ && uvx  --refresh --with mesop==1.0.0 gunicorn@latest main:me
 ```
 
 This will launch Mesop under the Gunicorn server so you can make sure it works as expected.
