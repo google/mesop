@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 
 interface ExperimentSettings {
   readonly websocketsEnabled: boolean;
+  readonly webComponentsCacheKey: string | null;
 }
 
 @Injectable({
@@ -19,5 +20,8 @@ export class ExperimentService {
 
   get websocketsEnabled(): boolean {
     return this.settings.websocketsEnabled;
+  }
+  get webComponentsCacheKey(): string | null {
+    return this.settings.webComponentsCacheKey;
   }
 }

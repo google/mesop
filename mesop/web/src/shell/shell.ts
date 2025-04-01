@@ -42,6 +42,7 @@ import {
   ProdErrorDialogService,
 } from '../services/error_dialog_service';
 import {MatDialog} from '@angular/material/dialog';
+import {ExperimentService} from '../services/experiment_service';
 // Keep the following comment to ensure there's a hook for adding TS imports in the downstream sync.
 // ADD_TS_IMPORT_HERE
 
@@ -74,6 +75,7 @@ export class Shell {
     errorHandler: ErrorHandler,
     private themeService: ThemeService,
     private dialog: MatDialog,
+    private experimentService: ExperimentService,
   ) {
     iconRegistry.setDefaultFontSetClass('material-symbols-rounded');
     (errorHandler as GlobalErrorHandlerService).setOnError((error) => {
@@ -103,11 +105,14 @@ export class Shell {
         onRender: async (rootComponent, jsModules) => {
           // Import all JS modules concurrently
           await Promise.all(
-            jsModules.map((modulePath) =>
-              import(modulePath).then(() =>
+            jsModules.map((modulePath) => {
+              if (this.experimentService.webComponentsCacheKey) {
+                modulePath += `?v=${this.experimentService.webComponentsCacheKey}`;
+              }
+              return import(modulePath).then(() =>
                 console.debug(`Successfully imported JS module: ${modulePath}`),
-              ),
-            ),
+              );
+            }),
           ).then(() => {
             console.debug('All JS modules imported');
           });

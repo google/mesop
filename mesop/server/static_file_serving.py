@@ -1,4 +1,5 @@
 import gzip
+import hashlib
 import io
 import json
 import mimetypes
@@ -14,6 +15,8 @@ from flask import Flask, Response, g, make_response, request, send_file
 from werkzeug.security import safe_join
 
 from mesop.env.env import (
+  MESOP_HTTP_CACHE_JS_BUNDLE,
+  MESOP_WEB_COMPONENTS_HTTP_CACHE_KEY,
   MESOP_WEBSOCKETS_ENABLED,
   get_app_base_path,
 )
@@ -47,6 +50,11 @@ def configure_static_file_serving(
     safe_path = safe_join(static_file_runfiles_base, path)
     assert safe_path
     return get_runfile_location(safe_path)
+
+  prod_bundle_hash = ""
+  if MESOP_HTTP_CACHE_JS_BUNDLE and not runtime().debug_mode:
+    with open(get_path("prod_bundle.js"), "rb") as f:
+      prod_bundle_hash = hashlib.md5(f.read()).hexdigest()
 
   def retrieve_index_html() -> io.BytesIO | str:
     page_config = runtime().get_page_config(path=request.path)
@@ -84,12 +92,18 @@ def configure_static_file_serving(
       ):
         experiment_settings = {
           "websocketsEnabled": MESOP_WEBSOCKETS_ENABLED,
+          "webComponentsCacheKey": MESOP_WEB_COMPONENTS_HTTP_CACHE_KEY,
         }
         lines[i] = f"""
           <script nonce="{g.csp_nonce}">
             window.__MESOP_EXPERIMENTS__ = {json.dumps(experiment_settings)};
           </script>
         """
+      if '<script src="prod_bundle.js"' in line and prod_bundle_hash:
+        lines[i] = lines[i].replace(
+          '<script src="prod_bundle.js"',
+          f'<script src="prod_bundle.js?v={prod_bundle_hash}"',
+        )
 
     # Create a BytesIO object from the modified lines
     modified_file_content = "".join(lines)
@@ -322,7 +336,20 @@ def configure_static_file_serving(
     # Recommended by https://web.dev/articles/referrer-best-practices
     response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
 
-    # If we've set Cache-Control earlier, respect those.
+    if (
+      request.path == "/prod_bundle.js"
+      and request.args.get("v") == prod_bundle_hash
+      and not runtime().debug_mode
+      and MESOP_HTTP_CACHE_JS_BUNDLE
+    ):
+      response.headers["Cache-Control"] = "public, max-age=31536000, immutable"
+    if (
+      request.path.startswith(f"/{WEB_COMPONENTS_PATH_SEGMENT}/")
+      and not runtime().debug_mode
+      and MESOP_WEB_COMPONENTS_HTTP_CACHE_KEY
+      and request.args.get("v") == MESOP_WEB_COMPONENTS_HTTP_CACHE_KEY
+    ):
+      response.headers["Cache-Control"] = "public, max-age=31536000, immutable"
     if "Cache-Control" not in response.headers:
       # no-store ensures that resources are never cached.
       # https://web.dev/articles/http-cache#request-headers

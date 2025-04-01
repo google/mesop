@@ -37,3 +37,11 @@ MESOP_PROD_UNREDACTED_ERRORS = (
 MESOP_WEBSOCKETS_ENABLED = (
   os.environ.get("MESOP_WEBSOCKETS_ENABLED", "false").lower() == "true"
 )
+
+MESOP_HTTP_CACHE_JS_BUNDLE = (
+  os.environ.get("MESOP_HTTP_CACHE_JS_BUNDLE", "false").lower() == "true"
+)
+
+MESOP_WEB_COMPONENTS_HTTP_CACHE_KEY = os.environ.get(
+  "MESOP_WEB_COMPONENTS_HTTP_CACHE_KEY", None
+)
