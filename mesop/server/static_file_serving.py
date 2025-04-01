@@ -315,7 +315,10 @@ def configure_static_file_serving(
     if livereload_script_url:
       livereload_origin = extract_origin(livereload_script_url)
       if livereload_origin:
-        csp["connect-src"] = f"'self' {livereload_origin}"
+        if "connect-src" in csp:
+          csp["connect-src"] += f" {livereload_origin}"
+        else:
+          csp["connect-src"] = f"'self' {livereload_origin}"
 
     if request.path == "/sandbox_iframe.html":
       # Set a minimal CSP to not restrict Mesop app developers.
