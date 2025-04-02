@@ -286,7 +286,7 @@ describe('applyComponentDiff functionality', () => {
     expect(c1).toEqual(expectedC1);
   });
 
-  it('applies mutliple delete diffs', () => {
+  it('applies multiple delete diffs', () => {
     // Starting component
     const c1 = createDefaultComponent();
     const c1c1 = createDefaultComponent();
