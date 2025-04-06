@@ -21,10 +21,17 @@ class UploadEvent(MesopEvent):
   """Event for file uploads.
 
   Attributes:
-      file: Uploaded file.
+      files: Upload files
+      file: The first uploaded file. Convenience property for single uploads
   """
 
-  file: UploadedFile
+  files: list[UploadedFile]
+
+  @property
+  def file(self):
+    if not self.files:
+      return UploadedFile()
+    return self.files[0]
 
 
 def map_upload_event(event, key):
@@ -33,12 +40,15 @@ def map_upload_event(event, key):
   if upload_event.file:
     return UploadEvent(
       key=key.key,
-      file=UploadedFile(
-        upload_event.file[0].contents,
-        name=upload_event.file[0].name,
-        size=upload_event.file[0].size,
-        mime_type=upload_event.file[0].mime_type,
-      ),
+      files=[
+        UploadedFile(
+          file.contents,
+          name=file.name,
+          size=file.size,
+          mime_type=file.mime_type,
+        )
+        for file in upload_event.file
+      ],
     )
   raise MesopDeveloperException("No file was sent to the server.")
 
@@ -57,6 +67,7 @@ def uploader(
   color: Literal["primary", "accent", "warn"] | None = None,
   disable_ripple: bool = False,
   disabled: bool = False,
+  multiple: bool = False,
   style: Style | None = None,
 ):
   """Creates an uploader with a simple text Button component.
@@ -70,6 +81,7 @@ def uploader(
       color: Theme color palette of the button.
       disable_ripple: Whether the ripple effect is disabled or not.
       disabled: Whether the button is disabled.
+      multiple: Allow multiple file selection for uploads.
       style: Style for the component.
   """
   with content_uploader(
@@ -79,6 +91,7 @@ def uploader(
     color=color,
     disable_ripple=disable_ripple,
     disabled=disabled,
+    multiple=multiple,
     style=style,
     key=key,
   ):
@@ -95,6 +108,7 @@ def content_uploader(
   color: Literal["primary", "accent", "warn"] | None = None,
   disable_ripple: bool = False,
   disabled: bool = False,
+  multiple: bool = False,
   style: Style | None = None,
 ):
   """
@@ -111,6 +125,7 @@ def content_uploader(
       color: Theme color palette of the button
       disable_ripple: Whether the ripple effect is disabled or not.
       disabled: Whether the button is disabled.
+      multiple: Allow multiple file selection for uploads.
       style: Style for the component.
   """
   return insert_composite_component(
@@ -128,6 +143,7 @@ def content_uploader(
       color=color,
       disable_ripple=disable_ripple,
       disabled=disabled,
+      multiple=multiple,
     ),
     style=style,
   )

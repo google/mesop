@@ -50,8 +50,6 @@ export class UploaderComponent {
     const files = target.files as FileList;
     const uploadEvent = new UploadEvent();
 
-    // Multiple file uploads are not supported yet, so only one file will be saved at
-    // most.
     for (let i = 0; i < files.length; ++i) {
       const uploaded_file = new UploadedFile();
       const buffer = await files[i].arrayBuffer();

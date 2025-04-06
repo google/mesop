@@ -2,6 +2,7 @@
   type="file"
   accept="{{ accept() }}"
   (change)="onFileSelected($event)"
+  [multiple]="config().getMultiple()"
   #fileUpload
 />
 <div>
