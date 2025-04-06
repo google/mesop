@@ -5,7 +5,7 @@ import mesop as me
 
 @me.stateclass
 class State:
-  file: me.UploadedFile
+  files: list[me.UploadedFile]
 
 
 def load(e: me.LoadEvent):
@@ -28,6 +28,7 @@ def app():
         on_upload=handle_upload,
         type="flat",
         color="primary",
+        multiple=True,
         style=me.Style(font_weight="bold"),
       ):
         with me.box(style=me.Style(display="flex", gap=5)):
@@ -39,6 +40,7 @@ def app():
         on_upload=handle_upload,
         type="flat",
         color="warn",
+        multiple=True,
         style=me.Style(font_weight="bold"),
       ):
         me.icon("upload")
@@ -49,6 +51,7 @@ def app():
         on_upload=handle_upload,
         type="flat",
         color="accent",
+        multiple=True,
         style=me.Style(font_weight="bold"),
       )
 
@@ -56,23 +59,25 @@ def app():
         accepted_file_types=["image/jpeg", "image/png"],
         on_upload=handle_upload,
         type="icon",
+        multiple=True,
         style=me.Style(font_weight="bold"),
       ):
         me.icon("upload")
 
-    if state.file.size:
-      with me.box(style=me.Style(margin=me.Margin.all(10))):
-        me.text(f"File name: {state.file.name}")
-        me.text(f"File size: {state.file.size}")
-        me.text(f"File type: {state.file.mime_type}")
+    if state.files:
+      for file in state.files:
+        with me.box(style=me.Style(margin=me.Margin.all(10))):
+          me.text(f"File name: {file.name}")
+          me.text(f"File size: {file.size}")
+          me.text(f"File type: {file.mime_type}")
 
-      with me.box(style=me.Style(margin=me.Margin.all(10))):
-        me.image(src=_convert_contents_data_url(state.file))
+          with me.box(style=me.Style(margin=me.Margin.all(10))):
+            me.image(src=_convert_contents_data_url(file))
 
 
 def handle_upload(event: me.UploadEvent):
   state = me.state(State)
-  state.file = event.file
+  state.files = event.files
 
 
 def _convert_contents_data_url(file: me.UploadedFile) -> str:

@@ -15,13 +15,14 @@ message UploadEvent {
 }
 
 
-// Next ID: 8
+// Next ID: 9
 message UploaderType {
     repeated string accepted_file_type = 1;
     optional string on_upload_event_handler_id = 2;
     optional string color = 3;
     optional bool disable_ripple = 4;
     optional bool disabled = 5;
+    optional bool multiple = 8;
 
     // Type has two properties:
     // |type_index| is used for rendering
