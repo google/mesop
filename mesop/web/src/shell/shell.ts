@@ -5,8 +5,8 @@ import {
   HostListener,
   NgZone,
   Renderer2,
-  afterRender,
 } from '@angular/core';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {Router, RouterOutlet, Routes, provideRouter} from '@angular/router';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {
@@ -34,7 +34,7 @@ import {GlobalErrorHandlerService} from '../services/global_error_handler';
 import {getViewportSize} from '../utils/viewport_size';
 import {createCustomElement} from '@angular/elements';
 import {Subject} from 'rxjs';
-import {debounceTime} from 'rxjs/operators';
+import {debounceTime, takeUntil} from 'rxjs/operators';
 import {ThemeService} from '../services/theme_service';
 import {getQueryParams} from '../utils/query_params';
 import {
@@ -87,7 +87,7 @@ export class Shell {
       .pipe(debounceTime(500))
       .subscribe(() => this.onResizeDebounced());
 
-    afterRender(() => {
+    this.zone.onStable.pipe(takeUntilDestroyed()).subscribe(() => {
       this.maybeExecuteScrollCommand();
     });
   }
