@@ -22,4 +22,4 @@ def app():
 
 
 def upper_case_stream(s: str):
-  return "Echo: " + s
+  return "Echo: " + s.capitalize()
