@@ -1,11 +1,12 @@
 import {
+  afterRenderEffect,
   ApplicationRef,
   Component,
   ErrorHandler,
   HostListener,
   NgZone,
   Renderer2,
-  afterRender,
+  signal,
 } from '@angular/core';
 import {Router, RouterOutlet, Routes, provideRouter} from '@angular/router';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
@@ -64,7 +65,7 @@ export class Shell {
   rootComponent!: ComponentProto;
   private resizeSubject = new Subject<void>();
 
-  private commandScrollKey = '';
+  private commandScrollKey = signal('');
 
   constructor(
     private zone: NgZone,
@@ -87,9 +88,7 @@ export class Shell {
       .pipe(debounceTime(500))
       .subscribe(() => this.onResizeDebounced());
 
-    afterRender(() => {
-      this.maybeExecuteScrollCommand();
-    });
+    afterRenderEffect(() => this.maybeExecuteScrollCommand());
   }
 
   ngOnInit() {
@@ -131,7 +130,9 @@ export class Shell {
             // Store the scroll key so we can defer execution of scroll command until
             // after everything is fully rendered. This helps avoid race conditions
             // with the scroll behavior.
-            this.commandScrollKey = command.getScrollIntoView()!.getKey() || '';
+            this.commandScrollKey.set(
+              command.getScrollIntoView()!.getKey() || '',
+            );
           } else if (command.hasSetPageTitle()) {
             this.channel.setOverridedTitle(
               command.getSetPageTitle()!.getTitle() || '',
@@ -249,9 +250,9 @@ export class Shell {
 
   // Executes the scroll command if a key has been specified.
   maybeExecuteScrollCommand() {
-    if (this.commandScrollKey) {
-      const scrollKey = this.commandScrollKey;
-      this.commandScrollKey = '';
+    if (this.commandScrollKey()) {
+      const scrollKey = this.commandScrollKey();
+      this.commandScrollKey.set('');
       const targetElements = document.querySelectorAll(
         `[data-key="${scrollKey}"]`,
       );
