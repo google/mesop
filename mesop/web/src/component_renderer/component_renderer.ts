@@ -325,7 +325,7 @@ Make sure the web component name is spelled the same between Python and JavaScri
     return '';
   }
 
-  onClick(event: Event) {
+  onClick(event: MouseEvent) {
     if (!this._boxType) {
       return;
     }
@@ -334,6 +334,12 @@ Make sure the web component name is spelled the same between Python and JavaScri
     userEvent.setKey(this.component.getKey());
     const click = new ClickEvent();
     click.setIsTarget(event.target === event.currentTarget);
+    click.setClientX(event.clientX);
+    click.setClientY(event.clientY);
+    click.setPageX(event.pageX);
+    click.setPageY(event.pageY);
+    click.setOffsetX(event.offsetX);
+    click.setOffsetY(event.offsetY);
     userEvent.setClick(click);
     this.channel.dispatch(userEvent);
   }

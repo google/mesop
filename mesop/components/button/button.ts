@@ -34,12 +34,18 @@ export class ButtonComponent {
     return this._config;
   }
 
-  onClick(event: Event): void {
+  onClick(event: MouseEvent): void {
     const userEvent = new UserEvent();
     userEvent.setHandlerId(this.config().getOnClickHandlerId()!);
     userEvent.setKey(this.key);
     const click = new ClickEvent();
     click.setIsTarget(event.target === event.currentTarget);
+    click.setClientX(event.clientX);
+    click.setClientY(event.clientY);
+    click.setPageX(event.pageX);
+    click.setPageY(event.pageY);
+    click.setOffsetX(event.offsetX);
+    click.setOffsetY(event.offsetY);
     userEvent.setClick(click);
     this.channel.dispatch(userEvent);
   }
