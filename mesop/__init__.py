@@ -221,6 +221,9 @@ from mesop.events import (
 from mesop.events import (
   LoadEvent as LoadEvent,
 )
+from mesop.events import (
+  RightClickEvent as RightClickEvent,
+)
 from mesop.events import WebEvent as WebEvent
 from mesop.exceptions import (
   MesopDeveloperException as MesopDeveloperException,

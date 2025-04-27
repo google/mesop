@@ -24,7 +24,13 @@ from google.protobuf.message import Message
 
 import mesop.protos.ui_pb2 as pb
 from mesop.component_helpers.style import Style, to_style_proto
-from mesop.events import ClickEvent, InputEvent, MesopEvent, WebEvent
+from mesop.events import (
+  ClickEvent,
+  InputEvent,
+  MesopEvent,
+  RightClickEvent,
+  WebEvent,
+)
 from mesop.exceptions import MesopDeveloperException
 from mesop.key import Key, key_from_proto
 from mesop.runtime import runtime
@@ -674,9 +680,28 @@ runtime().register_event_mapper(
   lambda userEvent, key: ClickEvent(
     key=key.key,
     is_target=userEvent.click.is_target,
+    client_x=userEvent.click.client_x,
+    client_y=userEvent.click.client_y,
+    page_x=userEvent.click.page_x,
+    page_y=userEvent.click.page_y,
+    offset_x=userEvent.click.offset_x,
+    offset_y=userEvent.click.offset_y,
   ),
 )
 
+runtime().register_event_mapper(
+  RightClickEvent,
+  lambda userEvent, key: RightClickEvent(
+    key=key.key,
+    is_target=userEvent.click.is_target,
+    client_x=userEvent.click.client_x,
+    client_y=userEvent.click.client_y,
+    page_x=userEvent.click.page_x,
+    page_y=userEvent.click.page_y,
+    offset_x=userEvent.click.offset_x,
+    offset_y=userEvent.click.offset_y,
+  ),
+)
 
 runtime().register_event_mapper(
   InputEvent,

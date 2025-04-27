@@ -7,7 +7,7 @@ from mesop.component_helpers import (
   register_event_handler,
   register_native_component,
 )
-from mesop.events import ClickEvent
+from mesop.events import ClickEvent, RightClickEvent
 
 
 @register_native_component
@@ -15,6 +15,7 @@ def box(
   *,
   style: Style | None = None,
   on_click: Callable[[ClickEvent], Any] | None = None,
+  on_right_click: Callable[[RightClickEvent], Any] | None = None,
   classes: list[str] | str = "",
   key: str | None = None,
 ) -> Any:
@@ -24,6 +25,7 @@ def box(
     style: Style to apply to component. Follows [HTML Element inline style API](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/style).
     on_click: The callback function that is called when the box is clicked.
       It receives a ClickEvent as its only argument.
+    on_right_click: The callback function that is called when the box is right clicked. This will disable the default context menu behavior if set.
     classes: CSS classes.
     key: The component [key](../components/index.md#component-key).
 
@@ -36,6 +38,11 @@ def box(
     proto=box_pb.BoxType(
       on_click_handler_id=register_event_handler(on_click, event=ClickEvent)
       if on_click
+      else "",
+      on_right_click_handler_id=register_event_handler(
+        on_right_click, event=RightClickEvent
+      )
+      if on_right_click
       else "",
       classes=classes if isinstance(classes, list) else classes.split(" "),
     ),

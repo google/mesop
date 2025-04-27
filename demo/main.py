@@ -33,6 +33,7 @@ import chat as chat
 import chat_inputs as chat_inputs
 import checkbox as checkbox
 import code_demo as code_demo  # cannot call it code due to python library naming conflict
+import context_menu as context_menu
 import date_picker as date_picker
 import date_range_picker as date_range_picker
 import density as density
@@ -109,6 +110,7 @@ FIRST_SECTIONS = [
   Section(
     name="Patterns",
     examples=[
+      Example(name="context_menu"),
       Example(name="dialog"),
       Example(name="grid_table"),
       Example(name="headers"),

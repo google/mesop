@@ -13,13 +13,13 @@ class ClickEvent(MesopEvent):
 
   Attributes:
       key (str): key of the component that emitted this event.
-      is_target (bool): Whether the clicked target is the component which attached the event handler.
-      client_x (float): X coordinate relative to the viewport
-      client_y (float): Y coordinate relative to the viewport
-      page_x (float): X coordinate relative to the entire document, including scrolled parts
-      page_y (float): Y coordinate relative to the entire document, including scrolled parts
-      offset_x (float): X coordinate relative to the element
-      offset_y (float): Y coordinate relative to the element
+      is_target: Whether the clicked target is the component which attached the event handler.
+      client_x: X coordinate relative to the viewport.
+      client_y: Y coordinate relative to the viewport.
+      page_x: X coordinate relative to the entire document, including scrolled parts.
+      page_y: Y coordinate relative to the entire document, including scrolled parts.
+      offset_x: X coordinate relative to the element.
+      offset_y: Y coordinate relative to the element.
   """
 
   is_target: bool

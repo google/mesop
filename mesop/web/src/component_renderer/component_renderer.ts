@@ -14,6 +14,7 @@ import {CommonModule} from '@angular/common';
 import {
   ClickEvent,
   Component as ComponentProto,
+  RightClickEvent,
   UserEvent,
   WebComponentType,
 } from 'mesop/mesop/protos/ui_jspb_proto_pb/mesop/protos/ui_pb';
@@ -53,6 +54,7 @@ export class ComponentRenderer {
   customElement: HTMLElement | undefined;
   projectedViewRef: EmbeddedViewRef<ComponentRenderer> | undefined;
   clickListenerRemover: (() => void) | undefined;
+  rightClickListenerRemover: (() => void) | undefined;
 
   constructor(
     private channel: Channel,
@@ -123,6 +125,7 @@ export class ComponentRenderer {
       return;
     }
     let hasClickHandler = false;
+    let hasRightClickHandler = false;
     if (this.isBoxType()) {
       this._boxType = BoxType.deserializeBinary(
         this.component.getType()!.getValue() as unknown as Uint8Array,
@@ -130,6 +133,7 @@ export class ComponentRenderer {
       // Used for determinine which component-renderer elements are not boxes.
       this.elementRef.nativeElement.setAttribute('mesop-box', 'true');
       hasClickHandler = Boolean(this._boxType.getOnClickHandlerId());
+      hasRightClickHandler = Boolean(this._boxType.getOnRightClickHandlerId());
     }
 
     if (hasClickHandler) {
@@ -142,6 +146,18 @@ export class ComponentRenderer {
       }
     } else {
       this.clickListenerRemover?.();
+    }
+
+    if (hasRightClickHandler) {
+      if (!this.rightClickListenerRemover) {
+        this.rightClickListenerRemover = this.renderer.listen(
+          this.elementRef.nativeElement,
+          'contextmenu',
+          this.onRightClick.bind(this),
+        );
+      }
+    } else {
+      this.rightClickListenerRemover?.();
     }
 
     this.computeStyles();
@@ -333,13 +349,24 @@ Make sure the web component name is spelled the same between Python and JavaScri
     userEvent.setHandlerId(this._boxType.getOnClickHandlerId()!);
     userEvent.setKey(this.component.getKey());
     const click = new ClickEvent();
-    click.setIsTarget(event.target === event.currentTarget);
-    click.setClientX(event.clientX);
-    click.setClientY(event.clientY);
-    click.setPageX(event.pageX);
-    click.setPageY(event.pageY);
-    click.setOffsetX(event.offsetX);
-    click.setOffsetY(event.offsetY);
+    populateClickEvent(click, event);
+    userEvent.setClick(click);
+    this.channel.dispatch(userEvent);
+  }
+
+  onRightClick(event: MouseEvent) {
+    if (!this._boxType) {
+      return;
+    }
+
+    // Disable the default contextmenu on right click.
+    event.preventDefault();
+
+    const userEvent = new UserEvent();
+    userEvent.setHandlerId(this._boxType.getOnRightClickHandlerId()!);
+    userEvent.setKey(this.component.getKey());
+    const click = new RightClickEvent();
+    populateClickEvent(click, event);
     userEvent.setClick(click);
     this.channel.dispatch(userEvent);
   }
@@ -363,4 +390,17 @@ export function checkPropertyNameIsSafe(propertyName: string) {
   ) {
     throw new Error(`Unsafe property name '${propertyName}' cannot be used.`);
   }
+}
+
+function populateClickEvent(
+  click: ClickEvent | RightClickEvent,
+  event: MouseEvent,
+) {
+  click.setIsTarget(event.target === event.currentTarget);
+  click.setClientX(event.clientX);
+  click.setClientY(event.clientY);
+  click.setPageX(event.pageX);
+  click.setPageY(event.pageY);
+  click.setOffsetX(event.offsetX);
+  click.setOffsetY(event.offsetY);
 }

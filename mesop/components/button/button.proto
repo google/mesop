@@ -3,12 +3,13 @@ syntax = "proto2";
 
 package mesop.components.button;
 
+// Next ID: 8
 message ButtonType {
   optional string color = 1;
   optional bool disable_ripple = 2;
   optional bool disabled = 3;
   optional string on_click_handler_id = 4;
-
+  optional string on_right_click_handler_id = 7;
   // Type has two properties:
   // |type_index| is used for rendering
   // |type| is used for editor value

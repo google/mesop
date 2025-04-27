@@ -28,7 +28,7 @@ def button(
 
   Args:
     label: Text label for button
-    on_click: [click](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/click_event) is a native browser event.
+    on_click: [click](https://developer.mozilla.org/en-US/docs/Web/API/Element/click_event) is a native browser event.
     type: Type of button style to use
     color: Theme color palette of the button
     disable_ripple: Whether the ripple effect is disabled or not.
@@ -64,7 +64,7 @@ def content_button(
   Intended for advanced use cases.
 
   Args:
-    on_click: [click](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/click_event) is a native browser event.
+    on_click: [click](https://developer.mozilla.org/en-US/docs/Web/API/Element/click_event) is a native browser event.
     type: Type of button style to use
     color: Theme color palette of the button
     disable_ripple: Whether the ripple effect is disabled or not.
