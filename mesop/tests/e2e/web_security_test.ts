@@ -32,6 +32,30 @@ testInProdOnly('csp trusted types', async ({page}) => {
   expect(cleanCsp(csp)).toMatchSnapshot('csp_trusted_types.txt');
 });
 
+testInProdOnly('coop: default', async ({page}) => {
+  const response = await page.goto('/');
+  const coop = response?.headers()['cross-origin-opener-policy']!;
+  expect(coop).toEqual('unsafe-none');
+});
+
+testInProdOnly('coop: same origin', async ({page}) => {
+  const response = await page.goto('/testing/coop_same_origin');
+  const coop = response?.headers()['cross-origin-opener-policy']!;
+  expect(coop).toEqual('same-origin');
+});
+
+testInProdOnly('coop: same origin allow popups', async ({page}) => {
+  const response = await page.goto('/testing/coop_same_origin_allow_popups');
+  const coop = response?.headers()['cross-origin-opener-policy']!;
+  expect(coop).toEqual('same-origin-allow-popups');
+});
+
+testInProdOnly('coop: noopener allow popups', async ({page}) => {
+  const response = await page.goto('/testing/coop_noopener_allow_popups');
+  const coop = response?.headers()['cross-origin-opener-policy']!;
+  expect(coop).toEqual('noopener-allow-popups');
+});
+
 function cleanCsp(csp: string): string {
   return (
     csp

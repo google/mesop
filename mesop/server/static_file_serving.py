@@ -264,6 +264,12 @@ def configure_static_file_serving(
     security_policy = None
     if page_config and page_config.security_policy:
       security_policy = page_config.security_policy
+
+    if security_policy and security_policy.cross_origin_opener_policy:
+      response.headers["Cross-Origin-Opener-Policy"] = (
+        security_policy.cross_origin_opener_policy
+      )
+
     if security_policy and security_policy.allowed_connect_srcs:
       csp["connect-src"] = "'self' " + " ".join(
         [

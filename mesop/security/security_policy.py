@@ -1,4 +1,5 @@
 from dataclasses import dataclass, field
+from typing import Literal
 
 from mesop.exceptions import MesopDeveloperException
 
@@ -9,6 +10,7 @@ class SecurityPolicy:
   A class to represent the security policy.
 
   Attributes:
+    cross_origin_opener_policy: See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cross-Origin-Opener-Policy).
     allowed_iframe_parents: A list of allowed iframe parents.
     allowed_connect_srcs: A list of sites you can connect to, see [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/connect-src).
     allowed_script_srcs: A list of sites you can load scripts from, see [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/script-src).
@@ -20,6 +22,12 @@ class SecurityPolicy:
       it's an important web security feature!
   """
 
+  cross_origin_opener_policy: Literal[
+    "unsafe-none",
+    "same-origin-allow-popups",
+    "same-origin",
+    "noopener-allow-popups",
+  ] = "unsafe-none"
   allowed_iframe_parents: list[str] = field(default_factory=list)
   allowed_connect_srcs: list[str] = field(default_factory=list)
   allowed_script_srcs: list[str] = field(default_factory=list)

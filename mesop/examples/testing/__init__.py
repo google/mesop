@@ -11,6 +11,9 @@ from mesop.examples.testing import (
   conditional_event_handler as conditional_event_handler,
 )
 from mesop.examples.testing import (
+  coop as coop,
+)
+from mesop.examples.testing import (
   csp_escaping as csp_escaping,
 )
 from mesop.examples.testing import (
