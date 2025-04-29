@@ -35,21 +35,21 @@ def on_click(e: me.ClickEvent):
   state = me.state(State)
   state.is_click = True
   state.is_right_click = False
-  state.client_x = e.client_x
-  state.client_y = e.client_y
-  state.page_x = e.page_x
-  state.page_y = e.page_y
-  state.offset_x = e.offset_x
-  state.offset_y = e.offset_y
+  state.client_x = int(e.client_x)
+  state.client_y = int(e.client_y)
+  state.page_x = int(e.page_x)
+  state.page_y = int(e.page_y)
+  state.offset_x = int(e.offset_x)
+  state.offset_y = int(e.offset_y)
 
 
 def on_right_click(e: me.ClickEvent):
   state = me.state(State)
   state.is_click = True
   state.is_right_click = True
-  state.client_x = e.client_x
-  state.client_y = e.client_y
-  state.page_x = e.page_x
-  state.page_y = e.page_y
-  state.offset_x = e.offset_x
-  state.offset_y = e.offset_y
+  state.client_x = int(e.client_x)
+  state.client_y = int(e.client_y)
+  state.page_x = int(e.page_x)
+  state.page_y = int(e.page_y)
+  state.offset_x = int(e.offset_x)
+  state.offset_y = int(e.offset_y)
