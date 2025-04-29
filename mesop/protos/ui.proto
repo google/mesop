@@ -24,7 +24,7 @@ message QueryParam {
     repeated string values = 2;
 }
 
-// Next ID: 20
+// Next ID: 21
 message UserEvent {
     optional States states = 1;
 
@@ -48,6 +48,7 @@ message UserEvent {
         bytes bytes_value = 9;
         ChangePrefersColorScheme change_prefers_color_scheme = 14;
         ClickEvent click = 16;
+        RightClickEvent right_click = 20;
         TextareaShortcutEvent textarea_shortcut = 17;
         DateRangePickerEvent date_range_picker_event = 18;
     }
@@ -83,8 +84,31 @@ message ArgPathSegment {
 }
 
 // Click event parameters
+//
+// Next ID: 8
 message ClickEvent {
     optional bool is_target = 1;
+    optional bool is_right_click = 2;
+    optional float client_x = 3;
+    optional float client_y = 4;
+    optional float page_x = 5;
+    optional float page_y = 6;
+    optional float offset_x = 7;
+    optional float offset_y = 8;
+}
+
+// Right click event parameters
+//
+// Next ID: 8
+message RightClickEvent {
+    optional bool is_target = 1;
+    optional bool is_right_click = 2;
+    optional float client_x = 3;
+    optional float client_y = 4;
+    optional float page_x = 5;
+    optional float page_y = 6;
+    optional float offset_x = 7;
+    optional float offset_y = 8;
 }
 
 // Shortcut event for textareas.

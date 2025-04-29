@@ -11,5 +11,8 @@ from .events import (
   MesopEvent as MesopEvent,
 )
 from .events import (
+  RightClickEvent as RightClickEvent,
+)
+from .events import (
   WebEvent as WebEvent,
 )

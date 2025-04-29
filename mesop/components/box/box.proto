@@ -2,7 +2,9 @@ syntax = "proto2";
 
 package mesop.components.box;
 
+// Next ID: 5
 message BoxType {
     optional string on_click_handler_id = 2;
+    optional string on_right_click_handler_id = 4;
     repeated string classes = 3;
 }
