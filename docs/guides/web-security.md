@@ -41,6 +41,12 @@ def app():
 
 You can also use wildcards to allow-list multiple subdomains from the same site, such as: `https://*.example.com`.
 
+## Cross Origin Opener Policy
+
+Mesop sets this value to `unsafe-none`, which is the default value. It is recommended to set this to `same-origin` to ensure process isolation from random domains. In most cases, your Mesop app should run without any issues.
+
+For more information, see [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cross-Origin-Opener-Policy) and [XS Leaks Wiki](https://xsleaks.dev/).
+
 ## API
 
 You can configure the security policy at the page level. See [SecurityPolicy on the Page API docs](../api/page.md#mesop.security.security_policy.SecurityPolicy).
