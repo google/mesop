@@ -7,6 +7,7 @@ import {
   UserEvent,
   Component as ComponentProto,
   UiResponse,
+  InitRequest,
   Command,
   ChangePrefersColorScheme,
   HotReloadEvent,
@@ -232,7 +233,20 @@ export class Channel {
             5000,
           );
           setTimeout(() => {
-            this.initWebSocket(initParams, request);
+            // Create a new initial request object when reconnecting the websocket.
+            //
+            // This is to ensure that we get the latest viewport / theme settings / query params
+            // on refresh for the user.
+            //
+            // This is only a temporary fix. Ideally, when the websocket reconnects, it should
+            // retain the existing state and continue from there.
+            const refreshRequest = new UiRequest();
+            const initRequest = new InitRequest();
+            initRequest.setViewportSize(getViewportSize());
+            initRequest.setThemeSettings(this.themeService.getThemeSettings());
+            initRequest.setQueryParamsList(getQueryParams());
+            refreshRequest.setInit(initRequest);
+            this.initWebSocket(initParams, refreshRequest);
           }, backoffDelay);
         }
       });
