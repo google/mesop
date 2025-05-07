@@ -367,7 +367,7 @@ Make sure the web component name is spelled the same between Python and JavaScri
     userEvent.setKey(this.component.getKey());
     const click = new RightClickEvent();
     populateClickEvent(click, event);
-    userEvent.setClick(click);
+    userEvent.setRightClick(click);
     this.channel.dispatch(userEvent);
   }
 }
