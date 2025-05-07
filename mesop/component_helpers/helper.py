@@ -693,13 +693,13 @@ runtime().register_event_mapper(
   RightClickEvent,
   lambda userEvent, key: RightClickEvent(
     key=key.key,
-    is_target=userEvent.click.is_target,
-    client_x=userEvent.click.client_x,
-    client_y=userEvent.click.client_y,
-    page_x=userEvent.click.page_x,
-    page_y=userEvent.click.page_y,
-    offset_x=userEvent.click.offset_x,
-    offset_y=userEvent.click.offset_y,
+    is_target=userEvent.right_click.is_target,
+    client_x=userEvent.right_click.client_x,
+    client_y=userEvent.right_click.client_y,
+    page_x=userEvent.right_click.page_x,
+    page_y=userEvent.right_click.page_y,
+    offset_x=userEvent.right_click.offset_x,
+    offset_y=userEvent.right_click.offset_y,
   ),
 )
 
